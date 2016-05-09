@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="renderer" content="webkit"/>
+        <meta http-equiv="Cache-Control" content="no-siteapp"/>
+        <meta http-equiv="X-UA-Compatible" content="chrome=1,IE=Edge"/>
+        <title>Welcome to JudgeOnline</title>
+        <!--<link th:href="@{/webjars/bootstrap/3.3.6/css/bootstrap.min.css}" rel="stylesheet"/>-->
+
+        <link th:href="@{/css/site.css(_=${#ctx.applicationAttributes.startUpDate})}" rel="stylesheet"/>
+        <link th:href="@{/sample.png}" rel="shortcut icon"/>
+        <script th:src="@{/webjars/jquery/1.12.3/jquery.min.js}"></script>
+        <script th:src="@{/js/site.js(_=${#ctx.applicationAttributes.startUpDate})}"></script>
+    </head>
+    <body id="page-home">
+        <div id="page">
+            <div id="nav">
+                <th:block th:if="${contestId==null}">
+                    <div id="outer-header">
+                        <div id="branding" align="center">
+                            <a th:href="@{/}">
+                                <img id="logo" border="0"
+                                     th:src="@{|/images${#ctx.httpServletRequest.contextPath}logo.jpg|}"
+                                     width="100%" height="100"/></a>
+                        </div>
+                        <!-- end branding -->
+                    </div>
+                    <!-- end header -->
+                    <th:block th:replace="fragment/navigation"/>
+                </th:block>
+                <th:block th:unless="${contestId==null}">
+                    <table border="0" width="100%" class="table-back">
+                        <tr>
+                            <td style="width:16.7%"><a th:href="@{/}" style="width:16.7%">Home Page</a></td>
+                            <td style="width:16.7%"><a th:href="@{/bbs}" target="_blank">Web Board</a></td>
+                            <td style="width:16.7%"><a th:href="@{/showcontest(contest_id=${contestId})}">Problems</a></td>
+                            <td style="width:16.7%"><a th:href="@{/contests/{contestId}/standing(contestId=${contestId})}">Standing</a></td>
+                            <td style="width:16.7%"><a th:href="@{/status(contest_id=${contestId})}">Status</a></td>
+
+                            <td th:if="${#ctx.httpServletRequest.userPrincipal != null}"><b th:text="${#ctx.httpServletRequest.userPrincipal.name}">login.user.name</b><a href="@{/logout}">Logout</a></td>
+                            <td th:unless="${#ctx.httpServletRequest.userPrincipal != null}"><a th:href="@{/login(url=${backUrl})}">Login</a></td>
+                        </tr>
+                    </table>
+                </th:block>
+                <th:block th:replace="fragment/notice"/>
+            </div>
+            <!-- end nav -->
+            <div id="content" class="clearfix">
+                <th:block layout:fragment="content"/>
+            </div>
+            <!-- end content -->
+            <div id="footer" class="clearfix">
+                <p>
+                    <img alt="home" height="29" th:src="@{/images/home.png}" width="40"
+                         border="0"/>
+                    <font size="3"><a th:href="@{/}">Home Page</a></font>
+                    <img alt="goback" height="29" th:src="@{/images/goback.png}" width="40"
+                         border="0" style=" margin-left: 40px;"/>
+                    <font size="3"><a href="javascript:history.go(-1)">Go Back</a>
+                        <img alt="top" height="29" width="40" border="0"
+                             th:src="@{/images/top.png}" style=" margin-left: 40px;"/><a
+                             href="#top">To top</a></font>
+                </p>
+                <hr/>
+                <p align="center"><font size="3" th:inline="text">All Copyright Reserved 2006-[[${T(java.time.Year).now()}]] ZJNU ACM<br/>Any problem, Please Contact <a  th:href="|mailto:${#ctx.applicationAttributes['admin.mail']}|">Administrator</a></font>
+                </p>
+            </div>
+            <!-- end footer -->
+        </div>
+        <!-- end page -->
+        <th:block th:include="fragment/ga"/>
+    </body>
+</html>

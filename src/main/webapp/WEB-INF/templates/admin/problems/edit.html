@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout/admin">
+    <head>
+        <title th:text="${title}">title</title>
+    </head>
+    <body>
+        <!--/*/<th:block layout:fragment="content">/*/-->
+        <input type="hidden" name="ckfinderPath" th:value="@{/ckfinder/}"/>
+        <h1 th:inline="text">[[${hint}]]</h1>
+        <p align="center"><font size="4" color="#333399" th:inline="text">[[${hint2}]]</font></p>
+        <form method="POST" th:action="@{${url}}" th:object="${problem}">
+            <input type="hidden" name="id" th:value="*{id}"/>
+            <input type="hidden" name="_method" th:value="${method}"/>
+            <p align="left" th:inline="text">Problem Id:&nbsp;&nbsp;[[*{id}==0?'New Problem':*{id}]]</p>
+            <p align="left">Title:<input name="title" rows="1" style="width:57em" th:value="*{title}"/></p>
+            <p align="left">Time Limit:<input type="text" name="timeLimit" size="20" th:value="*{timeLimit}"/>MS</p>
+            <p align="left">Memory Limit:<input type="text" name="memoryLimit" size="20" th:value="*{memoryLimit}"/>KByte</p>
+            <p align="left">Description:<br/><textarea class="editable" rows="13" name="description" cols="120" th:text="*{description}"></textarea></p>
+            <p align="left">Input:<br/><textarea class="editable" rows="13" name="input" cols="120" th:text="*{input}"></textarea></p>
+            <p align="left">Output:<br/><textarea class="editable" rows="13" name="output" cols="120" th:text="*{output}"></textarea></p>
+            <p align="left">Sample Input:<br/><textarea rows="13" name="sampleInput" cols="120" th:text="*{sampleInput}"></textarea></p>
+            <p align="left">Sample Output:<br/><textarea rows="13" name="sampleOutput" cols="120" th:text="*{sampleOutput}"></textarea></p>
+            <p align="left">Hint:<br/><textarea class="editable" rows="13" name="hint" cols="120" th:text="*{hint}"></textarea></p>
+            <p align="left">Source:<br/><textarea class="editable" name="source" rows="1" cols="70" th:text="*{source}"></textarea></p>
+            <p align="left">contest:<select name="contest">
+                    <option value="">no contest</option>
+                    <option th:each="contest:${contests}" th:object="${contest}" th:value="*{id}" th:text="*{title}" th:selected="*{id}==${problem.contest}">contest.title</option>
+                </select>
+            </p>
+            <div align="center"><input type="submit" value="Submit"/></div>
+        </form>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.5.8/ckeditor.js" th:src="@{/webjars/ckeditor/4.5.8/full/ckeditor.js}"></script>
+        <script th:src="@{/ckfinder/ckfinder.js}"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.5.8/adapters/jquery.js" th:src="@{/webjars/ckeditor/4.5.8/full/adapters/jquery.js}"></script>
+        <script src="../../../../js/ckfinder.js" th:src="@{/js/ckfinder.js(_=${#ctx.applicationAttributes.startUpDate})}"></script>
+        <!--/*/</th:block>/*/-->
+    </body>
+</html>

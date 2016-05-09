@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout/main">
+    <head>
+        <!--/*--><meta charset="UTF-8"/><!--*/-->
+        <title>修改用户注册信息</title>
+    </head>
+    <body>
+        <!--/*/<th:block layout:fragment="content">/*/-->
+        <form class="modify-user" method="POST" th:action="@{/modifyuser}" th:object="${user}">
+            <table align="center" cellspacing="3" cellpadding="3" width="600" border="0" class="table-back">
+                <tr><td colspan="2" width="600" height="40">
+                        <p align="center">修改用户注册信息</p></td>
+                </tr><tr><td width="25%">用　户　名:</td>
+                    <td width="75%" th:text="*{id}">userId</td></tr>
+                <tr><td>姓　　　名:</td>
+                    <td><input type="text" name="nick" size="50" th:value="*{nick}"/></td></tr>
+                <tr><td>旧　密　码:</td>
+                    <td><input id="oldPassword" type="password" name="oldPassword" size="20" autocomplete="off"/></td></tr>
+                <tr><td>新　密　码:</td>
+                    <td><input type="password" name="newPassword" size="20" autocomplete="off"/></td>
+                </tr><tr><td>重复新密码:</td>
+                    <td><input type="password" name="rptPassword" size="20" autocomplete="off"/></td></tr>
+                <tr><td>班　　　级:</td>
+                    <td><input type="text" name="school" size="30" th:value="*{school}"/></td></tr>
+                <tr><td>邮　　　箱:</td>
+                    <td><input type="text" name="email" size="30" th:value="*{email}"/></td>
+                </tr><tr><td>&nbsp;</td><td align="left">
+                        <input type="submit" value="确定"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="reset" value="重置" name="reset"/>
+                    </td></tr>
+            </table>
+        </form>
+        <script>jQuery(function($){$("form.modify-user").submit(function(){var b=$(this).find("[name='oldPassword']");return b.val()?!0:(alert("请输入旧密码"),b.focus(),!1);});});</script>
+        <font size="4" color="red">如果您不想改变密码，请不要再新密码栏填写任何信息！</font>
+        <!--/*/</th:block>/*/-->
+    </body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout/main">
+    <head>
+        <title>Register Information</title>
+    </head>
+    <body>
+        <!--/*/<th:block layout:fragment="content">/*/-->
+        <form method="POST" th:action="@{/register}">
+            <table align="center" cellspacing="3" cellpadding="3" width="600" border="0" class="table-back">
+                <tr><td colspan="2" width="600" height="40">
+                        <p align="center">请输入你的信息</p></td></tr>
+                <tr><td width="25%">用&nbsp;户&nbsp;名:</td>
+                    <td width="75%"><input type="text" name="user_id" size="20"/></td></tr>
+                <tr><td>昵　　称:</td>
+                    <td><input type="text" name="nick" size="50"/></td></tr>
+                <tr><td>密　　码:</td>
+                    <td><input type="password" name="password" size="20" autocomplete="off"/></td>
+                </tr><tr>
+                    <td>重复密码:</td>
+                    <td>
+                        <input type="password" name="rptPassword" size="20" autocomplete="off"/></td></tr>
+                <tr><td>班　　级:</td>
+                    <td><input type="text" name="school" size="30"/></td></tr>
+                <tr><td>邮　　箱:</td>
+                    <td><input type="text" name="email" size="30"/></td>
+                </tr><tr><td>&nbsp;</td><td align="left">
+                        <input type="submit" value="Submit" name="submit"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="reset" value="Reset" name="reset"/>
+                    </td></tr>
+            </table>
+        </form>
+        <!--/*/</th:block>/*/-->
+    </body>
+</html>

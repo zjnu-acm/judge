@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout/admin">
+    <head><title>Congratulations</title></head>
+    <body>
+        <!--/*/<th:block layout:fragment="content">/*/-->
+        <p>
+            <img border="0" th:src="@{/images/j0293240.png}" width="50" height="36"/>
+            <font size="4">Congratulations</font>
+        </p>
+        <ul>
+            <li>You have deleted a problem, the id is <font color="#CC9900" th:inline="text">[[${problemId}]]</font></li>
+        </ul>
+        <p>
+            <img border="0" th:src="@{/images/j0293234.png}" width="40" height="29"/>
+            <a th:href="@{/admin/problems/{problemId}(problemId=${problemId})}">See This Problem</a>
+        </p>
+        <!--/*/</th:block>/*/-->
+    </body>
+</html>
