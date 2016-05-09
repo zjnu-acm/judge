@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout/main">
+    <head>
+        <title th:inline="text">User -- [[${user.id}]]</title>
+    </head>
+    <body>
+        <!--/*/<th:block layout:fragment="content">/*/-->
+        <center>
+            <font size="5" color="blue">
+                <a th:href="@{/sendpage(to=${user.id})}" th:inline="text">[[${user.id}]]--[[${user.nick}]]</a>
+            </font>
+            <br/>
+            <span th:if="${user.accesstime!=null}" th:inline="text">Last Loginned Time:[[${#calendars.format(T(java.util.Date).from(user.accesstime),"yyyy-MM-dd HH:mm:ss")}]]</span>
+            <span th:if="${#ctx.httpServletRequest.isUserInRole('ADMIN')} and ${user.ip!=null}" th:inline="text"><br/>Last Loginned IP:[[${user.ip}]]</span>
+            <table align="center" cellspacing="0" cellpadding="0" width="700" border="1" class="table-back" style="border-collapse: collapse" bordercolor="#FFF">
+                <tr valign="bottom">
+                    <td colspan="3"><br/>
+                        <form th:action="@{/usercmp}" method="get">
+                            <span>Compare </span>
+                            <input type="text" size="10" name="uid1" th:value="${user.id}"/>
+                            <span>and </span>
+                            <input type="text" size="10" name="uid2"
+                                   th:value="${#ctx.httpServletRequest.userPrincipal!=null?#ctx.httpServletRequest.userPrincipal.name:''}"/>
+                            <input type="submit" value="GO"/>
+                        </form>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="15%" align="left">Rank:</td>
+                    <td align="center" width="25%">
+                        <font color="red" th:text="${rank}">23</font></td>
+                    <td width="60%" align="center">Solved Problems List</td>
+                </tr>
+                <tr>
+                    <td width="15%" align="left">Solved:</td>
+                    <td align="center" width="25%">
+                        <a th:href="@{/status(score=100,user_id=${user.id})}" th:text="${user.solved}">solved</a>
+                    </td>
+                    <td width="60%" align="center" rowspan="4">
+                        <a class="solved-problems" th:each="pid:${solvedProblems}" th:href="@{/showproblem(problem_id=${pid})}" th:text="${pid}">pid</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="15%" align="left">Submissions:</td>
+                    <td align="center" width="25%">
+                        <a th:href="@{/status(user_id=${user.id})}" th:text="${user.submit}">submit</a>
+                    </td>
+                </tr>
+                <tr><td width="15%" align="left">班　　级:</td>
+                    <td align="center" width="25%" th:text="${user.school}">school</td></tr>
+                <tr><td width="15%" align="left">邮　　箱:</td>
+                    <td align="center" width="25%" th:text="${user.email}">email</td></tr>
+            </table>
+            <font size="5">Neighbours:</font><br/>
+            <table width="700" border="1" bordercolorlight="#FFF" bordercolordark="#FFF" style="border-collapse: collapse">
+                <tr bgcolor="#6589D1">
+                    <td width="10%">Rank</td>
+                    <td width="40%">User</td>
+                    <td width="25%">Solved</td>
+                    <td width="25%">Submissions</td>
+                </tr>
+                <tr th:each="neighbour,it:${neighbours}" th:object="${neighbour}"
+                    th:bgcolor="${neighbour.id==user.id?'':it.count%2!=0?'#C0C0C0':'#78C8FF'}">
+                    <td width="10%" th:text="${rankFirst+it.index}">1</td>
+                    <td width="40%"><a th:href="@{/userstatus(user_id=*{id})}"
+                                       th:text="*{id}">userId</a></td>
+                    <td width="25%" th:text="*{solved}">solved</td>
+                    <td width="25%" th:text="*{submit}">submit</td>
+                </tr>
+            </table>
+        </center>
+        <!--/*/</th:block>/*/-->
+    </body>
+</html>

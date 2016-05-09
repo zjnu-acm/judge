@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout/main">
+    <head>
+        <!--/*--><meta charset="UTF-8"/><!--*/-->
+        <title>Login Here</title>
+    </head>
+    <body>
+        <!--/*/<th:block layout:fragment="content">/*/-->
+        <p th:if="${#ctx.requestParameters.error!=null}" style="text-align: center; color: red">Id or password not correct. Please retry.</p>
+        <form method="POST" th:action="@{/login}">
+            <table align="center">
+                <tr>
+                    <td><label for="username-content">User ID:</label></td>
+                    <td><input type="text" id="username-content" name="user_id1" size="15"/></td>
+                </tr>
+                <tr>
+                    <td><label for="password-content">Password:</label></td>
+                    <td><input type="password" id="password-content" name="password1" size="15" autocomplete="off"/></td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="text-center">
+                        <input type="checkbox" name="rememberMe" value="true" id="rememberMe-content" checked="checked"/><label for="rememberMe-content">Remember me</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center">
+                        <input type="submit" value="login"/>
+                        <input type="hidden" th:if="${backURL!=null}" name="url" th:value="${backURL}"/>
+                        <input type="hidden" th:if="${contestId!=null}" name="contest_id" th:value="${contestId}"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <div align="center">
+            <font size="5">Have no ID? <a th:href="@{/registerpage}">REGISTER NOW.</a></font>
+        </div>
+        <!--/*/</th:block>/*/-->
+    </body>
+</html>

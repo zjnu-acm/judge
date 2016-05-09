@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout/admin">
+    <head>
+        <title>Congratulations</title>
+        <style>img{border: 0}</style>
+    </head>
+    <body>
+        <!--/*/<th:block layout:fragment="content">/*/-->
+        <p>
+            <img src="../../../../images/j0293240.png" th:src="@{/images/j0293240.png}" width="50" height="36"/>
+            <font size="4">Congratulations</font></p>
+        <ul th:inline="text">
+            <li>You have added a contest, the id is <font color="#CC9900">[[${contestId}]]</font></li>
+            <li>Start time:<font color="#CC9900">[[${#calendars.format(T(java.util.Date).from(startTime),'yyyy-MM-dd HH:mm:ss')}]]</font></li>
+            <li>End time:<font color="#CC9900">[[${#calendars.format(T(java.util.Date).from(endTime),'yyyy-MM-dd HH:mm:ss')}]]</font></li>
+        </ul>
+        <p>
+            <img src="../../../../images/j0293234.png" th:src="@{/images/j0293234.png}" width="40" height="29"/> <a th:href="@{/admin/contests/new}">Add Another Contest</a>
+            <img src="../../../../images/j0293234.png" th:src="@{/images/j0293234.png}" width="40" height="29"/> <a th:href="@{/admin/contests/{contestId}(contestId=${contestId})}">See This Contest</a>
+        </p>
+        <!--/*/</th:block>/*/-->
+    </body>
+</html>

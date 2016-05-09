@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout/main">
+    <head>
+        <title>Submit Your Solution Via Web</title>
+    </head>
+    <body>
+        <!--/*/<th:block layout:fragment="content">/*/-->
+        <div style="width:980px; margin: 0 auto; padding: 1px" class="table-back">
+            <form method="POST" th:action="@{/submit}">
+                <p align="center">
+                    <font size="4" color="#333399">Submit Your Solution Via Web</font>
+                </p>
+                <p align="center">Problem ID:<input type="text" name="problem_id" th:value="${problemId}" size="20" accesskey="p"/>
+                    <br/>Language:<select size="1" name="language" style="width:100;" accesskey="l">
+                        <option th:each="language:${languages}" th:object="${language}" th:value="*{id}" th:selected="*{id}==${languageId}" th:text="*{name}">GNU C++</option>
+                    </select>
+                    <br/>
+                    <a href="/CLanguage/showmessage?message_id=1164" class="submit hint" style="color:red">使用GCC(GNU C)或VC++提交出现Runtime Error，请确保main的返回类型为int，main最后有return 0</a>
+                </p>
+                <p align="center">Source: <br/>
+                    <textarea rows="30" name="source" cols="79" accesskey="c"></textarea>
+                </p>
+                <div align="center">
+                    <input type="submit" value="Submit" name="submit" accesskey="s"/>
+                    <input type="reset" value="Reset" name="reset"/>
+                </div>
+            </form>
+        </div>
+        <script src="../../js/submit.js" th:src="@{/js/submit.js}"></script>
+        <!--/*/</th:block>/*/-->
+    </body>
+</html>

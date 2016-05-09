@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout/admin">
+    <head><title>Add a contest</title></head>
+    <body>
+        <!--/*/<th:block layout:fragment="content">/*/-->
+        <form method="post" th:action="@{/admin/contests}">
+            <p align="center"><font size="4" color="#333399">Add a Contest</font></p>
+            <p align="left">Title:<input type="text" name="title" size="71"/></p>
+            <p align="left">Description:<br/><textarea rows="8" name="description" cols="76"></textarea></p>
+            <p align="left">Start Time:<br/>&nbsp;&nbsp;&nbsp;
+                Year:<input type="text" name="syear" th:value="${#calendars.format(execInfo.now,'yyyy')}" size="7"/>
+                Month:<input type="text" name="smonth" th:value="${#calendars.format(execInfo.now,'M')}" size="7"/>
+                Day:<input type="text" name="sday" size="7"/>&nbsp;
+                Hour:<input type="text" name="shour" size="7" onchange="document.getElementsByName('ehour')[0].value = 5 + parseInt(this.value);"/>&nbsp;
+                Minute:<input type="text" name="sminute" value="0" size="7"/></p>
+            <p align="left">End Time:<br/>&nbsp;&nbsp;&nbsp;
+                Year:<input type="text" name="eyear" th:value="${#calendars.format(execInfo.now,'yyyy')}" size="7"/>
+                Month:<input type="text" name="emonth" th:value="${#calendars.format(execInfo.now,'M')}" size="7"/>
+                Day:<input type="text" name="eday" size="7"/>&nbsp;
+                Hour:<input type="text" name="ehour" size="7"/>&nbsp;
+                Minute:<input type="text" name="eminute" value="0" size="7"/></p>
+            <div align="center">
+                <p>
+                    <input type="submit" value="Submit" name="submit"/>
+                    <input type="reset" value="Reset" name="reset"/></p>
+            </div>
+        </form>
+        <!--/*/</th:block>/*/-->
+    </body>
+</html>

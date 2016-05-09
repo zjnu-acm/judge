@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+    <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# object: http://ogp.me/ns/object# article: http://ogp.me/ns/article# profile: http://ogp.me/ns/profile#">
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta http-equiv="X-UA-Compatible" content="chrome=1,IE=Edge"/>
+        <title>Welcome To Administrator's Page of Judge Online of ACM ICPC, ZheJiang Normal University</title>
+        <link href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.css" th:href="@{/webjars/bootstrap/3.3.6/css/bootstrap.min.css}" rel="stylesheet"/>
+        <link href="../../../css/site.css" th:href="@{/css/site.css(_=${#ctx.applicationAttributes.startUpDate})}" rel="stylesheet"/>
+        <script th:src="@{/webjars/jquery/1.12.3/jquery.min.js}"></script>
+        <script th:src="@{/js/site.js(_=${#ctx.applicationAttributes.startUpDate})}" ></script>
+    </head>
+    <body>
+        <div class="container">
+            <div align="center">
+                <table border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse; width:100%; height: 50px">
+                    <tr>
+                        <td><p align="center"><font color="#333399" size="4">Welcome To Administrator's Page of Judge Online of ACM ICPC, ZheJiang Normal University</font></p></td>
+                    </tr>
+                </table>
+            </div>
+            <hr/>
+            <th:block layout:fragment="content"/>
+            <font size="3"><a th:href="@{/admin}">Admin's Home Page</a></font><br/>
+            <hr/>
+            <p align="center"><font size="3" th:inline="text">All Copyright Reserved 2006-[[${T(java.time.Year).now()}]]<br/>Any problem, Please Contact <a th:href="|mailto:${#ctx.applicationAttributes.get('admin.mail')}|">Administrator</a></font></p>
+        </div>
+    </body>
+</html>

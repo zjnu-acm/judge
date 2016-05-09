@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout/main">
+    <head>
+        <title>Error</title>
+    </head>
+    <body>
+        <!--/*/<th:block layout:fragment="content">/*/-->
+        <p>
+            <img border="0" th:src="@{/images/j0293240.png}" width="50" height="36"/>
+            <font size="4">Error Occurred</font>
+        </p>
+        <ul>
+            <li th:text="${message}">Can not find problem (ID:999)</li>
+        </ul>
+        <!--/*/</th:block>/*/-->
+    </body>
+</html>

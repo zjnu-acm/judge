@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout/main">
+    <head>
+        <title>Congratulations</title>
+    </head>
+    <body>
+        <!--/*/<th:block layout:fragment="content">/*/-->
+        <img border="0" th:src="@{/images/j0293240.png}" width="50" height="36"/>
+        <font size="4">Congratulations</font>
+        <ul th:inline="text">
+            <li>ID:                [[${user.id}]]</li>
+            <li>Password:        *********</li>
+            <li>Email:                [[${user.email}]]</li>
+        </ul>
+        <!--/*/</th:block>/*/-->
+    </body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout/main">
+    <head>
+        <title th:text="${contest.title}">title</title>
+    </head>
+    <body>
+        <!--/*/<th:block layout:fragment="content">/*/-->
+        <p align="center">
+            <b>
+                <font size="5" face="Arial" th:inline="text">Contest - [[${contest.title}]]</font>
+            </b>
+        </p>
+        <p align="center" style="font-family: Arial">
+            <span>Start time:&nbsp;&nbsp;</span>
+            <font color="#993399" th:text="${#calendars.format(T(java.util.Date).from(contest.startTime),'yyyy-MM-dd HH:mm:ss')}">2016-04-09 12:00:00</font>
+            <span>&nbsp;&nbsp;End time:&nbsp;&nbsp;</span>
+            <font color="#993399" th:text="${#calendars.format(T(java.util.Date).from(contest.endTime),'yyyy-MM-dd HH:mm:ss')}">2016-04-09 17:00:00</font><br/>
+            <span>Current System Time:&nbsp;&nbsp;</span>
+            <font color="#993399" th:text="${#calendars.format(execInfo.now,'yyyy-MM-dd HH:mm:ss')}">2016-05-06 17:15:15</font>
+            <span>&nbsp;&nbsp;Contest Status:&nbsp;&nbsp;</span>
+            <font color="red" th:text="${@contestService.getStatus(contest)}">Ended</font>
+        </p>
+        <div align="center" th:if="${contest.started}">
+            <span th:text="${contest.description}"></span>
+            <table align="center" cellspacing="0" cellpadding="0" width="600" border="1" class="problem-list table-back">
+                <tr bgcolor="#6589D1">
+                    <td width="5%" class="status"></td>
+                    <td width="15%" align="center"><b>Problem Id</b></td>
+                    <td width="30%" align="center"><b>Title</b></td>
+                </tr>
+                <tr th:each="problem,it:${problems}" th:object="${problem}" th:class="*{status==1?'ac':status==2?'wa':''}">
+                    <td class="status"></td>
+                    <td align="center"><b th:inline="text">[[*{orign}]] Problem [[${T(java.lang.Character).toString(65+it.index)}]]</b></td>
+                    <td align="left"><a th:href="@{/contests/{contestId}/problems/{pid}(contestId=${contest.id},pid=*{id})}" th:text="*{title}">title</a></td>
+                </tr>
+            </table>
+        </div>
+        <p align="center">
+            <span>[</span>
+            <a th:href="@{/contests/{contestId}/standing(contestId=${contest.id})}">Standings</a>
+            <span>]&nbsp;&nbsp;[</span>
+            <a th:href="@{/status(contest_id=${contest.id})}">Status</a>
+            <span>]&nbsp;&nbsp;[</span>
+            <a th:href="@{/conteststatistics(contest_id=${contest.id})}">Statistics</a>
+            <span>]</span>
+        </p>
+        <!--/*/</th:block>/*/-->
+    </body>
+</html>

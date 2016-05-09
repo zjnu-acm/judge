@@ -1,0 +1,177 @@
+a:link,a:visited {
+    color: blue;
+    text-decoration: none;
+}
+a:active,a:hover {
+    color: red;
+    text-decoration: underline;
+}
+/* required problemstatus.js */
+a.sssss {
+    text-transform: none;
+    text-decoration: none;
+    color: black;
+}
+a.sssss:hover {
+    color: white;
+    text-decoration: none;
+}
+a.sssss0 {
+    text-transform: none;
+    text-decoration: none;
+    color: #FFFF99;
+    font-weight: bold;
+}
+a.sssss0:hover {
+    text-decoration: underline;
+    color: #FFFF99;
+    font-weight: bold;
+}
+/* required problemstatus.js ended*/
+/* class sortable required /problemlist and problemstatus */
+a.sortable {
+    text-decoration: none;
+    color: #FFFF66;
+}
+a.sortable:hover {
+    color: #FFFF66;
+    text-decoration: underline;
+}
+div.sd1 {
+    position: absolute;
+    left: 0px;
+}
+div.sd2 {
+    position: absolute;
+    right: 0px;
+}
+div.ptt {
+    text-align: center;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 18pt;
+    font-weight: bold;
+    color: blue;
+}
+div.plm {
+    text-align: center;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 12pt;
+}
+div.ptx {
+    font-family: serif;
+    font-size: 12pt;
+}
+p.pst {
+    text-align: left;
+    font-family: sans-serif;
+    font-size: 18pt;
+    font-weight: bold;
+    color: blue;
+}
+th.top {
+    color: #FFF;
+    font-family: Arial, Helvetica, sans-serif;
+    width: 20%;
+    text-align: center;
+}
+td.top {
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+}
+th.inc {
+    color: #FFF;
+    text-align: center;
+    background: #6589d1;
+    border-color: #FFF;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+.scbg {
+    background: #f1f1fd;
+}
+.scbg:hover {
+    background: #DAE6FF;
+}
+table.problem-status {
+    border-collapse: collapse;
+    font-family: "Times New Roman", Times, serif;
+}
+tr.inc {
+    color: #FFF;
+    text-align: center;
+    background: #6589d1;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+tr.top {
+    background: #6589d1;
+    vertical-align: top;
+    color: #FFF;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.page-index {
+    padding: 40px 0;
+    text-indent: 4em;
+}
+.table-back {
+    background: url(../images/table_back.jpg);
+}
+/* standing */
+.standing {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+}
+.standing td,.standing th {
+    border: 1px white solid;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+.standing td {
+    white-space: pre;
+}
+.standing th {
+    padding-left: 8px;
+    padding-right: 8px;
+}
+/* faq */
+.faq .q {
+    font-size: 12.0pt;
+    color: green;
+}
+.faq .a {
+    font-size: 12.0pt;
+    color: red;
+}
+.text-center {
+    text-align: center!important;
+}
+.pagination li {
+    display: inline;
+    margin: 8px;
+}
+.problem-list .ac .status {
+    background: url(../images/accepted.gif) center no-repeat;
+}
+.problem-list .wa .status {
+    background: url(../images/wrong.gif) center no-repeat;
+}
+.problem-list.notlogined .status {
+    display: none;
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+.problem-list .id {
+    width: 10%;
+}
+.problem-list.notlogined .title {
+    width: 55%;
+}
+a.self {
+    color: red;
+}
+.solved-problems {
+    float: left;
+    padding: 0 2px;
+}
