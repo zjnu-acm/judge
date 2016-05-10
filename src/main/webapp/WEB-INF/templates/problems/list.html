@@ -29,7 +29,7 @@
                 <td width="8%" align="center"><a th:href="@{/problemlist(orderby=difficulty,volume=${volume})}"><b><font color="white">Difficulty</font></b></a></td>
                 <td width="12%" align="center"><b>Date</b></td>
             </tr>
-            <tr th:each="problem:${problems}" th:object="${problem}" th:class="*{status==1?'ac':status==2?'wa':_}" th:inline="text">
+            <tr th:each="problem:${problems}" th:object="${problem}" th:class="*{status==1?'ac':status==2?'wa':''}" th:inline="text">
                 <td class="status"></td>
                 <td align="center" th:text="*{id}">1000</td>
                 <td><a th:href="@{/showproblem(problem_id=*{id})}" th:text="*{title}">title</a></td>
