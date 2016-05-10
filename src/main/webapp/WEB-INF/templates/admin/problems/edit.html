@@ -9,12 +9,12 @@
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
         <input type="hidden" name="ckfinderPath" th:value="@{/ckfinder/}"/>
-        <h1 th:inline="text">[[${hint}]]</h1>
-        <p align="center"><font size="4" color="#333399" th:inline="text">[[${hint2}]]</font></p>
+        <h1>[[${hint}]]</h1>
+        <p align="center"><font size="4" color="#333399">[[${hint2}]]</font></p>
         <form method="POST" th:action="@{${url}}" th:object="${problem}">
             <input type="hidden" name="id" th:value="*{id}"/>
             <input type="hidden" name="_method" th:value="${method}"/>
-            <p align="left" th:inline="text">Problem Id:&nbsp;&nbsp;[[*{id}==0?'New Problem':*{id}]]</p>
+            <p align="left">Problem Id:&nbsp;&nbsp;[[*{id}==0?'New Problem':*{id}]]</p>
             <p align="left">Title:<input name="title" rows="1" style="width:57em" th:value="*{title}"/></p>
             <p align="left">Time Limit:<input type="text" name="timeLimit" size="20" th:value="*{timeLimit}"/>MS</p>
             <p align="left">Memory Limit:<input type="text" name="memoryLimit" size="20" th:value="*{memoryLimit}"/>KByte</p>

@@ -12,7 +12,7 @@
             <font size="4" color="#333399">Source</font>
         </p>
         <form>
-            <p align="center" th:inline="text">
+            <p align="center">
                 <font size="2">Problem Id:<a th:href="@{/showproblem(problem_id=${submission.problem})}" th:text="${submission.problem}">1000</a> User Id:<a th:href="@{/userstatus(user_id=${submission.user})}" th:text="${submission.user}">user</a><br/>Memory:[[${submission.memory}]]K&nbsp;&nbsp;Time:[[${submission.time}]]MS<br/>Language:[[${language}]]&nbsp;&nbsp;Result:[[${result}]]</font><br/>Style: <select onchange="submit()" name="style">
                     <option th:each="item,it:${styles}" th:value="${it.index}" th:text="${item}" th:selected="${it.index==style}">acid</option>
                 </select>

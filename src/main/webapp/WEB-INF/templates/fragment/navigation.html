@@ -39,7 +39,7 @@
                     <a th:href="@{/logout}">退出登录</a>
                     <br/>
                     <a th:href="@{/mail}">
-                        <font color="blue" th:inline="text">站内邮件:[[${mailInfo.total}]](<b th:text="${mailInfo.newMail}">0</b>)</font>
+                        <font color="blue">站内邮件:[[${mailInfo.total}]](<b th:text="${mailInfo.newMail}">0</b>)</font>
                     </a>
                 </th:block>
             </td>

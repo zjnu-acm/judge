@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `loginlog` (
   `time` datetime NOT NULL,
   `success` bit(1) NOT NULL DEFAULT b'0' COMMENT '表示登录是否成功',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=191232 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='由于历史原因2016/3/21及以前的success均为1，实际登陆是否成功未知。';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='由于历史原因2016/3/21及以前的success均为1，实际登陆是否成功未知。';
 
 -- 数据导出被取消选择。
 -- 导出  表 clanguage.mail 结构

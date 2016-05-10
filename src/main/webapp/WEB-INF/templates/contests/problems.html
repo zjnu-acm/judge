@@ -10,7 +10,7 @@
         <!--/*/<th:block layout:fragment="content">/*/-->
         <p align="center">
             <b>
-                <font size="5" face="Arial" th:inline="text">Contest - [[${contest.title}]]</font>
+                <font size="5" face="Arial">Contest - [[${contest.title}]]</font>
             </b>
         </p>
         <p align="center" style="font-family: Arial">
@@ -33,7 +33,7 @@
                 </tr>
                 <tr th:each="problem,it:${problems}" th:object="${problem}" th:class="*{status==1?'ac':status==2?'wa':''}">
                     <td class="status"></td>
-                    <td align="center"><b th:inline="text">[[*{orign}]] Problem [[${T(java.lang.Character).toString(65+it.index)}]]</b></td>
+                    <td align="center"><b>[[*{orign}]] Problem [[${T(java.lang.Character).toString(65+it.index)}]]</b></td>
                     <td align="left"><a th:href="@{/contests/{contestId}/problems/{pid}(contestId=${contest.id},pid=*{id})}" th:text="*{title}">title</a></td>
                 </tr>
             </table>
