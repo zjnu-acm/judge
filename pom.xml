@@ -35,7 +35,6 @@
         <maven.test.failure.ignore>false</maven.test.failure.ignore>
         <!--<maven.test.skip>true</maven.test.skip>-->
         <snakeyaml.version>1.17</snakeyaml.version>
-        <spring-data-releasetrain.version>Hopper-SR1</spring-data-releasetrain.version>
         <spring-security.version>4.1.0.RELEASE</spring-security.version>
         <start-class>cn.edu.zjnu.acm.judge.Application</start-class>
         <!--<thymeleaf.version>3.0.0.RELEASE</thymeleaf.version>-->

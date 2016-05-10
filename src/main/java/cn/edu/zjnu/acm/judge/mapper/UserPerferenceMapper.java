@@ -27,22 +27,22 @@ import org.apache.ibatis.annotations.Update;
 @Mapper
 public interface UserPerferenceMapper {
 
-    @Select("select volume from users where user_id = #{userId}")
+    @Select("select volume from users where user_id=#{userId}")
     long getVolume(@Param("userId") String userId);
 
-    @Update("update users set volume = #{volumn} where user_id = #{userId}")
+    @Update("update users set volume=#{volumn} where user_id=#{userId}")
     long setVolumn(@Param("userId") String userId, @Param("volumn") long volumn);
 
-    @Select("select style from users where user_id = #{userId}")
+    @Select("select style from users where user_id=#{userId}")
     int getStyle(@Param("userId") String userId);
 
-    @Update("update users set style = #{style} where user_id = #{userId}")
+    @Update("update users set style=#{style} where user_id=#{userId}")
     long setStyle(@Param("userId") String userId, @Param("style") int style);
 
     @Select("select language from users where user_id=#{id}")
     int getLanguage(@Param("id") String str);
 
-    @Update("update users set language = #{language} where user_id=#{id}")
+    @Update("update users set language=#{language} where user_id=#{id}")
     long setLanguage(@Param("id") String userId, @Param("language") int language);
 
 }

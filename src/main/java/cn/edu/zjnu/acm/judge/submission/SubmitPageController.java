@@ -16,7 +16,7 @@ public class SubmitPageController {
     @Autowired
     private UserPerferenceMapper userPerferenceMapper;
 
-    @RequestMapping(value = "/submitpage", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @RequestMapping(value = {"/submitpage", "/submit"}, method = {RequestMethod.GET, RequestMethod.HEAD})
     public String submitpage(HttpServletRequest request,
             @RequestParam(value = "problem_id", defaultValue = "0") long problemId,
             @RequestParam(value = "contest_id", required = false) Long contestId) {
@@ -29,4 +29,5 @@ public class SubmitPageController {
         request.setAttribute("languageId", languageId);
         return "submit";
     }
+
 }
