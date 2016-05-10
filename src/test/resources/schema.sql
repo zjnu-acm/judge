@@ -16,8 +16,6 @@
 CREATE DATABASE IF NOT EXISTS `clanguage` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */;
 USE `clanguage`;
 
--- 导出  表 clanguage.compileinfo 结构
--- Data exporting was unselected.
 -- Dumping structure for table clanguage.compileinfo
 CREATE TABLE IF NOT EXISTS `compileinfo` (
   `solution_id` bigint(20) NOT NULL,
@@ -63,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `loginlog` (
   `time` datetime NOT NULL,
   `success` bit(1) NOT NULL DEFAULT b'0' COMMENT '表示登录是否成功',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=191256 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='由于历史原因2016/3/21及以前的success均为1，实际登陆是否成功未知。';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='由于历史原因2016/3/21及以前的success均为1，实际登陆是否成功未知。';
 
 -- Data exporting was unselected.
 -- Dumping structure for table clanguage.mail
