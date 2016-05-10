@@ -65,3 +65,4 @@ $RECYCLE.BIN/
 /pom.xml.bak
 /nbproject
 /src/main/webapp/META-INF
+*.original~
