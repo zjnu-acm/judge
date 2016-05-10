@@ -10,10 +10,10 @@
         <title>Welcome to JudgeOnline</title>
         <!--<link th:href="@{/webjars/bootstrap/3.3.6/css/bootstrap.min.css}" rel="stylesheet"/>-->
 
-        <link th:href="@{/css/site.css(_=${#ctx.applicationAttributes.startUpDate})}" rel="stylesheet"/>
+        <link th:href="@{/css/site.css(_=${application.startUpDate})}" rel="stylesheet"/>
         <link th:href="@{/sample.png}" rel="shortcut icon"/>
         <script th:src="@{/webjars/jquery/1.12.3/jquery.min.js}"></script>
-        <script th:src="@{/js/site.js(_=${#ctx.applicationAttributes.startUpDate})}"></script>
+        <script th:src="@{/js/site.js(_=${application.startUpDate})}"></script>
     </head>
     <body id="page-home">
         <div id="page">
@@ -22,9 +22,7 @@
                     <div id="outer-header">
                         <div id="branding" align="center">
                             <a th:href="@{/}">
-                                <img id="logo" border="0"
-                                     th:src="@{|/images${#ctx.httpServletRequest.contextPath}logo.jpg|}"
-                                     width="100%" height="100"/></a>
+                                <img id="logo" border="0" th:src="@{|/images${#request.contextPath}logo.jpg|}" width="100%" height="100"/></a>
                         </div>
                         <!-- end branding -->
                     </div>
@@ -40,8 +38,8 @@
                             <td style="width:16.7%"><a th:href="@{/contests/{contestId}/standing(contestId=${contestId})}">Standing</a></td>
                             <td style="width:16.7%"><a th:href="@{/status(contest_id=${contestId})}">Status</a></td>
 
-                            <td th:if="${#ctx.httpServletRequest.userPrincipal != null}"><b th:text="${#ctx.httpServletRequest.userPrincipal.name}">login.user.name</b><a href="@{/logout}">Logout</a></td>
-                            <td th:unless="${#ctx.httpServletRequest.userPrincipal != null}"><a th:href="@{/login(url=${backUrl})}">Login</a></td>
+                            <td th:if="${#request.userPrincipal != null}"><b th:text="${#request.userPrincipal.name}">login.user.name</b><a href="@{/logout}">Logout</a></td>
+                            <td th:unless="${#request.userPrincipal != null}"><a th:href="@{/login(url=${backUrl})}">Login</a></td>
                         </tr>
                     </table>
                 </th:block>
@@ -54,18 +52,20 @@
             <!-- end content -->
             <div id="footer" class="clearfix">
                 <p>
-                    <img alt="home" height="29" th:src="@{/images/home.png}" width="40"
-                         border="0"/>
-                    <font size="3"><a th:href="@{/}">Home Page</a></font>
-                    <img alt="goback" height="29" th:src="@{/images/goback.png}" width="40"
-                         border="0" style=" margin-left: 40px;"/>
+                    <img alt="home" height="29" th:src="@{/images/home.png}" width="40" border="0"/>
+                    <font size="3">
+                        <a th:href="@{/}">Home Page</a>
+                    </font>
+                    <img alt="goback" height="29" th:src="@{/images/goback.png}" width="40" border="0" style=" margin-left: 40px;"/>
                     <font size="3"><a href="javascript:history.go(-1)">Go Back</a>
-                        <img alt="top" height="29" width="40" border="0"
-                             th:src="@{/images/top.png}" style=" margin-left: 40px;"/><a
-                             href="#top">To top</a></font>
+                        <img alt="top" height="29" width="40" border="0" th:src="@{/images/top.png}" style=" margin-left: 40px;"/>
+                        <a href="#top">To top</a>
+                    </font>
                 </p>
                 <hr/>
-                <p align="center"><font size="3" th:inline="text">All Copyright Reserved 2006-[[${T(java.time.Year).now()}]] ZJNU ACM<br/>Any problem, Please Contact <a  th:href="|mailto:${#ctx.applicationAttributes['admin.mail']}|">Administrator</a></font>
+                <p align="center">
+                    <font size="3" th:inline="text">All Copyright Reserved 2006-[[${T(java.time.Year).now()}]] ZJNU ACM<br/>Any problem, Please Contact <a th:href="|mailto:${application['admin.mail']}|">Administrator</a>
+                    </font>
                 </p>
             </div>
             <!-- end footer -->

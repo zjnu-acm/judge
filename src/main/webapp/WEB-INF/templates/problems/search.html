@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorator="layout/main">
+      layout:decorator="'layout/main'">
     <head>
         <title th:inline="text">Search Problem for &apos;[[${query}]]&apos;</title>
     </head>
@@ -22,7 +22,7 @@
                     <td width="25%">Title</td>
                     <td>Source</td>
                 </tr>
-                <tr th:each="problem:${problems}" th:object="${problem}" th:class="*{status==1?'ac':status==2?'wa':''}">
+                <tr th:each="problem:${problems}" th:object="${problem}" th:class="*{status==1?'ac':status==2?'wa':_}">
                     <td class="status"></td>
                     <td th:text="*{id}">id</td>
                     <td><a th:href="@{/showproblem(problem_id=*{id})}" th:text="*{title}">title</a></td>

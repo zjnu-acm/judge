@@ -22,7 +22,7 @@
             <td class="top scbg"><a th:href="@{/registerpage}">注册</a><br/><a th:href="@{/modifyuserpage}">更新个人信息</a><br/><a th:href="@{/userlist}">用户排名</a><br/><form th:action="@{/searchuser}" method="get"><input size="10" name="user_id" type="text"/><input value="Search" type="submit"/></form></td>
             <td class="top scbg"><a style="color:red" th:href="@{/currentcontests}">正在进行的考试</a><br/><a th:href="@{/pastcontests}">已考过的考试</a><br/><a style="color:red" th:href="@{/scheduledcontests}">计划中的考试</a></td>
             <td class="top scbg">
-                <form method="POST" th:action="@{/login}" th:if="${#ctx.httpServletRequest.userPrincipal==null}">
+                <form method="POST" th:action="@{/login}" th:if="${#request.userPrincipal==null}">
                     <label for="nav-username">学号:&nbsp;</label>
                     <input id="nav-username" type="text" name="user_id1" size="10" style="font-family:monospace"/>
                     <br/>
@@ -33,9 +33,9 @@
                     <input type="Submit" value="登陆"/><br/>
                     <a th:href="@{/findpassword}">忘了密码</a>/<a th:href="@{/registerpage}">注册</a>
                 </form>
-                <th:block th:unless="${#ctx.httpServletRequest.userPrincipal==null}">
+                <th:block th:unless="${#request.userPrincipal==null}">
                     <span>欢迎</span><br/>
-                    <b th:text="${#ctx.httpServletRequest.userPrincipal.name}">userId</b>
+                    <b th:text="${#request.userPrincipal.name}">userId</b>
                     <a th:href="@{/logout}">退出登录</a>
                     <br/>
                     <a th:href="@{/mail}">
