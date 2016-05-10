@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorator="layout/main">
+      layout:decorator="'layout/main'">
     <head>
         <title th:inline="text">Volume [[${volume}]]</title>
     </head>
@@ -10,14 +10,14 @@
         <!--/*/<th:block layout:fragment="content">/*/-->
         <ul class="text-center pagination">
             <li style="font-size: x-large">Volume </li>
-            <li th:each="i:${#numbers.sequence(1,totalVolume)}"><a th:href="@{/problemlist(volume=${i})}" th:class="${i==volume?'self':''}"><font size="5" th:text="${i}">1</font></a></li>
+            <li th:each="i:${#numbers.sequence(1,totalVolume)}"><a th:href="@{/problemlist(volume=${i})}" th:class="${i==volume?'self':_}"><font size="5" th:text="${i}">1</font></a></li>
         </ul>
         <form method="GET" th:action="@{/searchproblem}">
             <font color="blue" size="5">请输入题目的标题或Source进行搜索:</font>
             <input type="text" name="sstr" size="25"/>
             <input type="submit" value="GO"/>
         </form>
-        <table cellspacing="0" cellpadding="0" width="100%" border="1" class="table-back problem-list" style="border-collapse: collapse" bordercolor="#FFF" th:classappend="${#ctx.httpServletRequest.isUserInRole('USER')}?'':' notlogined'">
+        <table cellspacing="0" cellpadding="0" width="100%" border="1" class="table-back problem-list" style="border-collapse: collapse" bordercolor="#FFF" th:classappend="${#request.isUserInRole('USER')}?'':' notlogined'">
             <tr class="inc">
                 <td class="status" width="5%" align="center"></td>
                 <td class="id" width="10%" align="center"><a class="sortable" th:href="@{/problemlist(volume=${volume})}">ID</a></td>
@@ -29,13 +29,13 @@
                 <td width="8%" align="center"><a th:href="@{/problemlist(orderby=difficulty,volume=${volume})}"><b><font color="white">Difficulty</font></b></a></td>
                 <td width="12%" align="center"><b>Date</b></td>
             </tr>
-            <tr th:each="problem:${problems}" th:object="${problem}" th:class="*{status==1?'ac':status==2?'wa':''}" th:inline="text">
+            <tr th:each="problem:${problems}" th:object="${problem}" th:class="*{status==1?'ac':status==2?'wa':_}" th:inline="text">
                 <td class="status"></td>
                 <td align="center" th:text="*{id}">1000</td>
                 <td><a th:href="@{/showproblem(problem_id=*{id})}" th:text="*{title}">title</a></td>
                 <td align="center">[[*{ratio}]]%(<a th:href="@{/problemstatus?problem_id=1000}">[[*{accepted}]]</a>/<a th:href="@{/status(problem_id=*{id})}">[[*{submit}]]</a>)</td>
                 <td align="center">[[*{difficulty}]]%</td>
-                <td align="center">[[*{inDate!=null?#calendars.format(T(java.util.Date).from(inDate),'yyyy-M-d'):''}]]</td>
+                <td align="center">[[*{inDate!=null?#calendars.format(T(java.util.Date).from(inDate),'yyyy-M-d'):_}]]</td>
             </tr>
         </table>
         <!--/*/</th:block>/*/-->

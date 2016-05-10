@@ -15,60 +15,161 @@
  */
 package cn.edu.zjnu.acm.judge.config;
 
-import java.io.IOException;
-import java.io.Writer;
+import com.google.common.collect.ImmutableSet;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Optional;
+import java.util.Set;
+import javax.servlet.Servlet;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfiguration;
+import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafProperties;
+import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.util.StringUtils;
-import org.thymeleaf.Arguments;
-import org.thymeleaf.dom.Text;
+import org.springframework.core.Ordered;
+import org.springframework.util.MimeType;
+import org.thymeleaf.context.ITemplateContext;
+import org.thymeleaf.dialect.AbstractProcessorDialect;
+import org.thymeleaf.dialect.IDialect;
+import org.thymeleaf.model.IText;
+import org.thymeleaf.processor.IProcessor;
+import org.thymeleaf.processor.text.AbstractTextProcessor;
+import org.thymeleaf.processor.text.ITextStructureHandler;
 import org.thymeleaf.spring4.SpringTemplateEngine;
-import org.thymeleaf.templatemode.ITemplateModeHandler;
-import org.thymeleaf.templatemode.StandardTemplateModeHandlers;
-import org.thymeleaf.templatemode.TemplateModeHandler;
-import org.thymeleaf.templatewriter.AbstractGeneralTemplateWriter;
+import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
+import org.thymeleaf.spring4.view.ThymeleafViewResolver;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ITemplateResolver;
 
-/**
- * Hacking Thymeleaf to minimize white space.
- *
- * @author zhanhb
- * @see cn.edu.zjnu.acm.judge.config.WhiteSpaceNormalizedTemplateWriter
- * @see
- * <a href="https://distigme.wordpress.com/2012/10/11/hacking-thymeleaf-to-minimize-white-space/">Hacking
- * Thymeleaf to minimize white space</a>
- */
+@Slf4j
 @Configuration
+@ConditionalOnClass({SpringTemplateEngine.class})
+@EnableConfigurationProperties({ThymeleafProperties.class})  //no sense rolling our own.
+@AutoConfigureAfter({WebMvcAutoConfiguration.class})
+@AutoConfigureBefore(ThymeleafAutoConfiguration.class)
+@SuppressWarnings({"ProtectedInnerClass", "PublicInnerClass"})
 public class ThymeleafConfiguration {
 
-    @Autowired
-    public void addTemplateModeHandlers(SpringTemplateEngine templateEngine) {
-        ITemplateModeHandler html5 = StandardTemplateModeHandlers.HTML5;
-        templateEngine.addTemplateModeHandler(new TemplateModeHandler(html5.getTemplateModeName(),
-                html5.getTemplateParser(),
-                new WhiteSpaceNormalizedTemplateWriter()));
+    @Configuration
+    @ConditionalOnClass({Servlet.class})
+    @ConditionalOnWebApplication
+    protected static class ThymeleafViewResolverConfiguration {
+
+        @Autowired
+        private ThymeleafProperties properties;
+
+        @Autowired
+        private SpringTemplateEngine templateEngine;
+
+        @Bean
+        public ThymeleafViewResolver thymeleafViewResolver() {
+            ThymeleafViewResolver resolver = new ThymeleafViewResolver();
+            resolver.setTemplateEngine(this.templateEngine);
+            resolver.setCharacterEncoding(this.properties.getEncoding().name());
+            resolver.setContentType(appendCharset(this.properties.getContentType(),
+                    resolver.getCharacterEncoding()));
+            resolver.setExcludedViewNames(this.properties.getExcludedViewNames());
+            resolver.setViewNames(this.properties.getViewNames());
+            // This resolver acts as a fallback resolver (e.g. like a
+            // InternalResourceViewResolver) so it needs to have low precedence
+            resolver.setOrder(Ordered.LOWEST_PRECEDENCE - 5);
+            resolver.setCache(this.properties.isCache());
+            return resolver;
+        }
+
+        private String appendCharset(MimeType type, String charset) {
+            if (type.getCharSet() != null) {
+                return type.toString();
+            }
+            LinkedHashMap<String, String> parameters = new LinkedHashMap<>(type.getParameters().size() + 1);
+            parameters.put("charset", charset);
+            parameters.putAll(type.getParameters());
+            return new MimeType(type, parameters).toString();
+        }
     }
 
-    private static class WhiteSpaceNormalizedTemplateWriter extends AbstractGeneralTemplateWriter {
+    @Configuration
+    public static class DefaultTemplateResolverConfiguration {
 
-        @Override
-        protected boolean shouldWriteXmlDeclaration() {
-            return false;
-        }
+        @Autowired
+        private ThymeleafProperties properties;
 
-        @Override
-        protected boolean useXhtmlTagMinimizationRules() {
-            return true;
-        }
-
-        @Override
-        protected void writeText(final Arguments arguments, final Writer writer, final Text text)
-                throws IOException {
-            final String content = text.getEscapedContent();
-            if (StringUtils.hasText(content)) {
-                writer.write(content);
+        @Bean
+        public SpringResourceTemplateResolver defaultTemplateResolver() {
+            SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
+            // resolver.setResourceResolver(thymeleafResourceResolver());
+            resolver.setPrefix(this.properties.getPrefix());
+            resolver.setSuffix(this.properties.getSuffix());
+            resolver.setTemplateMode(this.properties.getMode());
+            Optional.ofNullable(this.properties.getEncoding());
+            if (this.properties.getEncoding() != null) {
+                resolver.setCharacterEncoding(this.properties.getEncoding().name());
             }
+            resolver.setCacheable(this.properties.isCache());
+            Integer order = this.properties.getTemplateResolverOrder();
+            if (order != null) {
+                resolver.setOrder(order);
+            }
+            return resolver;
         }
 
+    }
+
+    @Configuration
+    @ConditionalOnMissingBean(SpringTemplateEngine.class)
+    protected static class ThymeleafDefaultConfiguration {
+
+        @Autowired
+        private final Collection<ITemplateResolver> templateResolvers = Collections
+                .emptySet();
+
+        @Autowired(required = false)
+        private final Collection<IDialect> dialects = Collections.emptySet();
+
+        @Bean
+        public SpringTemplateEngine templateEngine() {
+            log.info("dialects: {}", dialects);
+            SpringTemplateEngine engine = new SpringTemplateEngine();
+            this.templateResolvers.forEach(engine::addTemplateResolver);
+            this.dialects.forEach(engine::addDialect);
+            return engine;
+        }
+
+    }
+
+    @Bean
+    public AbstractProcessorDialect whiteSpaceNormalizedDialect() {
+        TemplateMode templateMode = TemplateMode.HTML;
+        int processorPrecedence = 100000;
+        String dialectName = "spaces";
+        String dialectPrefix = dialectName;
+
+        return new AbstractProcessorDialect(dialectName, dialectPrefix, processorPrecedence) {
+            @Override
+            public Set<IProcessor> getProcessors(String dialectPrefix) {
+
+                return ImmutableSet.of(new AbstractTextProcessor(templateMode, processorPrecedence) {
+                    @Override
+                    public void doProcess(ITemplateContext context, IText text, ITextStructureHandler structureHandler) {
+                        String content = text.getText();
+                        if (StringUtils.isBlank(content)) {
+                            structureHandler.removeText();
+                        }
+                    }
+
+                });
+            }
+        };
     }
 
 }

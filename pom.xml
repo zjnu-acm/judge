@@ -38,8 +38,9 @@
         <spring-data-releasetrain.version>Hopper-SR1</spring-data-releasetrain.version>
         <spring-security.version>4.1.0.RELEASE</spring-security.version>
         <start-class>cn.edu.zjnu.acm.judge.Application</start-class>
-        <!--<thymeleaf.version>3.0.0.RELEASE</thymeleaf.version>-->
-        <thymeleaf-layout-dialect.version>1.4.0</thymeleaf-layout-dialect.version>
+        <thymeleaf-extras-springsecurity4.version>${thymeleaf.version}</thymeleaf-extras-springsecurity4.version>
+        <thymeleaf-layout-dialect.version>2.0.0-SNAPSHOT</thymeleaf-layout-dialect.version>
+        <thymeleaf.version>3.0.0.RELEASE</thymeleaf.version>
         <tomcat.version>8.5.0</tomcat.version>
         <unbescape.version>1.1.3.RELEASE</unbescape.version>
     </properties>
@@ -221,6 +222,13 @@
         </dependency>
     </dependencies>
 
+    <repositories>
+        <repository>
+            <id>sonatype-nexus-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </repository>
+    </repositories>
+
     <build>
         <pluginManagement>
             <plugins>
@@ -292,12 +300,12 @@
                                     <message>You are running an older version of Java. ${project.name} requires at least JDK ${java.version}</message>
                                     <version>[${java.version}.0,)</version>
                                 </requireJavaVersion>
-                                <requireNoRepositories>
+                                <!--<requireNoRepositories>
                                     <message>Best Practice is to never define repositories in pom.xml (use a repository manager instead).</message>
                                 </requireNoRepositories>
                                 <requireReleaseDeps>
                                     <message>No Snapshots Dependencies Allowed!</message>
-                                </requireReleaseDeps>
+                                </requireReleaseDeps>-->
                                 <bannedDependencies>
                                     <searchTransitive>true</searchTransitive>
                                     <excludes>
