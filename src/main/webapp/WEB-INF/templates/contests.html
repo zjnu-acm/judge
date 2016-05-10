@@ -14,7 +14,7 @@
                 <td width="40%"><b>Title</b></td>
                 <td width="30%"><b>Start Time</b></td>
                 <td width="20%"><b>Status</b></td></tr>
-            <tr th:each="contest : ${contests}" th:inline="text" th:object="${contest}">
+            <tr th:each="contest : ${contests}" th:object="${contest}">
                 <td>[[*{id}]]</td>
                 <td><a th:href="@{/showcontest(contest_id=${contest.id})}">[[*{title}]]</a></td>
                 <td>[[*{#calendars.format(T(java.util.Date).from(startTime),"yyyy-MM-dd HH:mm:ss")}]]</td>

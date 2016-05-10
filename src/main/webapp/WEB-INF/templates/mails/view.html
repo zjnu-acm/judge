@@ -10,7 +10,7 @@
         <!--/*/<th:block layout:fragment="content" th:object="${mail}">/*/-->
         <table style="border: 0; width: 80%">
             <tr bgcolor="#c0c0c0">
-                <td th:inline="text">
+                <td>
                     <span>From: </span><font color="blue"><a th:href="@{/userstatus(user_id=*{from})}" th:text="*{from}">userId</a></font><br/>
                     <span>Title:</span><font color="blue" th:text="*{title}">关于1695分栗子</font><br/>
                     <span>Send Time:</span>[[*{#calendars.format(T(java.util.Date).from(inDate),'yyyy-MM-dd HH:mm:ss')}]]<br/>

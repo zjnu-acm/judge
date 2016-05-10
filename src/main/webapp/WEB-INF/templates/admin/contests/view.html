@@ -9,7 +9,7 @@
     </head>
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
-        <p align="center" th:inline="text">
+        <p align="center">
             <b><font size="5" face="Arial">Contest - [[*{title}]]</font></b>
         </p>
         <p align="center">
@@ -19,7 +19,7 @@
         <div align="center">
             <table align="center" cellspacing="0" cellpadding="0" width="600" border="1" class="table-back">
                 <tr bgcolor="#6589D1" align="center"><td width="20%"><b>Problem Id</b></td><td width="30%"><b>Title</b></td><td width="10%"><b>Action</b></td></tr>
-                <tr th:each="p,it:${problems}" th:object="${p}" th:inline="text">
+                <tr th:each="p,it:${problems}" th:object="${p}">
                     <td align="center"><b>[[*{orign}]] Problem [[${T(java.lang.Character).toString(65+it.index)}]]</b></td>
                     <td align="left"><a th:href="@{/admin/problems/{problemId}(problemId=*{orign})}" th:text="*{title}">title</a></td>
                     <td align="center">
