@@ -33,6 +33,7 @@ import org.apache.ibatis.annotations.Update;
 public interface SubmissionMapper {
 
     String COLUMNS = " solution_id id,problem_id problem,user_id user,contest_id contest,time,memory,score,language,ip,code_length sourceLength,in_date inDate,num ";
+    String LIST_COLUMNS = " solution_id id,user_id user,time,memory,language,code_length sourceLength,in_date inDate";
 
     @Select("select uncompress(source) source from source_code where solution_id=#{id}")
     String findSourceById(@Param("id") long id);
@@ -40,9 +41,9 @@ public interface SubmissionMapper {
     @Select("SELECT error FROM compileinfo WHERE solution_id=#{id}")
     String findCompileInfoById(@Param("id") long id);
 
-    @Insert("INSERT INTO solution (solution_id,problem_id,user_id,in_date,code_length,score,language,ip,contest_id,num) VALUES\n"
+    @Insert("INSERT INTO solution (solution_id,problem_id,user_id,in_date,code_length,score,language,ip,contest_id,num) VALUES"
             + " (#{id},#{problem},#{user},#{inDate},#{sourceLength},#{score},#{language},#{ip},#{contest},#{num})")
-    @SelectKey(statement = "select COALESCE(max(solution_id)+1, 1000) maxp from solution",
+    @SelectKey(statement = "select COALESCE(max(solution_id)+1,1000) maxp from solution",
             before = true, keyProperty = "id", resultType = long.class)
     long save(Submission submission);
 
@@ -59,13 +60,13 @@ public interface SubmissionMapper {
             @Param("time") long time,
             @Param("memory") long memory);
 
-    @Insert("replace into solution_details (solution_id,details) values(#{id}, #{detail})")
+    @Insert("replace into solution_details (solution_id,details) values(#{id},#{detail})")
     long saveDetail(@Param("id") long id, @Param("detail") String detail);
 
-    @Insert("replace into compileinfo (solution_id, error) values(#{id}, #{errorInfo})")
+    @Insert("replace into compileinfo (solution_id,error) values(#{id},#{errorInfo})")
     long saveCompileInfo(@Param("id") long id, @Param("errorInfo") String errorInfo);
 
-    @Select("SELECT details FROM solution_details WHERE solution_id = #{id}")
+    @Select("SELECT details FROM solution_details WHERE solution_id=#{id}")
     String getSubmissionDetail(@Param("id") long id);
 
     @Select({
@@ -89,7 +90,19 @@ public interface SubmissionMapper {
     })
     List<Submission> findAllByCriteria(SubmissionCriteria submissionCriteria);
 
-    @Select("select solution_id from solution where problem_id=#{problemId} order by solution_id")
+    @Select("select solution_id from solution where problem_id=#{problemId} order by solution_id desc")
     List<Long> findAllByProblemId(@Param("problemId") long problemId);
+
+    @Select("select t2.* from solution t2 join ("
+            + "select t2.user_id,t2.time,min(t2.memory) memory from solution t2 "
+            + "join ("
+            + "select user_id,min(time) time from solution t2 "
+            + "where t2.score=100 and t2.problem_id=#{problemId} "
+            + "group by t2.user_id"
+            + ") t1 on t2.problem_id=#{problemId} and t1.user_id=t2.user_id and t1.time=t2.time and t2.score=100 "
+            + "group by t2.user_id"
+            + ") t1 on t2.problem_id=#{problemId} and t1.user_id=t2.user_id and t2.time=t1.time and t2.score=100 and t2.memory=t1.memory group by user_id "
+            + "order by time,memory")
+    List<Submission> bestSubmission(@Param("problemId") long problemId);
 
 }

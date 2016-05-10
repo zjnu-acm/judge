@@ -24,8 +24,8 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -44,7 +44,7 @@ public class LanguageFactory {
             Gson gson = new Gson();
             Language[] allLanguages = gson.fromJson(reader, Language[].class);
             languages = Arrays.asList(allLanguages).stream()
-                    .collect(Collectors.toMap(Language::getId, Function.identity(), throwOnMerge(), TreeMap::new));
+                    .collect(Collectors.toMap(Language::getId, Function.identity(), throwOnMerge(), LinkedHashMap::new));
         } catch (IOException ex) {
             throw new ExceptionInInitializerError(ex);
         }
@@ -60,13 +60,9 @@ public class LanguageFactory {
         return Collections.unmodifiableMap(languages);
     }
 
-    public static boolean isLanguage(int languageId) {
-        return languages.containsKey(languageId);
-    }
-
     public static Language getLanguage(int languageId) {
         return languages.computeIfAbsent(languageId, x -> {
-            throw new NoSuchLanguageException("no such language " + languageId);
+            throw new NoSuchLanguageException("no such language " + x);
         });
     }
 

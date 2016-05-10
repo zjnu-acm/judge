@@ -56,4 +56,14 @@ public class SubmissionMapperTest {
         log.info("{}", result.size());
     }
 
+    /**
+     * Test of bestSubmission method, of class SubmissionMapper.
+     */
+    @Test
+    public void testBestSubmission() {
+        log.info("bestSubmission");
+        long problemId = 1252;
+        instance.bestSubmission(problemId);
+    }
+
 }

@@ -46,7 +46,7 @@ public class MainController {
         return "fragment/notice";
     }
 
-    @RequestMapping(value = "/registerpage", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @RequestMapping(value = {"/registerpage", "/register"}, method = {RequestMethod.GET, RequestMethod.HEAD})
     public String registerpage() {
         return "registerpage";
     }

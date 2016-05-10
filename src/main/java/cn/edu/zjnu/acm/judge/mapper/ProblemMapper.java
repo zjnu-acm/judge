@@ -33,17 +33,17 @@ import org.apache.ibatis.annotations.Update;
 @Mapper
 public interface ProblemMapper {
 
-    String COLUMNS = " p.problem_id id,p.title,p.description,p.input,\n"
-            + "p.output,p.sample_input sampleInput,p.sample_output sampleOutput,\n"
+    String COLUMNS = " p.problem_id id,p.title,p.description,p.input,"
+            + "p.output,p.sample_input sampleInput,p.sample_output sampleOutput,"
             + "p.hint,p.source,p.in_date inDate,p.time_limit timeLimit,"
-            + "p.memory_limit memoryLimit,\n"
-            + "p.contest_id contest,if(p.defunct!='N',1,0) disabled,\n"
+            + "p.memory_limit memoryLimit,"
+            + "p.contest_id contest,if(p.defunct!='N',1,0) disabled,"
             + "p.accepted,p.submit,p.solved,p.submit_user submitUser ";
 
-    String LIST_COLUMNS = " p.problem_id id,p.title,\n"
+    String LIST_COLUMNS = " p.problem_id id,p.title,"
             + "p.in_date inDate,p.time_limit timeLimit,"
-            + "p.memory_limit memoryLimit,\n"
-            + "p.contest_id contest,if(p.defunct!='N',1,0) disabled,\n"
+            + "p.memory_limit memoryLimit,"
+            + "p.contest_id contest,if(p.defunct!='N',1,0) disabled,"
             + "p.accepted,p.submit,p.solved,p.submit_user submitUser ";
 
     String STATUS = "<if test='userId!=null'>,if(up.submit is null or up.submit=0,0,if(up.accepted!=0,1,2)) status </if>";
@@ -55,7 +55,7 @@ public interface ProblemMapper {
     long enable(@Param("id") long problemId);
 
     @Deprecated
-    @Select("select COALESCE(max(problem_id)+1, 1000) maxp from problem")
+    @Select("select COALESCE(max(problem_id)+1,1000) maxp from problem")
     long nextId();
 
     @Select("SELECT COUNT(*) total FROM problem")
@@ -63,9 +63,9 @@ public interface ProblemMapper {
 
     @Insert("INSERT INTO problem (problem_id,title,description,input,output,sample_input,sample_output,"
             + "hint,source,in_date,time_limit,memory_limit,contest_id) values ("
-            + "#{id}, #{title}, #{description}, #{input}, #{output}, #{sampleInput}, #{sampleOutput},"
-            + "#{hint}, #{source}, now(), #{timeLimit}, #{memoryLimit}, #{contest})")
-    @SelectKey(statement = "select COALESCE(max(problem_id)+1, 1000) maxp from problem",
+            + "#{id},#{title},#{description},#{input},#{output},#{sampleInput},#{sampleOutput},"
+            + "#{hint},#{source},now(),#{timeLimit},#{memoryLimit},#{contest})")
+    @SelectKey(statement = "select COALESCE(max(problem_id)+1,1000) maxp from problem",
             before = true, keyProperty = "id", resultType = long.class)
     long save(Problem problem);
 
@@ -82,8 +82,8 @@ public interface ProblemMapper {
     @Select({"<script>"
         + "select" + LIST_COLUMNS
         + STATUS
-        + "from problem p\n"
-        + "<if test='userId!=null'>left join user_problem up\n"
+        + "from problem p "
+        + "<if test='userId!=null'>left join user_problem up "
         + "on up.user_id=#{userId} and up.problem_id=p.problem_id </if>"
         + "where p.defunct='N' and p.problem_id&gt;=#{start} and p.problem_id&lt;=#{end}"
         + "</script>"
@@ -105,7 +105,7 @@ public interface ProblemMapper {
         + "from problem p "
         + "<if test='userId!=null'>left join user_problem up on up.problem_id=p.problem_id and up.user_id=#{userId}</if>"
         + "WHERE (instr(p.title,#{query})&gt;0 or instr(p.source,#{query})&gt;0) "
-        + "and p.defunct = 'N'"
+        + "and p.defunct='N'"
         + "<if test='userId!=null'>group by p.problem_id</if>"
         + "ORDER BY p.problem_id"
         + "</script>"
