@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class PostPageController {
 
-    @RequestMapping(value = "/postpage", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @RequestMapping(value = {"/postpage", "/post"}, method = {RequestMethod.GET, RequestMethod.HEAD})
     public String postpage(HttpServletRequest request,
             @RequestParam(value = "problem_id", required = false) Long problemId) {
         UserDetailService.requireLoginned(request);

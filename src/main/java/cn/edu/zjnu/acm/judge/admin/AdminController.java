@@ -27,9 +27,9 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -118,7 +118,7 @@ public class AdminController {
             @RequestParam(value = "sinfo", required = false) String sinfo,
             @RequestParam(value = "pureText", required = false) String pureText) {
         UserDetailService.requireAdminLoginned(request);
-        if (StringUtils.isBlank(op)) {
+        if (!StringUtils.hasText(op)) {
             throw new MessageException("Nothing I can do for you.");
         }
 
@@ -129,7 +129,7 @@ public class AdminController {
                 userProblemMapper.updateUsers();
                 break;
             case "setsysteminfo":
-                if (StringUtils.isBlank(sinfo)) {
+                if (!StringUtils.hasText(sinfo)) {
                     judgeConfiguration.setSystemInfo(null);
                 } else if (pureText != null) {
                     judgeConfiguration.setSystemInfo(StringEscapeUtils.escapeHtml4(sinfo.trim()));

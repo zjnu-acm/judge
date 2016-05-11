@@ -32,7 +32,7 @@ public interface MessageMapper {
             + "content,title,problem_id problem,depth,thread_id thread,orderNum `order` ";
 
     @Deprecated
-    @Select("select COALESCE(max(message_id)+1, 1000) maxp from message")
+    @Select("select COALESCE(max(message_id)+1,1000) maxp from message")
     long nextId();
 
     @Select("select" + COLUMNS + "from message where message_id=#{id}")
