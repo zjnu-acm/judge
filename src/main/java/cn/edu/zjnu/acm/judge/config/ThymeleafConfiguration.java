@@ -16,7 +16,6 @@
 package cn.edu.zjnu.acm.judge.config;
 
 import java.nio.charset.Charset;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Optional;
@@ -27,7 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfiguration;
 import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafProperties;
@@ -39,7 +37,6 @@ import org.springframework.core.Ordered;
 import org.springframework.util.MimeType;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
-import org.thymeleaf.dialect.IDialect;
 import org.thymeleaf.model.IText;
 import org.thymeleaf.processor.IProcessor;
 import org.thymeleaf.processor.text.AbstractTextProcessor;
@@ -48,7 +45,6 @@ import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ITemplateResolver;
 
 @AutoConfigureAfter({WebMvcAutoConfiguration.class})
 @AutoConfigureBefore(ThymeleafAutoConfiguration.class)
@@ -138,27 +134,6 @@ public class ThymeleafConfiguration {
             Optional.ofNullable(this.properties.getTemplateResolverOrder())
                     .ifPresent(resolver::setOrder);
             return resolver;
-        }
-
-    }
-
-    @Configuration
-    @ConditionalOnMissingBean(SpringTemplateEngine.class)
-    protected static class ThymeleafDefaultConfiguration {
-
-        @Autowired
-        private final Collection<ITemplateResolver> templateResolvers
-                = Collections.emptySet();
-
-        @Autowired(required = false)
-        private final Collection<IDialect> dialects = Collections.emptySet();
-
-        @Bean
-        public SpringTemplateEngine templateEngine() {
-            SpringTemplateEngine engine = new SpringTemplateEngine();
-            this.templateResolvers.forEach(engine::addTemplateResolver);
-            this.dialects.forEach(engine::addDialect);
-            return engine;
         }
 
     }

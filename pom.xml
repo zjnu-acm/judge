@@ -38,7 +38,7 @@
         <spring-data-releasetrain.version>Hopper-SR1</spring-data-releasetrain.version>
         <spring-security.version>4.1.0.RELEASE</spring-security.version>
         <start-class>cn.edu.zjnu.acm.judge.Application</start-class>
-        <thymeleaf-extras-springsecurity4.version>${thymeleaf.version}</thymeleaf-extras-springsecurity4.version>
+        <thymeleaf-extras-springsecurity4.version>3.0.0.RELEASE</thymeleaf-extras-springsecurity4.version>
         <thymeleaf-layout-dialect.version>2.0.0-SNAPSHOT</thymeleaf-layout-dialect.version>
         <thymeleaf.version>3.0.0.RELEASE</thymeleaf.version>
         <tomcat.version>8.5.0</tomcat.version>
@@ -51,6 +51,11 @@
                 <groupId>com.fasterxml</groupId>
                 <artifactId>classmate</artifactId>
                 <version>${classmate.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.jhlabs</groupId>
+                <artifactId>filters</artifactId>
+                <version>2.0.235-1</version>
             </dependency>
             <dependency>
                 <groupId>org.jboss</groupId>
