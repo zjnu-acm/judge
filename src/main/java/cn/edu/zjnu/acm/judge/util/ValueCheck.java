@@ -17,7 +17,7 @@ package cn.edu.zjnu.acm.judge.util;
 
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import com.google.common.base.Strings;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 
 public class ValueCheck {
 
@@ -71,7 +71,7 @@ public class ValueCheck {
     }
 
     public static void checkEmail(String email) {
-        if (StringUtils.isNoneEmpty(email) && !email.matches(EMAIL_PATTERN)) {
+        if (StringUtils.hasLength(email) && !email.matches(EMAIL_PATTERN)) {
             throw new MessageException("email format incorrect");
         }
     }

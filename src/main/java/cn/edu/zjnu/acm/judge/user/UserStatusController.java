@@ -7,9 +7,9 @@ import cn.edu.zjnu.acm.judge.mapper.UserProblemMapper;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,7 +27,7 @@ public class UserStatusController {
     public String userstatus(HttpServletRequest request,
             @RequestParam(value = "size", defaultValue = "3") int display,
             @RequestParam(value = "user_id", required = false) String userId) {
-        if (StringUtils.isBlank(userId)) {
+        if (!StringUtils.hasText(userId)) {
             throw new MessageException("Error -- no user found");
         }
         User user = userMapper.findOne(userId);

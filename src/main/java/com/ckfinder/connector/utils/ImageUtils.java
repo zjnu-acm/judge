@@ -55,7 +55,7 @@ public class ImageUtils {
             // for some special files outputQuality couses error:
             //IllegalStateException inner Thumbnailator jar. When exception is thrown
             // image is resized without quality
-            // When http://code.google.com/p/thumbnailator/issues/detail?id=9 
+            // When http://code.google.com/p/thumbnailator/issues/detail?id=9
             // will be fixed this try catch can be deleted. Only:
             //Thumbnails.of(sourceImage).size(width, height).keepAspectRatio(false)
             //	.outputQuality(quality).toFile(destFile);

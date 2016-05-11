@@ -23,9 +23,9 @@ import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import cn.edu.zjnu.acm.judge.util.JudgeUtils;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,12 +36,12 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller
 public class MailController {
-    
+
     @Autowired
     private UserMapper userMapper;
     @Autowired
     private MailMapper mailMapper;
-    
+
     @RequestMapping(value = "/deletemail", method = {RequestMethod.GET, RequestMethod.HEAD})
     public String delete(HttpServletRequest request,
             @RequestParam("mail_id") long mailId) {
@@ -56,7 +56,7 @@ public class MailController {
         mailMapper.delete(mailId);
         return "redirect:/mail";
     }
-    
+
     @RequestMapping(value = "/mail", method = {RequestMethod.GET, RequestMethod.HEAD})
     public String mail(HttpServletRequest request,
             @RequestParam(value = "size", defaultValue = "20") int size,
@@ -66,16 +66,16 @@ public class MailController {
             start = 1;
         }
         String currentUserId = UserDetailService.getCurrentUserId(request).orElse(null);
-        
+
         List<Mail> mails = mailMapper.findAllByTo(currentUserId, start - 1, size);
-        
+
         request.setAttribute("userId", currentUserId);
         request.setAttribute("mails", mails);
         request.setAttribute("size", size);
         request.setAttribute("start", start);
         return "mails/list";
     }
-    
+
     @RequestMapping(value = "/send", method = RequestMethod.POST)
     public String send(HttpServletRequest request,
             @RequestParam("title") String title,
@@ -83,7 +83,7 @@ public class MailController {
             @RequestParam("content") String content) {
         UserDetailService.requireLoginned(request);
         String userId = UserDetailService.getCurrentUserId(request).orElse(null);
-        if (StringUtils.isBlank(title)) {
+        if (!StringUtils.hasText(title)) {
             title = "No Topic";
         }
         if (content.length() > 40000) {
@@ -92,7 +92,7 @@ public class MailController {
         if (userMapper.findOne(to) == null) {
             throw new MessageException("Sorry, no such user:" + to);
         }
-        
+
         mailMapper.save(Mail.builder()
                 .from(userId)
                 .to(to)
@@ -101,15 +101,15 @@ public class MailController {
                 .build());
         return "mails/sendsuccess";
     }
-    
-    @RequestMapping(value = "/sendpage", method = {RequestMethod.GET, RequestMethod.HEAD})
+
+    @RequestMapping(value = {"/sendpage", "/send"}, method = {RequestMethod.GET, RequestMethod.HEAD})
     public String sendpage(HttpServletRequest request,
             @RequestParam(value = "reply", defaultValue = "-1") long reply,
             @RequestParam(value = "to", defaultValue = "") String userId) {
         UserDetailService.requireLoginned(request);
         String title = "";
         String content = "";
-        
+
         if (reply != -1) {
             Mail parent = mailMapper.findOne(reply);
             if (parent == null) {
@@ -132,7 +132,7 @@ public class MailController {
         request.setAttribute("content", JudgeUtils.getReplyString(content));
         return "mails/sendpage";
     }
-    
+
     @RequestMapping(value = "/showmail", method = {RequestMethod.GET, RequestMethod.HEAD})
     public String showmail(HttpServletRequest request, @RequestParam("mail_id") long mailId) {
         UserDetailService.requireLoginned(request);
@@ -147,5 +147,5 @@ public class MailController {
         request.setAttribute("mail", mail);
         return "mails/view";
     }
-    
+
 }

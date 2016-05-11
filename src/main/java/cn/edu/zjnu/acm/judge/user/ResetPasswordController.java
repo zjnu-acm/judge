@@ -39,8 +39,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
-import org.thymeleaf.spring4.SpringTemplateEngine;
 
 @Controller
 @Slf4j
@@ -49,7 +49,7 @@ public class ResetPasswordController {
     @Autowired
     private JavaMailSenderImpl javaMailSender;
     @Autowired
-    private SpringTemplateEngine springTemplateEngine;
+    private TemplateEngine templateEngine;
 
     @Autowired
     private UserMapper userMapper;
@@ -113,8 +113,8 @@ public class ResetPasswordController {
                 map.put("url", url);
                 map.put("ojName", judgeConfiguration.getContextPath() + " OJ");
 
-                String content = springTemplateEngine.process("users/password", new Context(locale, map));
-                String title = springTemplateEngine.process("users/passwordTitle", new Context(locale, map));
+                String content = templateEngine.process("users/password", new Context(locale, map));
+                String title = templateEngine.process("users/passwordTitle", new Context(locale, map));
 
                 MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 

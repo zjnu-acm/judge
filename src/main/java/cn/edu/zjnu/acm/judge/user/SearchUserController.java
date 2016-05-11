@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +24,7 @@ public class SearchUserController {
     @RequestMapping(value = "/searchuser", method = {RequestMethod.GET, RequestMethod.HEAD})
     protected String searchuser(HttpServletRequest request,
             @RequestParam(value = "length", defaultValue = "0") long length,
-            @RequestParam(value = "user_id", required = false) String keyword,
+            @RequestParam(value = "user_id", defaultValue = "") String keyword,
             @RequestParam(value = "orderby", required = false) String orderby,
             @RequestParam(value = "position", required = false) String position)
             throws SQLException {
@@ -34,7 +33,7 @@ public class SearchUserController {
         } else {
             orderby = " order by solved desc, submit asc";
         }
-        if (StringUtils.length(keyword) < 2) {
+        if (keyword.length() < 2) {
             throw new MessageException("search key word whose length must be greater than 2");
         }
         String sql = "select user_id id,nick,solved,submit from users WHERE (user_id like ? or nick like ?) and defunct = 'N' ";
