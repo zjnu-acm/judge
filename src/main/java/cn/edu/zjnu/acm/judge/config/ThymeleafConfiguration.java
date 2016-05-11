@@ -15,14 +15,13 @@
  */
 package cn.edu.zjnu.acm.judge.config;
 
-import com.google.common.collect.ImmutableSet;
+import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Optional;
 import java.util.Set;
 import javax.servlet.Servlet;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -51,14 +50,35 @@ import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
-@Slf4j
+@AutoConfigureAfter({WebMvcAutoConfiguration.class})
+@AutoConfigureBefore(ThymeleafAutoConfiguration.class)
 @Configuration
 @ConditionalOnClass({SpringTemplateEngine.class})
 @EnableConfigurationProperties({ThymeleafProperties.class})  //no sense rolling our own.
-@AutoConfigureAfter({WebMvcAutoConfiguration.class})
-@AutoConfigureBefore(ThymeleafAutoConfiguration.class)
 @SuppressWarnings({"ProtectedInnerClass", "PublicInnerClass"})
 public class ThymeleafConfiguration {
+
+    @Bean
+    public AbstractProcessorDialect whiteSpaceNormalizedDialect() {
+        TemplateMode templateMode = TemplateMode.HTML;
+        int processorPrecedence = 100000;
+        String dialectName = "spaces";
+        String dialectPrefix = dialectName;
+        return new AbstractProcessorDialect(dialectName, dialectPrefix, processorPrecedence) {
+            @Override
+            public Set<IProcessor> getProcessors(String dialectPrefix) {
+                return Collections.singleton(new AbstractTextProcessor(templateMode, processorPrecedence) {
+                    @Override
+                    public void doProcess(ITemplateContext context, IText text, ITextStructureHandler structureHandler) {
+                        String content = text.getText();
+                        if (StringUtils.isBlank(content)) {
+                            structureHandler.removeText();
+                        }
+                    }
+                });
+            }
+        };
+    }
 
     @Configuration
     @ConditionalOnClass({Servlet.class})
@@ -111,15 +131,12 @@ public class ThymeleafConfiguration {
             resolver.setPrefix(this.properties.getPrefix());
             resolver.setSuffix(this.properties.getSuffix());
             resolver.setTemplateMode(this.properties.getMode());
-            Optional.ofNullable(this.properties.getEncoding());
-            if (this.properties.getEncoding() != null) {
-                resolver.setCharacterEncoding(this.properties.getEncoding().name());
-            }
+            Optional.ofNullable(this.properties.getEncoding())
+                    .map(Charset::name)
+                    .ifPresent(resolver::setCharacterEncoding);
             resolver.setCacheable(this.properties.isCache());
-            Integer order = this.properties.getTemplateResolverOrder();
-            if (order != null) {
-                resolver.setOrder(order);
-            }
+            Optional.ofNullable(this.properties.getTemplateResolverOrder())
+                    .ifPresent(resolver::setOrder);
             return resolver;
         }
 
@@ -130,46 +147,20 @@ public class ThymeleafConfiguration {
     protected static class ThymeleafDefaultConfiguration {
 
         @Autowired
-        private final Collection<ITemplateResolver> templateResolvers = Collections
-                .emptySet();
+        private final Collection<ITemplateResolver> templateResolvers
+                = Collections.emptySet();
 
         @Autowired(required = false)
         private final Collection<IDialect> dialects = Collections.emptySet();
 
         @Bean
         public SpringTemplateEngine templateEngine() {
-            log.info("dialects: {}", dialects);
             SpringTemplateEngine engine = new SpringTemplateEngine();
             this.templateResolvers.forEach(engine::addTemplateResolver);
             this.dialects.forEach(engine::addDialect);
             return engine;
         }
 
-    }
-
-    @Bean
-    public AbstractProcessorDialect whiteSpaceNormalizedDialect() {
-        TemplateMode templateMode = TemplateMode.HTML;
-        int processorPrecedence = 100000;
-        String dialectName = "spaces";
-        String dialectPrefix = dialectName;
-
-        return new AbstractProcessorDialect(dialectName, dialectPrefix, processorPrecedence) {
-            @Override
-            public Set<IProcessor> getProcessors(String dialectPrefix) {
-
-                return ImmutableSet.of(new AbstractTextProcessor(templateMode, processorPrecedence) {
-                    @Override
-                    public void doProcess(ITemplateContext context, IText text, ITextStructureHandler structureHandler) {
-                        String content = text.getText();
-                        if (StringUtils.isBlank(content)) {
-                            structureHandler.removeText();
-                        }
-                    }
-
-                });
-            }
-        };
     }
 
 }
