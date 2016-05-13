@@ -56,10 +56,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.input.BoundedInputStream;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 /**
  *
@@ -167,8 +167,7 @@ public class Judger {
         long memory = 0; //内存
         String command = runRecord.getLanguage().getExecuteCommand();
         Path work = judgeConfiguration.getWorkDirectory(runRecord.getSubmissionId()); //建立临时文件
-        command = StringUtils.isBlank(command) ? work.resolve("Main." + runRecord.getLanguage().getExecutableExtension()).toString()
-                : command;
+        command = StringUtils.hasText(command) ? command : work.resolve("Main." + runRecord.getLanguage().getExecutableExtension()).toString();
         long extTime = runRecord.getLanguage().getExtTime();
         long castTimeLimit = runRecord.getTimeLimit() * runRecord.getLanguage().getTimeFactor() + extTime;
         long extraMemory = runRecord.getLanguage().getExtMemory(); //内存附加
@@ -243,7 +242,7 @@ public class Judger {
 
     private boolean compile(RunRecord runRecord) throws IOException {
         String source = runRecord.getSource();
-        if (StringUtils.isBlank(source)) {
+        if (!StringUtils.hasText(source)) {
             return false;
         }
         Path previous = judgeConfiguration.getWorkDirectory(runRecord.getSubmissionId() - 1);
@@ -256,7 +255,7 @@ public class Judger {
 
         String compileCommand = runRecord.getLanguage().getCompileCommand();
         log.debug("Compile Command: {}", compileCommand); //编译命令
-        if (StringUtils.isBlank(compileCommand)) {
+        if (!StringUtils.hasText(compileCommand)) {
             return true;
         }
         //创建编译进程

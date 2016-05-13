@@ -19,7 +19,6 @@ import java.io.Serializable;
 import java.util.Collection;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.GrantedAuthority;
 
 /**
@@ -47,7 +46,7 @@ public class UserModel extends org.springframework.security.core.userdetails.Use
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "[" + StringUtils.trimToEmpty(user.getId()) + "]";
+        return getClass().getSimpleName() + "[" + user.getId() + "]";
     }
 
 }

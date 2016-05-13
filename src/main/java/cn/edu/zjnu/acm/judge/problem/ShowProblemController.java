@@ -15,9 +15,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -108,37 +108,37 @@ public class ShowProblemController {
             out.print("<td width=\"10px\"></td><td style=\"font-weight:bold; color:red;\">Special Judge</td>");
         }
         out.print("</table></div>");
-        if (StringUtils.isNotBlank(description)) {
+        if (StringUtils.hasText(description)) {
             out.print("<p class=\"pst\">Description</p><div class=\"ptx\" lang=\"en-US\">");
             out.print(JudgeUtils.getHtmlFormattedString(description));
             out.print("</div>");
         }
-        if (StringUtils.isNotBlank(input)) {
+        if (StringUtils.hasText(input)) {
             out.print("<p class=\"pst\">Input</p><div class=\"ptx\" lang=\"en-US\">");
             out.print(JudgeUtils.getHtmlFormattedString(input));
             out.print("</div>");
         }
-        if (StringUtils.isNotBlank(output)) {
+        if (StringUtils.hasText(output)) {
             out.print("<p class=\"pst\">Output</p><div class=\"ptx\" lang=\"en-US\">");
             out.print(JudgeUtils.getHtmlFormattedString(output));
             out.print("</div>");
         }
-        if (StringUtils.isNotBlank(sampleInput)) {
+        if (StringUtils.hasText(sampleInput)) {
             out.print("<p class=\"pst\">Sample Input</p><div class=\"ptx\" style=\"white-space:pre\" lang=\"en-US\">");
             out.print(sampleInput);
             out.print("</div>");
         }
-        if (StringUtils.isNotBlank(sampleOutput)) {
+        if (StringUtils.hasText(sampleOutput)) {
             out.print("<p class=\"pst\">Sample Output</p><div class=\"ptx\" style=\"white-space:pre\" lang=\"en-US\">");
             out.print(sampleOutput);
             out.print("</div>");
         }
-        if (StringUtils.isNotBlank(hint)) {
+        if (StringUtils.hasText(hint)) {
             out.print("<p class=\"pst\">Hint</p><div class=\"ptx\" lang=\"en-US\">");
             out.print(JudgeUtils.getHtmlFormattedString(hint));
             out.print("</div>");
         }
-        if (ended && StringUtils.isNotBlank(source)) {
+        if (ended && StringUtils.hasText(source)) {
             out.print("<p class=\"pst\">Source</p><div class=\"ptx\" lang=\"en-US\">");
             out.print(JudgeUtils.getHtmlFormattedString(source));
             out.print("</div>");
