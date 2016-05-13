@@ -11,14 +11,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+@Slf4j
 public class UserListController {
+
+    private static final Sort DEFAULT_SORT = new Sort(new Sort.Order(Sort.Direction.DESC, "solved"), new Sort.Order(Sort.Direction.ASC, "submit"));
 
     @Autowired
     private DataSource dataSource;
@@ -27,41 +33,40 @@ public class UserListController {
 
     @RequestMapping(value = {"/userlist", "/users"}, method = {RequestMethod.GET, RequestMethod.HEAD})
     public String userlist(HttpServletRequest request,
-            @RequestParam(value = "start", defaultValue = "0") long start,
-            @RequestParam(value = "size", defaultValue = "50") int size,
-            @RequestParam(value = "of1", defaultValue = "solved") String of1,
-            @RequestParam(value = "od1", defaultValue = "desc") String od1,
-            @RequestParam(value = "of2", defaultValue = "submit") String of2,
-            @RequestParam(value = "od2", defaultValue = "asc") String od2)
-            throws SQLException {
-        switch (of1) {
-            case "solved":
-            case "submit":
-            case "ratio":
-                break;
-            default:
-                of1 = "solved";
+            @PageableDefault(50) Pageable pageable) throws SQLException {
+        int start = pageable.getOffset();
+        int size = pageable.getPageSize();
+        Sort sort = pageable.getSort();
+        if (sort == null || !sort.iterator().hasNext()) {
+            sort = DEFAULT_SORT;
         }
-        if (!od1.equals("asc")) {
-            od1 = "desc";
+
+        StringBuilder sb = new StringBuilder(40);
+
+        for (Sort.Order order : sort) {
+            if (sb.length() != 0) {
+                sb.append(",");
+            }
+            String property = order.getProperty();
+            switch (property) {
+                case "user_id":
+                case "nick":
+                case "solved":
+                case "submit":
+                    break;
+                case "ratio":
+                    property = "solved/submit";
+                    break;
+                default:
+                    property = "solved";
+                    break;
+            }
+            sb.append(property);
+            if (!order.isAscending()) {
+                sb.append(" desc");
+            }
         }
-        if (of1.equals("ratio")) {
-            of1 = "solved/submit";
-        }
-        switch (of2) {
-            case "solved":
-            case "submit":
-            case "ratio":
-                break;
-            default:
-                of2 = "submit";
-        }
-        if (!od2.equals("desc") && !od2.equals("asc")) {
-            od2 = "asc";
-        }
-        if (of2.equals("ratio")) {
-            of2 = "solved/submit";
-        }
+
         start = Math.max(0, start);
         if (size < 1) {
             size = 50;
@@ -70,7 +75,7 @@ public class UserListController {
         String query;
         try {
             query = URLBuilder.fromRequest(request)
-                    .replaceQueryParam("start")
+                    .replaceQueryParam("page")
                     .toString();
         } catch (IllegalStateException | IllegalArgumentException ex) {
             throw new BadRequestException();
@@ -78,8 +83,10 @@ public class UserListController {
 
         long totalUsers = userMapper.countByDefunctN();
         ArrayList<User> users = new ArrayList<>(size);
+        String sql = "SELECT * FROM users WHERE defunct = 'N' ORDER BY " + sb + " limit ?,?";
+        log.debug(sql);
         try (Connection conn = dataSource.getConnection();
-                PreparedStatement ps = conn.prepareStatement("SELECT * FROM users WHERE defunct = 'N' ORDER BY " + of1 + " " + od1 + "," + of2 + " " + od2 + " limit ?,?")) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, start);
             ps.setLong(2, size);
             try (ResultSet rs = ps.executeQuery()) {
