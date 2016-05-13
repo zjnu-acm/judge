@@ -6,7 +6,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 
 public class JudgeUtils {
 
@@ -57,7 +57,7 @@ public class JudgeUtils {
     }
 
     public static String escapeCompileInfo(String string) {
-        if (StringUtils.isBlank(string)) {
+        if (!StringUtils.hasText(string)) {
             return "";
         }
         return StringEscapeUtils.escapeHtml4(string
@@ -66,7 +66,7 @@ public class JudgeUtils {
     }
 
     public static String getReplyString(String string) {
-        if (StringUtils.isBlank(string)) {
+        if (!StringUtils.hasText(string)) {
             return "";
         }
         return StringEscapeUtils.escapeHtml4(new BufferedReader(new StringReader(string)).lines()
@@ -75,7 +75,7 @@ public class JudgeUtils {
     }
 
     public static String getHtmlFormattedString(String str) {
-        if (StringUtils.isBlank(str)) {
+        if (!StringUtils.hasText(str)) {
             return "";
         }
         for (int i = 0, len = str.length(); i < len; ++i) {

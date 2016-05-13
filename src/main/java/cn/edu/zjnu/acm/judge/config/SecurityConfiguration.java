@@ -27,7 +27,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -65,8 +64,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private UserMapper userMapper;
 
     private void saveLoginLog(HttpServletRequest request, boolean success) {
-        String userId = StringUtils.trimToEmpty(request.getParameter("user_id1"));
-        String passsword = StringUtils.trimToEmpty(request.getParameter("password1"));
+        String userId = Optional.ofNullable(request.getParameter("user_id1")).orElse("");
+        String passsword = Optional.ofNullable(request.getParameter("password1")).orElse("");
         loginlogMapper.save(userId, passwordConfuser.confuse(passsword), request.getRemoteAddr(), success);
         if (success) {
             Optional.ofNullable(userMapper.findOne(userId)).ifPresent(user -> {

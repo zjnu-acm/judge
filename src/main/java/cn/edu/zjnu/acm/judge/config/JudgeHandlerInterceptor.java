@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 /**
@@ -38,7 +38,7 @@ public class JudgeHandlerInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request,
             HttpServletResponse response, Object handler) {
         String url = request.getParameter("url");
-        if (StringUtils.isBlank(url)) {
+        if (!StringUtils.hasText(url)) {
             url = request.getRequestURI();
             String query = request.getQueryString();
             if (query != null) {
