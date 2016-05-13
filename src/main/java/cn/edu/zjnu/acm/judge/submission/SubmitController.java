@@ -46,7 +46,7 @@ public class SubmitController {
     @RequestMapping(value = "/submit", method = RequestMethod.POST)
     public String submit(HttpServletRequest request,
             @RequestParam("language") int languageId,
-            @RequestParam("problem_id") long pid,
+            @RequestParam("problem_id") long problemId,
             @RequestParam("source") String source,
             RedirectAttributes redirectAttributes) {
         UserDetailService.requireLoginned(request);
@@ -74,9 +74,9 @@ public class SubmitController {
         }
         userModel.setLastSubmitTime(now);
         String userId = userModel.getUserId();
-        Problem problem = problemMapper.findOne(pid);
+        Problem problem = problemMapper.findOne(problemId);
 
-        Path dataPath = judgeConfiguration.getDataDirectory(pid);
+        Path dataPath = judgeConfiguration.getDataDirectory(problemId);
 
         //检查该题是否被禁用
         if (problem == null) {
@@ -105,16 +105,16 @@ public class SubmitController {
             }
             //题目中竞赛id置为空
             if (ended) {
-                problemMapper.setContest(pid, null);
+                problemMapper.setContest(problemId, null);
                 contestId = null;
             } else { //num为竞赛中的题目编号
-                num = contestMapper.getProblemIdInContest(contestId, pid);
+                num = contestMapper.getProblemIdInContest(contestId, problemId);
             }
         }
 
         // 插入solution数据库表
         Submission submission = Submission.builder()
-                .problem(pid)
+                .problem(problemId)
                 .user(userId)
                 .inDate(nowTimestamp)
                 .sourceLength(source.length())
@@ -130,14 +130,14 @@ public class SubmitController {
 
         RunRecord runRecord = new RunRecord();
         runRecord.setSubmissionId(submissionId);
-        runRecord.setProblemId(pid);
+        runRecord.setProblemId(problemId);
         runRecord.setMemoryLimit(memoryLimit);
         runRecord.setTimeLimit(timeLimit);
         runRecord.setLanguage(language);
 
         runRecord.setDataPath(dataPath);
         runRecord.setSource(source);
-        problemMapper.setInDate(pid, nowTimestamp);
+        problemMapper.setInDate(problemId, nowTimestamp);
         runRecord.setUserId(userId);
 
         // 插入source_code表
