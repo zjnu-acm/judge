@@ -17,9 +17,11 @@ package cn.edu.zjnu.acm.judge.mapper;
 
 import cn.edu.zjnu.acm.judge.domain.Message;
 import java.util.List;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 /**
  *
@@ -41,5 +43,21 @@ public interface MessageMapper {
     @Select("select" + COLUMNS + "from message where thread_id=#{thread} and orderNum>#{orderNum} order by orderNum")
     List<Message> findAllByThreadIdAndOrderNumGreaterThanOrderByOrderNum(
             @Param("thread") long thread, @Param("orderNum") long orderNum);
+
+    @Update("update message set orderNum=orderNum+1 where thread_id=#{threadId} and orderNum>${orderNum}")
+    long updateOrderNumByThreadIdAndOrderNumGreaterThan(@Param("threadId") long thread, @Param("orderNum") long orderNum);
+
+    @Update("update message set thread_id=${threadId} where thread_id=#{original}")
+    long updateThreadIdByThreadId(@Param("threadId") long nextId, @Param("original") long original);
+
+    @Insert("insert into message (thread_id,message_id,parent_id,orderNum,problem_id,depth,user_id,title,content,in_date) values(#{id},#{id},#{parentId},#{orderNum},#{problemId},#{depth},#{userId},#{title},#{content},now())")
+    long save(@Param("id") long id,
+            @Param("parentId") long parentId,
+            @Param("orderNum") long orderNum,
+            @Param("problemId") long problemId,
+            @Param("depth") long depth,
+            @Param("userId") String userId,
+            @Param("title") String title,
+            @Param("content") String content);
 
 }
