@@ -23,6 +23,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
@@ -60,6 +63,20 @@ public class UserMapperTest {
         List<User> result = instance.neighbours(userId, 4);
         log.info("{}", result.size());
         log.info("{}", result);
+    }
+
+    /**
+     * Test of findAll method, of class UserMapper.
+     */
+    @Test
+    public void testFindAll() {
+        log.info("findAll");
+        Pageable pageable = new PageRequest(0, 50);
+        List<User> result = instance.findAll(pageable);
+        log.debug("{}", result);
+        pageable = new PageRequest(0, 50, new Sort(new Sort.Order(Sort.Direction.DESC, "solved"), new Sort.Order(Sort.Direction.ASC, "submit")));
+        result = instance.findAll(pageable);
+        log.debug("{}", result);
     }
 
 }

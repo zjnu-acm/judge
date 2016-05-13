@@ -71,7 +71,7 @@ public class ValueCheck {
     }
 
     public static void checkEmail(String email) {
-        if (StringUtils.hasLength(email) && !email.matches(EMAIL_PATTERN)) {
+        if (StringUtils.hasText(email) && !email.matches(EMAIL_PATTERN)) {
             throw new MessageException("email format incorrect");
         }
     }
