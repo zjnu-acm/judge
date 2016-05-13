@@ -22,6 +22,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.springframework.data.domain.Pageable;
 
 /**
  *
@@ -67,5 +68,20 @@ public interface UserMapper {
 
     @Select("select temp.user_id id,sol solved,sub submit,nick from ( select user_id,sum(if(score=100,1,0)) sol,count(*) sub from ( select * from solution order by solution_id desc limit #{count} ) s group by user_id order by sol desc,sub asc limit 50 ) temp,users where temp.user_id=users.user_id")
     List<User> recentrank(@Param("count") int count);
+
+    @Select("<script>select user_id id,solved,submit,nick from users where defunct = 'N' "
+            + "<if test='sort!=null'><foreach item='item' index='index' collection='sort' open='order by' separator=','>"
+            + "<choose>"
+            + "<when test='item.property==&quot;user_id&quot;'>user_id</when>"
+            + "<when test='item.property==&quot;nick&quot;'>nick</when>"
+            + "<when test='item.property==&quot;submit&quot;'>submit</when>"
+            + "<when test='item.property==&quot;ratio&quot;'>solved/submit</when>"
+            + "<otherwise>solved</otherwise>"
+            + "</choose>"
+            +"<if test='not item.ascending'>desc</if>"
+            + "</foreach></if>"
+            + "limit #{offset},#{size}"
+            + "</script>")
+    List<User> findAll(Pageable pageable);
 
 }
