@@ -31,6 +31,8 @@ import org.springframework.data.domain.Pageable;
 @Mapper
 public interface UserMapper {
 
+    String LIST_COLUMNS = " user_id id,solved,submit,nick ";
+
     @Select("select user_id id,nick,email,vcode,password,school,ip,solved,submit,accesstime from users where user_id=#{id}")
     User findOne(@Param("id") String id);
 
@@ -69,7 +71,8 @@ public interface UserMapper {
     @Select("select temp.user_id id,sol solved,sub submit,nick from ( select user_id,sum(if(score=100,1,0)) sol,count(*) sub from ( select * from solution order by solution_id desc limit #{count} ) s group by user_id order by sol desc,sub asc limit 50 ) temp,users where temp.user_id=users.user_id")
     List<User> recentrank(@Param("count") int count);
 
-    @Select("<script>select user_id id,solved,submit,nick from users where defunct = 'N' "
+    @Select("<script>select" + LIST_COLUMNS
+            + "from users where defunct='N' "
             + "<if test='sort!=null'><foreach item='item' index='index' collection='sort' open='order by' separator=','>"
             + "<choose>"
             + "<when test='item.property==&quot;user_id&quot;'>user_id</when>"
@@ -78,10 +81,13 @@ public interface UserMapper {
             + "<when test='item.property==&quot;ratio&quot;'>solved/submit</when>"
             + "<otherwise>solved</otherwise>"
             + "</choose>"
-            +"<if test='not item.ascending'>desc</if>"
+            + "<if test='not item.ascending'>desc</if>"
             + "</foreach></if>"
             + "limit #{offset},#{size}"
             + "</script>")
     List<User> findAll(Pageable pageable);
+
+    @Select("select " + LIST_COLUMNS + " from users WHERE (user_id like #{query} or nick like #{query}) and defunct='N' order by solved desc,submit asc")
+    List<User> findAllBySearch(@Param("query") String query);
 
 }

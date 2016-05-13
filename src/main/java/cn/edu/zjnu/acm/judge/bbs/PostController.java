@@ -4,7 +4,6 @@ import cn.edu.zjnu.acm.judge.domain.Message;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.MessageMapper;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
@@ -30,8 +29,7 @@ public class PostController {
             @RequestParam(value = "parent_id", defaultValue = "0") long parentId,
             @RequestParam(value = "content", defaultValue = "") String content,
             @RequestParam(value = "title", defaultValue = "") String title,
-            RedirectAttributes redirectAttributes)
-            throws SQLException {
+            RedirectAttributes redirectAttributes) {
         UserDetailService.requireAdminLoginned(request);
         long depth = 0;
         long orderNum = 0;
