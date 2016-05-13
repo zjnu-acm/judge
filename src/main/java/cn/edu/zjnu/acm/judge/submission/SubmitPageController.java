@@ -18,7 +18,7 @@ public class SubmitPageController {
 
     @RequestMapping(value = {"/submitpage", "/submit"}, method = {RequestMethod.GET, RequestMethod.HEAD})
     public String submitpage(HttpServletRequest request,
-            @RequestParam(value = "problem_id", defaultValue = "0") long problemId,
+            @RequestParam(value = "problem_id", required = false) Long problemId,
             @RequestParam(value = "contest_id", required = false) Long contestId) {
         UserDetailService.requireLoginned(request);
         request.setAttribute("contestId", contestId);

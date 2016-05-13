@@ -38,7 +38,7 @@ public interface UserProblemMapper {
 
     @Insert("replace into user_problem(user_id,problem_id,accepted,submit) "
             + "select user_id,problem_id,sum(if(score=100,1,0)),count(solution_id) "
-            + "from solution group by user_id,problem_id")
+            + "from solution where result!=" + ResultType.QUEUING + " group by user_id,problem_id")
     long init();
 
     @Select("select" + COLUMNS + "from user_problem where user_id=#{userId} and problem_id=#{problemId}")
