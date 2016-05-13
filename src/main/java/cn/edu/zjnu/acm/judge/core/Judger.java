@@ -69,14 +69,14 @@ import org.springframework.util.StringUtils;
 @Slf4j
 public class Judger {
 
-    private static final Object judgeLock = new Object();
+    private static final Object JUDGE_LOCK = new Object();
 
     /**
      * use blocking queue instead of LinkedList
      */
-    private static final PriorityBlockingQueue<RunRecord> list = new PriorityBlockingQueue<>(40, Comparator.comparingLong(RunRecord::getSubmissionId));
-    private static final ThreadGroup group = new ThreadGroup("judge group");
-    private static final AtomicInteger counter = new AtomicInteger();
+    private static final PriorityBlockingQueue<RunRecord> QUEUE = new PriorityBlockingQueue<>(40, Comparator.comparingLong(RunRecord::getSubmissionId));
+    private static final ThreadGroup GROUP = new ThreadGroup("judge group");
+    private static final AtomicInteger COUNTER = new AtomicInteger();
 
     private static String collectLines(Path path) throws IOException {
         Charset charset = Platform.getCharset();
@@ -299,16 +299,16 @@ public class Judger {
     }
 
     public void judge(RunRecord runRecord) {
-        list.add(runRecord);
-        synchronized (group) {
-            if (group.activeCount() < 1) {
-                new Thread(group, this::run, "judge thread " + counter.incrementAndGet()).start();
+        QUEUE.add(runRecord);
+        synchronized (GROUP) {
+            if (GROUP.activeCount() < 1) {
+                new Thread(GROUP, this::run, "judge thread " + COUNTER.incrementAndGet()).start();
             }
         }
     }
 
     private void judgeInternal(RunRecord runRecord) throws IOException {
-        synchronized (judgeLock) {
+        synchronized (JUDGE_LOCK) {
             if (compile(runRecord)) {
                 runProcess(runRecord);
             }
@@ -318,7 +318,7 @@ public class Judger {
     private void run() {
         try {
             while (true) {
-                RunRecord runRecord = list.take();
+                RunRecord runRecord = QUEUE.take();
                 try {
                     judgeInternal(runRecord);
                 } catch (IOException | RuntimeException | Error ex) {
