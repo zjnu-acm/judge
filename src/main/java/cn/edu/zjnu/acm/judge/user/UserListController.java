@@ -40,7 +40,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Slf4j
 public class UserListController {
 
-    private static final Sort DEFAULT_SORT = new Sort(new Sort.Order(Sort.Direction.DESC, "solved"), new Sort.Order(Sort.Direction.ASC, "submit"));
+    private static final Sort DEFAULT_SORT = new Sort(
+            new Sort.Order(Sort.Direction.DESC, "solved"),
+            new Sort.Order(Sort.Direction.ASC, "submit"),
+            new Sort.Order(Sort.Direction.ASC, "user_id")
+    );
 
     @Autowired
     private UserMapper userMapper;

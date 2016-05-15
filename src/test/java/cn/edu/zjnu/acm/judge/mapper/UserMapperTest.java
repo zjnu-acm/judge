@@ -17,6 +17,7 @@ package cn.edu.zjnu.acm.judge.mapper;
 
 import cn.edu.zjnu.acm.judge.Application;
 import cn.edu.zjnu.acm.judge.domain.User;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -74,7 +75,16 @@ public class UserMapperTest {
         Pageable pageable = new PageRequest(0, 50);
         List<User> result = instance.findAll(pageable);
         log.debug("{}", result);
+
         pageable = new PageRequest(0, 50, new Sort(new Sort.Order(Sort.Direction.DESC, "solved"), new Sort.Order(Sort.Direction.ASC, "submit")));
+        result = instance.findAll(pageable);
+        log.debug("{}", result);
+
+        Sort.Order order = new Sort.Order(Sort.Direction.DESC, "solved");
+        ArrayList<Sort.Order> list = new ArrayList<>(1);
+        list.add(order);
+        pageable = new PageRequest(0, 50, new Sort(list));
+        list.clear();
         result = instance.findAll(pageable);
         log.debug("{}", result);
     }

@@ -33,7 +33,7 @@
                 <td class="status"></td>
                 <td align="center" th:text="*{id}">1000</td>
                 <td><a th:href="@{/showproblem(problem_id=*{id})}" th:text="*{title}">title</a></td>
-                <td align="center">[[*{ratio}]]%(<a th:href="@{/problemstatus?problem_id=1000}">[[*{accepted}]]</a>/<a th:href="@{/status(problem_id=*{id})}">[[*{submit}]]</a>)</td>
+                <td align="center">[[*{ratio}]]%(<a th:href="@{/problemstatus(problem_id=*{id})}">[[*{accepted}]]</a>/<a th:href="@{/status(problem_id=*{id})}">[[*{submit}]]</a>)</td>
                 <td align="center">[[*{difficulty}]]%</td>
                 <td align="center">[[*{inDate!=null?#calendars.format(T(java.util.Date).from(inDate),'yyyy-M-d'):_}]]</td>
             </tr>

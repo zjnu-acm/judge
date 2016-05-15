@@ -34,10 +34,9 @@ public class ShowMessageController {
 
     @RequestMapping(value = "/showmessage", method = {RequestMethod.GET, RequestMethod.HEAD})
     public void showmessage(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam("message_id") long msgid)
-            throws IOException {
+            @RequestParam("message_id") long messageId) throws IOException {
         UserDetailService.requireLoginned(request);
-        Message message = messageMapper.findOne(msgid);
+        Message message = messageMapper.findOne(messageId);
         if (message == null) {
             throw new MessageException("No such message");
         }
@@ -104,7 +103,7 @@ public class ShowMessageController {
                 + "<font color=blue>Post your reply here:</font><br/>"
                 + "<form method=POST action=post>"
                 + "<input type=hidden name=problem_id value=" + pid + (">"
-                + "<input type=hidden name=parent_id value=") + msgid + ">");
+                + "<input type=hidden name=parent_id value=") + messageId + ">");
         if (!title.regionMatches(true, 0, "re:", 0, 3)) {
             title = "Reply:" + title;
         }

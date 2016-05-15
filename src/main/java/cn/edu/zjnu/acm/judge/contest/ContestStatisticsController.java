@@ -47,7 +47,7 @@ public class ContestStatisticsController {
         PrintWriter out = response.getWriter();
         request.setAttribute("contestId", contestId);
         out.print("<html><head><title>Contest Statistics</title></head><body><p align=center><font size=5 color=blue>Contest Statistics--");
-        out.print(title);
+        out.print(StringEscapeUtils.escapeHtml4(title));
         if (!contest.isEnded()) {
             if (endTime != null) {
                 out.print("<br/>Time to go:" + JudgeUtils.formatTime(now, endTime));
