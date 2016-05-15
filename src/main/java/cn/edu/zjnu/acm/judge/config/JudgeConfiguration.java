@@ -38,8 +38,7 @@ public class JudgeConfiguration {
     private static final String WEB_PROPERTIES = "web.properties";
 
     public static final String VALIDATE_FILE_NAME = "compare.exe";
-    private static Path dataFilesPath;
-    private static Path uploadDirectory;
+    private static Path uploadDirectory; // TODO
 
     static {
         log.info("<clinit> {}", JudgeConfiguration.class.getClassLoader());
@@ -55,6 +54,7 @@ public class JudgeConfiguration {
         return uploadDirectory;
     }
 
+    private Path dataFilesPath;
     private volatile String systemInfo;
     private String contextPath;
     private Path workingPath;
