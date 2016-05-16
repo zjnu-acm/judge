@@ -21,7 +21,7 @@
                 <td width="8%">Defunct</td>
             </tr>
             <tr align="center" th:each="problem:${list}" th:object="${problem}">
-                <td th:text="*{id}">1000</td>
+                <td th:text="*{id}">problem.id</td>
                 <td align="left">
                     <a th:href="@{/admin/problems/{problemId}(problemId=*{id})}"
                        th:text="*{title}">problem.title</a>
@@ -29,7 +29,7 @@
                 <td>
                     <a th:if="*{contest}"
                        th:href="@{/admin/contests/{contestId}(contestId=*{contest})}"
-                       th:text="*{contest}">1000</a>
+                       th:text="*{contest}">contest.id</a>
                 </td>
                 <td>
                     <a th:href="@{/admin/problems/{problemId}/edit(problemId=*{id})}">Edit</a>
