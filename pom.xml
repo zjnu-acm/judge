@@ -348,7 +348,7 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
                 <configuration>
-                    <rulesUri>https://raw.githubusercontent.com/zjnu-acm/judge/master/judge-web/src/test/resources/maven-version-rules.xml</rulesUri>
+                    <rulesUri>file:${project.build.testResources[0].directory}/maven-version-rules.xml</rulesUri>
                 </configuration>
             </plugin>
             <plugin>
