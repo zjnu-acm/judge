@@ -34,7 +34,7 @@ public class SearchUserController {
         }
         List<User> users = userMapper.findAllBySearch(like);
         if (users.isEmpty()) {
-            throw new MessageException("Sorry, no user founded");
+            throw new MessageException("Sorry, no user found");
         }
 
         request.setAttribute("query", keyword);
