@@ -15,38 +15,42 @@
             </a>
         </div>
         <table align="center" cellspacing="0" cellpadding="0" width="980" border="1" class="table-back" style="border-collapse: collapse; border-color: white">
-            <tr align="center" bgcolor="#6589D1">
-                <td width="5%"><b>No.</b></td>
-                <td width="10%"><b>User ID</b></td>
-                <td width="55%"><b>Nick Name</b></td>
-                <td width="10%">
-                    <a th:href="@{/userlist}">
-                        <b>
-                            <font color="white">Solved Problems</font>
-                        </b>
-                    </a>
-                </td>
-                <td width="10%">
-                    <a th:href="@{/userlist(sort='submit,desc',sort=solved)}">
-                        <b>
-                            <font color="white">Submit</font>
-                        </b>
-                    </a>
-                </td>
-                <td width="10%">
-                    <a th:href="@{/userlist(sort='ratio,desc',sort='solved,desc')}">
-                        <b><font color="white">Ratio (AC/submit)</font></b>
-                    </a>
-                </td>
-            </tr>
-            <tr align="center" th:each="user,it:${page}" th:object="${user}">
-                <td align="center" th:text="${page.number*page.size+it.count}">1</td>
-                <td><a th:href="@{/userstatus(user_id=*{id})}" th:text="*{id}">id</a></td>
-                <td><font color="green" th:text="*{nick}">nick</font></td>
-                <td><a th:href="@{/status(score=100,user_id=*{id})}" th:text="*{solved}">solved</a></td>
-                <td><a th:href="@{/status(user_id=*{id})}" th:text="*{submit}">submit</a></td>
-                <td th:text="|*{ratio}%|">30%</td>
-            </tr>
+            <thead>
+                <tr align="center" bgcolor="#6589D1">
+                    <td width="5%"><b>No.</b></td>
+                    <td width="10%"><b>User ID</b></td>
+                    <td width="55%"><b>Nick Name</b></td>
+                    <td width="10%">
+                        <a th:href="@{/userlist}">
+                            <b>
+                                <font color="white">Solved Problems</font>
+                            </b>
+                        </a>
+                    </td>
+                    <td width="10%">
+                        <a th:href="@{/userlist(sort='submit,desc',sort=solved)}">
+                            <b>
+                                <font color="white">Submit</font>
+                            </b>
+                        </a>
+                    </td>
+                    <td width="10%">
+                        <a th:href="@{/userlist(sort='ratio,solved,desc')}">
+                            <b><font color="white">Ratio (AC/submit)</font></b>
+                        </a>
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr align="center" th:each="user,it:${page}" th:object="${user}">
+                    <td align="center" th:text="${page.number*page.size+it.count}">1</td>
+                    <td><a th:href="@{/userstatus(user_id=*{id})}" th:text="*{id}">id</a></td>
+                    <td><font color="green" th:text="*{nick}">nick</font></td>
+                    <td><a th:href="@{/status(score=100,user_id=*{id})}" th:text="*{solved}">solved</a></td>
+                    <td><a th:href="@{/status(user_id=*{id})}" th:text="*{submit}">submit</a></td>
+                    <td th:text="|*{ratio}%|">30%</td>
+                </tr>
+            </tbody>
         </table>
         <ul class="text-center pagination">
             <li th:each="it:${#numbers.sequence(0,page.totalPages-1)}">

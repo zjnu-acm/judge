@@ -9,21 +9,26 @@
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
         <table cellspacing="0" cellpadding="0" width="780" border="1" class="text-center table-back" style="margin: 0 auto">
-            <tr>
-                <td width="10%"><b>ID</b></td>
-                <td width="40%"><b>Title</b></td>
-                <td width="30%"><b>Start Time</b></td>
-                <td width="20%"><b>Status</b></td></tr>
-            <tr th:each="contest : ${contests}" th:inline="text" th:object="${contest}">
-                <td>[[*{id}]]</td>
-                <td><a th:href="@{/showcontest(contest_id=${contest.id})}">[[*{title}]]</a></td>
-                <td>[[*{#calendars.format(T(java.util.Date).from(startTime),"yyyy-MM-dd HH:mm:ss")}]]</td>
-                <td th:switch="*{(started?1:0)+(ended?1:0)}">
-                    <font th:case="0" color="blue">Pending</font>
-                    <font th:case="1" color="red">Running</font>
-                    <font th:case="2" color="green">Ended</font>
-                </td>
-            </tr>
+            <thead>
+                <tr class="inc">
+                    <td width="10%"><b>ID</b></td>
+                    <td width="40%"><b>Title</b></td>
+                    <td width="30%"><b>Start Time</b></td>
+                    <td width="20%"><b>Status</b></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="contest:${contests}" th:object="${contest}">
+                    <td>[[*{id}]]</td>
+                    <td><a th:href="@{/showcontest(contest_id=${contest.id})}">[[*{title}]]</a></td>
+                    <td>[[*{#calendars.format(T(java.util.Date).from(startTime),"yyyy-MM-dd HH:mm:ss")}]]</td>
+                    <td th:switch="*{(started?1:0)+(ended?1:0)}">
+                        <font th:case="0" color="blue">Pending</font>
+                        <font th:case="1" color="red">Running</font>
+                        <font th:case="2" color="green">Ended</font>
+                    </td>
+                </tr>
+            </tbody>
         </table>
         <!--/*/</th:block>/*/-->
     </body>
