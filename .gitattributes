@@ -17,8 +17,6 @@
 *.PDF binary
 *.rtf binary
 *.RTF binary
-*.png binary
-*.jpg binary
 *.ttf binary
 
 *.java  text    diff=java
@@ -35,3 +33,6 @@
 *.sql   text
 *.properties text
 *.txt   text
+*.gif diff=image
+*.jpg diff=image
+*.png diff=image
