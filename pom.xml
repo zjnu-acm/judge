@@ -31,7 +31,7 @@
         <jboss-vfs.version>3.2.12.Final</jboss-vfs.version>
         <jna.version>4.2.2</jna.version>
         <lombok.version>1.16.8</lombok.version>
-        <mariadb.version>1.4.4</mariadb.version>
+        <mariadb.version>1.4.5</mariadb.version>
         <maven.test.failure.ignore>false</maven.test.failure.ignore>
         <!--<maven.test.skip>true</maven.test.skip>-->
         <snakeyaml.version>1.17</snakeyaml.version>
