@@ -31,6 +31,8 @@ public class ContestStatisticsController {
     private DataSource dataSource;
     @Autowired
     private ContestMapper contestMapper;
+    @Autowired
+    private LanguageFactory languageFactory;
 
     @RequestMapping(value = "/conteststatistics", method = {RequestMethod.GET, RequestMethod.HEAD})
     public void conteststatistics(HttpServletRequest request, HttpServletResponse response,
@@ -59,7 +61,7 @@ public class ContestStatisticsController {
                 + "<TABLE align=center cellSpacing=0 cellPadding=0 width=600 border=1 class=table-back style=\"border-collapse: collapse\" bordercolor=#FFF>"
                 + "<tr bgcolor=#6589D1><th>&nbsp;</th><th>100</th><th>99~70</th><th>69~31</th><th>30~1</th><th>0</th><th>CE</th><th>Others</th><th>Total</th>");
 
-        Map<Integer, Language> languages = LanguageFactory.getLanguages();
+        Map<Integer, Language> languages = languageFactory.getLanguages();
         int languageCount = languages.size();
         String str2 = "select ";
         for (int i : languages.keySet()) {

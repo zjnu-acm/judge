@@ -76,6 +76,8 @@ public class ShowSourceController {
     private UserPerferenceMapper userPerferenceMapper;
     @Autowired
     private SubmissionService submissionService;
+    @Autowired
+    private LanguageFactory languageFactory;
 
     @RequestMapping(value = "/showsource", method = {RequestMethod.GET, RequestMethod.HEAD})
     public String showsource(HttpServletRequest request,
@@ -91,7 +93,7 @@ public class ShowSourceController {
         if (!submissionService.canView(request, submission)) {
             throw new MessageException("You have no permission to view the source.");
         }
-        String language = LanguageFactory.getLanguage(submission.getLanguage()).getName();
+        String language = languageFactory.getLanguage(submission.getLanguage()).getName();
         String sh = findClass4SHJS(language);
         if (style == null) {
             style = userPerferenceMapper.getStyle(userId);

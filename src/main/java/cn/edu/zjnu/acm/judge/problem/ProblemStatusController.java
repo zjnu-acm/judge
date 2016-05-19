@@ -49,6 +49,8 @@ public class ProblemStatusController {
     private DataSource dataSource;
     @Autowired
     private ProblemMapper problemMapper;
+    @Autowired
+    private LanguageFactory languageFactory;
 
     @RequestMapping(value = "/gotoproblem", method = {RequestMethod.GET, RequestMethod.HEAD})
     public String gotoProblem(@RequestParam(value = "pid", required = false) String pid,
@@ -143,7 +145,7 @@ public class ProblemStatusController {
                     Timestamp inDate = rs.getTimestamp("in_date");
                     long memory = rs.getLong("memory");
                     long time = rs.getLong("time");
-                    String language = LanguageFactory.getLanguage(rs.getInt("language")).getName();
+                    String language = languageFactory.getLanguage(rs.getInt("language")).getName();
                     String length = rs.getString("len");
                     out.print("<tr align=center><td>" + rank + "</td><td>" + submissionId + "</td>"
                             + "<td><a href=userstatus?user_id=" + userId + ">" + userId + "</a></td>");

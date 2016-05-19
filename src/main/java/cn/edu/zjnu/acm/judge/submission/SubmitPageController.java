@@ -15,6 +15,8 @@ public class SubmitPageController {
 
     @Autowired
     private UserPerferenceMapper userPerferenceMapper;
+    @Autowired
+    private LanguageFactory languageFactory;
 
     @RequestMapping(value = {"/submitpage", "/submit"}, method = {RequestMethod.GET, RequestMethod.HEAD})
     public String submitpage(HttpServletRequest request,
@@ -23,7 +25,7 @@ public class SubmitPageController {
         UserDetailService.requireLoginned(request);
         request.setAttribute("contestId", contestId);
         request.setAttribute("problemId", problemId);
-        request.setAttribute("languages", LanguageFactory.getLanguages().values());
+        request.setAttribute("languages", languageFactory.getLanguages().values());
         String user = UserDetailService.getCurrentUserId(request).orElse(null);
         int languageId = userPerferenceMapper.getLanguage(user);
         request.setAttribute("languageId", languageId);
