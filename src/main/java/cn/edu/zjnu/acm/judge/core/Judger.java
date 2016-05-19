@@ -100,6 +100,8 @@ public class Judger {
     private JudgeServerService judgeServerService;
     @Autowired
     private JudgeConfiguration judgeConfiguration;
+    @Autowired
+    private LanguageFactory languageFactory;
 
     private void updateSubmissionStatus(RunRecord runRecord) {
         userProblemMapper.update(runRecord.getUserId(), runRecord.getProblemId());
@@ -115,7 +117,7 @@ public class Judger {
         RunRecord runRecord = new RunRecord();
         runRecord.setSubmissionId(submission.getId());
 
-        runRecord.setLanguage(LanguageFactory.getLanguage(submission.getLanguage()));
+        runRecord.setLanguage(languageFactory.getLanguage(submission.getLanguage()));
         runRecord.setProblemId(submission.getProblem());
         runRecord.setUserId(submission.getUser());
         runRecord.setSource(submissionMapper.findSourceById(submissionId));

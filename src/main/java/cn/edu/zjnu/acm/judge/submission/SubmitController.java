@@ -42,6 +42,8 @@ public class SubmitController {
     private UserPerferenceMapper userPerferenceMapper;
     @Autowired
     private JudgeConfiguration judgeConfiguration;
+    @Autowired
+    private LanguageFactory languageFactory;
 
     @RequestMapping(value = "/submit", method = RequestMethod.POST)
     public String submit(HttpServletRequest request,
@@ -52,7 +54,7 @@ public class SubmitController {
         UserDetailService.requireLoginned(request);
         Language language;
         try {
-            language = LanguageFactory.getLanguage(languageId);
+            language = languageFactory.getLanguage(languageId);
         } catch (IllegalArgumentException ex) {
             throw new MessageException("Please choose a language");
         }

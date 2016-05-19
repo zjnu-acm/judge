@@ -29,11 +29,13 @@ import java.util.Map;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author zhanhb
  */
+@Service
 public class LanguageFactory {
 
     private static final Map<Integer, Language> languages;
@@ -56,17 +58,14 @@ public class LanguageFactory {
         };
     }
 
-    public static Map<Integer, Language> getLanguages() {
+    public Map<Integer, Language> getLanguages() {
         return Collections.unmodifiableMap(languages);
     }
 
-    public static Language getLanguage(int languageId) {
+    public Language getLanguage(int languageId) {
         return languages.computeIfAbsent(languageId, x -> {
             throw new NoSuchLanguageException("no such language " + x);
         });
-    }
-
-    private LanguageFactory() {
     }
 
 }

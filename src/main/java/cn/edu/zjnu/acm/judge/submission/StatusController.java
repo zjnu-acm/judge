@@ -41,6 +41,8 @@ public class StatusController {
     private ContestMapper contestMapper;
     @Autowired
     private SubmissionService submissionService;
+    @Autowired
+    private LanguageFactory languageFactory;
 
     @RequestMapping(value = {"/status", "/submissions"}, method = {RequestMethod.GET, RequestMethod.HEAD})
     public void status(HttpServletRequest request, HttpServletResponse response,
@@ -112,7 +114,7 @@ public class StatusController {
                 + " Language:"
                 + "<select size=\"1\" name=\"language\">"
                 + "<option value=\"\">All</option>");
-        for (Map.Entry<Integer, Language> entry : LanguageFactory.getLanguages().entrySet()) {
+        for (Map.Entry<Integer, Language> entry : languageFactory.getLanguages().entrySet()) {
             int key = entry.getKey();
             Language value = entry.getValue();
             out.print("<option value=\"" + key + "\"" + (key == language ? " selected" : "")
@@ -138,7 +140,7 @@ public class StatusController {
             long num = submission.getNum();
             int score = submission.getScore();
             Instant inDate = submission.getInDate();
-            String language1 = LanguageFactory.getLanguage(submission.getLanguage()).getName();
+            String language1 = languageFactory.getLanguage(submission.getLanguage()).getName();
             String color;
             if (score == 100) {
                 color = "blue";
