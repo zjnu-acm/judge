@@ -15,8 +15,13 @@
  */
 package cn.edu.zjnu.acm.judge.config;
 
+import cn.edu.zjnu.acm.judge.service.UserDetailService;
+import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.Servlet;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -50,6 +55,34 @@ public class RegistrationBeanConfiguration {
     public FilterRegistrationBean sitemesh() {
         Filter filter = new com.opensymphony.sitemesh.webapp.SiteMeshFilter();
         return new FilterRegistrationBean(filter);
+    }
+
+}
+
+@SuppressWarnings("MultipleTopLevelClassesInFile")
+class ConnectorServlet extends com.ckfinder.connector.ConnectorServlet {
+
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    protected void service(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        UserDetailService.requireAdminLoginned(request);
+        super.service(request, response);
+    }
+
+}
+
+@SuppressWarnings("MultipleTopLevelClassesInFile")
+class KaptchaServlet extends com.google.code.kaptcha.servlet.KaptchaServlet {
+
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    public void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        req.getSession(); // create session for kaptcha servlet
+        super.doGet(req, resp);
     }
 
 }
