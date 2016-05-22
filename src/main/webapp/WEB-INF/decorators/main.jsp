@@ -28,7 +28,7 @@
 
             <link href="${pageContext.request.contextPath}/css/site.css?_=${applicationScope.startUpDate}" rel="stylesheet"/>
             <link href="${pageContext.request.contextPath}/sample.png" rel="shortcut icon"/>
-            <script src="${pageContext.request.contextPath}/webjars/jquery/1.12.3/jquery.min.js"><!----></script>
+            <script src="${pageContext.request.contextPath}/webjars/jquery/1.12.4/jquery.min.js"><!----></script>
             <script src="${pageContext.request.contextPath}/js/site.js?_=${applicationScope.startUpDate}"><!----></script>
             <decorator:head/>
         </head>
