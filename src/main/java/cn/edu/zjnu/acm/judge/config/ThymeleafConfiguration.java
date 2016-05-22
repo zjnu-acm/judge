@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.io.Writer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.util.StringUtils;
 import org.thymeleaf.Arguments;
 import org.thymeleaf.dom.Text;
 import org.thymeleaf.spring4.SpringTemplateEngine;
@@ -27,6 +26,7 @@ import org.thymeleaf.templatemode.ITemplateModeHandler;
 import org.thymeleaf.templatemode.StandardTemplateModeHandlers;
 import org.thymeleaf.templatemode.TemplateModeHandler;
 import org.thymeleaf.templatewriter.AbstractGeneralTemplateWriter;
+import org.thymeleaf.util.StringUtils;
 
 /**
  * Hacking Thymeleaf to minimize white space.
@@ -64,7 +64,7 @@ public class ThymeleafConfiguration {
         protected void writeText(final Arguments arguments, final Writer writer, final Text text)
                 throws IOException {
             final String content = text.getEscapedContent();
-            if (StringUtils.hasText(content)) {
+            if (!StringUtils.isEmptyOrWhitespace(content)) {
                 writer.write(content);
             }
         }

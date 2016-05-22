@@ -282,7 +282,7 @@
                     <fork>true</fork>
                     <compilerArgs>
                         <arg>-J-Duser.language=en_us</arg>
-                        <arg>-J-Dfile.encoding=UTF-8</arg>
+                        <arg>-J-Dfile.encoding=${file.encoding}</arg>
                     </compilerArgs>
                     <showDeprecation>true</showDeprecation>
                 </configuration>
