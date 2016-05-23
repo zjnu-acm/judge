@@ -346,7 +346,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <argLine>-Dfile.encoding=${file.encoding} -ea ${surefireArgLine}</argLine>
+                    <argLine>-Dfile.encoding=${file.encoding} -ea @{surefireArgLine}</argLine>
                     <systemPropertyVariables>
                         <slf4j.detectLoggerNameMismatch>true</slf4j.detectLoggerNameMismatch>
                     </systemPropertyVariables>
