@@ -3,7 +3,7 @@ jQuery(function ($) {
         if (event.keyCode === 13)
             button.trigger("click");
     }
-    var form = $(".fp_form"), newp = form.find("#newPassword"),
+    var form = $(".fp-form"), newp = form.find("#newPassword"),
             renp = form.find("#reNewPassword"), button = form.find("#submit");
     newp.bind("keypress", d);
     renp.bind("keypress", d);
