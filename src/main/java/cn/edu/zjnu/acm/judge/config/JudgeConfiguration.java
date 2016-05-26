@@ -15,13 +15,11 @@
  */
 package cn.edu.zjnu.acm.judge.config;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Locale;
 import java.util.Objects;
-import java.util.Properties;
+import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import lombok.extern.slf4j.Slf4j;
@@ -33,22 +31,13 @@ import org.thymeleaf.util.StringUtils;
 @Slf4j
 public class JudgeConfiguration {
 
-    private static final Properties PROPS = new Properties();
-    private static final String SERVER_CONFIG_PROPERTIES = "serverConfig.properties";
-    private static final String WEB_PROPERTIES = "web.properties";
-
     public static final String VALIDATE_FILE_NAME = "compare.exe";
-    private static Path uploadDirectory; // TODO
 
-    static {
-        log.info("<clinit> {}", JudgeConfiguration.class.getClassLoader());
-        try (InputStream in = JudgeConfiguration.class.getClassLoader().getResourceAsStream(SERVER_CONFIG_PROPERTIES)) {
-            in.getClass();
-            PROPS.load(in);
-        } catch (IOException ex) {
-            throw new ExceptionInInitializerError(ex);
-        }
-    }
+    private static final String SERVER_CONFIG_PROPERTIES = "serverConfig";
+    private static final String WEB_PROPERTIES = "web";
+    private static final ResourceBundle BUNDLE = ResourceBundle.getBundle(SERVER_CONFIG_PROPERTIES, Locale.US);
+
+    private static Path uploadDirectory; // TODO
 
     public static Path getUploadDirectory() {
         return uploadDirectory;
@@ -64,7 +53,7 @@ public class JudgeConfiguration {
     private ServletContext servletContext;
 
     public String getValue(String key) {
-        String property = PROPS.getProperty(key);
+        String property = BUNDLE.getString(key);
         String ctx = getContextPath();
         if (property != null && ctx != null) {
             property = property.replace("%CONTEXT_PATH%", ctx);
@@ -104,23 +93,16 @@ public class JudgeConfiguration {
 
     @PostConstruct
     public void init() {
-        try {
-            {
-                Properties properties = new Properties();
-                try (InputStream in = getClass().getClassLoader().getResourceAsStream(WEB_PROPERTIES)) {
-                    properties.load(in);
-                }
-                properties.forEach((key, value) -> servletContext.setAttribute((String) key, value));
-            }
-
-            contextPath = fixContextPath(servletContext.getContextPath());
-            dataFilesPath = Paths.get(Objects.requireNonNull(getValue("DataFilesPath"), "Data Files Path not set."));
-            workingPath = Paths.get(getValue("WorkingPath"));
-            uploadDirectory = Paths.get(getValue("UploadPath"));
-            deleteTempFile = Boolean.parseBoolean(getValue("DeleteTempFile"));
-        } catch (IOException ex) {
-            throw new UncheckedIOException(ex);
+        {
+            ResourceBundle bundle = ResourceBundle.getBundle(WEB_PROPERTIES, Locale.US);
+            bundle.keySet().forEach(key -> servletContext.setAttribute(key, bundle.getObject(key)));
         }
+
+        contextPath = fixContextPath(servletContext.getContextPath());
+        dataFilesPath = Paths.get(Objects.requireNonNull(getValue("DataFilesPath"), "Data Files Path not set."));
+        workingPath = Paths.get(getValue("WorkingPath"));
+        uploadDirectory = Paths.get(getValue("UploadPath"));
+        deleteTempFile = Boolean.parseBoolean(getValue("DeleteTempFile"));
     }
 
 }
