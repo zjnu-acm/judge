@@ -39,17 +39,6 @@ public class JudgeConfigurationTest {
     private JudgeConfiguration judgeConfiguration;
 
     /**
-     * Test of getValue method, of class JudgeConfiguration.
-     */
-    @Test
-    public void testGetValue() {
-        log.info("getValue");
-        String key = "";
-        String expResult = "";
-        String result = judgeConfiguration.getValue(key);
-    }
-
-    /**
      * Test of getDataDirectory method, of class JudgeConfiguration.
      */
     @Test
