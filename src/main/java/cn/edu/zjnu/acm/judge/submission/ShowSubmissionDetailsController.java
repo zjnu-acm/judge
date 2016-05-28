@@ -33,7 +33,7 @@ public class ShowSubmissionDetailsController {
             throws IOException {
         Submission submission = submissionMapper.findOne(submissionId);
         if (submission == null) {
-            throw new MessageException("No such solution");
+            throw new MessageException("No such solution", HttpServletResponse.SC_NOT_FOUND);
         }
         Long contestId = submission.getContest();
         if (contestId != null) {
@@ -43,11 +43,11 @@ public class ShowSubmissionDetailsController {
             }
         }
         if (!submissionService.canView(request, submission)) {
-            throw new MessageException("You have no permission to view solution '" + submissionId + "'");
+            throw new MessageException("You have no permission to view solution '" + submissionId + "'", HttpServletResponse.SC_FORBIDDEN);
         }
         String submissionDetail = submissionMapper.getSubmissionDetail(submissionId);
         if (submissionDetail == null) {
-            throw new MessageException("No such solution");
+            throw new MessageException("No such solution", HttpServletResponse.SC_NOT_FOUND);
         }
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();

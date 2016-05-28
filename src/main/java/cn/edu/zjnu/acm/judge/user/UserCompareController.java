@@ -8,6 +8,7 @@ import cn.edu.zjnu.acm.judge.mapper.UserProblemMapper;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -88,7 +89,7 @@ public class UserCompareController {
 
     private void checkUser(String uid) {
         if (userMapper.findOne(uid) == null) {
-            throw new MessageException("No such user:" + uid);
+            throw new MessageException("No such user:" + uid, HttpServletResponse.SC_NOT_FOUND);
         }
     }
 

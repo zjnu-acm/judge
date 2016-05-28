@@ -22,15 +22,21 @@ package cn.edu.zjnu.acm.judge.exception;
 public class MessageException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
+    private final int code;
 
-    public MessageException(String message) {
+    public MessageException(String message, int code) {
         super(message);
+        this.code = code;
     }
 
     // no stack trace
     @Override
     public MessageException fillInStackTrace() {
         return this;
+    }
+
+    public int getCode() {
+        return code;
     }
 
 }

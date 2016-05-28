@@ -23,6 +23,7 @@ import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import cn.edu.zjnu.acm.judge.util.JudgeUtils;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -48,10 +49,10 @@ public class MailController {
         UserDetailService.requireLoginned(request);
         Mail mail = mailMapper.findOne(mailId);
         if (mail == null) {
-            throw new MessageException("No such mail");
+            throw new MessageException("No such mail", HttpServletResponse.SC_NOT_FOUND);
         }
         if (!UserDetailService.isUser(request, mail.getTo())) {
-            throw new MessageException("Sorry, invalid access");
+            throw new MessageException("Sorry, invalid access", HttpServletResponse.SC_FORBIDDEN);
         }
         mailMapper.delete(mailId);
         return "redirect:/mail";
@@ -87,10 +88,10 @@ public class MailController {
             title = "No Topic";
         }
         if (content.length() > 40000) {
-            throw new MessageException("Sorry, content too long");
+            throw new MessageException("Sorry, content too long", HttpServletResponse.SC_REQUEST_ENTITY_TOO_LARGE);
         }
         if (userMapper.findOne(to) == null) {
-            throw new MessageException("Sorry, no such user:" + to);
+            throw new MessageException("Sorry, no such user:" + to, HttpServletResponse.SC_NOT_FOUND);
         }
 
         mailMapper.save(Mail.builder()
@@ -113,11 +114,11 @@ public class MailController {
         if (reply != -1) {
             Mail parent = mailMapper.findOne(reply);
             if (parent == null) {
-                throw new MessageException("No such mail");
+                throw new MessageException("No such mail", HttpServletResponse.SC_NOT_FOUND);
             }
             String toUser = parent.getTo();
             if (!UserDetailService.isUser(request, toUser)) {
-                throw new MessageException("invalid access");
+                throw new MessageException("invalid access", HttpServletResponse.SC_FORBIDDEN);
             }
             userId = parent.getFrom();
             title = parent.getTitle();
@@ -138,10 +139,10 @@ public class MailController {
         UserDetailService.requireLoginned(request);
         Mail mail = mailMapper.findOne(mailId);
         if (mail == null) {
-            throw new MessageException("No such mail");
+            throw new MessageException("No such mail", HttpServletResponse.SC_NOT_FOUND);
         }
         if (!UserDetailService.isUser(request, mail.getTo())) {
-            throw new MessageException("Sorry, invalid access");
+            throw new MessageException("Sorry, invalid access", HttpServletResponse.SC_FORBIDDEN);
         }
         mailMapper.readed(mailId);
         request.setAttribute("mail", mail);
