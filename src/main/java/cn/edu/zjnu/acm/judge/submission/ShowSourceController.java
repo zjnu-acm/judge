@@ -10,6 +10,7 @@ import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import cn.edu.zjnu.acm.judge.util.ResultType;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -87,11 +88,11 @@ public class ShowSourceController {
         Submission submission = submissionMapper.findOne(submissionId);
 
         if (submission == null) {
-            throw new MessageException("No such solution");
+            throw new MessageException("No such solution", HttpServletResponse.SC_NOT_FOUND);
         }
         String userId = UserDetailService.getCurrentUserId(request).orElse(null);
         if (!submissionService.canView(request, submission)) {
-            throw new MessageException("You have no permission to view the source.");
+            throw new MessageException("You have no permission to view the source.", HttpServletResponse.SC_FORBIDDEN);
         }
         String language = languageFactory.getLanguage(submission.getLanguage()).getName();
         String sh = findClass4SHJS(language);

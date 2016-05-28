@@ -18,15 +18,22 @@ package cn.edu.zjnu.acm.judge.exception;
 import java.io.IOException;
 import java.net.URLEncoder;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.springframework.boot.autoconfigure.web.ErrorController;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler implements ErrorController {
 
     @ExceptionHandler(MessageException.class)
-    public String messageExceptionHandler(HttpServletRequest request, MessageException ex) {
-        request.setAttribute("message", ex.getMessage());
+    public String messageExceptionHandler(HttpServletRequest request, HttpServletResponse response, MessageException ex) {
+        String message = ex.getMessage();
+        int code = ex.getCode();
+        request.setAttribute("message", message);
+        if (code % 100 == 4) {
+            response.setStatus(code);
+        }
         return "message";
     }
 
@@ -34,6 +41,11 @@ public class GlobalExceptionHandler {
     public String forbiddenExceptionHandler(HttpServletRequest request)
             throws IOException {
         return "redirect:/login?url=" + URLEncoder.encode((String) request.getAttribute("backUrl"), "UTF-8");
+    }
+
+    @Override
+    public String getErrorPath() {
+        return "/error";
     }
 
 }

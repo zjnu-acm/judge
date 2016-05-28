@@ -38,7 +38,7 @@ public class ShowProblemController {
             throws IOException {
         Problem problem = problemMapper.findOne(problemId);
         if (problem == null) {
-            throw new MessageException("Can not find problem (ID:" + problemId + ")");
+            throw new MessageException("Can not find problem (ID:" + problemId + ")", HttpServletResponse.SC_NOT_FOUND);
         }
         Long contestId = problem.getContest();
         long accepted = problem.getAccepted();
@@ -65,7 +65,7 @@ public class ShowProblemController {
             }
         }
         if (!started) {
-            throw new MessageException("Can not find problem (ID:" + problemId + ")");
+            throw new MessageException("Can not find problem (ID:" + problemId + ")", HttpServletResponse.SC_NOT_FOUND);
         }
         String title = problem.getTitle();
         long timeLimit = problem.getTimeLimit();

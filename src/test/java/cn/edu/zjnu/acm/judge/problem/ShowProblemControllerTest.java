@@ -52,4 +52,12 @@ public class ShowProblemControllerTest {
                 .andDo(print());
     }
 
+    @Test
+    public void testShowproblemNotFound() throws Exception {
+        MockMvc mvc = webAppContextSetup(context).build();
+        mvc.perform(get("/showproblem").param("problem_id", "999"))
+                .andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
 }

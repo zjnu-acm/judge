@@ -8,6 +8,7 @@ import cn.edu.zjnu.acm.judge.util.ValueCheck;
 import com.google.common.base.Strings;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -33,16 +34,16 @@ public class ModifyUserController {
             @RequestParam("school") String school) {
         UserDetailService.requireLoginned(request);
         if (!Objects.equals(newPassword, rptPassword)) {
-            throw new MessageException("Passwords are not match");
+            throw new MessageException("Passwords are not match", HttpServletResponse.SC_BAD_REQUEST);
         }
         String userId = UserDetailService.getCurrentUserId(request).orElse(null);
         User user = userMapper.findOne(userId);
         if (user == null) {
-            throw new MessageException("The ID( " + userId + " ) is not existed");
+            throw new MessageException("The ID( " + userId + " ) is not existed", HttpServletResponse.SC_CONFLICT);
         }
         String password = user.getPassword();
         if (!passwordEncoder.matches(oldPassword, password)) {
-            throw new MessageException("password is not correct");
+            throw new MessageException("password is not correct", HttpServletResponse.SC_BAD_REQUEST);
         }
         if (Strings.isNullOrEmpty(nick)) {
             nick = userId;

@@ -20,6 +20,7 @@ import cn.edu.zjnu.acm.judge.util.ResultType;
 import java.nio.file.Path;
 import java.time.Instant;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,13 +57,13 @@ public class SubmitController {
         try {
             language = languageFactory.getLanguage(languageId);
         } catch (IllegalArgumentException ex) {
-            throw new MessageException("Please choose a language");
+            throw new MessageException("Please choose a language", HttpServletResponse.SC_BAD_REQUEST);
         }
         if (source.length() > 32768) {
-            throw new MessageException("Source code too long, submit FAILED;if you really need submit this source please contact administrator");
+            throw new MessageException("Source code too long, submit FAILED;if you really need submit this source please contact administrator", HttpServletResponse.SC_BAD_REQUEST);
         }
         if (source.length() < 10) {
-            throw new MessageException("Source code too short, submit FAILED;if you really need submit this source please contact administrator");
+            throw new MessageException("Source code too short, submit FAILED;if you really need submit this source please contact administrator", HttpServletResponse.SC_BAD_REQUEST);
         }
         UserModel userModel = UserDetailService.getCurrentUser(request).orElseThrow(ForbiddenException::new);
         assert userModel != null;
@@ -72,7 +73,7 @@ public class SubmitController {
         // 8秒交一次。。。
         // 使用绝对值，如果系统时间被改了依然可用
         if (Math.abs(userModel.getLastSubmitTime() - now) < 10000) {
-            throw new MessageException("Sorry, please don't submit again within 10 seconds.");
+            throw new MessageException("Sorry, please don't submit again within 10 seconds.", HttpServletResponse.SC_BAD_REQUEST);
         }
         userModel.setLastSubmitTime(now);
         String userId = userModel.getUserId();
@@ -82,7 +83,7 @@ public class SubmitController {
 
         //检查该题是否被禁用
         if (problem == null) {
-            throw new MessageException("No such problem");
+            throw new MessageException("No such problem", HttpServletResponse.SC_NOT_FOUND);
         }
         Long contestId = problem.getContest();
         long memoryLimit = problem.getMemoryLimit();
@@ -102,7 +103,7 @@ public class SubmitController {
                 ended = contest.isEnded();
 
                 if (!started) {
-                    throw new MessageException("No such problem");
+                    throw new MessageException("No such problem", HttpServletResponse.SC_NOT_FOUND);
                 }
             }
             //题目中竞赛id置为空

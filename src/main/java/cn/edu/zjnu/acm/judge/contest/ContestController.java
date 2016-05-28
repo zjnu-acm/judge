@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.ObjIntConsumer;
+import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -92,10 +93,10 @@ public class ContestController {
         model.addAttribute("contestId", id);
         model.addAttribute("contest", contest);
         if (contest == null) {
-            throw new MessageException("No such contest");
+            throw new MessageException("No such contest", HttpServletResponse.SC_NOT_FOUND);
         }
         if (!contest.isStarted()) {
-            throw new MessageException("Contest not started yet");
+            throw new MessageException("Contest not started yet", HttpServletResponse.SC_OK);
         }
         // TODO user is empty
         List<Problem> problems = contestMapper.getProblems(id, null);

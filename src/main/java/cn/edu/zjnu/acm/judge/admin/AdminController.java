@@ -26,6 +26,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -119,7 +120,7 @@ public class AdminController {
             @RequestParam(value = "pureText", required = false) String pureText) {
         UserDetailService.requireAdminLoginned(request);
         if (!StringUtils.hasText(op)) {
-            throw new MessageException("Nothing I can do for you.");
+            throw new MessageException("Nothing I can do for you.", HttpServletResponse.SC_BAD_REQUEST);
         }
 
         switch (op.toLowerCase()) {

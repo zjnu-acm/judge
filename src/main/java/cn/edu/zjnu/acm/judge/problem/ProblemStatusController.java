@@ -86,7 +86,7 @@ public class ProblemStatusController {
         groupBy += ",user_id ";
         Problem problem = problemMapper.findOne(id);
         if (problem == null) {
-            throw new MessageException("No such problem");
+            throw new MessageException("No such problem", HttpServletResponse.SC_NOT_FOUND);
         }
         Long contestId = problem.getContest();
         long submitUser = problem.getSubmitUser();

@@ -7,6 +7,7 @@ import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import com.google.common.base.Strings;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,13 +24,11 @@ public class SearchProblemController {
     protected String searchproblem(HttpServletRequest request,
             @RequestParam(value = "sstr", required = false) String query) {
         if (Strings.isNullOrEmpty(query)) {
-            throw new MessageException("Please input the keyword to the problem.");
+            throw new MessageException("Please input the keyword to the problem.", HttpServletResponse.SC_BAD_REQUEST);
         }
         String userId = UserDetailService.getCurrentUserId(request).orElse(null);
         List<Problem> problems = problemMapper.findAllBySearchTitleOrSourceAndDefunctN(query, userId);
-        if (problems.isEmpty()) {
-            throw new MessageException("Sorry, the Problem doesn't exist.");
-        }
+
         request.setAttribute("query", query);
         request.setAttribute("problems", problems);
         return "problems/search";

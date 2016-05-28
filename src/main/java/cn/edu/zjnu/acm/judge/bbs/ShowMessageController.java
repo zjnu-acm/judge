@@ -38,7 +38,7 @@ public class ShowMessageController {
         UserDetailService.requireLoginned(request);
         Message message = messageMapper.findOne(messageId);
         if (message == null) {
-            throw new MessageException("No such message");
+            throw new MessageException("No such message", HttpServletResponse.SC_NOT_FOUND);
         }
         final DateTimeFormatter formatter = dtf.withZone(ZoneId.systemDefault());
         final Instant inDate = message.getInDate();
