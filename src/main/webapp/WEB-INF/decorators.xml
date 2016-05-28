@@ -9,6 +9,5 @@
         <pattern>/showproblem</pattern>
         <pattern>/showsolutiondetails</pattern>
         <pattern>/status</pattern>
-        <pattern>/usercmp</pattern>
     </decorator>
 </decorators>
