@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -41,7 +42,7 @@ public class ContestStatisticsController {
         Instant now = Instant.now();
         Contest contest = contestMapper.findOneByIdAndDefunctN(contestId);
         if (contest == null || !contest.isStarted()) {
-            throw new MessageException("No such contest", HttpServletResponse.SC_NOT_FOUND);
+            throw new MessageException("No such contest", HttpStatus.NOT_FOUND);
         }
         String title = contest.getTitle();
         Instant endTime = contest.getEndTime();

@@ -5,8 +5,8 @@ import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,7 +30,7 @@ public class RejudgeController {
         } else if (problemId != 0) {
             new Thread(() -> rejudger.run(problemId)).start();
         } else {
-            throw new MessageException("please specified problem_id or solution_id", HttpServletResponse.SC_BAD_REQUEST);
+            throw new MessageException("please specified problem_id or solution_id", HttpStatus.BAD_REQUEST);
         }
         return "admin/recieved";
     }

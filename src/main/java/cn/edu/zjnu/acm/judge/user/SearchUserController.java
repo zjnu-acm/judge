@@ -5,8 +5,8 @@ import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,7 +23,7 @@ public class SearchUserController {
             @RequestParam(value = "user_id", defaultValue = "") String keyword,
             @RequestParam(value = "position", required = false) String position) {
         if (keyword.length() < 2) {
-            throw new MessageException("search key word whose length must be greater than 2", HttpServletResponse.SC_BAD_REQUEST);
+            throw new MessageException("search key word whose length must be greater than 2", HttpStatus.BAD_REQUEST);
         }
         String like = keyword;
         if (position == null) {

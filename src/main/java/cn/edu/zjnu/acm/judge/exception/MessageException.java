@@ -15,6 +15,9 @@
  */
 package cn.edu.zjnu.acm.judge.exception;
 
+import java.util.Objects;
+import org.springframework.http.HttpStatus;
+
 /**
  *
  * @author zhanhb
@@ -22,11 +25,11 @@ package cn.edu.zjnu.acm.judge.exception;
 public class MessageException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
-    private final int code;
+    private final HttpStatus httpStatus;
 
-    public MessageException(String message, int code) {
+    public MessageException(String message, HttpStatus httpStatus) {
         super(message);
-        this.code = code;
+        this.httpStatus = Objects.requireNonNull(httpStatus);
     }
 
     // no stack trace
@@ -35,8 +38,8 @@ public class MessageException extends RuntimeException {
         return this;
     }
 
-    public int getCode() {
-        return code;
+    public HttpStatus getHttpStatus() {
+        return httpStatus;
     }
 
 }

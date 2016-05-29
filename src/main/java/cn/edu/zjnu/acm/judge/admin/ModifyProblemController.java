@@ -8,8 +8,8 @@ import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +30,7 @@ public class ModifyProblemController {
         UserDetailService.requireAdminLoginned(request);
         Problem problem = problemMapper.findOne(problemId);
         if (problem == null) {
-            throw new MessageException("no such problem " + problemId, HttpServletResponse.SC_NOT_FOUND);
+            throw new MessageException("no such problem " + problemId, HttpStatus.NOT_FOUND);
         }
         Long oldContestId = problem.getContest();
         Long contestId = p.getContest();
@@ -60,7 +60,7 @@ public class ModifyProblemController {
             if (!Objects.equals(oldContestId, contestId)) {
                 Contest newContest = contestMapper.findOneByIdAndDefunctN(contestId);
                 if (newContest == null) {
-                    throw new MessageException("No such contest", HttpServletResponse.SC_NOT_FOUND);
+                    throw new MessageException("No such contest", HttpStatus.NOT_FOUND);
                 }
                 boolean started = newContest.isStarted();
                 if (!started) {
