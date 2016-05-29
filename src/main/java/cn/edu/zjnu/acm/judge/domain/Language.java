@@ -17,16 +17,21 @@ package cn.edu.zjnu.acm.judge.domain;
 
 import java.io.Serializable;
 import javax.annotation.Nullable;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NonNull;
+import lombok.Setter;
 import lombok.Value;
 
 /**
  *
  * @author zhanhb
  */
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @Value
+@Setter(AccessLevel.PRIVATE)
 @SuppressWarnings("FinalClass")
 public class Language implements Serializable {
 
