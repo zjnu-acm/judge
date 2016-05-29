@@ -15,7 +15,6 @@
  */
 package cn.edu.zjnu.acm.judge.domain;
 
-import java.io.Serializable;
 import java.util.Collection;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,7 +24,7 @@ import org.springframework.security.core.GrantedAuthority;
  *
  * @author zhanhb
  */
-public class UserModel extends org.springframework.security.core.userdetails.User implements Serializable {
+public class UserModel extends org.springframework.security.core.userdetails.User {
 
     private static final long serialVersionUID = 1L;
 

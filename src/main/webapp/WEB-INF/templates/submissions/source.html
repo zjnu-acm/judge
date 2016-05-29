@@ -11,7 +11,7 @@
         <p align="center">
             <font size="4" color="#333399">Source</font>
         </p>
-        <form>
+        <form id="show-source">
             <p align="center" th:inline="text">
                 <font size="2">
                     <span>Problem Id:</span>
@@ -29,18 +29,22 @@
                 </font>
                 <br/>
                 <label th:for="${#ids.next('style')}">Style: </label>
-                <select th:id="${#ids.seq('style')}" onchange="submit()" name="style">
-                    <option th:each="item,it:${styles}" th:value="${it.index}" th:text="${item}" th:selected="${it.index==style}">acid</option>
-                </select>
+                <select th:id="${#ids.seq('style')}"></select>
+                <input type="hidden" name="style" th:value="${style}"/>
                 <input type="hidden" name="solution_id" th:value="${submission.id}"/>
+                <input type="hidden" name="styleTemplateUrl" th:value="@{/webjars/highlightjs/9.2.0/styles/${name}.css}"/>
             </p>
         </form>
-        <script th:src="@{/shjs/sh_main.min.js}"></script>
-        <script th:src="@{|/shjs/lang/${sh}.min.js|}"></script>
-        <link rel="stylesheet" th:href="@{|/shjs/css/sh_${styleName}.min.css|}"/>
-        <ul><li><font color="#333399" size="5">Source</font></li>
-        <pre th:class="${sh}" th:text="${source}"></pre></ul>
-        <script>jQuery(sh_highlightDocument);</script>
+        <ul>
+            <li>
+                <font color="#333399" size="5">Source</font>
+            </li>
+            <pre>
+                <code th:text="${source}"></code>
+            </pre>
+        </ul>
+        <script src="" th:src="@{/webjars/highlightjs/9.2.0/highlight.min.js}"></script>
+        <script src="../../../js/source.js" th:src="@{/js/source.js}"></script>
         <!--/*/</th:block>/*/-->
     </body>
 </html>
