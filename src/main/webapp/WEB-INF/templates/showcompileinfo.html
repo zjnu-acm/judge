@@ -9,8 +9,13 @@
     </head>
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
-        <ul><li><font color="#333399" size="5">Compile Error</font></li></ul>
-        <p><font face="Times New Roman" size="3" th:utext="${compileInfo}" style="white-space: pre"></font></p>
+        <ul>
+            <li>
+                <font color="#333399" size="5">Compile Error</font>
+            </li>
+        </ul>
+        <pre style="font-family: 'Times New Roman';font-size: medium;" th:text="${compileInfo}">
+        </pre>
         <!--/*/</th:block>/*/-->
     </body>
 </html>

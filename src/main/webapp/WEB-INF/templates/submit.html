@@ -18,14 +18,16 @@
                     <input th:id="${#ids.seq('pid')}" type="number" name="problem_id" th:value="${problemId}" size="20" accesskey="p" required="required"/>
                     <br/>
                     <label th:for="${#ids.next('language')}">Language:</label>
-                    <select th:id="${#ids.seq('language')}" size="1" name="language" style="width:100;" accesskey="l">
+                    <select th:id="${#ids.seq('language')}" size="1" name="language" style="width:100px;" accesskey="l">
                         <option th:each="language:${languages}" th:object="${language}" th:value="*{id}" th:selected="*{id}==${languageId}" th:text="*{name}">GNU C++</option>
                     </select>
                     <br/>
                     <a href="/CLanguage/showmessage?message_id=1164" class="submit hint" style="color:red">使用GCC(GNU C)或VC++提交出现Runtime Error，请确保main的返回类型为int，main最后有return 0</a>
                 </p>
-                <p align="center">Source: <br/>
-                    <textarea rows="30" name="source" cols="79" accesskey="c"></textarea>
+                <p align="center">
+                    <label th:for="${#ids.next('source')}">Source: </label>
+                    <br/>
+                    <textarea th:id="${#ids.seq('source')}" rows="30" name="source" cols="79" accesskey="c"></textarea>
                 </p>
                 <div align="center">
                     <input type="submit" value="Submit" name="submit" accesskey="s"/>

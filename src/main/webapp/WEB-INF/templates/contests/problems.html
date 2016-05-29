@@ -8,9 +8,9 @@
     </head>
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
-        <p align="center">
+        <p align="center" th:inline="text">
             <b>
-                <font size="5" face="Arial" th:inline="text">Contest - [[${contest.title}]]</font>
+                <font size="5" face="Arial">Contest - [[${contest.title}]]</font>
             </b>
         </p>
         <p align="center" style="font-family: Arial">
@@ -25,7 +25,7 @@
         </p>
         <div align="center" th:if="${contest.started}">
             <span th:text="${contest.description}"></span>
-            <table align="center" cellspacing="0" cellpadding="0" width="600" border="1" class="problem-list table-back" th:classappend="${#ctx.httpServletRequest.userPrincipal==null?' notlogined':''}">
+            <table align="center" cellspacing="0" cellpadding="0" width="600" border="1" class="problem-list table-back" th:classappend="${#ctx.httpServletRequest.userPrincipal==null?'notlogined':''}">
                 <tr bgcolor="#6589D1">
                     <td width="5%" class="status"></td>
                     <td width="15%" align="center"><b>Problem Id</b></td>

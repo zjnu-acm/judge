@@ -21,28 +21,28 @@
             <p></p>
             <p>Here is a sample solution for problem 1000 using C++/G++:</p>
             <pre class="sh_c">#include &lt;iostream&gt;<br/>using namespace std;<br/>int main() {<br/>    int a, b;<br/>    cin &gt;&gt; a &gt;&gt; b;<br/>    cout &lt;&lt; a + b &lt;&lt; endl;<br/>    return 0;<br/>}</pre>
-            <p><span style="color:#FF0000;font-size: 5">It's important that the return type of main() must be int when you use G++/GCC, or you may get </span>
-                <span style="color:#008080;font-size: 5">compile error</span>
-                <span style="color:#FF0000;font-size: 5">.</span></p>
+            <p><span style="color:#FF0000;font-size: x-large">It's important that the return type of main() must be int when you use G++/GCC, or you may get </span>
+                <span style="color:#008080;font-size: x-large">compile error</span>
+                <span style="color:#FF0000;font-size: x-large">.</span></p>
             <p>Here is a sample solution for problem 1000 using C/GCC:</p>
             <pre class="sh_c">#include &lt;stdio.h&gt;<br/>int main() {<br/>    int a, b;<br/>    scanf(&quot;%d %d&quot;, &amp;a, &amp;b);<br/>    printf(&quot;%d\n&quot;, a + b);<br/>    return 0;<br/>}</pre>
             <p>Here is a sample solution for problem 1000 using PASCAL:</p>
             <pre class="sh_pascal">program p1000(Input, Output); var<br/>a, b:Integer;<br/>begin<br/>Readln(a, b);<br/>Writeln(a + b);<br/>end.</pre>
             <p>Here is a sample solution for problem 1000 using JAVA:</p>
             <p>
-                <span style="color:#FF0000;font-size: 5">Now java compiler is jdk 1.5, next is program for 1000.</span></p>
+                <span style="color:#FF0000;font-size: x-large">Now java compiler is jdk 1.5, next is program for 1000.</span></p>
             <pre class="sh_java">import java.util.Scanner;<br/><br/>public class Main {<br/>    public static void main(String args[]) {<br/>        Scanner cin = new Scanner(System.in);<br/>        int a = cin.nextInt(), b = cin.nextInt();<br/>        System.out.println(a + b);<br/>    }<br/>}</pre>
             <p>
                 <span style="color: #FF0000">Old program for jdk 1.4</span></p>
             <pre class="sh_java">import java.io.*;<br/>import java.util.*;<br/><br/>public class Main {<br/>    public static void main(String args[]) throws Exception {<br/>        BufferedReader stdin<br/>                = new BufferedReader(<br/>                        new InputStreamReader(System.in));<br/><br/>        String line = stdin.readLine();<br/>        StringTokenizer st = new StringTokenizer(line);<br/>        int a = Integer.parseInt(st.nextToken());<br/>        int b = Integer.parseInt(st.nextToken());<br/>        System.out.println(a + b);<br/>    }<br/>}</pre>
             <p><span class="q">Q</span>: How to submit java program?</p>
             <p><span class="a">A</span>: The Java programs submitted must be in a single source code (not .class) file. They must read and write the standard input/output, as the other languages. All programs must begin in a static main method in a Main class. However, you can add and instance as many classes as needed.</p>
-            <p><span class="q">Q</span>: <span style="font-size: 3">Can I use shortcut key when submitting?</span></p>
+            <p><span class="q">Q</span>: <span style="font-size: medium">Can I use shortcut key when submitting?</span></p>
             <p><span class="a">A</span>: Here are shortcut keys defined in the submit page</p>
-            <p><span style="font-size: 3"><span style="color:#FF00FF"><b>ALT+s</b></span> :Submit button</span></p>
-            <p><span style="font-size: 3"><span style="color:#FF00FF"><b>ALT+u</b></span> :User id field, if you haven't login.</span></p>
-            <p><span style="font-size: 3"><b><span style="color:#FF00FF">ALT+l</span></b> :Language Option</span></p>
-            <p><span style="font-size: 3"><b><span style="color:#FF00FF">ALT+p</span></b> :Problem Id filed</span></p>
+            <p><span style="font-size: medium"><span style="color:#FF00FF"><b>ALT+s</b></span> :Submit button</span></p>
+            <p><span style="font-size: medium"><span style="color:#FF00FF"><b>ALT+u</b></span> :User id field, if you haven't login.</span></p>
+            <p><span style="font-size: medium"><b><span style="color:#FF00FF">ALT+l</span></b> :Language Option</span></p>
+            <p><span style="font-size: medium"><b><span style="color:#FF00FF">ALT+p</span></b> :Problem Id filed</span></p>
             <p></p>
             <p></p>
             <p><span class="q">Q</span>: What is the meaning of the judger's replies?</p>
@@ -54,9 +54,9 @@
             <p><span style="color: blue">Runtime Error</span>: Your program failed during the execution (illegal file access, stack overflow, pointer reference out of range, floating point exception, divided by zero...).</p>
             <p><span style="color: blue">Time Limit Exceeded: Your program tried to run during too much time.</span></p>
             <blockquote>
-                <p><span style="font-size: 3">Now each problem have two time limit--TOTAL TIME LIMIT and CASE TIME LIMIT. When JudgeOnline run your program, it redirect your program's standard input to input file, then you can just read from standard input. And one problem may have several input files, when your program finished one input file and produce the correct output, JudgeOnline then restart your program to deal with next input file. Each input file's format is exactly as the problem's input specification. Case time limit is the maximum time your program is allowed to use for each input file, and TOTAL TIME LIMIT is the maximum time for you to pass all input file. If your program exceed any one of this two time limit, you will receive time limit exceed.</span></p>
-                <p><span style="font-size: 3">As most problems only have one or two input file (of course, also one or two output file), then the CASE TIME LIMIT is trivial then it will be set equal to TOTAL TIME LIMIT and the problem description will not display CASE TIME LIMIT.</span></p>
-                <p><span style="font-size: 3">So when you got time limit exceed, but you find the time your program used is much less than TOTAL TIME LIMIT----your program must exceed CASE TIME LIMIT.</span></p>
+                <p><span style="font-size: medium">Now each problem have two time limit--TOTAL TIME LIMIT and CASE TIME LIMIT. When JudgeOnline run your program, it redirect your program's standard input to input file, then you can just read from standard input. And one problem may have several input files, when your program finished one input file and produce the correct output, JudgeOnline then restart your program to deal with next input file. Each input file's format is exactly as the problem's input specification. Case time limit is the maximum time your program is allowed to use for each input file, and TOTAL TIME LIMIT is the maximum time for you to pass all input file. If your program exceed any one of this two time limit, you will receive time limit exceed.</span></p>
+                <p><span style="font-size: medium">As most problems only have one or two input file (of course, also one or two output file), then the CASE TIME LIMIT is trivial then it will be set equal to TOTAL TIME LIMIT and the problem description will not display CASE TIME LIMIT.</span></p>
+                <p><span style="font-size: medium">So when you got time limit exceed, but you find the time your program used is much less than TOTAL TIME LIMIT----your program must exceed CASE TIME LIMIT.</span></p>
             </blockquote>
             <p><span style="color: blue">Memory Limit Exceeded</span>: Your program tried to use more memory than the judge default settings. </p>
             <p><span style="color: blue">Output Limit Exceeded</span>: Your program tried to write too much information. This usually occurs if it goes into a infinite loop. Currently the output limit is 2*answer file's size.</p>

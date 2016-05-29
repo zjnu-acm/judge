@@ -13,12 +13,20 @@
         <form method="POST" th:action="@{/login}">
             <table align="center">
                 <tr>
-                    <td><label th:for="${#ids.next('username')}">User ID:</label></td>
-                    <td><input type="text" th:id="${#ids.seq('username')}" name="user_id1" size="15"/></td>
+                    <td>
+                        <label th:for="${#ids.next('username')}">User ID:</label>
+                    </td>
+                    <td>
+                        <input type="text" th:id="${#ids.seq('username')}" name="user_id1" size="15"/>
+                    </td>
                 </tr>
                 <tr>
-                    <td><label th:for="${#ids.next('password')}">Password:</label></td>
-                    <td><input type="password" th:id="${#ids.seq('password')}" name="password1" size="15" autocomplete="off"/></td>
+                    <td>
+                        <label th:for="${#ids.next('password')}">Password:</label>
+                    </td>
+                    <td>
+                        <input type="password" th:id="${#ids.seq('password')}" name="password1" size="15" autocomplete="off"/>
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="2" class="text-center">

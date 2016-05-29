@@ -6,13 +6,22 @@
     <head><title>Post New Message</title></head>
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
-        <h2>Post new message<th:block th:if="${problemId!=null and problemId!=0}" th:inline="text"> for problem [[${problemId}]]</th:block></h2>
+        <h2>
+            <span>Post new message</span>
+            <th:block th:if="${problemId!=null and problemId!=0}" th:inline="text"> for problem [[${problemId}]]</th:block>
+        </h2>
         <form method="POST" th:action="@{/post}">
             <input th:if="${problemId!=null and problemId!=0}" type="hidden" name="problem_id" th:value="${problemId}"/>
-            <br/>Title:<br/><input type="text" name="title" size="100"/>
-            <br/>Content:<br/>
-            <textarea rows="20" name="content" cols="100"></textarea>
-            <br/><input type="submit" value="Post"/>
+            <br/>
+            <label th:for="${#ids.next('title')}">Title:</label>
+            <br/>
+            <input th:id="${#ids.seq('title')}" type="text" name="title" size="100"/>
+            <br/>
+            <label th:for="${#ids.next('content')}">Content:</label>
+            <br/>
+            <textarea th:id="${#ids.seq('content')}" rows="20" name="content" cols="100"></textarea>
+            <br/>
+            <input type="submit" value="Post"/>
         </form>
         <!--/*/</th:block>/*/-->
     </body>
