@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
--- Host:                         172.9.32.83
+-- Host:                         localhost
 -- Server version:               10.1.13-MariaDB - mariadb.org binary distribution
 -- Server OS:                    Win64
--- HeidiSQL Version:             9.3.0.5072
+-- HeidiSQL Version:             9.3.0.5077
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `loginlog` (
   `time` datetime NOT NULL,
   `success` bit(1) NOT NULL DEFAULT b'0' COMMENT '表示登录是否成功',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='由于历史原因2016/3/21及以前的success均为1，实际登陆是否成功未知。';
+) ENGINE=InnoDB AUTO_INCREMENT=195133 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='由于历史原因2016/3/21及以前的success均为1，实际登陆是否成功未知。';
 
 -- Data exporting was unselected.
 -- Dumping structure for table clanguage.mail
@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `mail` (
   `content` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `new_mail` bit(1) NOT NULL DEFAULT b'1',
   `reply` bit(1) NOT NULL DEFAULT b'0',
-  `in_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `in_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `defunct` enum('N','Y') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N',
   PRIMARY KEY (`mail_id`),
   KEY `INDEX_to_user` (`to_user`),
@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS `message` (
   `user_id` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `title` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
   `content` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `in_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `in_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `defunct` enum('N','Y') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N',
   PRIMARY KEY (`message_id`),
   KEY `INDEX_user` (`user_id`) USING HASH,
@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS `news` (
   `user_id` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `title` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `content` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `importance` tinyint(4) NOT NULL DEFAULT '0',
   `defunct` enum('N','Y') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N',
   PRIMARY KEY (`news_id`),
@@ -150,7 +150,7 @@ CREATE TABLE IF NOT EXISTS `problem` (
   `sample_output` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `hint` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `source` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `in_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `in_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `time_limit` int(11) NOT NULL,
   `memory_limit` int(11) NOT NULL,
   `defunct` enum('N','Y') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N',
@@ -187,7 +187,7 @@ CREATE TABLE IF NOT EXISTS `solution` (
   `user_id` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `time` bigint(20) NOT NULL DEFAULT '0',
   `memory` bigint(20) NOT NULL DEFAULT '0',
-  `in_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `in_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `score` smallint(6) NOT NULL DEFAULT '0',
   `language` tinyint(4) NOT NULL,
   `ip` varchar(39) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
@@ -233,7 +233,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `volume` int(11) NOT NULL DEFAULT '1',
   `language` tinyint(4) NOT NULL DEFAULT '1',
   `password` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `reg_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `reg_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `nick` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `school` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `style` tinyint(4) NOT NULL DEFAULT '18',
