@@ -6,9 +6,9 @@ import cn.edu.zjnu.acm.judge.mapper.UserMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserProblemMapper;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,11 +29,11 @@ public class UserStatusController {
             @RequestParam(value = "size", defaultValue = "3") int display,
             @RequestParam(value = "user_id", required = false) String userId) {
         if (!StringUtils.hasText(userId)) {
-            throw new MessageException("Error -- no user found", HttpServletResponse.SC_BAD_REQUEST);
+            throw new MessageException("Error -- no user found", HttpStatus.BAD_REQUEST);
         }
         User user = userMapper.findOne(userId);
         if (user == null) {
-            throw new MessageException("Sorry, '" + userId + "' doesn't exist", HttpServletResponse.SC_NOT_FOUND);
+            throw new MessageException("Sorry, '" + userId + "' doesn't exist", HttpStatus.NOT_FOUND);
         }
         display = Math.max(Math.min(display, 9), 1);
         userId = user.getId();

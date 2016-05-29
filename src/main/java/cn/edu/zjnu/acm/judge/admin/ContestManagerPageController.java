@@ -8,8 +8,8 @@ import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +26,7 @@ public class ContestManagerPageController {
             @PathVariable("contestId") long contestId) {
         UserDetailService.requireAdminLoginned(request);
         Contest contest = Optional.ofNullable(contestMapper.findOne(contestId))
-                .orElseThrow(() -> new MessageException("No such contest", HttpServletResponse.SC_NOT_FOUND));
+                .orElseThrow(() -> new MessageException("No such contest", HttpStatus.NOT_FOUND));
         List<Problem> problems = contestMapper.getProblems(contestId, null);
         request.setAttribute("contest", contest);
         request.setAttribute("problems", problems);

@@ -19,20 +19,20 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.boot.autoconfigure.web.ErrorController;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class GlobalExceptionHandler implements ErrorController {
+public class GlobalExceptionHandler   {
 
     @ExceptionHandler(MessageException.class)
     public String messageExceptionHandler(HttpServletRequest request, HttpServletResponse response, MessageException ex) {
         String message = ex.getMessage();
-        int code = ex.getCode();
+        HttpStatus code = ex.getHttpStatus();
         request.setAttribute("message", message);
-        if (code % 100 == 4) {
-            response.setStatus(code);
+        if (code.is4xxClientError()) {
+            response.setStatus(code.value());
         }
         return "message";
     }
@@ -41,11 +41,6 @@ public class GlobalExceptionHandler implements ErrorController {
     public String forbiddenExceptionHandler(HttpServletRequest request)
             throws IOException {
         return "redirect:/login?url=" + URLEncoder.encode((String) request.getAttribute("backUrl"), "UTF-8");
-    }
-
-    @Override
-    public String getErrorPath() {
-        return "/error";
     }
 
 }

@@ -7,8 +7,8 @@ import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -36,12 +36,12 @@ public class PostController {
         long orderNum = 0;
         final String userId = UserDetailService.getCurrentUserId(request).orElse(null);
         if (!StringUtils.hasText(title)) {
-            throw new MessageException("Title can't be blank", HttpServletResponse.SC_BAD_REQUEST);
+            throw new MessageException("Title can't be blank", HttpStatus.BAD_REQUEST);
         }
         final long nextId = messageMapper.nextId();
         final Message parent = parentId != 0
                 ? Optional.ofNullable(messageMapper.findOne(parentId))
-                .orElseThrow(() -> new MessageException("No such parent message", HttpServletResponse.SC_NOT_FOUND))
+                .orElseThrow(() -> new MessageException("No such parent message", HttpStatus.NOT_FOUND))
                 : null;
         if (parent != null) {
             orderNum = parent.getOrder();

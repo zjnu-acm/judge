@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +39,7 @@ public class ShowProblemController {
             throws IOException {
         Problem problem = problemMapper.findOne(problemId);
         if (problem == null) {
-            throw new MessageException("Can not find problem (ID:" + problemId + ")", HttpServletResponse.SC_NOT_FOUND);
+            throw new MessageException("Can not find problem (ID:" + problemId + ")", HttpStatus.NOT_FOUND);
         }
         Long contestId = problem.getContest();
         long accepted = problem.getAccepted();
@@ -65,7 +66,7 @@ public class ShowProblemController {
             }
         }
         if (!started) {
-            throw new MessageException("Can not find problem (ID:" + problemId + ")", HttpServletResponse.SC_NOT_FOUND);
+            throw new MessageException("Can not find prob lem (ID:" + problemId + ")", HttpStatus.NOT_FOUND);
         }
         String title = problem.getTitle();
         long timeLimit = problem.getTimeLimit();
