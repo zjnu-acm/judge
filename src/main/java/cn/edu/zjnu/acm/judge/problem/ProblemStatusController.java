@@ -17,20 +17,22 @@ package cn.edu.zjnu.acm.judge.problem;
 
 import cn.edu.zjnu.acm.judge.config.LanguageFactory;
 import cn.edu.zjnu.acm.judge.domain.Problem;
+import cn.edu.zjnu.acm.judge.domain.ScoreCount;
+import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import cn.edu.zjnu.acm.judge.util.ResultType;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.text.DecimalFormat;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -46,8 +48,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class ProblemStatusController {
 
-    @Autowired
-    private DataSource dataSource;
+    private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
     @Autowired
     private ProblemMapper problemMapper;
     @Autowired
@@ -69,7 +71,7 @@ public class ProblemStatusController {
     public void status(HttpServletRequest request, HttpServletResponse response,
             @RequestParam("problem_id") long id,
             @RequestParam(value = "start", defaultValue = "0") long start,
-            @RequestParam(value = "size", defaultValue = "20") long size,
+            @RequestParam(value = "size", defaultValue = "20") int size,
             @RequestParam(value = "orderby", defaultValue = "time") String orderby)
             throws IOException, SQLException {
         if (size > 500) {
@@ -95,6 +97,7 @@ public class ProblemStatusController {
         if (contestId != null) {
             request.setAttribute("contestId", contestId);
         }
+        final DateTimeFormatter formatter = dtf.withZone(ZoneId.systemDefault());
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         out.print("<html><head><title>" + id + "'s Status List</title></head><body>"
@@ -102,18 +105,13 @@ public class ProblemStatusController {
                 + "<table><tr><td valign=top><div style='position:relative; height:650px; width:260px'>"
                 + "<script src='js/problemstatus.js'></script>"
                 + "<script>var sa = [[],[],[]];var len = 0;");
-        try (Connection conn = dataSource.getConnection();
-                PreparedStatement ps = conn.prepareStatement("select score,count(*) as sum from solution where problem_id=? group by score")) {
-            ps.setLong(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                int ii = 0;
-                while (rs.next()) {
-                    int i = rs.getInt("score");
-                    String score = ResultType.getShowsourceString(i);
-                    out.print("sa[1][" + ii + "]='" + score + "'; sa[0][" + ii + "]=" + rs.getLong("sum") + "; sa[2][" + ii + "]='status?problem_id=" + id + "&score=" + i + "'; ");
-                    ii++;
-                }
-            }
+        List<ScoreCount> list = problemMapper.groupByScore(id);
+        int ii = 0;
+        for (ScoreCount scoreCount : list) {
+            int score = scoreCount.getScore();
+            String scoreStr = ResultType.getShowsourceString(score);
+            out.print("sa[1][" + ii + "]='" + scoreStr + "'; sa[0][" + ii + "]=" + scoreCount.getCount() + "; sa[2][" + ii + "]='status?problem_id=" + id + "&score=" + score + "'; ");
+            ii++;
         }
         out.print("if (sa[0].length > sa[1].length){ len = sa[1].length; }else { len = sa[0].length; }"
                 + "table(len,0,0,600,600,'Statistics','',200,250," + submitUser + "," + solved + ",'status?problem_id=" + id + "'); </script></div></td>"
@@ -129,46 +127,41 @@ public class ProblemStatusController {
                 + "<th width=10%><a class=sortable href=problemstatus?problem_id="
                 + id + "&orderby=clen>Code Length</a></th>"
                 + "<th width=25%>Submit Time</th></tr>");
-        try (Connection conn = dataSource.getConnection();
-                PreparedStatement ps = conn.prepareStatement("select solution_id,user_id,in_date,language,memory,time,format(code_length/1024,2) as len from solution where problem_id=? and score=100 group by " + groupBy + " limit ?,?")) {
-            ps.setLong(1, id);
-            ps.setLong(2, start);
-            ps.setLong(3, size);
-            try (ResultSet rs = ps.executeQuery()) {
-                boolean isAdmin = UserDetailService.isAdminLoginned(request);
-                boolean isSourceBrowser = UserDetailService.isSourceBrowser(request);
-                boolean canView = isAdmin || isSourceBrowser;
-                long rank = start;
-                while (rs.next()) {
-                    rank++;
-                    long submissionId = rs.getLong("solution_id");
-                    String userId = rs.getString("user_id");
-                    Timestamp inDate = rs.getTimestamp("in_date");
-                    long memory = rs.getLong("memory");
-                    long time = rs.getLong("time");
-                    String language = languageFactory.getLanguage(rs.getInt("language")).getName();
-                    String length = rs.getString("len");
-                    out.print("<tr align=center><td>" + rank + "</td><td>" + submissionId + "</td>"
-                            + "<td><a href=userstatus?user_id=" + userId + ">" + userId + "</a></td>");
-                    if (canView || (contestId == null)) {
-                        out.print("<td>" + memory + "K</td><td>" + time + "MS</td>");
-                    } else {
-                        out.print("<td>&nbsp;</td><td>&nbsp;</td>");
-                    }
-                    if (canView || UserDetailService.isUser(request, userId)) {
-                        out.print("<td><a href=showsource?solution_id="
-                                + submissionId + " target=_blank>" + language + "</a></td>");
-                    } else {
-                        out.print("<td>" + language + "</td>");
-                    }
-                    if (canView || (contestId == null)) {
-                        out.print("<td>" + length + "K</td>");
-                    } else {
-                        out.print("<td>&nbsp;</td>");
-                    }
-                    out.print("<td>" + inDate + "</td></tr>");
-                }
+        List<Submission> bestSubmissions = problemMapper.bestSubmissions(groupBy, id, start, size);
+
+        boolean isAdmin = UserDetailService.isAdminLoginned(request);
+        boolean isSourceBrowser = UserDetailService.isSourceBrowser(request);
+        boolean canView = isAdmin || isSourceBrowser;
+        long rank = start;
+        DecimalFormat df = new DecimalFormat("0.00");
+        for (Submission s : bestSubmissions) {
+            rank++;
+            long submissionId = s.getId();
+            String userId = s.getUser();
+            Instant inDate = s.getInDate();
+            long memory = s.getMemory();
+            long time = s.getTime();
+            String language = languageFactory.getLanguage(s.getLanguage()).getName();
+            String length = df.format(s.getSourceLength() / 1024.);
+            out.print("<tr align=center><td>" + rank + "</td><td>" + submissionId + "</td>"
+                    + "<td><a href=userstatus?user_id=" + userId + ">" + userId + "</a></td>");
+            if (canView || (contestId == null)) {
+                out.print("<td>" + memory + "K</td><td>" + time + "MS</td>");
+            } else {
+                out.print("<td>&nbsp;</td><td>&nbsp;</td>");
             }
+            if (canView || UserDetailService.isUser(request, userId)) {
+                out.print("<td><a href=showsource?solution_id="
+                        + submissionId + " target=_blank>" + language + "</a></td>");
+            } else {
+                out.print("<td>" + language + "</td>");
+            }
+            if (canView || (contestId == null)) {
+                out.print("<td>" + length + "K</td>");
+            } else {
+                out.print("<td>&nbsp;</td>");
+            }
+            out.print("<td>" + formatter.format(inDate) + "</td></tr>");
         }
         String str10 = "[<a href=\"problemstatus?problem_id=" + id + "&size=" + size + "&orderby=" + orderby;
         out.print("</table><p align=center>"

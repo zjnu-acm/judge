@@ -23,9 +23,15 @@
             </div>
             <hr/>
             <th:block layout:fragment="content"/>
-            <font size="3"><a th:href="@{/admin}">Admin's Home Page</a></font><br/>
+            <font size="3">
+                <a th:href="@{/admin}">Admin's Home Page</a>
+            </font>
+            <br/>
             <hr/>
-            <p align="center"><font size="3" th:inline="text">All Copyright Reserved 2006-[[${T(java.time.Year).now()}]]<br/>Any problem, Please Contact <a th:href="|mailto:${#ctx.applicationAttributes.get('admin.mail')}|">Administrator</a></font></p>
+            <p align="center">
+                <font size="3" th:inline="text">All Copyright Reserved 2006-[[${T(java.time.Year).now()}]]<br/>Any problem, Please Contact <a th:href="|mailto:${#ctx.applicationAttributes.get('admin.mail')}|">Administrator</a>
+                </font>
+            </p>
         </div>
     </body>
 </html>

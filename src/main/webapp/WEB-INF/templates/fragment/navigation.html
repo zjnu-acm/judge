@@ -2,7 +2,13 @@
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:th="http://www.thymeleaf.org">
     <table align="center" width="100%" border="1" bordercolor="#FFF" style="border-collapse: collapse">
-        <tr bgcolor="#6589D1" align="center" valign="top"><th class="top">在线评测</th><th class="top">题目</th><th class="top">用户</th><th class="top"><a style="color: white" th:href="@{/contests}">在线考试</a></th><th class="top">个人</th></tr>
+        <tr bgcolor="#6589D1" align="center" valign="top">
+            <th class="top">在线评测</th>
+            <th class="top">题目</th>
+            <th class="top">用户</th>
+            <th class="top"><a style="color: white" th:href="@{/contests}">在线考试</a></th>
+            <th class="top">个人</th>
+        </tr>
         <tr valign="top" align="center" bgcolor="#F1F1FD">
             <td class="top scbg">
                 <a th:href="@{/bbs}">讨论版</a><br/>
@@ -19,15 +25,33 @@
                     <input value="Go" type="submit"/>
                 </form>
             </td>
-            <td class="top scbg"><a th:href="@{/registerpage}">注册</a><br/><a th:href="@{/modifyuserpage}">更新个人信息</a><br/><a th:href="@{/userlist}">用户排名</a><br/><form th:action="@{/searchuser}" method="get"><input size="10" name="user_id" type="text"/><input value="Search" type="submit"/></form></td>
-            <td class="top scbg"><a style="color:red" th:href="@{/currentcontests}">正在进行的考试</a><br/><a th:href="@{/pastcontests}">已考过的考试</a><br/><a style="color:red" th:href="@{/scheduledcontests}">计划中的考试</a></td>
+            <td class="top scbg">
+                <a th:href="@{/registerpage}">注册</a>
+                <br/>
+                <a th:href="@{/modifyuserpage}">更新个人信息</a>
+                <br/>
+                <a th:href="@{/userlist}">用户排名</a>
+                <br/>
+                <form th:action="@{/searchuser}" method="get">
+                    <input size="10" name="user_id" type="text"/>
+                    <input value="Search" type="submit"/>
+                </form>
+            </td>
+            <td class="top scbg">
+                <a style="color:red" th:href="@{/currentcontests}">正在进行的考试</a>
+                <br/>
+                <a th:href="@{/pastcontests}">已考过的考试</a>
+                <br/>
+                <a style="color:red" th:href="@{/scheduledcontests}">计划中的考试</a>
+            </td>
             <td class="top scbg">
                 <form method="POST" th:action="@{/login}" th:if="${#ctx.httpServletRequest.userPrincipal==null}">
                     <label th:for="${#ids.next('username')}">学号:&nbsp;</label>
                     <input th:id="${#ids.seq('username')}" type="text" name="user_id1" size="10" style="font-family:monospace"/>
                     <br/>
                     <label th:for="${#ids.next('password')}">密码:&nbsp;</label>
-                    <input th:id="${#ids.seq('password')}" type="password" name="password1" size="10" style="font-family:monospace" autocomplete="off"/><br/>
+                    <input th:id="${#ids.seq('password')}" type="password" name="password1" size="10" style="font-family:monospace" autocomplete="off"/>
+                    <br/>
                     <input type="checkbox" name="rememberMe" value="true" th:id="${#ids.seq('rememberMe')}" checked="checked"/>
                     <label th:for="${#ids.prev('rememberMe')}">记住登陆</label>
                     <input name="url" type="hidden" th:value="${backUrl}"/>

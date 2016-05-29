@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 zhanhb.
+ * Copyright 2016 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,31 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.exception;
+package cn.edu.zjnu.acm.judge.domain;
 
-import lombok.Getter;
-import lombok.NonNull;
-import org.springframework.http.HttpStatus;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.Setter;
 
 /**
  *
  * @author zhanhb
  */
-public class MessageException extends RuntimeException {
+@Data
+@Setter(value = AccessLevel.PRIVATE)
+public class ScoreCount {
 
-    private static final long serialVersionUID = 1L;
-    @Getter
-    private final HttpStatus httpStatus;
-
-    public MessageException(String message, @NonNull HttpStatus httpStatus) {
-        super(message);
-        this.httpStatus = httpStatus;
-    }
-
-    // no stack trace
-    @Override
-    public MessageException fillInStackTrace() {
-        return this;
-    }
+    private int score;
+    private long count;
 
 }
