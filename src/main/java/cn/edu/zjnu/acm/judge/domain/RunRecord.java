@@ -2,9 +2,14 @@ package cn.edu.zjnu.acm.judge.domain;
 
 import java.io.Serializable;
 import java.nio.file.Path;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Setter;
 
+@Builder(toBuilder = true)
 @Data
+@Setter(AccessLevel.PRIVATE)
 public class RunRecord implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -131,17 +131,17 @@ public class SubmitController {
         submissionMapper.save(submission);
         long submissionId = submission.getId();
 
-        RunRecord runRecord = new RunRecord();
-        runRecord.setSubmissionId(submissionId);
-        runRecord.setProblemId(problemId);
-        runRecord.setMemoryLimit(memoryLimit);
-        runRecord.setTimeLimit(timeLimit);
-        runRecord.setLanguage(language);
-
-        runRecord.setDataPath(dataPath);
-        runRecord.setSource(source);
+        RunRecord runRecord = RunRecord.builder()
+                .submissionId(submissionId)
+                .problemId(problemId)
+                .memoryLimit(memoryLimit)
+                .timeLimit(timeLimit)
+                .language(language)
+                .dataPath(dataPath)
+                .source(source)
+                .userId(userId)
+                .build();
         problemMapper.setInDate(problemId, nowTimestamp);
-        runRecord.setUserId(userId);
 
         // 插入source_code表
         submissionMapper.saveSource(submissionId, source);

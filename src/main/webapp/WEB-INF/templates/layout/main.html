@@ -40,8 +40,15 @@
                             <td style="width:16.7%"><a th:href="@{/contests/{contestId}/standing(contestId=${contestId})}">Standing</a></td>
                             <td style="width:16.7%"><a th:href="@{/status(contest_id=${contestId})}">Status</a></td>
 
-                            <td th:if="${#ctx.httpServletRequest.userPrincipal != null}"><b th:text="${#ctx.httpServletRequest.userPrincipal.name}">login.user.name</b><a href="@{/logout}">Logout</a></td>
-                            <td th:unless="${#ctx.httpServletRequest.userPrincipal != null}"><a th:href="@{/login(url=${backUrl})}">Login</a></td>
+                            <td th:if="${#ctx.httpServletRequest.userPrincipal != null}">
+                                <b th:text="${#ctx.httpServletRequest.userPrincipal.name}">
+                                    login.user.name
+                                </b>
+                                <a th:href="@{/logout}">Logout</a>
+                            </td>
+                            <td th:unless="${#ctx.httpServletRequest.userPrincipal != null}">
+                                <a th:href="@{/login(url=${backUrl})}">Login</a>
+                            </td>
                         </tr>
                     </table>
                 </th:block>
@@ -54,18 +61,21 @@
             <!-- end content -->
             <div id="footer" class="clearfix">
                 <p>
-                    <img alt="home" height="29" th:src="@{/images/home.png}" width="40"
-                         border="0"/>
-                    <font size="3"><a th:href="@{/}">Home Page</a></font>
-                    <img alt="goback" height="29" th:src="@{/images/goback.png}" width="40"
-                         border="0" style=" margin-left: 40px;"/>
-                    <font size="3"><a href="javascript:history.go(-1)">Go Back</a>
-                        <img alt="top" height="29" width="40" border="0"
-                             th:src="@{/images/top.png}" style=" margin-left: 40px;"/><a
-                             href="#top">To top</a></font>
+                    <img alt="home" height="29" th:src="@{/images/home.png}" width="40" border="0"/>
+                    <font size="3">
+                        <a th:href="@{/}">Home Page</a>
+                    </font>
+                    <img alt="goback" height="29" th:src="@{/images/goback.png}" width="40" border="0" style=" margin-left: 40px;"/>
+                    <font size="3">
+                        <a href="javascript:history.go(-1)">Go Back</a>
+                        <img alt="top" height="29" width="40" border="0" th:src="@{/images/top.png}" style=" margin-left: 40px;"/>
+                        <a href="#top">To top</a>
+                    </font>
                 </p>
                 <hr/>
-                <p align="center"><font size="3" th:inline="text">All Copyright Reserved 2006-[[${T(java.time.Year).now()}]] ZJNU ACM<br/>Any problem, Please Contact <a  th:href="|mailto:${#ctx.applicationAttributes['admin.mail']}|">Administrator</a></font>
+                <p align="center">
+                    <font size="3" th:inline="text">All Copyright Reserved 2006-[[${T(java.time.Year).now()}]] ZJNU ACM<br/>Any problem, Please Contact <a  th:href="|mailto:${#ctx.applicationAttributes['admin.mail']}|">Administrator</a>
+                    </font>
                 </p>
             </div>
             <!-- end footer -->

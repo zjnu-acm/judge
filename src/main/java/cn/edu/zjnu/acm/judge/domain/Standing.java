@@ -16,8 +16,10 @@
 package cn.edu.zjnu.acm.judge.domain;
 
 import java.io.Serializable;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  *
@@ -25,6 +27,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
+@Setter(AccessLevel.PRIVATE)
 public class Standing implements Serializable {
 
     private static final long serialVersionUID = 1L;
