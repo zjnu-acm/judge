@@ -114,21 +114,23 @@ public class Judger {
         if (submission == null) {
             return;
         }
-        RunRecord runRecord = new RunRecord();
-        runRecord.setSubmissionId(submission.getId());
-
-        runRecord.setLanguage(languageFactory.getLanguage(submission.getLanguage()));
-        runRecord.setProblemId(submission.getProblem());
-        runRecord.setUserId(submission.getUser());
-        runRecord.setSource(submissionMapper.findSourceById(submissionId));
+        RunRecord runRecord = RunRecord.builder()
+                .submissionId(submission.getId())
+                .language(languageFactory.getLanguage(submission.getLanguage()))
+                .problemId(submission.getProblem())
+                .userId(submission.getUser())
+                .source(submissionMapper.findSourceById(submissionId))
+                .build();
         Problem problem = problemMapper.findOne(submission.getProblem());
         if (problem == null) {
             return;
         }
         Path dataPath = judgeConfiguration.getDataDirectory(runRecord.getProblemId());
-        runRecord.setDataPath(dataPath);
-        runRecord.setMemoryLimit(problem.getMemoryLimit());
-        runRecord.setTimeLimit(problem.getTimeLimit());
+        runRecord.toBuilder()
+                .dataPath(dataPath)
+                .memoryLimit(submissionId)
+                .timeLimit(problem.getTimeLimit())
+                .build();
         Path workDirectory = judgeConfiguration.getWorkDirectory(submissionId);
         judgeServerService.delete(workDirectory);
         judgeInternal(runRecord);

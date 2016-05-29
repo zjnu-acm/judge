@@ -13,23 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.mapper;
+package cn.edu.zjnu.acm.judge.domain;
 
-import cn.edu.zjnu.acm.judge.domain.LoginLog;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.SelectKey;
+import java.io.Serializable;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  *
  * @author zhanhb
  */
-@Mapper
-public interface LoginlogMapper {
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
+@Data
+@NoArgsConstructor
+@Setter(AccessLevel.PRIVATE)
+public class LoginLog implements Serializable {
 
-    @Insert("insert into loginlog (id,user_id,password,ip,time,success) values(#{id},#{user},#{password},#{ip},now(),#{success})")
-    @SelectKey(statement = "select COALESCE(max(id)+1,1) maxp from loginlog",
-            keyProperty = "id", before = true, resultType = long.class)
-    long save(LoginLog loginLog);
+    private static final long serialVersionUID = 1L;
+    private long id;
+    private String user;
+    private String password;
+    private String ip;
+    private boolean success;
 
 }
