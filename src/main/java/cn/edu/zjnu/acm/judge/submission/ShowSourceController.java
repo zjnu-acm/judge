@@ -48,6 +48,8 @@ public class ShowSourceController {
 
         if (style == null) {
             style = userPerferenceMapper.getStyle(userId);
+        } else {
+            userPerferenceMapper.setStyle(userId, style);
         }
         String source = submissionMapper.findSourceById(submissionId);
 

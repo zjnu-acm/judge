@@ -21,6 +21,7 @@ import com.github.zhanhb.judge.common.JudgeException;
 import com.github.zhanhb.judge.common.Options;
 import com.github.zhanhb.judge.common.Validator;
 import com.github.zhanhb.judge.impl.SimpleValidator;
+import com.sun.jna.Platform;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -32,7 +33,9 @@ import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
+import org.junit.AssumptionViolatedException;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -43,6 +46,13 @@ import static org.junit.Assert.assertEquals;
  */
 @Slf4j
 public class JudgeBridgeTest {
+
+    @BeforeClass
+    public static void setUpClass() {
+        if (!Platform.isWindows()) {
+            throw new AssumptionViolatedException("not windows");
+        }
+    }
 
     private static String build(String... args) {
         return Arrays.stream(args)
