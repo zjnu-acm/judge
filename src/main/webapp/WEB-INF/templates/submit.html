@@ -13,8 +13,12 @@
                 <p align="center">
                     <font size="4" color="#333399">Submit Your Solution Via Web</font>
                 </p>
-                <p align="center">Problem ID:<input type="number" name="problem_id" th:value="${problemId}" size="20" accesskey="p" required="required"/>
-                    <br/>Language:<select size="1" name="language" style="width:100;" accesskey="l">
+                <p align="center">
+                    <label th:for="${#ids.next('pid')}">Problem ID:</label>
+                    <input th:id="${#ids.seq('pid')}" type="number" name="problem_id" th:value="${problemId}" size="20" accesskey="p" required="required"/>
+                    <br/>
+                    <label th:for="${#ids.next('language')}">Language:</label>
+                    <select th:id="${#ids.seq('language')}" size="1" name="language" style="width:100;" accesskey="l">
                         <option th:each="language:${languages}" th:object="${language}" th:value="*{id}" th:selected="*{id}==${languageId}" th:text="*{name}">GNU C++</option>
                     </select>
                     <br/>

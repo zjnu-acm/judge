@@ -13,7 +13,23 @@
         </p>
         <form>
             <p align="center" th:inline="text">
-                <font size="2">Problem Id:<a th:href="@{/showproblem(problem_id=${submission.problem})}" th:text="${submission.problem}">problem.id</a> User Id:<a th:href="@{/userstatus(user_id=${submission.user})}" th:text="${submission.user}">user</a><br/>Memory:[[${submission.memory}]]K&nbsp;&nbsp;Time:[[${submission.time}]]MS<br/>Language:[[${language}]]&nbsp;&nbsp;Result:[[${result}]]</font><br/>Style: <select onchange="submit()" name="style">
+                <font size="2">
+                    <span>Problem Id:</span>
+                    <a th:href="@{/showproblem(problem_id=${submission.problem})}" th:text="${submission.problem}">problem.id</a>
+                    <span> User Id:</span>
+                    <a th:href="@{/userstatus(user_id=${submission.user})}" th:text="${submission.user}">user</a>
+                    <br/>
+                    <span>Memory:[[${submission.memory}]]K</span>
+                    <span>&nbsp;&nbsp;</span>
+                    <span>Time:[[${submission.time}]]MS</span>
+                    <br/>
+                    <span>Language:[[${language}]]</span>
+                    <span>&nbsp;&nbsp;</span>
+                    <span>Result:[[${result}]]</span>
+                </font>
+                <br/>
+                <label th:for="${#ids.next('style')}">Style: </label>
+                <select th:id="${#ids.seq('style')}" onchange="submit()" name="style">
                     <option th:each="item,it:${styles}" th:value="${it.index}" th:text="${item}" th:selected="${it.index==style}">acid</option>
                 </select>
                 <input type="hidden" name="solution_id" th:value="${submission.id}"/>
