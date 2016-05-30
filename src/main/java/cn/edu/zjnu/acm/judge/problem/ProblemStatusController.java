@@ -25,7 +25,6 @@ import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import cn.edu.zjnu.acm.judge.util.ResultType;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -73,7 +72,7 @@ public class ProblemStatusController {
             @RequestParam(value = "start", defaultValue = "0") long start,
             @RequestParam(value = "size", defaultValue = "20") int size,
             @RequestParam(value = "orderby", defaultValue = "time") String orderby)
-            throws IOException, SQLException {
+            throws IOException {
         if (size > 500) {
             size = 500;
         }

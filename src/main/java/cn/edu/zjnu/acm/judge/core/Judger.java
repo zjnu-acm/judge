@@ -55,7 +55,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.input.BoundedInputStream;
+import org.apache.commons.io.input.BoundedReader;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -82,9 +82,10 @@ public class Judger {
         Charset charset = Platform.getCharset();
         String compileInfo;
         try (InputStream is = Files.newInputStream(path);
-                BoundedInputStream bis = new BoundedInputStream(is, (long) Math.ceil(1001 * charset.newEncoder().maxBytesPerChar()));
-                BufferedReader reader = new BufferedReader(new InputStreamReader(bis, charset))) {
-            compileInfo = reader.lines().collect(Collectors.joining("\n"));
+                InputStreamReader isr = new InputStreamReader(is, charset);
+                BoundedReader reader = new BoundedReader(isr, 2002);
+                BufferedReader br = new BufferedReader(reader)) {
+            compileInfo = br.lines().collect(Collectors.joining("\n"));
         }
         return compileInfo.length() > 1000 ? compileInfo.substring(0, 997) + "..." : compileInfo;
     }
