@@ -17,6 +17,7 @@ package cn.edu.zjnu.acm.judge.problem;
 
 import cn.edu.zjnu.acm.judge.Application;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,7 @@ public class ShowProblemControllerTest {
     @Autowired
     private WebApplicationContext context;
 
+    @Ignore
     @Test
     public void testShowproblem() throws Exception {
         MockMvc mvc = webAppContextSetup(context).build();
