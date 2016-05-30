@@ -15,13 +15,10 @@
  */
 package cn.edu.zjnu.acm.judge.config;
 
-import cn.edu.zjnu.acm.judge.mapper.MailMapper;
 import com.github.zhanhb.download.spring.DownloadHandler;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 /**
@@ -30,14 +27,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  */
 @Configuration
 public class JudgeWebMvcConfiguration extends WebMvcConfigurerAdapter {
-
-    @Autowired
-    private MailMapper mailMapper;
-
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new JudgeHandlerInterceptor(mailMapper));
-    }
 
     @Override
     public void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> returnValueHandlers) {
