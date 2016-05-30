@@ -71,17 +71,15 @@ public class ContestStatisticsController {
         str2 += "problem_id,num,count(if(score=100,1,0)) as AC,count(if(score<100 and score >=70,1,0)) as PE,count(if(score<70 and score >30,1,null)) as TLE,count(if(score>0 and score <=30,1,null)) as WA,count(if(score=0,1,null)) as RE,count(if(score=-7,1,null)) as CE,count(if(score<-7 or score > 100,1,null)) as Others,count(*) as Total from solution where contest_id=? group by problem_id order by num";
 
         String[] judgeStatus = {"AC", "PE", "WA", "TLE", "RE", "CE", "Others", "Total"};
-        long[] arrayOfLong1;
-        long[] arrayOfLong2;
+        long[] arrayOfLong1 = new long[judgeStatus.length];
+        long[] arrayOfLong2 = new long[languageCount];
+        out.print("<th>&nbsp;</th>");
+        languages.values().forEach(language -> out.print("<th>" + StringEscapeUtils.escapeHtml4(language.getName()) + "</th>"));
+        out.print("</tr>");
         try (Connection conn = dataSource.getConnection();
                 PreparedStatement ps = conn.prepareStatement(str2)) {
             ps.setLong(1, contestId);
             try (ResultSet rs = ps.executeQuery()) {
-                out.print("<th>&nbsp;</th>");
-                languages.values().forEach(language -> out.print("<th>" + StringEscapeUtils.escapeHtml4(language.getName()) + "</th>"));
-                out.print("</tr>");
-                arrayOfLong1 = new long[judgeStatus.length];
-                arrayOfLong2 = new long[languageCount];
                 while (rs.next()) {
                     long problemId = rs.getLong("problem_id");
                     long num = rs.getLong("num");
