@@ -12,9 +12,10 @@
             <form th:action="@{/recentrank}" method="get">
                 <font color="blue" size="5">
                     <label th:for="${#ids.next('count')}">Rank of last </label>
-                    <input th:id="${#ids.seq('count')}" type="text" name="count" size="5" th:value="${count}"/>
-                    <label th:for="${#ids.prev('count')}">submits.</label></font>
-                <input type="submit" value="Go"/>
+                    <input th:id="${#ids.seq('count')}" type="number" name="count" size="5" th:value="${count}" required="required"/>
+                    <label th:for="${#ids.prev('count')}">submits.</label>
+                </font>
+                <button type="submit">Go</button>
             </form>
         </div>
         <table align="center" cellspacing="0" cellpadding="0" width="600" border="1" class="table-back" style="border-collapse: collapse;border: white">
