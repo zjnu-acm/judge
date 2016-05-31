@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorator="layout/admin">
+      layout:decorator="'layout/admin'">
     <head>
         <title th:text="${title}">title</title>
     </head>
@@ -35,7 +35,7 @@
         <script src="http://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.5.8/ckeditor.js" th:src="@{/webjars/ckeditor/4.5.8/full/ckeditor.js}"></script>
         <script th:src="@{/ckfinder/ckfinder.js}"></script>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.5.8/adapters/jquery.js" th:src="@{/webjars/ckeditor/4.5.8/full/adapters/jquery.js}"></script>
-        <script src="../../../../js/ckfinder.js" th:src="@{/js/ckfinder.js(_=${#ctx.applicationAttributes.startUpDate})}"></script>
+        <script src="../../../../js/ckfinder.js" th:src="@{/js/ckfinder.js(_=${application.startUpDate})}"></script>
         <!--/*/</th:block>/*/-->
     </body>
 </html>
