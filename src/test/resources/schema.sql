@@ -54,14 +54,14 @@ CREATE TABLE IF NOT EXISTS `contest_problem` (
 -- Data exporting was unselected.
 -- Dumping structure for table clanguage.loginlog
 CREATE TABLE IF NOT EXISTS `loginlog` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) NOT NULL,
   `user_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
   `ip` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `time` datetime NOT NULL,
   `success` bit(1) NOT NULL DEFAULT b'0' COMMENT '表示登录是否成功',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=195133 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='由于历史原因2016/3/21及以前的success均为1，实际登陆是否成功未知。';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='由于历史原因2016/3/21及以前的success均为1，实际登陆是否成功未知。';
 
 -- Data exporting was unselected.
 -- Dumping structure for table clanguage.mail
@@ -233,10 +233,10 @@ CREATE TABLE IF NOT EXISTS `users` (
   `volume` int(11) NOT NULL DEFAULT '1',
   `language` tinyint(4) NOT NULL DEFAULT '1',
   `password` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `reg_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `reg_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `nick` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `school` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `style` tinyint(4) NOT NULL DEFAULT '18',
+  `style` tinyint(4) NOT NULL DEFAULT '41',
   `vcode` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `defunct` enum('N','Y') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N',
   `accepted` bigint(20) NOT NULL DEFAULT '0',
