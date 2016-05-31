@@ -111,7 +111,7 @@ public class ShowMessageController {
         out.print("Title:<br/><input type=text name=title value=\"" + StringEscapeUtils.escapeHtml4(title) + "\" size=75><br/>"
                 + "Content:<br/><textarea rows=15 name=content cols=75>"
                 + JudgeUtils.getReplyString(content)
-                + "</textarea><br/><input type=Submit value=reply></td></tr></table></body></html>");
+                + "</textarea><br/><button type=Submit>reply</button></td></tr></table></body></html>");
     }
 
 }

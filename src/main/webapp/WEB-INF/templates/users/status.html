@@ -24,7 +24,7 @@
                             <input type="text" size="10" name="uid1" th:value="${user.id}"/>
                             <span> and </span>
                             <input type="text" size="10" name="uid2" th:value="${#ctx.httpServletRequest.userPrincipal!=null?#ctx.httpServletRequest.userPrincipal.name:''}"/>
-                            <input type="submit" value="GO"/>
+                            <button type="submit">GO</button>
                         </form>
                     </td>
                 </tr>

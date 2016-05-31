@@ -26,13 +26,13 @@
                 <input type="hidden" name="op" value="setsysteminfo"/>
                 <input type="text" name="sinfo"/>
                 <label><input type="checkbox" name="pureText" checked="checked" />纯文本</label>
-                <input type="submit" value="set"/>
+                <button type="submit">set</button>
             </form>
         </div>
         <div style="color: #339">
             <form th:action="@{/admin/tools}" method="POST">
                 <input type="hidden" name="op" value="test"/>
-                <input type="submit" value="修复提交数和Accepted数"/>
+                <button type="submit">修复提交数和Accepted数</button>
             </form>
         </div>
         <!--/*/</th:block>/*/-->

@@ -22,7 +22,7 @@
                 <form th:action="@{/gotoproblem}" method="get">
                     <label th:for="${#ids.next('problem-search')}" style="color:blue">查找题目:</label>
                     <input th:id="${#ids.seq('problem-search')}" size="6" name="pid" type="text"/>
-                    <input value="Go" type="submit"/>
+                    <button type="submit">Go</button>
                 </form>
             </td>
             <td class="top scbg">
@@ -34,7 +34,7 @@
                 <br/>
                 <form th:action="@{/searchuser}" method="get">
                     <input size="10" name="user_id" type="text"/>
-                    <input value="Search" type="submit"/>
+                    <button type="submit">Search</button>
                 </form>
             </td>
             <td class="top scbg">
@@ -55,7 +55,7 @@
                     <input type="checkbox" name="rememberMe" value="true" th:id="${#ids.seq('rememberMe')}" checked="checked"/>
                     <label th:for="${#ids.prev('rememberMe')}">记住登陆</label>
                     <input name="url" type="hidden" th:value="${backUrl}"/>
-                    <input type="Submit" value="登陆"/><br/>
+                    <button type="Submit">登陆</button><br/>
                     <a th:href="@{/findpassword}">忘了密码</a>/<a th:href="@{/registerpage}">注册</a>
                 </form>
                 <th:block th:unless="${#ctx.httpServletRequest.userPrincipal==null}">
