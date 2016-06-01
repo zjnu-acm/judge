@@ -21,7 +21,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
@@ -48,13 +47,23 @@ public class PasswordEncoderTest {
         log.info("matches");
         String rawPassword = "123456";
         String encodedPassword = "123456";
+        String md5 = "7c4a8d09ca3762af61e59520943dc26494f8941b";
         assertTrue(passwordEncoder.matches(rawPassword, encodedPassword));
-        encodedPassword = "7c4a8d09ca3762af61e59520943dc26494f8941b";
+        encodedPassword = md5;
         assertTrue(passwordEncoder.matches(rawPassword, encodedPassword));
         encodedPassword = "123456,123456";
         assertFalse(passwordEncoder.matches(rawPassword, encodedPassword));
-        encodedPassword = "7c4a8d09ca3762af61e59520943dc26494f8941b,7c4a8d09ca3762af61e59520943dc26494f8941b";
+        String wrong = md5.substring(0, md5.length() - 3) + "ttt";
+        encodedPassword = String.format("%s,%s", md5, wrong);
         assertTrue(passwordEncoder.matches(rawPassword, encodedPassword));
+        encodedPassword = String.format("%s,%s", wrong, md5);
+        assertTrue(passwordEncoder.matches(rawPassword, encodedPassword));
+        encodedPassword = String.format("%s,%s", wrong, wrong);
+        assertFalse(passwordEncoder.matches(rawPassword, encodedPassword));
+        String p = md5;
+        assertFalse(passwordEncoder.matches(p, p));
+        p = p.substring(0, 20);
+        assertTrue(passwordEncoder.matches(p, p));
     }
 
     /**
@@ -65,7 +74,7 @@ public class PasswordEncoderTest {
         log.info("passwordEncoder");
         String rawPassword = "123456";
         String result = passwordEncoder.encode(rawPassword);
-        assertTrue(BCrypt.checkpw(rawPassword, result));
+        assertTrue(passwordEncoder.matches(rawPassword, result));
 
     }
 
