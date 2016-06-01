@@ -15,24 +15,31 @@
  */
 package cn.edu.zjnu.acm.judge.exception;
 
-import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler   {
 
     @ExceptionHandler(MessageException.class)
-    public String messageExceptionHandler(HttpServletRequest request, MessageException ex) {
-        request.setAttribute("message", ex.getMessage());
+    public String messageExceptionHandler(HttpServletRequest request, HttpServletResponse response, MessageException ex) {
+        String message = ex.getMessage();
+        HttpStatus code = ex.getHttpStatus();
+        request.setAttribute("message", message);
+        if (code.is4xxClientError()) {
+            response.setStatus(code.value());
+        }
         return "message";
     }
 
     @ExceptionHandler(ForbiddenException.class)
     public String forbiddenExceptionHandler(HttpServletRequest request)
-            throws IOException {
+            throws UnsupportedEncodingException {
         return "redirect:/login?url=" + URLEncoder.encode((String) request.getAttribute("backUrl"), "UTF-8");
     }
 

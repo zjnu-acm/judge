@@ -16,6 +16,8 @@
 package cn.edu.zjnu.acm.judge.mapper;
 
 import cn.edu.zjnu.acm.judge.domain.Problem;
+import cn.edu.zjnu.acm.judge.domain.ScoreCount;
+import cn.edu.zjnu.acm.judge.domain.Submission;
 import java.time.Instant;
 import java.util.List;
 import javax.annotation.Nullable;
@@ -110,6 +112,12 @@ public interface ProblemMapper {
         + "ORDER BY p.problem_id"
         + "</script>"
     })
-    List<Problem> findAllBySearchTitleOrSourceAndDefunctN(@Param(value = "query") String query, @Param(value = "userId") String userId);
+    List<Problem> findAllBySearchTitleOrSourceAndDefunctN(@Param("query") String query, @Param("userId") String userId);
+
+    @Select("select score,count(*) count from solution where problem_id=#{problemId} group by score")
+    List<ScoreCount> groupByScore(@Param("problemId") long problemId);
+
+    @Select("select solution_id id,user_id user,in_date inDate,language,memory,time,code_length sourceLength from solution where problem_id=#{problemId} and score=100 group by ${groupBy} limit #{start},#{size}")
+    List<Submission> bestSubmissions(@Param("groupBy") String groupBy, @Param("problemId") long problemId, @Param("start") long start, @Param("size") int size);
 
 }

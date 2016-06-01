@@ -6,6 +6,7 @@ import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import java.util.List;
 import java.util.function.Supplier;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,7 +43,7 @@ public class ContestListController {
             String title, String errorMessage, RedirectAttributes redirectAttributes) {
         List<Contest> contests = supplier.get();
         if (contests.isEmpty()) {
-            throw new MessageException(errorMessage);
+            throw new MessageException(errorMessage, HttpStatus.NOT_FOUND);
         } else if (contests.size() == 1) {
             redirectAttributes.addAttribute("contest_id", contests.get(0).getId());
             return "redirect:/showcontest";

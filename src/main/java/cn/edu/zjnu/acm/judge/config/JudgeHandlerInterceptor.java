@@ -18,38 +18,40 @@ package cn.edu.zjnu.acm.judge.config;
 import cn.edu.zjnu.acm.judge.mapper.MailMapper;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
  * @author zhanhb
  */
-@RequiredArgsConstructor
+@ControllerAdvice
 @Slf4j
-public class JudgeHandlerInterceptor extends HandlerInterceptorAdapter {
+public class JudgeHandlerInterceptor {
 
-    private final MailMapper mailMapper;
+    @Autowired
+    private MailMapper mailMapper;
 
-    @Override
-    public boolean preHandle(HttpServletRequest request,
-            HttpServletResponse response, Object handler) {
-        String url = request.getParameter("url");
-        if (!StringUtils.hasText(url)) {
-            url = request.getRequestURI();
+    @ModelAttribute
+    public void addAttributes(HttpServletRequest request,
+            @RequestParam(value = "url", required = false) String url) {
+        if (StringUtils.hasText(url)) {
+            request.setAttribute("backUrl", url);
+        } else {
+            String uri = request.getRequestURI();
             String query = request.getQueryString();
             if (query != null) {
-                url = url + '?' + query;
+                uri = uri + '?' + query;
             }
+            request.setAttribute("backUrl", uri);
         }
-        request.setAttribute("backUrl", url);
         UserDetailService.getCurrentUserId(request)
                 .map(mailMapper::getMailInfo)
                 .ifPresent(mailInfo -> request.setAttribute("mailInfo", mailInfo));
-        return true;
     }
 
 }

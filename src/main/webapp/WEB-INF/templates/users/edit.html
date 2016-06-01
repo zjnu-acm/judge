@@ -11,25 +11,70 @@
         <!--/*/<th:block layout:fragment="content">/*/-->
         <form class="modify-user" method="POST" th:action="@{/modifyuser}" th:object="${user}">
             <table align="center" cellspacing="3" cellpadding="3" width="600" border="0" class="table-back">
-                <tr><td colspan="2" width="600" height="40">
-                        <p align="center">修改用户注册信息</p></td>
-                </tr><tr><td width="25%">用　户　名:</td>
+                <tr>
+                    <td colspan="2" width="600" height="40">
+                        <p align="center">修改用户注册信息</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="25%"><label>用　户　名:</label></td>
                     <td width="75%" th:text="*{id}">userId</td></tr>
-                <tr><td>姓　　　名:</td>
-                    <td><input type="text" name="nick" size="50" th:value="*{nick}"/></td></tr>
-                <tr><td>旧　密　码:</td>
-                    <td><input id="oldPassword" type="password" name="oldPassword" size="20" autocomplete="off"/></td></tr>
-                <tr><td>新　密　码:</td>
-                    <td><input type="password" name="newPassword" size="20" autocomplete="off"/></td>
-                </tr><tr><td>重复新密码:</td>
-                    <td><input type="password" name="rptPassword" size="20" autocomplete="off"/></td></tr>
-                <tr><td>班　　　级:</td>
-                    <td><input type="text" name="school" size="30" th:value="*{school}"/></td></tr>
-                <tr><td>邮　　　箱:</td>
-                    <td><input type="text" name="email" size="30" th:value="*{email}"/></td>
-                </tr><tr><td>&nbsp;</td><td align="left">
-                        <input type="submit" value="确定"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="reset" value="重置" name="reset"/>
-                    </td></tr>
+                <tr>
+                    <td>
+                        <label th:for="${#ids.next('nick')}">姓　　　名:</label>
+                    </td>
+                    <td>
+                        <input th:id="${#ids.seq('nick')}" type="text" name="nick" size="50" th:value="*{nick}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label th:for="${#ids.next('password')}">旧　密　码:</label>
+                    </td>
+                    <td>
+                        <input th:id="${#ids.seq('password')}" type="password" name="oldPassword" size="20" autocomplete="off"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label th:for="${#ids.next('password')}">新　密　码:</label>
+                    </td>
+                    <td>
+                        <input th:id="${#ids.seq('password')}" type="password" name="newPassword" size="20" autocomplete="off"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label th:for="${#ids.next('password')}">重复新密码:</label>
+                    </td>
+                    <td>
+                        <input th:id="${#ids.seq('password')}" type="password" name="rptPassword" size="20" autocomplete="off"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label th:for="${#ids.next('school')}">班　　　级:</label>
+                    </td>
+                    <td>
+                        <input th:id="${#ids.seq('school')}" type="text" name="school" size="30" th:value="*{school}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label th:for="${#ids.next('email')}">邮　　　箱:</label>
+                    </td>
+                    <td>
+                        <input th:id="${#ids.seq('email')}" type="email" name="email" size="30" th:value="*{email}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td align="left">
+                        <button type="submit">确定</button>
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <button type="reset">重置</button>
+                    </td>
+                </tr>
             </table>
         </form>
         <script>jQuery(function($){$("form.modify-user").submit(function(){var b=$(this).find("[name='oldPassword']");return b.val()?!0:(alert("请输入旧密码"),b.focus(),!1);});});</script>

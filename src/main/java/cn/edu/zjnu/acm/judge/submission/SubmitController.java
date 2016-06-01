@@ -21,6 +21,7 @@ import java.nio.file.Path;
 import java.time.Instant;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -42,6 +43,8 @@ public class SubmitController {
     private UserPerferenceMapper userPerferenceMapper;
     @Autowired
     private JudgeConfiguration judgeConfiguration;
+    @Autowired
+    private LanguageFactory languageFactory;
 
     @RequestMapping(value = "/submit", method = RequestMethod.POST)
     public String submit(HttpServletRequest request,
@@ -52,15 +55,15 @@ public class SubmitController {
         UserDetailService.requireLoginned(request);
         Language language;
         try {
-            language = LanguageFactory.getLanguage(languageId);
+            language = languageFactory.getLanguage(languageId);
         } catch (IllegalArgumentException ex) {
-            throw new MessageException("Please choose a language");
+            throw new MessageException("Please choose a language", HttpStatus.BAD_REQUEST);
         }
         if (source.length() > 32768) {
-            throw new MessageException("Source code too long, submit FAILED;if you really need submit this source please contact administrator");
+            throw new MessageException("Source code too long, submit FAILED;if you really need submit this source please contact administrator", HttpStatus.BAD_REQUEST);
         }
         if (source.length() < 10) {
-            throw new MessageException("Source code too short, submit FAILED;if you really need submit this source please contact administrator");
+            throw new MessageException("Source code too short, submit FAILED;if you really need submit this source please contact administrator", HttpStatus.BAD_REQUEST);
         }
         UserModel userModel = UserDetailService.getCurrentUser(request).orElseThrow(ForbiddenException::new);
         assert userModel != null;
@@ -70,7 +73,7 @@ public class SubmitController {
         // 8秒交一次。。。
         // 使用绝对值，如果系统时间被改了依然可用
         if (Math.abs(userModel.getLastSubmitTime() - now) < 10000) {
-            throw new MessageException("Sorry, please don't submit again within 10 seconds.");
+            throw new MessageException("Sorry, please don't submit again within 10 seconds.", HttpStatus.BAD_REQUEST);
         }
         userModel.setLastSubmitTime(now);
         String userId = userModel.getUserId();
@@ -80,7 +83,7 @@ public class SubmitController {
 
         //检查该题是否被禁用
         if (problem == null) {
-            throw new MessageException("No such problem");
+            throw new MessageException("No such problem", HttpStatus.NOT_FOUND);
         }
         Long contestId = problem.getContest();
         long memoryLimit = problem.getMemoryLimit();
@@ -100,7 +103,7 @@ public class SubmitController {
                 ended = contest.isEnded();
 
                 if (!started) {
-                    throw new MessageException("No such problem");
+                    throw new MessageException("No such problem", HttpStatus.NOT_FOUND);
                 }
             }
             //题目中竞赛id置为空
@@ -128,17 +131,17 @@ public class SubmitController {
         submissionMapper.save(submission);
         long submissionId = submission.getId();
 
-        RunRecord runRecord = new RunRecord();
-        runRecord.setSubmissionId(submissionId);
-        runRecord.setProblemId(problemId);
-        runRecord.setMemoryLimit(memoryLimit);
-        runRecord.setTimeLimit(timeLimit);
-        runRecord.setLanguage(language);
-
-        runRecord.setDataPath(dataPath);
-        runRecord.setSource(source);
+        RunRecord runRecord = RunRecord.builder()
+                .submissionId(submissionId)
+                .problemId(problemId)
+                .memoryLimit(memoryLimit)
+                .timeLimit(timeLimit)
+                .language(language)
+                .dataPath(dataPath)
+                .source(source)
+                .userId(userId)
+                .build();
         problemMapper.setInDate(problemId, nowTimestamp);
-        runRecord.setUserId(userId);
 
         // 插入source_code表
         submissionMapper.saveSource(submissionId, source);

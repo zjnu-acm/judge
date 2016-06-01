@@ -15,6 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.config;
 
+import cn.edu.zjnu.acm.judge.domain.LoginLog;
 import cn.edu.zjnu.acm.judge.mapper.LoginlogMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
@@ -66,7 +67,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private void saveLoginLog(HttpServletRequest request, boolean success) {
         String userId = Optional.ofNullable(request.getParameter("user_id1")).orElse("");
         String passsword = Optional.ofNullable(request.getParameter("password1")).orElse("");
-        loginlogMapper.save(userId, passwordConfuser.confuse(passsword), request.getRemoteAddr(), success);
+        loginlogMapper.save(LoginLog.builder()
+                .user(userId)
+                .password(passwordConfuser.confuse(passsword))
+                .ip(request.getRemoteAddr())
+                .success(success)
+                .build());
         if (success) {
             Optional.ofNullable(userMapper.findOne(userId)).ifPresent(user -> {
                 userMapper.update(

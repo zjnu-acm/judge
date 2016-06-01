@@ -15,22 +15,23 @@
  */
 package cn.edu.zjnu.acm.judge.domain;
 
-import cn.edu.zjnu.acm.judge.config.LanguageFactory;
-import cn.edu.zjnu.acm.judge.exception.NoSuchLanguageException;
-import java.io.IOException;
-import java.io.InvalidObjectException;
 import java.io.Serializable;
 import javax.annotation.Nullable;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NonNull;
+import lombok.Setter;
 import lombok.Value;
 
 /**
  *
  * @author zhanhb
  */
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @Value
+@Setter(AccessLevel.PRIVATE)
 @SuppressWarnings("FinalClass")
 public class Language implements Serializable {
 
@@ -51,13 +52,5 @@ public class Language implements Serializable {
     private long timeFactor;
     private long extTime;
     private String description;
-
-    private Object readResolve() throws IOException {
-        try {
-            return LanguageFactory.getLanguage(id);
-        } catch (NoSuchLanguageException ex) {
-            throw new InvalidObjectException(ex.getMessage());
-        }
-    }
 
 }

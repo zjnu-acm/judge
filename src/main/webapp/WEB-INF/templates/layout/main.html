@@ -8,11 +8,11 @@
         <meta http-equiv="Cache-Control" content="no-siteapp"/>
         <meta http-equiv="X-UA-Compatible" content="chrome=1,IE=Edge"/>
         <title>Welcome to JudgeOnline</title>
-        <!--<link th:href="@{/webjars/bootstrap/3.3.6/css/bootstrap.min.css}" rel="stylesheet"/>-->
+        <!--<link href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.css" th:href="@{/webjars/bootstrap/3.3.6/css/bootstrap.min.css}" rel="stylesheet"/>-->
 
         <link th:href="@{/css/site.css(_=${application.startUpDate})}" rel="stylesheet"/>
         <link th:href="@{/sample.png}" rel="shortcut icon"/>
-        <script th:src="@{/webjars/jquery/1.12.3/jquery.min.js}"></script>
+        <script th:src="@{/webjars/jquery/1.12.4/jquery.min.js}"></script>
         <script th:src="@{/js/site.js(_=${application.startUpDate})}"></script>
     </head>
     <body id="page-home">
@@ -38,8 +38,15 @@
                             <td style="width:16.7%"><a th:href="@{/contests/{contestId}/standing(contestId=${contestId})}">Standing</a></td>
                             <td style="width:16.7%"><a th:href="@{/status(contest_id=${contestId})}">Status</a></td>
 
-                            <td th:if="${#request.userPrincipal != null}"><b th:text="${#request.userPrincipal.name}">login.user.name</b><a href="@{/logout}">Logout</a></td>
-                            <td th:unless="${#request.userPrincipal != null}"><a th:href="@{/login(url=${backUrl})}">Login</a></td>
+                            <td th:if="${#request.userPrincipal != null}">
+                                <b th:text="${#request.userPrincipal.name}">
+                                    login.user.name
+                                </b>
+                                <a th:href="@{/logout}">Logout</a>
+                            </td>
+                            <td th:unless="${#request.userPrincipal != null}">
+                                <a th:href="@{/login(url=${backUrl})}">Login</a>
+                            </td>
                         </tr>
                     </table>
                 </th:block>
@@ -57,16 +64,14 @@
                         <a th:href="@{/}">Home Page</a>
                     </font>
                     <img alt="goback" height="29" th:src="@{/images/goback.png}" width="40" border="0" style=" margin-left: 40px;"/>
-                    <font size="3"><a href="javascript:history.go(-1)">Go Back</a>
+                    <font size="3">
+                        <a href="javascript:history.go(-1)">Go Back</a>
                         <img alt="top" height="29" width="40" border="0" th:src="@{/images/top.png}" style=" margin-left: 40px;"/>
                         <a href="#top">To top</a>
                     </font>
                 </p>
                 <hr/>
-                <p align="center">
-                    <font size="3">All Copyright Reserved 2006-[[${T(java.time.Year).now()}]] ZJNU ACM<br/>Any problem, Please Contact <a th:href="|mailto:${application['admin.mail']}|">Administrator</a>
-                    </font>
-                </p>
+                <p align="center" style="font-size: medium;">All Copyright Reserved 2006-[[${T(java.time.Year).now()}]] ZJNU ACM<br/>Any problem, Please Contact <a th:href="|mailto:${application['admin.mail']}|">Administrator</a></p>
             </div>
             <!-- end footer -->
         </div>

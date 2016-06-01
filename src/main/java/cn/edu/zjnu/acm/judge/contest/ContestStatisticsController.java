@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,6 +32,8 @@ public class ContestStatisticsController {
     private DataSource dataSource;
     @Autowired
     private ContestMapper contestMapper;
+    @Autowired
+    private LanguageFactory languageFactory;
 
     @RequestMapping(value = "/conteststatistics", method = {RequestMethod.GET, RequestMethod.HEAD})
     public void conteststatistics(HttpServletRequest request, HttpServletResponse response,
@@ -39,7 +42,7 @@ public class ContestStatisticsController {
         Instant now = Instant.now();
         Contest contest = contestMapper.findOneByIdAndDefunctN(contestId);
         if (contest == null || !contest.isStarted()) {
-            throw new MessageException("No such contest");
+            throw new MessageException("No such contest", HttpStatus.NOT_FOUND);
         }
         String title = contest.getTitle();
         Instant endTime = contest.getEndTime();
@@ -59,7 +62,7 @@ public class ContestStatisticsController {
                 + "<TABLE align=center cellSpacing=0 cellPadding=0 width=600 border=1 class=table-back style=\"border-collapse: collapse\" bordercolor=#FFF>"
                 + "<tr bgcolor=#6589D1><th>&nbsp;</th><th>100</th><th>99~70</th><th>69~31</th><th>30~1</th><th>0</th><th>CE</th><th>Others</th><th>Total</th>");
 
-        Map<Integer, Language> languages = LanguageFactory.getLanguages();
+        Map<Integer, Language> languages = languageFactory.getLanguages();
         int languageCount = languages.size();
         String str2 = "select ";
         for (int i : languages.keySet()) {
@@ -68,17 +71,15 @@ public class ContestStatisticsController {
         str2 += "problem_id,num,count(if(score=100,1,0)) as AC,count(if(score<100 and score >=70,1,0)) as PE,count(if(score<70 and score >30,1,null)) as TLE,count(if(score>0 and score <=30,1,null)) as WA,count(if(score=0,1,null)) as RE,count(if(score=-7,1,null)) as CE,count(if(score<-7 or score > 100,1,null)) as Others,count(*) as Total from solution where contest_id=? group by problem_id order by num";
 
         String[] judgeStatus = {"AC", "PE", "WA", "TLE", "RE", "CE", "Others", "Total"};
-        long[] arrayOfLong1;
-        long[] arrayOfLong2;
+        long[] arrayOfLong1 = new long[judgeStatus.length];
+        long[] arrayOfLong2 = new long[languageCount];
+        out.print("<th>&nbsp;</th>");
+        languages.values().forEach(language -> out.print("<th>" + StringEscapeUtils.escapeHtml4(language.getName()) + "</th>"));
+        out.print("</tr>");
         try (Connection conn = dataSource.getConnection();
                 PreparedStatement ps = conn.prepareStatement(str2)) {
             ps.setLong(1, contestId);
             try (ResultSet rs = ps.executeQuery()) {
-                out.print("<th>&nbsp;</th>");
-                languages.values().forEach(language -> out.print("<th>" + StringEscapeUtils.escapeHtml4(language.getName()) + "</th>"));
-                out.print("</tr>");
-                arrayOfLong1 = new long[judgeStatus.length];
-                arrayOfLong2 = new long[languageCount];
                 while (rs.next()) {
                     long problemId = rs.getLong("problem_id");
                     long num = rs.getLong("num");

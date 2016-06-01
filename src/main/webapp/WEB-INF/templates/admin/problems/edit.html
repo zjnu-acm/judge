@@ -30,7 +30,7 @@
                     <option th:each="contest:${contests}" th:object="${contest}" th:value="*{id}" th:text="*{title}" th:selected="*{id}==${problem.contest}">contest.title</option>
                 </select>
             </p>
-            <div align="center"><input type="submit" value="Submit"/></div>
+            <div align="center"><button type="submit">Submit</button></div>
         </form>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.5.8/ckeditor.js" th:src="@{/webjars/ckeditor/4.5.8/full/ckeditor.js}"></script>
         <script th:src="@{/ckfinder/ckfinder.js}"></script>

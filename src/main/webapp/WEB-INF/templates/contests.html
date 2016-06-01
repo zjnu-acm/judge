@@ -20,7 +20,9 @@
             <tbody>
                 <tr th:each="contest:${contests}" th:object="${contest}">
                     <td>[[*{id}]]</td>
-                    <td><a th:href="@{/showcontest(contest_id=${contest.id})}">[[*{title}]]</a></td>
+                    <td>
+                        <a th:href="@{/showcontest(contest_id=${contest.id})}">[[*{title}]]</a>
+                    </td>
                     <td>[[*{#calendars.format(T(java.util.Date).from(startTime),"yyyy-MM-dd HH:mm:ss")}]]</td>
                     <td th:switch="*{(started?1:0)+(ended?1:0)}">
                         <font th:case="0" color="blue">Pending</font>

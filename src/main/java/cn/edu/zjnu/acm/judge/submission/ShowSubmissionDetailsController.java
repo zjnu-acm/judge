@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,7 +34,7 @@ public class ShowSubmissionDetailsController {
             throws IOException {
         Submission submission = submissionMapper.findOne(submissionId);
         if (submission == null) {
-            throw new MessageException("No such solution");
+            throw new MessageException("No such solution", HttpStatus.NOT_FOUND);
         }
         Long contestId = submission.getContest();
         if (contestId != null) {
@@ -43,11 +44,11 @@ public class ShowSubmissionDetailsController {
             }
         }
         if (!submissionService.canView(request, submission)) {
-            throw new MessageException("You have no permission to view solution '" + submissionId + "'");
+            throw new MessageException("You have no permission to view solution '" + submissionId + "'", HttpStatus.FORBIDDEN);
         }
         String submissionDetail = submissionMapper.getSubmissionDetail(submissionId);
         if (submissionDetail == null) {
-            throw new MessageException("No such solution");
+            throw new MessageException("No such solution", HttpStatus.NOT_FOUND);
         }
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
@@ -76,4 +77,5 @@ public class ShowSubmissionDetailsController {
                 + submission.getMemory() + "K</td><td></tr>"
                 + "</table></body></html>");
     }
+
 }

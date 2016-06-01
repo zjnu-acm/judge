@@ -11,20 +11,39 @@
         <p align="center">
             <font size="4" color="#333399">Source</font>
         </p>
-        <form>
+        <form id="show-source">
             <p align="center">
-                <font size="2">Problem Id:<a th:href="@{/showproblem(problem_id=${submission.problem})}" th:text="${submission.problem}">problem.id</a> User Id:<a th:href="@{/userstatus(user_id=${submission.user})}" th:text="${submission.user}">user</a><br/>Memory:[[${submission.memory}]]K&nbsp;&nbsp;Time:[[${submission.time}]]MS<br/>Language:[[${language}]]&nbsp;&nbsp;Result:[[${result}]]</font><br/>Style: <select onchange="submit()" name="style">
-                    <option th:each="item,it:${styles}" th:value="${it.index}" th:text="${item}" th:selected="${it.index==style}">acid</option>
-                </select>
+                <font size="2">
+                    <span>Problem Id:</span>
+                    <a th:href="@{/showproblem(problem_id=${submission.problem})}" th:text="${submission.problem}">problem.id</a>
+                    <span> User Id:</span>
+                    <a th:href="@{/userstatus(user_id=${submission.user})}" th:text="${submission.user}">user</a>
+                    <br/>
+                    <span>Memory:[[${submission.memory}]]K</span>
+                    <span>&nbsp;&nbsp;</span>
+                    <span>Time:[[${submission.time}]]MS</span>
+                    <br/>
+                    <span>Language:[[${language}]]</span>
+                    <span>&nbsp;&nbsp;</span>
+                    <span>Result:[[${result}]]</span>
+                </font>
+                <br/>
+                <label th:for="${#ids.next('style')}">Style: </label>
+                <select th:id="${#ids.seq('style')}"></select>
+                <input type="hidden" name="style" th:value="${style}"/>
                 <input type="hidden" name="solution_id" th:value="${submission.id}"/>
             </p>
         </form>
-        <script th:src="@{/shjs/sh_main.min.js}"></script>
-        <script th:src="@{|/shjs/lang/${sh}.min.js|}"></script>
-        <link rel="stylesheet" th:href="@{|/shjs/css/sh_${styleName}.min.css|}"/>
-        <ul><li><font color="#333399" size="5">Source</font></li>
-        <pre th:class="${sh}" th:text="${source}"></pre></ul>
-        <script>jQuery(sh_highlightDocument);</script>
+        <ul>
+            <li>
+                <font color="#333399" size="5">Source</font>
+            </li>
+            <pre>
+                <code th:text="${source}"></code>
+            </pre>
+        </ul>
+        <script src="" th:src="@{/webjars/highlightjs/9.2.0/highlight.min.js}"></script>
+        <script th:inline="javascript">/*<![CDATA[*/!function($){var styles={'atelier-sulphurpool-dark':'atelier-sulphurpool-dark','ir_black.min':'ir_black','solarized-light':'solarized-light','solarized_dark.min':'solarized_dark','dracula':'dracula','atelier-lakeside.light.min':'atelier-lakeside.light','arduino-light':'arduino-light','atelier-estuary-light':'atelier-estuary-light','docco':'docco','atelier-plateau-dark':'atelier-plateau-dark','far':'far','atelier-lakeside.dark.min':'atelier-lakeside.dark','tomorrow-night-eighties':'tomorrow-night-eighties','ir-black':'ir-black','qtcreator_light':'qtcreator_light','codepen-embed':'codepen-embed','darkula':'darkula','brown-paper':'brown-paper','googlecode':'googlecode','github':'github','obsidian':'obsidian','atelier-seaside.dark.min':'atelier-seaside.dark','monokai':'monokai','atelier-heath-light':'atelier-heath-light','atelier-heath.dark.min':'atelier-heath.dark','tomorrow':'tomorrow','gruvbox-light':'gruvbox-light','paraiso-light':'paraiso-light','color-brewer':'color-brewer','agate':'agate','tomorrow-night':'tomorrow-night','xcode':'xcode','atelier-dune.light.min':'atelier-dune.light','rainbow':'rainbow','solarized-dark':'solarized-dark','atelier-cave-dark':'atelier-cave-dark','hybrid':'hybrid','atelier-seaside.light.min':'atelier-seaside.light','school_book.min':'school_book','atelier-savanna-light':'atelier-savanna-light','atelier-seaside-dark':'atelier-seaside-dark','zenburn':'zenburn','vs':'vs','kimbie.dark':'kimbie.dark','mono-blue':'mono-blue','paraiso-dark':'paraiso-dark','tomorrow-night-blue':'tomorrow-night-blue','tomorrow-night-bright':'tomorrow-night-bright','atelier-lakeside-dark':'atelier-lakeside-dark','atelier-savanna-dark':'atelier-savanna-dark','idea':'idea','atelier-seaside-light':'atelier-seaside-light','pojoaque':'pojoaque','qtcreator_dark':'qtcreator_dark','atelier-dune-dark':'atelier-dune-dark','foundation':'foundation','atelier-forest-dark':'atelier-forest-dark','paraiso.dark.min':'paraiso.dark','atelier-dune-light':'atelier-dune-light','monokai_sublime.min':'monokai_sublime','grayscale':'grayscale','atelier-estuary-dark':'atelier-estuary-dark','default':'default','github-gist':'github-gist','androidstudio':'androidstudio','dark':'dark','solarized_light.min':'solarized_light','atelier-heath.light.min':'atelier-heath.light','atelier-sulphurpool-light':'atelier-sulphurpool-light','sunburst':'sunburst','ascetic':'ascetic','atelier-plateau-light':'atelier-plateau-light','gruvbox-dark':'gruvbox-dark','atelier-forest-light':'atelier-forest-light','atelier-heath-dark':'atelier-heath-dark','hopscotch':'hopscotch','railscasts':'railscasts','atelier-lakeside-light':'atelier-lakeside-light','kimbie.light':'kimbie.light','atelier-cave-light':'atelier-cave-light','magula':'magula','atelier-forest.light.min':'atelier-forest.light','arta':'arta','school-book':'school-book','atelier-dune.dark.min':'atelier-dune.dark','brown_paper.min':'brown_paper','paraiso.light.min':'paraiso.light','atelier-forest.dark.min':'atelier-forest.dark','monokai-sublime':'monokai-sublime'};var form=$("#show-source"),select=form.find("select"),s=form.find("[name='style']"),style=+s.val(),u=/*[+[[@{/webjars/highlightjs/9.2.0/styles/${name}.css}]]+]*//*[-*/null/*-]*/;var j=0;$.each(styles,function(i,s){$("<option/>",{value:s,text:i,selected:j++==style}).appendTo(select);});$("<link/>",{rel:"stylesheet",href:u.replace("${name}",select.change(function(){s.val(select.find(":selected").index());form.submit();}).val()||"default")}).appendTo($("head"));$('pre code').each(function(i,block){hljs.highlightBlock(block);});}(jQuery);/*]]>*/</script>
         <!--/*/</th:block>/*/-->
     </body>
 </html>

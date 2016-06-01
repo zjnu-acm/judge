@@ -4,7 +4,7 @@
 * text eol=lf
 
 # Custom for Visual Studio
-*.cs    diff=csharp
+*.cs   text    diff=csharp
 
 # binary files.
 *.doc binary
@@ -18,12 +18,17 @@
 *.rtf binary
 *.RTF binary
 *.ttf binary
+*.eot binary
+*.woff binary
+*.woff2 binary
+*.ico binary
 
 *.java  text    diff=java
 *.html  text    diff=html
 *.xml   text    diff=xml
 *.jspx  text    diff=xml
 *.tagx  text    diff=xml
+*.svg   text    diff=xml
 *.css   text
 *.js    text
 *.jsp   text
@@ -33,6 +38,12 @@
 *.sql   text
 *.properties text
 *.txt   text
-*.gif diff=image
-*.jpg diff=image
-*.png diff=image
+*.groovy text
+*.cpp text
+*.c   text
+*.tld text diff=xml
+*.in  text
+*.out text
+*.gif binary diff=image
+*.jpg binary diff=image
+*.png binary diff=image

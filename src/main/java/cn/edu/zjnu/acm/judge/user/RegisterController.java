@@ -9,6 +9,7 @@ import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +38,7 @@ public class RegisterController {
         ValueCheck.checkPassword(password);
         ValueCheck.checkEmail(email);
         if (!Objects.equals(password, rptPassword)) {
-            throw new MessageException("Passwords are not match");
+            throw new MessageException("Passwords are not match", HttpStatus.BAD_REQUEST);
         }
         if (Strings.isNullOrEmpty(nick)) {
             nick = userId;
@@ -46,7 +47,7 @@ public class RegisterController {
         }
         ValueCheck.checkNick(nick);
         if (userMapper.findOne(userId) != null) {
-            throw new MessageException("The ID( " + userId + ") existed");
+            throw new MessageException("The ID( " + userId + ") existed", HttpStatus.NOT_FOUND);
         }
         User user = User.builder().id(userId)
                 .password(passwordEncoder.encode(password))

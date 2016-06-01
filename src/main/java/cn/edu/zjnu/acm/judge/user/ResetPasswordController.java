@@ -73,68 +73,65 @@ public class ResetPasswordController {
             @RequestParam(value = "verify", required = false) String verify,
             @RequestParam(value = "username", required = false) String username,
             Locale locale) throws IOException {
-        if ("changePassword".equalsIgnoreCase(action)) {
-            changePassword(request, response);
-        } else {
-            response.setContentType("text/javascript;charset=UTF-8");
-            PrintWriter out = response.getWriter();
+        response.setContentType("text/javascript;charset=UTF-8");
+        PrintWriter out = response.getWriter();
 
-            HttpSession session = request.getSession(false);
-            String word = null;
-            if (session != null) {
-                word = (String) session.getAttribute("word");
-                session.removeAttribute("word");
-            }
-            if (word == null || !word.equalsIgnoreCase(verify)) {
-                out.print("alert('验证码错误');");
-                return;
-            }
-
-            User user = userMapper.findOne(username);
-            if (user == null) {
-                out.print("alert('用户不存在');");
-                return;
-            }
-            String email = user.getEmail();
-            if (email == null || !email.toLowerCase().matches(ValueCheck.EMAIL_PATTERN)) {
-                out.print("alert('该用户未设置邮箱或邮箱格式不对，如需重置密码，请联系管理员！');");
-                return;
-            }
-            try {
-                String basePath = getBasePath(request);
-                String vc = user.getVcode();
-                if (vc == null) {
-                    vc = Utility.getRandomString(16);
-                    user = user.toBuilder().vcode(vc).build();
-                    userMapper.update(user);
-                }
-                String url = basePath + request.getServletPath() + "?vc=" + vc + "&u=" + user.getId();
-                HashMap<String, Object> map = new HashMap<>(2);
-                map.put("url", url);
-                map.put("ojName", judgeConfiguration.getContextPath() + " OJ");
-
-                String content = templateEngine.process("users/password", new Context(locale, map));
-                String title = templateEngine.process("users/passwordTitle", new Context(locale, map));
-
-                MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-
-                MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-                helper.setTo(email);
-                helper.setSubject(title);
-                helper.setText(content, true);
-                helper.setFrom(javaMailSender.getUsername());
-
-                javaMailSender.send(mimeMessage);
-            } catch (MailException | MessagingException ex) {
-                log.error("", ex);
-                out.print("alert('邮件发送失败，请稍后再试')");
-                return;
-            }
-            out.print("alert('已经将邮件发送到" + user.getEmail() + "，请点击链接重设密码');");
+        HttpSession session = request.getSession(false);
+        String word = null;
+        if (session != null) {
+            word = (String) session.getAttribute("word");
+            session.removeAttribute("word");
         }
+        if (word == null || !word.equalsIgnoreCase(verify)) {
+            out.print("alert('验证码错误');");
+            return;
+        }
+
+        User user = userMapper.findOne(username);
+        if (user == null) {
+            out.print("alert('用户不存在');");
+            return;
+        }
+        String email = user.getEmail();
+        if (email == null || !email.toLowerCase().matches(ValueCheck.EMAIL_PATTERN)) {
+            out.print("alert('该用户未设置邮箱或邮箱格式不对，如需重置密码，请联系管理员！');");
+            return;
+        }
+        try {
+            String basePath = getBasePath(request);
+            String vc = user.getVcode();
+            if (vc == null) {
+                vc = Utility.getRandomString(16);
+                user = user.toBuilder().vcode(vc).build();
+                userMapper.update(user);
+            }
+            String url = basePath + request.getServletPath() + "?vc=" + vc + "&u=" + user.getId();
+            HashMap<String, Object> map = new HashMap<>(2);
+            map.put("url", url);
+            map.put("ojName", judgeConfiguration.getContextPath() + " OJ");
+
+            String content = templateEngine.process("users/password", new Context(locale, map));
+            String title = templateEngine.process("users/passwordTitle", new Context(locale, map));
+
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+            helper.setTo(email);
+            helper.setSubject(title);
+            helper.setText(content, true);
+            helper.setFrom(javaMailSender.getUsername());
+
+            javaMailSender.send(mimeMessage);
+        } catch (MailException | MessagingException ex) {
+            log.error("", ex);
+            out.print("alert('邮件发送失败，请稍后再试')");
+            return;
+        }
+        out.print("alert('已经将邮件发送到" + user.getEmail() + "，请点击链接重设密码');");
     }
 
-    private void changePassword(HttpServletRequest request, HttpServletResponse response)
+    @RequestMapping(value = "/resetPassword", method = RequestMethod.POST, params = "action=changePassword")
+    public void changePassword(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         response.setContentType("text/javascript;charset=UTF-8");
         PrintWriter out = response.getWriter();
@@ -175,4 +172,5 @@ public class ResetPasswordController {
         }
         return sb.append(request.getContextPath()).toString();
     }
+
 }
