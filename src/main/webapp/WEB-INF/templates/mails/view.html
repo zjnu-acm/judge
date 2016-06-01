@@ -10,10 +10,17 @@
         <!--/*/<th:block layout:fragment="content" th:object="${mail}">/*/-->
         <table style="border: 0; width: 80%">
             <tr bgcolor="#c0c0c0">
-                <td>
-                    <span>From: </span><font color="blue"><a th:href="@{/userstatus(user_id=*{from})}" th:text="*{from}">userId</a></font><br/>
-                    <span>Title:</span><font color="blue" th:text="*{title}">关于1695分栗子</font><br/>
-                    <span>Send Time:</span>[[*{#calendars.format(T(java.util.Date).from(inDate),'yyyy-MM-dd HH:mm:ss')}]]<br/>
+                <td th:inline="text">
+                    <span>From: </span>
+                    <font color="blue">
+                        <a th:href="@{/userstatus(user_id=*{from})}" th:text="*{from}">userId</a>
+                    </font>
+                    <br/>
+                    <span>Title:</span>
+                    <font color="blue" th:text="*{title}">title</font>
+                    <br/>
+                    <span>Send Time: [[*{#calendars.format(T(java.util.Date).from(inDate),'yyyy-MM-dd HH:mm:ss')}]]</span>
+                    <br/>
                 </td>
             </tr>
             <tr bgcolor="#78c8ff">
@@ -24,7 +31,21 @@
                 </td>
             </tr>
         </table>
-        <center>[<a href="@{/mail}"><font color="blue">Return</font></a>]&nbsp;&nbsp;&nbsp;[<a th:href="@{/sendpage(reply=*{id})}"><font color="blue">Reply</font></a>]&nbsp;&nbsp;&nbsp;[<a th:href="@{/deletemail(reply=*{id})}"><font color="blue">Delete</font></a>]</center>
+        <center>
+            <span>[</span>
+            <a href="@{/mail}">
+                <font color="blue">Return</font>
+            </a>
+            <span>]&nbsp;&nbsp;&nbsp;[</span>
+            <a th:href="@{/sendpage(reply=*{id})}">
+                <font color="blue">Reply</font>
+            </a>
+            <span>]&nbsp;&nbsp;&nbsp;[</span>
+            <a th:href="@{/deletemail(reply=*{id})}">
+                <font color="blue">Delete</font>
+            </a>
+            <span>]</span>
+        </center>
         <!--/*/</th:block>/*/-->
     </body>
 </html>

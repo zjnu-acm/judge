@@ -16,13 +16,16 @@
 package cn.edu.zjnu.acm.judge.domain;
 
 import java.io.Serializable;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Setter;
 
 /**
  *
  * @author zhanhb
  */
 @Data
+@Setter(AccessLevel.PRIVATE)
 public class MailInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;

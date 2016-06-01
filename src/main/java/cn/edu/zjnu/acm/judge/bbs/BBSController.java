@@ -146,6 +146,6 @@ public class BBSController {
         if (problemId != null) {
             out.print("<input type=hidden name=problem_id value=" + problemId + ">");
         }
-        out.print("<input type=submit value='Post new message'></form></body></html>");
+        out.print("<button type=submit>Post new message</button></form></body></html>");
     }
 }

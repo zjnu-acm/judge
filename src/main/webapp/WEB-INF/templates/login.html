@@ -13,21 +13,30 @@
         <form method="POST" th:action="@{/login}">
             <table align="center">
                 <tr>
-                    <td><label for="username-content">User ID:</label></td>
-                    <td><input type="text" id="username-content" name="user_id1" size="15"/></td>
+                    <td>
+                        <label th:for="${#ids.next('username')}">User ID:</label>
+                    </td>
+                    <td>
+                        <input type="text" th:id="${#ids.seq('username')}" name="user_id1" size="15"/>
+                    </td>
                 </tr>
                 <tr>
-                    <td><label for="password-content">Password:</label></td>
-                    <td><input type="password" id="password-content" name="password1" size="15" autocomplete="off"/></td>
+                    <td>
+                        <label th:for="${#ids.next('password')}">Password:</label>
+                    </td>
+                    <td>
+                        <input type="password" th:id="${#ids.seq('password')}" name="password1" size="15" autocomplete="off"/>
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="2" class="text-center">
-                        <input type="checkbox" name="rememberMe" value="true" id="rememberMe-content" checked="checked"/><label for="rememberMe-content">Remember me</label>
+                        <input type="checkbox" name="rememberMe" value="true" th:id="${#ids.seq('rememberMe')}" checked="checked"/>
+                        <label th:for="${#ids.prev('rememberMe')}">Remember me</label>
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2" style="text-align: center">
-                        <input type="submit" value="login"/>
+                        <button type="submit">login</button>
                         <input type="hidden" th:if="${backURL!=null}" name="url" th:value="${backURL}"/>
                         <input type="hidden" th:if="${contestId!=null}" name="contest_id" th:value="${contestId}"/>
                     </td>

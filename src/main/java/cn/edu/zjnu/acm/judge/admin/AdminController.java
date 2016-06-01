@@ -28,6 +28,7 @@ import java.time.ZoneId;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -119,7 +120,7 @@ public class AdminController {
             @RequestParam(value = "pureText", required = false) String pureText) {
         UserDetailService.requireAdminLoginned(request);
         if (!StringUtils.hasText(op)) {
-            throw new MessageException("Nothing I can do for you.");
+            throw new MessageException("Nothing I can do for you.", HttpStatus.BAD_REQUEST);
         }
 
         switch (op.toLowerCase()) {

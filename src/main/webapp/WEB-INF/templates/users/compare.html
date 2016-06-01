@@ -1,0 +1,109 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="'layout/main'">
+    <head>
+        <title th:inline="text">[[${uid1}]] vs [[${uid2}]]</title>
+    </head>
+    <body>
+        <!--/*/<th:block layout:fragment="content">/*/-->
+        <div align="center" style="font-size: x-large; color: blue;">
+            <a th:href="@{/userstatus(user_id=${uid1})}" th:text="${uid1}">uid1</a>
+            <span> vs </span>
+            <a th:href="@{/userstatus(user_id=${uid2})}" th:text="${uid2}">uid2</a>
+        </div>
+        <table align="center" cellspacing="0" cellpadding="0" width="600" border="1" class="table-back" style="border-collapse: collapse" bordercolor="#FFF">
+            <tbody>
+                <tr valign="bottom">
+                    <td>
+                        <br/>
+                        <form th:action="@{/usercmp}" method="get">
+                            <span>Compare </span>
+                            <input type="text" size="10" name="uid1" th:value="${uid1}"/>
+                            <span>and </span>
+                            <input type="text" size="10" name="uid2" th:value="${uid2}"/>
+                            <button type="submit">GO</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr bgcolor="#6589D1">
+                    <td>
+                        <span>Problems only </span>
+                        <a th:href="@{/userstatus(user_id=${uid1})}" th:text="${uid1}">uid1</a>
+                        <span> accepted:</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a th:each="p:${a}" th:href="@{/showproblem(problem_id=${p})}" th:text="|${p} |">1000 </a>
+                    </td>
+                </tr>
+                <tr bgcolor="#6589D1">
+                    <td>
+                        <span>Problems only </span>
+                        <a th:href="@{/userstatus(user_id=${uid2})}" th:text="${uid2}">uid2</a>
+                        <span> accepted:</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a th:each="p:${b}" th:href="@{/showproblem(problem_id=${p})}" th:text="|${p} |">1000 </a>
+                    </td>
+                </tr>
+                <tr bgcolor="#6589D1">
+                    <td>
+                        <span>Problems both </span>
+                        <a th:href="@{/userstatus(user_id=${uid1})}" th:text="${uid1}">uid1</a>
+                        <span> and </span>
+                        <a th:href="@{/userstatus(user_id=${uid2})}" th:text="${uid2}">uid2</a>
+                        <span> accepted:</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a th:each="p:${c}" th:href="@{/showproblem(problem_id=${p})}" th:text="|${p} |">1000 </a>
+                    </td>
+                </tr>
+                <tr bgcolor="#6589D1">
+                    <td>
+                        <span>Problems only </span>
+                        <a th:href="@{/userstatus(user_id=${uid1})}" th:text="${uid1}">uid1</a>
+                        <span> tried but failed:</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a th:each="p:${d}" th:href="@{/showproblem(problem_id=${p})}" th:text="|${p} |">1000 </a>
+                    </td>
+                </tr>
+                <tr bgcolor="#6589D1">
+                    <td>
+                        <span>Problems only </span>
+                        <a th:href="@{/userstatus(user_id=${uid2})}" th:text="${uid2}">uid2</a>
+                        <span> tried but failed:</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a th:each="p:${e}" th:href="@{/showproblem(problem_id=${p})}" th:text="|${p} |">1000 </a>
+                    </td>
+                </tr>
+                <tr bgcolor="#6589D1">
+                    <td>
+                        <span>Problems both </span>
+                        <a th:href="@{/userstatus(user_id=${uid1})}" th:text="${uid1}">uid1</a>
+                        <span> and </span>
+                        <a th:href="@{/userstatus(user_id=${uid2})}" th:text="${uid2}">uid2</a>
+                        <span> tried but failed:</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a th:each="p:${f}" th:href="@{/showproblem(problem_id=${p})}" th:text="|${p} |">1000 </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <!--/*/</th:block>/*/-->
+    </body>
+</html>

@@ -60,9 +60,8 @@ public class JudgeUtils {
         if (!StringUtils.hasText(string)) {
             return "";
         }
-        return StringEscapeUtils.escapeHtml4(string
-                .replaceAll("\\w:[/\\\\](?:\\w+[/\\\\])+?(?i)(?=Main\\.)(?-i)", ""))
-                .replaceAll("\r\n|[\n\r\u2028\u2029\u0085]", "<br/>");
+        return string
+                .replaceAll("\\w:[/\\\\](?:\\w+[/\\\\])+?(?i)(?=Main\\.)(?-i)", "");
     }
 
     public static String getReplyString(String string) {

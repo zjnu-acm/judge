@@ -8,6 +8,7 @@ import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +28,7 @@ public class ContestManagerController {
 
     private Contest getContest(long contestId) {
         return Optional.ofNullable(contestMapper.findOne(contestId))
-                .orElseThrow(() -> new MessageException("No such contest"));
+                .orElseThrow(() -> new MessageException("No such contest", HttpStatus.NOT_FOUND));
     }
 
     @RequestMapping(value = "/admin/contests/{contestId}/problems", method = RequestMethod.POST)
@@ -38,7 +39,7 @@ public class ContestManagerController {
         UserDetailService.requireAdminLoginned(request);
         Contest contest = getContest(contestId);
         if (contest.isEnded()) {
-            throw new MessageException("Contest is ended, can't add problem now");
+            throw new MessageException("Contest is ended, can't add problem now", HttpStatus.BAD_REQUEST);
         }
         synchronized (contestLock) {
             problemMapper.setContest(problemId, contestId);
@@ -57,10 +58,10 @@ public class ContestManagerController {
         UserDetailService.requireAdminLoginned(request);
         Contest contest = getContest(contestId);
         if (contest.isEnded()) {
-            throw new MessageException("Contest is ended, can't delete problem now");
+            throw new MessageException("Contest is ended, can't delete problem now", HttpStatus.BAD_REQUEST);
         }
         if (contest.isStarted()) {
-            throw new MessageException("Contest is started, can't delete problem now");
+            throw new MessageException("Contest is started, can't delete problem now", HttpStatus.BAD_REQUEST);
         }
         synchronized (contestLock) {
             problemMapper.setContest(problemId, null);

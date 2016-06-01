@@ -15,6 +15,10 @@
  */
 package cn.edu.zjnu.acm.judge.exception;
 
+import lombok.Getter;
+import lombok.NonNull;
+import org.springframework.http.HttpStatus;
+
 /**
  *
  * @author zhanhb
@@ -22,9 +26,12 @@ package cn.edu.zjnu.acm.judge.exception;
 public class MessageException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
+    @Getter
+    private final HttpStatus httpStatus;
 
-    public MessageException(String message) {
+    public MessageException(String message, @NonNull HttpStatus httpStatus) {
         super(message);
+        this.httpStatus = httpStatus;
     }
 
     // no stack trace

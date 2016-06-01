@@ -7,25 +7,50 @@
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
         <form method="post" th:action="@{/admin/contests}">
-            <p align="center"><font size="4" color="#333399">Add a Contest</font></p>
-            <p align="left">Title:<input type="text" name="title" size="71"/></p>
-            <p align="left">Description:<br/><textarea rows="8" name="description" cols="76"></textarea></p>
-            <p align="left">Start Time:<br/>&nbsp;&nbsp;&nbsp;
-                Year:<input type="text" name="syear" th:value="${#calendars.format(execInfo.now,'yyyy')}" size="7"/>
-                Month:<input type="text" name="smonth" th:value="${#calendars.format(execInfo.now,'M')}" size="7"/>
-                Day:<input type="text" name="sday" size="7"/>&nbsp;
-                Hour:<input type="text" name="shour" size="7" onchange="document.getElementsByName('ehour')[0].value = 5 + parseInt(this.value);"/>&nbsp;
-                Minute:<input type="text" name="sminute" value="0" size="7"/></p>
-            <p align="left">End Time:<br/>&nbsp;&nbsp;&nbsp;
-                Year:<input type="text" name="eyear" th:value="${#calendars.format(execInfo.now,'yyyy')}" size="7"/>
-                Month:<input type="text" name="emonth" th:value="${#calendars.format(execInfo.now,'M')}" size="7"/>
-                Day:<input type="text" name="eday" size="7"/>&nbsp;
-                Hour:<input type="text" name="ehour" size="7"/>&nbsp;
-                Minute:<input type="text" name="eminute" value="0" size="7"/></p>
+            <p align="center" style="color: #333399;font-size: large;">Add a Contest</p>
+            <p align="left">
+                <label th:for="${#ids.next('title')}">Title:</label>
+                <input th:id="${#ids.seq('title')}" type="text" name="title" size="71"/>
+            </p>
+            <p align="left">
+                <label th:for="${#ids.next('description')}">Description:</label>
+                <br/>
+                <textarea th:id="${#ids.seq('description')}" rows="8" name="description" cols="76"></textarea>
+            </p>
+            <p align="left">
+                <span>Start Time:</span>
+                <br/>
+                <span>&nbsp;&nbsp;&nbsp;</span>
+                <span>Year:</span>
+                <input type="text" name="syear" th:value="${#calendars.format(execInfo.now,'yyyy')}" size="7"/>
+                <span> Month:</span>
+                <input type="text" name="smonth" th:value="${#calendars.format(execInfo.now,'M')}" size="7"/>
+                <span> Day:</span>
+                <input type="text" name="sday" size="7"/>
+                <span> Hour:</span>
+                <input type="text" name="shour" size="7" onchange="document.getElementsByName('ehour')[0].value = 5 + parseInt(this.value);"/>
+                <span> Minute:</span>
+                <input type="text" name="sminute" value="0" size="7"/>
+            </p>
+            <p align="left">
+                <span>End Time:</span>
+                <br/><span>&nbsp;&nbsp;&nbsp;</span>
+                <span>Year:</span>
+                <input type="text" name="eyear" th:value="${#calendars.format(execInfo.now,'yyyy')}" size="7"/>
+                <span> Month:</span>
+                <input type="text" name="emonth" th:value="${#calendars.format(execInfo.now,'M')}" size="7"/>
+                <span> Day:</span>
+                <input type="text" name="eday" size="7"/>
+                <span> Hour:</span>
+                <input type="text" name="ehour" size="7"/>
+                <span> Minute:</span>
+                <input type="text" name="eminute" value="0" size="7"/>
+            </p>
             <div align="center">
                 <p>
-                    <input type="submit" value="Submit" name="submit"/>
-                    <input type="reset" value="Reset" name="reset"/></p>
+                    <button type="submit">Submit</button>
+                    <button type="reset">Reset</button>
+                </p>
             </div>
         </form>
         <!--/*/</th:block>/*/-->

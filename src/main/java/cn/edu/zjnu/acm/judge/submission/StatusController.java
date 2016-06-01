@@ -41,6 +41,8 @@ public class StatusController {
     private ContestMapper contestMapper;
     @Autowired
     private SubmissionService submissionService;
+    @Autowired
+    private LanguageFactory languageFactory;
 
     @RequestMapping(value = {"/status", "/submissions"}, method = {RequestMethod.GET, RequestMethod.HEAD})
     public void status(HttpServletRequest request, HttpServletResponse response,
@@ -106,13 +108,13 @@ public class StatusController {
         request.setAttribute("contestId", contestId);
         out.print("<html><head><title>Problem Status List</title></head><body>"
                 + "<p align=center><font size=4 color=#333399>Problem Status List</font></p>"
-                + "<form method=get action='status'/>Problem ID:<input type=text name=problem_id size=8 value=\""
+                + "<form method=get action='status'/>Problem ID:<input type=number name=problem_id size=8 value=\""
                 + StringEscapeUtils.escapeHtml4(pid) + "\"/> User ID:<input type=text name=user_id size=15 value=\""
                 + StringEscapeUtils.escapeHtml4(userId) + "\"/>"
                 + " Language:"
                 + "<select size=\"1\" name=\"language\">"
                 + "<option value=\"\">All</option>");
-        for (Map.Entry<Integer, Language> entry : LanguageFactory.getLanguages().entrySet()) {
+        for (Map.Entry<Integer, Language> entry : languageFactory.getLanguages().entrySet()) {
             int key = entry.getKey();
             Language value = entry.getValue();
             out.print("<option value=\"" + key + "\"" + (key == language ? " selected" : "")
@@ -122,7 +124,7 @@ public class StatusController {
         if (contestId != null) {
             out.print("<input type=hidden name=contest_id value='" + contestId + "' />");
         }
-        out.print(" <input type=submit value='Go'/></form>"
+        out.print(" <button type=submit>Go</button></form>"
                 + "<TABLE cellSpacing=0 cellPadding=0 width=100% border=1 class=table-back style=\"border-collapse: collapse\" bordercolor=#FFF>"
                 + "<tr bgcolor=#6589D1><td align=center width=8%><b>Run ID</b></td><td align=center width=10%><b>User</b></td><td align=center width=6%><b>Problem</b></td>"
                 + "<td align=center width=10%><b>Result</b></td><td align=center width=10%><b>Score</b></td><td align=center width=7%><b>Memory</b></td><td align=center width=7%><b>Time</b></td><td align=center width=7%><b>Language</b></td><td align=center width=7%><b>Code Length</b></td><td align=center width=17%><b>Submit Time</b></td></tr>");
@@ -138,7 +140,7 @@ public class StatusController {
             long num = submission.getNum();
             int score = submission.getScore();
             Instant inDate = submission.getInDate();
-            String language1 = LanguageFactory.getLanguage(submission.getLanguage()).getName();
+            String language1 = languageFactory.getLanguage(submission.getLanguage()).getName();
             String color;
             if (score == 100) {
                 color = "blue";

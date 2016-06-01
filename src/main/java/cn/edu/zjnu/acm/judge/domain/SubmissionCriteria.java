@@ -16,19 +16,22 @@
 package cn.edu.zjnu.acm.judge.domain;
 
 import java.io.Serializable;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  *
  * @author zhanhb
  */
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(toBuilder = true)
 @Data
 @NoArgsConstructor
+@Setter(AccessLevel.PRIVATE)
 public class SubmissionCriteria implements Serializable {
 
     private static final long serialVersionUID = 1L;

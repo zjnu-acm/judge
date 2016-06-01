@@ -22,7 +22,7 @@
                 <tr th:each="user,it:${users}" th:style="${it.even?'background: #C0C0C0':'background: #78C8FF'}" th:object="${user}">
                     <td th:text="${it.count}">1</td>
                     <td><a th:href="@{/userstatus(user_id=*{id})}" th:text="*{id}">userId</a></td>
-                    <td th:text="*{nick}">管理员ญ๊</td>
+                    <td th:text="*{nick}">nick</td>
                     <td th:text="*{solved}">225</td>
                     <td th:text="*{submit}">845</td>
                 </tr>
