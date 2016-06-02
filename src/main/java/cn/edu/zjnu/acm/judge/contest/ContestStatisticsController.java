@@ -66,7 +66,7 @@ public class ContestStatisticsController {
         int languageCount = languages.size();
         String str2 = "select ";
         for (int i : languages.keySet()) {
-            str2 = str2 + "count(if(language=" + i + ",1,null)),";
+            str2 = str2 + "count(if(language=" + i + ",1,null)) t" + i + ",";
         }
         str2 += "problem_id,num,count(if(score=100,1,0)) as AC,count(if(score<100 and score >=70,1,0)) as PE,count(if(score<70 and score >30,1,null)) as TLE,count(if(score>0 and score <=30,1,null)) as WA,count(if(score=0,1,null)) as RE,count(if(score=-7,1,null)) as CE,count(if(score<-7 or score > 100,1,null)) as Others,count(*) as Total from solution where contest_id=? group by problem_id order by num";
 

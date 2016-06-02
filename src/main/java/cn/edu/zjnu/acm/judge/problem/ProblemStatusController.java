@@ -23,12 +23,15 @@ import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import cn.edu.zjnu.acm.judge.util.ResultType;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -97,21 +100,23 @@ public class ProblemStatusController {
             request.setAttribute("contestId", contestId);
         }
         final DateTimeFormatter formatter = dtf.withZone(ZoneId.systemDefault());
+        List<ScoreCount> list = problemMapper.groupByScore(id);
+        ArrayList<String> scores = new ArrayList<>(list.size());
+        ArrayList<Long> counts = new ArrayList<>(list.size());
+        ArrayList<String> urls = new ArrayList<>(list.size());
+        for (ScoreCount scoreCount : list) {
+            int score = scoreCount.getScore();
+            scores.add(ResultType.getShowsourceString(score));
+            counts.add(scoreCount.getCount());
+            urls.add("status?problem_id=" + id + "&score=" + score);
+        }
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         out.print("<html><head><title>" + id + "'s Status List</title></head><body>"
                 + "<STYLE> v\\:* { Behavior: url(#default#VML) }o\\:* { behavior: url(#default#VML) }</STYLE>"
                 + "<table><tr><td valign=top><div style='position:relative; height:650px; width:260px'>"
                 + "<script src='js/problemstatus.js'></script>"
-                + "<script>var sa = [[],[],[]];var len = 0;");
-        List<ScoreCount> list = problemMapper.groupByScore(id);
-        int ii = 0;
-        for (ScoreCount scoreCount : list) {
-            int score = scoreCount.getScore();
-            String scoreStr = ResultType.getShowsourceString(score);
-            out.print("sa[1][" + ii + "]='" + scoreStr + "'; sa[0][" + ii + "]=" + scoreCount.getCount() + "; sa[2][" + ii + "]='status?problem_id=" + id + "&score=" + score + "'; ");
-            ii++;
-        }
+                + "<script>var sa = " + new Gson().toJson(Arrays.asList(counts, scores, urls)) + ";var len = 0;");
         out.print("if (sa[0].length > sa[1].length){ len = sa[1].length; }else { len = sa[0].length; }"
                 + "table(len,0,0,600,600,'Statistics','',200,250," + submitUser + "," + solved + ",'status?problem_id=" + id + "'); </script></div></td>"
                 + "<td valign=top><p align=center><font size=5 color=#333399>Best solutions of Problem <a href=showproblem?problem_id=" + id + ">" + id + "</a></font></p>"
