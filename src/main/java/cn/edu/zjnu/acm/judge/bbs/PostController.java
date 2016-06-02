@@ -26,8 +26,8 @@ public class PostController {
     @RequestMapping(value = "/post", method = RequestMethod.POST)
     @Transactional
     public String post(HttpServletRequest request,
-            @RequestParam(value = "problem_id", defaultValue = "0") long problemId,
-            @RequestParam(value = "parent_id", defaultValue = "0") long parentId,
+            @RequestParam(value = "problem_id", required = false) Long problemId,
+            @RequestParam(value = "parent_id", required = false) Long parentId,
             @RequestParam(value = "content", defaultValue = "") String content,
             @RequestParam(value = "title", defaultValue = "") String title,
             RedirectAttributes redirectAttributes) {
@@ -39,7 +39,7 @@ public class PostController {
             throw new MessageException("Title can't be blank", HttpStatus.BAD_REQUEST);
         }
         final long nextId = messageMapper.nextId();
-        final Message parent = parentId != 0
+        final Message parent = parentId != null
                 ? Optional.ofNullable(messageMapper.findOne(parentId))
                 .orElseThrow(() -> new MessageException("No such parent message", HttpStatus.NOT_FOUND))
                 : null;
@@ -63,7 +63,7 @@ public class PostController {
         if (parent != null) {
             messageMapper.updateThreadIdByThreadId(nextId, parent.getThread());
         }
-        if (problemId != 0) {
+        if (problemId != null) {
             redirectAttributes.addAttribute("problem_id", problemId);
         }
         return "redirect:/bbs";

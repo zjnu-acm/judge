@@ -86,8 +86,8 @@ CREATE TABLE IF NOT EXISTS `mail` (
 -- Dumping structure for table clanguage.message
 CREATE TABLE IF NOT EXISTS `message` (
   `message_id` bigint(20) NOT NULL,
-  `problem_id` bigint(20) NOT NULL,
-  `parent_id` bigint(20) NOT NULL DEFAULT '0',
+  `problem_id` bigint(20) DEFAULT NULL,
+  `parent_id` bigint(20) DEFAULT NULL,
   `thread_id` bigint(20) NOT NULL DEFAULT '0',
   `depth` int(11) NOT NULL DEFAULT '0',
   `orderNum` int(11) NOT NULL DEFAULT '0',
@@ -99,6 +99,8 @@ CREATE TABLE IF NOT EXISTS `message` (
   PRIMARY KEY (`message_id`),
   KEY `INDEX_user` (`user_id`) USING HASH,
   KEY `INDEX_problem` (`problem_id`) USING HASH,
+  KEY `FK_message_message` (`parent_id`),
+  CONSTRAINT `FK_message_message` FOREIGN KEY (`parent_id`) REFERENCES `message` (`message_id`),
   CONSTRAINT `FK_message_problem` FOREIGN KEY (`problem_id`) REFERENCES `problem` (`problem_id`),
   CONSTRAINT `FK_message_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='讨论版';
