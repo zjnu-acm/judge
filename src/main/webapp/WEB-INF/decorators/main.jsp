@@ -84,12 +84,12 @@
                 <!-- end content -->
                 <div id="footer" class="clearfix">
                     <p>
-                        <img alt="home" height="29" src="${pageContext.request.contextPath}/images/home.png" width="40" border="0"/>
+                        <img alt="home" height="29" src="${pageContext.request.contextPath}/images/home.jpg" width="40" border="0"/>
                         <font size="3"><a href="${pageContext.request.contextPath}/">Home Page</a></font>
-                        <img alt="goback" height="29" src="${pageContext.request.contextPath}/images/goback.png" width="40" border="0" style="margin-left: 40px;"/>
+                        <img alt="goback" height="29" src="${pageContext.request.contextPath}/images/goback.jpg" width="40" border="0" style="margin-left: 40px;"/>
                         <font size="3">
                         <a href="javascript:history.go(-1)">Go Back</a>
-                        <img alt="top" height="29" width="40" border="0" src="${pageContext.request.contextPath}/images/top.png" style="margin-left: 40px;"/>
+                        <img alt="top" height="29" width="40" border="0" src="${pageContext.request.contextPath}/images/top.jpg" style="margin-left: 40px;"/>
                         <a href="#top">To top</a>
                         </font>
                     </p>

@@ -15,7 +15,6 @@
  */
 package cn.edu.zjnu.acm.judge;
 
-import com.google.common.base.Strings;
 import java.util.Locale;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.Banner;
@@ -36,8 +35,8 @@ public class Application extends SpringBootServletInitializer {
             int port = ((EmbeddedWebApplicationContext) context).getEmbeddedServletContainer().getPort();
             String contextPath = context.getApplicationName();
             String url = String.format(Locale.US, "http://localhost:%d%s", port, contextPath);
-            String dashes = Strings.repeat("-", 72);
-            log.info("Access URLs:\n{}\n\tLocal:\t\t{}\n{}", dashes, url, dashes);
+            final String dashes = "------------------------------------------------------------------------";
+            log.info("Access URLs:\n" + dashes + "\n\tLocal:\t\t{}\n" + dashes, url);
         }
     }
 
