@@ -56,10 +56,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+import org.thymeleaf.util.StringUtils;
 
 /**
  *
@@ -146,7 +145,7 @@ public class Judger {
             log.error("{} not exists", runRecord.getDataPath());
             return false;
         }
-        List<Pair<Path, Path>> files = new ArrayList<>(20);
+        List<Path[]> files = new ArrayList<>(20);
         try (DirectoryStream<Path> listFiles = Files.newDirectoryStream(dataPath)) {
             log.debug("dataPath = {}", dataPath);
             for (Path inFile : listFiles) {
@@ -158,7 +157,7 @@ public class Judger {
                 if (!Files.exists(outFile)) {
                     continue;
                 }
-                files.add(Pair.of(inFile, outFile));//统计输入,输出文件
+                files.add(new Path[]{inFile, outFile});//统计输入,输出文件
             }
         }
         int casenum = files.size();
@@ -172,16 +171,16 @@ public class Judger {
         long memory = 0; //内存
         String command = runRecord.getLanguage().getExecuteCommand();
         Path work = judgeConfiguration.getWorkDirectory(runRecord.getSubmissionId()); //建立临时文件
-        command = StringUtils.hasText(command) ? command : work.resolve("Main." + runRecord.getLanguage().getExecutableExtension()).toString();
+        command = !StringUtils.isEmptyOrWhitespace(command) ? command : work.resolve("Main." + runRecord.getLanguage().getExecutableExtension()).toString();
         long extTime = runRecord.getLanguage().getExtTime();
         long castTimeLimit = runRecord.getTimeLimit() * runRecord.getLanguage().getTimeFactor() + extTime;
         long extraMemory = runRecord.getLanguage().getExtMemory(); //内存附加
         long caseMemoryLimit = (runRecord.getMemoryLimit() + extraMemory) * 1024;
         Options[] optionses = new Options[casenum];
         for (int cas = 0; cas < casenum; cas++) {
-            Pair<Path, Path> entry = files.get(cas);
-            Path in = entry.getLeft();
-            Path standard = entry.getRight();
+            Path[] entry = files.get(cas);
+            Path in = entry[0];
+            Path standard = entry[1];
             Path progOutput = work.resolve(standard.getFileName());
 
             optionses[cas] = Options.builder()
@@ -247,7 +246,7 @@ public class Judger {
 
     private boolean compile(RunRecord runRecord) throws IOException {
         String source = runRecord.getSource();
-        if (!StringUtils.hasText(source)) {
+        if (StringUtils.isEmptyOrWhitespace(source)) {
             return false;
         }
         Path previous = judgeConfiguration.getWorkDirectory(runRecord.getSubmissionId() - 1);
@@ -260,7 +259,7 @@ public class Judger {
 
         String compileCommand = runRecord.getLanguage().getCompileCommand();
         log.debug("Compile Command: {}", compileCommand); //编译命令
-        if (!StringUtils.hasText(compileCommand)) {
+        if (StringUtils.isEmptyOrWhitespace(compileCommand)) {
             return true;
         }
         //创建编译进程

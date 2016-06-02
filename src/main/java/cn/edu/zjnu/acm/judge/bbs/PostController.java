@@ -11,11 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.thymeleaf.util.StringUtils;
 
 @Controller
 public class PostController {
@@ -35,7 +35,7 @@ public class PostController {
         long depth = 0;
         long orderNum = 0;
         final String userId = UserDetailService.getCurrentUserId(request).orElse(null);
-        if (!StringUtils.hasText(title)) {
+        if (StringUtils.isEmptyOrWhitespace(title)) {
             throw new MessageException("Title can't be blank", HttpStatus.BAD_REQUEST);
         }
         final long nextId = messageMapper.nextId();

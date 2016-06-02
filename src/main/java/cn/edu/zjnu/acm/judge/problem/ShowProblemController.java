@@ -11,7 +11,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -79,7 +78,7 @@ public class ShowProblemController {
         StringBuilder sb = new StringBuilder(800);
 
         if (contestId == null) {
-            sb.append("<html><head><title>").append(problemId).append(" -- ").append(StringEscapeUtils.escapeHtml4(title)).append("</title></head><body>" + "<table border=0 width=100% class=table-back><tr><td><div class=\"ptt\" lang=\"en-US\">").append(title).append("</div>");
+            sb.append("<html><head><title>").append(problemId).append(" -- ").append(org.thymeleaf.util.StringUtils.escapeXml(title)).append("</title></head><body>" + "<table border=0 width=100% class=table-back><tr><td><div class=\"ptt\" lang=\"en-US\">").append(title).append("</div>");
         } else {
             request.setAttribute("contestId", contestId);
             sb.append("<html><head><title>").append((char) (contestNum + 'A')).append(":").append(problemId).append(" -- ").append(title).append("</title></head><body>"

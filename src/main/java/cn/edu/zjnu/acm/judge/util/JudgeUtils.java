@@ -5,8 +5,7 @@ import java.io.StringReader;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.stream.Collectors;
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.springframework.util.StringUtils;
+import org.thymeleaf.util.StringUtils;
 
 public class JudgeUtils {
 
@@ -57,7 +56,7 @@ public class JudgeUtils {
     }
 
     public static String escapeCompileInfo(String string) {
-        if (!StringUtils.hasText(string)) {
+        if (StringUtils.isEmptyOrWhitespace(string)) {
             return "";
         }
         return string
@@ -65,16 +64,16 @@ public class JudgeUtils {
     }
 
     public static String getReplyString(String string) {
-        if (!StringUtils.hasText(string)) {
+        if (StringUtils.isEmptyOrWhitespace(string)) {
             return "";
         }
-        return StringEscapeUtils.escapeHtml4(new BufferedReader(new StringReader(string)).lines()
+        return StringUtils.escapeXml(new BufferedReader(new StringReader(string)).lines()
                 .filter(line -> !line.startsWith("> "))
                 .collect(Collectors.joining("\n> ", "> ", "\n")));
     }
 
     public static String getHtmlFormattedString(String str) {
-        if (!StringUtils.hasText(str)) {
+        if (StringUtils.isEmptyOrWhitespace(str)) {
             return "";
         }
         for (int i = 0, len = str.length(); i < len; ++i) {
