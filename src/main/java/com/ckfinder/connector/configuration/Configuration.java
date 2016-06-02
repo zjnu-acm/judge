@@ -86,7 +86,6 @@ public class Configuration implements IConfiguration {
     protected Set<String> defaultResourceTypes;
     protected IBasePathBuilder basePathBuilder;
     protected boolean disallowUnsafeCharacters;
-    protected boolean enableCsrfProtection;
     private boolean loading;
     private Events events;
     private boolean debug;
@@ -145,7 +144,6 @@ public class Configuration implements IConfiguration {
         this.events = new Events();
         this.basePathBuilder = null;
         this.disallowUnsafeCharacters = false;
-        this.enableCsrfProtection = true;
     }
 
     /**
@@ -235,9 +233,6 @@ public class Configuration implements IConfiguration {
                         break;
                     case "checkSizeAfterScaling":
                         this.checkSizeAfterScaling = Boolean.valueOf(nullNodeToString(childNode));
-                        break;
-                    case "enableCsrfProtection":
-                        this.enableCsrfProtection = Boolean.valueOf(nullNodeToString(childNode));
                         break;
                     case "htmlExtensions":
                         String htmlExt = nullNodeToString(childNode);
@@ -615,18 +610,6 @@ public class Configuration implements IConfiguration {
     @Override
     public boolean isDisallowUnsafeCharacters() {
         return this.disallowUnsafeCharacters;
-    }
-
-    /**
-     * Returns flag indicating if Cross-site request forgery (CSRF) protection
-     * has been enabled.
-     *
-     * @return {@code boolean} flag indicating if CSRF protection has been
-     * enabled
-     */
-    @Override
-    public boolean isEnableCsrfProtection() {
-        return this.enableCsrfProtection;
     }
 
     /**
@@ -1155,7 +1138,6 @@ public class Configuration implements IConfiguration {
         configuration.doubleExtensions = this.doubleExtensions;
         configuration.forceASCII = this.forceASCII;
         configuration.disallowUnsafeCharacters = this.disallowUnsafeCharacters;
-        configuration.enableCsrfProtection = this.enableCsrfProtection;
         configuration.checkSizeAfterScaling = this.checkSizeAfterScaling;
         configuration.secureImageUploads = this.secureImageUploads;
         configuration.uriEncoding = this.uriEncoding;

@@ -294,9 +294,6 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
             final IConfiguration configuration, final Object... params)
             throws ConnectorException {
         super.initParams(request, configuration);
-        if (this.configuration.isEnableCsrfProtection() && !checkCsrfToken(request, null)) {
-            throw new ConnectorException(Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST, "CSRF Attempt");
-        }
         this.files = new ArrayList<>();
         this.movedAll = (request.getParameter("moved") != null) ? Integer.valueOf(request.getParameter("moved")) : 0;
 

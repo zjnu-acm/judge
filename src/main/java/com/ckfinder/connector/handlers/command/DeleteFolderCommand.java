@@ -31,9 +31,6 @@ public class DeleteFolderCommand extends XMLCommand implements IPostCommand {
             throws ConnectorException {
 
         super.initParams(request, configuration, params);
-        if (this.configuration.isEnableCsrfProtection() && !checkCsrfToken(request, null)) {
-            throw new ConnectorException(Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST, "CSRF Attempt");
-        }
     }
 
     @Override

@@ -163,9 +163,6 @@ public class RenameFileCommand extends XMLCommand implements IPostCommand {
             final IConfiguration configuration, final Object... params)
             throws ConnectorException {
         super.initParams(request, configuration);
-        if (this.configuration.isEnableCsrfProtection() && !checkCsrfToken(request, null)) {
-            throw new ConnectorException(Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST, "CSRF Attempt");
-        }
         this.fileName = getParameter(request, "fileName");
         this.newFileName = getParameter(request, "newFileName");
     }
