@@ -67,7 +67,7 @@ public class ProblemStatusController {
         }
     }
 
-    @RequestMapping(value = "/problemstatus", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @RequestMapping(value = "/problemstatus", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = "text/html;charset=UTF-8")
     public ResponseEntity<String> status(HttpServletRequest request,
             @RequestParam("problem_id") long id,
             @RequestParam(value = "start", defaultValue = "0") long start,

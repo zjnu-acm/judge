@@ -21,7 +21,7 @@ public class BBSController {
     @Autowired
     private DataSource dataSource;
 
-    @RequestMapping(value = "/bbs", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @RequestMapping(value = "/bbs", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = "text/html;charset=UTF-8")
     protected ResponseEntity<String> bbs(HttpServletRequest request,
             @RequestParam(value = "problem_id", required = false) Long problemId,
             @RequestParam(value = "size", defaultValue = "50") long threadLimit,
