@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class ModifyUserController {
-    
+
     @Autowired
     private UserMapper userMapper;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    
+
     @RequestMapping(value = "/modifyuser", method = RequestMethod.POST)
     public String modifyuser(HttpServletRequest request,
             @RequestParam("oldPassword") String oldPassword,
@@ -67,5 +67,5 @@ public class ModifyUserController {
         request.setAttribute("user", user);
         return "modifyusersuccess";
     }
-    
+
 }

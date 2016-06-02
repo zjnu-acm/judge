@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class GlobalExceptionHandler   {
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(MessageException.class)
     public String messageExceptionHandler(HttpServletRequest request, HttpServletResponse response, MessageException ex) {

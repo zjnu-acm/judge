@@ -1,17 +1,15 @@
 package cn.edu.zjnu.acm.judge.bbs;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,11 +22,10 @@ public class BBSController {
     private DataSource dataSource;
 
     @RequestMapping(value = "/bbs", method = {RequestMethod.GET, RequestMethod.HEAD})
-    protected void bbs(HttpServletRequest request, HttpServletResponse response,
+    protected ResponseEntity<String> bbs(HttpServletRequest request,
             @RequestParam(value = "problem_id", required = false) Long problemId,
             @RequestParam(value = "size", defaultValue = "50") long threadLimit,
-            @RequestParam(value = "top", defaultValue = "99999999") long top)
-            throws IOException, SQLException {
+            @RequestParam(value = "top", defaultValue = "99999999") long top) throws SQLException {
         threadLimit = Math.min(threadLimit, 500);
         threadLimit = Math.max(threadLimit, 0);
         long mint = 0;
@@ -57,9 +54,7 @@ public class BBSController {
         long l5 = 0;
         long depth = 0;
         long l11 = 0;
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        out.print("<html><head><title>Messages</title></head><body>"
+        StringBuilder sb = new StringBuilder("<html><head><title>Messages</title></head><body>"
                 + "<table border=0 width=100% class=table-back><tr><td><ul>");
         try (Connection conn = dataSource.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql2)) {
@@ -86,29 +81,27 @@ public class BBSController {
                     }
 
                     for (long l7 = l5; l7 < depth; l7++) {
-                        out.print("<ul>");
+                        sb.append("<ul>");
                     }
                     for (long l7 = depth; l7 < l5; l7++) {
-                        out.print("</ul>");
+                        sb.append("</ul>");
                     }
                     if ((l11 != 0) && (threadId != l11) && (depth == 0)) {
-                        out.print("<hr/>");
+                        sb.append("<hr/>");
                     }
                     l11 = threadId;
-                    out.print("<li><a href=showmessage?message_id="
-                            + messageId + "><font color=blue>" + StringEscapeUtils.escapeHtml4(title) + "</font></a> <b><a href=userstatus?user_id="
-                            + userId + "><font color=black>" + userId + "</font></a></b> " + timestamp);
+                    sb.append("<li><a href=showmessage?message_id=").append(messageId).append("><font color=blue>").append(StringEscapeUtils.escapeHtml4(title)).append("</font></a> <b><a href=userstatus?user_id=").append(userId).append("><font color=black>").append(userId).append("</font></a></b> ").append(timestamp);
                     if (problem != null && problem != 0L && depth == 0) {
-                        out.print(" <b><a href=showproblem?problem_id=" + problem + "><font color=#000>Problem " + problem + "</font></a></b>");
+                        sb.append(" <b><a href=showproblem?problem_id=").append(problem).append("><font color=#000>Problem ").append(problem).append("</font></a></b>");
                     }
                     l5 = depth;
                 }
             }
         }
         for (long l7 = 0; l7 < depth; l7++) {
-            out.print("</ul>");
+            sb.append("</ul>");
         }
-        out.print("</ul></td></tr></table><center>");
+        sb.append("</ul></td></tr></table><center>");
         String sql3 = "select thread_id from message where thread_id>=? ";
         if (problemId != null) {
             sql3 += " and problem_id=? ";
@@ -132,20 +125,22 @@ public class BBSController {
         if (problemId != null) {
             query = query + "?problem_id=" + problemId;
         }
-        out.print("<hr/>[<a href=bbs" + query + ">Top</a>]");
+        sb.append("<hr/>[<a href=bbs").append(query).append(">Top</a>]");
         query = "?top=" + maxt;
         if (problemId != null) {
             query = query + "&problem_id=" + problemId;
         }
-        out.print("&nbsp;&nbsp;&nbsp;[<a href=bbs" + query + ">Previous</a>]");
+        sb.append("&nbsp;&nbsp;&nbsp;[<a href=bbs").append(query).append(">Previous</a>]");
         query = "?top=" + mint;
         if (problemId != null) {
             query = query + "&problem_id=" + problemId;
         }
-        out.print("&nbsp;&nbsp;&nbsp;[<a href=bbs" + query + ">Next</a>]<br/></center><form action=postpage>");
+        sb.append("&nbsp;&nbsp;&nbsp;[<a href=bbs").append(query).append(">Next</a>]<br/></center><form action=postpage>");
         if (problemId != null) {
-            out.print("<input type=hidden name=problem_id value=" + problemId + ">");
+            sb.append("<input type=hidden name=problem_id value=").append(problemId).append(">");
         }
-        out.print("<button type=submit>Post new message</button></form></body></html>");
+        sb.append("<button type=submit>Post new message</button></form></body></html>");
+        return ResponseEntity.ok(sb.toString());
     }
+
 }
