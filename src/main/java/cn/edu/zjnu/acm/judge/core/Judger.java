@@ -50,6 +50,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -124,10 +125,10 @@ public class Judger {
         if (problem == null) {
             return;
         }
-        Path dataPath = judgeConfiguration.getDataDirectory(runRecord.getProblemId());
-        runRecord.toBuilder()
+        Path dataPath = judgeConfiguration.getDataDirectory(problem.getId());
+        runRecord = runRecord.toBuilder()
                 .dataPath(dataPath)
-                .memoryLimit(submissionId)
+                .memoryLimit(problem.getMemoryLimit())
                 .timeLimit(problem.getTimeLimit())
                 .build();
         Path workDirectory = judgeConfiguration.getWorkDirectory(submissionId);
@@ -137,9 +138,10 @@ public class Judger {
     }
 
     private boolean runProcess(RunRecord runRecord) throws IOException {
-        Path specialFile = runRecord.getDataPath().resolve(JudgeConfiguration.VALIDATE_FILE_NAME);
-        boolean isspecial = Files.exists(specialFile);
         Path dataPath = runRecord.getDataPath();
+        Objects.requireNonNull(dataPath, "dataPath");
+        Path specialFile = dataPath.resolve(JudgeConfiguration.VALIDATE_FILE_NAME);
+        boolean isspecial = Files.exists(specialFile);
         if (!Files.isDirectory(dataPath)) {
             log.error("{} not exists", runRecord.getDataPath());
             return false;
