@@ -5,13 +5,13 @@ import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import cn.edu.zjnu.acm.judge.util.ValueCheck;
-import com.google.common.base.Strings;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,10 +45,10 @@ public class ModifyUserController {
         if (!passwordEncoder.matches(oldPassword, password)) {
             throw new MessageException("password is not correct", HttpStatus.BAD_REQUEST);
         }
-        if (Strings.isNullOrEmpty(nick)) {
+        if (StringUtils.isEmpty(nick)) {
             nick = userId;
         }
-        if (Strings.isNullOrEmpty(newPassword)) {
+        if (StringUtils.isEmpty(newPassword)) {
             newPassword = oldPassword;
         } else {
             ValueCheck.checkPassword(newPassword);

@@ -15,10 +15,6 @@
  */
 package cn.edu.zjnu.acm.judge.user;
 
-import com.google.common.base.Strings;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import java.util.concurrent.ExecutionException;
 import javax.annotation.Nullable;
 import org.springframework.stereotype.Service;
 
@@ -29,14 +25,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class PasswordConfuser {
 
-    private static final Cache<Integer, String> CACHE
-            = CacheBuilder.newBuilder().weakValues().build();
+    private static final String[] STARS;
 
-    private static String repeat(int n) {
-        try {
-            return CACHE.get(n, () -> Strings.repeat("*", n));
-        } catch (ExecutionException impossible) {
-            throw new Error(impossible);
+    static {
+        STARS = new String[17];
+        String t = "****************";
+        STARS[16] = t;
+        for (int i = 0; i < 16; i++) {
+            STARS[i] = t.substring(0, i);
         }
     }
 
@@ -47,14 +43,14 @@ public class PasswordConfuser {
         }
         int len = rawPassword.length();
         if (len <= 4) {
-            return repeat(len);
+            return STARS[len];
         }
         char s = rawPassword.charAt(0);
         char e = rawPassword.charAt(len - 1);
         if (len > 16) {
             return s + "......" + e + "(total " + len + " characters)";
         }
-        return s + repeat(len - 2) + e;
+        return s + STARS[len - 2] + e;
     }
 
 }
