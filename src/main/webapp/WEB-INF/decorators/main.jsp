@@ -17,14 +17,14 @@
     </jsp:scriptlet>
 
     <jsp:expression>"&lt;!DOCTYPE html&gt;"</jsp:expression>
-        <html>
-            <head>
-                <meta charset="utf-8"/>
-                <meta name="renderer" content="webkit"/>
-                <meta http-equiv="Cache-Control" content="no-siteapp"/>
-                <meta http-equiv="X-UA-Compatible" content="chrome=1,IE=Edge"/>
-                <title><decorator:title default="Welcome to JudgeOnline"/></title>
-                <!--<link href="${pageContext.request.contextPath}/webjars/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>-->
+    <html>
+        <head>
+            <meta charset="utf-8"/>
+            <meta name="renderer" content="webkit"/>
+            <meta http-equiv="Cache-Control" content="no-siteapp"/>
+            <meta http-equiv="X-UA-Compatible" content="chrome=1,IE=Edge"/>
+            <title><decorator:title default="Welcome to JudgeOnline"/></title>
+            <!--<link href="${pageContext.request.contextPath}/webjars/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>-->
 
             <link href="${pageContext.request.contextPath}/css/site.css?_=${applicationScope.startUpDate}" rel="stylesheet"/>
             <link href="${pageContext.request.contextPath}/sample.png" rel="shortcut icon"/>
@@ -84,23 +84,24 @@
                 <!-- end content -->
                 <div id="footer" class="clearfix">
                     <p>
-                        <img alt="home" height="29" src="${pageContext.request.contextPath}/images/home.png" width="40"
-                             border="0"/>
+                        <img alt="home" height="29" src="${pageContext.request.contextPath}/images/home.png" width="40" border="0"/>
                         <font size="3"><a href="${pageContext.request.contextPath}/">Home Page</a></font>
-                        <img alt="goback" height="29" src="${pageContext.request.contextPath}/images/goback.png" width="40"
-                             border="0" style=" margin-left: 40px;"/>
-                        <font size="3"><a href="javascript:history.go(-1)">Go Back</a>
-                        <img alt="top" height="29" width="40" border="0"
-                             src="${pageContext.request.contextPath}/images/top.png" style=" margin-left: 40px;"/><a
-                             href="#top">To top</a></font>
+                        <img alt="goback" height="29" src="${pageContext.request.contextPath}/images/goback.png" width="40" border="0" style="margin-left: 40px;"/>
+                        <font size="3">
+                        <a href="javascript:history.go(-1)">Go Back</a>
+                        <img alt="top" height="29" width="40" border="0" src="${pageContext.request.contextPath}/images/top.png" style="margin-left: 40px;"/>
+                        <a href="#top">To top</a>
+                        </font>
                     </p>
                     <hr/>
-                    <p align="center"><font size="3">All Copyright Reserved 2006-<jsp:expression>java.time.Year.now()</jsp:expression> ZJNU ACM<br/>Any problem, Please Contact <a href="mailto:${applicationScope['admin.mail']}">Administrator</a></font>
-                        </p>
-                    </div>
-                    <!-- end footer -->
+                    <p align="center">
+                        <font size="3">All Copyright Reserved 2006-<jsp:expression>java.time.Year.now()</jsp:expression> ZJNU ACM<br/>Any problem, Please Contact <a href="mailto:${applicationScope['admin.mail']}">Administrator</a>
+                        </font>
+                    </p>
                 </div>
-                <!-- end page -->
+                <!-- end footer -->
+            </div>
+            <!-- end page -->
             <jsp:directive.include file="ga.jsp"/>
         </body>
     </html>
