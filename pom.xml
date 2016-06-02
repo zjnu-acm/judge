@@ -177,11 +177,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.jboss</groupId>
-            <artifactId>jboss-vfs</artifactId>
-            <version>${jboss-vfs.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
             <scope>runtime</scope>

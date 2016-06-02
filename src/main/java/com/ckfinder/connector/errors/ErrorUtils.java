@@ -14,30 +14,21 @@ package com.ckfinder.connector.errors;
 import com.ckfinder.connector.ConnectorServlet;
 import com.ckfinder.connector.configuration.Constants;
 import com.ckfinder.connector.configuration.IConfiguration;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLDecoder;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Executors;
 import java.util.function.Function;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import org.jboss.vfs.TempFileProvider;
-import org.jboss.vfs.VFS;
-import org.jboss.vfs.VFSUtils;
-import org.jboss.vfs.VirtualFile;
-import org.jboss.vfs.spi.MountHandle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -100,102 +91,16 @@ public final class ErrorUtils {
     private List<String> getLangCodeFromJars() {
         List<String> langFiles = new ArrayList<>();
         try {
-            URL dirURL = ConnectorServlet.class.getResource("/lang/");
-            // #768 there was a problem that files were loaded from work not from jar
-            // in work we can get list of files from standard directory
-            String protocol = dirURL.getProtocol();
-            if ("file".equalsIgnoreCase(protocol)) {
-                // getPath returns path with spaces converted to "%20"
-                // It's a Java feature: http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4466485
-                // The path needs to be decoded first with URLDecoder
-                URI uri = URI.create(dirURL.toString());
-                File f = new File(uri);
-                if (f.exists() && f.isDirectory()) {
-                    for (File file : f.listFiles()) {
-                        langFiles.add(file.getName().replaceAll(".xml", ""));
-                    }
-                }
-            } else if ("jar".equalsIgnoreCase(protocol) || "zip".equalsIgnoreCase(protocol)) {
-                String jarPath;
-                // If url is path to jar content we have to get it other way. Remove "file:" and all chars after !
-                // In Weblogic path starts with drive so we just have to remove chars after !
-                jarPath = dirURL.getPath().substring("zip".equalsIgnoreCase(protocol) ? 0 : 5, dirURL.getPath().indexOf('!'));
-                // change "%20" to " "
-                JarFile jarFile = new JarFile(URLDecoder.decode(jarPath, "UTF-8"));
-                Enumeration<JarEntry> entries = jarFile.entries();
-                Pattern pattern = Pattern.compile("lang.+\\.xml");
-                while (entries.hasMoreElements()) {
-                    JarEntry jarEntry = entries.nextElement();
-                    if (checkJarEntry(jarEntry, pattern)) {
-                        langFiles.add(jarEntry.getName().replaceAll("lang/", "").replaceAll(".xml", ""));
-                    }
-                }
-            } else if ("vfs".equalsIgnoreCase(protocol)) {//JBoss vfs
-                VirtualFile langDir = VFS.getChild(dirURL.getPath());
-                List<VirtualFile> langFilesList = langDir.getChildren();
-                if (langFilesList.size() > 0) { //This will work in JBOSS 7 with exploded and packed war.
-                    for (VirtualFile vFile : langFilesList) {
-                        File contentsFile = vFile.getPhysicalFile();
-                        langFiles.add(contentsFile.getName().replaceAll(".xml", ""));
-                    }
-                } else { //It's JBOSS 6.
-                    VirtualFile jarFile = VFS.getChild(dirURL.getPath().substring(1, dirURL.getPath().indexOf(".jar") + 4));
-                    if (jarFile.exists()) { //war is exploded.
-                        TempFileProvider tempFileProvider = TempFileProvider.create("tmpjar", Executors.newScheduledThreadPool(2));
-                        MountHandle jarHandle = (MountHandle) VFS.mountZip(jarFile, jarFile, tempFileProvider);
-                        File mountJar = jarHandle.getMountSource();
-                        addFileNamesToList(mountJar, jarFile, langFiles);
-                        VFSUtils.safeClose(jarHandle);
-                    } else {//war is packed.
-                        VirtualFile warFile = VFS.getChild(dirURL.getPath().substring(1, dirURL.getPath().indexOf(".war") + 4));
-                        if (warFile.exists()) {
-                            TempFileProvider tempWarFileProvider = TempFileProvider.create("tmpwar", Executors.newScheduledThreadPool(2));
-                            MountHandle warHandle = (MountHandle) VFS.mountZip(warFile, warFile, tempWarFileProvider);
-                            File mountWar = warHandle.getMountSource();
-                            if (mountWar.exists()) {
-                                TempFileProvider tempJarFileProvider = TempFileProvider.create("tmpjar", Executors.newScheduledThreadPool(2));
-                                MountHandle jarHandle = (MountHandle) VFS.mountZip(jarFile, jarFile, tempJarFileProvider);
-                                File mountJar = jarHandle.getMountSource();
-                                addFileNamesToList(mountJar, jarFile, langFiles);
-                                VFSUtils.safeClose(jarHandle);
-                                VFSUtils.safeClose(warHandle);
-                            }
-                        }
-                    }
+            Path dir = Paths.get(ConnectorServlet.class.getResource("/lang/").toURI());
+            if (Files.isDirectory(dir)) {
+                for (Iterator<Path> it = Files.newDirectoryStream(dir).iterator(); it.hasNext();) {
+                    langFiles.add(it.next().getFileName().toString().replaceAll(".xml", ""));
                 }
             }
-        } catch (IOException e) {
+        } catch (URISyntaxException | IOException ex) {
             return null;
         }
         return langFiles;
-    }
-
-    /**
-     * Adds language codes to {@code List}.
-     *
-     * @param mountJar mounted source file
-     * @param jarFile virtual jar file
-     * @param langFiles list of string codes representing supported languages.
-     */
-    private void addFileNamesToList(File mountJar, VirtualFile jarFile, List<String> langFiles) throws IOException {
-        if (mountJar.exists()) {
-            List<VirtualFile> jarLangFilesList = jarFile.getChild("lang").getChildrenRecursively();
-            for (VirtualFile vFile : jarLangFilesList) {
-                File contentsFile = vFile.getPhysicalFile();
-                langFiles.add(contentsFile.getName().replaceAll(".xml", ""));
-            }
-        }
-    }
-
-    /**
-     * Checks if jar entry, provided as parameter, is locale file.
-     *
-     * @param jarEntry jar entry to check
-     * @return {@code true} if jar entry is locale file, {@code false}
-     * otherwise.
-     */
-    private boolean checkJarEntry(final JarEntry jarEntry, Pattern pattern) {
-        return pattern.matcher(jarEntry.getName()).matches();
     }
 
     /**
@@ -227,4 +132,5 @@ public final class ErrorUtils {
         }
         return langCodeMap;
     }
+
 }
