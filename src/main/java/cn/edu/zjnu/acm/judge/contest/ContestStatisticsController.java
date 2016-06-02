@@ -14,7 +14,6 @@ import java.time.Instant;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.thymeleaf.util.StringUtils;
 
 @Controller
 public class ContestStatisticsController {
@@ -46,7 +46,7 @@ public class ContestStatisticsController {
         request.setAttribute("contestId", contestId);
 
         StringBuilder sb = new StringBuilder("<html><head><title>Contest Statistics</title></head><body><p align=center><font size=5 color=blue>Contest Statistics--");
-        sb.append(StringEscapeUtils.escapeHtml4(title));
+        sb.append(StringUtils.escapeXml(title));
         if (!contest.isEnded()) {
             if (endTime != null) {
                 sb.append("<br/>Time to go:").append(JudgeUtils.formatTime(now, endTime));
@@ -70,7 +70,7 @@ public class ContestStatisticsController {
         long[] arrayOfLong1 = new long[judgeStatus.length];
         long[] arrayOfLong2 = new long[languageCount];
         sb.append("<th>&nbsp;</th>");
-        languages.values().forEach(language -> sb.append("<th>").append(StringEscapeUtils.escapeHtml4(language.getName())).append("</th>"));
+        languages.values().forEach(language -> sb.append("<th>").append(StringUtils.escapeXml(language.getName())).append("</th>"));
         sb.append("</tr>");
         try (Connection conn = dataSource.getConnection();
                 PreparedStatement ps = conn.prepareStatement(str2)) {

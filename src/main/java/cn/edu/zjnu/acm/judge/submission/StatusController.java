@@ -20,14 +20,13 @@ import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.thymeleaf.util.StringUtils;
 
 @Slf4j
 @Controller
@@ -85,7 +84,7 @@ public class StatusController {
                 .size(size)
                 .top(top)
                 .bottom(bottom)
-                .user(StringUtils.hasText(userId) ? userId : null)
+                .user(!StringUtils.isEmptyOrWhitespace(userId) ? userId : null)
                 .language(language != -1 ? language : null)
                 .build();
         log.info("{}", criteria);
@@ -102,14 +101,14 @@ public class StatusController {
 
         request.setAttribute("contestId", contestId);
 
-        StringBuilder sb = new StringBuilder("<html><head><title>Problem Status List</title></head><body>" + "<p align=center><font size=4 color=#333399>Problem Status List</font></p>" + "<form method=get action='status'/>Problem ID:<input type=number name=problem_id size=8 value=\"").append(StringEscapeUtils.escapeHtml4(pid)).append("\"/> User ID:<input type=text name=user_id size=15 value=\"").append(StringEscapeUtils.escapeHtml4(userId)).append("\"/>"
+        StringBuilder sb = new StringBuilder("<html><head><title>Problem Status List</title></head><body>" + "<p align=center><font size=4 color=#333399>Problem Status List</font></p>" + "<form method=get action='status'/>Problem ID:<input type=number name=problem_id size=8 value=\"").append(org.thymeleaf.util.StringUtils.escapeXml(pid)).append("\"/> User ID:<input type=text name=user_id size=15 value=\"").append(StringUtils.escapeXml(userId)).append("\"/>"
                 + " Language:"
                 + "<select size=\"1\" name=\"language\">"
                 + "<option value=\"\">All</option>");
         for (Map.Entry<Integer, Language> entry : languageFactory.getLanguages().entrySet()) {
             int key = entry.getKey();
             Language value = entry.getValue();
-            sb.append("<option value=\"").append(key).append("\"").append(key == language ? " selected" : "").append(">").append(StringEscapeUtils.escapeHtml4(value.getName())).append("</option>");
+            sb.append("<option value=\"").append(key).append("\"").append(key == language ? " selected" : "").append(">").append(StringUtils.escapeXml(value.getName())).append("</option>");
         }
         sb.append("</select>");
         if (contestId != null) {

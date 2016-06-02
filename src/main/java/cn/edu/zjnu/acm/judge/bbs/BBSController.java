@@ -7,13 +7,13 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.thymeleaf.util.StringUtils;
 
 @Controller
 public class BBSController {
@@ -90,7 +90,7 @@ public class BBSController {
                         sb.append("<hr/>");
                     }
                     l11 = threadId;
-                    sb.append("<li><a href=showmessage?message_id=").append(messageId).append("><font color=blue>").append(StringEscapeUtils.escapeHtml4(title)).append("</font></a> <b><a href=userstatus?user_id=").append(userId).append("><font color=black>").append(userId).append("</font></a></b> ").append(timestamp);
+                    sb.append("<li><a href=showmessage?message_id=").append(messageId).append("><font color=blue>").append(StringUtils.escapeXml(title)).append("</font></a> <b><a href=userstatus?user_id=").append(userId).append("><font color=black>").append(userId).append("</font></a></b> ").append(timestamp);
                     if (problem != null && problem != 0L && depth == 0) {
                         sb.append(" <b><a href=showproblem?problem_id=").append(problem).append("><font color=#000>Problem ").append(problem).append("</font></a></b>");
                     }

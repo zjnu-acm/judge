@@ -10,7 +10,6 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.thymeleaf.util.StringUtils;
 
 /**
  *
@@ -50,7 +50,7 @@ public class ShowMessageController {
         final long thread = message.getThread();
         final long order = message.getOrder();
 
-        StringBuilder sb = new StringBuilder("<html><head><title>Detail of message</title></head><body>" + "<table border=0 width=980 class=table-back><tr><td>" + "<center><h2><font color=blue>").append(StringEscapeUtils.escapeHtml4(title)).append("</font></h2></center>" + "Posted by <b><a href=userstatus?user_id=").append(uid).append("><font color=black>").append(uid).append("</font></a></b>" + "at ").append(formatter.format(inDate));
+        StringBuilder sb = new StringBuilder("<html><head><title>Detail of message</title></head><body>" + "<table border=0 width=980 class=table-back><tr><td>" + "<center><h2><font color=blue>").append(StringUtils.escapeXml(title)).append("</font></h2></center>" + "Posted by <b><a href=userstatus?user_id=").append(uid).append("><font color=black>").append(uid).append("</font></a></b>" + "at ").append(formatter.format(inDate));
         if (pid != null && pid != 0) {
             sb.append("on <b><a href=showproblem?problem_id=").append(pid).append("><font color=black>Problem ").append(pid).append("</font></a></b>");
         }
@@ -59,11 +59,11 @@ public class ShowMessageController {
             if (parent != null) {
                 String title1 = parent.getTitle();
                 Instant inDate1 = parent.getInDate();
-                sb.append("<br/>In Reply To:<a href=showmessage?message_id=").append(parentId).append("><font color=blue>").append(StringEscapeUtils.escapeHtml4(title1)).append("</font></a>" + "Posted by:<b><a href=userstatus?user_id=").append(parent.getUser()).append("><font color=black>").append(parent.getUser()).append("</font></a></b>" + "at ").append(formatter.format(inDate1));
+                sb.append("<br/>In Reply To:<a href=showmessage?message_id=").append(parentId).append("><font color=blue>").append(StringUtils.escapeXml(title1)).append("</font></a>" + "Posted by:<b><a href=userstatus?user_id=").append(parent.getUser()).append("><font color=black>").append(parent.getUser()).append("</font></a></b>" + "at ").append(formatter.format(inDate1));
             }
         }
         sb.append("<HR noshade color=#FFF><pre>");
-        sb.append(StringEscapeUtils.escapeHtml4(content));
+        sb.append(StringUtils.escapeXml(content));
         sb.append("</pre><HR noshade color='#FFF'><b>Followed by:</b><br/><ul>");
         final long l8 = depth;
         List<Message> messages = messageMapper.findAllByThreadIdAndOrderNumGreaterThanOrderByOrderNum(thread, order);
@@ -82,7 +82,7 @@ public class ShowMessageController {
             for (long i = depth1; i < depth; i++) {
                 sb.append("</ul>");
             }
-            sb.append("<li><a href=showmessage?message_id=").append(id).append("><font color=blue>").append(StringEscapeUtils.escapeHtml4(title1)).append("</font></a>" + " -- <b><a href=userstatus?user_id=").append(user).append("><font color=black>").append(user).append("</font></a></b> ");
+            sb.append("<li><a href=showmessage?message_id=").append(id).append("><font color=blue>").append(StringUtils.escapeXml(title1)).append("</font></a>" + " -- <b><a href=userstatus?user_id=").append(user).append("><font color=black>").append(user).append("</font></a></b> ");
             sb.append(formatter.format(inDate1));
             depth = depth1;
         }
@@ -97,7 +97,7 @@ public class ShowMessageController {
         if (!title.regionMatches(true, 0, "re:", 0, 3)) {
             title = "Reply:" + title;
         }
-        sb.append("Title:<br/><input type=text name=title value=\"").append(StringEscapeUtils.escapeHtml4(title)).append("\" size=75><br/>" + "Content:<br/><textarea rows=15 name=content cols=75>").append(JudgeUtils.getReplyString(content)).append("</textarea><br/><button type=Submit>reply</button></td></tr></table></body></html>");
+        sb.append("Title:<br/><input type=text name=title value=\"").append(StringUtils.escapeXml(title)).append("\" size=75><br/>" + "Content:<br/><textarea rows=15 name=content cols=75>").append(JudgeUtils.getReplyString(content)).append("</textarea><br/><button type=Submit>reply</button></td></tr></table></body></html>");
         return ResponseEntity.ok(sb.toString());
     }
 

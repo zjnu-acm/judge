@@ -26,10 +26,10 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.thymeleaf.util.StringUtils;
 
 /**
  *
@@ -84,7 +84,7 @@ public class MailController {
             @RequestParam("content") String content) {
         UserDetailService.requireLoginned(request);
         String userId = UserDetailService.getCurrentUserId(request).orElse(null);
-        if (!StringUtils.hasText(title)) {
+        if (StringUtils.isEmptyOrWhitespace(title)) {
             title = "No Topic";
         }
         if (content.length() > 40000) {
