@@ -6,8 +6,6 @@ import cn.edu.zjnu.acm.judge.domain.Language;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.util.JudgeUtils;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,11 +13,11 @@ import java.sql.SQLException;
 import java.time.Instant;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,9 +34,8 @@ public class ContestStatisticsController {
     private LanguageFactory languageFactory;
 
     @RequestMapping(value = "/conteststatistics", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public void conteststatistics(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam("contest_id") long contestId)
-            throws IOException, SQLException {
+    public ResponseEntity<String> conteststatistics(HttpServletRequest request,
+            @RequestParam("contest_id") long contestId) throws SQLException {
         Instant now = Instant.now();
         Contest contest = contestMapper.findOneByIdAndDefunctN(contestId);
         if (contest == null || !contest.isStarted()) {
@@ -46,19 +43,18 @@ public class ContestStatisticsController {
         }
         String title = contest.getTitle();
         Instant endTime = contest.getEndTime();
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
         request.setAttribute("contestId", contestId);
-        out.print("<html><head><title>Contest Statistics</title></head><body><p align=center><font size=5 color=blue>Contest Statistics--");
-        out.print(StringEscapeUtils.escapeHtml4(title));
+
+        StringBuilder sb = new StringBuilder("<html><head><title>Contest Statistics</title></head><body><p align=center><font size=5 color=blue>Contest Statistics--");
+        sb.append(StringEscapeUtils.escapeHtml4(title));
         if (!contest.isEnded()) {
             if (endTime != null) {
-                out.print("<br/>Time to go:" + JudgeUtils.formatTime(now, endTime));
+                sb.append("<br/>Time to go:").append(JudgeUtils.formatTime(now, endTime));
             } else {
-                out.print("<br/>Time to go Infinity");
+                sb.append("<br/>Time to go Infinity");
             }
         }
-        out.print("</font></p>"
+        sb.append("</font></p>"
                 + "<TABLE align=center cellSpacing=0 cellPadding=0 width=600 border=1 class=table-back style=\"border-collapse: collapse\" bordercolor=#FFF>"
                 + "<tr bgcolor=#6589D1><th>&nbsp;</th><th>100</th><th>99~70</th><th>69~31</th><th>30~1</th><th>0</th><th>CE</th><th>Others</th><th>Total</th>");
 
@@ -73,9 +69,9 @@ public class ContestStatisticsController {
         String[] judgeStatus = {"AC", "PE", "WA", "TLE", "RE", "CE", "Others", "Total"};
         long[] arrayOfLong1 = new long[judgeStatus.length];
         long[] arrayOfLong2 = new long[languageCount];
-        out.print("<th>&nbsp;</th>");
-        languages.values().forEach(language -> out.print("<th>" + StringEscapeUtils.escapeHtml4(language.getName()) + "</th>"));
-        out.print("</tr>");
+        sb.append("<th>&nbsp;</th>");
+        languages.values().forEach(language -> sb.append("<th>").append(StringEscapeUtils.escapeHtml4(language.getName())).append("</th>"));
+        sb.append("</tr>");
         try (Connection conn = dataSource.getConnection();
                 PreparedStatement ps = conn.prepareStatement(str2)) {
             ps.setLong(1, contestId);
@@ -83,51 +79,51 @@ public class ContestStatisticsController {
                 while (rs.next()) {
                     long problemId = rs.getLong("problem_id");
                     long num = rs.getLong("num");
-                    out.print("<tr><th><a href=showproblem?problem_id=" + problemId + ">" + (char) ('A' + num) + "</a></th>");
+                    sb.append("<tr><th><a href=showproblem?problem_id=").append(problemId).append(">").append((char) ('A' + num)).append("</a></th>");
                     for (int i = 0; i < judgeStatus.length; ++i) {
                         long l6 = rs.getLong(judgeStatus[i]);
                         arrayOfLong1[i] += l6;
                         if (l6 == 0) {
-                            out.print("<td>&nbsp;</td>");
+                            sb.append("<td>&nbsp;</td>");
                         } else if (i == judgeStatus.length - 1) {
-                            out.print("<th><a href=status?contest_id=" + contestId
-                                    + "&problem_id=" + problemId + ">" + l6 + "</a></th>");
+                            sb.append("<th><a href=status?contest_id=").append(contestId).append("&problem_id=").append(problemId).append(">").append(l6).append("</a></th>");
                         } else {
-                            out.print("<td>" + l6 + "</td>");
+                            sb.append("<td>").append(l6).append("</td>");
                         }
                     }
-                    out.print("<td>&nbsp;</td>");
+                    sb.append("<td>&nbsp;</td>");
                     for (int i = 0; i < languageCount; ++i) {
                         long l6 = rs.getLong(i + 1);
                         arrayOfLong2[i] += l6;
                         if (l6 == 0) {
-                            out.print("<td>&nbsp;</td>");
+                            sb.append("<td>&nbsp;</td>");
                         } else {
-                            out.print("<td>" + l6 + "</td>");
+                            sb.append("<td>").append(l6).append("</td>");
                         }
                     }
-                    out.print("</tr>");
+                    sb.append("</tr>");
                 }
             }
         }
-        out.print("<tr><th>Total</th>");
+        sb.append("<tr><th>Total</th>");
         for (int i = 0; i < judgeStatus.length; ++i) {
             if (arrayOfLong1[i] == 0) {
-                out.print("<td>&nbsp;</td>");
+                sb.append("<td>&nbsp;</td>");
             } else if (i == judgeStatus.length - 1) {
-                out.print("<th>" + arrayOfLong1[i] + "</th>");
+                sb.append("<th>").append(arrayOfLong1[i]).append("</th>");
             } else {
-                out.print("<td>" + arrayOfLong1[i] + "</td>");
+                sb.append("<td>").append(arrayOfLong1[i]).append("</td>");
             }
         }
-        out.print("<td>&nbsp;</td>");
+        sb.append("<td>&nbsp;</td>");
         for (int i = 0; i < languageCount; ++i) {
             if (arrayOfLong2[i] == 0) {
-                out.print("<td>&nbsp;</td>");
+                sb.append("<td>&nbsp;</td>");
             } else {
-                out.print("<td>" + arrayOfLong2[i] + "</td>");
+                sb.append("<td>").append(arrayOfLong2[i]).append("</td>");
             }
         }
-        out.print("</tr></table></body></html>");
+        sb.append("</tr></table></body></html>");
+        return ResponseEntity.ok(sb.toString());
     }
 }

@@ -11,8 +11,6 @@ import cn.edu.zjnu.acm.judge.service.SubmissionService;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import cn.edu.zjnu.acm.judge.util.ResultType;
 import cn.edu.zjnu.acm.judge.util.URLBuilder;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -21,10 +19,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,7 +43,7 @@ public class StatusController {
     private LanguageFactory languageFactory;
 
     @RequestMapping(value = {"/status", "/submissions"}, method = {RequestMethod.GET, RequestMethod.HEAD})
-    public void status(HttpServletRequest request, HttpServletResponse response,
+    public ResponseEntity<String> status(HttpServletRequest request,
             @RequestParam(value = "problem_id", defaultValue = "") String pid,
             @RequestParam(value = "contest_id", required = false) Long contestId,
             @RequestParam(value = "language", defaultValue = "-1") int language,
@@ -53,8 +51,7 @@ public class StatusController {
             final @RequestParam(value = "bottom", required = false) Long bottom,
             @RequestParam(value = "score", required = false) Integer sc,
             @RequestParam(value = "user_id", defaultValue = "") String userId,
-            final @RequestParam(value = "top", required = false) Long top)
-            throws IOException {
+            final @RequestParam(value = "top", required = false) Long top) {
         long problemId = 0;
         String query;
         try {
@@ -103,28 +100,22 @@ public class StatusController {
                 .max(Comparator.naturalOrder())
                 .orElseGet(() -> bottom != null ? bottom : top != null ? top : null);
 
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
         request.setAttribute("contestId", contestId);
-        out.print("<html><head><title>Problem Status List</title></head><body>"
-                + "<p align=center><font size=4 color=#333399>Problem Status List</font></p>"
-                + "<form method=get action='status'/>Problem ID:<input type=number name=problem_id size=8 value=\""
-                + StringEscapeUtils.escapeHtml4(pid) + "\"/> User ID:<input type=text name=user_id size=15 value=\""
-                + StringEscapeUtils.escapeHtml4(userId) + "\"/>"
+
+        StringBuilder sb = new StringBuilder("<html><head><title>Problem Status List</title></head><body>" + "<p align=center><font size=4 color=#333399>Problem Status List</font></p>" + "<form method=get action='status'/>Problem ID:<input type=number name=problem_id size=8 value=\"").append(StringEscapeUtils.escapeHtml4(pid)).append("\"/> User ID:<input type=text name=user_id size=15 value=\"").append(StringEscapeUtils.escapeHtml4(userId)).append("\"/>"
                 + " Language:"
                 + "<select size=\"1\" name=\"language\">"
                 + "<option value=\"\">All</option>");
         for (Map.Entry<Integer, Language> entry : languageFactory.getLanguages().entrySet()) {
             int key = entry.getKey();
             Language value = entry.getValue();
-            out.print("<option value=\"" + key + "\"" + (key == language ? " selected" : "")
-                    + ">" + StringEscapeUtils.escapeHtml4(value.getName()) + "</option>");
+            sb.append("<option value=\"").append(key).append("\"").append(key == language ? " selected" : "").append(">").append(StringEscapeUtils.escapeHtml4(value.getName())).append("</option>");
         }
-        out.print("</select>");
+        sb.append("</select>");
         if (contestId != null) {
-            out.print("<input type=hidden name=contest_id value='" + contestId + "' />");
+            sb.append("<input type=hidden name=contest_id value='").append(contestId).append("' />");
         }
-        out.print(" <button type=submit>Go</button></form>"
+        sb.append(" <button type=submit>Go</button></form>"
                 + "<TABLE cellSpacing=0 cellPadding=0 width=100% border=1 class=table-back style=\"border-collapse: collapse\" bordercolor=#FFF>"
                 + "<tr bgcolor=#6589D1><td align=center width=8%><b>Run ID</b></td><td align=center width=10%><b>User</b></td><td align=center width=6%><b>Problem</b></td>"
                 + "<td align=center width=10%><b>Result</b></td><td align=center width=10%><b>Score</b></td><td align=center width=7%><b>Memory</b></td><td align=center width=7%><b>Time</b></td><td align=center width=7%><b>Language</b></td><td align=center width=7%><b>Code Length</b></td><td align=center width=17%><b>Submit Time</b></td></tr>");
@@ -147,69 +138,60 @@ public class StatusController {
             } else {
                 color = "red";
             }
-            out.print("<tr align=center><td>" + id + "</td>");
+            sb.append("<tr align=center><td>").append(id).append("</td>");
             String problemString;
             if (contestId == null || num == -1) {
                 problemString = "" + problem_id1;
             } else {
                 problemString = Character.toString((char) (num + 'A'));
             }
-            out.print("<td><a href=userstatus?user_id=" + user_id1 + ">"
-                    + user_id1 + "</a></td><td><a href=showproblem?problem_id="
-                    + problem_id1 + ">" + problemString + "</a></td>");
+            sb.append("<td><a href=userstatus?user_id=").append(user_id1).append(">").append(user_id1).append("</a></td><td><a href=showproblem?problem_id=").append(problem_id1).append(">").append(problemString).append("</a></td>");
 
             if (score == ResultType.COMPILE_ERROR) {
                 if (submissionService.canView(request, submission)) {
-                    out.print("<td><a href=\"showcompileinfo?solution_id="
-                            + id + "\" target=_blank><font color=green>"
-                            + ResultType.getResultDescription(score) + "</font></a></td>");
+                    sb.append("<td><a href=\"showcompileinfo?solution_id=").append(id).append("\" target=_blank><font color=green>").append(ResultType.getResultDescription(score)).append("</font></a></td>");
                 } else {
-                    out.print("<td><font color=green>" + ResultType.getResultDescription(score) + "</font></td>");
+                    sb.append("<td><font color=green>").append(ResultType.getResultDescription(score)).append("</font></td>");
                 }
             } else if (submissionService.canView(request, submission)) {
-                out.print("<td><a href=showsolutiondetails?solution_id=" + id + " target=_blank><strong><font color=" + color + ">"
-                        + ResultType.getResultDescription(score)
-                        + "</font></strong></a></td>");
+                sb.append("<td><a href=showsolutiondetails?solution_id=").append(id).append(" target=_blank><strong><font color=").append(color).append(">").append(ResultType.getResultDescription(score)).append("</font></strong></a></td>");
             } else {
-                out.print("<td><font color=" + color + ">" + ResultType.getResultDescription(score)
-                        + "</font></a></td>");
+                sb.append("<td><font color=").append(color).append(">").append(ResultType.getResultDescription(score)).append("</font></a></td>");
             }
             if (score <= 100 && score >= 0) {
-                out.print("<td>" + score + "</td>");
+                sb.append("<td>").append(score).append("</td>");
             } else {
-                out.print("<td>&nbsp;</td>");
+                sb.append("<td>&nbsp;</td>");
             }
             boolean ended = true;
             if (!admin && contest_id1 != null) {
                 ended = contestMapper.findOne(contest_id1).isEnded();
             }
             if (score == 100 && ended) {
-                out.print("<td>" + submission.getMemory() + "K</td><td>"
-                        + submission.getTime() + "MS</td>");
+                sb.append("<td>").append(submission.getMemory()).append("K</td><td>").append(submission.getTime()).append("MS</td>");
             } else {
-                out.print("<td>&nbsp;</td><td>&nbsp;</td>");
+                sb.append("<td>&nbsp;</td><td>&nbsp;</td>");
             }
             if (admin || SourceBrowser || UserDetailService.isUser(request, user_id1)) {
-                out.print("<td><a href=showsource?solution_id="
-                        + id + " target=_blank>" + language1 + "</a></td>");
+                sb.append("<td><a href=showsource?solution_id=").append(id).append(" target=_blank>").append(language1).append("</a></td>");
             } else {
-                out.print("<td>" + language1 + "</td>");
+                sb.append("<td>").append(language1).append("</td>");
             }
             if (ended) {
                 int sourceLength = submission.getSourceLength();
                 String t = sourceLength > 2048 ? new DecimalFormat("0.00").format(sourceLength / 1024.) + " KB" : sourceLength + " B";
-                out.print("<td>" + t + "</td>");
+                sb.append("<td>").append(t).append("</td>");
             } else {
-                out.print("<td>&nbsp;</td>");
+                sb.append("<td>&nbsp;</td>");
             }
-            out.print("<td>" + sdf.format(Timestamp.from(inDate)) + "</td></tr>");
+            sb.append("<td>").append(sdf.format(Timestamp.from(inDate))).append("</td></tr>");
         }
         query = request.getContextPath() + query;
-        out.print("</table><p align=center>[<a href=\"" + query + "\">Top</a>]&nbsp;&nbsp;");
+        sb.append("</table><p align=center>[<a href=\"").append(query).append("\">Top</a>]&nbsp;&nbsp;");
         query += query.contains("?") ? '&' : '?';
-        out.print("[<a href=\"" + query + "bottom=" + (max != null ? max : "") + "\"><font color=blue>Previous Page</font></a>]"
-                + "&nbsp;&nbsp;[<a href=\"" + query + "top=" + (min != null ? min : "") + "\"><font color=blue>Next Page</font></a>]&nbsp;&nbsp;</p>"
+        sb.append("[<a href=\"").append(query).append("bottom=").append(max != null ? max : "").append("\"><font color=blue>Previous Page</font></a>]" + "&nbsp;&nbsp;[<a href=\"").append(query).append("top=").append(min != null ? min : "").append("\"><font color=blue>Next Page</font></a>]&nbsp;&nbsp;</p>"
                 + "<script>!function(w){setTimeout(function(){w.location.reload()},60000)}(this)</script></body></html>");
+        return ResponseEntity.ok(sb.toString());
     }
 
 }
