@@ -475,23 +475,14 @@ public class FileUtils {
      */
     private static String getClassPath() throws ConnectorException {
         if (fuClassPath == null || fuClassPath.isEmpty()) {
-            java.net.URL url = FileUtils.class.getResource("FileUtils.class");
+            java.net.URL url = FileUtils.class.getProtectionDomain().getCodeSource().getLocation();
             String finalPath = null;
             String filePathPrefix = "file:/";
 
-            if ("vfs".equalsIgnoreCase(url.getProtocol())) {
-                try {
-                    org.jboss.vfs.VirtualFile vFile = org.jboss.vfs.VFS.getChild(url.getPath());
-                    finalPath = org.jboss.vfs.VFSUtils.getPhysicalURI(vFile).getPath();
-                } catch (IOException ioex) {
-                    throw new ConnectorException(ioex);
-                }
-            } else {
-                try {
-                    finalPath = url.toURI().getSchemeSpecificPart();
-                } catch (URISyntaxException ueex) {
-                    throw new ConnectorException(ueex);
-                }
+            try {
+                finalPath = url.toURI().getSchemeSpecificPart();
+            } catch (URISyntaxException ueex) {
+                throw new ConnectorException(ueex);
             }
 
             if (finalPath != null && finalPath.startsWith(filePathPrefix)) {
