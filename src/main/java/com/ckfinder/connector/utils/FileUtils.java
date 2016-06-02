@@ -38,7 +38,7 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.servlet.ServletContext;
-import org.apache.commons.fileupload.FileItem;
+import javax.servlet.http.Part;
 
 /**
  * Utils for files.
@@ -771,7 +771,7 @@ public class FileUtils {
      * @return true if detected.
      * @throws IOException when io error occurs.
      */
-    public static boolean detectHtml(final FileItem item) throws IOException {
+    public static boolean detectHtml(final Part item) throws IOException {
         byte[] buff = new byte[MAX_BUFFER_SIZE];
         try (InputStream is = item.getInputStream()) {
             is.read(buff, 0, MAX_BUFFER_SIZE);

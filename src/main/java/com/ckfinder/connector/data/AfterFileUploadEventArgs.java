@@ -22,7 +22,6 @@ import java.io.File;
 public class AfterFileUploadEventArgs extends EventArgs {
 
     private String currentFolder;
-    private byte[] fileContent;
     private File file;
 
     /**
@@ -43,14 +42,14 @@ public class AfterFileUploadEventArgs extends EventArgs {
      * @return the fileContent
      */
     public final byte[] getFileContent() {
-        return fileContent;
+        throw new NoSuchMethodError();
     }
 
     /**
      * @param fileContent the fileContent to set
      */
     public final void setFileContent(final byte[] fileContent) {
-        this.fileContent = fileContent;
+        // noop
     }
 
     /**
@@ -66,4 +65,5 @@ public class AfterFileUploadEventArgs extends EventArgs {
     public final void setFile(final File file) {
         this.file = file;
     }
+
 }

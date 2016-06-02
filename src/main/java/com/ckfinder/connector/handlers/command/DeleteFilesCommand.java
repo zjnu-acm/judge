@@ -162,9 +162,6 @@ public class DeleteFilesCommand extends XMLCommand implements IPostCommand {
             IConfiguration configuration,
             Object... params) throws ConnectorException {
         super.initParams(request, configuration);
-        if (this.configuration.isEnableCsrfProtection() && !checkCsrfToken(request, null)) {
-            throw new ConnectorException(Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST, "CSRF Attempt");
-        }
         this.files = new ArrayList<>();
         getFilesListFromRequest(request);
     }

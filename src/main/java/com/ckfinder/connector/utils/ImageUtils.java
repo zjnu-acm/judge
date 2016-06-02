@@ -23,8 +23,8 @@ import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.List;
 import javax.imageio.ImageIO;
+import javax.servlet.http.Part;
 import net.coobird.thumbnailator.Thumbnails;
-import org.apache.commons.fileupload.FileItem;
 
 /**
  * Utils to operate on images.
@@ -230,7 +230,7 @@ public class ImageUtils {
      * @param item file upload item
      * @return true if file is image.
      */
-    public static boolean checkImageFile(final FileItem item) {
+    public static boolean checkImageFile(final Part item) {
         BufferedImage bi;
         try (InputStream is = item.getInputStream()) {
             bi = ImageIO.read(is);

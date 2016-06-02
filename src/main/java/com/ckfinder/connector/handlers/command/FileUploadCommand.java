@@ -24,20 +24,13 @@ import com.ckfinder.connector.utils.ImageUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Collections;
-import java.util.List;
+import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadBase.FileSizeLimitExceededException;
-import org.apache.commons.fileupload.FileUploadBase.IOFileUploadException;
-import org.apache.commons.fileupload.FileUploadBase.InvalidContentTypeException;
-import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import javax.servlet.http.Part;
 
 /**
  * Class to handle <code>FileUpload</code> command.
@@ -237,53 +230,14 @@ public class FileUploadCommand extends Command implements IPostCommand {
     @SuppressWarnings("unchecked")
     private boolean fileUpload(final HttpServletRequest request) {
         try {
-            DiskFileItemFactory fileItemFactory = new DiskFileItemFactory();
-            ServletFileUpload uploadHandler = new ServletFileUpload(
-                    fileItemFactory);
-
-            List<FileItem> items = uploadHandler.parseRequest(request);
-            Collections.sort(items, (a, b)
-                    -> -Boolean.compare(a.getFieldName().equals(tokenParamName),
-                            b.getFieldName().equals(tokenParamName))
-            ); //This comparator moves tokenParamName to first position on the list.
-
-            for (int i = 0, j = items.size(); i < j; i++) {
-                FileItem item = items.get(i);
-                if (configuration.isEnableCsrfProtection() && (!items.get(0).getFieldName().equals(tokenParamName)
-                        || (item.getFieldName().equals(tokenParamName) && !checkCsrfToken(request, item.getString())))) {
-                    throw new ConnectorException(Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST, "CSRF Attempt");
-                } else if (items.get(0).getFieldName().equals(tokenParamName) && items.size() == 1) {
-                    //No file was provided. Only the CSRF token
-                    throw new ConnectorException(Constants.Errors.CKFINDER_CONNECTOR_ERROR_CUSTOM_ERROR, "No file provided in the request.");
-                } else if (!item.isFormField()) {
-                    String path = configuration.getTypes().get(this.type).getPath()
-                            + this.currentFolder;
-                    this.fileName = getFileItemName(item);
-
-                    try {
-                        if (validateUploadItem(item, path)) {
-                            return saveTemporaryFile(path, item);
-                        }
-                    } finally {
-                        item.delete();
-                    }
+            Collection<Part> parts = request.getParts();
+            for (Part part : parts) {
+                String path = configuration.getTypes().get(this.type).getPath() + this.currentFolder;
+                this.fileName = getFileItemName(part);
+                if (validateUploadItem(part, path)) {
+                    return saveTemporaryFile(path, part);
                 }
             }
-            return false;
-        } catch (InvalidContentTypeException e) {
-            if (configuration.isDebugMode()) {
-                this.exception = e;
-            }
-            this.errorCode = Constants.Errors.CKFINDER_CONNECTOR_ERROR_UPLOADED_CORRUPT;
-            return false;
-        } catch (IOFileUploadException e) {
-            if (configuration.isDebugMode()) {
-                this.exception = e;
-            }
-            this.errorCode = Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED;
-            return false;
-        } catch (SizeLimitExceededException | FileSizeLimitExceededException e) {
-            this.errorCode = Constants.Errors.CKFINDER_CONNECTOR_ERROR_UPLOADED_TOO_BIG;
             return false;
         } catch (ConnectorException e) {
             this.errorCode = e.getErrorCode();
@@ -292,6 +246,11 @@ public class FileUploadCommand extends Command implements IPostCommand {
             }
             return false;
         } catch (Exception e) {
+            String message = e.getMessage().toLowerCase();
+            if (message.contains("sizelimit") || message.contains("size limit")) {
+                this.errorCode = Constants.Errors.CKFINDER_CONNECTOR_ERROR_UPLOADED_TOO_BIG;
+                return false;
+            }
             if (configuration.isDebugMode()) {
                 this.exception = e;
             }
@@ -309,16 +268,15 @@ public class FileUploadCommand extends Command implements IPostCommand {
      * @return result of saving, true if saved correctly
      * @throws Exception when error occurs.
      */
-    private boolean saveTemporaryFile(final String path, final FileItem item)
+    private boolean saveTemporaryFile(final String path, final Part item)
             throws Exception {
         File file = new File(path, this.newFileName);
 
         AfterFileUploadEventArgs args = new AfterFileUploadEventArgs();
         args.setCurrentFolder(this.currentFolder);
         args.setFile(file);
-        args.setFileContent(item.get());
         if (!ImageUtils.isImage(file)) {
-            item.write(file);
+            item.write(file.getName());
             if (configuration.getEvents() != null) {
                 configuration.getEvents().run(EventTypes.AfterFileUpload,
                         args, configuration);
@@ -386,9 +344,9 @@ public class FileUploadCommand extends Command implements IPostCommand {
      * @param path file path
      * @return true if validation
      */
-    private boolean validateUploadItem(final FileItem item, final String path) {
+    private boolean validateUploadItem(final Part item, final String path) {
 
-        if (item.getName() != null && item.getName().length() > 0) {
+        if (item.getSubmittedFileName() != null && item.getSubmittedFileName().length() > 0) {
             this.fileName = getFileItemName(item);
         } else {
             this.errorCode = Constants.Errors.CKFINDER_CONNECTOR_ERROR_UPLOADED_INVALID;
@@ -482,9 +440,9 @@ public class FileUploadCommand extends Command implements IPostCommand {
      * @param item file upload item
      * @return file name of uploaded item
      */
-    private String getFileItemName(final FileItem item) {
+    private String getFileItemName(final Part item) {
         Pattern p = Pattern.compile("[^\\\\/]+$");
-        Matcher m = p.matcher(item.getName());
+        Matcher m = p.matcher(item.getSubmittedFileName());
 
         return (m.find()) ? m.group(0) : "";
     }
@@ -556,4 +514,5 @@ public class FileUploadCommand extends Command implements IPostCommand {
         }
         return true;
     }
+
 }

@@ -233,14 +233,6 @@ public interface IConfiguration {
      */
     public boolean isDisallowUnsafeCharacters();
 
-    /**
-     * Returns flag indicating if Cross-site request forgery (CSRF) protection
-     * has been enabled.
-     *
-     * @return {@code boolean} flag indicating if CSRF protection has been
-     * enabled.
-     */
-    public boolean isEnableCsrfProtection();
 
     /**
      * flag if check image size after resizing image.

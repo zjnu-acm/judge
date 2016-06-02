@@ -75,10 +75,6 @@ public class ImageResizeCommad extends XMLCommand implements IEventHandler {
     @Override
     protected int getDataForXml() {
 
-        if (this.configuration.isEnableCsrfProtection() && !checkCsrfToken(this.request, null)) {
-            return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
-        }
-
         if (!checkIfTypeExists(this.type)) {
             this.type = null;
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;

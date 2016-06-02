@@ -130,9 +130,6 @@ public class CreateFolderCommand extends XMLCommand implements IPostCommand {
             final IConfiguration configuration, final Object... params)
             throws ConnectorException {
         super.initParams(request, configuration, params);
-        if (this.configuration.isEnableCsrfProtection() && !checkCsrfToken(request, null)) {
-            throw new ConnectorException(Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST, "CSRF Attempt");
-        }
         this.newFolderName = getParameter(request, "NewFolderName");
     }
 }
