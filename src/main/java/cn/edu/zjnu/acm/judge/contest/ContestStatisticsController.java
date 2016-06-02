@@ -33,7 +33,7 @@ public class ContestStatisticsController {
     @Autowired
     private LanguageFactory languageFactory;
 
-    @RequestMapping(value = "/conteststatistics", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @RequestMapping(value = "/conteststatistics", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = "text/html;charset=UTF-8")
     public ResponseEntity<String> conteststatistics(HttpServletRequest request,
             @RequestParam("contest_id") long contestId) throws SQLException {
         Instant now = Instant.now();

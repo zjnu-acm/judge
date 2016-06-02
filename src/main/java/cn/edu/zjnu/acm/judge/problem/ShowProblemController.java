@@ -31,7 +31,7 @@ public class ShowProblemController {
     @Autowired
     private JudgeConfiguration judgeConfiguration;
 
-    @RequestMapping(value = "/showproblem", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @RequestMapping(value = "/showproblem", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = "text/html;charset=UTF-8")
     public ResponseEntity<String> showproblem(HttpServletRequest request,
             @RequestParam("problem_id") long problemId) {
         Problem problem = problemMapper.findOne(problemId);

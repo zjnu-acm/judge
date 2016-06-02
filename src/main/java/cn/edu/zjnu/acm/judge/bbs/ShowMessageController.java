@@ -31,7 +31,7 @@ public class ShowMessageController {
     @Autowired
     private MessageMapper messageMapper;
 
-    @RequestMapping(value = "/showmessage", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @RequestMapping(value = "/showmessage", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = "text/html;charset=UTF-8")
     public ResponseEntity<String> showmessage(HttpServletRequest request,
             @RequestParam("message_id") long messageId) {
         UserDetailService.requireLoginned(request);
