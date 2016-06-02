@@ -89,8 +89,11 @@ public class ShowMessageController {
         for (long i = l8; i < depth; ++i) {
             sb.append("</ul>");
         }
-        sb.append("</ul>" + "<HR noshade color=#FFF>" + "<font color=blue>Post your reply here:</font><br/>" + "<form method=POST action=post>" + "<input type=hidden name=problem_id value=").append(pid).append(">"
-                + "<input type=hidden name=parent_id value=").append(messageId).append(">");
+        sb.append("</ul>" + "<HR noshade color=#FFF>" + "<font color=blue>Post your reply here:</font><br/>" + "<form method=POST action=post>");
+        if (pid != null) {
+            sb.append("<input type=hidden name=problem_id value=").append(pid).append(">");
+        }
+        sb.append("<input type=hidden name=parent_id value=").append(messageId).append(">");
         if (!title.regionMatches(true, 0, "re:", 0, 3)) {
             title = "Reply:" + title;
         }
