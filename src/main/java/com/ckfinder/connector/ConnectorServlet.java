@@ -281,14 +281,14 @@ public class ConnectorServlet extends HttpServlet {
                 "configuration");
         if (className != null) {
             try {
-                Class<?> clazz = Class.forName(className);
+                Class<? extends IConfiguration> clazz = Class.forName(className).asSubclass(IConfiguration.class);
 
                 try {
-                    configuration = (IConfiguration) clazz.getConstructor(
+                    configuration = clazz.getConstructor(
                             ServletConfig.class).newInstance(getServletConfig());
 
                 } catch (NoSuchMethodException ex) {
-                    configuration = (IConfiguration) clazz.newInstance();
+                    configuration = clazz.newInstance();
                 }
             } catch (Exception e) {
                 log.error("Couldn't initialize custom configuration. Rolling back to the default one.", e);

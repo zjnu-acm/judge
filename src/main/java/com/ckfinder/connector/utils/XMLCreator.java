@@ -157,7 +157,7 @@ public class XMLCreator {
     /**
      * error node object.
      */
-    private class ErrorNode {
+    private static class ErrorNode {
 
         private String folder;
         private String type;
