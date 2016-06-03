@@ -315,7 +315,7 @@ public final class AccessControlUtil {
     /**
      * simple check ACL entry.
      */
-    class CheckEntry {
+    private static class CheckEntry {
 
         private String role;
         private String type;
