@@ -673,11 +673,7 @@ public class FileUtils {
      */
     public static String convertFromUriEncoding(final String fileName,
             final IConfiguration configuration) {
-        try {
-            return new String(fileName.getBytes(configuration.getUriEncoding()), "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            return fileName;
-        }
+        return fileName;
     }
 
     /**
