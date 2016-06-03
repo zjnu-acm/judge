@@ -234,11 +234,7 @@ public abstract class Command {
      */
     protected String getParameter(final HttpServletRequest request,
             final String paramName) {
-        if (request.getParameter(paramName) == null) {
-            return null;
-        }
-        return FileUtils.convertFromUriEncoding(
-                request.getParameter(paramName), configuration);
+        return request.getParameter(paramName);
     }
 
     /**
