@@ -36,12 +36,12 @@ import org.springframework.context.annotation.Configuration;
 public class RegistrationBeanConfiguration {
 
     @Bean
-    public ServletRegistrationBean connectorServlet() {
+    public ServletRegistrationBean connectorServlet(MultipartConfigElement multipartConfigElement) {
         Servlet servlet = new ConnectorServlet();
         ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(servlet, "/ckfinder/core/connector/java/connector.java");
         servletRegistrationBean.addInitParameter("XMLConfig", "/WEB-INF/config.xml");
         servletRegistrationBean.addInitParameter("debug", "false");
-        servletRegistrationBean.setMultipartConfig(new MultipartConfigElement(""));
+        servletRegistrationBean.setMultipartConfig(multipartConfigElement);
         return servletRegistrationBean;
     }
 
