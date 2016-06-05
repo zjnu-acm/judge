@@ -43,7 +43,7 @@ public class ContestListController {
             String title, String errorMessage, RedirectAttributes redirectAttributes) {
         List<Contest> contests = supplier.get();
         if (contests.isEmpty()) {
-            throw new MessageException(errorMessage, HttpStatus.NOT_FOUND);
+            throw new MessageException(errorMessage, HttpStatus.OK);
         } else if (contests.size() == 1) {
             redirectAttributes.addAttribute("contest_id", contests.get(0).getId());
             return "redirect:/showcontest";

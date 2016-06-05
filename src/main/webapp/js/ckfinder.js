@@ -9,7 +9,7 @@
     $(function ($) {
         var editor;
         var ckfinderpath = $("[name='ckfinderPath']").val();
-        $("textarea.editable").bind("focus", function () {
+        $("textarea.editable").on("focus", function () {
             editor && destroyCKEditor(editor);
             editor = undefined;
             var me = $(this).ckeditor({
