@@ -25,7 +25,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
-import org.junit.Test;
 
 /**
  *
@@ -33,16 +32,10 @@ import org.junit.Test;
  */
 public class ErrorUtilsTest {
 
-    /**
-     * Test of getErrorMsgByLangAndCode method, of class ErrorUtils.
-     * @throws java.lang.Exception
-     */
-    @Test
-    public void testGetErrorMsgByLangAndCode() throws Exception {
-        System.out.println("getErrorMsgByLangAndCode");
+    @SuppressWarnings("unchecked")
+    public static void main(String[] args) throws Exception {
         URL location = ErrorUtils.class.getProtectionDomain().getCodeSource().getLocation();
         Path base = Paths.get(location.toURI()).resolve(ErrorUtils.class.getPackage().getName().replace('.', '/'));
-        System.out.println(base);
         ErrorUtils instance = ErrorUtils.getInstance();
         Field field = ErrorUtils.class.getDeclaredField("langMap");
         field.setAccessible(true);
@@ -61,7 +54,6 @@ public class ErrorUtilsTest {
             try (OutputStream out = Files.newOutputStream(path)) {
                 p.store(out, null);
             }
-            System.out.println(path);
             ResourceBundle.getBundle("com/ckfinder/connector/errors/LocalStrings", locale);
         }
 
