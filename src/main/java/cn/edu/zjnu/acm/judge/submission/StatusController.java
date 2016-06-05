@@ -101,7 +101,11 @@ public class StatusController {
 
         request.setAttribute("contestId", contestId);
 
-        StringBuilder sb = new StringBuilder("<html><head><title>Problem Status List</title></head><body>" + "<p align=center><font size=4 color=#333399>Problem Status List</font></p>" + "<form method=get action='status'/>Problem ID:<input type=number name=problem_id size=8 value=\"").append(org.thymeleaf.util.StringUtils.escapeXml(pid)).append("\"/> User ID:<input type=text name=user_id size=15 value=\"").append(StringUtils.escapeXml(userId)).append("\"/>"
+        StringBuilder sb = new StringBuilder("<html><head><title>Problem Status List</title></head><body>"
+                + "<p align=center><font size=4 color=#333399>Problem Status List</font></p>"
+                + "<form method=get action='status'/>Problem ID:<input type=text name=problem_id size=8 value=\"")
+                .append(StringUtils.escapeXml(pid)).append("\"/> User ID:<input type=text name=user_id size=15 value=\"")
+                .append(StringUtils.escapeXml(userId)).append("\"/>"
                 + " Language:"
                 + "<select size=\"1\" name=\"language\">"
                 + "<option value=\"\">All</option>");
@@ -119,7 +123,7 @@ public class StatusController {
                 + "<tr bgcolor=#6589D1><td align=center width=8%><b>Run ID</b></td><td align=center width=10%><b>User</b></td><td align=center width=6%><b>Problem</b></td>"
                 + "<td align=center width=10%><b>Result</b></td><td align=center width=10%><b>Score</b></td><td align=center width=7%><b>Memory</b></td><td align=center width=7%><b>Time</b></td><td align=center width=7%><b>Language</b></td><td align=center width=7%><b>Code Length</b></td><td align=center width=17%><b>Submit Time</b></td></tr>");
         boolean admin = UserDetailService.isAdminLoginned(request);
-        boolean SourceBrowser = UserDetailService.isSourceBrowser(request);
+        boolean sourceBrowser = UserDetailService.isSourceBrowser(request);
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         for (Submission submission : submissions) {
@@ -144,7 +148,9 @@ public class StatusController {
             } else {
                 problemString = Character.toString((char) (num + 'A'));
             }
-            sb.append("<td><a href=userstatus?user_id=").append(user_id1).append(">").append(user_id1).append("</a></td><td><a href=showproblem?problem_id=").append(problem_id1).append(">").append(problemString).append("</a></td>");
+            sb.append("<td><a href=userstatus?user_id=").append(user_id1)
+                    .append(">").append(user_id1).append("</a></td><td><a href=showproblem?problem_id=")
+                    .append(problem_id1).append(">").append(problemString).append("</a></td>");
 
             if (score == ResultType.COMPILE_ERROR) {
                 if (submissionService.canView(request, submission)) {
@@ -171,7 +177,7 @@ public class StatusController {
             } else {
                 sb.append("<td>&nbsp;</td><td>&nbsp;</td>");
             }
-            if (admin || SourceBrowser || UserDetailService.isUser(request, user_id1)) {
+            if (admin || sourceBrowser || UserDetailService.isUser(request, user_id1)) {
                 sb.append("<td><a href=showsource?solution_id=").append(id).append(" target=_blank>").append(language1).append("</a></td>");
             } else {
                 sb.append("<td>").append(language1).append("</td>");

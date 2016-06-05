@@ -74,7 +74,7 @@ public class Events {
      * @return false when end executing command.
      * @throws ConnectorException when error occurs.
      */
-    @SuppressWarnings("UseSpecificCatch")
+    @SuppressWarnings({"UseSpecificCatch", "BroadCatchBlock", "TooBroadCatch"})
     public boolean run(final EventTypes eventTyp, final EventArgs args,
             final IConfiguration configuration)
             throws ConnectorException {
@@ -102,6 +102,7 @@ public class Events {
     /**
      * The list of events.
      */
+    @SuppressWarnings("PublicInnerClass")
     public enum EventTypes {
 
         BeforeExecuteCommand, AfterFileUpload, InitCommand;

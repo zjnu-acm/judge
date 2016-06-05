@@ -17,6 +17,7 @@ import java.util.Collection;
  * @param <E> type of elelmens which will be kept in
  * {@code AccessControlLevelsList}
  */
+@SuppressWarnings({"serial", "CloneableImplementsClone"})
 public class AccessControlLevelsList<E> extends ArrayList<E> {
 
     /**

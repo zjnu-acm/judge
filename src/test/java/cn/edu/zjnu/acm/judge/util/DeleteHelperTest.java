@@ -33,6 +33,7 @@ public class DeleteHelperTest {
 
     /**
      * Test of delete method, of class DeleteHelper.
+     * @throws java.lang.Exception
      */
     @Test
     public void testDelete() throws Exception {
@@ -45,6 +46,7 @@ public class DeleteHelperTest {
 
     /**
      * Test of delete method, of class DeleteHelper.
+     * @throws java.lang.Exception
      */
     @Test
     public void testDeleteDirectory() throws Exception {
