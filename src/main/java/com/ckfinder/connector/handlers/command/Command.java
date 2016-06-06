@@ -25,7 +25,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.regex.Pattern;
 import javax.servlet.ServletContext;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -46,10 +45,6 @@ public abstract class Command {
     protected String userRole;
     protected String currentFolder;
     protected String type;
-    /**
-     * Name of the csrf token passed as request parameter.
-     */
-    protected final String tokenParamName = "ckCsrfToken";
 
     /**
      * standard constructor.
@@ -256,42 +251,6 @@ public abstract class Command {
         } else {
             this.currentFolder = PathUtils.addSlashToBeginning(PathUtils.addSlashToEnd(currFolder));
         }
-    }
-
-    /**
-     * Checks if the request contains a valid CSRF token that matches the value
-     * sent in the cookie.<br>
-     *
-     * @see
-     * <a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)_Prevention_Cheat_Sheet#Double_Submit_Cookies">Cross-Site_Request_Forgery_(CSRF)_Prevention</a>
-     *
-     * @param request current request object
-     * @param csrfTokenValue string value of CSRF token passed as request
-     * parameter
-     * @return {@code true} if token is valid, {@code false} otherwise.
-     */
-    protected boolean checkCsrfToken(final HttpServletRequest request, String csrfTokenValue) {
-        final String tokenCookieName = "ckCsrfToken",
-                paramToken;
-        final int minTokenLength = 32;
-
-        if (csrfTokenValue != null) {
-            paramToken = csrfTokenValue;
-        } else {
-            paramToken = nullToString(request.getParameter(this.tokenParamName)).trim();
-        }
-
-        Cookie[] cookies = request.getCookies();
-        String cookieToken = "";
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals(tokenCookieName)) {
-                cookieToken = nullToString(cookie.getValue()).trim();
-                break;
-            }
-        }
-
-        return paramToken.length() >= minTokenLength && cookieToken.length() >= minTokenLength
-                && paramToken.equals(cookieToken);
     }
 
     /**
