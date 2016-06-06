@@ -40,9 +40,11 @@ class IOUtils {
             final long inputOffset, final long length,
             final byte[] buffer) throws IOException {
         if (inputOffset > 0) {
-            long skipped = input.skip(inputOffset);
-            if (skipped != inputOffset) {
-                throw new EOFException("Bytes to skip: " + inputOffset + " actual: " + skipped);
+            for (long remain = inputOffset, skipped; remain > 0; remain -= skipped) {
+                skipped = input.skip(remain);
+                if (skipped <= 0) {
+                    throw new EOFException("Bytes to skip: " + inputOffset + " actual: " + (inputOffset - remain));
+                }
             }
         }
         if (length <= 0) {

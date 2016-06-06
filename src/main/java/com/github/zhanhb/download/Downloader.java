@@ -30,7 +30,6 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 
-
 @Slf4j
 public class Downloader {
 
@@ -324,7 +323,7 @@ public class Downloader {
             }
             if (index == -1) {
                 int size = result.size();
-                if (size == 0) {
+                if (size == 0 || size > 1 && resource.isOpen()) {
                     break;
                 }
                 return result.toArray(new Range[size]);
