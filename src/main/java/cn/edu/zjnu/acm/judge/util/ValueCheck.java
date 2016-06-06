@@ -17,7 +17,7 @@ package cn.edu.zjnu.acm.judge.util;
 
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import org.springframework.http.HttpStatus;
-import org.springframework.util.StringUtils;
+import org.thymeleaf.util.StringUtils;
 
 public class ValueCheck {
 
@@ -71,7 +71,7 @@ public class ValueCheck {
     }
 
     public static void checkEmail(String email) {
-        if (StringUtils.hasText(email) && !email.matches(EMAIL_PATTERN)) {
+        if (!StringUtils.isEmptyOrWhitespace(email) && !email.matches(EMAIL_PATTERN)) {
             throw new MessageException("email format incorrect", HttpStatus.BAD_REQUEST);
         }
     }
