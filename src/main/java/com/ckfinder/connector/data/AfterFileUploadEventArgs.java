@@ -11,7 +11,7 @@
  */
 package com.ckfinder.connector.data;
 
-import java.io.File;
+import java.nio.file.Path;
 
 /**
  * Event data for
@@ -22,7 +22,7 @@ import java.io.File;
 public class AfterFileUploadEventArgs extends EventArgs {
 
     private String currentFolder;
-    private File file;
+    private Path file;
 
     /**
      * @return the currentFolder
@@ -55,14 +55,14 @@ public class AfterFileUploadEventArgs extends EventArgs {
     /**
      * @return the file
      */
-    public final File getFile() {
+    public final Path getFile() {
         return file;
     }
 
     /**
      * @param file the file to set
      */
-    public final void setFile(final File file) {
+    public final void setFile(final Path file) {
         this.file = file;
     }
 

@@ -18,9 +18,11 @@ import com.ckfinder.connector.data.ResourceType;
 import com.ckfinder.connector.errors.ConnectorException;
 import com.ckfinder.connector.utils.FileUtils;
 import com.ckfinder.connector.utils.PathUtils;
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.regex.Pattern;
 import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
@@ -144,10 +146,10 @@ public abstract class Command {
         String tmpType = getParameter(request, "type");
         if (tmpType != null) {
             if (checkIfTypeExists(tmpType)) {
-                File currDir = new File(
+                Path currDir = Paths.get(
                         configuration.getTypes().get(tmpType).getPath()
                         + this.currentFolder);
-                if (!currDir.exists() || !currDir.isDirectory()) {
+                if (!Files.exists(currDir) || !Files.isDirectory(currDir)) {
                     throw new ConnectorException(
                             Constants.Errors.CKFINDER_CONNECTOR_ERROR_FOLDER_NOT_FOUND,
                             false);
@@ -191,9 +193,10 @@ public abstract class Command {
      *
      * @param out response output stream
      * @throws ConnectorException when error occurs
+     * @throws java.io.IOException
      */
     public abstract void execute(final OutputStream out)
-            throws ConnectorException;
+            throws ConnectorException, IOException;
 
     /**
      * sets header in response.

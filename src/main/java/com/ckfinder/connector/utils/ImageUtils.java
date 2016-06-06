@@ -15,10 +15,10 @@ import com.ckfinder.connector.configuration.IConfiguration;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.List;
@@ -49,9 +49,9 @@ public class ImageUtils {
      */
     private static void resizeImage(final BufferedImage sourceImage, final int width,
             final int height, final float quality,
-            final File destFile) throws IOException {
+            final Path destFile) throws IOException {
         try {
-            Thumbnails.of(sourceImage).size(width, height).keepAspectRatio(false).outputQuality(quality).toFile(destFile);
+            Thumbnails.of(sourceImage).size(width, height).keepAspectRatio(false).outputQuality(quality).toFile(destFile.toFile());
             // for some special files outputQuality couses error:
             //IllegalStateException inner Thumbnailator jar. When exception is thrown
             // image is resized without quality
@@ -61,7 +61,7 @@ public class ImageUtils {
             //	.outputQuality(quality).toFile(destFile);
             // should remain.
         } catch (IllegalStateException e) {
-            Thumbnails.of(sourceImage).size(width, height).keepAspectRatio(false).toFile(destFile);
+            Thumbnails.of(sourceImage).size(width, height).keepAspectRatio(false).toFile(destFile.toFile());
         }
     }
 
@@ -73,9 +73,9 @@ public class ImageUtils {
      * @param conf connector configuration
      * @throws IOException when error occurs.
      */
-    public static void createThumb(final File orginFile, final File file,
+    public static void createThumb(final Path orginFile, final Path file,
             final IConfiguration conf) throws IOException {
-        try (InputStream is = Files.newInputStream(orginFile.toPath())) {
+        try (InputStream is = Files.newInputStream(orginFile)) {
             BufferedImage image = ImageIO.read(is);
             if (image != null) {
                 Dimension dimension = createThumbDimension(image,
@@ -105,7 +105,7 @@ public class ImageUtils {
      * @throws IOException when error occurs.
      */
     public static void createTmpThumb(final InputStream stream,
-            final File file, final String fileName, final IConfiguration conf)
+            final Path file, final String fileName, final IConfiguration conf)
             throws IOException {
         try (BufferedInputStream bufferedIS = new BufferedInputStream(stream)) {
             bufferedIS.mark(Integer.MAX_VALUE);
@@ -118,7 +118,7 @@ public class ImageUtils {
             if (dimension.width == 0 || dimension.height == 0
                     || (image.getHeight() == dimension.height && image.getWidth() == dimension.width)) {
                 bufferedIS.reset();
-                Files.copy(bufferedIS, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(bufferedIS, file, StandardCopyOption.REPLACE_EXISTING);
             } else {
                 resizeImage(image, dimension.width, dimension.height,
                         conf.getImgQuality(), file);
@@ -136,11 +136,11 @@ public class ImageUtils {
      * @param quality image quality
      * @throws IOException when error occurs.
      */
-    public static void createResizedImage(final File sourceFile,
-            final File destFile, final int width, final int height,
+    public static void createResizedImage(final Path sourceFile,
+            final Path destFile, final int width, final int height,
             final float quality) throws IOException {
 
-        BufferedImage image = ImageIO.read(sourceFile);
+        BufferedImage image = ImageIO.read(sourceFile.toFile());
         Dimension dimension = new Dimension(width, height);
         if (image.getHeight() == dimension.height
                 && image.getWidth() == dimension.width) {
@@ -188,10 +188,10 @@ public class ImageUtils {
      * @param file file to check
      * @return true if file is image.
      */
-    public static boolean isImage(final File file) {
+    public static boolean isImage(final Path file) {
         List<String> list = Arrays.asList(ALLOWED_EXT);
         if (file != null) {
-            String fileExt = FileUtils.getFileExtension(file.getName().toLowerCase());
+            String fileExt = FileUtils.getFileExtension(file.getFileName().toString().toLowerCase());
             return (fileExt != null) ? list.contains(fileExt) : false;
         } else {
             return false;
@@ -249,9 +249,9 @@ public class ImageUtils {
      *
      * @throws IOException when error occurs.
      */
-    private static void writeUntouchedImage(final File sourceFile, final File destFile)
+    private static void writeUntouchedImage(final Path sourceFile, final Path destFile)
             throws IOException {
-        Files.copy(sourceFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(sourceFile, destFile, StandardCopyOption.REPLACE_EXISTING);
     }
 
 }

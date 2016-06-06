@@ -21,9 +21,11 @@ import com.ckfinder.connector.errors.ErrorUtils;
 import com.ckfinder.connector.utils.AccessControlUtil;
 import com.ckfinder.connector.utils.FileUtils;
 import com.ckfinder.connector.utils.ImageUtils;
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -270,13 +272,13 @@ public class FileUploadCommand extends Command implements IPostCommand {
      */
     private boolean saveTemporaryFile(final String path, final Part item)
             throws Exception {
-        File file = new File(path, this.newFileName);
+        Path file = Paths.get(path, this.newFileName);
 
         AfterFileUploadEventArgs args = new AfterFileUploadEventArgs();
         args.setCurrentFolder(this.currentFolder);
         args.setFile(file);
         if (!ImageUtils.isImage(file)) {
-            item.write(file.getPath());
+            item.write(file.toString());
             if (configuration.getEvents() != null) {
                 configuration.getEvents().run(EventTypes.AfterFileUpload,
                         args, configuration);
@@ -287,13 +289,13 @@ public class FileUploadCommand extends Command implements IPostCommand {
             ImageUtils.createTmpThumb(item.getInputStream(), file, getFileItemName(item),
                     this.configuration);
             if (!configuration.checkSizeAfterScaling()
-                    || FileUtils.checkFileSize(configuration.getTypes().get(this.type), file.length())) {
+                    || FileUtils.checkFileSize(configuration.getTypes().get(this.type), Files.size(file))) {
                 if (configuration.getEvents() != null) {
                     configuration.getEvents().run(EventTypes.AfterFileUpload, args, configuration);
                 }
                 return true;
             } else {
-                file.delete();
+                Files.deleteIfExists(file);
                 this.errorCode = Constants.Errors.CKFINDER_CONNECTOR_ERROR_UPLOADED_TOO_BIG;
                 return false;
             }
@@ -311,7 +313,7 @@ public class FileUploadCommand extends Command implements IPostCommand {
      * @return new file name.
      */
     private String getFinalFileName(final String path, final String name) {
-        File file = new File(path, name);
+        Path file = Paths.get(path, name);
         int number = 0;
 
         String nameWithoutExtension = FileUtils.getFileNameWithoutExtension(name, false);
@@ -320,14 +322,14 @@ public class FileUploadCommand extends Command implements IPostCommand {
         boolean protectedName = m.find();
 
         while (true) {
-            if (file.exists() || protectedName) {
+            if (Files.exists(file) || protectedName) {
                 number++;
                 StringBuilder sb = new StringBuilder();
                 sb.append(FileUtils.getFileNameWithoutExtension(name, false));
                 sb.append("(").append(number).append(").");
                 sb.append(FileUtils.getFileExtension(name, false));
                 this.newFileName = sb.toString();
-                file = new File(path, this.newFileName);
+                file = Paths.get(path, this.newFileName);
                 this.errorCode
                         = Constants.Errors.CKFINDER_CONNECTOR_ERROR_UPLOADED_FILE_RENAMED;
                 protectedName = false;
@@ -390,7 +392,7 @@ public class FileUploadCommand extends Command implements IPostCommand {
         }
 
         try {
-            File file = new File(path, getFinalFileName(path, this.newFileName));
+            Path file = Paths.get(path, getFinalFileName(path, this.newFileName));
             if (!(ImageUtils.isImage(file) && configuration.checkSizeAfterScaling())
                     && !FileUtils.checkFileSize(resourceType, item.getSize())) {
                 this.errorCode = Constants.Errors.CKFINDER_CONNECTOR_ERROR_UPLOADED_TOO_BIG;
@@ -404,7 +406,7 @@ public class FileUploadCommand extends Command implements IPostCommand {
                 return false;
             }
 
-            if (!FileUtils.checkIfFileIsHtmlFile(file.getName(), configuration)
+            if (!FileUtils.checkIfFileIsHtmlFile(file.getFileName().toString(), configuration)
                     && FileUtils.detectHtml(item)) {
                 this.errorCode
                         = Constants.Errors.CKFINDER_CONNECTOR_ERROR_UPLOADED_WRONG_HTML_FILE;
@@ -493,9 +495,9 @@ public class FileUploadCommand extends Command implements IPostCommand {
             throws ConnectorException {
         String tmpType = getParameter(request, "type");
         if (checkIfTypeExists(tmpType)) {
-            File currDir = new File(configuration.getTypes().get(tmpType).getPath()
+            Path currDir = Paths.get(configuration.getTypes().get(tmpType).getPath()
                     + this.currentFolder);
-            if (currDir.exists() && currDir.isDirectory()) {
+            if (Files.exists(currDir) && Files.isDirectory(currDir)) {
                 return true;
             } else {
                 this.errorCode = Constants.Errors.CKFINDER_CONNECTOR_ERROR_FOLDER_NOT_FOUND;

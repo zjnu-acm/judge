@@ -17,14 +17,16 @@ import com.ckfinder.connector.configuration.Constants;
 import com.ckfinder.connector.configuration.IConfiguration;
 import com.ckfinder.connector.data.ResourceType;
 import com.ckfinder.connector.errors.ConnectorException;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -81,15 +83,13 @@ public class FileUtils {
      * @param searchDirs if true method return list of folders, otherwise list
      * of files.
      * @return list of files or subdirectories in selected directory
+     * @throws java.io.IOException
      */
-    public static List<String> findChildrensList(final File dir,
-            final boolean searchDirs) {
+    public static List<String> findChildrensList(final Path dir,
+            final boolean searchDirs) throws IOException {
         List<String> files = new ArrayList<>();
-        for (File file : dir.listFiles()) {
-            if ((searchDirs && file.isDirectory())
-                    || (!searchDirs && !file.isDirectory())) {
-                files.add(file.getName());
-            }
+        for (Path file : Files.newDirectoryStream(dir, file -> searchDirs == Files.isDirectory(file))) {
+            files.add(file.getFileName().toString());
         }
         return files;
     }
@@ -166,9 +166,9 @@ public class FileUtils {
      * @param out outputstream.
      * @throws IOException when io error occurs.
      */
-    public static void printFileContentToResponse(final File file,
+    public static void printFileContentToResponse(final Path file,
             final OutputStream out) throws IOException {
-        Files.copy(file.toPath(), out);
+        Files.copy(file, out);
     }
 
     /**
@@ -180,16 +180,16 @@ public class FileUtils {
      * @return true if file moved/copied correctly
      * @throws IOException when IOerror occurs
      */
-    public static boolean copyFromSourceToDestFile(final File sourceFile,
-            final File destFile,
+    public static boolean copyFromSourceToDestFile(final Path sourceFile,
+            final Path destFile,
             final boolean move,
             final IConfiguration conf)
             throws IOException {
         createPath(destFile, true);
         if (move) {
-            Files.move(sourceFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            Files.move(sourceFile, destFile, StandardCopyOption.REPLACE_EXISTING);
         } else {
-            Files.copy(sourceFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(sourceFile, destFile, StandardCopyOption.REPLACE_EXISTING);
         }
         return true;
 
@@ -312,8 +312,7 @@ public class FileUtils {
      * @return {@code true} if file/folder exists, {@code false} otherwise.
      */
     private static boolean isFileExist(String path) {
-        File f = new File(path);
-        return f.exists();
+        return Files.exists(Paths.get(path));
     }
 
     /**
@@ -507,9 +506,10 @@ public class FileUtils {
      *
      * @param file input file.
      * @return parsed file modification date.
+     * @throws java.io.IOException
      */
-    public static String parseLastModifDate(final File file) {
-        Date date = new Date(file.lastModified());
+    public static String parseLastModifDate(final Path file) throws IOException {
+        Date date = Date.from(Files.getLastModifiedTime(file).toInstant());
         DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
         return dateFormat.format(date);
     }
@@ -579,9 +579,9 @@ public class FileUtils {
      * @param file file or directory to delete.
      * @return true if all files are deleted.
      */
-    public static boolean delete(final File file) {
+    public static boolean delete(final Path file) {
         try {
-            DeleteHelper.delete(file.toPath());
+            DeleteHelper.delete(file);
             return true;
         } catch (IOException ex) {
             return false;
@@ -707,22 +707,21 @@ public class FileUtils {
      * @param asFile if it is path to folder.
      * @throws IOException when io error occurs.
      */
-    public static void createPath(final File file, final boolean asFile) throws IOException {
-        String path = file.getAbsolutePath();
+    public static void createPath(final Path file, final boolean asFile) throws IOException {
+        Path path = file.toAbsolutePath();
 
-        String dirPath;
+        Path dir;
         if (asFile) {
-            dirPath = path.substring(0, path.lastIndexOf(File.separator));
+            dir = path.getParent();
         } else {
-            dirPath = path;
+            dir = path;
         }
 
-        File dir = new File(dirPath);
-        if (!dir.exists()) {
-            dir.mkdirs();
+        if (!Files.exists(dir)) {
+            Files.createDirectories(dir);
         }
         if (asFile) {
-            file.createNewFile();
+            Files.createFile(path);
         }
     }
 
@@ -820,13 +819,14 @@ public class FileUtils {
      * @param resourceType name of resource type, folder is assigned to.
      * @param currentUserRole user role.
      * @return true if there are any allowed and non-hidden subfolders.
+     * @throws java.io.IOException
      */
-    public static Boolean hasChildren(String dirPath, File dir, IConfiguration configuration, String resourceType, String currentUserRole) {
-        File[] subDirsList = dir.listFiles(File::isDirectory);
+    public static Boolean hasChildren(String dirPath, Path dir, IConfiguration configuration, String resourceType, String currentUserRole) throws IOException {
+        DirectoryStream<Path> subDirsList = Files.newDirectoryStream(dir, Files::isDirectory);
 
         if (subDirsList != null) {
-            for (File subDirsList1 : subDirsList) {
-                String subDirName = subDirsList1.getName();
+            for (Path subDirsList1 : subDirsList) {
+                String subDirName = subDirsList1.getFileName().toString();
                 if (!FileUtils.checkIfDirIsHidden(subDirName, configuration)
                         && AccessControlUtil.getInstance().checkFolderACL(resourceType,
                                 dirPath + subDirName, currentUserRole, AccessControlUtil.CKFINDER_CONNECTOR_ACL_FOLDER_VIEW)) {
