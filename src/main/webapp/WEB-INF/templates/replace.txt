@@ -18,3 +18,15 @@ $1
 
 \<input(?: type="(submit|reset|button)" value="([^"]+)"| value="([^"]+)" type="(submit|reset|button)")([^>]*?)\/?\>
 <button type="$1$3"$5>$2$4</button>
+
+new File
+Paths.get
+
+([a-zA-Z]+)\.exists\(\)
+Files.exists($1)
+
+([a-zA-Z]+)\.isFile\(\)
+Files.isRegularFile($1)
+
+([a-zA-Z]+)\.length\(\)
+Files.size($1)
