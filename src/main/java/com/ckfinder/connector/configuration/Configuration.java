@@ -47,7 +47,6 @@ import static com.ckfinder.connector.configuration.IConfiguration.DEFAULT_IMG_QU
 import static com.ckfinder.connector.configuration.IConfiguration.DEFAULT_IMG_WIDTH;
 import static com.ckfinder.connector.configuration.IConfiguration.DEFAULT_THUMB_MAX_HEIGHT;
 import static com.ckfinder.connector.configuration.IConfiguration.DEFAULT_THUMB_MAX_WIDTH;
-import static com.ckfinder.connector.configuration.IConfiguration.DEFAULT_URI_ENCODING;
 
 /**
  * Class loads configuration from XML file.
@@ -140,7 +139,6 @@ public class Configuration implements IConfiguration {
         this.doubleExtensions = false;
         this.forceASCII = false;
         this.checkSizeAfterScaling = false;
-        this.uriEncoding = DEFAULT_URI_ENCODING;
         this.userRoleSessionVar = "";
         this.plugins = new ArrayList<>();
         this.secureImageUploads = false;
@@ -256,7 +254,6 @@ public class Configuration implements IConfiguration {
                         break;
 
                     case "uriEncoding":
-                        this.uriEncoding = nullNodeToString(childNode);
                         break;
                     case "userRoleSessionVar":
                         this.userRoleSessionVar = nullNodeToString(childNode);
@@ -864,19 +861,6 @@ public class Configuration implements IConfiguration {
     }
 
     /**
-     * Returns URI encoding.
-     *
-     * @return URI encoding e.g. UTF-8.
-     */
-    @Override
-    public String getUriEncoding() {
-        if (this.uriEncoding == null || this.uriEncoding.length() == 0) {
-            return DEFAULT_URI_ENCODING;
-        }
-        return this.uriEncoding;
-    }
-
-    /**
      * Gets user role name set in configuration.
      *
      * @return role name
@@ -1149,7 +1133,6 @@ public class Configuration implements IConfiguration {
         configuration.disallowUnsafeCharacters = this.disallowUnsafeCharacters;
         configuration.checkSizeAfterScaling = this.checkSizeAfterScaling;
         configuration.secureImageUploads = this.secureImageUploads;
-        configuration.uriEncoding = this.uriEncoding;
         configuration.userRoleSessionVar = this.userRoleSessionVar;
         configuration.events = this.events;
         configuration.basePathBuilder = this.basePathBuilder;

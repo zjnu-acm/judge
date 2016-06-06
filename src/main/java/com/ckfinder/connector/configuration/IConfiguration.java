@@ -33,7 +33,6 @@ public interface IConfiguration {
     String DEFAULT_THUMBS_URL = "_thumbs/";
     String DEFAULT_THUMBS_DIR = "%BASE_DIR%_thumbs/";
     boolean DEFAULT_CHECKAUTHENTICATION = true;
-    String DEFAULT_URI_ENCODING = "UTF-8";
     String DEFAULT_BASE_URL = "/userfiles";
 
     /**
@@ -240,13 +239,6 @@ public interface IConfiguration {
      * @return true if check.
      */
     public boolean checkSizeAfterScaling();
-
-    /**
-     * Gets uri encoding.
-     *
-     * @return uri encoding name.
-     */
-    public String getUriEncoding();
 
     /**
      * prepares configuration for single request.
