@@ -27,6 +27,7 @@ import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfigurati
 import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafProperties;
 import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -42,6 +43,7 @@ import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ITemplateResolver;
 
 @AutoConfigureAfter(WebMvcAutoConfiguration.class)
 @AutoConfigureBefore(ThymeleafAutoConfiguration.class)
@@ -99,9 +101,9 @@ public class ThymeleafConfiguration {
     }
 
     @Bean
-    public SpringResourceTemplateResolver defaultTemplateResolver(ThymeleafProperties properties) {
+    public ITemplateResolver defaultTemplateResolver(ThymeleafProperties properties, ApplicationContext applicationContext) {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
-        // resolver.setResourceResolver(thymeleafResourceResolver());
+        resolver.setApplicationContext(applicationContext);
         resolver.setPrefix(properties.getPrefix());
         resolver.setSuffix(properties.getSuffix());
         resolver.setTemplateMode(properties.getMode());
