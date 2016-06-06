@@ -66,3 +66,6 @@ $RECYCLE.BIN/
 /nbproject
 /src/main/webapp/META-INF
 *.original~
+.classpath
+.project
+.settings
