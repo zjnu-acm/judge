@@ -16,7 +16,9 @@ import com.ckfinder.connector.configuration.IConfiguration;
 import com.ckfinder.connector.errors.ConnectorException;
 import com.ckfinder.connector.utils.AccessControlUtil;
 import com.ckfinder.connector.utils.FileUtils;
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javax.servlet.http.HttpServletRequest;
 import org.w3c.dom.Element;
 
@@ -31,9 +33,6 @@ public class DeleteFolderCommand extends XMLCommand implements IPostCommand {
             throws ConnectorException {
 
         super.initParams(request, configuration, params);
-        if (this.configuration.isEnableCsrfProtection() && !checkCsrfToken(request, null)) {
-            throw new ConnectorException(Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST, "CSRF Attempt");
-        }
     }
 
     @Override
@@ -66,18 +65,17 @@ public class DeleteFolderCommand extends XMLCommand implements IPostCommand {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
         }
 
-        File dir = new File(configuration.getTypes().get(this.type).getPath()
+        Path dir = Paths.get(configuration.getTypes().get(this.type).getPath()
                 + this.currentFolder);
 
         try {
-            if (!dir.exists() || !dir.isDirectory()) {
+            if (!Files.exists(dir) || !Files.isDirectory(dir)) {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_FOLDER_NOT_FOUND;
             }
 
             if (FileUtils.delete(dir)) {
-                File thumbDir = new File(configuration.getThumbsPath()
-                        + File.separator
-                        + this.type
+                Path thumbDir = Paths.get(configuration.getThumbsPath(),
+                        this.type
                         + this.currentFolder);
                 FileUtils.delete(thumbDir);
             } else {

@@ -23,7 +23,6 @@ import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import org.apache.commons.io.FilenameUtils;
 
 /**
  *
@@ -33,6 +32,7 @@ public class ExtensionsViewer {
 
     /**
      * @param args the command line arguments
+     * @throws java.io.IOException
      */
     public static void main(String[] args) throws IOException {
         Path path = Paths.get(".");
@@ -44,7 +44,7 @@ public class ExtensionsViewer {
                 Files.walk(p)
                         .map(pp -> pp.getFileName())
                         .map(Object::toString)
-                        .map(FilenameUtils::getExtension)
+                        .map(str -> str.contains(".") ? str.substring(str.lastIndexOf('.') + 1, str.length()) : "")
                         .filter(Objects::nonNull)
                         .filter(string -> !string.isEmpty())
                         .forEach(set::add);

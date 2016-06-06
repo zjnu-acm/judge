@@ -33,7 +33,6 @@ public interface IConfiguration {
     String DEFAULT_THUMBS_URL = "_thumbs/";
     String DEFAULT_THUMBS_DIR = "%BASE_DIR%_thumbs/";
     boolean DEFAULT_CHECKAUTHENTICATION = true;
-    String DEFAULT_URI_ENCODING = "UTF-8";
     String DEFAULT_BASE_URL = "/userfiles";
 
     /**
@@ -233,14 +232,6 @@ public interface IConfiguration {
      */
     public boolean isDisallowUnsafeCharacters();
 
-    /**
-     * Returns flag indicating if Cross-site request forgery (CSRF) protection
-     * has been enabled.
-     *
-     * @return {@code boolean} flag indicating if CSRF protection has been
-     * enabled.
-     */
-    public boolean isEnableCsrfProtection();
 
     /**
      * flag if check image size after resizing image.
@@ -248,13 +239,6 @@ public interface IConfiguration {
      * @return true if check.
      */
     public boolean checkSizeAfterScaling();
-
-    /**
-     * Gets uri encoding.
-     *
-     * @return uri encoding name.
-     */
-    public String getUriEncoding();
 
     /**
      * prepares configuration for single request.

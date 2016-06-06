@@ -16,8 +16,8 @@
 package cn.edu.zjnu.acm.judge.config;
 
 import cn.edu.zjnu.acm.judge.domain.LoginLog;
-import cn.edu.zjnu.acm.judge.mapper.LoginlogMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
+import cn.edu.zjnu.acm.judge.service.LoginlogService;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import cn.edu.zjnu.acm.judge.user.PasswordConfuser;
 import java.io.IOException;
@@ -58,7 +58,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private PersistentTokenRepository persistentTokenRepository;
     @Autowired
-    private LoginlogMapper loginlogMapper;
+    private LoginlogService loginlogService;
     @Autowired
     private PasswordConfuser passwordConfuser;
     @Autowired
@@ -67,7 +67,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private void saveLoginLog(HttpServletRequest request, boolean success) {
         String userId = Optional.ofNullable(request.getParameter("user_id1")).orElse("");
         String passsword = Optional.ofNullable(request.getParameter("password1")).orElse("");
-        loginlogMapper.save(LoginLog.builder()
+        loginlogService.save(LoginLog.builder()
                 .user(userId)
                 .password(passwordConfuser.confuse(passsword))
                 .ip(request.getRemoteAddr())

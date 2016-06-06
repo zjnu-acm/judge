@@ -17,7 +17,9 @@ import com.ckfinder.connector.data.ResourceType;
 import com.ckfinder.connector.errors.ConnectorException;
 import com.ckfinder.connector.utils.FileUtils;
 import com.ckfinder.connector.utils.PathUtils;
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import org.w3c.dom.Element;
@@ -62,8 +64,8 @@ public class XMLErrorCommand extends XMLCommand {
     }
 
     /**
-     * for error command there should be no exection throw becouse there is no
-     * more excetpion handlers.
+     * for error command there should be no exception throw because there is no
+     * more exception handlers.
      *
      * @param reqParam request param
      * @return true if validation passed
@@ -103,9 +105,9 @@ public class XMLErrorCommand extends XMLCommand {
             throws ConnectorException {
         String tmpType = getParameter(request, "type");
         if (checkIfTypeExists(tmpType)) {
-            File currDir = new File(configuration.getTypes().get(tmpType).getPath()
+            Path currDir = Paths.get(configuration.getTypes().get(tmpType).getPath()
                     + this.currentFolder);
-            if (currDir.exists() && currDir.isDirectory()) {
+            if (Files.exists(currDir) && Files.isDirectory(currDir)) {
                 return true;
             } else {
                 this.connectorException = new ConnectorException(

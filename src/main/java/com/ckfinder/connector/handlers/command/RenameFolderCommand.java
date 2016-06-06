@@ -17,7 +17,10 @@ import com.ckfinder.connector.errors.ConnectorException;
 import com.ckfinder.connector.utils.AccessControlUtil;
 import com.ckfinder.connector.utils.FileUtils;
 import com.ckfinder.connector.utils.PathUtils;
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javax.servlet.http.HttpServletRequest;
 import org.w3c.dom.Element;
 
@@ -53,7 +56,7 @@ public class RenameFolderCommand extends XMLCommand implements IPostCommand {
     }
 
     @Override
-    protected int getDataForXml() {
+    protected int getDataForXml() throws IOException {
 
         try {
             checkParam(newFolderName);
@@ -87,21 +90,22 @@ public class RenameFolderCommand extends XMLCommand implements IPostCommand {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
         }
 
-        File dir = new File(configuration.getTypes().get(this.type).getPath()
+        Path dir = Paths.get(configuration.getTypes().get(this.type).getPath()
                 + this.currentFolder);
         try {
-            if (!dir.isDirectory()) {
+            if (!Files.isDirectory(dir)) {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
             }
             setNewFolder();
-            File newDir = new File(configuration.getTypes().get(this.type).getPath()
+            Path newDir = Paths.get(configuration.getTypes().get(this.type).getPath()
                     + this.newFolderPath);
-            if (newDir.exists()) {
+            if (Files.exists(newDir)) {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_ALREADY_EXIST;
             }
-            if (dir.renameTo(newDir)) {
+            try {
+                Files.move(dir, newDir);
                 renameThumb();
-            } else {
+            } catch (IOException ex) {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED;
             }
         } catch (SecurityException e) {
@@ -118,16 +122,14 @@ public class RenameFolderCommand extends XMLCommand implements IPostCommand {
     /**
      * renames thumb folder.
      */
-    private void renameThumb() {
-        File thumbDir = new File(configuration.getThumbsPath()
-                + File.separator
-                + this.type
+    private void renameThumb() throws IOException {
+        Path thumbDir = Paths.get(configuration.getThumbsPath(),
+                this.type
                 + this.currentFolder);
-        File newThumbDir = new File(configuration.getThumbsPath()
-                + File.separator
-                + this.type
+        Path newThumbDir = Paths.get(configuration.getThumbsPath(),
+                 this.type
                 + this.newFolderPath);
-        thumbDir.renameTo(newThumbDir);
+        Files.move(thumbDir, newThumbDir);
 
     }
 
@@ -155,9 +157,6 @@ public class RenameFolderCommand extends XMLCommand implements IPostCommand {
             final Object... params) throws ConnectorException {
 
         super.initParams(request, configuration);
-        if (this.configuration.isEnableCsrfProtection() && !checkCsrfToken(request, null)) {
-            throw new ConnectorException(Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST, "CSRF Attempt");
-        }
         this.newFolderName = getParameter(request, "NewFolderName");
 
     }

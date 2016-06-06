@@ -20,10 +20,10 @@ import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.thymeleaf.util.StringUtils;
 
 /**
  *
@@ -39,7 +39,7 @@ public class JudgeHandlerInterceptor {
     @ModelAttribute
     public void addAttributes(HttpServletRequest request,
             @RequestParam(value = "url", required = false) String url) {
-        if (StringUtils.hasText(url)) {
+        if (!StringUtils.isEmptyOrWhitespace(url)) {
             request.setAttribute("backUrl", url);
         } else {
             String uri = request.getRequestURI();

@@ -26,15 +26,14 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.thymeleaf.util.StringUtils;
 
 /**
  *
@@ -119,7 +118,7 @@ public class AdminController {
             @RequestParam(value = "sinfo", required = false) String sinfo,
             @RequestParam(value = "pureText", required = false) String pureText) {
         UserDetailService.requireAdminLoginned(request);
-        if (!StringUtils.hasText(op)) {
+        if (StringUtils.isEmptyOrWhitespace(op)) {
             throw new MessageException("Nothing I can do for you.", HttpStatus.BAD_REQUEST);
         }
 
@@ -130,10 +129,10 @@ public class AdminController {
                 userProblemMapper.updateUsers();
                 break;
             case "setsysteminfo":
-                if (!StringUtils.hasText(sinfo)) {
+                if (StringUtils.isEmptyOrWhitespace(sinfo)) {
                     judgeConfiguration.setSystemInfo(null);
                 } else if (pureText != null) {
-                    judgeConfiguration.setSystemInfo(StringEscapeUtils.escapeHtml4(sinfo.trim()));
+                    judgeConfiguration.setSystemInfo(StringUtils.escapeXml(sinfo.trim()));
                 } else {
                     judgeConfiguration.setSystemInfo(sinfo.trim());
                 }

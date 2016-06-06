@@ -16,7 +16,10 @@ import com.ckfinder.connector.configuration.IConfiguration;
 import com.ckfinder.connector.errors.ConnectorException;
 import com.ckfinder.connector.utils.AccessControlUtil;
 import com.ckfinder.connector.utils.FileUtils;
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javax.servlet.http.HttpServletRequest;
 import org.w3c.dom.Element;
 
@@ -57,9 +60,10 @@ public class RenameFileCommand extends XMLCommand implements IPostCommand {
      * gets data for XML and checks all validation.
      *
      * @return error code or 0 if it's correct.
+     * @throws java.io.IOException
      */
     @Override
-    protected int getDataForXml() {
+    protected int getDataForXml() throws IOException {
 
         if (!checkIfTypeExists(this.type)) {
             this.type = null;
@@ -110,27 +114,29 @@ public class RenameFileCommand extends XMLCommand implements IPostCommand {
         String dirPath = configuration.getTypes().get(this.type).getPath()
                 + this.currentFolder;
 
-        File file = new File(dirPath, this.fileName);
-        File newFile = new File(dirPath, this.newFileName);
-        File dir = new File(dirPath);
+        Path file = Paths.get(dirPath, this.fileName);
+        Path newFile = Paths.get(dirPath, this.newFileName);
+        Path dir = Paths.get(dirPath);
 
         try {
-            if (!file.exists()) {
+            if (!Files.exists(file)) {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_FILE_NOT_FOUND;
             }
 
-            if (newFile.exists()) {
+            if (Files.exists(newFile)) {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_ALREADY_EXIST;
             }
 
-            if (!dir.canWrite() || !file.canWrite()) {
+            if (!Files.isWritable(dir) || !Files.isWritable(file)) {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED;
             }
-            this.renamed = file.renameTo(newFile);
-            if (this.renamed) {
+            try {
+                Files.move(file, newFile);
+                renamed = true;
                 renameThumb();
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_NONE;
-            } else {
+            } catch (IOException ex) {
+                renamed = false;
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED;
             }
         } catch (SecurityException e) {
@@ -146,15 +152,15 @@ public class RenameFileCommand extends XMLCommand implements IPostCommand {
     /**
      * rename thumb file.
      */
-    private void renameThumb() {
-        File thumbFile = new File(configuration.getThumbsPath()
-                + File.separator + this.type + this.currentFolder,
+    private void renameThumb() throws IOException {
+        Path thumbFile = Paths.get(configuration.getThumbsPath(),
+                this.type + this.currentFolder,
                 this.fileName);
-        File newThumbFile = new File(configuration.getThumbsPath()
-                + File.separator + this.type + this.currentFolder,
+        Path newThumbFile = Paths.get(configuration.getThumbsPath(),
+                this.type + this.currentFolder,
                 this.newFileName);
 
-        thumbFile.renameTo(newThumbFile);
+        Files.move(thumbFile, newThumbFile);
 
     }
 
@@ -163,9 +169,6 @@ public class RenameFileCommand extends XMLCommand implements IPostCommand {
             final IConfiguration configuration, final Object... params)
             throws ConnectorException {
         super.initParams(request, configuration);
-        if (this.configuration.isEnableCsrfProtection() && !checkCsrfToken(request, null)) {
-            throw new ConnectorException(Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST, "CSRF Attempt");
-        }
         this.fileName = getParameter(request, "fileName");
         this.newFileName = getParameter(request, "newFileName");
     }

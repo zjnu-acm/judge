@@ -54,7 +54,7 @@
         </table>
         <ul class="text-center pagination">
             <li th:each="i:${#numbers.sequence(0,page.totalPages-1)}">
-                <a th:href="@{${url}(page=${i})}" th:text="${i}">1</a>
+                <a th:href="@{${url}(page=${i})}" th:text="${i+1}">1</a>
             </li>
         </ul>
         <!--/*/</th:block>/*/-->

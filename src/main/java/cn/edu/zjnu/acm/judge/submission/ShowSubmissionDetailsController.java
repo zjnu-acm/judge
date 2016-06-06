@@ -2,15 +2,13 @@ package cn.edu.zjnu.acm.judge.submission;
 
 import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.domain.Submission;
+import cn.edu.zjnu.acm.judge.domain.SubmissionDetail;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.service.SubmissionService;
 import cn.edu.zjnu.acm.judge.util.ResultType;
-import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -29,9 +27,7 @@ public class ShowSubmissionDetailsController {
     private SubmissionService submissionService;
 
     @RequestMapping(value = "/showsolutiondetails", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public void showsolutiondetails(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam("solution_id") long submissionId)
-            throws IOException {
+    public String showsolutiondetails(HttpServletRequest request, @RequestParam("solution_id") long submissionId) {
         Submission submission = submissionMapper.findOne(submissionId);
         if (submission == null) {
             throw new MessageException("No such solution", HttpStatus.NOT_FOUND);
@@ -48,34 +44,27 @@ public class ShowSubmissionDetailsController {
         }
         String submissionDetail = submissionMapper.getSubmissionDetail(submissionId);
         if (submissionDetail == null) {
-            throw new MessageException("No such solution", HttpStatus.NOT_FOUND);
+            submissionDetail = "";
         }
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        out.print("<html><head><title>Solution Details</title></head><body>"
-                + "<ul><li><font color=#333399 size=5>Solution Details</font></li></ul>"
-                + "<TABLE align=center cellSpacing=0 cellPadding=0 width=75% border=1 class=table-back style=\"border-collapse: collapse\" bordercolor=#FFF>"
-                + "<tr bgcolor=#6589D1><td align=center width=25%><b>Case num</b></td>"
-                + "<td align=center width=25%><b>Result</b></td>"
-                + "<td align=center width=25%><b>Score</b></td><td align=center width=7%><b>Time</b></td>"
-                + "<td align=center width=25%><b>Memory</b></td>"
-                + "</tr>");
 
         String[] detailsArray = submissionDetail.split(",");
+        SubmissionDetail[] details = new SubmissionDetail[detailsArray.length / 4];
         for (int i = 0; i < detailsArray.length / 4; ++i) {
-            out.print("<tr align=center>"
-                    + "<td>" + (i + 1) + "</td><td>"
-                    + ResultType.getCaseScoreDescription(Integer.parseInt(detailsArray[i << 2])) + "</td><td>"
-                    + detailsArray[i << 2 | 1] + "</td><td>" + detailsArray[i << 2 | 2] + "MS</td><td>"
-                    + detailsArray[i << 2 | 3] + "K</td><td></tr>");
+            details[i] = SubmissionDetail.builder()
+                    .result(ResultType.getCaseScoreDescription(Integer.parseInt(detailsArray[i << 2])))
+                    .score(Integer.parseInt(detailsArray[i << 2 | 1]))
+                    .time(Integer.parseInt(detailsArray[i << 2 | 2]))
+                    .memory(Integer.parseInt(detailsArray[i << 2 | 3]))
+                    .build();
         }
-        out.print("<tr bgcolor=#6589D1 align=center>"
-                + "<td>Result</td><td>"
-                + ResultType.getResultDescription(submission.getScore()) + "</td><td>"
-                + submission.getScore() + "</td><td>"
-                + submission.getTime() + "MS</td><td>"
-                + submission.getMemory() + "K</td><td></tr>"
-                + "</table></body></html>");
+        request.setAttribute("details", details);
+        request.setAttribute("user", submission.getUser());
+        request.setAttribute("problem", submission.getProblem());
+        request.setAttribute("result", ResultType.getResultDescription(submission.getScore()));
+        request.setAttribute("score", submission.getScore());
+        request.setAttribute("time", submission.getTime());
+        request.setAttribute("memory", submission.getMemory());
+        return "submissions/detail";
     }
 
 }

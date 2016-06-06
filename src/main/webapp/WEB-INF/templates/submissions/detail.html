@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="'layout/main'">
+    <head>
+        <title>Solution Details</title>
+    </head>
+    <body>
+        <!--/*/<th:block layout:fragment="content">/*/-->
+        <ul><li><font color="#333399" size="5">Solution Details</font></li></ul>
+        <table align="center" cellspacing="0" cellpadding="0" width="75%" border="1" class="table-back" style="border-collapse: collapse" bordercolor="#FFF">
+            <tbody>
+                <tr bgcolor="#6589D1">
+                    <td align="center" width="25%"><b>Case num</b></td>
+                    <td align="center" width="25%"><b>Result</b></td>
+                    <td align="center" width="25%"><b>Score</b></td>
+                    <td align="center" width="7%"><b>Time</b></td>
+                    <td align="center" width="25%"><b>Memory</b></td>
+                </tr>
+                <tr th:each="detail,it:${details}" align="center" th:object="${detail}">
+                    <td th:text="${it.count}">1</td>
+                    <td th:text="*{result}">Accepted</td>
+                    <td th:text="*{score}">10</td>
+                    <td>[[*{time}]]MS</td>
+                    <td>[[*{memory}]]K</td>
+                </tr>
+                <tr bgcolor="#6589D1" align="center">
+                    <td>Result</td>
+                    <td>Accepted</td>
+                    <td>100</td>
+                    <td>15MS</td>
+                    <td>0K</td>
+                </tr>
+            </tbody>
+        </table>
+        <!--/*/</th:block>/*/-->
+    </body>
+</html>

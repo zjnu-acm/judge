@@ -29,11 +29,6 @@
 	<imgHeight>1200</imgHeight>
 	<imgQuality>80</imgQuality>
 	<!--
-	See the following article for more details:
-	http://docs.cksource.com/CKFinder_2.x/Developers_Guide/Java/Configuration/URI_Encoding
-	-->
-	<uriEncoding>UTF-8</uriEncoding>
-	<!--
 	ResourceType : defines the "resource types" handled in CKFinder. A resource
 	type is nothing more than a way to group files under different paths, each one
 	having different configuration settings.

@@ -72,7 +72,7 @@ public abstract class XMLCommand extends Command {
      * @param errorNum error code from method getDataForXml()
      * @throws ConnectorException to handle in error handler.
      */
-    private void createXMLResponse(final int errorNum) throws ConnectorException {
+    private void createXMLResponse(final int errorNum) throws ConnectorException, IOException {
         if (configuration.isDebugMode() && this.exception != null) {
             throw new ConnectorException(this.exception);
         }
@@ -104,10 +104,11 @@ public abstract class XMLCommand extends Command {
      * @param errorNum error code
      * @param rootElement XML root node
      * @throws ConnectorException to handle in error handler.
+     * @throws java.io.IOException
      */
     protected abstract void createXMLChildNodes(final int errorNum,
             final Element rootElement)
-            throws ConnectorException;
+            throws ConnectorException, IOException;
 
     /**
      * gets all necessary data to create XML response.
@@ -116,8 +117,9 @@ public abstract class XMLCommand extends Command {
      * {@link com.ckfinder.connector.configuration.Constants.Errors} or
      * {@link com.ckfinder.connector.configuration.Constants.Errors#CKFINDER_CONNECTOR_ERROR_NONE}
      * if no error occurred.
+     * @throws java.io.IOException
      */
-    protected abstract int getDataForXml();
+    protected abstract int getDataForXml() throws IOException;
 
     /**
      * creates <code>CurrentFolder</code> element.

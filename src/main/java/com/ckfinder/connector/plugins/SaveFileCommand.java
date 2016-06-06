@@ -20,10 +20,11 @@ import com.ckfinder.connector.errors.ConnectorException;
 import com.ckfinder.connector.handlers.command.XMLCommand;
 import com.ckfinder.connector.utils.AccessControlUtil;
 import com.ckfinder.connector.utils.FileUtils;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javax.servlet.http.HttpServletRequest;
 import org.w3c.dom.Element;
 
@@ -43,10 +44,6 @@ public class SaveFileCommand extends XMLCommand implements IEventHandler {
 
     @Override
     protected int getDataForXml() {
-
-        if (this.configuration.isEnableCsrfProtection() && !checkCsrfToken(this.request, null)) {
-            return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
-        }
 
         if (!checkIfTypeExists(this.type)) {
             this.type = null;
@@ -74,14 +71,14 @@ public class SaveFileCommand extends XMLCommand implements IEventHandler {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
         }
 
-        File sourceFile = new File(configuration.getTypes().get(this.type).getPath()
+        Path sourceFile = Paths.get(configuration.getTypes().get(this.type).getPath()
                 + this.currentFolder, this.fileName);
 
         try {
-            if (!(sourceFile.exists() && sourceFile.isFile())) {
+            if (!(Files.exists(sourceFile) && Files.isRegularFile(sourceFile))) {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_FILE_NOT_FOUND;
             }
-            Files.write(sourceFile.toPath(), this.fileContent.getBytes("UTF-8"));
+            Files.write(sourceFile, this.fileContent.getBytes("UTF-8"));
         } catch (FileNotFoundException e) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_FILE_NOT_FOUND;
         } catch (SecurityException | IOException e) {

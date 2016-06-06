@@ -18,7 +18,11 @@ import com.ckfinder.connector.data.ResourceType;
 import com.ckfinder.connector.errors.ConnectorException;
 import com.ckfinder.connector.utils.FileUtils;
 import com.ckfinder.connector.utils.PathUtils;
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -43,17 +47,17 @@ import static com.ckfinder.connector.configuration.IConfiguration.DEFAULT_IMG_QU
 import static com.ckfinder.connector.configuration.IConfiguration.DEFAULT_IMG_WIDTH;
 import static com.ckfinder.connector.configuration.IConfiguration.DEFAULT_THUMB_MAX_HEIGHT;
 import static com.ckfinder.connector.configuration.IConfiguration.DEFAULT_THUMB_MAX_WIDTH;
-import static com.ckfinder.connector.configuration.IConfiguration.DEFAULT_URI_ENCODING;
 
 /**
  * Class loads configuration from XML file.
  */
 @Slf4j
+@SuppressWarnings({"ProtectedField", "CollectionWithoutInitialCapacity", "ReturnOfCollectionOrArrayField", "FinalMethod"})
 public class Configuration implements IConfiguration {
 
     protected static final int MAX_QUALITY = 100;
     protected static final float MAX_QUALITY_FLOAT = 100f;
-    private long lastCfgModificationDate;
+    private FileTime lastCfgModificationDate;
     protected boolean enabled;
     protected String xmlFilePath;
     protected String baseDir;
@@ -86,7 +90,6 @@ public class Configuration implements IConfiguration {
     protected Set<String> defaultResourceTypes;
     protected IBasePathBuilder basePathBuilder;
     protected boolean disallowUnsafeCharacters;
-    protected boolean enableCsrfProtection;
     private boolean loading;
     private Events events;
     private boolean debug;
@@ -136,7 +139,6 @@ public class Configuration implements IConfiguration {
         this.doubleExtensions = false;
         this.forceASCII = false;
         this.checkSizeAfterScaling = false;
-        this.uriEncoding = DEFAULT_URI_ENCODING;
         this.userRoleSessionVar = "";
         this.plugins = new ArrayList<>();
         this.secureImageUploads = false;
@@ -145,7 +147,6 @@ public class Configuration implements IConfiguration {
         this.events = new Events();
         this.basePathBuilder = null;
         this.disallowUnsafeCharacters = false;
-        this.enableCsrfProtection = true;
     }
 
     /**
@@ -157,11 +158,11 @@ public class Configuration implements IConfiguration {
     public void init() throws Exception {
         clearConfiguration();
         this.loading = true;
-        File file = new File(getFullConfigPath());
-        this.lastCfgModificationDate = file.lastModified();
+        Path file = Paths.get(getFullConfigPath());
+        this.lastCfgModificationDate = Files.getLastModifiedTime(file);
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
-        Document doc = db.parse(file);
+        Document doc = db.parse(file.toFile());
         doc.normalize();
         Node node = doc.getFirstChild();
         if (node != null) {
@@ -236,9 +237,6 @@ public class Configuration implements IConfiguration {
                     case "checkSizeAfterScaling":
                         this.checkSizeAfterScaling = Boolean.valueOf(nullNodeToString(childNode));
                         break;
-                    case "enableCsrfProtection":
-                        this.enableCsrfProtection = Boolean.valueOf(nullNodeToString(childNode));
-                        break;
                     case "htmlExtensions":
                         String htmlExt = nullNodeToString(childNode);
                         StringTokenizer scanner = new StringTokenizer(htmlExt, ",");
@@ -256,7 +254,6 @@ public class Configuration implements IConfiguration {
                         break;
 
                     case "uriEncoding":
-                        this.uriEncoding = nullNodeToString(childNode);
                         break;
                     case "userRoleSessionVar":
                         this.userRoleSessionVar = nullNodeToString(childNode);
@@ -298,17 +295,17 @@ public class Configuration implements IConfiguration {
      * @throws ConnectorException when absolute path cannot be obtained.
      */
     private String getFullConfigPath() throws ConnectorException {
-        File cfgFile = null;
+        Path cfgFile = null;
         String path = FileUtils.getFullPath(xmlFilePath, false, true);
         if (path == null) {
             throw new ConnectorException(Constants.Errors.CKFINDER_CONNECTOR_ERROR_FILE_NOT_FOUND,
                     "Configuration file could not be found under specified location.");
         } else {
-            cfgFile = new File(path);
+            cfgFile = Paths.get(path);
         }
 
-        if (cfgFile.exists() && cfgFile.isFile()) {
-            return cfgFile.getAbsolutePath();
+        if (Files.exists(cfgFile) && Files.isRegularFile(cfgFile)) {
+            return cfgFile.toAbsolutePath().toString();
         } else {
             return xmlFilePath;
         }
@@ -360,8 +357,7 @@ public class Configuration implements IConfiguration {
     protected void registerEventHandlers() {
         for (PluginInfo item : this.plugins) {
             try {
-                @SuppressWarnings("unchecked")
-                Class<Plugin> clazz = (Class<Plugin>) Class.forName(item.getClassName());
+                Class<? extends Plugin> clazz = Class.forName(item.getClassName()).asSubclass(Plugin.class);
                 Plugin plugin = clazz.newInstance();
                 plugin.setPluginInfo(item);
                 plugin.registerEventHandlers(this.events);
@@ -618,18 +614,6 @@ public class Configuration implements IConfiguration {
     }
 
     /**
-     * Returns flag indicating if Cross-site request forgery (CSRF) protection
-     * has been enabled.
-     *
-     * @return {@code boolean} flag indicating if CSRF protection has been
-     * enabled
-     */
-    @Override
-    public boolean isEnableCsrfProtection() {
-        return this.enableCsrfProtection;
-    }
-
-    /**
      * Gets location of ckfinder in application e.g. /ckfinder/.
      *
      * @return base directory.
@@ -877,19 +861,6 @@ public class Configuration implements IConfiguration {
     }
 
     /**
-     * Returns URI encoding.
-     *
-     * @return URI encoding e.g. UTF-8.
-     */
-    @Override
-    public String getUriEncoding() {
-        if (this.uriEncoding == null || this.uriEncoding.length() == 0) {
-            return DEFAULT_URI_ENCODING;
-        }
-        return this.uriEncoding;
-    }
-
-    /**
      * Gets user role name set in configuration.
      *
      * @return role name
@@ -983,7 +954,7 @@ public class Configuration implements IConfiguration {
      */
     @Override
     public boolean checkIfReloadConfig() throws ConnectorException {
-        File cfgFile;
+        Path cfgFile;
         String path = FileUtils.getFullPath(xmlFilePath, false, true);
         if (path == null) {
             if (this.debug) {
@@ -994,10 +965,14 @@ public class Configuration implements IConfiguration {
                 return false;
             }
         } else {
-            cfgFile = new File(path);
+            cfgFile = Paths.get(path);
         }
 
-        return (cfgFile.lastModified() > this.lastCfgModificationDate);
+        try {
+            return (Files.getLastModifiedTime(cfgFile).compareTo(this.lastCfgModificationDate) > 0);
+        } catch (IOException ex) {
+            return false;
+        }
     }
 
     /**
@@ -1131,6 +1106,7 @@ public class Configuration implements IConfiguration {
      *
      * @param configuration destination configuration
      */
+    @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
     protected void copyConfFields(final Configuration configuration) {
         configuration.loading = this.loading;
         configuration.xmlFilePath = this.xmlFilePath;
@@ -1155,10 +1131,8 @@ public class Configuration implements IConfiguration {
         configuration.doubleExtensions = this.doubleExtensions;
         configuration.forceASCII = this.forceASCII;
         configuration.disallowUnsafeCharacters = this.disallowUnsafeCharacters;
-        configuration.enableCsrfProtection = this.enableCsrfProtection;
         configuration.checkSizeAfterScaling = this.checkSizeAfterScaling;
         configuration.secureImageUploads = this.secureImageUploads;
-        configuration.uriEncoding = this.uriEncoding;
         configuration.userRoleSessionVar = this.userRoleSessionVar;
         configuration.events = this.events;
         configuration.basePathBuilder = this.basePathBuilder;

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ckfinder.connector.configuration;
 
 import com.ckfinder.connector.utils.AccessControlUtil;
@@ -22,6 +17,7 @@ import java.util.Collection;
  * @param <E> type of elelmens which will be kept in
  * {@code AccessControlLevelsList}
  */
+@SuppressWarnings({"serial", "CloneableImplementsClone"})
 public class AccessControlLevelsList<E> extends ArrayList<E> {
 
     /**

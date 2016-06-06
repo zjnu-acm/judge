@@ -21,8 +21,10 @@ import com.ckfinder.connector.handlers.command.XMLCommand;
 import com.ckfinder.connector.utils.AccessControlUtil;
 import com.ckfinder.connector.utils.FileUtils;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import org.w3c.dom.Element;
@@ -83,16 +85,16 @@ public class ImageResizeInfoCommand extends XMLCommand implements IEventHandler 
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
         }
 
-        File imageFile = new File(configuration.getTypes().get(this.type).getPath()
+        Path imageFile = Paths.get(configuration.getTypes().get(this.type).getPath()
                 + this.currentFolder,
                 this.fileName);
 
         try {
-            if (!(imageFile.exists() && imageFile.isFile())) {
+            if (!(Files.exists(imageFile) && Files.isRegularFile(imageFile))) {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_FILE_NOT_FOUND;
             }
 
-            BufferedImage image = ImageIO.read(imageFile);
+            BufferedImage image = ImageIO.read(imageFile.toFile());
             this.imageWidth = image.getWidth();
             this.imageHeight = image.getHeight();
         } catch (SecurityException | IOException e) {

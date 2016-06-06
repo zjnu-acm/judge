@@ -23,6 +23,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import lombok.AllArgsConstructor;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -54,7 +55,7 @@ public class XMLCreator {
      * @throws ConnectorException if a DocumentBuilder cannot be created which
      * satisfies the configuration requested.
      */
-    @SuppressWarnings("UseSpecificCatch")
+    @SuppressWarnings({"UseSpecificCatch", "BroadCatchBlock", "TooBroadCatch"})
     public void createDocument() throws ConnectorException {
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -157,26 +158,13 @@ public class XMLCreator {
     /**
      * error node object.
      */
-    private class ErrorNode {
+    @AllArgsConstructor
+    private static class ErrorNode {
 
         private String folder;
         private String type;
         private String name;
         private int errorCode;
 
-        /**
-         * @param folder folder param
-         * @param type resource type param
-         * @param name file name param
-         * @param errorCode error code param
-         */
-        public ErrorNode(final String folder, final String type,
-                final String name, final int errorCode) {
-            super();
-            this.folder = folder;
-            this.type = type;
-            this.name = name;
-            this.errorCode = errorCode;
-        }
     }
 }
