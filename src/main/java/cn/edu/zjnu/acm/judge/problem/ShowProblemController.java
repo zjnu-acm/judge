@@ -16,10 +16,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.thymeleaf.util.StringUtils;
 
 @Controller
 public class ShowProblemController {
@@ -79,7 +79,13 @@ public class ShowProblemController {
         StringBuilder sb = new StringBuilder(800);
 
         if (contestId == null) {
-            sb.append("<html><head><title>").append(problemId).append(" -- ").append(org.thymeleaf.util.StringUtils.escapeXml(title)).append("</title></head><body>" + "<table border=0 width=100% class=table-back><tr><td><div class=\"ptt\" lang=\"en-US\">").append(title).append("</div>");
+            sb.append("<html><head><title>")
+                    .append(problemId)
+                    .append(" -- ").
+                    append(StringUtils.escapeXml(title))
+                    .append("</title></head><body>" + "<table border=0 width=100% class=table-back><tr><td><div class=\"ptt\" lang=\"en-US\">")
+                    .append(title)
+                    .append("</div>");
         } else {
             request.setAttribute("contestId", contestId);
             sb.append("<html><head><title>").append((char) (contestNum + 'A')).append(":").append(problemId).append(" -- ").append(title).append("</title></head><body>"
@@ -97,37 +103,37 @@ public class ShowProblemController {
             sb.append("<td width=\"10px\"></td><td style=\"font-weight:bold; color:red;\">Special Judge</td>");
         }
         sb.append("</table></div>");
-        if (StringUtils.hasText(description)) {
+        if (!StringUtils.isEmptyOrWhitespace(description)) {
             sb.append("<p class=\"pst\">Description</p><div class=\"ptx\" lang=\"en-US\">");
             sb.append(JudgeUtils.getHtmlFormattedString(description));
             sb.append("</div>");
         }
-        if (StringUtils.hasText(input)) {
+        if (!StringUtils.isEmptyOrWhitespace(input)) {
             sb.append("<p class=\"pst\">Input</p><div class=\"ptx\" lang=\"en-US\">");
             sb.append(JudgeUtils.getHtmlFormattedString(input));
             sb.append("</div>");
         }
-        if (StringUtils.hasText(output)) {
+        if (!StringUtils.isEmptyOrWhitespace(output)) {
             sb.append("<p class=\"pst\">Output</p><div class=\"ptx\" lang=\"en-US\">");
             sb.append(JudgeUtils.getHtmlFormattedString(output));
             sb.append("</div>");
         }
-        if (StringUtils.hasText(sampleInput)) {
+        if (!StringUtils.isEmptyOrWhitespace(sampleInput)) {
             sb.append("<p class=\"pst\">Sample Input</p><div class=\"ptx\" style=\"white-space:pre\" lang=\"en-US\">");
             sb.append(sampleInput);
             sb.append("</div>");
         }
-        if (StringUtils.hasText(sampleOutput)) {
+        if (!StringUtils.isEmptyOrWhitespace(sampleOutput)) {
             sb.append("<p class=\"pst\">Sample Output</p><div class=\"ptx\" style=\"white-space:pre\" lang=\"en-US\">");
             sb.append(sampleOutput);
             sb.append("</div>");
         }
-        if (StringUtils.hasText(hint)) {
+        if (!StringUtils.isEmptyOrWhitespace(hint)) {
             sb.append("<p class=\"pst\">Hint</p><div class=\"ptx\" lang=\"en-US\">");
             sb.append(JudgeUtils.getHtmlFormattedString(hint));
             sb.append("</div>");
         }
-        if (ended && StringUtils.hasText(source)) {
+        if (ended && !StringUtils.isEmptyOrWhitespace(source)) {
             sb.append("<p class=\"pst\">Source</p><div class=\"ptx\" lang=\"en-US\">");
             sb.append(JudgeUtils.getHtmlFormattedString(source));
             sb.append("</div>");
