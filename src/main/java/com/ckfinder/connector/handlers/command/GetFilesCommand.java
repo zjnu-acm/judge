@@ -19,7 +19,10 @@ import com.ckfinder.connector.errors.ConnectorException;
 import com.ckfinder.connector.utils.AccessControlUtil;
 import com.ckfinder.connector.utils.FileUtils;
 import com.ckfinder.connector.utils.ImageUtils;
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -67,7 +70,7 @@ public class GetFilesCommand extends XMLCommand {
 
     @Override
     protected void createXMLChildNodes(final int errorNum, final Element rootElement)
-            throws ConnectorException {
+            throws ConnectorException, IOException {
         if (errorNum == Constants.Errors.CKFINDER_CONNECTOR_ERROR_NONE) {
             createFilesData(rootElement);
         }
@@ -77,9 +80,10 @@ public class GetFilesCommand extends XMLCommand {
      * gets data to XML response.
      *
      * @return 0 if ok, otherwise error code
+     * @throws java.io.IOException
      */
     @Override
-    protected int getDataForXml() {
+    protected int getDataForXml() throws IOException {
 
         if (!checkIfTypeExists(this.type)) {
             this.type = null;
@@ -95,9 +99,9 @@ public class GetFilesCommand extends XMLCommand {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
         }
 
-        File dir = new File(this.fullCurrentPath);
+        Path dir = Paths.get(this.fullCurrentPath);
         try {
-            if (!dir.exists()) {
+            if (!Files.exists(dir)) {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_FOLDER_NOT_FOUND;
             }
             files = FileUtils.findChildrensList(dir, false);
@@ -136,11 +140,11 @@ public class GetFilesCommand extends XMLCommand {
      *
      * @param rootElement root element from XML.
      */
-    private void createFilesData(final Element rootElement) {
+    private void createFilesData(final Element rootElement) throws IOException {
         Element element = creator.getDocument().createElement("Files");
         for (String filePath : files) {
-            File file = new File(this.fullCurrentPath, filePath);
-            if (file.exists()) {
+            Path file = Paths.get(this.fullCurrentPath, filePath);
+            if (Files.exists(file)) {
                 XmlElementData elementData = new XmlElementData("File");
                 XmlAttribute attribute = new XmlAttribute("name", filePath);
                 elementData.getAttributes().add(attribute);
@@ -168,14 +172,14 @@ public class GetFilesCommand extends XMLCommand {
      * @param file file to check if has thumb.
      * @return thumb attribute values
      */
-    private String createThumbAttr(final File file) {
-        File thumbFile = new File(configuration.getThumbsPath()
-                + File.separator + this.type + this.currentFolder,
-                file.getName());
-        if (thumbFile.exists()) {
-            return file.getName();
+    private String createThumbAttr(final Path file) {
+        Path thumbFile = Paths.get(configuration.getThumbsPath(),
+                 this.type + this.currentFolder,
+                file.getFileName().toString());
+        if (Files.exists(thumbFile)) {
+            return file.getFileName().toString();
         } else if (isShowThumbs()) {
-            return "?".concat(file.getName());
+            return "?".concat(file.getFileName().toString());
         } else {
             return "";
         }
@@ -187,11 +191,12 @@ public class GetFilesCommand extends XMLCommand {
      * @param file file
      * @return file size
      */
-    private String getSize(final File file) {
-        if (file.length() > 0 && file.length() < BYTES) {
+    private String getSize(final Path file) throws IOException {
+        long size = Files.size(file);
+        if (size > 0 && size < BYTES) {
             return "1";
         } else {
-            return String.valueOf(Math.round(file.length() / BYTES));
+            return String.valueOf(Math.round(size / BYTES));
         }
     }
 

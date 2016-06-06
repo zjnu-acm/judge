@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import javax.imageio.ImageIO;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
@@ -37,10 +38,10 @@ public class WatermarkCommand implements IEventHandler {
         try {
             final WatermarkSettings settings = WatermarkSettings.createFromConfiguration(configuration,
                     ServletContextFactory.getServletContext());
-            final File originalFile = ((AfterFileUploadEventArgs) args).getFile();
+            final Path originalFile = ((AfterFileUploadEventArgs) args).getFile();
             final WatermarkPosition position = new WatermarkPosition(settings.getMarginBottom(), settings.getMarginRight());
 
-            try (InputStream stream = Files.newInputStream(originalFile.toPath())) {
+            try (InputStream stream = Files.newInputStream(originalFile)) {
                 Thumbnails.of(stream)
                         .watermark(position, getWatermakImage(settings), settings.getTransparency())
                         .scale(1)

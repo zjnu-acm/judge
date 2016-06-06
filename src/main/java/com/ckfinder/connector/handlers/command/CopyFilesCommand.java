@@ -17,8 +17,10 @@ import com.ckfinder.connector.data.FilePostParam;
 import com.ckfinder.connector.errors.ConnectorException;
 import com.ckfinder.connector.utils.AccessControlUtil;
 import com.ckfinder.connector.utils.FileUtils;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -147,13 +149,13 @@ public class CopyFilesCommand extends XMLCommand implements IPostCommand {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
             }
 
-            File sourceFile = new File(configuration.getTypes().get(file.getType()).getPath()
+            Path sourceFile = Paths.get(configuration.getTypes().get(file.getType()).getPath()
                     + file.getFolder(), file.getName());
-            File destFile = new File(configuration.getTypes().get(this.type).getPath()
+            Path destFile = Paths.get(configuration.getTypes().get(this.type).getPath()
                     + this.currentFolder, file.getName());
 
             try {
-                if (!sourceFile.exists() || !sourceFile.isFile()) {
+                if (!Files.exists(sourceFile) || !Files.isRegularFile(sourceFile)) {
                     creator.appendErrorNodeChild(
                             Constants.Errors.CKFINDER_CONNECTOR_ERROR_FILE_NOT_FOUND,
                             file.getName(), file.getFolder(), file.getType());
@@ -161,7 +163,7 @@ public class CopyFilesCommand extends XMLCommand implements IPostCommand {
                 }
                 if (!this.type.equals(file.getType())) {
                     long maxSize = configuration.getTypes().get(this.type).getMaxSize();
-                    if (maxSize != 0 && maxSize < sourceFile.length()) {
+                    if (maxSize != 0 && maxSize < Files.size(sourceFile)) {
                         creator.appendErrorNodeChild(
                                 Constants.Errors.CKFINDER_CONNECTOR_ERROR_UPLOADED_TOO_BIG,
                                 file.getName(), file.getFolder(), file.getType());
@@ -172,7 +174,7 @@ public class CopyFilesCommand extends XMLCommand implements IPostCommand {
                     creator.appendErrorNodeChild(
                             Constants.Errors.CKFINDER_CONNECTOR_ERROR_SOURCE_AND_TARGET_PATH_EQUAL,
                             file.getName(), file.getFolder(), file.getType());
-                } else if (destFile.exists()) {
+                } else if (Files.exists(destFile)) {
                     if (file.getOptions() != null
                             && file.getOptions().contains("overwrite")) {
                         if (!handleOverwrite(sourceFile, destFile)) {
@@ -228,17 +230,21 @@ public class CopyFilesCommand extends XMLCommand implements IPostCommand {
      * @return true if copied correctly
      * @throws IOException when ioerror occurs
      */
-    private boolean handleAutoRename(final File sourceFile, final File destFile)
+    private boolean handleAutoRename(final Path sourceFile, final Path destFile)
             throws IOException {
         int counter = 1;
-        File newDestFile;
+        Path newDestFile;
+        String fileName = destFile.getFileName().toString();
+        String fileNameWithoutExtension = FileUtils.getFileNameWithoutExtension(fileName, false);
+        String fileExtension = FileUtils.getFileExtension(fileName, false);
+        Path parent = destFile.getParent();
         while (true) {
-            String newFileName = FileUtils.getFileNameWithoutExtension(destFile.getName(), false)
+            String newFileName = fileNameWithoutExtension
                     + "(" + counter + ")."
-                    + FileUtils.getFileExtension(destFile.getName(), false);
-            newDestFile = new File(destFile.getParent(), newFileName);
-            if (!newDestFile.exists()) {
-                // can't be in one if=, becouse when error in
+                    + fileExtension;
+            newDestFile = parent.resolve(newFileName);
+            if (!Files.exists(newDestFile)) {
+                // can't be in one if=, because when error in
                 // copy file occurs then it will be infinity loop
                 return (FileUtils.copyFromSourceToDestFile(sourceFile,
                         newDestFile,
@@ -258,7 +264,7 @@ public class CopyFilesCommand extends XMLCommand implements IPostCommand {
      * @return true if copied correctly
      * @throws IOException when ioerror occurs
      */
-    private boolean handleOverwrite(final File sourceFile, final File destFile)
+    private boolean handleOverwrite(final Path sourceFile, final Path destFile)
             throws IOException {
         return FileUtils.delete(destFile)
                 && FileUtils.copyFromSourceToDestFile(sourceFile, destFile,
@@ -272,14 +278,14 @@ public class CopyFilesCommand extends XMLCommand implements IPostCommand {
      * @throws IOException when ioerror occurs
      */
     private void copyThumb(final FilePostParam file) throws IOException {
-        File sourceThumbFile = new File(configuration.getThumbsPath() + File.separator
-                + file.getType()
+        Path sourceThumbFile = Paths.get(configuration.getThumbsPath(),
+                file.getType()
                 + file.getFolder(), file.getName());
-        File destThumbFile = new File(configuration.getThumbsPath() + File.separator
-                + this.type
+        Path destThumbFile = Paths.get(configuration.getThumbsPath(),
+                 this.type
                 + this.currentFolder, file.getName());
 
-        if (sourceThumbFile.isFile() && sourceThumbFile.exists()) {
+        if (Files.isRegularFile(sourceThumbFile) && Files.exists(sourceThumbFile)) {
             FileUtils.copyFromSourceToDestFile(sourceThumbFile, destThumbFile,
                     false, configuration);
         }

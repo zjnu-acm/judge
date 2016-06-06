@@ -16,11 +16,13 @@ import com.ckfinder.connector.configuration.IConfiguration;
 import com.ckfinder.connector.errors.ConnectorException;
 import com.ckfinder.connector.utils.AccessControlUtil;
 import com.ckfinder.connector.utils.FileUtils;
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javax.mail.internet.MimeUtility;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -34,7 +36,7 @@ public class DownloadFileCommand extends Command {
     /**
      * File to download.
      */
-    private File file;
+    private Path file;
     /**
      * filename request param.
      */
@@ -56,7 +58,7 @@ public class DownloadFileCommand extends Command {
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE, false);
         }
 
-        this.file = new File(configuration.getTypes().get(this.type).getPath()
+        this.file = Paths.get(configuration.getTypes().get(this.type).getPath()
                 + currentFolder, fileName);
 
         if (!AccessControlUtil.getInstance().checkFolderACL(
@@ -78,8 +80,8 @@ public class DownloadFileCommand extends Command {
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST);
         }
         try {
-            if (!file.exists()
-                    || !file.isFile()
+            if (!Files.exists(file)
+                    || !Files.isRegularFile(file)
                     || FileUtils.checkIfFileIsHidden(this.fileName,
                             this.configuration)) {
                 throw new ConnectorException(
@@ -143,7 +145,10 @@ public class DownloadFileCommand extends Command {
                 response.setContentType("application/octet-stream");
             }
             if (file != null) {
-                response.setContentLengthLong(file.length());
+                try {
+                    response.setContentLengthLong(Files.size(file));
+                } catch (IOException ex) {
+                }
             }
 
             response.setHeader("Content-Disposition", "attachment; filename=\""

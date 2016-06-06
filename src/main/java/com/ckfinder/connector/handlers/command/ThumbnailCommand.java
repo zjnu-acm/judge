@@ -17,9 +17,12 @@ import com.ckfinder.connector.errors.ConnectorException;
 import com.ckfinder.connector.utils.AccessControlUtil;
 import com.ckfinder.connector.utils.FileUtils;
 import com.ckfinder.connector.utils.ImageUtils;
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.FileTime;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -92,7 +95,7 @@ public class ThumbnailCommand extends Command {
     /**
      * Thumbnail file.
      */
-    private File thumbFile;
+    private Path thumbFile;
     /**
      * Field holding If-None-Match header value.
      */
@@ -151,7 +154,7 @@ public class ThumbnailCommand extends Command {
     }
 
     @Override
-    public void execute(final OutputStream out) throws ConnectorException {
+    public void execute(final OutputStream out) throws ConnectorException, IOException {
         validate();
         createThumb();
         if (setResponseHeadersAfterCreatingFile()) {
@@ -196,7 +199,7 @@ public class ThumbnailCommand extends Command {
      *
      * @throws ConnectorException when validation fails.
      */
-    private void validate() throws ConnectorException {
+    private void validate() throws ConnectorException, IOException {
         if (!this.configuration.getThumbsEnabled()) {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_THUMBNAILS_DISABLED);
@@ -224,14 +227,13 @@ public class ThumbnailCommand extends Command {
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_FILE_NOT_FOUND);
         }
 
-        File typeThumbDir = new File(configuration.getThumbsPath()
-                + File.separator + this.type);
+        Path typeThumbDir = Paths.get(configuration.getThumbsPath(), this.type);
 
         try {
-            this.fullCurrentPath = typeThumbDir.getAbsolutePath()
+            this.fullCurrentPath = typeThumbDir.toAbsolutePath().toString()
                     + currentFolder;
-            if (!typeThumbDir.exists()) {
-                typeThumbDir.mkdir();
+            if (!Files.exists(typeThumbDir)) {
+                Files.createDirectories(typeThumbDir);
             }
         } catch (SecurityException e) {
             throw new ConnectorException(
@@ -247,19 +249,23 @@ public class ThumbnailCommand extends Command {
      * @throws ConnectorException when thumbnail creation fails.
      */
     private void createThumb() throws ConnectorException {
-        this.thumbFile = new File(fullCurrentPath, this.fileName);
+        this.thumbFile = Paths.get(fullCurrentPath, this.fileName);
         try {
-            if (!thumbFile.exists()) {
-                File orginFile = new File(configuration.getTypes().get(this.type).getPath()
+            if (!Files.exists(thumbFile)) {
+                Path orginFile = Paths.get(configuration.getTypes().get(this.type).getPath()
                         + this.currentFolder, this.fileName);
-                if (!orginFile.exists()) {
+                if (!Files.exists(orginFile)) {
                     throw new ConnectorException(
                             Constants.Errors.CKFINDER_CONNECTOR_ERROR_FILE_NOT_FOUND);
                 }
                 try {
                     ImageUtils.createThumb(orginFile, thumbFile, configuration);
                 } catch (Exception e) {
-                    thumbFile.delete();
+                    try {
+                        Files.deleteIfExists(thumbFile);
+                    } catch (IOException ex) {
+                        e.addSuppressed(ex);
+                    }
                     throw new ConnectorException(
                             Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED,
                             e);
@@ -279,18 +285,19 @@ public class ThumbnailCommand extends Command {
      * response code.
      * @throws ConnectorException when access is denied.
      */
-    private boolean setResponseHeadersAfterCreatingFile() throws ConnectorException {
+    private boolean setResponseHeadersAfterCreatingFile() throws ConnectorException, IOException {
         // Set content size
-        File file = new File(this.fullCurrentPath, this.fileName);
+        Path file = Paths.get(this.fullCurrentPath, this.fileName);
         try {
-            String etag = "W/\"" + Long.toHexString(file.lastModified()) + "-" + Long.toHexString(file.length()) + '"';
+            FileTime lastModifiedTime = Files.getLastModifiedTime(file);
+            String etag = "W/\"" + Long.toHexString(lastModifiedTime.toMillis()) + "-" + Long.toHexString(Files.size(file)) + '"';
             if (etag.equals(this.ifNoneMatch)) {
                 return false;
             } else {
                 response.setHeader("Etag", etag);
             }
 
-            if (file.lastModified() <= this.ifModifiedSince) {
+            if (lastModifiedTime.toMillis() <= this.ifModifiedSince) {
                 return false;
             } else {
                 Date date = new Date(System.currentTimeMillis());
@@ -298,7 +305,7 @@ public class ThumbnailCommand extends Command {
                 df.setTimeZone(TimeZone.getTimeZone("GMT"));
                 response.setHeader("Last-Modified", df.format(date));
             }
-            response.setContentLengthLong(file.length());
+            response.setContentLengthLong(Files.size(file));
         } catch (SecurityException e) {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED, e);

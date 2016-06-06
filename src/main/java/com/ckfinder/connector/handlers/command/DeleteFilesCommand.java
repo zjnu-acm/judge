@@ -17,7 +17,9 @@ import com.ckfinder.connector.data.FilePostParam;
 import com.ckfinder.connector.errors.ConnectorException;
 import com.ckfinder.connector.utils.AccessControlUtil;
 import com.ckfinder.connector.utils.FileUtils;
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -107,11 +109,11 @@ public class DeleteFilesCommand extends XMLCommand implements IPostCommand {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
             }
 
-            File file = new File(configuration.getTypes().get(fileItem.getType()).getPath() + fileItem.getFolder(), fileItem.getName());
+            Path file = Paths.get(configuration.getTypes().get(fileItem.getType()).getPath() + fileItem.getFolder(), fileItem.getName());
 
             try {
                 this.addDeleteNode = true;
-                if (!file.exists()) {
+                if (!Files.exists(file)) {
                     creator.appendErrorNodeChild(
                             Constants.Errors.CKFINDER_CONNECTOR_ERROR_FILE_NOT_FOUND,
                             fileItem.getName(), fileItem.getFolder(), fileItem.getType());
@@ -119,8 +121,8 @@ public class DeleteFilesCommand extends XMLCommand implements IPostCommand {
                 }
 
                 if (FileUtils.delete(file)) {
-                    File thumbFile = new File(configuration.getThumbsPath()
-                            + File.separator + fileItem.getType() + this.currentFolder, fileItem.getName());
+                    Path thumbFile = Paths.get(configuration.getThumbsPath(),
+                            fileItem.getType() + this.currentFolder, fileItem.getName());
                     this.filesDeleted++;
 
                     try {
