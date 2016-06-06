@@ -43,6 +43,10 @@ public abstract class Resource {
 
     abstract boolean isReadable();
 
+    boolean isOpen() {
+        return false;
+    }
+
     abstract String getFilename();
 
     /**
