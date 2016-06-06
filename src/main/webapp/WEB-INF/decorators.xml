@@ -7,7 +7,6 @@
         <pattern>/problemstatus</pattern>
         <pattern>/showmessage</pattern>
         <pattern>/showproblem</pattern>
-        <pattern>/showsolutiondetails</pattern>
         <pattern>/status</pattern>
     </decorator>
 </decorators>

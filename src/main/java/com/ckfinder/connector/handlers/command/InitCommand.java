@@ -14,18 +14,17 @@ package com.ckfinder.connector.handlers.command;
 import com.ckfinder.connector.configuration.Constants;
 import com.ckfinder.connector.configuration.Events.EventTypes;
 import com.ckfinder.connector.data.InitCommandEventArgs;
-import com.ckfinder.connector.data.PluginInfo;
 import com.ckfinder.connector.data.ResourceType;
 import com.ckfinder.connector.errors.ConnectorException;
 import com.ckfinder.connector.utils.AccessControlUtil;
 import com.ckfinder.connector.utils.FileUtils;
 import com.ckfinder.connector.utils.PathUtils;
-import java.io.File;
-import java.io.UnsupportedEncodingException;
+import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import org.w3c.dom.Element;
 
@@ -94,7 +93,6 @@ public class InitCommand extends XMLCommand {
         }
         element.setAttribute("imgWidth", String.valueOf(configuration.getImgWidth()));
         element.setAttribute("imgHeight", String.valueOf(configuration.getImgHeight()));
-        element.setAttribute("csrfProtection", String.valueOf(configuration.isEnableCsrfProtection()));
         if (configuration.getPlugins().size() > 0) {
             element.setAttribute("plugins", getPlugins());
         }
@@ -107,18 +105,10 @@ public class InitCommand extends XMLCommand {
      * @return plugins names.
      */
     private String getPlugins() {
-        StringBuilder sb = new StringBuilder();
-        boolean first = false;
-        for (PluginInfo item : configuration.getPlugins()) {
-            if (item.isEnabled() && !item.isInternal()) {
-                if (first) {
-                    sb.append(",");
-                }
-                sb.append(item.getName());
-                first = true;
-            }
-        }
-        return sb.toString();
+        return configuration.getPlugins().stream()
+                .filter(item -> item.isEnabled() && !item.isInternal())
+                .map(item -> item.getName())
+                .collect(Collectors.joining(","));
     }
 
     /**
@@ -224,7 +214,7 @@ public class InitCommand extends XMLCommand {
                 long maxSize = resourceType.getMaxSize();
                 childElement.setAttribute("maxSize", maxSize > 0 ? Long.toString(maxSize) : "0");
                 childElement.setAttribute("hasChildren",
-                        FileUtils.hasChildren("/", new File(PathUtils.escape(resourceType.getPath())),
+                        FileUtils.hasChildren("/", Paths.get(PathUtils.escape(resourceType.getPath())),
                                 configuration, resourceType.getName(), this.userRole).toString());
                 element.appendChild(childElement);
             }
@@ -255,15 +245,7 @@ public class InitCommand extends XMLCommand {
 
         try {
             MessageDigest algorithm = MessageDigest.getInstance("SHA-256");
-            algorithm.reset();
-            try {
-                algorithm.update(folder.getBytes("UTF8"));
-            } catch (UnsupportedEncodingException e) {
-                if (configuration.isDebugMode()) {
-                    throw e;
-                }
-                algorithm.update(folder.getBytes());
-            }
+            algorithm.update(folder.getBytes("UTF8"));
             byte[] messageDigest = algorithm.digest();
 
             StringBuilder hexString = new StringBuilder();

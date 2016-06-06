@@ -18,6 +18,7 @@ package cn.edu.zjnu.acm.judge.config;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import java.io.IOException;
 import javax.servlet.Filter;
+import javax.servlet.MultipartConfigElement;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -35,11 +36,12 @@ import org.springframework.context.annotation.Configuration;
 public class RegistrationBeanConfiguration {
 
     @Bean
-    public ServletRegistrationBean connectorServlet() {
+    public ServletRegistrationBean connectorServlet(MultipartConfigElement multipartConfigElement) {
         Servlet servlet = new ConnectorServlet();
         ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(servlet, "/ckfinder/core/connector/java/connector.java");
         servletRegistrationBean.addInitParameter("XMLConfig", "/WEB-INF/config.xml");
         servletRegistrationBean.addInitParameter("debug", "false");
+        servletRegistrationBean.setMultipartConfig(multipartConfigElement);
         return servletRegistrationBean;
     }
 

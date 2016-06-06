@@ -18,12 +18,13 @@ import com.ckfinder.connector.data.ResourceType;
 import com.ckfinder.connector.errors.ConnectorException;
 import com.ckfinder.connector.utils.FileUtils;
 import com.ckfinder.connector.utils.PathUtils;
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.regex.Pattern;
 import javax.servlet.ServletContext;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -44,10 +45,6 @@ public abstract class Command {
     protected String userRole;
     protected String currentFolder;
     protected String type;
-    /**
-     * Name of the csrf token passed as request parameter.
-     */
-    protected final String tokenParamName = "ckCsrfToken";
 
     /**
      * standard constructor.
@@ -144,10 +141,10 @@ public abstract class Command {
         String tmpType = getParameter(request, "type");
         if (tmpType != null) {
             if (checkIfTypeExists(tmpType)) {
-                File currDir = new File(
+                Path currDir = Paths.get(
                         configuration.getTypes().get(tmpType).getPath()
                         + this.currentFolder);
-                if (!currDir.exists() || !currDir.isDirectory()) {
+                if (!Files.exists(currDir) || !Files.isDirectory(currDir)) {
                     throw new ConnectorException(
                             Constants.Errors.CKFINDER_CONNECTOR_ERROR_FOLDER_NOT_FOUND,
                             false);
@@ -191,9 +188,10 @@ public abstract class Command {
      *
      * @param out response output stream
      * @throws ConnectorException when error occurs
+     * @throws java.io.IOException
      */
     public abstract void execute(final OutputStream out)
-            throws ConnectorException;
+            throws ConnectorException, IOException;
 
     /**
      * sets header in response.
@@ -234,11 +232,7 @@ public abstract class Command {
      */
     protected String getParameter(final HttpServletRequest request,
             final String paramName) {
-        if (request.getParameter(paramName) == null) {
-            return null;
-        }
-        return FileUtils.convertFromUriEncoding(
-                request.getParameter(paramName), configuration);
+        return request.getParameter(paramName);
     }
 
     /**
@@ -253,42 +247,6 @@ public abstract class Command {
         } else {
             this.currentFolder = PathUtils.addSlashToBeginning(PathUtils.addSlashToEnd(currFolder));
         }
-    }
-
-    /**
-     * Checks if the request contains a valid CSRF token that matches the value
-     * sent in the cookie.<br>
-     *
-     * @see
-     * <a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)_Prevention_Cheat_Sheet#Double_Submit_Cookies">Cross-Site_Request_Forgery_(CSRF)_Prevention</a>
-     *
-     * @param request current request object
-     * @param csrfTokenValue string value of CSRF token passed as request
-     * parameter
-     * @return {@code true} if token is valid, {@code false} otherwise.
-     */
-    protected boolean checkCsrfToken(final HttpServletRequest request, String csrfTokenValue) {
-        final String tokenCookieName = "ckCsrfToken",
-                paramToken;
-        final int minTokenLength = 32;
-
-        if (csrfTokenValue != null) {
-            paramToken = csrfTokenValue;
-        } else {
-            paramToken = nullToString(request.getParameter(this.tokenParamName)).trim();
-        }
-
-        Cookie[] cookies = request.getCookies();
-        String cookieToken = "";
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals(tokenCookieName)) {
-                cookieToken = nullToString(cookie.getValue()).trim();
-                break;
-            }
-        }
-
-        return paramToken.length() >= minTokenLength && cookieToken.length() >= minTokenLength
-                && paramToken.equals(cookieToken);
     }
 
     /**

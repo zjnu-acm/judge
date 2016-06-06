@@ -50,6 +50,7 @@ public interface Constants {
     /**
      * Class holding CKFinder error codes.
      */
+    @SuppressWarnings("PublicInnerClass")
     interface Errors {
 
         int CKFINDER_CONNECTOR_ERROR_NONE = 0;

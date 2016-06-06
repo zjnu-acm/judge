@@ -13,12 +13,16 @@ package com.ckfinder.connector.data;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Event data for
  * {@link com.ckfinder.connector.configuration.Events.EventTypes#BeforeExecuteCommand}
  * event.
  */
+@Getter
+@Setter
 @SuppressWarnings("FinalMethod")
 public class BeforeExecuteCommandEventArgs extends EventArgs {
 
@@ -26,45 +30,4 @@ public class BeforeExecuteCommandEventArgs extends EventArgs {
     private HttpServletRequest request;
     private HttpServletResponse response;
 
-    /**
-     * @return the command
-     */
-    public final String getCommand() {
-        return command;
-    }
-
-    /**
-     * @param command the command to set
-     */
-    public final void setCommand(final String command) {
-        this.command = command;
-    }
-
-    /**
-     * @return the request
-     */
-    public final HttpServletRequest getRequest() {
-        return request;
-    }
-
-    /**
-     * @param request the request to set
-     */
-    public final void setRequest(final HttpServletRequest request) {
-        this.request = request;
-    }
-
-    /**
-     * @return the response
-     */
-    public final HttpServletResponse getResponse() {
-        return response;
-    }
-
-    /**
-     * @param response the response to set
-     */
-    public final void setResponse(final HttpServletResponse response) {
-        this.response = response;
-    }
 }

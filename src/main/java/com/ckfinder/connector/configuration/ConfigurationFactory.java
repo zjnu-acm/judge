@@ -16,8 +16,10 @@ import com.ckfinder.connector.errors.ConnectorException;
 import com.ckfinder.connector.utils.AccessControlUtil;
 import com.ckfinder.connector.utils.FileUtils;
 import com.ckfinder.connector.utils.PathUtils;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -124,11 +126,11 @@ public final class ConfigurationFactory {
                     "Thumbs directory could not be created using specified path.");
         }
 
-        File file = new File(baseFolder);
-        if (!file.exists() && !request.getParameter("command").equals("Init")) {
-            file.mkdir();
+        Path file = Paths.get(baseFolder);
+        if (!Files.exists(file) && !request.getParameter("command").equals("Init")) {
+            Files.createDirectories(file);
         }
-        conf.setThumbsPath(file.getAbsolutePath());
+        conf.setThumbsPath(file.toAbsolutePath().toString());
 
         String thumbUrl = conf.getThumbsURL();
         thumbUrl = thumbUrl.replaceAll(
@@ -162,11 +164,11 @@ public final class ConfigurationFactory {
                         "Resource directory could not be created using specified path.");
             }
 
-            file = new File(resourcePath);
-            if (!file.exists() && !request.getParameter("command").equals("Init")) {
+            file = Paths.get(resourcePath);
+            if (!Files.exists(file) && !request.getParameter("command").equals("Init")) {
                 FileUtils.createPath(file, false);
             }
-            item.setPath(file.getAbsolutePath());
+            item.setPath(file.toAbsolutePath().toString());
         }
 
     }
@@ -185,8 +187,8 @@ public final class ConfigurationFactory {
             throws ConnectorException {
         String baseFolder = conf.getBasePathBuilder().getBaseDir(request);
 
-        File baseDir = new File(baseFolder);
-        if (!baseDir.exists()) {
+        Path baseDir = Paths.get(baseFolder);
+        if (!Files.exists(baseDir)) {
             try {
                 FileUtils.createPath(baseDir, false);
             } catch (IOException e) {

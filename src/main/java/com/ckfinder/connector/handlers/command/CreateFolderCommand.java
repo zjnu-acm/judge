@@ -16,7 +16,10 @@ import com.ckfinder.connector.configuration.IConfiguration;
 import com.ckfinder.connector.errors.ConnectorException;
 import com.ckfinder.connector.utils.AccessControlUtil;
 import com.ckfinder.connector.utils.FileUtils;
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javax.servlet.http.HttpServletRequest;
 import org.w3c.dom.Element;
 
@@ -116,12 +119,17 @@ public class CreateFolderCommand extends XMLCommand implements IPostCommand {
      * @throws ConnectorException when error occurs or dir exists
      */
     private boolean createFolder() throws ConnectorException {
-        File dir = new File(configuration.getTypes().get(this.type).getPath()
+        Path dir = Paths.get(configuration.getTypes().get(this.type).getPath()
                 + currentFolder + newFolderName);
-        if (dir.exists()) {
+        if (Files.exists(dir)) {
             throw new ConnectorException(Constants.Errors.CKFINDER_CONNECTOR_ERROR_ALREADY_EXIST);
         } else {
-            return dir.mkdir();
+            try {
+                Files.createDirectories(dir);
+                return true;
+            } catch (IOException ex) {
+                return false;
+            }
         }
     }
 
@@ -130,9 +138,6 @@ public class CreateFolderCommand extends XMLCommand implements IPostCommand {
             final IConfiguration configuration, final Object... params)
             throws ConnectorException {
         super.initParams(request, configuration, params);
-        if (this.configuration.isEnableCsrfProtection() && !checkCsrfToken(request, null)) {
-            throw new ConnectorException(Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST, "CSRF Attempt");
-        }
         this.newFolderName = getParameter(request, "NewFolderName");
     }
 }

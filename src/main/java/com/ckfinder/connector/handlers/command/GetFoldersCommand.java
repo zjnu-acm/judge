@@ -17,7 +17,10 @@ import com.ckfinder.connector.data.XmlElementData;
 import com.ckfinder.connector.errors.ConnectorException;
 import com.ckfinder.connector.utils.AccessControlUtil;
 import com.ckfinder.connector.utils.FileUtils;
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,7 +38,7 @@ public class GetFoldersCommand extends XMLCommand {
 
     @Override
     protected void createXMLChildNodes(final int errorNum, final Element rootElement)
-            throws ConnectorException {
+            throws ConnectorException, IOException {
 
         if (errorNum == Constants.Errors.CKFINDER_CONNECTOR_ERROR_NONE) {
             createFoldersData(rootElement);
@@ -46,9 +49,10 @@ public class GetFoldersCommand extends XMLCommand {
      * gets data for response.
      *
      * @return 0 if everything went ok or error code otherwise
+     * @throws java.io.IOException
      */
     @Override
-    protected int getDataForXml() {
+    protected int getDataForXml() throws IOException {
         if (!checkIfTypeExists(this.type)) {
             this.type = null;
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
@@ -64,10 +68,10 @@ public class GetFoldersCommand extends XMLCommand {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
         }
 
-        File dir = new File(configuration.getTypes().get(this.type).getPath()
+        Path dir = Paths.get(configuration.getTypes().get(this.type).getPath()
                 + this.currentFolder);
         try {
-            if (!dir.exists()) {
+            if (!Files.exists(dir)) {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_FOLDER_NOT_FOUND;
             }
 
@@ -110,13 +114,13 @@ public class GetFoldersCommand extends XMLCommand {
      *
      * @param rootElement root element in XML document
      */
-    private void createFoldersData(final Element rootElement) {
+    private void createFoldersData(final Element rootElement) throws IOException {
         Element element = creator.getDocument().createElement("Folders");
         for (String dirPath : directories) {
-            File dir = new File(this.configuration.getTypes().get(this.type).getPath()
+            Path dir = Paths.get(this.configuration.getTypes().get(this.type).getPath()
                     + this.currentFolder
                     + dirPath);
-            if (dir.exists()) {
+            if (Files.exists(dir)) {
                 XmlElementData xmlElementData = new XmlElementData("Folder");
                 xmlElementData.getAttributes().add(new XmlAttribute("name", dirPath));
 

@@ -16,16 +16,15 @@
 package cn.edu.zjnu.acm.judge.util;
 
 import cn.edu.zjnu.acm.judge.exception.MessageException;
-import com.google.common.base.Strings;
 import org.springframework.http.HttpStatus;
-import org.springframework.util.StringUtils;
+import org.thymeleaf.util.StringUtils;
 
 public class ValueCheck {
 
     public static final String EMAIL_PATTERN = "[a-z0-9!#$%&'*+/=?^_`{|}~-]++(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]++)*+@[a-z0-9](?:[a-z0-9-]*[a-z0-9])?+(?:\\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?+)++";
 
     public static void checkUserId(String userId) {
-        if (Strings.isNullOrEmpty(userId)) {
+        if (StringUtils.isEmpty(userId)) {
             throw new MessageException("User ID can not be NULL", HttpStatus.BAD_REQUEST);
         }
         if (userId.length() < 6) {
@@ -40,7 +39,7 @@ public class ValueCheck {
     }
 
     public static void checkPassword(String password) {
-        if (Strings.isNullOrEmpty(password)) {
+        if (StringUtils.isEmpty(password)) {
             throw new MessageException("Password can not be NULL", HttpStatus.BAD_REQUEST);
         }
         if (password.length() > 20) {
@@ -63,7 +62,7 @@ public class ValueCheck {
     }
 
     public static void checkNick(String nick) {
-        if (Strings.isNullOrEmpty(nick)) {
+        if (StringUtils.isEmpty(nick)) {
             throw new MessageException("nick can not be NULL", HttpStatus.BAD_REQUEST);
         }
         if (nick.length() > 64) {
@@ -72,7 +71,7 @@ public class ValueCheck {
     }
 
     public static void checkEmail(String email) {
-        if (StringUtils.hasText(email) && !email.matches(EMAIL_PATTERN)) {
+        if (!StringUtils.isEmptyOrWhitespace(email) && !email.matches(EMAIL_PATTERN)) {
             throw new MessageException("email format incorrect", HttpStatus.BAD_REQUEST);
         }
     }

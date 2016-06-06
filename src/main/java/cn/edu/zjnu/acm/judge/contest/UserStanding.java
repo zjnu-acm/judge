@@ -15,9 +15,9 @@
  */
 package cn.edu.zjnu.acm.judge.contest;
 
-import com.carrotsearch.hppc.LongObjectHashMap;
-import com.carrotsearch.hppc.LongObjectMap;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -47,7 +47,7 @@ public class UserStanding {
     @Setter(AccessLevel.PACKAGE)
     private String nick;
 
-    private final LongObjectMap<ProblemTimePenalty> map = new LongObjectHashMap<>(50);
+    private final Map<Long, ProblemTimePenalty> map = new HashMap<>(50);
 
     /**
      *

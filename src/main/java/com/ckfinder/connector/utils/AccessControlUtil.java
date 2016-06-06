@@ -294,15 +294,15 @@ public final class AccessControlUtil {
          */
         private int countACL() {
             int acl = 0;
-            acl += (folderView) ? CKFINDER_CONNECTOR_ACL_FOLDER_VIEW : 0;
-            acl += (folderCreate) ? CKFINDER_CONNECTOR_ACL_FOLDER_CREATE : 0;
-            acl += (folderRename) ? CKFINDER_CONNECTOR_ACL_FOLDER_RENAME : 0;
-            acl += (folderDelete) ? CKFINDER_CONNECTOR_ACL_FOLDER_DELETE : 0;
+            acl |= (folderView) ? CKFINDER_CONNECTOR_ACL_FOLDER_VIEW : 0;
+            acl |= (folderCreate) ? CKFINDER_CONNECTOR_ACL_FOLDER_CREATE : 0;
+            acl |= (folderRename) ? CKFINDER_CONNECTOR_ACL_FOLDER_RENAME : 0;
+            acl |= (folderDelete) ? CKFINDER_CONNECTOR_ACL_FOLDER_DELETE : 0;
 
-            acl += (fileView) ? CKFINDER_CONNECTOR_ACL_FILE_VIEW : 0;
-            acl += (fileUpload) ? CKFINDER_CONNECTOR_ACL_FILE_UPLOAD : 0;
-            acl += (fileRename) ? CKFINDER_CONNECTOR_ACL_FILE_RENAME : 0;
-            acl += (fileDelete) ? CKFINDER_CONNECTOR_ACL_FILE_DELETE : 0;
+            acl |= (fileView) ? CKFINDER_CONNECTOR_ACL_FILE_VIEW : 0;
+            acl |= (fileUpload) ? CKFINDER_CONNECTOR_ACL_FILE_UPLOAD : 0;
+            acl |= (fileRename) ? CKFINDER_CONNECTOR_ACL_FILE_RENAME : 0;
+            acl |= (fileDelete) ? CKFINDER_CONNECTOR_ACL_FILE_DELETE : 0;
             return acl;
         }
 
@@ -315,7 +315,7 @@ public final class AccessControlUtil {
     /**
      * simple check ACL entry.
      */
-    class CheckEntry {
+    private static class CheckEntry {
 
         private String role;
         private String type;

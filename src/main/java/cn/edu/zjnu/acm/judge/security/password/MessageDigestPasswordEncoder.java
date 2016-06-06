@@ -15,35 +15,50 @@
  */
 package cn.edu.zjnu.acm.judge.security.password;
 
-import com.google.common.hash.HashFunction;
-import com.google.common.hash.Hashing;
 import java.nio.charset.StandardCharsets;
-import lombok.RequiredArgsConstructor;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import org.springframework.security.crypto.codec.Hex;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  *
  * @author zhanhb
  */
-@RequiredArgsConstructor
 public enum MessageDigestPasswordEncoder implements PasswordEncoder {
 
-    MD5(Hashing.md5()),
-    SHA1(Hashing.sha1()),
-    SHA256(Hashing.sha256()),
-    SHA512(Hashing.sha512());
+    MD5("MD5"),
+    SHA1("SHA1"),
+    SHA256("SHA-256"),
+    SHA512("SHA-512");
 
-    private final HashFunction function;
+    private final String algorithm;
+    private final int bytes;
+
+    MessageDigestPasswordEncoder(String algorithm) {
+        this.algorithm = algorithm;
+        MessageDigest prototype = getMessageDigest(algorithm);
+        this.bytes = prototype.getDigestLength();
+    }
 
     @Override
     public String encode(CharSequence password) {
-        return function.hashString(password != null ? password : "", StandardCharsets.UTF_8).toString();
+        MessageDigest digest = getMessageDigest(algorithm);
+        return new String(Hex.encode(digest.digest(password != null ? password.toString().getBytes(StandardCharsets.UTF_8) : new byte[0])));
     }
 
     @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
-        return function.bits() >> 2 == encodedPassword.length()
+        return bytes << 1 == encodedPassword.length()
                 && encode(rawPassword).equalsIgnoreCase(encodedPassword);
+    }
+
+    private static MessageDigest getMessageDigest(String algorithmName) {
+        try {
+            return MessageDigest.getInstance(algorithmName);
+        } catch (NoSuchAlgorithmException e) {
+            throw new AssertionError(e);
+        }
     }
 
 }
