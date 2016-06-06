@@ -34,6 +34,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -67,7 +68,7 @@ public class ProblemStatusController {
         }
     }
 
-    @RequestMapping(value = "/problemstatus", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = "text/html;charset=UTF-8")
+    @RequestMapping(value = "/problemstatus", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = "text/html")
     public ResponseEntity<String> status(HttpServletRequest request,
             @RequestParam("problem_id") long id,
             @RequestParam(value = "start", defaultValue = "0") long start,
@@ -148,7 +149,7 @@ public class ProblemStatusController {
         }
         String str10 = "[<a href=\"problemstatus?problem_id=" + id + "&size=" + size + "&orderby=" + orderby;
         sb.append("</table><p align=center>").append(str10).append("\">Top</a>]").append(str10).append("&start=").append(Math.max(start - size, 0)).append("\">Previous Page</a>]").append(str10).append("&start=").append(start + size).append("\">Next Page</a>]</p></td></tr></table></body></html>");
-        return ResponseEntity.ok(sb.toString());
+        return ResponseEntity.ok().contentType(MediaType.valueOf("text/html;charset=UTF-8")).body(sb.toString());
     }
 
 }
