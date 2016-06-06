@@ -13,6 +13,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -30,7 +31,7 @@ public class ShowProblemController {
     @Autowired
     private JudgeConfiguration judgeConfiguration;
 
-    @RequestMapping(value = "/showproblem", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = "text/html;charset=UTF-8")
+    @RequestMapping(value = "/showproblem", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = "text/html")
     public ResponseEntity<String> showproblem(HttpServletRequest request,
             @RequestParam("problem_id") long problemId) {
         Problem problem = problemMapper.findOne(problemId);
@@ -142,7 +143,7 @@ public class ShowProblemController {
         sb.append(">Status</a>]&nbsp;&nbsp; [<a href=\"bbs?problem_id=");
         sb.append(problemId);
         sb.append("\">Discuss</a>]</font></p></body></html>");
-        return ResponseEntity.ok(sb.toString());
+        return ResponseEntity.ok().contentType(MediaType.valueOf("text/html;charset=UTF-8")).body(sb.toString());
     }
 
 }

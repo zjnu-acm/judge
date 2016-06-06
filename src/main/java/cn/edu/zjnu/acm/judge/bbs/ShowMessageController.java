@@ -12,6 +12,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +32,7 @@ public class ShowMessageController {
     @Autowired
     private MessageMapper messageMapper;
 
-    @RequestMapping(value = "/showmessage", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = "text/html;charset=UTF-8")
+    @RequestMapping(value = "/showmessage", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = "text/html")
     public ResponseEntity<String> showmessage(HttpServletRequest request,
             @RequestParam("message_id") long messageId) {
         UserDetailService.requireLoginned(request);
@@ -98,7 +99,7 @@ public class ShowMessageController {
             title = "Reply:" + title;
         }
         sb.append("Title:<br/><input type=text name=title value=\"").append(StringUtils.escapeXml(title)).append("\" size=75><br/>" + "Content:<br/><textarea rows=15 name=content cols=75>").append(JudgeUtils.getReplyString(content)).append("</textarea><br/><button type=Submit>reply</button></td></tr></table></body></html>");
-        return ResponseEntity.ok(sb.toString());
+        return ResponseEntity.ok().contentType(MediaType.valueOf("text/html;charset=UTF-8")).body(sb.toString());
     }
 
 }

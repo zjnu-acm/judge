@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +22,7 @@ public class BBSController {
     @Autowired
     private DataSource dataSource;
 
-    @RequestMapping(value = "/bbs", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = "text/html;charset=UTF-8")
+    @RequestMapping(value = "/bbs", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = "text/html")
     protected ResponseEntity<String> bbs(HttpServletRequest request,
             @RequestParam(value = "problem_id", required = false) Long problemId,
             @RequestParam(value = "size", defaultValue = "50") long threadLimit,
@@ -140,7 +141,7 @@ public class BBSController {
             sb.append("<input type=hidden name=problem_id value=").append(problemId).append(">");
         }
         sb.append("<button type=submit>Post new message</button></form></body></html>");
-        return ResponseEntity.ok(sb.toString());
+        return ResponseEntity.ok().contentType(MediaType.valueOf("text/html;charset=UTF-8")).body(sb.toString());
     }
 
 }

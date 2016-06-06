@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +34,7 @@ public class ContestStatisticsController {
     @Autowired
     private LanguageFactory languageFactory;
 
-    @RequestMapping(value = "/conteststatistics", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = "text/html;charset=UTF-8")
+    @RequestMapping(value = "/conteststatistics", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = "text/html")
     public ResponseEntity<String> conteststatistics(HttpServletRequest request,
             @RequestParam("contest_id") long contestId) throws SQLException {
         Instant now = Instant.now();
@@ -124,6 +125,6 @@ public class ContestStatisticsController {
             }
         }
         sb.append("</tr></table></body></html>");
-        return ResponseEntity.ok(sb.toString());
+        return ResponseEntity.ok().contentType(MediaType.valueOf("text/html;charset=UTF-8")).body(sb.toString());
     }
 }

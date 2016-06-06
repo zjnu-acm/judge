@@ -21,6 +21,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,7 +42,7 @@ public class StatusController {
     @Autowired
     private LanguageFactory languageFactory;
 
-    @RequestMapping(value = {"/status", "/submissions"}, method = {RequestMethod.GET, RequestMethod.HEAD}, produces = "text/html;charset=UTF-8")
+    @RequestMapping(value = {"/status", "/submissions"}, method = {RequestMethod.GET, RequestMethod.HEAD}, produces = "text/html")
     public ResponseEntity<String> status(HttpServletRequest request,
             @RequestParam(value = "problem_id", defaultValue = "") String pid,
             @RequestParam(value = "contest_id", required = false) Long contestId,
@@ -196,7 +197,7 @@ public class StatusController {
         query += query.contains("?") ? '&' : '?';
         sb.append("[<a href=\"").append(query).append("bottom=").append(max != null ? max : "").append("\"><font color=blue>Previous Page</font></a>]" + "&nbsp;&nbsp;[<a href=\"").append(query).append("top=").append(min != null ? min : "").append("\"><font color=blue>Next Page</font></a>]&nbsp;&nbsp;</p>"
                 + "<script>!function(w){setTimeout(function(){w.location.reload()},60000)}(this)</script></body></html>");
-        return ResponseEntity.ok(sb.toString());
+        return ResponseEntity.ok().contentType(MediaType.valueOf("text/html;charset=UTF-8")).body(sb.toString());
     }
 
 }
