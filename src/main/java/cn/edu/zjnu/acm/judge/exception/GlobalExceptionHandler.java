@@ -19,17 +19,30 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.NoSuchMessageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.LocaleResolver;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
+    @Autowired
+    private MessageSource messageSource;
+    @Autowired
+    private LocaleResolver localeResolver;
 
     @ExceptionHandler(MessageException.class)
     public String messageExceptionHandler(HttpServletRequest request, HttpServletResponse response, MessageException ex) {
         String message = ex.getMessage();
         HttpStatus code = ex.getHttpStatus();
+        try {
+            message = messageSource.getMessage(message, null, localeResolver.resolveLocale(request));
+        } catch (NoSuchMessageException exception) {
+        }
         request.setAttribute("message", message);
         if (code.is4xxClientError()) {
             response.setStatus(code.value());

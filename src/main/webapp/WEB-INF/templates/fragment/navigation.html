@@ -3,68 +3,71 @@
     xmlns:th="http://www.thymeleaf.org">
     <table align="center" width="100%" border="1" bordercolor="#FFF" style="border-collapse: collapse">
         <tr bgcolor="#6589D1" align="center" valign="top">
-            <th class="top">在线评测</th>
-            <th class="top">题目</th>
-            <th class="top">用户</th>
-            <th class="top"><a style="color: white" th:href="@{/contests}">在线考试</a></th>
+            <th class="top" th:text="#{onlinejudge}">在线评测</th>
+            <th class="top" th:text="#{onlinejudge.problem}">题目</th>
+            <th class="top" th:text="#{onlinejudge.user}">用户</th>
+            <th class="top"><a style="color: white" th:href="@{/contests}" th:text="#{onlinejudge.contest}">在线考试</a></th>
             <th class="top">个人</th>
         </tr>
         <tr valign="top" align="center" bgcolor="#F1F1FD">
             <td class="top scbg">
-                <a th:href="@{/bbs}">讨论版</a><br/>
-                <a th:href="@{/}">主页</a><br/>
-                <a th:href="@{/faq}">常见疑问</a>
+                <a th:href="@{/bbs}" th:text="#{onlinejudge.bbs}">讨论版</a><br/>
+                <a th:href="@{/}" th:text="#{onlinejudge.homepage}">主页</a><br/>
+                <a th:href="@{/faq}" th:text="#{onlinejudge.faq}">常见疑问</a>
             </td>
             <td class="top scbg">
-                <a th:href="@{/problemlist}">题目列表</a><br/>
-                <a th:href="@{/submitpage}">提交题目</a><br/>
-                <a th:href="@{/status}">提交状态</a><br/>
+                <a th:href="@{/problemlist}" th:text="#{onlinejudge.problem.list}">题目列表</a><br/>
+                <a th:href="@{/submitpage}" th:text="#{onlinejudge.problem.submitproblem}">提交题目</a><br/>
+                <a th:href="@{/status}" th:text="#{onlinejudge.problem.status}">提交状态</a><br/>
                 <form th:action="@{/gotoproblem}" method="get">
-                    <label th:for="${#ids.next('problem-search')}" style="color:blue">查找题目:</label>
+                    <label th:for="${#ids.next('problem-search')}" style="color:blue" th:text="#{onlinejudge.problem.searchproblem.label}">查找题目:</label>
                     <input th:id="${#ids.seq('problem-search')}" size="6" name="pid" type="text"/>
-                    <button type="submit">Go</button>
+                    <button type="submit" th:text="#{onlinejudge.problem.searchproblem.button}">Go</button>
                 </form>
             </td>
             <td class="top scbg">
-                <a th:href="@{/registerpage}">注册</a>
+                <a th:href="@{/registerpage}" th:text="#{onlinejudge.user.register}">注册</a>
                 <br/>
-                <a th:href="@{/modifyuserpage}">更新个人信息</a>
+                <a th:href="@{/modifyuserpage}" th:text="#{onlinejudge.user.update}">更新个人信息</a>
                 <br/>
-                <a th:href="@{/userlist}">用户排名</a>
+                <a th:href="@{/userlist}" th:text="#{onlinejudge.user.ranklist}">用户排名</a>
                 <br/>
                 <form th:action="@{/searchuser}" method="get">
                     <input size="10" name="user_id" type="text"/>
-                    <button type="submit">Search</button>
+                    <button type="submit" th:text="#{onlinejudge.user.searchuser.button}">Search</button>
                 </form>
             </td>
             <td class="top scbg">
-                <a style="color:red" th:href="@{/currentcontests}">正在进行的考试</a>
+                <a style="color:red" th:href="@{/currentcontests}" th:text="#{onlinejudge.contest.current}">正在进行的考试</a>
                 <br/>
-                <a th:href="@{/pastcontests}">已考过的考试</a>
+                <a th:href="@{/pastcontests}" th:text="#{onlinejudge.contest.past}">已考过的考试</a>
                 <br/>
-                <a style="color:red" th:href="@{/scheduledcontests}">计划中的考试</a>
+                <a style="color:red" th:href="@{/scheduledcontests}" th:text="#{onlinejudge.contest.schedule}">计划中的考试</a>
             </td>
             <td class="top scbg">
                 <form method="POST" th:action="@{/login}" th:if="${#ctx.httpServletRequest.userPrincipal==null}">
-                    <label th:for="${#ids.next('username')}">学号:&nbsp;</label>
+                    <label th:for="${#ids.next('username')}" th:text="#{onlinejudge.login.user.label}">学号:&nbsp;</label>
                     <input th:id="${#ids.seq('username')}" type="text" name="user_id1" size="10" style="font-family:monospace"/>
                     <br/>
-                    <label th:for="${#ids.next('password')}">密码:&nbsp;</label>
+                    <label th:for="${#ids.next('password')}" th:text="#{onlinejudge.login.password.label}">密码:&nbsp;</label>
                     <input th:id="${#ids.seq('password')}" type="password" name="password1" size="10" style="font-family:monospace" autocomplete="off"/>
                     <br/>
                     <input type="checkbox" name="rememberMe" value="true" th:id="${#ids.seq('rememberMe')}" checked="checked"/>
-                    <label th:for="${#ids.prev('rememberMe')}">记住登陆</label>
+                    <label th:for="${#ids.prev('rememberMe')}" th:text="#{onlinejudge.login.remember.label}">记住登陆</label>
                     <input name="url" type="hidden" th:value="${backUrl}"/>
-                    <button type="Submit">登陆</button><br/>
-                    <a th:href="@{/findpassword}">忘了密码</a>/<a th:href="@{/registerpage}">注册</a>
+                    <button type="Submit" th:text="#{onlinejudge.login.button}">登陆</button><br/>
+                    <a th:href="@{/findpassword}" th:text="#{onlinejudge.login.forget}">忘了密码</a> / <a th:href="@{/registerpage}" th:text="#{onlinejudge.user.register}">注册</a>
                 </form>
                 <th:block th:unless="${#ctx.httpServletRequest.userPrincipal==null}">
-                    <span>欢迎</span><br/>
+                    <span th:text="#{onlinejudge.login.welcome}">欢迎</span><br/>
                     <b th:text="${#ctx.httpServletRequest.userPrincipal.name}">userId</b>
-                    <a th:href="@{/logout}">退出登录</a>
+                    <a th:href="@{/logout}" th:text="#{onlinejudge.login.logout}">退出登录</a>
                     <br/>
                     <a th:href="@{/mail}">
-                        <font color="blue" th:inline="text">站内邮件:[[${mailInfo.total}]](<b th:text="${mailInfo.newMail}">0</b>)</font>
+                        <font color="blue" th:inline="text">
+                            <span th:text="#{onlinejudge.login.internalmail}">站内邮件:</span>
+                            <span>[[${mailInfo.total}]](<b th:text="${mailInfo.newMail}">0</b>)</span>
+                        </font>
                     </a>
                 </th:block>
             </td>
