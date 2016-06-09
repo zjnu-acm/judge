@@ -3,11 +3,11 @@
     xmlns:th="http://www.thymeleaf.org">
     <table align="center" width="100%" border="1" bordercolor="#FFF" style="border-collapse: collapse">
         <tr bgcolor="#6589D1" align="center" valign="top">
-            <th class="top" th:text="#{onlinejudge}">在线评测</th>
+            <th class="top" th:text="#{onlinejudge.main}">在线评测</th>
             <th class="top" th:text="#{onlinejudge.problem}">题目</th>
             <th class="top" th:text="#{onlinejudge.user}">用户</th>
             <th class="top"><a style="color: white" th:href="@{/contests}" th:text="#{onlinejudge.contest}">在线考试</a></th>
-            <th class="top">个人</th>
+            <th class="top" th:text="#{onlinejudge.login}">个人</th>
         </tr>
         <tr valign="top" align="center" bgcolor="#F1F1FD">
             <td class="top scbg">
