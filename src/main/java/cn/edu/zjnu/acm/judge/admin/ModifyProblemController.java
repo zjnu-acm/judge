@@ -60,7 +60,7 @@ public class ModifyProblemController {
             if (!Objects.equals(oldContestId, contestId)) {
                 Contest newContest = contestMapper.findOneByIdAndDefunctN(contestId);
                 if (newContest == null) {
-                    throw new MessageException("No such contest", HttpStatus.NOT_FOUND);
+                    throw new MessageException("onlinejudge.contest.nosuchcontest", HttpStatus.NOT_FOUND);
                 }
                 boolean started = newContest.isStarted();
                 if (!started) {

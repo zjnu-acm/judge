@@ -24,7 +24,7 @@ public class ContestProblemListController {
     public String showcontest(HttpServletRequest request, @RequestParam("contest_id") long contestId) {
         Contest contest = contestMapper.findOneByIdAndDefunctN(contestId);
         if (contest == null) {
-            throw new MessageException("No such contest", HttpStatus.NOT_FOUND);
+            throw new MessageException("onlinejudge.contest.nosuchcontest", HttpStatus.NOT_FOUND);
         }
         request.setAttribute("contestId", contestId);
         request.setAttribute("contest", contest);
