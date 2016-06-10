@@ -21,22 +21,22 @@ public class ContestListController {
 
     @RequestMapping(value = "/contests", method = {RequestMethod.GET, RequestMethod.HEAD})
     protected String contests(Model model, RedirectAttributes redirectAttributes) {
-        return execute(model, contestMapper::contests, "Contests", "没有考试", redirectAttributes);
+        return execute(model, contestMapper::contests, "Contests", "onlinejudge.contests.nocontest", redirectAttributes);
     }
 
     @RequestMapping(value = "/scheduledcontests", method = {RequestMethod.GET, RequestMethod.HEAD})
     protected String scheduledcontests(Model model, RedirectAttributes redirectAttributes) {
-        return execute(model, contestMapper::pending, "Scheduled Contests", "没有计划中的考试", redirectAttributes);
+        return execute(model, contestMapper::pending, "Scheduled Contests", "onlinejudge.contests.noschedule", redirectAttributes);
     }
 
     @RequestMapping(value = "/pastcontests", method = {RequestMethod.GET, RequestMethod.HEAD})
     protected String pastcontests(Model model, RedirectAttributes redirectAttributes) {
-        return execute(model, contestMapper::past, "Contests", "没有考过的考试", redirectAttributes);
+        return execute(model, contestMapper::past, "Contests", "onlinejudge.contests.nopast", redirectAttributes);
     }
 
     @RequestMapping(value = "/currentcontests", method = {RequestMethod.GET, RequestMethod.HEAD})
     protected String currentcontests(Model model, RedirectAttributes redirectAttributes) {
-        return execute(model, contestMapper::current, "Current Contests", "没有正在进行的比赛", redirectAttributes);
+        return execute(model, contestMapper::current, "Current Contests", "onlinejudge.contest.nocurrent", redirectAttributes);
     }
 
     private String execute(Model model, Supplier<List<Contest>> supplier,

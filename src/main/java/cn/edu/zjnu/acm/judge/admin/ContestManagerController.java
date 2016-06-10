@@ -28,7 +28,7 @@ public class ContestManagerController {
 
     private Contest getContest(long contestId) {
         return Optional.ofNullable(contestMapper.findOne(contestId))
-                .orElseThrow(() -> new MessageException("No such contest", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new MessageException("onlinejudge.contest.nosuchcontest", HttpStatus.NOT_FOUND));
     }
 
     @RequestMapping(value = "/admin/contests/{contestId}/problems", method = RequestMethod.POST)
