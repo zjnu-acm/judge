@@ -4,7 +4,7 @@
     <parent>
         <artifactId>platform-bom</artifactId>
         <groupId>io.spring.platform</groupId>
-        <version>2.0.5.RELEASE</version>
+        <version>2.1.0.BUILD-SNAPSHOT</version>
         <relativePath />
     </parent>
     <groupId>cn.edu.zjnu.acm</groupId>
@@ -249,6 +249,40 @@
         </dependency>
     </dependencies>
 
+    <repositories>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>spring-milestone</id>
+            <url>https://repo.spring.io/milestone</url>
+        </repository>
+        <repository>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <id>spring-snapshot</id>
+            <url>https://repo.spring.io/snapshot</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>spring-milestone</id>
+            <url>https://repo.spring.io/milestone</url>
+        </pluginRepository>
+        <pluginRepository>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <id>spring-snapshot</id>
+            <url>https://repo.spring.io/snapshot</url>
+        </pluginRepository>
+    </pluginRepositories>
+
     <build>
         <pluginManagement>
             <plugins>
@@ -319,12 +353,12 @@
                                     <message>You are running an older version of Java. ${project.name} requires at least JDK ${java.version}</message>
                                     <version>[${java.version}.0,)</version>
                                 </requireJavaVersion>
-                                <requireNoRepositories>
+                                <!--<requireNoRepositories>
                                     <message>Best Practice is to never define repositories in pom.xml (use a repository manager instead).</message>
                                 </requireNoRepositories>
                                 <requireReleaseDeps>
                                     <message>No Snapshots Dependencies Allowed!</message>
-                                </requireReleaseDeps>
+                                </requireReleaseDeps>-->
                                 <bannedDependencies>
                                     <searchTransitive>true</searchTransitive>
                                     <excludes>
