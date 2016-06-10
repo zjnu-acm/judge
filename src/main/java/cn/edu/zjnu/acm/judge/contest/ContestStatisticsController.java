@@ -40,7 +40,7 @@ public class ContestStatisticsController {
         Instant now = Instant.now();
         Contest contest = contestMapper.findOneByIdAndDefunctN(contestId);
         if (contest == null || !contest.isStarted()) {
-            throw new MessageException("No such contest", HttpStatus.NOT_FOUND);
+            throw new MessageException("onlinejudge.contest.nosuchcontest", HttpStatus.NOT_FOUND);
         }
         String title = contest.getTitle();
         Instant endTime = contest.getEndTime();

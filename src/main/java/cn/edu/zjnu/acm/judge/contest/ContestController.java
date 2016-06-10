@@ -93,7 +93,7 @@ public class ContestController {
         model.addAttribute("contestId", id);
         model.addAttribute("contest", contest);
         if (contest == null) {
-            throw new MessageException("No such contest", HttpStatus.NOT_FOUND);
+            throw new MessageException("onlinejudge.contest.nosuchcontest", HttpStatus.NOT_FOUND);
         }
         if (!contest.isStarted()) {
             throw new MessageException("Contest not started yet", HttpStatus.OK);

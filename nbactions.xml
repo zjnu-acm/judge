@@ -203,7 +203,7 @@
         </packagings>
         <goals>
             <goal>process-classes</goal>
-            <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
+            <goal>exec:exec</goal>
         </goals>
         <properties>
             <exec.args>-Dfile.encoding=UTF-8 -Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address} -classpath %classpath ${packageClassName}</exec.args>
