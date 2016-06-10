@@ -27,6 +27,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
+import org.springframework.data.domain.Pageable;
 
 /**
  *
@@ -78,8 +79,8 @@ public interface ProblemMapper {
     @Select("select" + COLUMNS + "from problem p where problem_id=#{id} AND defunct='N'")
     Problem findOneByIdAndDefunctN(@Param("id") long pid);
 
-    @Select("SELECT" + LIST_COLUMNS + "FROM problem p order by problem_id limit #{start},#{size}")
-    List<Problem> findAll(@Param("start") long start, @Param("size") int size);
+    @Select("SELECT" + LIST_COLUMNS + "FROM problem p order by problem_id limit #{offset},#{pageSize}")
+    List<Problem> findAll(Pageable pageable);
 
     @Select({"<script>"
         + "select" + LIST_COLUMNS
