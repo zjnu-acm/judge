@@ -88,7 +88,7 @@ public class MailController {
             title = "No Topic";
         }
         if (content.length() > 40000) {
-            throw new MessageException("Sorry, content too long", HttpStatus.REQUEST_ENTITY_TOO_LARGE);
+            throw new MessageException("Sorry, content too long", HttpStatus.PAYLOAD_TOO_LARGE);
         }
         if (userMapper.findOne(to) == null) {
             throw new MessageException("Sorry, no such user:" + to, HttpStatus.NOT_FOUND);
