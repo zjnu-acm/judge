@@ -175,7 +175,6 @@ public class ContestMapperTest {
     /**
      * Test of getProblemIdInContest method, of class ContestMapper.
      */
-    @Ignore("org.apache.ibatis.binding.BindingException")
     @Test
     @SuppressWarnings("deprecation")
     public void testGetProblemIdInContest() {
