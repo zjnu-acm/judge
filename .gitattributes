@@ -7,10 +7,10 @@
 *.cs   text    diff=csharp
 
 # binary files.
-*.doc binary
-*.DOC binary
-*.docx binary
-*.DOCX binary
+*.doc binary  diff=word
+*.DOC binary  diff=word
+*.docx binary diff=word
+*.DOCX binary diff=word
 *.dot binary
 *.DOT binary
 *.pdf binary

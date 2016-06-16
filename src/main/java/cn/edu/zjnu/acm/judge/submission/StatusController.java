@@ -88,7 +88,7 @@ public class StatusController {
                 .user(!StringUtils.isEmptyOrWhitespace(userId) ? userId : null)
                 .language(language != -1 ? language : null)
                 .build();
-        log.info("{}", criteria);
+        log.debug("{}", criteria);
         List<Submission> submissions = submissionMapper.findAllByCriteria(criteria);
 
         Long min = submissions.stream()

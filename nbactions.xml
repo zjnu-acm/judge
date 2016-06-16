@@ -76,7 +76,7 @@
         </goals>
         <properties>
             <test>${packageClassName}</test>
-            <maven.test.skip>false</maven.test.skip>
+            <skipTests>false</skipTests>
         </properties>
     </action>
     <action>
@@ -88,7 +88,7 @@
             <goal>test</goal>
         </goals>
         <properties>
-            <maven.test.skip>false</maven.test.skip>
+            <skipTests>false</skipTests>
         </properties>
     </action>
     <action>
@@ -103,7 +103,7 @@
             <test>${packageClassName}</test>
             <forkMode>once</forkMode>
             <jpda.listen>maven</jpda.listen>
-            <maven.test.skip>false</maven.test.skip>
+            <skipTests>false</skipTests>
         </properties>
     </action>
     <action>
@@ -120,18 +120,18 @@
             <goal>package</goal>
         </goals>
         <properties>
-            <maven.test.skip>true</maven.test.skip>
+            <skipTests>true</skipTests>
         </properties>
     </action>
     <action>
         <actionName>CUSTOM-clean package maven.tesk.skip=true</actionName>
-        <displayName>clean package maven.test.skip=true</displayName>
+        <displayName>clean package skipTests=true</displayName>
         <goals>
             <goal>clean</goal>
             <goal>package</goal>
         </goals>
         <properties>
-            <maven.test.skip>true</maven.test.skip>
+            <skipTests>true</skipTests>
         </properties>
     </action>
     <action>
@@ -169,7 +169,7 @@
         </goals>
         <properties>
             <netbeans.deploy>true</netbeans.deploy>
-            <maven.test.skip>true</maven.test.skip>
+            <skipTests>true</skipTests>
         </properties>
     </action>
     <action>
