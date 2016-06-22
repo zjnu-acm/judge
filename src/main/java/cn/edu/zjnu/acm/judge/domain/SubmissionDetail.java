@@ -33,7 +33,7 @@ public class SubmissionDetail implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String result;
-    private int score;
+    private double score;
     private int time;
     private int memory;
 
