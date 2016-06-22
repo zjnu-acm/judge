@@ -133,21 +133,15 @@ public final class AccessControlUtil {
                     if (aclEntry.folder.equals(cuttedPath)) {
                         acl = checkACLForFolder(aclEntry, cuttedPath);
                         break;
+                    } else if (cuttedPath.length() == 1) {
+                        break;
+                    } else if (cuttedPath.lastIndexOf('/') > -1) {
+                        cuttedPath = cuttedPath.substring(0,
+                                cuttedPath.lastIndexOf('/') + 1);
                     } else {
-
-                        if (cuttedPath.length() == 1) {
-                            break;
-                        }
-                        if (cuttedPath.lastIndexOf('/') > -1) {
-                            cuttedPath = cuttedPath.substring(0,
-                                    cuttedPath.lastIndexOf('/') + 1);
-
-                        } else {
-                            break;
-                        }
+                        break;
                     }
                 }
-
             }
         }
         return acl;

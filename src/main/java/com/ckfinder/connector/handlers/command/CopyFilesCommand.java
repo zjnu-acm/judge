@@ -282,7 +282,7 @@ public class CopyFilesCommand extends XMLCommand implements IPostCommand {
                 file.getType()
                 + file.getFolder(), file.getName());
         Path destThumbFile = Paths.get(configuration.getThumbsPath(),
-                 this.type
+                this.type
                 + this.currentFolder, file.getName());
 
         if (Files.isRegularFile(sourceThumbFile) && Files.exists(sourceThumbFile)) {
