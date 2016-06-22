@@ -56,7 +56,8 @@ public class ShowProblemController {
                 contestId = null;
                 contest = null;
             } else {
-                contestNum = contestMapper.getProblemIdInContest(contestId, problemId);
+                Long problemIdInContest = contestMapper.getProblemIdInContest(contestId, problemId);
+                contestNum = problemIdInContest == null ? -1 : problemIdInContest;
             }
             if (problem.isDisabled() && contestId == null) {
                 started = false;

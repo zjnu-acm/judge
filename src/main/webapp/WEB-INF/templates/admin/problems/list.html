@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorator="'layout/admin'">
+      layout:decorator="layout/admin">
     <head>
         <title>Problem List</title>
     </head>
@@ -20,7 +20,7 @@
                 <td width="20%">Date</td>
                 <td width="8%">Defunct</td>
             </tr>
-            <tr align="center" th:each="problem:${list}" th:object="${problem}">
+            <tr align="center" th:each="problem:${page}" th:object="${problem}">
                 <td th:text="*{id}">problem.id</td>
                 <td align="left">
                     <a th:href="@{/admin/problems/{problemId}(problemId=*{id})}"
@@ -41,10 +41,10 @@
                 </td>
             </tr>
         </table>
-        <p align="center">
+        <p align="center" th:if="${page.totalPages&gt;1}">
             <a style="margin: 10px;"
-               th:each="it:${#numbers.sequence(0,(total-1)/size)}"
-               th:href="@{/admin/problems(start=${it*size},size=${size})}"
+               th:each="it:${#numbers.sequence(0,page.totalPages-1)}"
+               th:href="@{/admin/problems(page=${it},size=${page.size})}"
                th:text="${it+1}">1</a>
         </p>
         <!--/*/</th:block>/*/-->

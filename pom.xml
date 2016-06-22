@@ -46,8 +46,6 @@
     <properties>
         <java.version>1.8</java.version>
         <javax-jsp.version>2.3.1</javax-jsp.version>
-        <maven.test.failure.ignore>false</maven.test.failure.ignore>
-        <!--<maven.test.skip>true</maven.test.skip>-->
         <objenesis.version>2.4</objenesis.version>
         <start-class>cn.edu.zjnu.acm.judge.Application</start-class>
         <!--<thymeleaf-extras-springsecurity4.version>3.0.0.RELEASE</thymeleaf-extras-springsecurity4.version>-->
@@ -194,6 +192,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>aopalliance</artifactId>
+                    <groupId>aopalliance</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

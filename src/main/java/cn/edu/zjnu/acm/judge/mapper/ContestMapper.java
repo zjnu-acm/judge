@@ -151,10 +151,9 @@ public interface ContestMapper {
     @Update("update contest set defunct='Y' where contest_id=#{id}")
     long disable(@Param("id") long contestId);
 
-    // TODO May throws org.apache.ibatis.binding.BindingException: Mapper method 'cn.edu.zjnu.acm.judge.mapper.ContestMapper.getProblemIdInContest attempted to return null from a method with a primitive return type (long).
     @Deprecated
     @Select("select num from contest_problem where contest_id=#{cid} and problem_id=#{pid}")
-    long getProblemIdInContest(@Param("cid") long contestId, @Param("pid") long problemId) throws BindingException;
+    Long getProblemIdInContest(@Param("cid") long contestId, @Param("pid") long problemId);
 
     @Select("select" + COLUMNS + "from contest order by contest_id desc")
     List<Contest> findAll();
