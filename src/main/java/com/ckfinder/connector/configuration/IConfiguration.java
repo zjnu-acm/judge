@@ -232,7 +232,6 @@ public interface IConfiguration {
      */
     public boolean isDisallowUnsafeCharacters();
 
-
     /**
      * flag if check image size after resizing image.
      *

@@ -127,7 +127,7 @@ public class RenameFolderCommand extends XMLCommand implements IPostCommand {
                 this.type
                 + this.currentFolder);
         Path newThumbDir = Paths.get(configuration.getThumbsPath(),
-                 this.type
+                this.type
                 + this.newFolderPath);
         Files.move(thumbDir, newThumbDir);
 
