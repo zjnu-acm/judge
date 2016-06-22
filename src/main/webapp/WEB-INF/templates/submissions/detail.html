@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorator="'layout/main'">
+      layout:decorator="layout/main">
     <head>
         <title>Solution Details</title>
     </head>
@@ -21,7 +21,7 @@
                 <tr th:each="detail,it:${details}" align="center" th:object="${detail}">
                     <td th:text="${it.count}">1</td>
                     <td th:text="*{result}">Accepted</td>
-                    <td th:text="*{score}">10</td>
+                    <td th:text="*{new java.text.DecimalFormat('0.##').format(score)}">10</td>
                     <td>[[*{time}]]MS</td>
                     <td>[[*{memory}]]K</td>
                 </tr>

@@ -56,7 +56,7 @@
         <mariadb.version>1.4.6</mariadb.version>
         <objenesis.version>2.4</objenesis.version>
         <snakeyaml.version>1.17</snakeyaml.version>
-        <spring-data-releasetrain.version>Hopper-SR1</spring-data-releasetrain.version>
+        <spring-data-releasetrain.version>Hopper-SR2</spring-data-releasetrain.version>
         <spring-security.version>4.1.0.RELEASE</spring-security.version>
         <spring.version>4.3.0.RELEASE</spring.version>
         <start-class>cn.edu.zjnu.acm.judge.Application</start-class>
