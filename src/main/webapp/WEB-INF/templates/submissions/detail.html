@@ -21,7 +21,7 @@
                 <tr th:each="detail,it:${details}" align="center" th:object="${detail}" th:inline="text">
                     <td th:text="${it.count}">1</td>
                     <td th:text="*{result}">Accepted</td>
-                    <td th:text="*{score}">10</td>
+                    <td th:text="*{new java.text.DecimalFormat('0.##').format(score)}">10</td>
                     <td>[[*{time}]]MS</td>
                     <td>[[*{memory}]]K</td>
                 </tr>
