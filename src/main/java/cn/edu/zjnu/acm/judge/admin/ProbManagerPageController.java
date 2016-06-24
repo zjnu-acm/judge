@@ -8,6 +8,7 @@ import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import cn.edu.zjnu.acm.judge.util.JudgeUtils;
 import java.util.List;
+import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,10 +41,13 @@ public class ProbManagerPageController {
         return finalBlock(problem, request);
     }
 
+    // TODO this page requires to be updated, for the page will modify the content in default language
     @RequestMapping(value = "/admin/problems/{problemId}/edit", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public String probmanagerpage(HttpServletRequest request, @PathVariable("problemId") long problemId) {
+    public String probmanagerpage(HttpServletRequest request,
+            @PathVariable("problemId") long problemId,
+            Locale locale) {
         UserDetailService.requireAdminLoginned(request);
-        Problem problem = problemMapper.findOne(problemId);
+        Problem problem = problemMapper.findOne(problemId, locale.getLanguage());
         if (problem == null) {
             throw new MessageException("No such problem, ID:" + problemId, HttpStatus.NOT_FOUND);
         }

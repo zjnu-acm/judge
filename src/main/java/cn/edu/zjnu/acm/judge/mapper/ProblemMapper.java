@@ -36,30 +36,44 @@ import org.springframework.data.domain.Pageable;
 @Mapper
 public interface ProblemMapper {
 
-    String COLUMNS = " p.problem_id id,p.title,p.description,p.input,"
-            + "p.output,p.sample_input sampleInput,p.sample_output sampleOutput,"
-            + "p.hint,p.source,p.in_date inDate,p.time_limit timeLimit,"
+    String COLUMNS = " p.problem_id id,"
+            + "COALESCE(pi.title,p.title) title,"
+            + "COALESCE(pi.description,p.description) description,"
+            + "COALESCE(pi.input,p.input) input,"
+            + "COALESCE(pi.output,p.output) output,"
+            + "p.sample_input sampleInput,"
+            + "p.sample_output sampleOutput,"
+            + "COALESCE(pi.hint,p.hint) hint,"
+            + "COALESCE(pi.source,p.source) source,"
+            + "p.in_date inDate,p.time_limit timeLimit,"
             + "p.memory_limit memoryLimit,"
             + "p.contest_id contest,if(p.defunct!='N',1,0) disabled,"
             + "p.accepted,p.submit,p.solved,p.submit_user submitUser ";
-    
+
     String COLUMNS_NO_I18N = " p.problem_id id,"
             + "p.in_date inDate,p.time_limit timeLimit,"
             + "p.memory_limit memoryLimit,"
             + "p.contest_id contest,if(p.defunct!='N',1,0) disabled,"
             + "p.accepted,p.submit,p.solved,p.submit_user submitUser ";
 
-    String LIST_COLUMNS = " p.problem_id id,p.title,"
-            + "p.in_date inDate,p.time_limit timeLimit,"
+    String LIST_COLUMNS = " p.problem_id id,"
+            + "COALESCE(pi.title,p.title) title,"
+            + "p.in_date inDate,"
+            + "p.time_limit timeLimit,"
             + "p.memory_limit memoryLimit,"
-            + "p.contest_id contest,if(p.defunct!='N',1,0) disabled,"
-            + "p.accepted,p.submit,p.solved,p.submit_user submitUser ";
+            + "p.contest_id contest,"
+            + "if(p.defunct!='N',1,0) disabled,"
+            + "p.accepted,"
+            + "p.submit,"
+            + "p.solved,"
+            + "p.submit_user submitUser ";
 
-    String LIST_COLUMNS_SOURCE = LIST_COLUMNS + ",source ";
+    String LIST_COLUMNS_SOURCE = LIST_COLUMNS + ","
+            + "COALESCE(pi.source,p.source) source ";
 
     String STATUS = "<if test='userId!=null'>,if(up.submit is null or up.submit=0,0,if(up.accepted!=0,1,2)) status </if>";
 
-    String FROM = " from problem p ";
+    String FROM = " from problem p left join problem_i18n pi on p.problem_id=pi.id and pi.locale=#{lang} ";
 
     @Update("update problem set defunct='Y' where problem_id=#{id}")
     long disable(@Param("id") long id);
@@ -110,7 +124,7 @@ public interface ProblemMapper {
             @Param("lang") String lang);
 
     @Select("select" + COLUMNS + FROM + " where problem_id=#{id}")
-    Problem findOne(@Param(value = "id") long id);
+    Problem findOne(@Param(value = "id") long id, @Param("lang") String lang);
 
     @Select("select" + COLUMNS_NO_I18N + "from problem p where problem_id=#{id}")
     Problem findOneNoI18n(@Param(value = "id") long id);

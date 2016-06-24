@@ -245,6 +245,7 @@ public class ContestMapperTest {
         log.info("updateProblemTitle");
         long contestId = 0L;
         long problemId = 0L;
+        // nothing happen for there will neither be a contest nor a problem id 0.
         instance.updateProblemTitle(contestId, problemId);
     }
 

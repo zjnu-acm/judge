@@ -10,6 +10,7 @@ import cn.edu.zjnu.acm.judge.util.JudgeUtils;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,8 +34,9 @@ public class ShowProblemController {
 
     @RequestMapping(value = "/showproblem", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = "text/html")
     public ResponseEntity<String> showproblem(HttpServletRequest request,
-            @RequestParam("problem_id") long problemId) {
-        Problem problem = problemMapper.findOne(problemId);
+            @RequestParam("problem_id") long problemId,
+            Locale locale) {
+        Problem problem = problemMapper.findOne(problemId, locale.getLanguage());
         if (problem == null) {
             throw new MessageException("Can not find problem (ID:" + problemId + ")", HttpStatus.NOT_FOUND);
         }
