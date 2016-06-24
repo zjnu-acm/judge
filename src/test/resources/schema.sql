@@ -171,12 +171,12 @@ CREATE TABLE IF NOT EXISTS `problem` (
 CREATE TABLE IF NOT EXISTS `problem_i18n` (
   `id` bigint(20) NOT NULL,
   `locale` enum('en','zh') NOT NULL DEFAULT 'zh',
-  `title` longtext NOT NULL,
-  `description` longtext NOT NULL,
-  `input` longtext NOT NULL,
-  `output` longtext NOT NULL,
-  `hint` longtext NOT NULL,
-  `source` longtext NOT NULL,
+  `title` longtext,
+  `description` longtext,
+  `input` longtext,
+  `output` longtext,
+  `hint` longtext,
+  `source` longtext,
   PRIMARY KEY (`id`,`locale`) USING HASH,
   CONSTRAINT `FK_problem` FOREIGN KEY (`id`) REFERENCES `problem` (`problem_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
