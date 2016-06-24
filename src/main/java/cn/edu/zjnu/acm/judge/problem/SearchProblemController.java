@@ -5,6 +5,7 @@ import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import java.util.List;
+import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,12 +23,12 @@ public class SearchProblemController {
 
     @RequestMapping(value = "/searchproblem", method = {RequestMethod.GET, RequestMethod.HEAD})
     protected String searchproblem(HttpServletRequest request,
-            @RequestParam(value = "sstr", required = false) String query) {
+            @RequestParam(value = "sstr", required = false) String query, Locale locale) {
         if (StringUtils.isEmpty(query)) {
             throw new MessageException("Please input the keyword to the problem.", HttpStatus.BAD_REQUEST);
         }
         String userId = UserDetailService.getCurrentUserId(request).orElse(null);
-        List<Problem> problems = problemMapper.findAllBySearchTitleOrSourceAndDefunctN(query, userId);
+        List<Problem> problems = problemMapper.findAllBySearchTitleOrSourceAndDefunctN(query, userId, locale.getLanguage());
 
         request.setAttribute("query", query);
         request.setAttribute("problems", problems);

@@ -87,7 +87,7 @@ public class ProblemStatusController {
             orderby = "time";
         }
         groupBy += ",user_id ";
-        Problem problem = problemMapper.findOne(id);
+        Problem problem = problemMapper.findOneNoI18n(id);
         if (problem == null) {
             throw new MessageException("No such problem", HttpStatus.NOT_FOUND);
         }
