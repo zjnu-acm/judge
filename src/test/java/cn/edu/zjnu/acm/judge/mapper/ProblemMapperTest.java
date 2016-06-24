@@ -52,7 +52,6 @@ public class ProblemMapperTest {
     public void testFindOneByIdAndDefunctN() {
         log.debug("findOneByIdAndDefunctN");
         long pid = 0L;
-        Problem expResult = null;
         Problem result = instance.findOneByIdAndDefunctN(pid, locale.getLanguage());
     }
 
@@ -85,7 +84,6 @@ public class ProblemMapperTest {
     @Test
     public void testFindOne() {
         log.debug("findOne");
-        Problem expResult = null;
         Problem result = instance.findOne(0, locale.getLanguage());
         result = instance.findOne(1000, locale.getLanguage());
     }
@@ -96,8 +94,6 @@ public class ProblemMapperTest {
     @Test
     public void testFindOneNoI18n() {
         log.debug("findOne");
-        long id = 0L;
-        Problem expResult = null;
         Problem result = instance.findOneNoI18n(0);
         result = instance.findOneNoI18n(1000);
     }
@@ -115,6 +111,17 @@ public class ProblemMapperTest {
         int size = result.size();
         result = instance.findAllBySearchTitleOrSourceAndDefunctN(query, null, locale.getLanguage());
         assertEquals(size, result.size());
+    }
+
+    /**
+     * Test of touchI18n method, of class ProblemMapper.
+     */
+    @Test
+    public void testTouchI18n() {
+        log.info("touchI18n");
+        long problemId = 1000L;
+        String lang = "en";
+        long result = instance.touchI18n(problemId, lang);
     }
 
 }

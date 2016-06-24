@@ -160,4 +160,7 @@ public interface ProblemMapper {
             @Param("start") long start,
             @Param("size") int size);
 
+    @Insert("insert ignore into problem_i18n(id,locale) values(#{problemId},#{lang})")
+    long touchI18n(@Param("problemId") long problemId, @Param("lang") String lang);
+
 }
