@@ -124,4 +124,19 @@ public class ProblemMapperTest {
         long result = instance.touchI18n(problemId, lang);
     }
 
+    /**
+     * Test of updateI18n method, of class ProblemMapper.
+     */
+    @Test
+    public void testUpdateI18n() {
+        log.info("updateI18n");
+        long problemId = 0L;
+        String lang = "en";
+        Problem problem = new Problem();
+        problem = problem.toBuilder().title("").build();
+        long result = instance.updateI18n(problemId, lang, problem);
+        problem = problem.toBuilder().title("").build();
+        result = instance.updateI18n(problemId, lang, problem);
+    }
+
 }

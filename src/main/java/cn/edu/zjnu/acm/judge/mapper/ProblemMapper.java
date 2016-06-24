@@ -163,4 +163,15 @@ public interface ProblemMapper {
     @Insert("insert ignore into problem_i18n(id,locale) values(#{problemId},#{lang})")
     long touchI18n(@Param("problemId") long problemId, @Param("lang") String lang);
 
+    @Update("<script>"
+            + "update problem_i18n"
+            + "<set>"
+            + "<if test='problem.title!=null'>title=nullif(#{problem.title},''),</if>"
+            + "</set>"
+            + "where id=#{problemId} and locale=#{lang}"
+            + "</script>")
+    long updateI18n(@Param("problemId") long problemId,
+            @Param("lang") String lang,
+            @Param("problem") Problem problem);
+
 }
