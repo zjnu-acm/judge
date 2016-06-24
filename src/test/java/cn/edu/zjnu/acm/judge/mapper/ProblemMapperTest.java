@@ -86,8 +86,8 @@ public class ProblemMapperTest {
     public void testFindOne() {
         log.debug("findOne");
         Problem expResult = null;
-        Problem result = instance.findOne(0);
-        result = instance.findOne(1000);
+        Problem result = instance.findOne(0, locale.getLanguage());
+        result = instance.findOne(1000, locale.getLanguage());
     }
 
     /**

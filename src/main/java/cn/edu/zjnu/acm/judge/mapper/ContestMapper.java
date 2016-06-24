@@ -121,6 +121,8 @@ public interface ContestMapper {
     @Select("select" + COLUMNS + "from contest where contest_id=#{id}")
     Contest findOne(@Param("id") long contestId);
 
+    // TODO not necessary support for i18n,
+    // for return value only the id is used
     @Select("select cp.num id,if(cp.title is null or trim(cp.title)='',p.title,cp.title) title,p.problem_id orign "
             + "from contest_problem cp "
             + "join problem p on cp.problem_id=p.problem_id "

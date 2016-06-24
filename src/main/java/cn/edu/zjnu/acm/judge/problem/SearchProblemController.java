@@ -23,7 +23,8 @@ public class SearchProblemController {
 
     @RequestMapping(value = "/searchproblem", method = {RequestMethod.GET, RequestMethod.HEAD})
     protected String searchproblem(HttpServletRequest request,
-            @RequestParam(value = "sstr", required = false) String query, Locale locale) {
+            @RequestParam(value = "sstr", required = false) String query,
+            Locale locale) {
         if (StringUtils.isEmpty(query)) {
             throw new MessageException("Please input the keyword to the problem.", HttpStatus.BAD_REQUEST);
         }
