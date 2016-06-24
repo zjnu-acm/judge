@@ -15,6 +15,10 @@
  */
 package cn.edu.zjnu.acm.judge.config;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Locale;
+import java.util.TreeSet;
 import javax.servlet.ServletContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,11 +47,13 @@ public class LocaleConfiguration extends WebMvcConfigurerAdapter {
     /* Store preferred language configuration in a cookie */
     @Bean(name = "localeResolver")
     public LocaleResolver localeResolver(ServletContext container) {
+        Collection<String> set = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        set.addAll(Arrays.asList("en", "zh"));
         CookieLocaleResolver localeResolver = new CookieLocaleResolver();
         localeResolver.setCookieName("locale");
         localeResolver.setCookieMaxAge(15 * 24 * 60 * 60);
         localeResolver.setCookiePath(getCookiePath(container));
-        return localeResolver;
+        return new FilterLocaleResolver(localeResolver, Locale.SIMPLIFIED_CHINESE, locale -> set.contains(locale.getLanguage()));
     }
 
     private String getCookiePath(ServletContext container) {
