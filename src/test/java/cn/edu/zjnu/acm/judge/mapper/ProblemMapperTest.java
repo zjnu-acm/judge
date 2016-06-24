@@ -30,7 +30,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  *
@@ -113,7 +112,6 @@ public class ProblemMapperTest {
         String query = "初级";
         String userId = "coach";
         List<Problem> result = instance.findAllBySearchTitleOrSourceAndDefunctN(query, userId, locale.getLanguage());
-        assertTrue(!result.isEmpty());
         int size = result.size();
         result = instance.findAllBySearchTitleOrSourceAndDefunctN(query, null, locale.getLanguage());
         assertEquals(size, result.size());
