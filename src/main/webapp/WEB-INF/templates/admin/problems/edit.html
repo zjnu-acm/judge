@@ -48,11 +48,7 @@
             //<![CDATA[
             jQuery(function ($) {
                 var KEY = "value-original", form = $("form[name='problem-edit']"), inputs = form.find(":input");
-                inputs.each(function () {
-                    var val = $(this).val();
-                    $(this).data(KEY, val);
-                });
-                $("[name='problemLang']").change(function () {
+                var problemLang = $("[name='problemLang']").change(function (event) {
                     var change = false;
                     inputs.each(function () {
                         if ($(this).val() !== $(this).data(KEY)) {
@@ -61,10 +57,16 @@
                         }
                     });
                     if (change && !confirm("你已经修改题目，继续操作将会丢失修改，是否继续？")) {
+                        $(this).val($(this).data(KEY));
                         return false;
                     }
                     $(this).parent("form").submit();
                 });
+                inputs.each(function () {
+                    var val = $(this).val();
+                    $(this).data(KEY, val);
+                });
+                problemLang.data(KEY, problemLang.val());
             });//]]>
         </script>
         <!--/*/</th:block>/*/-->
