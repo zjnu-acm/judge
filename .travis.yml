@@ -7,5 +7,5 @@ sudo: required
 install:
   - chmod +x .travis/install-mariadb.sh
   - sudo .travis/install-mariadb.sh
-before_script: mysql -uroot < src/test/resources/schema.sql
+before_script: mysql -uroot < .travis/create-db.sql
 script: mvn -Dspring.datasource.password= verify
