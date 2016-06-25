@@ -18,7 +18,6 @@ package cn.edu.zjnu.acm.judge.mapper;
 import cn.edu.zjnu.acm.judge.Application;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import java.util.List;
-import java.util.Locale;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,7 +42,11 @@ public class ProblemMapperTest {
 
     @Autowired
     private ProblemMapper instance;
-    private final Locale locale = Locale.SIMPLIFIED_CHINESE;
+    private String lang = "en";
+
+    void setLang(String lang) {
+        this.lang = lang;
+    }
 
     /**
      * Test of findOneByIdAndDefunctN method, of class ProblemMapper.
@@ -52,7 +55,7 @@ public class ProblemMapperTest {
     public void testFindOneByIdAndDefunctN() {
         log.debug("findOneByIdAndDefunctN");
         long pid = 0L;
-        Problem result = instance.findOneByIdAndDefunctN(pid, locale.getLanguage());
+        Problem result = instance.findOneByIdAndDefunctN(pid, lang);
     }
 
     /**
@@ -62,7 +65,7 @@ public class ProblemMapperTest {
     public void testFindAll() {
         log.debug("findAll");
         Pageable pageable = new PageRequest(0, 20);
-        List<Problem> result = instance.findAll(pageable, locale.getLanguage());
+        List<Problem> result = instance.findAll(pageable, lang);
     }
 
     /**
@@ -74,8 +77,8 @@ public class ProblemMapperTest {
         String userId = "coach";
         long start = 1000L;
         long end = 1099L;
-        List<Problem> result = instance.findAllByDefunctN(userId, start, end, locale.getLanguage());
-        result = instance.findAllByDefunctN(null, start, end, locale.getLanguage());
+        List<Problem> result = instance.findAllByDefunctN(userId, start, end, lang);
+        result = instance.findAllByDefunctN(null, start, end, lang);
     }
 
     /**
@@ -84,8 +87,8 @@ public class ProblemMapperTest {
     @Test
     public void testFindOne() {
         log.debug("findOne");
-        Problem result = instance.findOne(0, locale.getLanguage());
-        result = instance.findOne(1000, locale.getLanguage());
+        Problem result = instance.findOne(0, lang);
+        result = instance.findOne(1000, lang);
     }
 
     /**
@@ -107,9 +110,9 @@ public class ProblemMapperTest {
         log.debug("findAllBySearchTitleOrSourceAndDefunctN");
         String query = "初级";
         String userId = "coach";
-        List<Problem> result = instance.findAllBySearchTitleOrSourceAndDefunctN(query, userId, locale.getLanguage());
+        List<Problem> result = instance.findAllBySearchTitleOrSourceAndDefunctN(query, userId, lang);
         int size = result.size();
-        result = instance.findAllBySearchTitleOrSourceAndDefunctN(query, null, locale.getLanguage());
+        result = instance.findAllBySearchTitleOrSourceAndDefunctN(query, null, lang);
         assertEquals(size, result.size());
     }
 
@@ -120,7 +123,6 @@ public class ProblemMapperTest {
     public void testTouchI18n() {
         log.info("touchI18n");
         long problemId = 1000L;
-        String lang = "en";
         long result = instance.touchI18n(problemId, lang);
     }
 
@@ -131,11 +133,17 @@ public class ProblemMapperTest {
     public void testUpdateI18n() {
         log.info("updateI18n");
         long problemId = 0L;
-        String lang = "en";
         Problem problem = new Problem();
-        problem = problem.toBuilder().title("").build();
+        problem = problem.toBuilder()
+                .title("")
+                .input("")
+                .output("")
+                .description("")
+                .hint("")
+                .source("")
+                .build();
         long result = instance.updateI18n(problemId, lang, problem);
-        problem = problem.toBuilder().title("").build();
+        problem = new Problem().toBuilder().title("").build();
         result = instance.updateI18n(problemId, lang, problem);
     }
 

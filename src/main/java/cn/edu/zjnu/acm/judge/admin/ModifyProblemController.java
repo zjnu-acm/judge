@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class ModifyProblemController {
@@ -27,16 +28,19 @@ public class ModifyProblemController {
     @RequestMapping(value = "/admin/problems/{problemId}", method = RequestMethod.PUT)
     public String modifyproblem(HttpServletRequest request,
             @PathVariable("problemId") long problemId,
-            Problem p,
-            Locale locale) {
+            Locale locale,
+            @RequestParam("problemLang") String lang,
+            Problem p) {
         UserDetailService.requireAdminLoginned(request);
-        Problem problem = problemMapper.findOne(problemId, locale.getLanguage());
+
+        Problem problem = problemMapper.findOne(problemId, lang);
         if (problem == null) {
             throw new MessageException("no such problem " + problemId, HttpStatus.NOT_FOUND);
         }
         Long oldContestId = problem.getContest();
         Long contestId = p.getContest();
 
+        problemMapper.touchI18n(problemId, lang);
         problemMapper.update(problem.toBuilder()
                 .title(p.getTitle())
                 .description(p.getDescription())
@@ -49,7 +53,7 @@ public class ModifyProblemController {
                 .timeLimit(p.getTimeLimit())
                 .memoryLimit(p.getMemoryLimit())
                 .contest(p.getContest())
-                .build());
+                .build(), lang);
         if (oldContestId != null && !Objects.equals(oldContestId, contestId)) {
             boolean started = contestMapper.findOneByIdAndDefunctN(oldContestId).isStarted();
             if (!started) {
@@ -67,7 +71,7 @@ public class ModifyProblemController {
                 boolean started = newContest.isStarted();
                 if (!started) {
                     try {
-                        contestMapper.addProblem(contestId, problemId, "", 9999999);
+                        contestMapper.addProblem(contestId, problemId, null, 9999999);
                         contestMapper.updateContestOrder(contestId);
                     } catch (Exception ex) {
                     }

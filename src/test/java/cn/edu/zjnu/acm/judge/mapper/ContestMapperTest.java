@@ -22,6 +22,7 @@ import cn.edu.zjnu.acm.judge.domain.Standing;
 import cn.edu.zjnu.acm.judge.domain.User;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,6 +45,7 @@ public class ContestMapperTest {
 
     @Autowired
     private ContestMapper instance;
+    private Locale locale = Locale.SIMPLIFIED_CHINESE;
 
     /**
      * Test of standing method, of class ContestMapper.
@@ -64,7 +66,19 @@ public class ContestMapperTest {
         log.info("getProblems");
         long contestId = 0L;
         List<Problem> expResult = Arrays.asList();
-        List<Problem> result = instance.getProblems(contestId, null);
+        List<Problem> result = instance.getProblems(contestId, null, locale.getLanguage());
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getProblems method, of class ContestMapper.
+     */
+    @Test
+    public void testGetProblemsNullLocale() {
+        log.info("getProblems");
+        long contestId = 0L;
+        List<Problem> expResult = Arrays.asList();
+        List<Problem> result = instance.getProblems(contestId, null, null);
         assertEquals(expResult, result);
     }
 
@@ -77,7 +91,7 @@ public class ContestMapperTest {
         long contestId = 0L;
         String userId = "'";
         List<Problem> expResult = Arrays.asList();
-        List<Problem> result = instance.getProblems(contestId, userId);
+        List<Problem> result = instance.getProblems(contestId, userId, locale.getLanguage());
         assertEquals(expResult, result);
     }
 

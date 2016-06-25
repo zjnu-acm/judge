@@ -132,8 +132,34 @@ public interface ProblemMapper {
     @Update("UPDATE problem SET in_date=#{inDate} where problem_id=#{id}")
     long setInDate(@Param("id") long problemId, @Param("inDate") Instant timestamp);
 
-    @Update("UPDATE problem SET title=#{title},description=#{description},input=#{input},output=#{output},sample_input=#{sampleInput},sample_output=#{sampleOutput},hint=#{hint},source=#{source},time_limit=#{timeLimit},memory_limit=#{memoryLimit},contest_id=#{contest} WHERE problem_id=#{id}")
-    long update(Problem build);
+    @Update("<script>UPDATE problem p "
+            + "<if test='lang!=null and lang!=&quot;&quot;'>"
+            + "left join problem_i18n pi on p.problem_id = pi.id"
+            + "</if>"
+            + "SET "
+            + "<if test='lang==null or lang==&quot;&quot;'>"
+            + "p.title=#{p.title},"
+            + "p.description=#{p.description},"
+            + "p.input=#{p.input},"
+            + "p.output=#{p.output},"
+            + "p.hint=#{p.hint},"
+            + "p.source=#{p.source},"
+            + "</if>"
+            + "<if test='lang!=null and lang!=&quot;&quot;'>"
+            + "pi.title=#{p.title},"
+            + "pi.description=#{p.description},"
+            + "pi.input=#{p.input},"
+            + "pi.output=#{p.output},"
+            + "pi.hint=#{p.hint},"
+            + "pi.source=#{p.source},"
+            + "</if>"
+            + "p.sample_input=#{p.sampleInput},"
+            + "p.sample_output=#{p.sampleOutput},"
+            + "p.time_limit=#{p.timeLimit},"
+            + "p.memory_limit=#{p.memoryLimit},"
+            + "p.contest_id=#{p.contest} "
+            + "WHERE p.problem_id=#{p.id}</script>")
+    long update(@Param("p") Problem build, @Param("lang") String lang);
 
     @Select({"<script>"
         + "select" + LIST_COLUMNS_SOURCE + STATUS
@@ -161,16 +187,24 @@ public interface ProblemMapper {
             @Param("size") int size);
 
     @Insert("insert ignore into problem_i18n(id,locale) values(#{problemId},#{lang})")
-    long touchI18n(@Param("problemId") long problemId, @Param("lang") String lang);
+    long touchI18n(
+            @Param("problemId") long problemId,
+            @Param("lang") String lang);
 
     @Update("<script>"
             + "update problem_i18n"
             + "<set>"
             + "<if test='problem.title!=null'>title=nullif(#{problem.title},''),</if>"
+            + "<if test='problem.description!=null'>description=nullif(#{problem.description},''),</if>"
+            + "<if test='problem.input!=null'>input=nullif(#{problem.input},''),</if>"
+            + "<if test='problem.output!=null'>output=nullif(#{problem.output},''),</if>"
+            + "<if test='problem.hint!=null'>hint=nullif(#{problem.hint},''),</if>"
+            + "<if test='problem.source!=null'>source=nullif(#{problem.source},''),</if>"
             + "</set>"
             + "where id=#{problemId} and locale=#{lang}"
             + "</script>")
-    long updateI18n(@Param("problemId") long problemId,
+    long updateI18n(
+            @Param("problemId") long problemId,
             @Param("lang") String lang,
             @Param("problem") Problem problem);
 

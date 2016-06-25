@@ -9,15 +9,19 @@ import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import cn.edu.zjnu.acm.judge.util.JudgeUtils;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+@Slf4j
 public class ProbManagerPageController {
 
     @Autowired
@@ -45,9 +49,12 @@ public class ProbManagerPageController {
     @RequestMapping(value = "/admin/problems/{problemId}/edit", method = {RequestMethod.GET, RequestMethod.HEAD})
     public String probmanagerpage(HttpServletRequest request,
             @PathVariable("problemId") long problemId,
+            @RequestParam("problemLang") Optional<String> problemLang,
             Locale locale) {
         UserDetailService.requireAdminLoginned(request);
-        Problem problem = problemMapper.findOne(problemId, locale.getLanguage());
+        String lang = problemLang.orElseGet(locale::getLanguage);
+        log.debug(lang);
+        Problem problem = problemMapper.findOne(problemId, lang);
         if (problem == null) {
             throw new MessageException("No such problem, ID:" + problemId, HttpStatus.NOT_FOUND);
         }
@@ -64,6 +71,7 @@ public class ProbManagerPageController {
         request.setAttribute("url", "/admin/problems/" + problemId);
         request.setAttribute("method", "PUT");
         request.setAttribute("hint2", "Modify problem");
+        request.setAttribute("problemLang", lang);
         return finalBlock(problem, request);
     }
 
