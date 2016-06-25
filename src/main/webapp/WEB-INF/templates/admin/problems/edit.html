@@ -44,15 +44,15 @@
         <script th:src="@{/ckfinder/ckfinder.js}"></script>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.5.8/adapters/jquery.js" th:src="@{/webjars/ckeditor/4.5.8/full/adapters/jquery.js}"></script>
         <script src="../../../../js/ckfinder.js" th:src="@{/js/ckfinder.js(_=${application.startUpDate})}"></script>
-        <script>
-            //<![CDATA[
+        <script>//<![CDATA[
             jQuery(function ($) {
-                var KEY = "value-original", form = $("form[name='problem-edit']"), inputs = form.find(":input");
-                var problemLang = $("[name='problemLang']").change(function (event) {
+                var KEY = "value-original", inputs = $("form[name='problem-edit'] :input");
+                $("select[name='problemLang']").change(function () {
                     var change = false;
                     inputs.each(function () {
                         if ($(this).val() !== $(this).data(KEY)) {
                             change = true;
+                            console.log(this, $(this).val(), $(this).data(KEY));
                             return false;
                         }
                     });
@@ -60,13 +60,10 @@
                         $(this).val($(this).data(KEY));
                         return false;
                     }
-                    $(this).parent("form").submit();
+                    $(this).closest("form").submit();
+                }).add(inputs).each(function () {
+                    $(this).data(KEY, $(this).val());
                 });
-                inputs.each(function () {
-                    var val = $(this).val();
-                    $(this).data(KEY, val);
-                });
-                problemLang.data(KEY, problemLang.val());
             });//]]>
         </script>
         <!--/*/</th:block>/*/-->
