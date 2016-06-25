@@ -3,7 +3,7 @@ cache:
   directories:
     - $HOME/.m2
 jdk: oraclejdk8
-sudo: false
+sudo: required
 install:
   - chmod +x .travis/install-mariadb.sh
   - sudo .travis/install-mariadb.sh
