@@ -43,7 +43,7 @@ public class ContestManagerController {
         }
         synchronized (contestLock) {
             problemMapper.setContest(problemId, contestId);
-            contestMapper.addProblem(contestId, problemId, "", 9999999);
+            contestMapper.addProblem(contestId, problemId, null, 9999999);
             contestMapper.updateContestOrder(contestId);
             redirectAttributes.addAttribute("contestId", contestId);
         }

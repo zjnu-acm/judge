@@ -37,7 +37,7 @@ public class AddProblemController {
         }
         Long contest = problem.getContest();
         if (contest != null) {
-            contestMapper.addProblem(contest, id, "", 99999999);
+            contestMapper.addProblem(contest, id, null, 99999999);
             contestMapper.updateContestOrder(contest);
         }
         request.setAttribute("id", id);
