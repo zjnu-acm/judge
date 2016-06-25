@@ -24,7 +24,7 @@ import org.springframework.web.servlet.LocaleResolver;
 
 /**
  *
- * @author Administrator
+ * @author zhanhb
  */
 public class FilterLocaleResolver implements LocaleResolver {
 
