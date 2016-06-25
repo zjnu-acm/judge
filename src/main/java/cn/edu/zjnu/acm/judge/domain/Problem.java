@@ -34,7 +34,7 @@ import lombok.Setter;
 @Data
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Setter(AccessLevel.PRIVATE)
+@Setter(AccessLevel.PUBLIC)
 public class Problem implements Serializable {
 
     private static final long serialVersionUID = 1L;
