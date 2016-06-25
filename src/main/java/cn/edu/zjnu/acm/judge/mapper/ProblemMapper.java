@@ -134,7 +134,7 @@ public interface ProblemMapper {
 
     @Update("<script>UPDATE problem p "
             + "<if test='lang!=null and lang!=&quot;&quot;'>"
-            + "left join problem_i18n pi on p.problem_id = pi.id"
+            + "left join problem_i18n pi on p.problem_id = pi.id and pi.locale=#{lang}"
             + "</if>"
             + "SET "
             + "<if test='lang==null or lang==&quot;&quot;'>"
