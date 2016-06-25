@@ -1,4 +1,4 @@
-!/bin/sh
+#!/bin/sh
 
 remove_mysql(){
     service mysql stop
