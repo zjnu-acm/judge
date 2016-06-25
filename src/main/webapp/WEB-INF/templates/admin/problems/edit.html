@@ -52,7 +52,6 @@
                     inputs.each(function () {
                         if ($(this).val() !== $(this).data(KEY)) {
                             change = true;
-                            console.log(this, $(this).val(), $(this).data(KEY));
                             return false;
                         }
                     });
