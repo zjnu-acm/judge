@@ -93,7 +93,7 @@ public class ShowProblemController {
             request.setAttribute("contestId", contestId);
             sb.append("<html><head><title>").append((char) (contestNum + 'A')).append(":").append(problemId).append(" -- ").append(title).append("</title></head><body>"
                     + "<table border=0 width=100% class=table-back><tr><td><table border=0 width=100%><tr>");
-            List<Problem> problems = contestMapper.getProblems(contestId, null);
+            List<Problem> problems = contestMapper.getProblems(contestId, null, locale.getLanguage());
             for (Problem p : problems) {
                 sb.append("<td><a href=showproblem?problem_id=").append(p.getOrign()).append("><b>").append((char) (p.getId() + 'A')).append("</b></a></td>");
             }

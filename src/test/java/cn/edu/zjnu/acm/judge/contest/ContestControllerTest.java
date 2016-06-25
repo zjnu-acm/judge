@@ -16,6 +16,7 @@
 package cn.edu.zjnu.acm.judge.contest;
 
 import cn.edu.zjnu.acm.judge.Application;
+import java.util.Locale;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -50,6 +51,7 @@ public class ContestControllerTest {
 
     @Autowired
     private ContestController instance;
+    private final Locale locale = Locale.SIMPLIFIED_CHINESE;
 
     /**
      * Test of standingHtml method, of class ContestController.
@@ -59,7 +61,7 @@ public class ContestControllerTest {
         log.info("standingHtml");
         long cid = 1058;
         ExtendedModelMap map = new ExtendedModelMap();
-        String result = instance.standingHtml(cid, map);
+        String result = instance.standingHtml(cid, map, locale);
         assertEquals("contests/standing", result);
         assertNotNull(map.get("problems"));
     }

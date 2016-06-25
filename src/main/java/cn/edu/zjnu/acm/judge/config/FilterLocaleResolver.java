@@ -46,7 +46,7 @@ public class FilterLocaleResolver implements LocaleResolver {
 
     @Override
     public void setLocale(HttpServletRequest request, HttpServletResponse response, Locale locale) {
-        parent.setLocale(request, response, locale);
+        parent.setLocale(request, response, locale != null && !predicate.test(locale) ? null : locale);
     }
 
 }

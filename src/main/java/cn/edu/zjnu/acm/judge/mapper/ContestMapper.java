@@ -47,7 +47,7 @@ public interface ContestMapper {
     @Select("<script>select"
             + " cp.problem_id orign," // TODO remove if Problem.orign
             + " cp.num id,"
-            + " if(cp.title is null or trim(cp.title)='',p.title,cp.title) title"
+            + " COALESCE(cp.title,pi.title,p.title) title"
             + "<if test='userId!=null'>,temp.status</if>"
             + "from "
             + " contest_problem cp "
@@ -62,9 +62,13 @@ public interface ContestMapper {
             + "on cp.problem_id=temp.problem_id</if>"
             + "left join problem p "
             + "on cp.problem_id=p.problem_id "
+            + "left join problem_i18n pi on p.problem_id=pi.id and pi.locale=#{lang} "
             + "where cp.contest_id=#{contest} "
             + "order by cp.num</script>")
-    List<Problem> getProblems(@Param("contest") long contestId, @Nullable @Param("userId") String userId);
+    List<Problem> getProblems(
+            @Param(value = "contest") long contestId,
+            @Nullable @Param(value = "userId") String userId,
+            @Param("lang") String lang);
 
     @Update("update contest_problem cp left join ( "
             + "select cp1.contest_id,cp1.problem_id,count(cp2.problem_id) num "
