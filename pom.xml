@@ -402,7 +402,6 @@
                 <configuration>
                     <excludes>
                         <exclude>cn/edu/zjnu/acm/judge/Application.class</exclude>
-                        <exclude>cn/edu/zjnu/acm/judge/config/*.class</exclude>
                         <exclude>cn/edu/zjnu/acm/judge/domain/*.class</exclude>
                         <exclude>com/ckfinder/connector/**/*.class</exclude>
                         <exclude>com/github/zhanhb/download/**/*.class</exclude>
