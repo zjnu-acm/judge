@@ -178,7 +178,7 @@ public interface ContestMapper {
     @Select("select" + COLUMNS + "from contest where start_time<end_time and defunct='N' and end_time>now() order by contest_id desc")
     List<Contest> runningAndScheduling();
 
-    @Update("update contest_problem set title='' where problem_id=#{problem} and contest_id=#{contest}")
+    @Update("update contest_problem set title=null where problem_id=#{problem} and contest_id=#{contest}")
     long updateProblemTitle(@Param("contest") long contestId, @Param("problem") long problemId);
 
 }
