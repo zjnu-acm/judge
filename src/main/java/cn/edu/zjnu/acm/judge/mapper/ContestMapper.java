@@ -76,9 +76,9 @@ public interface ContestMapper {
             + "on cp1.contest_id=cp2.contest_id and cp1.num > cp2.num "
             + "group by contest_id,problem_id "
             + ") tmp on cp.problem_id=tmp.problem_id and cp.contest_id=tmp.contest_id "
-            + "set cp.num=tmp.num "// +1 ???
+            + "set cp.num=tmp.num+#{base} "// +1 ???
             + "where cp.contest_id=#{contest}")
-    long updateContestOrder(@Param("contest") long contestId);
+    long updateContestOrder(@Param(value = "contest") long contestId, @Param("base") long base);
 
     @Delete("delete from contest_problem where contest_id=#{contest} and problem_id=#{problem}")
     long deleteContestProblem(@Param("contest") long contestId, @Param("problem") long problemId);
@@ -147,7 +147,7 @@ public interface ContestMapper {
             + "group by s.user_id")
     List<User> attenders(@Param("id") long contestId);
 
-    @Insert("insert into contest_problem (contest_id,problem_id,title,num) values(#{id},#{problem},#{title},#{num})")
+    @Insert("insert ignore into contest_problem (contest_id,problem_id,title,num) values(#{id},#{problem},#{title},#{num})")
     long addProblem(@Param("id") long contestId, @Param("problem") long problem, @Param("title") String title, @Param("num") int num);
 
     @Update("update contest set defunct='N' where contest_id=#{id}")

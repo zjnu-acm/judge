@@ -5,6 +5,7 @@ import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
+import cn.edu.zjnu.acm.judge.service.ContestService;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import java.util.Locale;
 import java.util.Objects;
@@ -22,6 +23,8 @@ public class ModifyProblemController {
 
     @Autowired
     private ContestMapper contestMapper;
+    @Autowired
+    private ContestService contestService;
     @Autowired
     private ProblemMapper problemMapper;
 
@@ -57,8 +60,7 @@ public class ModifyProblemController {
         if (oldContestId != null && !Objects.equals(oldContestId, contestId)) {
             boolean started = contestMapper.findOneByIdAndDefunctN(oldContestId).isStarted();
             if (!started) {
-                contestMapper.deleteContestProblem(oldContestId, problemId);
-                contestMapper.updateContestOrder(oldContestId);
+                contestService.removeProblem(oldContestId, problemId);
             }
         }
         if (contestId != null) {
@@ -70,11 +72,7 @@ public class ModifyProblemController {
                 }
                 boolean started = newContest.isStarted();
                 if (!started) {
-                    try {
-                        contestMapper.addProblem(contestId, problemId, null, 9999999);
-                        contestMapper.updateContestOrder(contestId);
-                    } catch (Exception ex) {
-                    }
+                    contestService.addProblem(contestId, problemId);
                 }
             }
         }
