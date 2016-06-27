@@ -6,6 +6,7 @@ import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +24,12 @@ public class ContestManagerPageController {
 
     @RequestMapping(value = "/admin/contests/{contestId}", method = {RequestMethod.GET, RequestMethod.HEAD})
     public String view(HttpServletRequest request,
-            @PathVariable("contestId") long contestId) {
+            @PathVariable("contestId") long contestId,
+            Locale locale) {
         UserDetailService.requireAdminLoginned(request);
         Contest contest = Optional.ofNullable(contestMapper.findOne(contestId))
                 .orElseThrow(() -> new MessageException("onlinejudge.contest.nosuchcontest", HttpStatus.NOT_FOUND));
-        List<Problem> problems = contestMapper.getProblems(contestId, null);
+        List<Problem> problems = contestMapper.getProblems(contestId, null, locale.getLanguage());
         request.setAttribute("contest", contest);
         request.setAttribute("problems", problems);
         return "admin/contests/view";

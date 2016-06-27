@@ -4,6 +4,7 @@ import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
+import cn.edu.zjnu.acm.judge.service.ContestService;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
@@ -22,9 +23,7 @@ public class ContestManagerController {
     @Autowired
     private ContestMapper contestMapper;
     @Autowired
-    private ProblemMapper problemMapper;
-
-    private final Object contestLock = new Object();
+    private ContestService contestService;
 
     private Contest getContest(long contestId) {
         return Optional.ofNullable(contestMapper.findOne(contestId))
@@ -41,12 +40,8 @@ public class ContestManagerController {
         if (contest.isEnded()) {
             throw new MessageException("Contest is ended, can't add problem now", HttpStatus.BAD_REQUEST);
         }
-        synchronized (contestLock) {
-            problemMapper.setContest(problemId, contestId);
-            contestMapper.addProblem(contestId, problemId, "", 9999999);
-            contestMapper.updateContestOrder(contestId);
-            redirectAttributes.addAttribute("contestId", contestId);
-        }
+        contestService.addProblem(contestId, problemId);
+        redirectAttributes.addAttribute("contestId", contestId);
         return "redirect:/admin/contests/{contestId}";
     }
 
@@ -63,11 +58,7 @@ public class ContestManagerController {
         if (contest.isStarted()) {
             throw new MessageException("Contest is started, can't delete problem now", HttpStatus.BAD_REQUEST);
         }
-        synchronized (contestLock) {
-            problemMapper.setContest(problemId, null);
-            contestMapper.deleteContestProblem(contestId, problemId);
-            contestMapper.updateContestOrder(contestId);
-        }
+        contestService.removeProblem(contestId, problemId);
         redirectAttributes.addAttribute("contestId", contestId);
         return "redirect:/admin/contests/{contestId}";
     }

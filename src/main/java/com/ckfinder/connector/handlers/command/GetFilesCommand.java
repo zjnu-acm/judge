@@ -174,7 +174,7 @@ public class GetFilesCommand extends XMLCommand {
      */
     private String createThumbAttr(final Path file) {
         Path thumbFile = Paths.get(configuration.getThumbsPath(),
-                 this.type + this.currentFolder,
+                this.type + this.currentFolder,
                 file.getFileName().toString());
         if (Files.exists(thumbFile)) {
             return file.getFileName().toString();

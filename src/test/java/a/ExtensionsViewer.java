@@ -36,7 +36,7 @@ public class ExtensionsViewer {
      */
     public static void main(String[] args) throws IOException {
         Path path = Paths.get(".");
-        Set<String> set = new HashSet<>();
+        Set<String> set = new HashSet<>(20);
 
         Files.list(path).filter(p -> Files.isDirectory(p)
                 && !p.getFileName().toString().matches("target|\\.(?:git|idea|svn)")).forEach(p -> {

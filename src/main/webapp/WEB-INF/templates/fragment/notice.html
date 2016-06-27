@@ -1,7 +1,12 @@
 <th:block
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:th="http://www.thymeleaf.org">
-    <marquee scrollamount="3" behavior="ALTERNATE" scrolldelay="150" style="color:red">
+    <div style="text-align: right; margin-right: 20px">
+        <a data-lang="zh">中文</a>
+        <span>&nbsp;</span>
+        <a data-lang="en">English</a>
+    </div>
+    <marquee scrollamount="3" behavior="ALTERNATE" scrolldelay="150" style="color:red" >
         <a href="/CLanguage/showmessage?message_id=1164">使用GCC(GNU C)或VC++提交出现Runtime Error，请确保main的返回类型为int，main最后有return 0</a>
     </marquee>
     <th:block th:with="message=${@judgeConfiguration.systemInfo}">
