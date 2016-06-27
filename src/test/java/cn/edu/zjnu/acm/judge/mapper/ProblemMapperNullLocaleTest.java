@@ -13,28 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.domain;
+package cn.edu.zjnu.acm.judge.mapper;
 
-import java.io.Serializable;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Setter;
+import org.junit.AssumptionViolatedException;
+import org.junit.Before;
 
 /**
  *
  * @author zhanhb
  */
-@Builder
-@Data
-@Setter(AccessLevel.PRIVATE)
-public class SubmissionDetail implements Serializable {
+public class ProblemMapperNullLocaleTest extends ProblemMapperTest {
 
-    private static final long serialVersionUID = 1L;
+    @Before
+    public void setUp() {
+        setLang(null);
+    }
 
-    private String result;
-    private String score;
-    private String time;
-    private String memory;
+    @Override
+    public void testTouchI18n() {
+        throw new AssumptionViolatedException("primary key null not permitted");
+    }
 
 }

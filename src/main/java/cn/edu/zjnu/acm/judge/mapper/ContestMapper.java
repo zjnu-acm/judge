@@ -28,7 +28,6 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.binding.BindingException;
 
 /**
  *
@@ -48,7 +47,7 @@ public interface ContestMapper {
     @Select("<script>select"
             + " cp.problem_id orign," // TODO remove if Problem.orign
             + " cp.num id,"
-            + " if(cp.title is null or trim(cp.title)='',p.title,cp.title) title"
+            + " COALESCE(cp.title,pi.title,p.title) title"
             + "<if test='userId!=null'>,temp.status</if>"
             + "from "
             + " contest_problem cp "
@@ -63,9 +62,13 @@ public interface ContestMapper {
             + "on cp.problem_id=temp.problem_id</if>"
             + "left join problem p "
             + "on cp.problem_id=p.problem_id "
+            + "left join problem_i18n pi on p.problem_id=pi.id and pi.locale=#{lang} "
             + "where cp.contest_id=#{contest} "
             + "order by cp.num</script>")
-    List<Problem> getProblems(@Param("contest") long contestId, @Nullable @Param("userId") String userId);
+    List<Problem> getProblems(
+            @Param(value = "contest") long contestId,
+            @Nullable @Param(value = "userId") String userId,
+            @Param("lang") String lang);
 
     @Update("update contest_problem cp left join ( "
             + "select cp1.contest_id,cp1.problem_id,count(cp2.problem_id) num "
@@ -73,9 +76,9 @@ public interface ContestMapper {
             + "on cp1.contest_id=cp2.contest_id and cp1.num > cp2.num "
             + "group by contest_id,problem_id "
             + ") tmp on cp.problem_id=tmp.problem_id and cp.contest_id=tmp.contest_id "
-            + "set cp.num=tmp.num "// +1 ???
+            + "set cp.num=tmp.num+#{base} "// +1 ???
             + "where cp.contest_id=#{contest}")
-    long updateContestOrder(@Param("contest") long contestId);
+    long updateContestOrder(@Param(value = "contest") long contestId, @Param("base") long base);
 
     @Delete("delete from contest_problem where contest_id=#{contest} and problem_id=#{problem}")
     long deleteContestProblem(@Param("contest") long contestId, @Param("problem") long problemId);
@@ -122,6 +125,8 @@ public interface ContestMapper {
     @Select("select" + COLUMNS + "from contest where contest_id=#{id}")
     Contest findOne(@Param("id") long contestId);
 
+    // TODO not necessary support for i18n,
+    // for return value only the id is used
     @Select("select cp.num id,if(cp.title is null or trim(cp.title)='',p.title,cp.title) title,p.problem_id orign "
             + "from contest_problem cp "
             + "join problem p on cp.problem_id=p.problem_id "
@@ -142,7 +147,7 @@ public interface ContestMapper {
             + "group by s.user_id")
     List<User> attenders(@Param("id") long contestId);
 
-    @Insert("insert into contest_problem (contest_id,problem_id,title,num) values(#{id},#{problem},#{title},#{num})")
+    @Insert("insert ignore into contest_problem (contest_id,problem_id,title,num) values(#{id},#{problem},#{title},#{num})")
     long addProblem(@Param("id") long contestId, @Param("problem") long problem, @Param("title") String title, @Param("num") int num);
 
     @Update("update contest set defunct='N' where contest_id=#{id}")
@@ -173,7 +178,7 @@ public interface ContestMapper {
     @Select("select" + COLUMNS + "from contest where start_time<end_time and defunct='N' and end_time>now() order by contest_id desc")
     List<Contest> runningAndScheduling();
 
-    @Update("update contest_problem set title='' where problem_id=#{problem} and contest_id=#{contest}")
+    @Update("update contest_problem set title=null where problem_id=#{problem} and contest_id=#{contest}")
     long updateProblemTitle(@Param("contest") long contestId, @Param("problem") long problemId);
 
 }

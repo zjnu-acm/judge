@@ -77,7 +77,7 @@ public class SubmitController {
         }
         userModel.setLastSubmitTime(now);
         String userId = userModel.getUserId();
-        Problem problem = problemMapper.findOne(problemId);
+        Problem problem = problemMapper.findOneNoI18n(problemId);
 
         Path dataPath = judgeConfiguration.getDataDirectory(problemId);
 

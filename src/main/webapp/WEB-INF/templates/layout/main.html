@@ -11,10 +11,10 @@
         <title>Welcome to JudgeOnline</title>
         <!--<link href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.css" th:href="@{/webjars/bootstrap/3.3.6/css/bootstrap.min.css}" rel="stylesheet"/>-->
 
-        <link th:href="@{/css/site.css(_=${application.startUpDate})}" rel="stylesheet"/>
-        <link th:href="@{/sample.png}" rel="shortcut icon"/>
-        <script th:src="@{/webjars/jquery/1.12.4/jquery.min.js}"></script>
-        <script th:src="@{/js/site.js(_=${application.startUpDate})}"></script>
+        <link href="../../../css/site.css" th:href="@{/css/site.css(_=${application.startUpDate})}" rel="stylesheet"/>
+        <link href="../../../sample.png" th:href="@{/sample.png}" rel="shortcut icon"/>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js" th:src="@{/webjars/jquery/1.12.4/jquery.min.js}"></script>
+        <script src="../../../js/site.js" th:src="@{/js/site.js(_=${application.startUpDate})}"></script>
     </head>
     <body id="page-home">
         <div id="page">
@@ -22,8 +22,8 @@
                 <th:block th:if="${contestId==null}">
                     <div id="outer-header">
                         <div id="branding" align="center">
-                            <a th:href="@{/}">
-                                <img id="logo" border="0" th:src="@{|/images${#request.contextPath}logo.jpg|}" width="100%" height="100"/></a>
+                            <a href="../index.html" th:href="@{/}">
+                                <img id="logo" border="0" src="../../../images/CLanguagelogo.jpg" th:src="@{|/images${#request.contextPath}logo.jpg|}" width="100%" height="100"/></a>
                         </div>
                         <!-- end branding -->
                     </div>
@@ -33,10 +33,10 @@
                 <th:block th:unless="${contestId==null}">
                     <table border="0" width="100%" class="table-back">
                         <tr>
-                            <td style="width:16.7%"><a th:href="@{/}" style="width:16.7%">Home Page</a></td>
+                            <td style="width:16.7%"><a href="../index.html" th:href="@{/}" style="width:16.7%">Home Page</a></td>
                             <td style="width:16.7%"><a th:href="@{/bbs}" target="_blank">Web Board</a></td>
-                            <td style="width:16.7%"><a th:href="@{/showcontest(contest_id=${contestId})}">Problems</a></td>
-                            <td style="width:16.7%"><a th:href="@{/contests/{contestId}/standing(contestId=${contestId})}">Standing</a></td>
+                            <td style="width:16.7%"><a href="../contests/problems.html" th:href="@{/showcontest(contest_id=${contestId})}">Problems</a></td>
+                            <td style="width:16.7%"><a href="../contests/standing.html" th:href="@{/contests/{contestId}/standing(contestId=${contestId})}">Standing</a></td>
                             <td style="width:16.7%"><a th:href="@{/status(contest_id=${contestId})}">Status</a></td>
 
                             <td th:if="${#request.userPrincipal != null}">
@@ -60,14 +60,14 @@
             <!-- end content -->
             <div id="footer" class="clearfix">
                 <p>
-                    <img alt="home" height="29" th:src="@{/images/home.jpg}" width="40" border="0"/>
+                    <img alt="home" height="29" src="../../../images/home.jpg" th:src="@{/images/home.jpg}" width="40" border="0"/>
                     <font size="3">
-                        <a th:href="@{/}">Home Page</a>
+                        <a href="../index.html" th:href="@{/}">Home Page</a>
                     </font>
-                    <img alt="goback" height="29" th:src="@{/images/goback.jpg}" width="40" border="0" style="margin-left: 40px;"/>
+                    <img alt="goback" height="29" src="../../../images/goback.jpg" th:src="@{/images/goback.jpg}" width="40" border="0" style="margin-left: 40px;"/>
                     <font size="3">
                         <a href="javascript:history.go(-1)">Go Back</a>
-                        <img alt="top" height="29" width="40" border="0" th:src="@{/images/top.jpg}" style="margin-left: 40px;"/>
+                        <img alt="top" height="29" width="40" border="0" src="../../../images/top.jpg" th:src="@{/images/top.jpg}" style="margin-left: 40px;"/>
                         <a href="#top">To top</a>
                     </font>
                 </p>

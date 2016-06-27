@@ -15,7 +15,9 @@
  */
 package cn.edu.zjnu.acm.judge.config;
 
+import java.util.Locale;
 import javax.servlet.ServletContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.LocaleResolver;
@@ -30,6 +32,9 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
  */
 @Configuration
 public class LocaleConfiguration extends WebMvcConfigurerAdapter {
+
+    @Autowired
+    private LocaleFactory localeFactory;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -47,7 +52,7 @@ public class LocaleConfiguration extends WebMvcConfigurerAdapter {
         localeResolver.setCookieName("locale");
         localeResolver.setCookieMaxAge(15 * 24 * 60 * 60);
         localeResolver.setCookiePath(getCookiePath(container));
-        return localeResolver;
+        return new FilterLocaleResolver(localeResolver, Locale.SIMPLIFIED_CHINESE, locale -> localeFactory.getAllLanguages().contains(locale.getLanguage()));
     }
 
     private String getCookiePath(ServletContext container) {

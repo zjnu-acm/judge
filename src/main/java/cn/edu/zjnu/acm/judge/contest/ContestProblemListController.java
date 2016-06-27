@@ -6,6 +6,7 @@ import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import java.util.List;
+import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ public class ContestProblemListController {
     private ContestMapper contestMapper;
 
     @RequestMapping(value = "/showcontest", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public String showcontest(HttpServletRequest request, @RequestParam("contest_id") long contestId) {
+    public String showcontest(HttpServletRequest request, @RequestParam("contest_id") long contestId, Locale locale) {
         Contest contest = contestMapper.findOneByIdAndDefunctN(contestId);
         if (contest == null) {
             throw new MessageException("onlinejudge.contest.nosuchcontest", HttpStatus.NOT_FOUND);
@@ -29,7 +30,7 @@ public class ContestProblemListController {
         request.setAttribute("contestId", contestId);
         request.setAttribute("contest", contest);
         if (contest.isStarted()) {
-            List<Problem> problems = contestMapper.getProblems(contestId, UserDetailService.getCurrentUserId(request).orElse(null));
+            List<Problem> problems = contestMapper.getProblems(contestId, UserDetailService.getCurrentUserId(request).orElse(null), locale.getLanguage());
             request.setAttribute("problems", problems);
         }
 
