@@ -18,19 +18,58 @@
         </p>
         <div align="center">
             <table align="center" cellspacing="0" cellpadding="0" width="600" border="1" class="table-back">
-                <tr bgcolor="#6589D1" align="center"><td width="20%"><b>Problem Id</b></td><td width="30%"><b>Title</b></td><td width="10%"><b>Action</b></td></tr>
-                <tr th:each="p,it:${problems}" th:object="${p}" th:inline="text">
-                    <td align="center"><b>[[*{orign}]] Problem [[${T(java.lang.Character).toString(65+it.index)}]]</b></td>
-                    <td align="left"><a th:href="@{/admin/problems/{problemId}(problemId=*{orign})}" th:text="*{title}">title</a></td>
-                    <td align="center">
-                        <form th:action="@{/admin/contests/{contestId}/problems/{problemId}(contestId=${contest.id},problemId=*{orign})}" method="POST">
-                            <input type="hidden" name="_method" value="DELETE"/>
-                            <button type="submit">DELETE</button>
-                        </form>
-                    </td>
-                </tr>
+                <tbody>
+                    <tr bgcolor="#6589D1" align="center">
+                        <td width="33.3%"><b>Problem Id</b></td>
+                        <td width="50%"><b>Title</b></td>
+                        <td width="16.7%"><b>Action</b></td>
+                    </tr>
+                    <tr th:each="p,it:${problems}" th:object="${p}" th:inline="text">
+                        <td align="center"><b>[[*{orign}]] Problem [[${T(java.lang.Character).toString(65+it.index)}]]</b></td>
+                        <td align="left"><a th:href="@{/admin/problems/{problemId}(problemId=*{orign})}" th:text="*{title}">title</a></td>
+                        <td align="center">
+                            <form th:action="@{/admin/contests/{contestId}/problems/{problemId}(contestId=${contest.id},problemId=*{orign})}" method="POST">
+                                <input type="hidden" name="_method" value="DELETE"/>
+                                <button type="submit">DELETE</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
+            <form class="add-problem" th:action="@{/admin/contests/{contestId}/problems/(contestId=${contest.id})}" method="POST">
+                <table align="center" cellspacing="0" cellpadding="0" width="600" border="1" class="table-back">
+                    <tr class="item">
+                        <td align="center" width="33.3%">
+                            <input name="problemId" type="number" autofocus="autofocus" required="required"/>
+                        </td>
+                        <td align="left" width="50%">
+                            <span class="title"></span>
+                        </td>
+                        <td align="center" width="16.7%">
+                            <button type="submit">ADD</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
         </div>
+        <script th:inline="javascript">//<![CDATA[
+            jQuery(function ($) {
+                t = $("form.add-problem :input[name='problemId']").change(function () {
+                    var title = $(this).closest(".item").find(".title");
+                    var val = +$(this).val();
+                    if (val === val && val !== 0) {
+                        var url = /*[+[[@{/problems/}]]+]*//*[-*/null/*-]*/;
+                        $.getJSON(url + val, function (x) {
+                            title.text(x && x.title || "Error");
+                        }).fail(function(){
+                            title.text("Not found.");
+                        });
+                    } else {
+                        title.text('');
+                    }
+                });
+            });//]]>
+        </script>
         <!--/*/</th:block>/*/-->
     </body>
 </html>

@@ -70,7 +70,7 @@ public class StatusController {
                 // TODO the character is the index in the list.
                 int x = Character.toUpperCase(pid.charAt(0)) - 'A';
                 try {
-                    problemId = contestMapper.getProblems(contestId, null).get(x).getOrign();
+                    problemId = contestMapper.getProblems(contestId, null, null).get(x).getOrign();
                 } catch (IndexOutOfBoundsException ignore) {
                 }
             }

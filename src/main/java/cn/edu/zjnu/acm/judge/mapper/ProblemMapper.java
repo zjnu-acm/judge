@@ -36,20 +36,44 @@ import org.springframework.data.domain.Pageable;
 @Mapper
 public interface ProblemMapper {
 
-    String COLUMNS = " p.problem_id id,p.title,p.description,p.input,"
-            + "p.output,p.sample_input sampleInput,p.sample_output sampleOutput,"
-            + "p.hint,p.source,p.in_date inDate,p.time_limit timeLimit,"
-            + "p.memory_limit memoryLimit,"
-            + "p.contest_id contest,if(p.defunct!='N',1,0) disabled,"
-            + "p.accepted,p.submit,p.solved,p.submit_user submitUser ";
-
-    String LIST_COLUMNS = " p.problem_id id,p.title,"
+    String COLUMNS = " p.problem_id id,"
+            + "COALESCE(pi.title,p.title) title,"
+            + "COALESCE(pi.description,p.description) description,"
+            + "COALESCE(pi.input,p.input) input,"
+            + "COALESCE(pi.output,p.output) output,"
+            + "p.sample_input sampleInput,"
+            + "p.sample_output sampleOutput,"
+            + "COALESCE(pi.hint,p.hint) hint,"
+            + "COALESCE(pi.source,p.source) source,"
             + "p.in_date inDate,p.time_limit timeLimit,"
             + "p.memory_limit memoryLimit,"
             + "p.contest_id contest,if(p.defunct!='N',1,0) disabled,"
             + "p.accepted,p.submit,p.solved,p.submit_user submitUser ";
 
+    String COLUMNS_NO_I18N = " p.problem_id id,"
+            + "p.in_date inDate,p.time_limit timeLimit,"
+            + "p.memory_limit memoryLimit,"
+            + "p.contest_id contest,if(p.defunct!='N',1,0) disabled,"
+            + "p.accepted,p.submit,p.solved,p.submit_user submitUser ";
+
+    String LIST_COLUMNS = " p.problem_id id,"
+            + "COALESCE(pi.title,p.title) title,"
+            + "p.in_date inDate,"
+            + "p.time_limit timeLimit,"
+            + "p.memory_limit memoryLimit,"
+            + "p.contest_id contest,"
+            + "if(p.defunct!='N',1,0) disabled,"
+            + "p.accepted,"
+            + "p.submit,"
+            + "p.solved,"
+            + "p.submit_user submitUser ";
+
+    String LIST_COLUMNS_SOURCE = LIST_COLUMNS + ","
+            + "COALESCE(pi.source,p.source) source ";
+
     String STATUS = "<if test='userId!=null'>,if(up.submit is null or up.submit=0,0,if(up.accepted!=0,1,2)) status </if>";
+
+    String FROM = " from problem p left join problem_i18n pi on p.problem_id=pi.id and pi.locale=#{lang} ";
 
     @Update("update problem set defunct='Y' where problem_id=#{id}")
     long disable(@Param("id") long id);
@@ -61,7 +85,7 @@ public interface ProblemMapper {
     @Select("select COALESCE(max(problem_id)+1,1000) maxp from problem")
     long nextId();
 
-    @Select("SELECT COUNT(*) total FROM problem")
+    @Select("SELECT COUNT(*) total from problem")
     long count();
 
     @Insert("INSERT INTO problem (problem_id,title,description,input,output,sample_input,sample_output,"
@@ -76,36 +100,70 @@ public interface ProblemMapper {
     @Update("update problem set contest_id=#{cid} where problem_id=#{id}")
     long setContest(@Param("id") long problem, @Param("cid") Long contest);
 
-    @Select("select" + COLUMNS + "from problem p where problem_id=#{id} AND defunct='N'")
-    Problem findOneByIdAndDefunctN(@Param("id") long pid);
+    // TODO not used
+    @Select("select" + COLUMNS + FROM + " where problem_id=#{id} AND defunct='N'")
+    Problem findOneByIdAndDefunctN(@Param(value = "id") long pid, @Param("lang") String lang);
 
-    @Select("SELECT" + LIST_COLUMNS + "FROM problem p order by problem_id limit #{offset},#{pageSize}")
-    List<Problem> findAll(Pageable pageable);
+    @Select("SELECT" + LIST_COLUMNS + FROM + " order by problem_id limit #{pageable.offset},#{pageable.pageSize}")
+    List<Problem> findAll(@Param("pageable") Pageable pageable, @Param("lang") String lang);
 
+    // TODO not used
     @Select({"<script>"
         + "select" + LIST_COLUMNS
         + STATUS
-        + "from problem p "
+        + FROM
         + "<if test='userId!=null'>left join user_problem up "
         + "on up.user_id=#{userId} and up.problem_id=p.problem_id </if>"
         + "where p.defunct='N' and p.problem_id&gt;=#{start} and p.problem_id&lt;=#{end}"
         + "</script>"
     })
-    List<Problem> findAllByDefunctN(@Nullable @Param("userId") String userId,
-            @Param("start") long start, @Param("end") long end);
+    List<Problem> findAllByDefunctN(
+            @Nullable @Param(value = "userId") String userId,
+            @Param(value = "start") long start,
+            @Param(value = "end") long end,
+            @Param("lang") String lang);
 
-    @Select("select" + COLUMNS + "from problem p where problem_id=#{id}")
-    Problem findOne(@Param("id") long id);
+    @Select("select" + COLUMNS + FROM + " where problem_id=#{id}")
+    Problem findOne(@Param(value = "id") long id, @Param("lang") String lang);
+
+    @Select("select" + COLUMNS_NO_I18N + "from problem p where problem_id=#{id}")
+    Problem findOneNoI18n(@Param(value = "id") long id);
 
     @Update("UPDATE problem SET in_date=#{inDate} where problem_id=#{id}")
     long setInDate(@Param("id") long problemId, @Param("inDate") Instant timestamp);
 
-    @Update("UPDATE problem SET title=#{title},description=#{description},input=#{input},output=#{output},sample_input=#{sampleInput},sample_output=#{sampleOutput},hint=#{hint},source=#{source},time_limit=#{timeLimit},memory_limit=#{memoryLimit},contest_id=#{contest} WHERE problem_id=#{id}")
-    long update(Problem build);
+    @Update("<script>UPDATE problem p "
+            + "<if test='lang!=null and lang!=&quot;&quot;'>"
+            + "left join problem_i18n pi on p.problem_id = pi.id and pi.locale=#{lang}"
+            + "</if>"
+            + "SET "
+            + "<if test='lang==null or lang==&quot;&quot;'>"
+            + "p.title=#{p.title},"
+            + "p.description=#{p.description},"
+            + "p.input=#{p.input},"
+            + "p.output=#{p.output},"
+            + "p.hint=#{p.hint},"
+            + "p.source=#{p.source},"
+            + "</if>"
+            + "<if test='lang!=null and lang!=&quot;&quot;'>"
+            + "pi.title=nullif(nullif(#{p.title},''),p.title),"
+            + "pi.description=nullif(nullif(#{p.description},''),p.description),"
+            + "pi.input=nullif(nullif(#{p.input},''),p.input),"
+            + "pi.output=nullif(nullif(#{p.output},''),p.output),"
+            + "pi.hint=nullif(nullif(#{p.hint},''),p.hint),"
+            + "pi.source=nullif(nullif(#{p.source},''),p.source),"
+            + "</if>"
+            + "p.sample_input=#{p.sampleInput},"
+            + "p.sample_output=#{p.sampleOutput},"
+            + "p.time_limit=#{p.timeLimit},"
+            + "p.memory_limit=#{p.memoryLimit},"
+            + "p.contest_id=#{p.contest} "
+            + "WHERE p.problem_id=#{p.id}</script>")
+    long update(@Param("p") Problem build, @Param("lang") String lang);
 
     @Select({"<script>"
-        + "select" + LIST_COLUMNS + ",source" + STATUS
-        + "from problem p "
+        + "select" + LIST_COLUMNS_SOURCE + STATUS
+        + FROM
         + "<if test='userId!=null'>left join user_problem up on up.problem_id=p.problem_id and up.user_id=#{userId}</if>"
         + "WHERE (instr(p.title,#{query})&gt;0 or instr(p.source,#{query})&gt;0) "
         + "and p.defunct='N'"
@@ -113,12 +171,41 @@ public interface ProblemMapper {
         + "ORDER BY p.problem_id"
         + "</script>"
     })
-    List<Problem> findAllBySearchTitleOrSourceAndDefunctN(@Param("query") String query, @Param("userId") String userId);
+    List<Problem> findAllBySearchTitleOrSourceAndDefunctN(
+            @Param(value = "query") String query,
+            @Param(value = "userId") String userId,
+            @Param("lang") String lang);
 
     @Select("select score,count(*) count from solution where problem_id=#{problemId} group by score")
     List<ScoreCount> groupByScore(@Param("problemId") long problemId);
 
     @Select("select solution_id id,user_id user,in_date inDate,language,memory,time,code_length sourceLength from solution where problem_id=#{problemId} and score=100 group by ${groupBy} limit #{start},#{size}")
-    List<Submission> bestSubmissions(@Param("groupBy") String groupBy, @Param("problemId") long problemId, @Param("start") long start, @Param("size") int size);
+    List<Submission> bestSubmissions(
+            @Param("groupBy") String groupBy,
+            @Param("problemId") long problemId,
+            @Param("start") long start,
+            @Param("size") int size);
+
+    @Insert("insert ignore into problem_i18n(id,locale) values(#{problemId},#{lang})")
+    long touchI18n(
+            @Param("problemId") long problemId,
+            @Param("lang") String lang);
+
+    @Update("<script>"
+            + "update problem_i18n"
+            + "<set>"
+            + "<if test='problem.title!=null'>title=nullif(#{problem.title},''),</if>"
+            + "<if test='problem.description!=null'>description=nullif(#{problem.description},''),</if>"
+            + "<if test='problem.input!=null'>input=nullif(#{problem.input},''),</if>"
+            + "<if test='problem.output!=null'>output=nullif(#{problem.output},''),</if>"
+            + "<if test='problem.hint!=null'>hint=nullif(#{problem.hint},''),</if>"
+            + "<if test='problem.source!=null'>source=nullif(#{problem.source},''),</if>"
+            + "</set>"
+            + "where id=#{problemId} and locale=#{lang}"
+            + "</script>")
+    long updateI18n(
+            @Param("problemId") long problemId,
+            @Param("lang") String lang,
+            @Param("problem") Problem problem);
 
 }

@@ -13,28 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.domain;
+package cn.edu.zjnu.acm.judge.config;
 
-import java.io.Serializable;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Setter;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.TreeSet;
+import org.springframework.context.annotation.Configuration;
 
 /**
  *
  * @author zhanhb
  */
-@Builder
-@Data
-@Setter(AccessLevel.PRIVATE)
-public class SubmissionDetail implements Serializable {
+@Configuration
+public class LocaleFactory {
 
-    private static final long serialVersionUID = 1L;
+    private final Collection<String> allLanguages;
 
-    private String result;
-    private String score;
-    private String time;
-    private String memory;
+    public LocaleFactory() {
+        Collection<String> set = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        set.addAll(Arrays.asList("en", "zh"));
+        this.allLanguages = set;
+    }
+
+    public Collection<String> getAllLanguages() {
+        return Collections.unmodifiableCollection(allLanguages);
+    }
 
 }

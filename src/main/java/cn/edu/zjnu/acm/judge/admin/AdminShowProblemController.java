@@ -4,6 +4,7 @@ import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
+import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,11 +19,13 @@ public class AdminShowProblemController {
     @Autowired
     private ProblemMapper problemMapper;
 
+    // TODO
     @RequestMapping(value = "/admin/problems/{problemId}", method = {RequestMethod.GET, RequestMethod.HEAD})
     public String view(HttpServletRequest request,
-            @PathVariable("problemId") long problemId) {
+            @PathVariable("problemId") long problemId,
+            Locale locale) {
         UserDetailService.requireAdminLoginned(request);
-        Problem problem = problemMapper.findOne(problemId);
+        Problem problem = problemMapper.findOne(problemId, locale.getLanguage());
         if (problem == null) {
             throw new MessageException("Can not find problem (ID:" + problemId + ")", HttpStatus.NOT_FOUND);
         }

@@ -16,7 +16,11 @@
 package cn.edu.zjnu.acm.judge.service;
 
 import cn.edu.zjnu.acm.judge.domain.Contest;
+import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
+import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -24,6 +28,11 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ContestService {
+
+    @Autowired
+    private ContestMapper contestMapper;
+    @Autowired
+    private ProblemMapper problemMapper;
 
     public String getStatus(Contest contest) {
         if (contest.isDisabled()) {
@@ -37,6 +46,25 @@ public class ContestService {
         } else {
             return "Ended";
         }
+    }
+
+    private void updateContestOrder(long contest, long base) {
+        contestMapper.updateContestOrder(contest, base + 99999999L);
+        contestMapper.updateContestOrder(contest, base);
+    }
+
+    @Transactional
+    public void addProblem(long contestId, long problemId) {
+        problemMapper.setContest(problemId, contestId);
+        contestMapper.addProblem(contestId, problemId, null, 9999999);
+        updateContestOrder(contestId, 0);
+    }
+
+    @Transactional
+    public void removeProblem(long contestId, long problemId) {
+        problemMapper.setContest(problemId, null);
+        contestMapper.deleteContestProblem(contestId, problemId);
+        updateContestOrder(contestId, 0);
     }
 
 }

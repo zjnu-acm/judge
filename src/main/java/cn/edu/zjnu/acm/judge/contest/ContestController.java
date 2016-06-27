@@ -23,6 +23,7 @@ import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -87,7 +88,7 @@ public class ContestController {
     }
 
     @RequestMapping(value = "standing", produces = {TEXT_HTML_VALUE, ALL_VALUE}, method = {RequestMethod.GET, RequestMethod.HEAD})
-    public String standingHtml(@PathVariable("contestId") long id, Model model) {
+    public String standingHtml(@PathVariable("contestId") long id, Model model, Locale locale) {
         Contest contest = contestMapper.findOneByIdAndDefunctN(id);
         // TODO
         model.addAttribute("contestId", id);
@@ -99,7 +100,7 @@ public class ContestController {
             throw new MessageException("Contest not started yet", HttpStatus.OK);
         }
         // TODO user is empty
-        List<Problem> problems = contestMapper.getProblems(id, null);
+        List<Problem> problems = contestMapper.getProblems(id, null, locale.getLanguage());
         model.addAttribute("id", id);
         model.addAttribute("problems", problems);
         model.addAttribute("standing", standing(id));
@@ -108,9 +109,9 @@ public class ContestController {
 
     //@ResponseBody
     //@RequestMapping(value = "problems", produces = APPLICATION_JSON_VALUE, method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<Problem> problems(@PathVariable("contestId") long contest) {
+    public List<Problem> problems(@PathVariable("contestId") long contest, Locale locale) {
         // TODO user is empty
-        return contestMapper.getProblems(contest, null);
+        return contestMapper.getProblems(contest, null, locale.getLanguage());
     }
 
     @RequestMapping(value = "", method = {RequestMethod.GET, RequestMethod.HEAD})

@@ -120,7 +120,7 @@ public class Judger {
                 .userId(submission.getUser())
                 .source(submissionMapper.findSourceById(submissionId))
                 .build();
-        Problem problem = problemMapper.findOne(submission.getProblem());
+        Problem problem = problemMapper.findOneNoI18n(submission.getProblem());
         if (problem == null) {
             return;
         }

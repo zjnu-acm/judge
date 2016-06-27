@@ -52,9 +52,9 @@ public class ShowSubmissionDetailsController {
         for (int i = 0; i < detailsArray.length / 4; ++i) {
             details[i] = SubmissionDetail.builder()
                     .result(ResultType.getCaseScoreDescription(Integer.parseInt(detailsArray[i << 2])))
-                    .score(Double.parseDouble(detailsArray[i << 2 | 1]))
-                    .time(Integer.parseInt(detailsArray[i << 2 | 2]))
-                    .memory(Integer.parseInt(detailsArray[i << 2 | 3]))
+                    .score(detailsArray[i << 2 | 1])
+                    .time(detailsArray[i << 2 | 2])
+                    .memory(detailsArray[i << 2 | 3])
                     .build();
         }
         request.setAttribute("details", details);
