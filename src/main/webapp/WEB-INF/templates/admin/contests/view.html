@@ -6,6 +6,11 @@
       layout:decorator="layout/admin">
     <head>
         <title th:text="*{title}">title</title>
+        <style>.bordered [class^=col-]{border: 1px solid rgba(86,61,124,.2);}
+            .row [class^=col-]{height: 30px; line-height: 30px;}
+            .row [class^=col-] input{height: 26px; line-height: 26px;}
+            .row [class^=col-] button{height: 26px; line-height: 26px;min-width: 68px;margin-left: 8px;margin-right: 8px;}
+            .row [class^=col-] form{display:inline-block;}</style>
     </head>
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
@@ -16,52 +21,49 @@
             <font face="Arial">Start time: <font color="#993399" th:text="*{#calendars.format(T(java.util.Date).from(startTime),'yyyy-MM-dd HH:mm:ss')}">2016-03-20 12:00:00</font> End time: <font color="#993399" th:text="*{#calendars.format(T(java.util.Date).from(endTime),'yyyy-MM-dd HH:mm:ss')}">2016-03-20 17:00:00.0</font><br/>Current System Time: <font color="#993399" th:text="${#calendars.format(execInfo.now,'yyyy-MM-dd HH:mm:ss')}">2016-03-28 16:17:18</font> Contest Status: <font color="red" th:utext="${@contestService.getStatus(contest)}">Ended</font>
             </font>
         </p>
-        <div align="center">
-            <table align="center" cellspacing="0" cellpadding="0" width="600" border="1" class="table-back">
-                <tbody>
-                    <tr bgcolor="#6589D1" align="center">
-                        <td width="33.3%"><b>Problem Id</b></td>
-                        <td width="50%"><b>Title</b></td>
-                        <td width="16.7%"><b>Action</b></td>
-                    </tr>
-                    <tr th:each="p,it:${problems}" th:object="${p}" th:inline="text">
-                        <td align="center"><b>[[*{orign}]] Problem [[${T(java.lang.Character).toString(65+it.index)}]]</b></td>
-                        <td align="left"><a th:href="@{/admin/problems/{problemId}(problemId=*{orign})}" th:text="*{title}">title</a></td>
-                        <td align="center">
-                            <form th:action="@{/admin/contests/{contestId}/problems/{problemId}(contestId=${contest.id},problemId=*{orign})}" method="POST">
-                                <input type="hidden" name="_method" value="DELETE"/>
-                                <button type="submit">DELETE</button>
-                            </form>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <form class="add-problem" th:action="@{/admin/contests/{contestId}/problems/(contestId=${contest.id})}" method="POST">
-                <table align="center" cellspacing="0" cellpadding="0" width="600" border="1" class="table-back">
-                    <tr class="item">
-                        <td align="center" width="33.3%">
-                            <input name="problemId" type="number" autofocus="autofocus" required="required"/>
-                        </td>
-                        <td align="left" width="50%">
-                            <span class="title"></span>
-                        </td>
-                        <td align="center" width="16.7%">
-                            <button type="submit">ADD</button>
-                        </td>
-                    </tr>
-                </table>
-            </form>
+        <div class="text-center container bordered table-back">
+            <div bgcolor="#6589D1" align="center" class="row">
+                <div class="col-sm-4"><b>Problem Id</b></div>
+                <div class="col-sm-5"><b>Title</b></div>
+                <div class="col-sm-3"><b>Action</b></div>
+            </div>
+            <div class="row" th:each="p,it:${problems}" th:object="${p}" th:inline="text">
+                <div class="col-sm-4 text-center" align="center"><b>[[*{orign}]] Problem [[${T(java.lang.Character).toString(65+it.index)}]]</b></div>
+                <div class="col-sm-5 text-left" align="left"><a th:href="@{/admin/problems/{problemId}(problemId=*{orign})}" th:text="*{title}">title</a></div>
+                <div class="col-sm-3 text-center" align="center">
+                    <form th:action="@{/admin/problems/{problemId}/edit(problemId=*{orign})}">
+                        <button>Edit</button>
+                    </form>
+                    <form th:action="@{/admin/contests/{contestId}/problems/{problemId}(contestId=${contest.id},problemId=*{orign})}" method="POST">
+                        <input type="hidden" name="_method" value="DELETE"/>
+                        <button type="submit">DELETE</button>
+                    </form>
+                </div>
+            </div>
+            <div class="row text-center item" align="center" cellspacing="0" cellpadding="0" width="600" border="1">
+                <form class="add-problem" th:action="@{/admin/contests/{contestId}/problems/(contestId=${contest.id})}" method="POST">
+                    <div class="col-sm-4 text-center">
+                        <input name="problemId" type="number" autofocus="autofocus" required="required"/>
+                    </div>
+                    <div class="col-sm-5 text-left">
+                        <span class="title"></span>
+                    </div>
+                    <div class="col-sm-3 text-center">
+                        <button type="submit">ADD</button>
+                    </div>
+                </form>
+            </div>
         </div>
         <script th:inline="javascript">//<![CDATA[
             jQuery(function ($) {
-                t = $("form.add-problem :input[name='problemId']").change(function () {
+                $("form.add-problem :input[name='problemId']").change(function () {
                     var title = $(this).closest(".item").find(".title");
                     var val = +$(this).val();
                     if (val === val && val !== 0) {
                         var url = /*[+[[@{/problems/}]]+]*//*[-*/null/*-]*/;
                         $.getJSON(url + val, function (x) {
                             title.text(x && x.title || "Error");
-                        }).fail(function(){
+                        }).fail(function () {
                             title.text("Not found.");
                         });
                     } else {
