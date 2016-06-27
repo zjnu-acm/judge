@@ -4,6 +4,7 @@ import cn.edu.zjnu.acm.judge.config.JudgeConfiguration;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
+import cn.edu.zjnu.acm.judge.service.ContestService;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -20,7 +21,7 @@ public class AddProblemController {
     @Autowired
     private ProblemMapper problemMapper;
     @Autowired
-    private ContestMapper contestMapper;
+    private ContestService contestService;
     @Autowired
     private JudgeConfiguration judgeConfiguration;
 
@@ -37,8 +38,7 @@ public class AddProblemController {
         }
         Long contest = problem.getContest();
         if (contest != null) {
-            contestMapper.addProblem(contest, id, null, 99999999);
-            contestMapper.updateContestOrder(contest);
+            contestService.addProblem(contest, id);
         }
         request.setAttribute("id", id);
         request.setAttribute("dir", problemDir);

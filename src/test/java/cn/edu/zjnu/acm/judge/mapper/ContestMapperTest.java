@@ -102,7 +102,7 @@ public class ContestMapperTest {
     public void testUpdateContestOrder() {
         log.info("updateContestOrder");
         long contestId = 0L;
-        instance.updateContestOrder(contestId);
+        instance.updateContestOrder(contestId, 0);
     }
 
     /**
