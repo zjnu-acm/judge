@@ -60,8 +60,8 @@
                     var title = $(this).closest(".item").find(".title");
                     var val = +$(this).val();
                     if (val === val && val !== 0) {
-                        var url = /*[+[[@{/problems/}]]+]*//*[-*/null/*-]*/;
-                        $.getJSON(url + val, function (x) {
+                        var url = /*[+[[@{/problems/problemId}]]+]*//*[-*/"../problems/problemId"/*-]*/;
+                        $.getJSON(url.replace('problemId', val), function (x) {
                             title.text(x && x.title || "Error");
                         }).fail(function () {
                             title.text("Not found.");
