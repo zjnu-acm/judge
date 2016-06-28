@@ -31,13 +31,13 @@ public class AddProblemController {
         problemMapper.save(problem);
         long id = problem.getId();
         Path problemDir = judgeConfiguration.getDataDirectory(id);
-        try {
-            Files.createDirectories(problemDir);
-        } catch (IOException ex) {
-        }
         Long contest = problem.getContest();
         if (contest != null) {
             contestService.addProblem(contest, id);
+        }
+        try {
+            Files.createDirectories(problemDir);
+        } catch (IOException ex) {
         }
         request.setAttribute("id", id);
         request.setAttribute("dir", problemDir);
