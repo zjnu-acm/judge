@@ -67,8 +67,8 @@ public class SubmitController {
         }
         UserModel userModel = UserDetailService.getCurrentUser(request).orElseThrow(ForbiddenException::new);
         assert userModel != null;
-        Instant nowTimestamp = Instant.now();
-        long now = nowTimestamp.toEpochMilli();  //获取当前时间
+        Instant instant = Instant.now();
+        long now = instant.toEpochMilli();  //获取当前时间
 
         // 8秒交一次。。。
         // 使用绝对值，如果系统时间被改了依然可用
@@ -79,39 +79,37 @@ public class SubmitController {
         String userId = userModel.getUserId();
         Problem problem = problemMapper.findOneNoI18n(problemId);
 
-        Path dataPath = judgeConfiguration.getDataDirectory(problemId);
-
         //检查该题是否被禁用
         if (problem == null) {
             throw new MessageException("No such problem", HttpStatus.NOT_FOUND);
         }
+        Path dataPath = judgeConfiguration.getDataDirectory(problemId);
+
         Long contestId = problem.getContest();
         long memoryLimit = problem.getMemoryLimit();
         long timeLimit = problem.getTimeLimit();
 
-        boolean started;
-        boolean ended = true;
         long num = -1;
         if (contestId != null) { //竞赛是否存在
             Contest contest = contestMapper.findOne(contestId);
-            if (contest != null) {
 
-                //是否超过竞赛开始时间
-                started = contest.isStarted();
+            // foreign key constraint, will never be null
+            assert contest != null;
 
-                //是否超过竞赛结束时间
-                ended = contest.isEnded();
-
-                if (!started) {
-                    throw new MessageException("No such problem", HttpStatus.NOT_FOUND);
-                }
+            // contest not started yet, can't view the problem.
+            if (!contest.isStarted()) {
+                throw new MessageException("No such problem", HttpStatus.NOT_FOUND);
             }
-            //题目中竞赛id置为空
-            if (ended) {
+
+            // set problem id to null if the contest is ended.
+            if (contest.isEnded()) {
                 problemMapper.setContest(problemId, null);
                 contestId = null;
             } else { //num为竞赛中的题目编号
-                num = contestMapper.getProblemIdInContest(contestId, problemId);
+                Long problemIdInContest = contestMapper.getProblemIdInContest(contestId, problemId);
+                if (problemIdInContest != null) {
+                    num = problemIdInContest;
+                }
             }
         }
 
@@ -119,9 +117,8 @@ public class SubmitController {
         Submission submission = Submission.builder()
                 .problem(problemId)
                 .user(userId)
-                .inDate(nowTimestamp)
+                .inDate(instant)
                 .sourceLength(source.length())
-                .score(languageId)
                 .language(languageId)
                 .ip(request.getRemoteAddr())
                 .contest(contestId)
@@ -141,7 +138,7 @@ public class SubmitController {
                 .source(source)
                 .userId(userId)
                 .build();
-        problemMapper.setInDate(problemId, nowTimestamp);
+        problemMapper.setInDate(problemId, instant);
 
         // 插入source_code表
         submissionMapper.saveSource(submissionId, source);
