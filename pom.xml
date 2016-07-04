@@ -12,7 +12,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
     <description>ZJNU Online Judge System</description>
-    <url>https://github.com/zjnu-acm/poj-judge/</url>
+    <url>https://github.com/zjnu-acm/judge/</url>
     <inceptionYear>2006</inceptionYear>
 
     <organization>
