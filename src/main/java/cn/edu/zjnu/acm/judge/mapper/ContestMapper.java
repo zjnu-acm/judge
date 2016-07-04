@@ -47,7 +47,7 @@ public interface ContestMapper {
     @Select("<script>select"
             + " cp.problem_id orign," // TODO remove if Problem.orign
             + " cp.num id,"
-            + " COALESCE(cp.title,pi.title,p.title) title"
+            + " COALESCE(nullif(cp.title,''),nullif(pi.title,''),p.title) title"
             + "<if test='userId!=null'>,temp.status</if>"
             + "from "
             + " contest_problem cp "
