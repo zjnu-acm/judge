@@ -66,8 +66,8 @@ public interface ContestMapper {
             + "where cp.contest_id=#{contest} "
             + "order by cp.num</script>")
     List<Problem> getProblems(
-            @Param(value = "contest") long contestId,
-            @Nullable @Param(value = "userId") String userId,
+            @Param("contest") long contestId,
+            @Nullable @Param("userId") String userId,
             @Param("lang") String lang);
 
     @Update("update contest_problem cp left join ( "
@@ -76,12 +76,16 @@ public interface ContestMapper {
             + "on cp1.contest_id=cp2.contest_id and cp1.num > cp2.num "
             + "group by contest_id,problem_id "
             + ") tmp on cp.problem_id=tmp.problem_id and cp.contest_id=tmp.contest_id "
-            + "set cp.num=tmp.num+#{base} "// +1 ???
+            + "set cp.num=tmp.num+#{base} "
             + "where cp.contest_id=#{contest}")
-    long updateContestOrder(@Param(value = "contest") long contestId, @Param("base") long base);
+    long updateContestOrder(
+            @Param("contest") long contestId,
+            @Param("base") long base);
 
     @Delete("delete from contest_problem where contest_id=#{contest} and problem_id=#{problem}")
-    long deleteContestProblem(@Param("contest") long contestId, @Param("problem") long problemId);
+    long deleteContestProblem(
+            @Param("contest") long contestId,
+            @Param("problem") long problemId);
 
     @Select("select "
             + " ac.user_id `user`,"
@@ -122,8 +126,10 @@ public interface ContestMapper {
             + "having sum(if(score=100,1,0))=0")
     List<Standing> standing(@Param("id") long contestId);
 
+    @Nullable
     @Select("select" + COLUMNS + "from contest where contest_id=#{id}")
-    Contest findOne(@Param("id") long contestId);
+    Contest findOne(
+            @Param("id") long contestId);
 
     // TODO not necessary support for i18n,
     // for return value only the id is used
@@ -131,7 +137,9 @@ public interface ContestMapper {
             + "from contest_problem cp "
             + "join problem p on cp.problem_id=p.problem_id "
             + "where cp.contest_id=#{contest} and cp.num=#{problem}")
-    Problem getProblem(@Param("contest") long contestId, @Param("problem") long problemOrder);
+    Problem getProblem(
+            @Param("contest") long contestId,
+            @Param("problem") long problemOrder);
 
     @Select("select" + COLUMNS + "from contest where contest_id=#{id} and defunct='N'")
     Contest findOneByIdAndDefunctN(@Param("id") long contestId);
@@ -147,8 +155,11 @@ public interface ContestMapper {
             + "group by s.user_id")
     List<User> attenders(@Param("id") long contestId);
 
-    @Insert("insert ignore into contest_problem (contest_id,problem_id,title,num) values(#{id},#{problem},#{title},#{num})")
-    long addProblem(@Param("id") long contestId, @Param("problem") long problem, @Param("title") String title, @Param("num") int num);
+    @Insert("insert ignore into contest_problem (contest_id,problem_id,title,num) "
+            + "values(#{id},#{problem},#{title},#{num})")
+    long addProblem(@Param("id") long contestId, @Param("problem") long problem,
+            @Param("title") String title,
+            @Param("num") int num);
 
     @Update("update contest set defunct='N' where contest_id=#{id}")
     long enable(@Param("id") long contestId);
@@ -157,6 +168,7 @@ public interface ContestMapper {
     long disable(@Param("id") long contestId);
 
     @Deprecated
+    @Nullable
     @Select("select num from contest_problem where contest_id=#{cid} and problem_id=#{pid}")
     Long getProblemIdInContest(@Param("cid") long contestId, @Param("pid") long problemId);
 

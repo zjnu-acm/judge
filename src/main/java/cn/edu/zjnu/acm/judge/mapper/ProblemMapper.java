@@ -101,8 +101,9 @@ public interface ProblemMapper {
     long setContest(@Param("id") long problem, @Param("cid") Long contest);
 
     // TODO not used
+    @Nullable
     @Select("select" + COLUMNS + FROM + " where problem_id=#{id} AND defunct='N'")
-    Problem findOneByIdAndDefunctN(@Param(value = "id") long pid, @Param("lang") String lang);
+    Problem findOneByIdAndDefunctN(@Param("id") long pid, @Param("lang") String lang);
 
     @Select("SELECT" + LIST_COLUMNS + FROM + " order by problem_id limit #{pageable.offset},#{pageable.pageSize}")
     List<Problem> findAll(@Param("pageable") Pageable pageable, @Param("lang") String lang);
@@ -118,16 +119,18 @@ public interface ProblemMapper {
         + "</script>"
     })
     List<Problem> findAllByDefunctN(
-            @Nullable @Param(value = "userId") String userId,
-            @Param(value = "start") long start,
-            @Param(value = "end") long end,
+            @Nullable @Param("userId") String userId,
+            @Param("start") long start,
+            @Param("end") long end,
             @Param("lang") String lang);
 
+    @Nullable
     @Select("select" + COLUMNS + FROM + " where problem_id=#{id}")
-    Problem findOne(@Param(value = "id") long id, @Param("lang") String lang);
+    Problem findOne(@Param("id") long id, @Param("lang") String lang);
 
+    @Nullable
     @Select("select" + COLUMNS_NO_I18N + "from problem p where problem_id=#{id}")
-    Problem findOneNoI18n(@Param(value = "id") long id);
+    Problem findOneNoI18n(@Param("id") long id);
 
     @Update("UPDATE problem SET in_date=#{inDate} where problem_id=#{id}")
     long setInDate(@Param("id") long problemId, @Param("inDate") Instant timestamp);
@@ -172,8 +175,8 @@ public interface ProblemMapper {
         + "</script>"
     })
     List<Problem> findAllBySearchTitleOrSourceAndDefunctN(
-            @Param(value = "query") String query,
-            @Param(value = "userId") String userId,
+            @Param("query") String query,
+            @Param("userId") String userId,
             @Param("lang") String lang);
 
     @Select("select score,count(*) count from solution where problem_id=#{problemId} group by score")

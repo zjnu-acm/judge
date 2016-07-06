@@ -15,5 +15,5 @@
       } else {
           out.write("','auto');");
       }
-        </jsp:scriptlet>ga('send','pageview');</script>
+    </jsp:scriptlet>ga('send','pageview');</script>
 </jsp:root>
