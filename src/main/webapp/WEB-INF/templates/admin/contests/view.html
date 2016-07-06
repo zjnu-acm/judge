@@ -32,7 +32,7 @@
                 <div class="col-sm-5 text-left" align="left"><a th:href="@{/admin/problems/{problemId}(problemId=*{orign})}" th:text="*{title}">title</a></div>
                 <div class="col-sm-3 text-center" align="center">
                     <form th:action="@{/admin/problems/{problemId}/edit(problemId=*{orign})}">
-                        <button>Edit</button>
+                        <button type="submit">Edit</button>
                     </form>
                     <form th:action="@{/admin/contests/{contestId}/problems/{problemId}(contestId=${contest.id},problemId=*{orign})}" method="POST">
                         <input type="hidden" name="_method" value="DELETE"/>
