@@ -55,7 +55,7 @@ public class ProblemMapperTest {
     public void testFindOneByIdAndDefunctN() {
         log.debug("findOneByIdAndDefunctN");
         long pid = 0L;
-        Problem result = instance.findOneByIdAndDefunctN(pid, lang);
+        instance.findOneByIdAndDefunctN(pid, lang);
     }
 
     /**
@@ -65,7 +65,7 @@ public class ProblemMapperTest {
     public void testFindAll() {
         log.debug("findAll");
         Pageable pageable = new PageRequest(0, 20);
-        List<Problem> result = instance.findAll(pageable, lang);
+        instance.findAll(pageable, lang);
     }
 
     /**
@@ -77,8 +77,8 @@ public class ProblemMapperTest {
         String userId = "coach";
         long start = 1000L;
         long end = 1099L;
-        List<Problem> result = instance.findAllByDefunctN(userId, start, end, lang);
-        result = instance.findAllByDefunctN(null, start, end, lang);
+        instance.findAllByDefunctN(userId, start, end, lang);
+        instance.findAllByDefunctN(null, start, end, lang);
     }
 
     /**
@@ -87,8 +87,8 @@ public class ProblemMapperTest {
     @Test
     public void testFindOne() {
         log.debug("findOne");
-        Problem result = instance.findOne(0, lang);
-        result = instance.findOne(1000, lang);
+        instance.findOne(0, lang);
+        instance.findOne(1000, lang);
     }
 
     /**
@@ -97,8 +97,8 @@ public class ProblemMapperTest {
     @Test
     public void testFindOneNoI18n() {
         log.debug("findOne");
-        Problem result = instance.findOneNoI18n(0);
-        result = instance.findOneNoI18n(1000);
+        instance.findOneNoI18n(0);
+        instance.findOneNoI18n(1000);
     }
 
     /**
@@ -122,8 +122,8 @@ public class ProblemMapperTest {
     @Test
     public void testTouchI18n() {
         log.info("touchI18n");
-        long problemId = 1000L;
-        long result = instance.touchI18n(problemId, lang);
+        long problemId = 0L;
+        instance.touchI18n(problemId, lang);
     }
 
     /**
@@ -142,9 +142,9 @@ public class ProblemMapperTest {
                 .hint("")
                 .source("")
                 .build();
-        long result = instance.updateI18n(problemId, lang, problem);
+        instance.updateI18n(problemId, lang, problem);
         problem = new Problem().toBuilder().title("").build();
-        result = instance.updateI18n(problemId, lang, problem);
+        instance.updateI18n(problemId, lang, problem);
     }
 
 }
