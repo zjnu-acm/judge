@@ -32,10 +32,10 @@ import org.apache.ibatis.annotations.Update;
 @Mapper
 public interface MailMapper {
 
-    @Select("select mail_id id,from_user `from`,to_user `to`,in_date inDate,title,content from mail where mail_id=#{id} and defunct='N'")
+    @Select("select mail_id id,from_user `from`,to_user `to`,in_date inDate,title,content from mail where mail_id=#{id} and not disabled")
     Mail findOne(@Param("id") long id);
 
-    @Select("select mail_id id,title,new_mail newMail,from_user `from`,in_date inDate from mail where to_user=#{user} and defunct='N' order by in_date desc limit #{start},#{size}")
+    @Select("select mail_id id,title,new_mail newMail,from_user `from`,in_date inDate from mail where to_user=#{user} and not disabled order by in_date desc limit #{start},#{size}")
     List<Mail> findAllByTo(
             @Param("user") String user,
             @Param("start") long start,
@@ -44,7 +44,7 @@ public interface MailMapper {
     @Update("update mail set new_mail=0 where mail_id=#{id}")
     long readed(@Param("id") long id);
 
-    @Update("update mail set defunct='Y' where mail_id=#{id}")
+    @Update("update mail set disabled=1 where mail_id=#{id}")
     long delete(long id);
 
     @Insert("insert into mail (mail_id,from_user,to_user,title,content,in_date) "
@@ -53,7 +53,7 @@ public interface MailMapper {
             keyProperty = "id", before = true, resultType = long.class)
     long save(Mail mail);
 
-    @Select("select count(*) total,sum(if(new_mail!=0,1,0)) newMail from mail where to_user=#{user} and defunct='N'")
+    @Select("select count(*) total,sum(if(new_mail!=0,1,0)) newMail from mail where to_user=#{user} and not disabled")
     MailInfo getMailInfo(@Param("user") String user);
 
     @Update("update mail set reply=1 where mail_id=#{id}")
