@@ -14,6 +14,7 @@ import java.time.Instant;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.util.StringUtils;
 
 @Controller
+@Slf4j
 public class ContestStatisticsController {
 
     @Autowired
@@ -61,11 +63,11 @@ public class ContestStatisticsController {
 
         Map<Integer, Language> languages = languageFactory.getLanguages();
         int languageCount = languages.size();
-        String str2 = "select ";
+        StringBuilder sql = new StringBuilder(600).append("select ");
         for (int i : languages.keySet()) {
-            str2 = str2 + "count(if(language=" + i + ",1,null)) t" + i + ",";
+            sql.append("sum(if(language=").append(i).append(",1,0)) g").append(i).append(",");
         }
-        str2 += "problem_id,num,count(if(score=100,1,0)) as AC,count(if(score<100 and score >=70,1,0)) as PE,count(if(score<70 and score >30,1,null)) as TLE,count(if(score>0 and score <=30,1,null)) as WA,count(if(score=0,1,null)) as RE,count(if(score=-7,1,null)) as CE,count(if(score<-7 or score > 100,1,null)) as Others,count(*) as Total from solution where contest_id=? group by problem_id order by num";
+        sql.append("problem_id,num,sum(if(score=100,1,0)) AC,sum(if(score<100 and score >=70,1,0)) PE,sum(if(score<70 and score >30,1,0)) TLE,sum(if(score>0 and score <=30,1,0)) WA,sum(if(score=0,1,0)) RE,sum(if(score=-7,1,0)) CE,sum(if(score<-7 or score > 100,1,0)) Others,count(*) Total from solution where contest_id=? group by problem_id order by num");
 
         String[] judgeStatus = {"AC", "PE", "WA", "TLE", "RE", "CE", "Others", "Total"};
         long[] arrayOfLong1 = new long[judgeStatus.length];
@@ -73,8 +75,9 @@ public class ContestStatisticsController {
         sb.append("<th>&nbsp;</th>");
         languages.values().forEach(language -> sb.append("<th>").append(StringUtils.escapeXml(language.getName())).append("</th>"));
         sb.append("</tr>");
+        log.debug("{}", sql);
         try (Connection conn = dataSource.getConnection();
-                PreparedStatement ps = conn.prepareStatement(str2)) {
+                PreparedStatement ps = conn.prepareStatement(sql.toString())) {
             ps.setLong(1, contestId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -127,4 +130,5 @@ public class ContestStatisticsController {
         sb.append("</tr></table></body></html>");
         return ResponseEntity.ok().contentType(MediaType.valueOf("text/html;charset=UTF-8")).body(sb.toString());
     }
+
 }
