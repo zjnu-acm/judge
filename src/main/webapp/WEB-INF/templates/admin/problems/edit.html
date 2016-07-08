@@ -17,23 +17,61 @@
         </form>
         <input type="hidden" name="ckfinderPath" th:value="@{/ckfinder/}"/>
         <h1 th:inline="text">[[${hint}]]</h1>
-        <p align="center"><font size="4" color="#333399" th:inline="text">[[${hint2}]]</font></p>
+        <p align="center">
+            <font size="4" color="#333399" th:inline="text">[[${hint2}]]</font>
+        </p>
         <form name="problem-edit" method="POST" th:action="@{${url}}" th:object="${problem}">
             <input type="hidden" name="id" th:value="*{id}"/>
             <input type="hidden" name="_method" th:value="${method}"/>
             <input type="hidden" name="problemLang" th:value="${problemLang}"/>
             <p align="left" th:inline="text">Problem Id:&nbsp;&nbsp;[[*{id}==0?'New Problem':*{id}]]</p>
-            <p align="left">Title:<input name="title" rows="1" style="width:57em" th:value="*{title}"/></p>
-            <p align="left">Time Limit:<input type="text" name="timeLimit" size="20" th:value="*{timeLimit}"/>MS</p>
-            <p align="left">Memory Limit:<input type="text" name="memoryLimit" size="20" th:value="*{memoryLimit}"/>KByte</p>
-            <p align="left">Description:<br/><textarea class="editable" rows="13" name="description" cols="120" th:text="*{description}"></textarea></p>
-            <p align="left">Input:<br/><textarea class="editable" rows="13" name="input" cols="120" th:text="*{input}"></textarea></p>
-            <p align="left">Output:<br/><textarea class="editable" rows="13" name="output" cols="120" th:text="*{output}"></textarea></p>
-            <p align="left">Sample Input:<br/><textarea rows="13" name="sampleInput" cols="120" th:text="*{sampleInput}"></textarea></p>
-            <p align="left">Sample Output:<br/><textarea rows="13" name="sampleOutput" cols="120" th:text="*{sampleOutput}"></textarea></p>
-            <p align="left">Hint:<br/><textarea class="editable" rows="13" name="hint" cols="120" th:text="*{hint}"></textarea></p>
-            <p align="left">Source:<br/><textarea class="editable" name="source" rows="1" cols="70" th:text="*{source}"></textarea></p>
-            <p align="left">contest:<select name="contest">
+            <p align="left">
+                <label th:for="${#ids.next('title')}">Title:</label>
+                <input th:id="${#ids.seq('title')}" name="title" rows="1" style="width: 100%" th:value="*{title}" required="required"/>
+            </p>
+            <p align="left">
+                <label th:for="${#ids.next('timeLimit')}">Time Limit:</label>
+                <input th:id="${#ids.seq('timeLimit')}" type="number" name="timeLimit" size="20" th:value="*{timeLimit}" required="required"/>MS</p>
+            <p align="left">
+                <label th:for="${#ids.next('memoryLimit')}">Memory Limit:</label>
+                <input th:id="${#ids.seq('memoryLimit')}" type="number" name="memoryLimit" size="20" th:value="*{memoryLimit}" required="required"/>KByte</p>
+            <p align="left">
+                <label th:for="${#ids.next('description')}">Description:</label>
+                <br/>
+                <textarea th:id="${#ids.seq('description')}" class="editable" rows="13" name="description"  style="width: 100%;" th:text="*{description}"></textarea>
+            </p>
+            <p align="left">
+                <label th:for="${#ids.next('input')}">Input:</label>
+                <br/>
+                <textarea th:id="${#ids.seq('input')}" class="editable" rows="13" name="input" style="width: 100%;" th:text="*{input}"></textarea></p>
+            <p align="left">
+                <label th:for="${#ids.next('output')}">Output:</label>
+                <br/>
+                <textarea th:id="${#ids.seq('output')}" class="editable" rows="13" name="output"  style="width: 100%;" th:text="*{output}"></textarea>
+            </p>
+            <p align="left">
+                <label th:for="${#ids.next('sampleInput')}">Sample Input:</label>
+                <br/>
+                <textarea th:id="${#ids.seq('sampleInput')}" rows="13" name="sampleInput"  style="width: 100%;" th:text="*{sampleInput}"></textarea>
+            </p>
+            <p align="left">
+                <label th:for="${#ids.next('sampleOutput')}">Sample Output:</label>
+                <br/>
+                <textarea th:id="${#ids.seq('sampleOutput')}" rows="13" name="sampleOutput" style="width: 100%;" th:text="*{sampleOutput}"></textarea>
+            </p>
+            <p align="left">
+                <label th:for="${#ids.next('hint')}">Hint:</label>
+                <br/>
+                <textarea th:id="${#ids.seq('hint')}" class="editable" rows="13" name="hint"  style="width: 100%;" th:text="*{hint}"></textarea>
+            </p>
+            <p align="left">
+                <label th:for="${#ids.next('source')}">Source:</label>
+                <br/>
+                <textarea th:id="${#ids.seq('source')}" class="editable" name="source" rows="1" style="width: 80%" th:text="*{source}"></textarea>
+            </p>
+            <p align="left">
+                <label th:for="${#ids.next('contest')}">contest:</label>
+                <select th:id="${#ids.seq('contest')}" name="contest">
                     <option value="">no contest</option>
                     <option th:each="contest:${contests}" th:object="${contest}" th:value="*{id}" th:text="*{title}" th:selected="*{id}==${problem.contest}">contest.title</option>
                 </select>
@@ -44,27 +82,7 @@
         <script th:src="@{/ckfinder/ckfinder.js}"></script>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.5.8/adapters/jquery.js" th:src="@{/webjars/ckeditor/4.5.8/full/adapters/jquery.js}"></script>
         <script src="../../../../js/ckfinder.js" th:src="@{/js/ckfinder.js(_=${application.startUpDate})}"></script>
-        <script>//<![CDATA[
-            jQuery(function ($) {
-                var KEY = "value-original", inputs = $("form[name='problem-edit'] :input");
-                $("select[name='problemLang']").change(function () {
-                    var change = false;
-                    inputs.each(function () {
-                        if ($(this).val() !== $(this).data(KEY)) {
-                            change = true;
-                            return false;
-                        }
-                    });
-                    if (change && !confirm("你已经修改题目，继续操作将会丢失修改，是否继续？")) {
-                        $(this).val($(this).data(KEY));
-                        return false;
-                    }
-                    $(this).closest("form").submit();
-                }).add(inputs).each(function () {
-                    $(this).data(KEY, $(this).val());
-                });
-            });//]]>
-        </script>
+        <script>/*<![CDATA[*/jQuery(function ($) {var KEY = "value-original", inputs = $("form[name='problem-edit'] :input");$("select[name='problemLang']").change(function () {var change = false;inputs.each(function () {if ($(this).val() !== $(this).data(KEY)) {change = true;return false;}});if (change && !confirm("你已经修改题目，继续操作将会丢失修改，是否继续？")) {$(this).val($(this).data(KEY));return false;}$(this).closest("form").submit();}).add(inputs).each(function () {$(this).data(KEY, $(this).val());});});/*]]>*/</script>
         <!--/*/</th:block>/*/-->
     </body>
 </html>

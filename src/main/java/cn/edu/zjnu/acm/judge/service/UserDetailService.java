@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +65,8 @@ public class UserDetailService {
         return request.isUserInRole("USER");
     }
 
-    public static Optional<UserModel> getCurrentUser(HttpServletRequest request) {
+    @Nonnull
+    public static Optional<UserModel> getCurrentUser(@Nonnull HttpServletRequest request) {
         return Optional.ofNullable(request.getUserPrincipal())
                 .filter(Authentication.class::isInstance)
                 .map(Authentication.class::cast)
@@ -73,7 +75,8 @@ public class UserDetailService {
                 .map(UserModel.class::cast);
     }
 
-    public static Optional<String> getCurrentUserId(HttpServletRequest request) {
+    @Nonnull
+    public static Optional<String> getCurrentUserId(@Nonnull HttpServletRequest request) {
         return getCurrentUser(request).map(UserModel::getUserId);
     }
 
