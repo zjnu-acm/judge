@@ -69,9 +69,9 @@ public class ContestStatisticsController {
         for (int i : languages.keySet()) {
             sql.append("sum(if(language=").append(i).append(",1,0)) g").append(i).append(",");
         }
-        sql.append("problem_id,num,sum(if(score=100,1,0)) AC,sum(if(score<100 and score >=70,1,0)) PE,sum(if(score<70 and score >30,1,0)) TLE,sum(if(score>0 and score <=30,1,0)) WA,sum(if(score=0,1,0)) RE,sum(if(score=-7,1,0)) CE,sum(if(score<-7 or score > 100,1,0)) Others,count(*) Total from solution where contest_id=? group by problem_id order by num");
+        sql.append("problem_id,num,sum(if(score=100,1,0)) A,sum(if(score<100 and score >=70,1,0)) B,sum(if(score<70 and score >30,1,0)) D,sum(if(score>0 and score <=30,1,0)) C,sum(if(score=0,1,0)) E,sum(if(score=-7,1,0)) F,sum(if(score<-7 or score > 100,1,0)) G,count(*) Total from solution where contest_id=? group by problem_id order by num");
 
-        String[] judgeStatus = {"AC", "PE", "WA", "TLE", "RE", "CE", "Others", "Total"};
+        String[] judgeStatus = {"A", "B", "C", "D", "E", "F", "G", "Total"};
         long[] arrayOfLong1 = new long[judgeStatus.length];
         long[] arrayOfLong2 = new long[languageCount];
         sb.append("<th>&nbsp;</th>");

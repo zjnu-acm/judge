@@ -97,7 +97,7 @@ public class ShowProblemController {
                     + "<table border=0 width=100% class=table-back><tr><td><table border=0 width=100%><tr>");
             List<Problem> problems = contestMapper.getProblems(contestId, null, locale.getLanguage());
             for (Problem p : problems) {
-                sb.append("<td><a href=showproblem?problem_id=").append(p.getOrign()).append("><b>").append((char) (p.getId() + 'A')).append("</b></a></td>");
+                sb.append("<td style='text-align:center'><a href=showproblem?problem_id=").append(p.getOrign()).append("><b>").append((char) (p.getId() + 'A')).append("</b></a></td>");
             }
             sb.append("</tr></table>" + "<div class=\"ptt\" lang=\"en-US\">Problem ").append((char) (contestNum + 'A')).append(":").append(title).append("</div>");
         }
