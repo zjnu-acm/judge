@@ -16,6 +16,8 @@
 package cn.edu.zjnu.acm.judge.config;
 
 import cn.edu.zjnu.acm.judge.domain.LoginLog;
+import cn.edu.zjnu.acm.judge.exception.ForbiddenException;
+import cn.edu.zjnu.acm.judge.exception.GlobalExceptionHandler;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
 import cn.edu.zjnu.acm.judge.service.LoginlogService;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
@@ -29,13 +31,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
@@ -48,6 +53,7 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
  * @author zhanhb
  */
 @Configuration
+@EnableGlobalMethodSecurity(securedEnabled = true)
 @Slf4j
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -63,6 +69,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private PasswordConfuser passwordConfuser;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private GlobalExceptionHandler globalExceptionHandler;
 
     private void saveLoginLog(HttpServletRequest request, boolean success) {
         String userId = Optional.ofNullable(request.getParameter("user_id1")).orElse("");
@@ -111,6 +119,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
             .csrf()
                 .disable()
+            .exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPoint())
+                .and()
             .formLogin()
                 .loginPage("/login")
                 .usernameParameter("user_id1")
@@ -156,6 +167,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailService::getUserModel)
                 .passwordEncoder(passwordEncoder);
+    }
+
+    @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint() {
+        return (request, response, authException) -> {
+            authException.printStackTrace();
+            throw new ForbiddenException();
+        };
     }
 
 }
