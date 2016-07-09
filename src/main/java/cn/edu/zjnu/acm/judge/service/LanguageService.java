@@ -18,10 +18,9 @@ package cn.edu.zjnu.acm.judge.service;
 import cn.edu.zjnu.acm.judge.domain.Language;
 import cn.edu.zjnu.acm.judge.exception.NoSuchLanguageException;
 import cn.edu.zjnu.acm.judge.mapper.LanguageMapper;
-import java.util.Collections;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -41,23 +40,17 @@ public class LanguageService {
         };
     }
 
-    private Map<Integer, Language> languages;
-
     @Autowired
-    public void setLanguageMapper(LanguageMapper languageMapper) {
-        List<Language> allLanguages = languageMapper.findAll();
-        languages = allLanguages.stream()
+    private LanguageMapper languageMapper;
+
+    public Map<Integer, Language> getLanguages() {
+        return languageMapper.findAll().stream()
                 .collect(Collectors.toMap(Language::getId, Function.identity(), throwOnMerge(), LinkedHashMap::new));
     }
 
-    public Map<Integer, Language> getLanguages() {
-        return Collections.unmodifiableMap(languages);
-    }
-
     public Language getLanguage(int languageId) {
-        return languages.computeIfAbsent(languageId, x -> {
-            throw new NoSuchLanguageException("no such language " + x);
-        });
+        return Optional.ofNullable(languageMapper.findOne(languageId))
+                .orElseThrow(() -> new NoSuchLanguageException("no such language " + languageId));
     }
 
 }
