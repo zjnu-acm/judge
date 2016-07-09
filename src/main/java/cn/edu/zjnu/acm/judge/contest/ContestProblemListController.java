@@ -23,7 +23,7 @@ public class ContestProblemListController {
 
     @RequestMapping(value = "/showcontest", method = {RequestMethod.GET, RequestMethod.HEAD})
     public String showcontest(HttpServletRequest request, @RequestParam("contest_id") long contestId, Locale locale) {
-        Contest contest = contestMapper.findOneByIdAndDefunctN(contestId);
+        Contest contest = contestMapper.findOneByIdAndDisabledFalse(contestId);
         if (contest == null) {
             throw new MessageException("onlinejudge.contest.nosuchcontest", HttpStatus.NOT_FOUND);
         }

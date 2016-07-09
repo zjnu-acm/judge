@@ -62,7 +62,7 @@ public class ModifyProblemController {
                 .contest(p.getContest())
                 .build(), lang);
         if (oldContestId != null && !Objects.equals(oldContestId, contestId)) {
-            boolean started = contestMapper.findOneByIdAndDefunctN(oldContestId).isStarted();
+            boolean started = contestMapper.findOneByIdAndDisabledFalse(oldContestId).isStarted();
             if (!started) {
                 contestService.removeProblem(oldContestId, problemId);
             }
@@ -70,7 +70,7 @@ public class ModifyProblemController {
         if (contestId != null) {
             contestMapper.updateProblemTitle(contestId, problemId);
             if (!Objects.equals(oldContestId, contestId)) {
-                Contest newContest = contestMapper.findOneByIdAndDefunctN(contestId);
+                Contest newContest = contestMapper.findOneByIdAndDisabledFalse(contestId);
                 if (newContest == null) {
                     throw new MessageException("onlinejudge.contest.nosuchcontest", HttpStatus.NOT_FOUND);
                 }

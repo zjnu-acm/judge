@@ -29,6 +29,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 /**
  *
@@ -49,13 +52,13 @@ public class ProblemMapperTest {
     }
 
     /**
-     * Test of findOneByIdAndDefunctN method, of class ProblemMapper.
+     * Test of findOneByIdAndDisabledFalse method, of class ProblemMapper.
      */
     @Test
-    public void testFindOneByIdAndDefunctN() {
-        log.debug("findOneByIdAndDefunctN");
+    public void testFindOneByIdAndDisabledFalse() {
+        log.debug("findOneByIdAndDisabledFalse");
         long pid = 0L;
-        instance.findOneByIdAndDefunctN(pid, lang);
+        instance.findOneByIdAndDisabledFalse(pid, lang);
     }
 
     /**
@@ -69,16 +72,16 @@ public class ProblemMapperTest {
     }
 
     /**
-     * Test of findAllByDefunctN method, of class ProblemMapper.
+     * Test of findAllByDisabledFalse method, of class ProblemMapper.
      */
     @Test
-    public void testFindAllByDefunctN() {
-        log.debug("findAllByDefunctN");
+    public void testFindAllByDisabledFalse() {
+        log.debug("findAllByDisabledFalse");
         String userId = "coach";
         long start = 1000L;
         long end = 1099L;
-        instance.findAllByDefunctN(userId, start, end, lang);
-        instance.findAllByDefunctN(null, start, end, lang);
+        instance.findAllByDisabledFalse(userId, start, end, lang);
+        instance.findAllByDisabledFalse(null, start, end, lang);
     }
 
     /**
@@ -102,17 +105,17 @@ public class ProblemMapperTest {
     }
 
     /**
-     * Test of findAllBySearchTitleOrSourceAndDefunctN method, of class
-     * ProblemMapper.
+     * Test of findAllBySearchTitleOrSourceAndDisabledFalse method, of class
+ ProblemMapper.
      */
     @Test
-    public void testFindAllBySearchTitleOrSourceAndDefunctN() {
-        log.debug("findAllBySearchTitleOrSourceAndDefunctN");
+    public void testFindAllBySearchTitleOrSourceAndDisabledFalse() {
+        log.debug("findAllBySearchTitleOrSourceAndDisabledFalse");
         String query = "初级";
         String userId = "coach";
-        List<Problem> result = instance.findAllBySearchTitleOrSourceAndDefunctN(query, userId, lang);
+        List<Problem> result = instance.findAllBySearchTitleOrSourceAndDisabledFalse(query, userId, lang);
         int size = result.size();
-        result = instance.findAllBySearchTitleOrSourceAndDefunctN(query, null, lang);
+        result = instance.findAllBySearchTitleOrSourceAndDisabledFalse(query, null, lang);
         assertEquals(size, result.size());
     }
 
