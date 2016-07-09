@@ -25,6 +25,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,6 +37,7 @@ import org.thymeleaf.util.StringUtils;
  * @author zhanhb
  */
 @Controller
+@Secured("ROLE_USER")
 public class MailController {
 
     @Autowired
@@ -46,7 +48,6 @@ public class MailController {
     @RequestMapping(value = "/deletemail", method = {RequestMethod.GET, RequestMethod.HEAD})
     public String delete(HttpServletRequest request,
             @RequestParam("mail_id") long mailId) {
-        UserDetailService.requireLoginned(request);
         Mail mail = mailMapper.findOne(mailId);
         if (mail == null) {
             throw new MessageException("No such mail", HttpStatus.NOT_FOUND);
@@ -62,7 +63,6 @@ public class MailController {
     public String mail(HttpServletRequest request,
             @RequestParam(value = "size", defaultValue = "20") int size,
             @RequestParam(value = "start", defaultValue = "1") long start) {
-        UserDetailService.requireLoginned(request);
         if (start <= 0) {
             start = 1;
         }
@@ -82,7 +82,6 @@ public class MailController {
             @RequestParam("title") String title,
             @RequestParam("to") String to,
             @RequestParam("content") String content) {
-        UserDetailService.requireLoginned(request);
         String userId = UserDetailService.getCurrentUserId(request).orElse(null);
         if (StringUtils.isEmptyOrWhitespace(title)) {
             title = "No Topic";
@@ -107,7 +106,6 @@ public class MailController {
     public String sendpage(HttpServletRequest request,
             @RequestParam(value = "reply", defaultValue = "-1") long reply,
             @RequestParam(value = "to", defaultValue = "") String userId) {
-        UserDetailService.requireLoginned(request);
         String title = "";
         String content = "";
 
@@ -136,7 +134,6 @@ public class MailController {
 
     @RequestMapping(value = "/showmail", method = {RequestMethod.GET, RequestMethod.HEAD})
     public String showmail(HttpServletRequest request, @RequestParam("mail_id") long mailId) {
-        UserDetailService.requireLoginned(request);
         Mail mail = mailMapper.findOne(mailId);
         if (mail == null) {
             throw new MessageException("No such mail", HttpStatus.NOT_FOUND);

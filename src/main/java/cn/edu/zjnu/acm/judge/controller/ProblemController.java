@@ -17,10 +17,9 @@ package cn.edu.zjnu.acm.judge.controller;
 
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
-import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import java.util.Locale;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,15 +33,14 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  */
 @RestController
 @RequestMapping("problems")
+@Secured("ROLE_ADMIN")
 public class ProblemController {
 
     @Autowired
     private ProblemMapper problemMapper;
 
     @RequestMapping(value = "{id}", method = {RequestMethod.GET}, produces = APPLICATION_JSON_VALUE)
-    public Problem findOne(HttpServletRequest request,
-            @PathVariable("id") long id, Locale locale) {
-        UserDetailService.requireAdminLoginned(request);
+    public Problem findOne(@PathVariable("id") long id, Locale locale) {
         return problemMapper.findOne(id, locale.getLanguage());
     }
 

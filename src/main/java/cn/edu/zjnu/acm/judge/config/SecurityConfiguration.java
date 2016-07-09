@@ -16,8 +16,6 @@
 package cn.edu.zjnu.acm.judge.config;
 
 import cn.edu.zjnu.acm.judge.domain.LoginLog;
-import cn.edu.zjnu.acm.judge.exception.ForbiddenException;
-import cn.edu.zjnu.acm.judge.exception.GlobalExceptionHandler;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
 import cn.edu.zjnu.acm.judge.service.LoginlogService;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
@@ -29,6 +27,7 @@ import java.util.Optional;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.PageContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -69,8 +68,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private PasswordConfuser passwordConfuser;
     @Autowired
     private UserMapper userMapper;
-    @Autowired
-    private GlobalExceptionHandler globalExceptionHandler;
 
     private void saveLoginLog(HttpServletRequest request, boolean success) {
         String userId = Optional.ofNullable(request.getParameter("user_id1")).orElse("");
@@ -172,8 +169,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthenticationEntryPoint authenticationEntryPoint() {
         return (request, response, authException) -> {
-            authException.printStackTrace();
-            throw new ForbiddenException();
+            request.setAttribute(PageContext.EXCEPTION, authException);
+            request.getRequestDispatcher("/unauthorized").forward(request, response);
         };
     }
 
