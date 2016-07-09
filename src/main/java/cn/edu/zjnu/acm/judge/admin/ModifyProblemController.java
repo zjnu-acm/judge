@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.thymeleaf.util.StringUtils;
 
 @Controller
 public class ModifyProblemController {
@@ -32,10 +33,11 @@ public class ModifyProblemController {
     public String modifyproblem(HttpServletRequest request,
             @PathVariable("problemId") long problemId,
             Locale locale,
-            @RequestParam("problemLang") String lang,
+            @RequestParam("problemLang") String problemLang,
             Problem p) {
         UserDetailService.requireAdminLoginned(request);
 
+        String lang = StringUtils.isEmpty(problemLang) ? null : problemLang;
         Problem problem = problemMapper.findOne(problemId, lang);
         if (problem == null) {
             throw new MessageException("no such problem " + problemId, HttpStatus.NOT_FOUND);
@@ -43,7 +45,9 @@ public class ModifyProblemController {
         Long oldContestId = problem.getContest();
         Long contestId = p.getContest();
 
-        problemMapper.touchI18n(problemId, lang);
+        if (!StringUtils.isEmpty(lang)) {
+            problemMapper.touchI18n(problemId, lang);
+        }
         problemMapper.update(problem.toBuilder()
                 .title(p.getTitle())
                 .description(p.getDescription())
