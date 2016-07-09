@@ -84,12 +84,6 @@ public class UserDetailService {
         return userId != null && getCurrentUserId(request).map(userId::equalsIgnoreCase).orElse(false);
     }
 
-    public static void requireLoginned(HttpServletRequest request) {
-        if (!isLoginned(request)) {
-            throw new ForbiddenException();
-        }
-    }
-
     @Autowired
     private UserRoleMapper userRoleMapper;
     @Autowired

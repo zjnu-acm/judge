@@ -33,25 +33,29 @@ import org.thymeleaf.util.StringUtils;
 @Slf4j
 public class JudgeHandlerInterceptor {
 
+    public static final String BACK_URL_ATTRIBUTE_NAME = "backUrl";
+
     @Autowired
     private MailMapper mailMapper;
 
     @ModelAttribute
     public void addAttributes(HttpServletRequest request,
             @RequestParam(value = "url", required = false) String url) {
-        if (!StringUtils.isEmptyOrWhitespace(url)) {
-            request.setAttribute("backUrl", url);
-        } else {
-            String uri = request.getRequestURI();
-            String query = request.getQueryString();
-            if (query != null) {
-                uri = uri + '?' + query;
+        if (request.getAttribute(BACK_URL_ATTRIBUTE_NAME) == null) {
+            if (!StringUtils.isEmptyOrWhitespace(url)) {
+                request.setAttribute(BACK_URL_ATTRIBUTE_NAME, url);
+            } else {
+                String uri = request.getRequestURI();
+                String query = request.getQueryString();
+                if (query != null) {
+                    uri = uri + '?' + query;
+                }
+                request.setAttribute(BACK_URL_ATTRIBUTE_NAME, uri);
             }
-            request.setAttribute("backUrl", uri);
+            UserDetailService.getCurrentUserId(request)
+                    .map(mailMapper::getMailInfo)
+                    .ifPresent(mailInfo -> request.setAttribute("mailInfo", mailInfo));
         }
-        UserDetailService.getCurrentUserId(request)
-                .map(mailMapper::getMailInfo)
-                .ifPresent(mailInfo -> request.setAttribute("mailInfo", mailInfo));
     }
 
 }

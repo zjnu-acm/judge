@@ -6,12 +6,12 @@ import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.service.ContestService;
-import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import java.util.Locale;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.util.StringUtils;
 
 @Controller
+@Secured("ROLE_ADMIN")
 public class ModifyProblemController {
 
     @Autowired
@@ -35,7 +36,6 @@ public class ModifyProblemController {
             Locale locale,
             @RequestParam("problemLang") String problemLang,
             Problem p) {
-        UserDetailService.requireAdminLoginned(request);
 
         String lang = StringUtils.isEmpty(problemLang) ? null : problemLang;
         Problem problem = problemMapper.findOne(problemId, lang);

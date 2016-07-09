@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -25,7 +24,7 @@ public class BBSController {
     private DataSource dataSource;
 
     @RequestMapping(value = "/bbs", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = TEXT_HTML_VALUE)
-    protected ResponseEntity<String> bbs(HttpServletRequest request,
+    protected ResponseEntity<String> bbs(
             @RequestParam(value = "problem_id", required = false) Long problemId,
             @RequestParam(value = "size", defaultValue = "50") long threadLimit,
             @RequestParam(value = "top", defaultValue = "99999999") long top) throws SQLException {

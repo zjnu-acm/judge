@@ -15,9 +15,14 @@
  */
 package cn.edu.zjnu.acm.judge.controller;
 
+import cn.edu.zjnu.acm.judge.exception.GlobalExceptionHandler;
+import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
  *
@@ -52,8 +57,13 @@ public class MainController {
     }
 
     @RequestMapping(value = "/navigation", method = {RequestMethod.GET, RequestMethod.HEAD})
-    protected String navigation() {
+    public String navigation() {
         return "fragment/navigation";
+    }
+
+    @RequestMapping(value = "/unauthorized", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = APPLICATION_JSON_VALUE)
+    public String unauthorized(HttpServletRequest request) throws IOException {
+        return GlobalExceptionHandler.unauthorized(request);
     }
 
 }

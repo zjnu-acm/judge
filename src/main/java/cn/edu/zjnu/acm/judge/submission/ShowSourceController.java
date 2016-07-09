@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,11 +31,11 @@ public class ShowSourceController {
     @Autowired
     private LanguageService languageService;
 
+    @Secured("ROLE_USER")
     @RequestMapping(value = "/showsource", method = {RequestMethod.GET, RequestMethod.HEAD})
     public String showsource(HttpServletRequest request,
             @RequestParam("solution_id") long submissionId,
             @RequestParam(value = "style", required = false) Integer style) {
-        UserDetailService.requireLoginned(request);
         Submission submission = submissionMapper.findOne(submissionId);
 
         if (submission == null) {

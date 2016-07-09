@@ -22,6 +22,7 @@ import java.time.Instant;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -46,13 +47,13 @@ public class SubmitController {
     @Autowired
     private LanguageService languageService;
 
+    @Secured("ROLE_USER")
     @RequestMapping(value = "/submit", method = RequestMethod.POST)
     public String submit(HttpServletRequest request,
             @RequestParam("language") int languageId,
             @RequestParam("problem_id") long problemId,
             @RequestParam("source") String source,
             RedirectAttributes redirectAttributes) {
-        UserDetailService.requireLoginned(request);
         Language language;
         try {
             language = languageService.getLanguage(languageId);
