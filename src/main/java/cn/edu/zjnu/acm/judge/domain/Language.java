@@ -20,9 +20,9 @@ import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.Setter;
-import lombok.Value;
 
 /**
  *
@@ -30,9 +30,8 @@ import lombok.Value;
  */
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
-@Value
-@Setter(AccessLevel.PRIVATE)
-@SuppressWarnings("FinalClass")
+@Data
+@NoArgsConstructor
 public class Language implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -43,7 +42,7 @@ public class Language implements Serializable {
     private String name;
     @NonNull
     private String sourceExtension;
-    @NonNull
+    @Nullable
     private String compileCommand;
     @Nullable
     private String executeCommand;
