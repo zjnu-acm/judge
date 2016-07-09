@@ -142,14 +142,14 @@ public class ContestMapperTest {
     }
 
     /**
-     * Test of findOneByIdAndDefunctN method, of class ContestMapper.
+     * Test of findOneByIdAndDisabledFalse method, of class ContestMapper.
      */
     @Test
-    public void testFindOneByIdAndDefunctN() {
-        log.info("findOneByIdAndDefunctN");
+    public void testFindOneByIdAndDisabledFalse() {
+        log.info("findOneByIdAndDisabledFalse");
         long contestId = 0L;
         Contest expResult = null;
-        Contest result = instance.findOneByIdAndDefunctN(contestId);
+        Contest result = instance.findOneByIdAndDisabledFalse(contestId);
         assertEquals(expResult, result);
     }
 

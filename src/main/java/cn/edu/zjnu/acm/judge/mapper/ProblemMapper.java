@@ -103,7 +103,7 @@ public interface ProblemMapper {
     // TODO not used
     @Nullable
     @Select("select" + COLUMNS + FROM + " where problem_id=#{id} AND not disabled")
-    Problem findOneByIdAndDefunctN(@Param("id") long pid, @Param("lang") String lang);
+    Problem findOneByIdAndDisabledFalse(@Param("id") long pid, @Param("lang") String lang);
 
     @Select("SELECT" + LIST_COLUMNS + FROM + " order by problem_id limit #{pageable.offset},#{pageable.pageSize}")
     List<Problem> findAll(@Param("pageable") Pageable pageable, @Param("lang") String lang);
@@ -118,7 +118,7 @@ public interface ProblemMapper {
         + "where not p.disabled and p.problem_id&gt;=#{start} and p.problem_id&lt;=#{end}"
         + "</script>"
     })
-    List<Problem> findAllByDefunctN(
+    List<Problem> findAllByDisabledFalse(
             @Nullable @Param("userId") String userId,
             @Param("start") long start,
             @Param("end") long end,
@@ -174,7 +174,7 @@ public interface ProblemMapper {
         + "ORDER BY p.problem_id"
         + "</script>"
     })
-    List<Problem> findAllBySearchTitleOrSourceAndDefunctN(
+    List<Problem> findAllBySearchTitleOrSourceAndDisabledFalse(
             @Param("query") String query,
             @Param("userId") String userId,
             @Param("lang") String lang);

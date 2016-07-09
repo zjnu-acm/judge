@@ -89,7 +89,7 @@ public class ContestController {
 
     @RequestMapping(value = "standing", produces = {TEXT_HTML_VALUE, ALL_VALUE}, method = {RequestMethod.GET, RequestMethod.HEAD})
     public String standingHtml(@PathVariable("contestId") long id, Model model, Locale locale) {
-        Contest contest = contestMapper.findOneByIdAndDefunctN(id);
+        Contest contest = contestMapper.findOneByIdAndDisabledFalse(id);
         // TODO
         model.addAttribute("contestId", id);
         model.addAttribute("contest", contest);

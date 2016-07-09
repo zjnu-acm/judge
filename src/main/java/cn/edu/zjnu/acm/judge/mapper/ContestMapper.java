@@ -142,7 +142,7 @@ public interface ContestMapper {
             @Param("problem") long problemOrder);
 
     @Select("select" + COLUMNS + "from contest where contest_id=#{id} and not disabled")
-    Contest findOneByIdAndDefunctN(@Param("id") long contestId);
+    Contest findOneByIdAndDisabledFalse(@Param("id") long contestId);
 
     @Select("select "
             + " s.user_id id,u.nick "

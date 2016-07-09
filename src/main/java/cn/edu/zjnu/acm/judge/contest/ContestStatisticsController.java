@@ -40,7 +40,7 @@ public class ContestStatisticsController {
     public ResponseEntity<String> conteststatistics(HttpServletRequest request,
             @RequestParam("contest_id") long contestId) throws SQLException {
         Instant now = Instant.now();
-        Contest contest = contestMapper.findOneByIdAndDefunctN(contestId);
+        Contest contest = contestMapper.findOneByIdAndDisabledFalse(contestId);
         if (contest == null || !contest.isStarted()) {
             throw new MessageException("onlinejudge.contest.nosuchcontest", HttpStatus.NOT_FOUND);
         }

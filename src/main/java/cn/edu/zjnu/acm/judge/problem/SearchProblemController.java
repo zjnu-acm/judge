@@ -29,7 +29,7 @@ public class SearchProblemController {
             throw new MessageException("Please input the keyword to the problem.", HttpStatus.BAD_REQUEST);
         }
         String userId = UserDetailService.getCurrentUserId(request).orElse(null);
-        List<Problem> problems = problemMapper.findAllBySearchTitleOrSourceAndDefunctN(query, userId, locale.getLanguage());
+        List<Problem> problems = problemMapper.findAllBySearchTitleOrSourceAndDisabledFalse(query, userId, locale.getLanguage());
 
         request.setAttribute("query", query);
         request.setAttribute("problems", problems);

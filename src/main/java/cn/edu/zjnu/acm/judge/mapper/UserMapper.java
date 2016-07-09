@@ -46,7 +46,7 @@ public interface UserMapper {
     long update(User user);
 
     @Select("SELECT COUNT(*) total FROM users WHERE not disabled")
-    long countByDefunctN();
+    long countByDisabledFalse();
 
     String ON = " (u1.solved>u2.solved or u1.solved=u2.solved and u1.submit<u2.submit or u1.solved=u2.solved and u1.submit=u2.submit and u1.user_id<u2.user_id) ";
 
