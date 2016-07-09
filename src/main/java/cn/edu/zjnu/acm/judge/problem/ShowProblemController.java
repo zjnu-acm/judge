@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.util.StringUtils;
 
+import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
+
 @Controller
 public class ShowProblemController {
 
@@ -32,7 +34,7 @@ public class ShowProblemController {
     @Autowired
     private JudgeConfiguration judgeConfiguration;
 
-    @RequestMapping(value = "/showproblem", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = "text/html")
+    @RequestMapping(value = "/showproblem", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = TEXT_HTML_VALUE)
     public ResponseEntity<String> showproblem(HttpServletRequest request,
             @RequestParam("problem_id") long problemId,
             Locale locale) {
