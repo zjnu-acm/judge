@@ -16,7 +16,6 @@
 package cn.edu.zjnu.acm.judge.core;
 
 import cn.edu.zjnu.acm.judge.config.JudgeConfiguration;
-import cn.edu.zjnu.acm.judge.config.LanguageFactory;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.domain.RunRecord;
 import cn.edu.zjnu.acm.judge.domain.Submission;
@@ -24,6 +23,7 @@ import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserProblemMapper;
 import cn.edu.zjnu.acm.judge.service.JudgeServerService;
+import cn.edu.zjnu.acm.judge.service.LanguageService;
 import cn.edu.zjnu.acm.judge.util.ResultType;
 import com.github.zhanhb.judge.classic.JudgeBridge;
 import com.github.zhanhb.judge.common.ExecuteResult;
@@ -100,7 +100,7 @@ public class Judger {
     @Autowired
     private JudgeConfiguration judgeConfiguration;
     @Autowired
-    private LanguageFactory languageFactory;
+    private LanguageService languageService;
 
     private void updateSubmissionStatus(RunRecord runRecord) {
         userProblemMapper.update(runRecord.getUserId(), runRecord.getProblemId());
@@ -115,7 +115,7 @@ public class Judger {
         }
         RunRecord runRecord = RunRecord.builder()
                 .submissionId(submission.getId())
-                .language(languageFactory.getLanguage(submission.getLanguage()))
+                .language(languageService.getLanguage(submission.getLanguage()))
                 .problemId(submission.getProblem())
                 .userId(submission.getUser())
                 .source(submissionMapper.findSourceById(submissionId))
