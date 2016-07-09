@@ -50,4 +50,7 @@ public interface LanguageMapper {
     @Select("select id id,name name,source_extension sourceExtension,compile_command compileCommand,execute_command executeCommand,executable_extension executableExtension,time_factor timeFactor,ext_memory extMemory,description description from language")
     List<Language> findAll();
 
+    @Select("select id id,name name,source_extension sourceExtension,compile_command compileCommand,execute_command executeCommand,executable_extension executableExtension,time_factor timeFactor,ext_memory extMemory,description description from language where id=#{param1}")
+    Language findOne(long id);
+
 }
