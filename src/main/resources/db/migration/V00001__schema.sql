@@ -12,7 +12,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 
--- Dumping database structure
 
 -- Dumping structure for table compileinfo
 CREATE TABLE IF NOT EXISTS `compileinfo` (
@@ -48,6 +47,20 @@ CREATE TABLE IF NOT EXISTS `contest_problem` (
   CONSTRAINT `FK_contest_problem_contest` FOREIGN KEY (`contest_id`) REFERENCES `contest` (`contest_id`),
   CONSTRAINT `FK_contest_problem_problem` FOREIGN KEY (`problem_id`) REFERENCES `problem` (`problem_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='比赛的题目。';
+
+-- Data exporting was unselected.
+CREATE TABLE `language` (
+	`id` INT(11) NOT NULL,
+	`name` VARCHAR(20) NOT NULL,
+	`source_extension` VARCHAR(20) NOT NULL,
+	`compile_command` LONGTEXT NULL,
+	`execute_command` LONGTEXT NULL,
+	`executable_extension` LONGTEXT NOT NULL,
+	`time_factor` BIGINT(20) NOT NULL,
+	`ext_memory` BIGINT(20) NOT NULL,
+	`description` LONGTEXT NOT NULL,
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
 -- Dumping structure for table loginlog

@@ -1,10 +1,10 @@
 package cn.edu.zjnu.acm.judge.submission;
 
-import cn.edu.zjnu.acm.judge.config.LanguageFactory;
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserPerferenceMapper;
+import cn.edu.zjnu.acm.judge.service.LanguageService;
 import cn.edu.zjnu.acm.judge.service.SubmissionService;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import cn.edu.zjnu.acm.judge.util.ResultType;
@@ -28,7 +28,7 @@ public class ShowSourceController {
     @Autowired
     private SubmissionService submissionService;
     @Autowired
-    private LanguageFactory languageFactory;
+    private LanguageService languageService;
 
     @RequestMapping(value = "/showsource", method = {RequestMethod.GET, RequestMethod.HEAD})
     public String showsource(HttpServletRequest request,
@@ -44,7 +44,7 @@ public class ShowSourceController {
         if (!submissionService.canView(request, submission)) {
             throw new MessageException("You have no permission to view the source.", HttpStatus.FORBIDDEN);
         }
-        String language = languageFactory.getLanguage(submission.getLanguage()).getName();
+        String language = languageService.getLanguage(submission.getLanguage()).getName();
 
         if (style == null) {
             style = userPerferenceMapper.getStyle(userId);
