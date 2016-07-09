@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.util.StringUtils;
 
+import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
+
 @Controller
 @Slf4j
 public class ContestStatisticsController {
@@ -36,7 +38,7 @@ public class ContestStatisticsController {
     @Autowired
     private LanguageFactory languageFactory;
 
-    @RequestMapping(value = "/conteststatistics", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = "text/html")
+    @RequestMapping(value = "/conteststatistics", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = TEXT_HTML_VALUE)
     public ResponseEntity<String> conteststatistics(HttpServletRequest request,
             @RequestParam("contest_id") long contestId) throws SQLException {
         Instant now = Instant.now();

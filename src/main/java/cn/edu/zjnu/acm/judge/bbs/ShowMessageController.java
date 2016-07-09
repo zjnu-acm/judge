@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.util.StringUtils;
 
+import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
+
 /**
  *
  * @author zhanhb
@@ -32,7 +34,7 @@ public class ShowMessageController {
     @Autowired
     private MessageMapper messageMapper;
 
-    @RequestMapping(value = "/showmessage", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = "text/html")
+    @RequestMapping(value = "/showmessage", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = TEXT_HTML_VALUE)
     public ResponseEntity<String> showmessage(HttpServletRequest request,
             @RequestParam("message_id") long messageId) {
         UserDetailService.requireLoginned(request);
