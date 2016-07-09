@@ -12,11 +12,9 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 
--- Dumping database structure for clanguage
-CREATE DATABASE IF NOT EXISTS `clanguage` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
-USE `clanguage`;
+-- Dumping database structure
 
--- Dumping structure for table clanguage.compileinfo
+-- Dumping structure for table compileinfo
 CREATE TABLE IF NOT EXISTS `compileinfo` (
   `solution_id` bigint(20) NOT NULL,
   `error` longtext NOT NULL,
@@ -25,24 +23,24 @@ CREATE TABLE IF NOT EXISTS `compileinfo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
--- Dumping structure for table clanguage.contest
+-- Dumping structure for table contest
 CREATE TABLE IF NOT EXISTS `contest` (
   `contest_id` bigint(20) NOT NULL,
   `title` varchar(255) NOT NULL,
   `start_time` datetime NOT NULL,
   `end_time` datetime NOT NULL,
-  `defunct` enum('N','Y') NOT NULL DEFAULT 'N' COMMENT 'defunct 表示该比赛有未被删除，Y表示已经被删除',
   `description` longtext NOT NULL,
   `private` int(11) DEFAULT NULL,
+  `disabled` bit(1) NOT NULL DEFAULT b'0' COMMENT 'disabled表示该比赛是否被禁用',
   PRIMARY KEY (`contest_id`) USING HASH
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
--- Dumping structure for table clanguage.contest_problem
+-- Dumping structure for table contest_problem
 CREATE TABLE IF NOT EXISTS `contest_problem` (
   `contest_id` bigint(20) NOT NULL,
   `problem_id` bigint(20) NOT NULL,
-  `title` varchar(255) NOT NULL,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `num` int(11) NOT NULL,
   PRIMARY KEY (`contest_id`,`problem_id`) USING HASH,
   UNIQUE KEY `UQ_contest_num` (`contest_id`,`num`),
@@ -52,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `contest_problem` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='比赛的题目。';
 
 -- Data exporting was unselected.
--- Dumping structure for table clanguage.loginlog
+-- Dumping structure for table loginlog
 CREATE TABLE IF NOT EXISTS `loginlog` (
   `id` bigint(20) NOT NULL,
   `user_id` varchar(255) NOT NULL,
@@ -64,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `loginlog` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='由于历史原因2016/3/21及以前的success均为1，实际登陆是否成功未知。';
 
 -- Data exporting was unselected.
--- Dumping structure for table clanguage.mail
+-- Dumping structure for table mail
 CREATE TABLE IF NOT EXISTS `mail` (
   `mail_id` bigint(20) NOT NULL,
   `from_user` varchar(20) NOT NULL,
@@ -74,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `mail` (
   `new_mail` bit(1) NOT NULL DEFAULT b'1',
   `reply` bit(1) NOT NULL DEFAULT b'0',
   `in_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `defunct` enum('N','Y') NOT NULL DEFAULT 'N',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`mail_id`),
   KEY `INDEX_to_user` (`to_user`),
   KEY `INDEX_from_user` (`from_user`),
@@ -83,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `mail` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='站内信';
 
 -- Data exporting was unselected.
--- Dumping structure for table clanguage.message
+-- Dumping structure for table message
 CREATE TABLE IF NOT EXISTS `message` (
   `message_id` bigint(20) NOT NULL,
   `problem_id` bigint(20) DEFAULT NULL,
@@ -95,7 +93,7 @@ CREATE TABLE IF NOT EXISTS `message` (
   `title` varchar(200) NOT NULL,
   `content` longtext NOT NULL,
   `in_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `defunct` enum('N','Y') NOT NULL DEFAULT 'N',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`message_id`),
   KEY `INDEX_user` (`user_id`) USING HASH,
   KEY `INDEX_problem` (`problem_id`) USING HASH,
@@ -106,7 +104,7 @@ CREATE TABLE IF NOT EXISTS `message` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='讨论版';
 
 -- Data exporting was unselected.
--- Dumping structure for table clanguage.news
+-- Dumping structure for table news
 CREATE TABLE IF NOT EXISTS `news` (
   `news_id` bigint(20) NOT NULL,
   `user_id` varchar(20) NOT NULL,
@@ -114,13 +112,13 @@ CREATE TABLE IF NOT EXISTS `news` (
   `content` longtext NOT NULL,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `importance` tinyint(4) NOT NULL DEFAULT '0',
-  `defunct` enum('N','Y') NOT NULL DEFAULT 'N',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`news_id`),
   KEY `INDEX_users` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
--- Dumping structure for table clanguage.persistent_logins
+-- Dumping structure for table persistent_logins
 CREATE TABLE IF NOT EXISTS `persistent_logins` (
   `username` varchar(64) NOT NULL,
   `series` varchar(64) NOT NULL,
@@ -131,17 +129,17 @@ CREATE TABLE IF NOT EXISTS `persistent_logins` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
--- Dumping structure for table clanguage.privilege
+-- Dumping structure for table privilege
 CREATE TABLE IF NOT EXISTS `privilege` (
   `user_id` varchar(20) NOT NULL,
   `rightstr` enum('administrator','source_browser','news_publisher') NOT NULL DEFAULT 'news_publisher' COMMENT 'news_publisher没有用到',
-  `defunct` enum('N','Y') NOT NULL DEFAULT 'N' COMMENT 'Y表示暂时禁用，N表示可用',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`user_id`) USING HASH,
   CONSTRAINT `FK_privilege_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
--- Dumping structure for table clanguage.problem
+-- Dumping structure for table problem
 CREATE TABLE IF NOT EXISTS `problem` (
   `problem_id` bigint(20) NOT NULL,
   `title` varchar(255) NOT NULL,
@@ -155,19 +153,19 @@ CREATE TABLE IF NOT EXISTS `problem` (
   `in_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `time_limit` int(11) NOT NULL,
   `memory_limit` int(11) NOT NULL,
-  `defunct` enum('N','Y') NOT NULL DEFAULT 'N',
   `contest_id` bigint(20) DEFAULT NULL,
   `accepted` bigint(20) NOT NULL DEFAULT '0',
   `submit` bigint(20) NOT NULL DEFAULT '0',
   `solved` bigint(20) NOT NULL DEFAULT '0',
   `submit_user` bigint(20) NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`problem_id`),
   KEY `FK_problem_contest` (`contest_id`),
   CONSTRAINT `FK_problem_contest` FOREIGN KEY (`contest_id`) REFERENCES `contest` (`contest_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
--- Dumping structure for table clanguage.problem_i18n
+-- Dumping structure for table problem_i18n
 CREATE TABLE IF NOT EXISTS `problem_i18n` (
   `id` bigint(20) NOT NULL,
   `locale` enum('en','zh') NOT NULL DEFAULT 'zh',
@@ -182,7 +180,7 @@ CREATE TABLE IF NOT EXISTS `problem_i18n` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
--- Dumping structure for table clanguage.solution
+-- Dumping structure for table solution
 CREATE TABLE IF NOT EXISTS `solution` (
   `solution_id` bigint(20) NOT NULL,
   `problem_id` bigint(20) NOT NULL,
@@ -208,7 +206,7 @@ CREATE TABLE IF NOT EXISTS `solution` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
--- Dumping structure for table clanguage.solution_details
+-- Dumping structure for table solution_details
 CREATE TABLE IF NOT EXISTS `solution_details` (
   `solution_id` bigint(20) NOT NULL,
   `details` longtext NOT NULL,
@@ -217,7 +215,7 @@ CREATE TABLE IF NOT EXISTS `solution_details` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
--- Dumping structure for table clanguage.source_code
+-- Dumping structure for table source_code
 CREATE TABLE IF NOT EXISTS `source_code` (
   `solution_id` bigint(20) NOT NULL,
   `source` blob NOT NULL,
@@ -226,7 +224,7 @@ CREATE TABLE IF NOT EXISTS `source_code` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
--- Dumping structure for table clanguage.users
+-- Dumping structure for table users
 CREATE TABLE IF NOT EXISTS `users` (
   `user_id` varchar(20) NOT NULL,
   `email` varchar(255) NOT NULL DEFAULT '',
@@ -240,16 +238,16 @@ CREATE TABLE IF NOT EXISTS `users` (
   `school` varchar(255) NOT NULL DEFAULT '',
   `style` tinyint(4) NOT NULL DEFAULT '41',
   `vcode` varchar(50) DEFAULT NULL,
-  `defunct` enum('N','Y') NOT NULL DEFAULT 'N',
   `accepted` bigint(20) NOT NULL DEFAULT '0',
   `submit` bigint(20) NOT NULL DEFAULT '0',
   `solved` bigint(20) NOT NULL DEFAULT '0',
   `submit_problem` bigint(20) NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`user_id`) USING HASH
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
--- Dumping structure for table clanguage.user_problem
+-- Dumping structure for table user_problem
 CREATE TABLE IF NOT EXISTS `user_problem` (
   `user_id` varchar(20) NOT NULL,
   `problem_id` bigint(20) NOT NULL,
