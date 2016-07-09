@@ -22,6 +22,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,35 +41,37 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @WebAppConfiguration
 public class BcryptPasswordEncoderTest {
 
-	@Autowired
-	private DataSource dataSource;
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+    @Autowired
+    private DataSource dataSource;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-	@Test
-	public void testEncode() throws SQLException {
-		int c = 0;
-		try (Connection conn = dataSource.getConnection()) {
-			conn.setAutoCommit(false);
-			try (PreparedStatement ps = conn.prepareStatement("select user_id,password from users where length(password)<31");
-					ResultSet rs = ps.executeQuery()) {
-				while (rs.next()) {
-					String password = rs.getString("password");
-					String userId = rs.getString("user_id");
-					try (PreparedStatement ps1 = conn.prepareStatement("update users set password=? where user_id=? and password=?")) {
-						ps1.setString(1, passwordEncoder.encode(password));
-						ps1.setString(2, userId);
-						ps1.setString(3, password);
-						ps1.executeUpdate();
-					}
-					c++;
-					if (c % 50 == 0) {
-						log.info("{}", c);
-						conn.commit();
-					}
-				}
-			}
-			conn.commit();
-		}
-	}
+    @Ignore("not safe")
+    @Test
+    public void testEncode() throws SQLException {
+        int c = 0;
+        try (Connection conn = dataSource.getConnection()) {
+            conn.setAutoCommit(false);
+            try (PreparedStatement ps = conn.prepareStatement("select user_id,password from users where length(password)<31");
+                    ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    String password = rs.getString("password");
+                    String userId = rs.getString("user_id");
+                    try (PreparedStatement ps1 = conn.prepareStatement("update users set password=? where user_id=? and password=?")) {
+                        ps1.setString(1, passwordEncoder.encode(password));
+                        ps1.setString(2, userId);
+                        ps1.setString(3, password);
+                        ps1.executeUpdate();
+                    }
+                    c++;
+                    if (c % 50 == 0) {
+                        log.info("{}", c);
+                        conn.commit();
+                    }
+                }
+            }
+            conn.commit();
+        }
+    }
+
 }
