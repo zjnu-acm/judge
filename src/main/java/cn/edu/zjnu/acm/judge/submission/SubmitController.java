@@ -1,7 +1,6 @@
 package cn.edu.zjnu.acm.judge.submission;
 
 import cn.edu.zjnu.acm.judge.config.JudgeConfiguration;
-import cn.edu.zjnu.acm.judge.config.LanguageFactory;
 import cn.edu.zjnu.acm.judge.core.Judger;
 import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.domain.Language;
@@ -15,6 +14,7 @@ import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserPerferenceMapper;
+import cn.edu.zjnu.acm.judge.service.LanguageService;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import cn.edu.zjnu.acm.judge.util.ResultType;
 import java.nio.file.Path;
@@ -44,7 +44,7 @@ public class SubmitController {
     @Autowired
     private JudgeConfiguration judgeConfiguration;
     @Autowired
-    private LanguageFactory languageFactory;
+    private LanguageService languageService;
 
     @RequestMapping(value = "/submit", method = RequestMethod.POST)
     public String submit(HttpServletRequest request,
@@ -55,7 +55,7 @@ public class SubmitController {
         UserDetailService.requireLoginned(request);
         Language language;
         try {
-            language = languageFactory.getLanguage(languageId);
+            language = languageService.getLanguage(languageId);
         } catch (IllegalArgumentException ex) {
             throw new MessageException("Please choose a language", HttpStatus.BAD_REQUEST);
         }

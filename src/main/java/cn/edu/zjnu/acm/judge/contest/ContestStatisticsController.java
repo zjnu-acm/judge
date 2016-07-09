@@ -1,10 +1,10 @@
 package cn.edu.zjnu.acm.judge.contest;
 
-import cn.edu.zjnu.acm.judge.config.LanguageFactory;
 import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.domain.Language;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
+import cn.edu.zjnu.acm.judge.service.LanguageService;
 import cn.edu.zjnu.acm.judge.util.JudgeUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -36,7 +36,7 @@ public class ContestStatisticsController {
     @Autowired
     private ContestMapper contestMapper;
     @Autowired
-    private LanguageFactory languageFactory;
+    private LanguageService languageService;
 
     @RequestMapping(value = "/conteststatistics", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = TEXT_HTML_VALUE)
     public ResponseEntity<String> conteststatistics(HttpServletRequest request,
@@ -63,7 +63,7 @@ public class ContestStatisticsController {
                 + "<TABLE align=center cellSpacing=0 cellPadding=0 width=600 border=1 class=table-back style=\"border-collapse: collapse\" bordercolor=#FFF>"
                 + "<tr bgcolor=#6589D1><th>&nbsp;</th><th>100</th><th>99~70</th><th>69~31</th><th>30~1</th><th>0</th><th>CE</th><th>Others</th><th>Total</th>");
 
-        Map<Integer, Language> languages = languageFactory.getLanguages();
+        Map<Integer, Language> languages = languageService.getLanguages();
         int languageCount = languages.size();
         StringBuilder sql = new StringBuilder(600).append("select ");
         for (int i : languages.keySet()) {

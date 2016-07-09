@@ -13,22 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.config;
+package cn.edu.zjnu.acm.judge.service;
 
 import cn.edu.zjnu.acm.judge.domain.Language;
 import cn.edu.zjnu.acm.judge.exception.NoSuchLanguageException;
-import com.google.gson.Gson;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
+import cn.edu.zjnu.acm.judge.mapper.LanguageMapper;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -36,26 +33,21 @@ import org.springframework.stereotype.Service;
  * @author zhanhb
  */
 @Service
-public class LanguageFactory {
-
-    private static final Map<Integer, Language> languages;
-
-    static {
-        try (InputStream is = LanguageFactory.class.getClassLoader().getResourceAsStream("language.json");
-                InputStreamReader reader = new InputStreamReader(is, StandardCharsets.UTF_8)) {
-            Gson gson = new Gson();
-            Language[] allLanguages = gson.fromJson(reader, Language[].class);
-            languages = Arrays.asList(allLanguages).stream()
-                    .collect(Collectors.toMap(Language::getId, Function.identity(), throwOnMerge(), LinkedHashMap::new));
-        } catch (IOException ex) {
-            throw new ExceptionInInitializerError(ex);
-        }
-    }
+public class LanguageService {
 
     private static <T> BinaryOperator<T> throwOnMerge() {
         return (u, v) -> {
             throw new IllegalStateException();
         };
+    }
+
+    private Map<Integer, Language> languages;
+
+    @Autowired
+    public void setLanguageMapper(LanguageMapper languageMapper) {
+        List<Language> allLanguages = languageMapper.findAll();
+        languages = allLanguages.stream()
+                .collect(Collectors.toMap(Language::getId, Function.identity(), throwOnMerge(), LinkedHashMap::new));
     }
 
     public Map<Integer, Language> getLanguages() {
