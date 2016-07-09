@@ -156,7 +156,7 @@ public interface ContestMapper {
     List<User> attenders(@Param("id") long contestId);
 
     @Insert("insert ignore into contest_problem (contest_id,problem_id,title,num) "
-            + "values(#{id},#{problem},#{title},#{num})")
+            + "values(#{id},#{problem},nullif(#{title},''),#{num})")
     long addProblem(@Param("id") long contestId, @Param("problem") long problem,
             @Param("title") String title,
             @Param("num") int num);
