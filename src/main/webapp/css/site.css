@@ -175,3 +175,38 @@ a.self {
     float: left;
     padding: 0 2px;
 }
+.back-to-top {
+    cursor: pointer;
+    display: none;
+    position: fixed;
+    z-index: 1049;
+    bottom: 7px;
+    right: 7px;
+    padding: 8px;
+    color: transparent;
+    overflow: hidden;
+    font: 0/0 arial;
+}
+.back-to-top:before {
+    background-color: #000;
+    filter: alpha(opacity = 20);
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+    -moz-opacity: 0.2;
+    -khtml-opacity: 0.2;
+    opacity: 0.2;
+    border-radius: 3px;
+    width: 40px;
+    height: 40px;
+    display: block;
+    content: "";
+}
+
+.back-to-top:after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 11px;
+    background: url(data:image/gif;base64,R0lGODlhFAALALMAAP39/vn5+vr7/f////7+/vz8/Pv7+/n5+fX19fHx8f///wAAAAAAAAAAAAAAAAAAACH5BAEAAAoALAAAAAAUAAsAQARIUMkpiSWUHjIISNnkccRBGQJ5DYNghlMCcN0Hd7RgUK1aKKkNLIMDwEqWAGY46eE6gsGwgGAhfgqqlSN5EqKhwczbUTIVyE4EADs=);
+    top: 22px;
+    left: 18px;
+}

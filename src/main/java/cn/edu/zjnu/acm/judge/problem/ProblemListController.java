@@ -75,7 +75,7 @@ public class ProblemListController {
         long end = 999 + volume * 100;
         long totalVolume = (problemMapper.nextId() - 1001) / 100 + 1;
 
-        List<Problem> problems = problemMapper.findAllByDefunctN(currentUserId, start, end, locale.getLanguage());
+        List<Problem> problems = problemMapper.findAllByDisabledFalse(currentUserId, start, end, locale.getLanguage());
         problems = problems.stream()
                 .filter(problem -> Optional.ofNullable(problem.getContest())
                         .map(contestMapper::findOne)

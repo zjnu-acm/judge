@@ -15,12 +15,12 @@
  */
 package cn.edu.zjnu.acm.judge.problem;
 
-import cn.edu.zjnu.acm.judge.config.LanguageFactory;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.domain.ScoreCount;
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
+import cn.edu.zjnu.acm.judge.service.LanguageService;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import cn.edu.zjnu.acm.judge.util.ResultType;
 import com.google.gson.Gson;
@@ -42,6 +42,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
+
 /**
  *
  * @author zhanhb
@@ -54,7 +56,7 @@ public class ProblemStatusController {
     @Autowired
     private ProblemMapper problemMapper;
     @Autowired
-    private LanguageFactory languageFactory;
+    private LanguageService languageService;
 
     @RequestMapping(value = "/gotoproblem", method = {RequestMethod.GET, RequestMethod.HEAD})
     public String gotoProblem(@RequestParam(value = "pid", required = false) String pid,
@@ -68,7 +70,7 @@ public class ProblemStatusController {
         }
     }
 
-    @RequestMapping(value = "/problemstatus", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = "text/html")
+    @RequestMapping(value = "/problemstatus", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = TEXT_HTML_VALUE)
     public ResponseEntity<String> status(HttpServletRequest request,
             @RequestParam("problem_id") long id,
             @RequestParam(value = "start", defaultValue = "0") long start,
@@ -127,7 +129,7 @@ public class ProblemStatusController {
             Instant inDate = s.getInDate();
             long memory = s.getMemory();
             long time = s.getTime();
-            String language = languageFactory.getLanguage(s.getLanguage()).getName();
+            String language = languageService.getLanguage(s.getLanguage()).getName();
             String length = df.format(s.getSourceLength() / 1024.);
             sb.append("<tr align=center><td>").append(rank).append("</td><td>").append(submissionId).append("</td>" + "<td><a href=userstatus?user_id=").append(userId).append(">").append(userId).append("</a></td>");
             if (canView || (contestId == null)) {

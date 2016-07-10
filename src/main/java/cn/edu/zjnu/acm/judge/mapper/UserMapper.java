@@ -45,25 +45,25 @@ public interface UserMapper {
             + "WHERE user_id=#{id}")
     long update(User user);
 
-    @Select("SELECT COUNT(*) total FROM users WHERE defunct='N'")
-    long countByDefunctN();
+    @Select("SELECT COUNT(*) total FROM users WHERE not disabled")
+    long countByDisabledFalse();
 
     String ON = " (u1.solved>u2.solved or u1.solved=u2.solved and u1.submit<u2.submit or u1.solved=u2.solved and u1.submit=u2.submit and u1.user_id<u2.user_id) ";
 
     @Select("select count(u1.user_id) "
             + "from users u1 join users u2 "
-            + "on" + ON + "and u1.defunct!='Y' where u2.user_id=#{id}")
+            + "on" + ON + "and not u1.disabled where u2.user_id=#{id}")
     long rank(@Param("id") String userId);
 
     @Select("select user_id id,nick,solved,submit from (( "
             + "select u1.* from users u1 join users u2 "
-            + "on " + ON + "and u1.defunct!='Y' "
+            + "on " + ON + "and not u1.disabled "
             + "where u2.user_id=#{id} order by u1.solved,u1.submit desc,u1.user_id desc limit #{c} "
             + ") union ("
             + "select * from users where user_id=#{id} "
             + ") union ( "
             + "select u2.* from users u1 join users u2 "
-            + "on " + ON + " and u2.defunct!='Y' "
+            + "on " + ON + " and not u2.disabled "
             + "where u1.user_id=#{id} order by u2.solved desc,u2.submit,u2.user_id limit #{c} "
             + ") order by solved desc,submit,user_id) z")
     List<User> neighbours(@Param("id") String userId, @Param("c") int count);
@@ -72,7 +72,7 @@ public interface UserMapper {
     List<User> recentrank(@Param("count") int count);
 
     @Select("<script>select" + LIST_COLUMNS
-            + "from users where defunct='N' "
+            + "from users where not disabled "
             + "<if test='sort!=null'><foreach item='item' index='index' collection='sort' open='order by' separator=','>"
             + "<choose>"
             + "<when test='item.property==&quot;user_id&quot;'>user_id</when>"
@@ -87,7 +87,7 @@ public interface UserMapper {
             + "</script>")
     List<User> findAll(Pageable pageable);
 
-    @Select("select " + LIST_COLUMNS + " from users WHERE (user_id like #{query} or nick like #{query}) and defunct='N' order by solved desc,submit asc")
+    @Select("select " + LIST_COLUMNS + " from users WHERE (user_id like #{query} or nick like #{query}) and not disabled order by solved desc,submit asc")
     List<User> findAllBySearch(@Param("query") String query);
 
 }

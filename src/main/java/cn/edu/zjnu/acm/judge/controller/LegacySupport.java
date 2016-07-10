@@ -15,7 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.controller;
 
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,11 +27,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * @author zhanhb
  */
 @Controller
+@Secured("ROLE_ADMIN")
 public class LegacySupport {
 
     @RequestMapping(value = "/admin.showproblem", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public String showproblem(HttpServletRequest request,
-            @RequestParam("problem_id") long problemId,
+    public String showproblem(@RequestParam("problem_id") long problemId,
             RedirectAttributes redirectAttributes) {
         redirectAttributes.addAttribute("problemId", problemId);
         return "redirect:/admin/problems/{problemId}";

@@ -1,7 +1,6 @@
 package cn.edu.zjnu.acm.judge.submission;
 
 import cn.edu.zjnu.acm.judge.config.JudgeConfiguration;
-import cn.edu.zjnu.acm.judge.config.LanguageFactory;
 import cn.edu.zjnu.acm.judge.core.Judger;
 import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.domain.Language;
@@ -15,6 +14,7 @@ import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserPerferenceMapper;
+import cn.edu.zjnu.acm.judge.service.LanguageService;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import cn.edu.zjnu.acm.judge.util.ResultType;
 import java.nio.file.Path;
@@ -22,6 +22,7 @@ import java.time.Instant;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -44,18 +45,18 @@ public class SubmitController {
     @Autowired
     private JudgeConfiguration judgeConfiguration;
     @Autowired
-    private LanguageFactory languageFactory;
+    private LanguageService languageService;
 
+    @Secured("ROLE_USER")
     @RequestMapping(value = "/submit", method = RequestMethod.POST)
     public String submit(HttpServletRequest request,
             @RequestParam("language") int languageId,
             @RequestParam("problem_id") long problemId,
             @RequestParam("source") String source,
             RedirectAttributes redirectAttributes) {
-        UserDetailService.requireLoginned(request);
         Language language;
         try {
-            language = languageFactory.getLanguage(languageId);
+            language = languageService.getLanguage(languageId);
         } catch (IllegalArgumentException ex) {
             throw new MessageException("Please choose a language", HttpStatus.BAD_REQUEST);
         }

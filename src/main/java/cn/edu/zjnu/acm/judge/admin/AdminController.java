@@ -21,13 +21,13 @@ import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserProblemMapper;
-import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +40,7 @@ import org.thymeleaf.util.StringUtils;
  * @author zhanhb
  */
 @Controller
+@Secured("ROLE_ADMIN")
 public class AdminController {
 
     @Autowired
@@ -52,21 +53,17 @@ public class AdminController {
     private JudgeConfiguration judgeConfiguration;
 
     @RequestMapping(value = "/admin/contests/new", method = {RequestMethod.GET, RequestMethod.HEAD})
-    protected String addcontestpage(HttpServletRequest request) {
-        UserDetailService.requireAdminLoginned(request);
+    protected String addcontestpage() {
         return "admin/addcontestpage";
     }
 
     @RequestMapping(value = "/admin", method = {RequestMethod.GET, RequestMethod.HEAD})
-    protected String index(HttpServletRequest request) {
-        UserDetailService.requireAdminLoginned(request);
+    protected String index() {
         return "admin/index";
     }
 
     @RequestMapping(value = "/admin/problems/{problemId}/disable", method = {RequestMethod.GET, RequestMethod.HEAD})
-    protected String disableProblem(HttpServletRequest request,
-            @PathVariable("problemId") long problemId) {
-        UserDetailService.requireAdminLoginned(request);
+    protected String disableProblem(HttpServletRequest request, @PathVariable("problemId") long problemId) {
 
         problemMapper.disable(problemId);
 
@@ -78,7 +75,6 @@ public class AdminController {
     @RequestMapping(value = "/admin/problems/{problemId}/resume", method = {RequestMethod.GET, RequestMethod.HEAD})
     protected String resumeProblem(HttpServletRequest request,
             @PathVariable("problemId") long problemId) {
-        UserDetailService.requireAdminLoginned(request);
         problemMapper.enable(problemId);
 
         request.setAttribute("problemId", problemId);
@@ -92,7 +88,6 @@ public class AdminController {
             @RequestParam(value = "title", required = false) String title,
             @RequestParam(value = "description", required = false) String description,
             HttpServletRequest request) {
-        UserDetailService.requireAdminLoginned(request);
 
         Instant startTime = LocalDateTime.of(syear, smonth, sday, shour, sminute).atZone(ZoneId.systemDefault()).toInstant();
         Instant endTime = LocalDateTime.of(eyear, emonth, eday, ehour, eminute).atZone(ZoneId.systemDefault()).toInstant();
@@ -113,11 +108,10 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/admin/tools", method = RequestMethod.POST)
-    public String tools(HttpServletRequest request,
+    public String tools(
             @RequestParam(value = "op", required = false) String op,
             @RequestParam(value = "sinfo", required = false) String sinfo,
             @RequestParam(value = "pureText", required = false) String pureText) {
-        UserDetailService.requireAdminLoginned(request);
         if (StringUtils.isEmptyOrWhitespace(op)) {
             throw new MessageException("Nothing I can do for you.", HttpStatus.BAD_REQUEST);
         }

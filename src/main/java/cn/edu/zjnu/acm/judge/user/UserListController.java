@@ -69,7 +69,7 @@ public class UserListController {
             throw new BadRequestException();
         }
 
-        long totalUsers = userMapper.countByDefunctN();
+        long totalUsers = userMapper.countByDisabledFalse();
         List<User> users = userMapper.findAll(pageable);
         PageImpl<User> page = new PageImpl<>(users, pageable, totalUsers);
         request.setAttribute("url", query);

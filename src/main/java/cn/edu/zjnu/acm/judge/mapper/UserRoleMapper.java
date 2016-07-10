@@ -27,7 +27,7 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface UserRoleMapper {
 
-    @Select("select rightstr from privilege where user_id=#{userId} and defunct='N'")
+    @Select("select rightstr from privilege where user_id=#{userId} and not disabled")
     List<String> findAllByUserId(@Param("userId") String userId);
 
 }
