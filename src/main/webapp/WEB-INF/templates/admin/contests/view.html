@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       th:object="${contest}"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorator="layout/admin">
+      layout:decorate="~{layout/admin}">
     <head>
         <title th:text="*{title}">title</title>
         <style>.bordered [class^=col-]{border: 1px solid rgba(86,61,124,.2);}
