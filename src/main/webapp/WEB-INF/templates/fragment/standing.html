@@ -14,7 +14,7 @@
             <td><a th:href="@{/userstatus(user_id=*{user})}" th:text="*{nick}">userId</a></td>
             <td><a th:href="@{/status(user_id=*{user},contest_id=${id})}" th:text="*{solved}">4</a></td>
             <td th:text="*{T(cn.edu.zjnu.acm.judge.util.JudgeUtils).formatTime(time)}">12:40:59</td>
-            <td th:each="problem : ${problems}" th:object="${problem}" th:with="penalty=${user.getPenalty(problem.id)},time=${user.getTime(problem.id)}" th:inline="text">
+            <td th:each="problem : ${problems}" th:object="${problem}" th:with="penalty=${user.getPenalty(problem.id)},time=${user.getTime(problem.id)}">
                 <th:block th:if="${time != null}" th:text="${T(cn.edu.zjnu.acm.judge.util.JudgeUtils).formatTime(time)}"/>
                 <th:block th:if="${time != null and penalty gt 0}" th:utext="'&#13;&#10;'"/>
                 <th:block th:if="${penalty gt 0}">(-[[${penalty}]])</th:block>

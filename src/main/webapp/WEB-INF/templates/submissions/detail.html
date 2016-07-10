@@ -18,14 +18,14 @@
                     <td align="center" width="7%"><b>Time</b></td>
                     <td align="center" width="25%"><b>Memory</b></td>
                 </tr>
-                <tr th:each="detail,it:${details}" align="center" th:object="${detail}" th:inline="text">
+                <tr th:each="detail,it:${details}" align="center" th:object="${detail}">
                     <td th:text="${it.count}">1</td>
                     <td th:text="*{result}">Accepted</td>
                     <td th:text="*{score}">10</td>
                     <td>[[*{time}]]MS</td>
                     <td>[[*{memory}]]K</td>
                 </tr>
-                <tr bgcolor="#6589D1" align="center" th:inline="text">
+                <tr bgcolor="#6589D1" align="center" >
                     <td>Result</td>
                     <td th:text="${result}">Accepted</td>
                     <td th:text="${score}">100</td>

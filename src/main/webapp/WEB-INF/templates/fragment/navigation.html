@@ -45,7 +45,7 @@
                 <a style="color:red" th:href="@{/scheduledcontests}" th:text="#{onlinejudge.contest.schedule}">计划中的考试</a>
             </td>
             <td class="top scbg">
-                <form method="POST" th:action="@{/login}" th:if="${#ctx.httpServletRequest.userPrincipal==null}">
+                <form method="POST" th:action="@{/login}" th:if="${#request.userPrincipal==null}">
                     <label th:for="${#ids.next('username')}" th:text="#{onlinejudge.login.user.label}">学号:&nbsp;</label>
                     <input th:id="${#ids.seq('username')}" type="text" name="user_id1" size="10" style="font-family:monospace"/>
                     <br/>
@@ -58,13 +58,13 @@
                     <button type="Submit" th:text="#{onlinejudge.login.button}">登陆</button><br/>
                     <a th:href="@{/findpassword}" th:text="#{onlinejudge.login.forget}">忘了密码</a> / <a th:href="@{/registerpage}" th:text="#{onlinejudge.user.register}">注册</a>
                 </form>
-                <th:block th:unless="${#ctx.httpServletRequest.userPrincipal==null}">
+                <th:block th:unless="${#request.userPrincipal==null}">
                     <span th:text="#{onlinejudge.login.welcome}">欢迎</span><br/>
-                    <b th:text="${#ctx.httpServletRequest.userPrincipal.name}">userId</b>
+                    <b th:text="${#request.userPrincipal.name}">userId</b>
                     <a th:href="@{/logout}" th:text="#{onlinejudge.login.logout}">退出登录</a>
                     <br/>
                     <a th:href="@{/mail}">
-                        <font color="blue" th:inline="text">
+                        <font color="blue" >
                             <span th:text="#{onlinejudge.login.internalmail}">站内邮件:</span>
                             <span>[[${mailInfo.total}]](<b th:text="${mailInfo.newMail}">0</b>)</span>
                         </font>

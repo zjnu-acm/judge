@@ -10,7 +10,7 @@
         <!--/*/<th:block layout:fragment="content">/*/-->
         <h2>
             <span>Post new message</span>
-            <th:block th:if="${problemId!=null and problemId!=0}" th:inline="text"> for problem [[${problemId}]]</th:block>
+            <th:block th:if="${problemId!=null and problemId!=0}"> for problem [[${problemId}]]</th:block>
         </h2>
         <form method="POST" th:action="@{/post}">
             <input th:if="${problemId!=null and problemId!=0}" type="hidden" name="problem_id" th:value="${problemId}"/>

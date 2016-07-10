@@ -8,7 +8,7 @@
     </head>
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
-        <p align="center" th:inline="text">
+        <p align="center">
             <b>
                 <font size="5" face="Arial">Contest - [[${contest.title}]]</font>
             </b>
@@ -25,7 +25,7 @@
         </p>
         <div align="center" th:if="${contest.started}">
             <span th:text="${contest.description}"></span>
-            <table align="center" cellspacing="0" cellpadding="0" width="600" border="1" class="problem-list table-back" th:classappend="${#ctx.httpServletRequest.userPrincipal==null?'notlogined':''}">
+            <table align="center" cellspacing="0" cellpadding="0" width="600" border="1" class="problem-list table-back" th:classappend="${#request.userPrincipal==null?'notlogined':''}">
                 <tr bgcolor="#6589D1">
                     <td width="5%" class="status"></td>
                     <td width="15%" align="center"><b>Problem Id</b></td>
@@ -33,7 +33,7 @@
                 </tr>
                 <tr th:each="problem,it:${problems}" th:object="${problem}" th:class="*{status==1?'ac':status==2?'wa':''}">
                     <td class="status"></td>
-                    <td align="center"><b th:inline="text">[[*{orign}]] Problem [[${T(java.lang.Character).toString(65+it.index)}]]</b></td>
+                    <td align="center"><b>[[*{orign}]] Problem [[${T(java.lang.Character).toString(65+it.index)}]]</b></td>
                     <td align="left"><a th:href="@{/contests/{contestId}/problems/{pid}(contestId=${contest.id},pid=*{id})}" th:text="*{title}">title</a></td>
                 </tr>
             </table>
