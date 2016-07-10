@@ -20,12 +20,8 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Optional;
 import java.util.Set;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfiguration;
 import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafProperties;
-import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -45,10 +41,8 @@ import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
-@AutoConfigureAfter(WebMvcAutoConfiguration.class)
-@AutoConfigureBefore(ThymeleafAutoConfiguration.class)
 @Configuration
-@EnableConfigurationProperties(ThymeleafProperties.class)  //no sense rolling our own.
+@EnableConfigurationProperties(ThymeleafProperties.class)
 public class ThymeleafConfiguration {
 
     @Bean
@@ -91,7 +85,7 @@ public class ThymeleafConfiguration {
     }
 
     private String appendCharset(MimeType type, String charset) {
-        if (type.getCharSet() != null) {
+        if (type.getCharset() != null) {
             return type.toString();
         }
         LinkedHashMap<String, String> parameters = new LinkedHashMap<>(type.getParameters().size() + 1);
