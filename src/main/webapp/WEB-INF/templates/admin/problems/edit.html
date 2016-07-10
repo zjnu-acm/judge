@@ -16,15 +16,15 @@
             </select>
         </form>
         <input type="hidden" name="ckfinderPath" th:value="@{/ckfinder/}"/>
-        <h1 th:inline="text">[[${hint}]]</h1>
+        <h1>[[${hint}]]</h1>
         <p align="center">
-            <font size="4" color="#333399" th:inline="text">[[${hint2}]]</font>
+            <font size="4" color="#333399">[[${hint2}]]</font>
         </p>
         <form name="problem-edit" method="POST" th:action="@{${url}}" th:object="${problem}">
             <input type="hidden" name="id" th:value="*{id}"/>
             <input type="hidden" name="_method" th:value="${method}"/>
             <input type="hidden" name="problemLang" th:value="${problemLang}"/>
-            <p align="left" th:inline="text">Problem Id:&nbsp;&nbsp;[[*{id}==0?'New Problem':*{id}]]</p>
+            <p align="left">Problem Id:&nbsp;&nbsp;[[*{id}==0?'New Problem':*{id}]]</p>
             <p align="left">
                 <label th:for="${#ids.next('title')}">Title:</label>
                 <input th:id="${#ids.seq('title')}" name="title" rows="1" style="width: 100%" th:value="*{title}" required="required"/>

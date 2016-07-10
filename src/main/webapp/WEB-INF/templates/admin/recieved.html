@@ -9,7 +9,7 @@
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
         <p>The servlet has received a GET. This is the reply.</p>
-        <p th:inline="text">time: [[${#calendars.format(execInfo.now,"yyyy-MM-dd HH:mm:ss.SSS")}]]</p>
+        <p>time: [[${#calendars.format(execInfo.now,"yyyy-MM-dd HH:mm:ss.SSS")}]]</p>
         <!--/*/</th:block>/*/-->
     </body>
 </html>

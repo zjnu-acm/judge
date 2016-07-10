@@ -69,3 +69,5 @@ $RECYCLE.BIN/
 .classpath
 .project
 .settings
+*.orig
+

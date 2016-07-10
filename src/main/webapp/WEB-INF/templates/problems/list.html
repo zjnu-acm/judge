@@ -4,7 +4,7 @@
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorator="layout/main">
     <head>
-        <title th:inline="text">Volume [[${volume}]]</title>
+        <title>Volume [[${volume}]]</title>
     </head>
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
@@ -21,7 +21,7 @@
             <input th:id="${#ids.seq('sstr')}" type="text" name="sstr" size="25"/>
             <button type="submit">GO</button>
         </form>
-        <table cellspacing="0" cellpadding="0" width="100%" border="1" class="table-back problem-list" style="border-collapse: collapse" bordercolor="#FFF" th:classappend="${#ctx.httpServletRequest.isUserInRole('USER')}?'':'notlogined'">
+        <table cellspacing="0" cellpadding="0" width="100%" border="1" class="table-back problem-list" style="border-collapse: collapse" bordercolor="#FFF" th:classappend="${#request.isUserInRole('USER')}?'':'notlogined'">
             <tr class="inc">
                 <td class="status" width="5%" align="center"></td>
                 <td class="id" width="10%" align="center">
@@ -49,13 +49,13 @@
                     <b>Date</b>
                 </td>
             </tr>
-            <tr th:each="problem:${problems}" th:object="${problem}" th:class="*{status==1?'ac':status==2?'wa':''}" th:inline="text">
+            <tr th:each="problem:${problems}" th:object="${problem}" th:class="*{status==1?'ac':status==2?'wa':''}">
                 <td class="status"></td>
                 <td align="center" th:text="*{id}">problem.id</td>
                 <td><a th:href="@{/showproblem(problem_id=*{id})}" th:text="*{title}">title</a></td>
                 <td align="center">[[*{ratio}]]%(<a th:href="@{/problemstatus(problem_id=*{id})}">[[*{accepted}]]</a>/<a th:href="@{/status(problem_id=*{id})}">[[*{submit}]]</a>)</td>
                 <td align="center">[[*{difficulty}]]%</td>
-                <td align="center">[[*{inDate!=null?#calendars.format(T(java.util.Date).from(inDate),'yyyy-M-d'):''}]]</td>
+                <td align="center">[[*{inDate!=null?#calendars.format(T(java.util.Date).from(inDate),'yyyy-M-d'):_}]]</td>
             </tr>
         </table>
         <!--/*/</th:block>/*/-->

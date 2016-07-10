@@ -18,7 +18,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="contest:${contests}" th:object="${contest}" th:inline="text">
+                <tr th:each="contest:${contests}" th:object="${contest}">
                     <td>[[*{id}]]</td>
                     <td>
                         <a th:href="@{/showcontest(contest_id=${contest.id})}">[[*{title}]]</a>

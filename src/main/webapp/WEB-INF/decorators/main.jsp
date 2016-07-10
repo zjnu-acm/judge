@@ -16,7 +16,7 @@
         response.setDateHeader("Expires", 0);
     </jsp:scriptlet>
 
-    <jsp:expression>"&lt;!DOCTYPE html&gt;"</jsp:expression>
+    <jsp:expression>"&lt;!DOCTYPE html&gt;\r\n"</jsp:expression>
     <html>
         <head>
             <meta charset="utf-8"/>
