@@ -15,15 +15,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
+
 @Controller
 public class ContestProblemListController {
 
     @Autowired
     private ContestMapper contestMapper;
 
-    @RequestMapping(value = "/showcontest", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @RequestMapping(value = "/showcontest", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = TEXT_HTML_VALUE)
     public String showcontest(HttpServletRequest request, @RequestParam("contest_id") long contestId, Locale locale) {
-        Contest contest = contestMapper.findOneByIdAndDefunctN(contestId);
+        Contest contest = contestMapper.findOneByIdAndDisabledFalse(contestId);
         if (contest == null) {
             throw new MessageException("onlinejudge.contest.nosuchcontest", HttpStatus.NOT_FOUND);
         }

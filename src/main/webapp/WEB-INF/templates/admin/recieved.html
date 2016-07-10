@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorator="layout/admin">
+      layout:decorate="~{layout/admin}">
     <head>
         <title>Administrator Tool Collections</title>
     </head>
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
         <p>The servlet has received a GET. This is the reply.</p>
-        <p th:inline="text">time: [[${#calendars.format(execInfo.now,"yyyy-MM-dd HH:mm:ss.SSS")}]]</p>
+        <p>time: [[${#calendars.format(execInfo.now,"yyyy-MM-dd HH:mm:ss.SSS")}]]</p>
         <!--/*/</th:block>/*/-->
     </body>
 </html>

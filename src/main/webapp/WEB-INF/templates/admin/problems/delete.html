@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorator="layout/admin">
+      layout:decorate="~{layout/admin}">
     <head>
         <title>Congratulations</title>
     </head>
@@ -13,7 +13,7 @@
             <font size="4">Congratulations</font>
         </p>
         <ul>
-            <li>You have deleted a problem, the id is <font color="#CC9900" th:inline="text">[[${problemId}]]</font></li>
+            <li>You have deleted a problem, the id is <font color="#CC9900">[[${problemId}]]</font></li>
         </ul>
         <p>
             <img border="0" th:src="@{/images/j0293234.png}" width="40" height="29"/>

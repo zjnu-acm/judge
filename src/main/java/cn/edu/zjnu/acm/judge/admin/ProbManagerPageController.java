@@ -5,7 +5,6 @@ import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
-import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import cn.edu.zjnu.acm.judge.util.JudgeUtils;
 import java.util.List;
 import java.util.Locale;
@@ -14,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @Slf4j
+@Secured("ROLE_ADMIN")
 public class ProbManagerPageController {
 
     @Autowired
@@ -31,7 +32,6 @@ public class ProbManagerPageController {
 
     @RequestMapping(value = "/admin/problems/new", method = {RequestMethod.GET, RequestMethod.HEAD})
     public String newProblem(HttpServletRequest request) {
-        UserDetailService.requireAdminLoginned(request);
         request.setAttribute("title", "New Problem");
         request.setAttribute("hint", "Add New problem");
         request.setAttribute("url", "/admin/problems");
@@ -51,7 +51,6 @@ public class ProbManagerPageController {
             @PathVariable("problemId") long problemId,
             @RequestParam("problemLang") Optional<String> problemLang,
             Locale locale) {
-        UserDetailService.requireAdminLoginned(request);
         String lang = problemLang.orElseGet(locale::getLanguage);
         log.debug(lang);
         Problem problem = problemMapper.findOne(problemId, lang);

@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorator="layout/main">
+      layout:decorate="~{layout/main}">
     <head>
         <!--/*--><meta charset="UTF-8"/><!--*/-->
         <title>Login Here</title>
     </head>
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
-        <p th:if="${#ctx.requestParameters.error!=null}" style="text-align: center; color: red">Id or password not correct. Please retry.</p>
+        <p th:if="${param.error!=null}" style="text-align: center; color: red">Id or password not correct. Please retry.</p>
         <form method="POST" th:action="@{/login}">
             <table align="center">
                 <tr>

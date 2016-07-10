@@ -34,9 +34,10 @@
             <br/>
             <hr/>
             <p align="center">
-                <font size="3" th:inline="text">All Copyright Reserved 2006-[[${T(java.time.Year).now()}]]<br/>Any problem, Please Contact <a th:href="|mailto:${application.get('admin.mail')}|">Administrator</a>
+                <font size="3">All Copyright Reserved 2006-[[${T(java.time.Year).now()}]]<br/>Any problem, Please Contact <a th:href="|mailto:${application.get('admin.mail')}|">Administrator</a>
                 </font>
             </p>
         </div>
+        <span th:title="#{onlinejudge.footer.back_to_top}" class="back-to-top" id="back-to-top"></span>
     </body>
 </html>

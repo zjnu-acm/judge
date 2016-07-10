@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorator="layout/main">
+      layout:decorate="~{layout/main}">
     <head>
         <title th:text="${title}">Contests</title>
     </head>
@@ -18,7 +18,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="contest:${contests}" th:object="${contest}" th:inline="text">
+                <tr th:each="contest:${contests}" th:object="${contest}">
                     <td>[[*{id}]]</td>
                     <td>
                         <a th:href="@{/showcontest(contest_id=${contest.id})}">[[*{title}]]</a>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorator="layout/main">
+      layout:decorate="~{layout/main}">
     <head>
         <title>Detail of mail</title>
     </head>
@@ -10,7 +10,7 @@
         <!--/*/<th:block layout:fragment="content" th:object="${mail}">/*/-->
         <table style="border: 0; width: 80%">
             <tr bgcolor="#c0c0c0">
-                <td th:inline="text">
+                <td>
                     <span>From: </span>
                     <font color="blue">
                         <a th:href="@{/userstatus(user_id=*{from})}" th:text="*{from}">userId</a>

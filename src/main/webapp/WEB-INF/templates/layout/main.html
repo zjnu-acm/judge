@@ -23,7 +23,7 @@
                     <div id="outer-header">
                         <div id="branding" align="center">
                             <a href="../index.html" th:href="@{/}">
-                                <img id="logo" border="0" src="../../../images/CLanguagelogo.jpg" th:src="@{|/images${#ctx.httpServletRequest.contextPath}logo.jpg|}" width="100%" height="100"/></a>
+                                <img id="logo" border="0" src="../../../images/CLanguagelogo.jpg" th:src="@{|/images${#request.contextPath}logo.jpg|}" width="100%" height="100"/></a>
                         </div>
                         <!-- end branding -->
                     </div>
@@ -39,13 +39,13 @@
                             <td style="width:16.7%"><a href="../contests/standing.html" th:href="@{/contests/{contestId}/standing(contestId=${contestId})}">Standing</a></td>
                             <td style="width:16.7%"><a th:href="@{/status(contest_id=${contestId})}">Status</a></td>
 
-                            <td th:if="${#ctx.httpServletRequest.userPrincipal != null}">
-                                <b th:text="${#ctx.httpServletRequest.userPrincipal.name}">
+                            <td th:if="${#request.userPrincipal != null}">
+                                <b th:text="${#request.userPrincipal.name}">
                                     login.user.name
                                 </b>
                                 <a th:href="@{/logout}">Logout</a>
                             </td>
-                            <td th:unless="${#ctx.httpServletRequest.userPrincipal != null}">
+                            <td th:unless="${#request.userPrincipal != null}">
                                 <a th:href="@{/login(url=${backUrl})}">Login</a>
                             </td>
                         </tr>
@@ -72,7 +72,7 @@
                     </font>
                 </p>
                 <hr/>
-                <p align="center" style="font-size: medium;" th:inline="text">All Copyright Reserved 2006-[[${T(java.time.Year).now()}]] ZJNU ACM<br/>Any problem, Please Contact <a th:href="|mailto:${application['admin.mail']}|">Administrator</a></p>
+                <p align="center" style="font-size: medium;">All Copyright Reserved 2006-[[${T(java.time.Year).now()}]] ZJNU ACM<br/>Any problem, Please Contact <a th:href="|mailto:${application['admin.mail']}|">Administrator</a></p>
             </div>
             <!-- end footer -->
         </div>

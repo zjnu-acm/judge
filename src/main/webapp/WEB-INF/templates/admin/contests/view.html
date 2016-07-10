@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       th:object="${contest}"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorator="layout/admin">
+      layout:decorate="~{layout/admin}">
     <head>
         <title th:text="*{title}">title</title>
         <style>.bordered [class^=col-]{border: 1px solid rgba(86,61,124,.2);}
@@ -14,7 +14,7 @@
     </head>
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
-        <p align="center" th:inline="text">
+        <p align="center">
             <b><font size="5" face="Arial">Contest - [[*{title}]]</font></b>
         </p>
         <p align="center">
@@ -27,7 +27,7 @@
                 <div class="col-sm-5"><b>Title</b></div>
                 <div class="col-sm-3"><b>Action</b></div>
             </div>
-            <div class="row" th:each="p,it:${problems}" th:object="${p}" th:inline="text">
+            <div class="row" th:each="p,it:${problems}" th:object="${p}">
                 <div class="col-sm-4 text-center" align="center"><b>[[*{orign}]] Problem [[${T(java.lang.Character).toString(65+it.index)}]]</b></div>
                 <div class="col-sm-5 text-left" align="left"><a th:href="@{/admin/problems/{problemId}(problemId=*{orign})}" th:text="*{title}">title</a></div>
                 <div class="col-sm-3 text-center" align="center">

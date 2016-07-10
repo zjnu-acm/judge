@@ -15,6 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.service;
 
+import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import javax.servlet.http.HttpServletRequest;
@@ -40,11 +41,12 @@ public class SubmissionService {
         }
         boolean sourceBrowser = UserDetailService.isSourceBrowser(request);
         if (sourceBrowser) {
-            Long contest = submission.getContest();
-            if (contest == null) {
+            Long contestId = submission.getContest();
+            if (contestId == null) {
                 return true;
             }
-            return contestMapper.findOne(contest).isEnded();
+            Contest contest = contestMapper.findOne(contestId);
+            return contest == null || contest.isEnded();
         }
         return false;
     }

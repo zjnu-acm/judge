@@ -2,19 +2,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorator="layout/main">
+      layout:decorate="~{layout/main}">
     <head>
-        <title th:inline="text">User -- [[${user.id}]]</title>
+        <title>User -- [[${user.id}]]</title>
     </head>
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
         <center>
             <font size="5" color="blue">
-                <a th:href="@{/sendpage(to=${user.id})}" th:inline="text">[[${user.id}]]--[[${user.nick}]]</a>
+                <a th:href="@{/sendpage(to=${user.id})}">[[${user.id}]]--[[${user.nick}]]</a>
             </font>
             <br/>
-            <span th:if="${user.accesstime!=null}" th:inline="text">Last Loginned Time:[[${#calendars.format(T(java.util.Date).from(user.accesstime),"yyyy-MM-dd HH:mm:ss")}]]</span>
-            <span th:if="${#ctx.httpServletRequest.isUserInRole('ADMIN')} and ${user.ip!=null}" th:inline="text"><br/>Last Loginned IP:[[${user.ip}]]</span>
+            <span th:if="${user.accesstime!=null}">Last Loginned Time:[[${#calendars.format(T(java.util.Date).from(user.accesstime),"yyyy-MM-dd HH:mm:ss")}]]</span>
+            <span th:if="${#request.isUserInRole('ADMIN')} and ${user.ip!=null}"><br/>Last Loginned IP:[[${user.ip}]]</span>
             <table align="center" cellspacing="0" cellpadding="0" width="700" border="1" class="table-back" style="border-collapse: collapse" bordercolor="#FFF">
                 <tr valign="bottom">
                     <td colspan="3">
@@ -23,7 +23,7 @@
                             <span>Compare </span>
                             <input type="text" size="10" name="uid1" th:value="${user.id}"/>
                             <span> and </span>
-                            <input type="text" size="10" name="uid2" th:value="${#ctx.httpServletRequest.userPrincipal!=null?#ctx.httpServletRequest.userPrincipal.name:''}"/>
+                            <input type="text" size="10" name="uid2" th:value="${#request.userPrincipal!=null?#request.userPrincipal.name:''}"/>
                             <button type="submit">GO</button>
                         </form>
                     </td>

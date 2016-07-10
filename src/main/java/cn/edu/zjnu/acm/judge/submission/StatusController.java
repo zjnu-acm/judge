@@ -1,12 +1,12 @@
 package cn.edu.zjnu.acm.judge.submission;
 
-import cn.edu.zjnu.acm.judge.config.LanguageFactory;
 import cn.edu.zjnu.acm.judge.domain.Language;
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.domain.SubmissionCriteria;
 import cn.edu.zjnu.acm.judge.exception.BadRequestException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
+import cn.edu.zjnu.acm.judge.service.LanguageService;
 import cn.edu.zjnu.acm.judge.service.SubmissionService;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import cn.edu.zjnu.acm.judge.util.ResultType;
@@ -29,6 +29,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.util.StringUtils;
 
+import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
+
 @Slf4j
 @Controller
 public class StatusController {
@@ -40,9 +42,9 @@ public class StatusController {
     @Autowired
     private SubmissionService submissionService;
     @Autowired
-    private LanguageFactory languageFactory;
+    private LanguageService languageService;
 
-    @RequestMapping(value = {"/status", "/submissions"}, method = {RequestMethod.GET, RequestMethod.HEAD}, produces = "text/html")
+    @RequestMapping(value = {"/status", "/submissions"}, method = {RequestMethod.GET, RequestMethod.HEAD}, produces = TEXT_HTML_VALUE)
     public ResponseEntity<String> status(HttpServletRequest request,
             @RequestParam(value = "problem_id", defaultValue = "") String pid,
             @RequestParam(value = "contest_id", required = false) Long contestId,
@@ -110,7 +112,7 @@ public class StatusController {
                 + " Language:"
                 + "<select size=\"1\" name=\"language\">"
                 + "<option value=\"\">All</option>");
-        for (Map.Entry<Integer, Language> entry : languageFactory.getLanguages().entrySet()) {
+        for (Map.Entry<Integer, Language> entry : languageService.getLanguages().entrySet()) {
             int key = entry.getKey();
             Language value = entry.getValue();
             sb.append("<option value=\"").append(key).append("\"").append(key == language ? " selected" : "").append(">").append(StringUtils.escapeXml(value.getName())).append("</option>");
@@ -135,7 +137,7 @@ public class StatusController {
             long num = submission.getNum();
             int score = submission.getScore();
             Instant inDate = submission.getInDate();
-            String language1 = languageFactory.getLanguage(submission.getLanguage()).getName();
+            String language1 = languageService.getLanguage(submission.getLanguage()).getName();
             String color;
             if (score == 100) {
                 color = "blue";

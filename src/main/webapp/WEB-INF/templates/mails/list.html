@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorator="layout/main">
+      layout:decorate="~{layout/main}">
     <head>
         <title>Mail List</title>
     </head>
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
         <h2 style="text-align: center">
-            <font color="blue" th:inline="text">Mail of [[${userId}]]</font>
+            <font color="blue">Mail of [[${userId}]]</font>
         </h2>
         <table align="center" style="border: 0; margin: auto;">
             <tr bgcolor="#78C8FF">
