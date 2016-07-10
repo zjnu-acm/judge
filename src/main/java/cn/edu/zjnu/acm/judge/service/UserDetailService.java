@@ -61,10 +61,6 @@ public class UserDetailService {
         return request.isUserInRole("SOURCE_BROWSER");
     }
 
-    public static boolean isLoginned(HttpServletRequest request) {
-        return request.isUserInRole("USER");
-    }
-
     @Nonnull
     public static Optional<UserModel> getCurrentUser(@Nonnull HttpServletRequest request) {
         return Optional.ofNullable(request.getUserPrincipal())

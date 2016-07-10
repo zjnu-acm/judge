@@ -44,6 +44,7 @@
     </scm>
 
     <properties>
+        <flyway.version>4.0.3</flyway.version>
         <hikaricp.version>2.4.7</hikaricp.version>
         <java.version>1.8</java.version>
         <spring-security.version>4.1.1.RELEASE</spring-security.version>
