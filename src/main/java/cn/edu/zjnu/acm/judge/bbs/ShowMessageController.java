@@ -3,22 +3,23 @@ package cn.edu.zjnu.acm.judge.bbs;
 import cn.edu.zjnu.acm.judge.domain.Message;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.MessageMapper;
-import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import cn.edu.zjnu.acm.judge.util.JudgeUtils;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.util.StringUtils;
+
+import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 
 /**
  *
@@ -32,10 +33,10 @@ public class ShowMessageController {
     @Autowired
     private MessageMapper messageMapper;
 
-    @RequestMapping(value = "/showmessage", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = "text/html")
-    public ResponseEntity<String> showmessage(HttpServletRequest request,
+    @Secured("ROLE_USER")
+    @RequestMapping(value = "/showmessage", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = TEXT_HTML_VALUE)
+    public ResponseEntity<String> showmessage(
             @RequestParam("message_id") long messageId) {
-        UserDetailService.requireLoginned(request);
         Message message = messageMapper.findOne(messageId);
         if (message == null) {
             throw new MessageException("No such message", HttpStatus.NOT_FOUND);

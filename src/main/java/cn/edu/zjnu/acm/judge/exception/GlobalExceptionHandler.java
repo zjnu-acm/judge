@@ -15,7 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.exception;
 
-import java.io.UnsupportedEncodingException;
+import java.io.IOException;
 import java.net.URLEncoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -51,8 +51,11 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ForbiddenException.class)
-    public String forbiddenExceptionHandler(HttpServletRequest request)
-            throws UnsupportedEncodingException {
+    public String forbiddenExceptionHandler(HttpServletRequest request) throws IOException {
+        return unauthorized(request);
+    }
+
+    public static String unauthorized(HttpServletRequest request) throws IOException {
         return "redirect:/login?url=" + URLEncoder.encode((String) request.getAttribute("backUrl"), "UTF-8");
     }
 

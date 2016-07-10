@@ -47,13 +47,13 @@ public interface ProblemMapper {
             + "COALESCE(pi.source,p.source) source,"
             + "p.in_date inDate,p.time_limit timeLimit,"
             + "p.memory_limit memoryLimit,"
-            + "p.contest_id contest,if(p.defunct!='N',1,0) disabled,"
+            + "p.contest_id contest,p.disabled,"
             + "p.accepted,p.submit,p.solved,p.submit_user submitUser ";
 
     String COLUMNS_NO_I18N = " p.problem_id id,"
             + "p.in_date inDate,p.time_limit timeLimit,"
             + "p.memory_limit memoryLimit,"
-            + "p.contest_id contest,if(p.defunct!='N',1,0) disabled,"
+            + "p.contest_id contest,p.disabled,"
             + "p.accepted,p.submit,p.solved,p.submit_user submitUser ";
 
     String LIST_COLUMNS = " p.problem_id id,"
@@ -62,7 +62,7 @@ public interface ProblemMapper {
             + "p.time_limit timeLimit,"
             + "p.memory_limit memoryLimit,"
             + "p.contest_id contest,"
-            + "if(p.defunct!='N',1,0) disabled,"
+            + "p.disabled,"
             + "p.accepted,"
             + "p.submit,"
             + "p.solved,"
@@ -75,10 +75,10 @@ public interface ProblemMapper {
 
     String FROM = " from problem p left join problem_i18n pi on p.problem_id=pi.id and pi.locale=#{lang} ";
 
-    @Update("update problem set defunct='Y' where problem_id=#{id}")
+    @Update("update problem set disabled=1 where problem_id=#{id}")
     long disable(@Param("id") long id);
 
-    @Update("update problem set defunct='N' where problem_id=#{id}")
+    @Update("update problem set disabled=0 where problem_id=#{id}")
     long enable(@Param("id") long problemId);
 
     @Deprecated
@@ -102,8 +102,8 @@ public interface ProblemMapper {
 
     // TODO not used
     @Nullable
-    @Select("select" + COLUMNS + FROM + " where problem_id=#{id} AND defunct='N'")
-    Problem findOneByIdAndDefunctN(@Param("id") long pid, @Param("lang") String lang);
+    @Select("select" + COLUMNS + FROM + " where problem_id=#{id} AND not disabled")
+    Problem findOneByIdAndDisabledFalse(@Param("id") long pid, @Param("lang") String lang);
 
     @Select("SELECT" + LIST_COLUMNS + FROM + " order by problem_id limit #{pageable.offset},#{pageable.pageSize}")
     List<Problem> findAll(@Param("pageable") Pageable pageable, @Param("lang") String lang);
@@ -115,10 +115,10 @@ public interface ProblemMapper {
         + FROM
         + "<if test='userId!=null'>left join user_problem up "
         + "on up.user_id=#{userId} and up.problem_id=p.problem_id </if>"
-        + "where p.defunct='N' and p.problem_id&gt;=#{start} and p.problem_id&lt;=#{end}"
+        + "where not p.disabled and p.problem_id&gt;=#{start} and p.problem_id&lt;=#{end}"
         + "</script>"
     })
-    List<Problem> findAllByDefunctN(
+    List<Problem> findAllByDisabledFalse(
             @Nullable @Param("userId") String userId,
             @Param("start") long start,
             @Param("end") long end,
@@ -169,12 +169,12 @@ public interface ProblemMapper {
         + FROM
         + "<if test='userId!=null'>left join user_problem up on up.problem_id=p.problem_id and up.user_id=#{userId}</if>"
         + "WHERE (instr(p.title,#{query})&gt;0 or instr(p.source,#{query})&gt;0) "
-        + "and p.defunct='N'"
+        + "and not p.disabled"
         + "<if test='userId!=null'>group by p.problem_id</if>"
         + "ORDER BY p.problem_id"
         + "</script>"
     })
-    List<Problem> findAllBySearchTitleOrSourceAndDefunctN(
+    List<Problem> findAllBySearchTitleOrSourceAndDisabledFalse(
             @Param("query") String query,
             @Param("userId") String userId,
             @Param("lang") String lang);

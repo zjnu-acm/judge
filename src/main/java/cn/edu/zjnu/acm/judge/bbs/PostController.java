@@ -9,6 +9,7 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.thymeleaf.util.StringUtils;
 
 @Controller
+@Secured("ROLE_USER")
 public class PostController {
 
     @Autowired
@@ -31,7 +33,6 @@ public class PostController {
             @RequestParam(value = "content", defaultValue = "") String content,
             @RequestParam(value = "title", defaultValue = "") String title,
             RedirectAttributes redirectAttributes) {
-        UserDetailService.requireAdminLoginned(request);
         long depth = 0;
         long orderNum = 0;
         final String userId = UserDetailService.getCurrentUserId(request).orElse(null);

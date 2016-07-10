@@ -17,6 +17,7 @@ package cn.edu.zjnu.acm.judge.mapper;
 
 import cn.edu.zjnu.acm.judge.Application;
 import cn.edu.zjnu.acm.judge.domain.UserProblem;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -100,6 +101,38 @@ public class UserProblemMapperTest {
     public void testUpdateUsers() {
         log.info("updateUsers");
         instance.updateUsers();
+    }
+
+    /**
+     * Test of updateProblems method, of class UserProblemMapper.
+     */
+    @Test
+    public void testUpdateProblems() {
+        log.info("updateProblems");
+        long expResult = 0L;
+        long result = instance.updateProblems();
+    }
+
+    /**
+     * Test of findAllByUserIdAndAcceptedNot0 method, of class UserProblemMapper.
+     */
+    @Test
+    public void testFindAllByUserIdAndAcceptedNot0() {
+        log.info("findAllByUserIdAndAcceptedNot0");
+        String userId = "";
+        List<Long> expResult = null;
+        List<Long> result = instance.findAllByUserIdAndAcceptedNot0(userId);
+    }
+
+    /**
+     * Test of findAllByUserId method, of class UserProblemMapper.
+     */
+    @Test
+    public void testFindAllByUserId() {
+        log.info("findAllByUserId");
+        String userId = "";
+        List<UserProblem> expResult = null;
+        List<UserProblem> result = instance.findAllByUserId(userId);
     }
 
 }

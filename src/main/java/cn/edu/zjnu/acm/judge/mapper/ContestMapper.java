@@ -36,7 +36,7 @@ import org.apache.ibatis.annotations.Update;
 @Mapper
 public interface ContestMapper {
 
-    String COLUMNS = " contest_id id,title,start_time startTime,end_time endTime,defunct!='N' disabled,description ";
+    String COLUMNS = " contest_id id,title,start_time startTime,end_time endTime,disabled,description ";
 
     @Insert("INSERT INTO contest (contest_id,title,description,start_time,end_time)"
             + " VALUES (#{id},#{title},#{description},#{startTime},#{endTime})")
@@ -47,7 +47,7 @@ public interface ContestMapper {
     @Select("<script>select"
             + " cp.problem_id orign," // TODO remove if Problem.orign
             + " cp.num id,"
-            + " COALESCE(cp.title,pi.title,p.title) title"
+            + " COALESCE(nullif(cp.title,''),nullif(pi.title,''),p.title) title"
             + "<if test='userId!=null'>,temp.status</if>"
             + "from "
             + " contest_problem cp "
@@ -141,8 +141,8 @@ public interface ContestMapper {
             @Param("contest") long contestId,
             @Param("problem") long problemOrder);
 
-    @Select("select" + COLUMNS + "from contest where contest_id=#{id} and defunct='N'")
-    Contest findOneByIdAndDefunctN(@Param("id") long contestId);
+    @Select("select" + COLUMNS + "from contest where contest_id=#{id} and not disabled")
+    Contest findOneByIdAndDisabledFalse(@Param("id") long contestId);
 
     @Select("select "
             + " s.user_id id,u.nick "
@@ -156,15 +156,15 @@ public interface ContestMapper {
     List<User> attenders(@Param("id") long contestId);
 
     @Insert("insert ignore into contest_problem (contest_id,problem_id,title,num) "
-            + "values(#{id},#{problem},#{title},#{num})")
+            + "values(#{id},#{problem},nullif(#{title},''),#{num})")
     long addProblem(@Param("id") long contestId, @Param("problem") long problem,
             @Param("title") String title,
             @Param("num") int num);
 
-    @Update("update contest set defunct='N' where contest_id=#{id}")
+    @Update("update contest set disabled=0 where contest_id=#{id}")
     long enable(@Param("id") long contestId);
 
-    @Update("update contest set defunct='Y' where contest_id=#{id}")
+    @Update("update contest set disabled=1 where contest_id=#{id}")
     long disable(@Param("id") long contestId);
 
     @Deprecated
@@ -175,19 +175,19 @@ public interface ContestMapper {
     @Select("select" + COLUMNS + "from contest order by contest_id desc")
     List<Contest> findAll();
 
-    @Select("select" + COLUMNS + "from contest where now()<start_time and start_time<end_time and defunct='N' order by contest_id")
+    @Select("select" + COLUMNS + "from contest where now()<start_time and start_time<end_time and not disabled order by contest_id")
     List<Contest> pending();
 
-    @Select("select" + COLUMNS + "from contest where start_time<end_time and end_time<now() and defunct='N' order by contest_id desc")
+    @Select("select" + COLUMNS + "from contest where start_time<end_time and end_time<now() and not disabled order by contest_id desc")
     List<Contest> past();
 
-    @Select("select" + COLUMNS + "from contest where start_time<now() and end_time>now() and defunct='N' order by contest_id desc")
+    @Select("select" + COLUMNS + "from contest where start_time<now() and end_time>now() and not disabled order by contest_id desc")
     List<Contest> current();
 
-    @Select("select" + COLUMNS + "from contest where start_time<end_time and defunct='N' order by contest_id desc")
+    @Select("select" + COLUMNS + "from contest where start_time<end_time and not disabled order by contest_id desc")
     List<Contest> contests();
 
-    @Select("select" + COLUMNS + "from contest where start_time<end_time and defunct='N' and end_time>now() order by contest_id desc")
+    @Select("select" + COLUMNS + "from contest where start_time<end_time and not disabled and end_time>now() order by contest_id desc")
     List<Contest> runningAndScheduling();
 
     @Update("update contest_problem set title=null where problem_id=#{problem} and contest_id=#{contest}")

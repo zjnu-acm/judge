@@ -6,19 +6,21 @@ import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.service.ContestService;
-import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import java.util.Locale;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.thymeleaf.util.StringUtils;
 
 @Controller
+@Secured("ROLE_ADMIN")
 public class ModifyProblemController {
 
     @Autowired
@@ -32,10 +34,10 @@ public class ModifyProblemController {
     public String modifyproblem(HttpServletRequest request,
             @PathVariable("problemId") long problemId,
             Locale locale,
-            @RequestParam("problemLang") String lang,
+            @RequestParam("problemLang") String problemLang,
             Problem p) {
-        UserDetailService.requireAdminLoginned(request);
 
+        String lang = StringUtils.isEmpty(problemLang) ? null : problemLang;
         Problem problem = problemMapper.findOne(problemId, lang);
         if (problem == null) {
             throw new MessageException("no such problem " + problemId, HttpStatus.NOT_FOUND);
@@ -43,7 +45,9 @@ public class ModifyProblemController {
         Long oldContestId = problem.getContest();
         Long contestId = p.getContest();
 
-        problemMapper.touchI18n(problemId, lang);
+        if (!StringUtils.isEmpty(lang)) {
+            problemMapper.touchI18n(problemId, lang);
+        }
         problemMapper.update(problem.toBuilder()
                 .title(p.getTitle())
                 .description(p.getDescription())
@@ -58,7 +62,7 @@ public class ModifyProblemController {
                 .contest(p.getContest())
                 .build(), lang);
         if (oldContestId != null && !Objects.equals(oldContestId, contestId)) {
-            boolean started = contestMapper.findOneByIdAndDefunctN(oldContestId).isStarted();
+            boolean started = contestMapper.findOneByIdAndDisabledFalse(oldContestId).isStarted();
             if (!started) {
                 contestService.removeProblem(oldContestId, problemId);
             }
@@ -66,7 +70,7 @@ public class ModifyProblemController {
         if (contestId != null) {
             contestMapper.updateProblemTitle(contestId, problemId);
             if (!Objects.equals(oldContestId, contestId)) {
-                Contest newContest = contestMapper.findOneByIdAndDefunctN(contestId);
+                Contest newContest = contestMapper.findOneByIdAndDisabledFalse(contestId);
                 if (newContest == null) {
                     throw new MessageException("onlinejudge.contest.nosuchcontest", HttpStatus.NOT_FOUND);
                 }
