@@ -5,7 +5,6 @@ import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.MessageMapper;
 import java.util.List;
 import java.util.Optional;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
@@ -27,8 +26,7 @@ public class PostController {
 
     @RequestMapping(value = "/post", method = RequestMethod.POST)
     @Transactional
-    public String post(HttpServletRequest request,
-            @RequestParam(value = "problem_id", required = false) Long problemId,
+    public String post(@RequestParam(value = "problem_id", required = false) Long problemId,
             @RequestParam(value = "parent_id", required = false) Long parentId,
             @RequestParam(value = "content", defaultValue = "") String content,
             @RequestParam(value = "title", defaultValue = "") String title,

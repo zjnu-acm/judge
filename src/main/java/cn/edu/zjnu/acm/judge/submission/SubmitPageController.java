@@ -2,11 +2,11 @@ package cn.edu.zjnu.acm.judge.submission;
 
 import cn.edu.zjnu.acm.judge.mapper.UserPerferenceMapper;
 import cn.edu.zjnu.acm.judge.service.LanguageService;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,16 +21,16 @@ public class SubmitPageController {
 
     @Secured("ROLE_USER")
     @RequestMapping(value = {"/submitpage", "/submit"}, method = {RequestMethod.GET, RequestMethod.HEAD})
-    public String submitpage(HttpServletRequest request,
+    public String submitpage(Model model,
             @RequestParam(value = "problem_id", required = false) Long problemId,
             @RequestParam(value = "contest_id", required = false) Long contestId,
             Authentication authentication) {
-        request.setAttribute("contestId", contestId);
-        request.setAttribute("problemId", problemId);
-        request.setAttribute("languages", languageService.getLanguages().values());
+        model.addAttribute("contestId", contestId);
+        model.addAttribute("problemId", problemId);
+        model.addAttribute("languages", languageService.getLanguages().values());
         String user = authentication != null ? authentication.getName() : null;
         int languageId = userPerferenceMapper.getLanguage(user);
-        request.setAttribute("languageId", languageId);
+        model.addAttribute("languageId", languageId);
         return "submit";
     }
 

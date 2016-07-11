@@ -5,13 +5,13 @@ import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
 import cn.edu.zjnu.acm.judge.util.ValueCheck;
 import java.util.Objects;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,7 +27,7 @@ public class ModifyUserController {
 
     @Secured("ROLE_USER")
     @RequestMapping(value = "/modifyuser", method = RequestMethod.POST)
-    public String modifyuser(HttpServletRequest request,
+    public String modifyuser(Model model,
             @RequestParam("oldPassword") String oldPassword,
             @RequestParam("newPassword") String newPassword,
             @RequestParam("rptPassword") String rptPassword,
@@ -66,7 +66,7 @@ public class ModifyUserController {
                 .school(school)
                 .build();
         userMapper.update(user);
-        request.setAttribute("user", user);
+        model.addAttribute("user", user);
         return "modifyusersuccess";
     }
 
