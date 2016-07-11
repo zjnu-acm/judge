@@ -15,6 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.exception;
 
+import cn.edu.zjnu.acm.judge.config.JudgeHandlerInterceptor;
 import java.io.IOException;
 import java.net.URLEncoder;
 import javax.servlet.http.HttpServletRequest;
@@ -56,7 +57,7 @@ public class GlobalExceptionHandler {
     }
 
     public static String unauthorized(HttpServletRequest request) throws IOException {
-        return "redirect:/login?url=" + URLEncoder.encode((String) request.getAttribute("backUrl"), "UTF-8");
+        return "redirect:/login?url=" + URLEncoder.encode((String) request.getAttribute(JudgeHandlerInterceptor.BACK_URL_ATTRIBUTE_NAME), "UTF-8");
     }
 
 }
