@@ -69,7 +69,10 @@ class ConnectorServlet extends com.ckfinder.connector.ConnectorServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        UserDetailService.requireAdminLoginned(request);
+        if (!UserDetailService.isAdminLoginned(request)) {
+            request.getRequestDispatcher("/unauthorized").forward(request, response);
+            return;
+        }
         super.service(request, response);
     }
 
