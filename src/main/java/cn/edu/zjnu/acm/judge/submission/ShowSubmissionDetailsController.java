@@ -11,6 +11,7 @@ import cn.edu.zjnu.acm.judge.util.ResultType;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,7 +28,10 @@ public class ShowSubmissionDetailsController {
     private SubmissionService submissionService;
 
     @RequestMapping(value = "/showsolutiondetails", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public String showsolutiondetails(HttpServletRequest request, @RequestParam("solution_id") long submissionId) {
+    public String showsolutiondetails(
+            HttpServletRequest request,
+            @RequestParam("solution_id") long submissionId,
+            Authentication authentication) {
         Submission submission = submissionMapper.findOne(submissionId);
         if (submission == null) {
             throw new MessageException("No such solution", HttpStatus.NOT_FOUND);

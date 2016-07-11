@@ -3,13 +3,13 @@ package cn.edu.zjnu.acm.judge.bbs;
 import cn.edu.zjnu.acm.judge.domain.Message;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.MessageMapper;
-import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,10 +32,11 @@ public class PostController {
             @RequestParam(value = "parent_id", required = false) Long parentId,
             @RequestParam(value = "content", defaultValue = "") String content,
             @RequestParam(value = "title", defaultValue = "") String title,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes,
+            Authentication authentication) {
         long depth = 0;
         long orderNum = 0;
-        final String userId = UserDetailService.getCurrentUserId(request).orElse(null);
+        final String userId = authentication != null ? authentication.getName() : null;
         if (StringUtils.isEmptyOrWhitespace(title)) {
             throw new MessageException("Title can't be blank", HttpStatus.BAD_REQUEST);
         }

@@ -4,7 +4,6 @@ import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserPerferenceMapper;
-import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import java.text.Collator;
 import java.util.Comparator;
 import java.util.List;
@@ -14,6 +13,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,8 +33,9 @@ public class ProblemListController {
     @RequestMapping(value = {"/problemlist", "/problems"}, method = {RequestMethod.GET, RequestMethod.HEAD})
     public String problemlist(HttpServletRequest request, @RequestParam(value = "orderby", defaultValue = "") final String orderby,
             @RequestParam(value = "volume", required = false) Long volumeOptional,
-            Locale locale) {
-        String currentUserId = UserDetailService.getCurrentUserId(request).orElse(null);
+            Locale locale,
+            Authentication authentication) {
+        String currentUserId = authentication != null ? authentication.getName() : null;
         boolean logined = currentUserId != null;
         long volume;
         if (logined) {
