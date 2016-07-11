@@ -3,13 +3,13 @@ package cn.edu.zjnu.acm.judge.user;
 import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
-import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import cn.edu.zjnu.acm.judge.util.ValueCheck;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,11 +33,12 @@ public class ModifyUserController {
             @RequestParam("rptPassword") String rptPassword,
             @RequestParam("email") String email,
             @RequestParam("nick") String nick,
-            @RequestParam("school") String school) {
+            @RequestParam("school") String school,
+            Authentication authentication) {
         if (!Objects.equals(newPassword, rptPassword)) {
             throw new MessageException("Passwords are not match", HttpStatus.BAD_REQUEST);
         }
-        String userId = UserDetailService.getCurrentUserId(request).orElse(null);
+        String userId = authentication != null ? authentication.getName() : null;
         User user = userMapper.findOne(userId);
         if (user == null) {
             throw new MessageException("The ID( " + userId + " ) is not existed", HttpStatus.CONFLICT);

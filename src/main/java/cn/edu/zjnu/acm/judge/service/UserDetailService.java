@@ -17,9 +17,9 @@ package cn.edu.zjnu.acm.judge.service;
 
 import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.domain.UserModel;
-import cn.edu.zjnu.acm.judge.exception.ForbiddenException;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserRoleMapper;
+import java.security.Principal;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -47,12 +47,6 @@ public class UserDetailService {
     private static final List<GrantedAuthority> ROLE_USER = Collections.unmodifiableList(AuthorityUtils.createAuthorityList("ROLE_USER"));
     private static final List<List<GrantedAuthority>> ROLES = Arrays.asList(ROLE_USER, ROLE_SOURCE_BROWSER, ROLE_ADMIN);
 
-    public static void requireAdminLoginned(HttpServletRequest request) {
-        if (!isAdminLoginned(request)) {
-            throw new ForbiddenException();
-        }
-    }
-
     public static boolean isAdminLoginned(HttpServletRequest request) {
         return request.isUserInRole("ADMIN");
     }
@@ -71,13 +65,9 @@ public class UserDetailService {
                 .map(UserModel.class::cast);
     }
 
-    @Nonnull
-    public static Optional<String> getCurrentUserId(@Nonnull HttpServletRequest request) {
-        return getCurrentUser(request).map(UserModel::getUserId);
-    }
-
-    public static boolean isUser(HttpServletRequest request, String userId) {
-        return userId != null && getCurrentUserId(request).map(userId::equalsIgnoreCase).orElse(false);
+    public static boolean isUser(Authentication authentication, String userId) {
+        return userId != null && Optional.ofNullable(authentication).map(Principal::getName)
+                .map(userId::equals).orElse(false);
     }
 
     @Autowired

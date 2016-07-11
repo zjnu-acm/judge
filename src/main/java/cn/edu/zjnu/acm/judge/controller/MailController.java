@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -47,12 +48,13 @@ public class MailController {
 
     @RequestMapping(value = "/deletemail", method = {RequestMethod.GET, RequestMethod.HEAD})
     public String delete(HttpServletRequest request,
-            @RequestParam("mail_id") long mailId) {
+            @RequestParam("mail_id") long mailId,
+            Authentication authentication) {
         Mail mail = mailMapper.findOne(mailId);
         if (mail == null) {
             throw new MessageException("No such mail", HttpStatus.NOT_FOUND);
         }
-        if (!UserDetailService.isUser(request, mail.getTo())) {
+        if (!UserDetailService.isUser(authentication, mail.getTo())) {
             throw new MessageException("Sorry, invalid access", HttpStatus.FORBIDDEN);
         }
         mailMapper.delete(mailId);
@@ -62,11 +64,12 @@ public class MailController {
     @RequestMapping(value = "/mail", method = {RequestMethod.GET, RequestMethod.HEAD})
     public String mail(HttpServletRequest request,
             @RequestParam(value = "size", defaultValue = "20") int size,
-            @RequestParam(value = "start", defaultValue = "1") long start) {
+            @RequestParam(value = "start", defaultValue = "1") long start,
+            Authentication authentication) {
         if (start <= 0) {
             start = 1;
         }
-        String currentUserId = UserDetailService.getCurrentUserId(request).orElse(null);
+        String currentUserId = authentication != null ? authentication.getName() : null;
 
         List<Mail> mails = mailMapper.findAllByTo(currentUserId, start - 1, size);
 
@@ -81,8 +84,9 @@ public class MailController {
     public String send(HttpServletRequest request,
             @RequestParam("title") String title,
             @RequestParam("to") String to,
-            @RequestParam("content") String content) {
-        String userId = UserDetailService.getCurrentUserId(request).orElse(null);
+            @RequestParam("content") String content,
+            Authentication authentication) {
+        String userId = authentication != null ? authentication.getName() : null;
         if (StringUtils.isEmptyOrWhitespace(title)) {
             title = "No Topic";
         }
@@ -105,7 +109,8 @@ public class MailController {
     @RequestMapping(value = {"/sendpage", "/send"}, method = {RequestMethod.GET, RequestMethod.HEAD})
     public String sendpage(HttpServletRequest request,
             @RequestParam(value = "reply", defaultValue = "-1") long reply,
-            @RequestParam(value = "to", defaultValue = "") String userId) {
+            @RequestParam(value = "to", defaultValue = "") String userId,
+            Authentication authentication) {
         String title = "";
         String content = "";
 
@@ -115,7 +120,7 @@ public class MailController {
                 throw new MessageException("No such mail", HttpStatus.NOT_FOUND);
             }
             String toUser = parent.getTo();
-            if (!UserDetailService.isUser(request, toUser)) {
+            if (!UserDetailService.isUser(authentication, toUser)) {
                 throw new MessageException("invalid access", HttpStatus.FORBIDDEN);
             }
             userId = parent.getFrom();
@@ -133,12 +138,15 @@ public class MailController {
     }
 
     @RequestMapping(value = "/showmail", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public String showmail(HttpServletRequest request, @RequestParam("mail_id") long mailId) {
+    public String showmail(
+            HttpServletRequest request,
+            @RequestParam("mail_id") long mailId,
+            Authentication authentication) {
         Mail mail = mailMapper.findOne(mailId);
         if (mail == null) {
             throw new MessageException("No such mail", HttpStatus.NOT_FOUND);
         }
-        if (!UserDetailService.isUser(request, mail.getTo())) {
+        if (!UserDetailService.isUser(authentication, mail.getTo())) {
             throw new MessageException("Sorry, invalid access", HttpStatus.FORBIDDEN);
         }
         mailMapper.readed(mailId);

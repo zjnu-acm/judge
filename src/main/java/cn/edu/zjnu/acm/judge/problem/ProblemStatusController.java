@@ -36,6 +36,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -75,7 +76,8 @@ public class ProblemStatusController {
             @RequestParam("problem_id") long id,
             @RequestParam(value = "start", defaultValue = "0") long start,
             @RequestParam(value = "size", defaultValue = "20") int size,
-            @RequestParam(value = "orderby", defaultValue = "time") String orderby) {
+            @RequestParam(value = "orderby", defaultValue = "time") String orderby,
+            Authentication authentication) {
         if (size > 500) {
             size = 500;
         }
@@ -137,7 +139,7 @@ public class ProblemStatusController {
             } else {
                 sb.append("<td>&nbsp;</td><td>&nbsp;</td>");
             }
-            if (canView || UserDetailService.isUser(request, userId)) {
+            if (canView || UserDetailService.isUser(authentication, userId)) {
                 sb.append("<td><a href=showsource?solution_id=").append(submissionId).append(" target=_blank>").append(language).append("</a></td>");
             } else {
                 sb.append("<td>").append(language).append("</td>");

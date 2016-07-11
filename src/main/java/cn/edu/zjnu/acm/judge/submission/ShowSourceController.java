@@ -6,13 +6,13 @@ import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserPerferenceMapper;
 import cn.edu.zjnu.acm.judge.service.LanguageService;
 import cn.edu.zjnu.acm.judge.service.SubmissionService;
-import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import cn.edu.zjnu.acm.judge.util.ResultType;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,13 +35,14 @@ public class ShowSourceController {
     @RequestMapping(value = "/showsource", method = {RequestMethod.GET, RequestMethod.HEAD})
     public String showsource(HttpServletRequest request,
             @RequestParam("solution_id") long submissionId,
-            @RequestParam(value = "style", required = false) Integer style) {
+            @RequestParam(value = "style", required = false) Integer style,
+            Authentication authentication) {
         Submission submission = submissionMapper.findOne(submissionId);
 
         if (submission == null) {
             throw new MessageException("No such solution", HttpStatus.NOT_FOUND);
         }
-        String userId = UserDetailService.getCurrentUserId(request).orElse(null);
+        String userId = authentication != null ? authentication.getName() : null;
         if (!submissionService.canView(request, submission)) {
             throw new MessageException("You have no permission to view the source.", HttpStatus.FORBIDDEN);
         }

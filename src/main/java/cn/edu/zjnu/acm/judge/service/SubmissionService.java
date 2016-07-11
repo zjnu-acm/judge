@@ -20,6 +20,7 @@ import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 /**
@@ -36,7 +37,8 @@ public class SubmissionService {
         if (UserDetailService.isAdminLoginned(request)) {
             return true;
         }
-        if (UserDetailService.isUser(request, submission.getUser())) {
+        // TODO cast to Authentication
+        if (UserDetailService.isUser((Authentication) request.getUserPrincipal(), submission.getUser())) {
             return true;
         }
         boolean sourceBrowser = UserDetailService.isSourceBrowser(request);
