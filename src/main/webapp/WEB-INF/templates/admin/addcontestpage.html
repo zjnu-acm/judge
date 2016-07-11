@@ -22,9 +22,9 @@
                 <br/>
                 <span>&nbsp;&nbsp;&nbsp;</span>
                 <span>Year:</span>
-                <input type="text" name="syear" th:value="${#calendars.format(execInfo.now,'yyyy')}" size="7"/>
+                <input type="text" name="syear" th:value="${#calendars.format(#execInfo.now,'yyyy')}" size="7"/>
                 <span> Month:</span>
-                <input type="text" name="smonth" th:value="${#calendars.format(execInfo.now,'M')}" size="7"/>
+                <input type="text" name="smonth" th:value="${#calendars.format(#execInfo.now,'M')}" size="7"/>
                 <span> Day:</span>
                 <input type="text" name="sday" size="7"/>
                 <span> Hour:</span>
@@ -36,9 +36,9 @@
                 <span>End Time:</span>
                 <br/><span>&nbsp;&nbsp;&nbsp;</span>
                 <span>Year:</span>
-                <input type="text" name="eyear" th:value="${#calendars.format(execInfo.now,'yyyy')}" size="7"/>
+                <input type="text" name="eyear" th:value="${#calendars.format(#execInfo.now,'yyyy')}" size="7"/>
                 <span> Month:</span>
-                <input type="text" name="emonth" th:value="${#calendars.format(execInfo.now,'M')}" size="7"/>
+                <input type="text" name="emonth" th:value="${#calendars.format(#execInfo.now,'M')}" size="7"/>
                 <span> Day:</span>
                 <input type="text" name="eday" size="7"/>
                 <span> Hour:</span>
