@@ -7,10 +7,10 @@ import cn.edu.zjnu.acm.judge.mapper.UserMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserProblemMapper;
 import java.util.ArrayList;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,7 +26,7 @@ public class UserCompareController {
     private UserMapper userMapper;
 
     @RequestMapping(value = "/usercmp", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public String compare(HttpServletRequest request,
+    public String compare(Model model,
             @RequestParam("uid1") String userId1,
             @RequestParam("uid2") String userId2) {
         checkUser(userId1);
@@ -76,14 +76,14 @@ public class UserCompareController {
                 f.add(j);
             }
         }
-        request.setAttribute("uid1", userId1);
-        request.setAttribute("uid2", userId2);
-        request.setAttribute("a", a);
-        request.setAttribute("b", b);
-        request.setAttribute("c", c);
-        request.setAttribute("d", d);
-        request.setAttribute("e", e);
-        request.setAttribute("f", f);
+        model.addAttribute("uid1", userId1);
+        model.addAttribute("uid2", userId2);
+        model.addAttribute("a", a);
+        model.addAttribute("b", b);
+        model.addAttribute("c", c);
+        model.addAttribute("d", d);
+        model.addAttribute("e", e);
+        model.addAttribute("f", f);
         return "users/compare";
     }
 

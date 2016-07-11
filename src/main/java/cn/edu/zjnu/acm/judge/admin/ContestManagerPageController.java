@@ -7,11 +7,11 @@ import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,14 +24,14 @@ public class ContestManagerPageController {
     private ContestMapper contestMapper;
 
     @RequestMapping(value = "/admin/contests/{contestId}", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public String view(HttpServletRequest request,
+    public String view(Model model,
             @PathVariable("contestId") long contestId,
             Locale locale) {
         Contest contest = Optional.ofNullable(contestMapper.findOne(contestId))
                 .orElseThrow(() -> new MessageException("onlinejudge.contest.nosuchcontest", HttpStatus.NOT_FOUND));
         List<Problem> problems = contestMapper.getProblems(contestId, null, locale.getLanguage());
-        request.setAttribute("contest", contest);
-        request.setAttribute("problems", problems);
+        model.addAttribute("contest", contest);
+        model.addAttribute("problems", problems);
         return "admin/contests/view";
     }
 

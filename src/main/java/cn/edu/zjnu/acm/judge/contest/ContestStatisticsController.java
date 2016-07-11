@@ -12,7 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,7 +39,7 @@ public class ContestStatisticsController {
     private LanguageService languageService;
 
     @RequestMapping(value = "/conteststatistics", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = TEXT_HTML_VALUE)
-    public ResponseEntity<String> conteststatistics(HttpServletRequest request,
+    public ResponseEntity<String> conteststatistics(Model model,
             @RequestParam("contest_id") long contestId) throws SQLException {
         Instant now = Instant.now();
         Contest contest = contestMapper.findOneByIdAndDisabledFalse(contestId);
@@ -48,7 +48,7 @@ public class ContestStatisticsController {
         }
         String title = contest.getTitle();
         Instant endTime = contest.getEndTime();
-        request.setAttribute("contestId", contestId);
+        model.addAttribute("contestId", contestId);
 
         StringBuilder sb = new StringBuilder("<html><head><title>Contest Statistics</title></head><body><p align=center><font size=5 color=blue>Contest Statistics--");
         sb.append(StringUtils.escapeXml(title));

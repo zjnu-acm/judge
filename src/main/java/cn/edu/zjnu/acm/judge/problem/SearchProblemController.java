@@ -5,11 +5,11 @@ import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import java.util.List;
 import java.util.Locale;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,7 +22,7 @@ public class SearchProblemController {
     private ProblemMapper problemMapper;
 
     @RequestMapping(value = "/searchproblem", method = {RequestMethod.GET, RequestMethod.HEAD})
-    protected String searchproblem(HttpServletRequest request,
+    protected String searchproblem(Model model,
             @RequestParam(value = "sstr", required = false) String query,
             Locale locale,
             Authentication authentication) {
@@ -32,8 +32,8 @@ public class SearchProblemController {
         String userId = authentication != null ? authentication.getName() : null;
         List<Problem> problems = problemMapper.findAllBySearchTitleOrSourceAndDisabledFalse(query, userId, locale.getLanguage());
 
-        request.setAttribute("query", query);
-        request.setAttribute("problems", problems);
+        model.addAttribute("query", query);
+        model.addAttribute("problems", problems);
         return "problems/search";
     }
 
