@@ -65,7 +65,7 @@ public class AdminController {
     @RequestMapping(value = "/admin/problems/{problemId}/disable", method = {RequestMethod.GET, RequestMethod.HEAD})
     protected String disableProblem(Model model, @PathVariable("problemId") long problemId) {
 
-        problemMapper.disable(problemId);
+        problemMapper.setDisabled(problemId, true);
 
         model.addAttribute("problemId", problemId);
         return "admin/problems/delete";
@@ -75,7 +75,7 @@ public class AdminController {
     @RequestMapping(value = "/admin/problems/{problemId}/resume", method = {RequestMethod.GET, RequestMethod.HEAD})
     protected String resumeProblem(Model model,
             @PathVariable("problemId") long problemId) {
-        problemMapper.enable(problemId);
+        problemMapper.setDisabled(problemId, false);
 
         model.addAttribute("problemId", problemId);
         return "admin/problems/resume";
