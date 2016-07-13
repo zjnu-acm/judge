@@ -40,8 +40,12 @@ public class FilterLocaleResolver implements LocaleResolver {
 
     @Override
     public Locale resolveLocale(HttpServletRequest request) {
-        Locale locale = parent.resolveLocale(request);
-        return locale == null || !predicate.test(defaultLocale) ? defaultLocale : locale;
+        try {
+            Locale locale = parent.resolveLocale(request);
+            return locale == null || !predicate.test(defaultLocale) ? defaultLocale : locale;
+        } catch (IllegalArgumentException ex) {
+            return defaultLocale;
+        }
     }
 
     @Override
