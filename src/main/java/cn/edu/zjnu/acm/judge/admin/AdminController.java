@@ -68,17 +68,17 @@ public class AdminController {
         problemMapper.setDisabled(problemId, true);
 
         model.addAttribute("problemId", problemId);
-        return "admin/problems/delete";
+        return "admin/problems/disable";
     }
 
     // TODO request method
-    @RequestMapping(value = "/admin/problems/{problemId}/resume", method = {RequestMethod.GET, RequestMethod.HEAD})
-    protected String resumeProblem(Model model,
+    @RequestMapping(value = "/admin/problems/{problemId}/enable", method = {RequestMethod.GET, RequestMethod.HEAD})
+    protected String enableProblem(Model model,
             @PathVariable("problemId") long problemId) {
         problemMapper.setDisabled(problemId, false);
 
         model.addAttribute("problemId", problemId);
-        return "admin/problems/resume";
+        return "admin/problems/enable";
     }
 
     @RequestMapping(value = "/admin/contests", method = RequestMethod.POST)

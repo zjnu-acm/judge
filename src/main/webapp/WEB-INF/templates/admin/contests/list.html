@@ -25,8 +25,8 @@
                         <!--/*/</th:block>/*/-->
                     </td>
                     <td>
-                        <a th:if="*{disabled}" th:href="@{/contests/{contestId}/enable(contestId=*{id})}">Show</a>
-                        <a th:unless="*{disabled}" th:href="@{/contests/{contestId}/disable(contestId=*{id})}">Hide</a>
+                        <a th:if="*{disabled}" th:href="@{/contests/{contestId}/enable(contestId=*{id})}">Enable</a>
+                        <a th:unless="*{disabled}" th:href="@{/contests/{contestId}/disable(contestId=*{id})}">Disable</a>
                     </td>
                 </tr>
             </table>
