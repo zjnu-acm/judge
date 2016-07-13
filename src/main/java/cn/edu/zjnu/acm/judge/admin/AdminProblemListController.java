@@ -28,7 +28,6 @@ public class AdminProblemListController {
         Page<Problem> page = new PageImpl<>(problemMapper.findAll(pageable, locale.getLanguage()), pageable, total);
 
         model.addAttribute("total", total);
-        model.addAttribute("size", page.getSize());
         model.addAttribute("page", page);
 
         return "admin/problems/list";
