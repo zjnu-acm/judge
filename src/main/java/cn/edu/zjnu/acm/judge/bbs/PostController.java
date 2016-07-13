@@ -1,10 +1,7 @@
 package cn.edu.zjnu.acm.judge.bbs;
 
-import cn.edu.zjnu.acm.judge.domain.Message;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
-import cn.edu.zjnu.acm.judge.mapper.MessageMapper;
-import java.util.List;
-import java.util.Optional;
+import cn.edu.zjnu.acm.judge.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
@@ -22,7 +19,7 @@ import org.thymeleaf.util.StringUtils;
 public class PostController {
 
     @Autowired
-    private MessageMapper messageMapper;
+    private MessageService messageService;
 
     @RequestMapping(value = "/post", method = RequestMethod.POST)
     @Transactional
@@ -32,37 +29,13 @@ public class PostController {
             @RequestParam(value = "title", defaultValue = "") String title,
             RedirectAttributes redirectAttributes,
             Authentication authentication) {
-        long depth = 0;
-        long orderNum = 0;
         final String userId = authentication != null ? authentication.getName() : null;
         if (StringUtils.isEmptyOrWhitespace(title)) {
             throw new MessageException("Title can't be blank", HttpStatus.BAD_REQUEST);
         }
-        final long nextId = messageMapper.nextId();
-        final Message parent = parentId != null
-                ? Optional.ofNullable(messageMapper.findOne(parentId))
-                .orElseThrow(() -> new MessageException("No such parent message", HttpStatus.NOT_FOUND))
-                : null;
-        if (parent != null) {
-            orderNum = parent.getOrder();
-            final long depth1 = parent.getDepth();
 
-            List<Message> messages = messageMapper.findAllByThreadIdAndOrderNumGreaterThanOrderByOrderNum(parent.getThread(), parent.getOrder());
-            for (Message m : messages) {
-                depth = m.getDepth();
-                if (depth <= depth1) {
-                    break;
-                }
-                orderNum = m.getOrder();
-            }
-            depth = depth1 + 1;
-            messageMapper.updateOrderNumByThreadIdAndOrderNumGreaterThan(parent.getThread(), orderNum);
-            ++orderNum;
-        }
-        messageMapper.save(nextId, parentId, orderNum, problemId, depth, userId, title, content);
-        if (parent != null) {
-            messageMapper.updateThreadIdByThreadId(nextId, parent.getThread());
-        }
+        messageService.save(parentId, problemId, userId, title, content);
+
         if (problemId != null) {
             redirectAttributes.addAttribute("problem_id", problemId);
         }

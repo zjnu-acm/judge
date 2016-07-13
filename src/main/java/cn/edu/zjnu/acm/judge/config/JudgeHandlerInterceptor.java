@@ -54,7 +54,7 @@ public class JudgeHandlerInterceptor {
     public void addAttributes(HttpServletRequest request,
             @RequestParam(value = "url", required = false) String url,
             Authentication authentication) {
-        if (Boolean.TRUE == request.getAttribute(APPLIED_ONCE_KEY)) {
+        if (Boolean.TRUE.equals(request.getAttribute(APPLIED_ONCE_KEY))) {
             return;
         }
         request.setAttribute(APPLIED_ONCE_KEY, true);
