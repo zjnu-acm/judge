@@ -27,9 +27,14 @@
         <div class="source" th:utext="${problem.source}">source</div>
         <font color="#333399" size="3">
             <p align="center">
-                <span>[</span><a th:href="@{/admin/problems/{problemId}/disable(problemId=${problem.id})}" th:unless="${problem.disabled}">Delete</a>
-                <a th:href="@{/admin/problems/{problemId}/resume(problemId=${problem.id})}" th:if="${problem.disabled}">Resume</a><span>]&nbsp;&nbsp;</span>
-                <span>[</span><a th:href="@{/admin/problems/{problemId}/edit(problemId=${problem.id})}">Edit</a>]</p>
+                <span>[</span>
+                <a th:href="@{/admin/problems/{problemId}/disable(problemId=${problem.id})}" th:unless="${problem.disabled}">Disable this problem</a>
+                <a th:href="@{/admin/problems/{problemId}/enable(problemId=${problem.id})}" th:if="${problem.disabled}">Enable this problem</a>
+                <span>]&nbsp;&nbsp;</span>
+                <span>[</span>
+                <a th:href="@{/admin/problems/{problemId}/edit(problemId=${problem.id})}">Edit</a>
+                <span>]</span>
+            </p>
         </font>
         <!--/*/</th:block>/*/-->
     </body>

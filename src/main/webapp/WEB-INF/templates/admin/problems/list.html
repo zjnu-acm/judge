@@ -40,8 +40,8 @@
                         </td>
                         <td th:text="*{#calendars.format(T(java.util.Date).from(inDate),'yyyy-MM-dd HH:mm:ss')}">2016-03-09 22:28:54</td>
                         <td>
-                            <a th:if="*{disabled}" th:href="@{/admin/problems/{problemId}/resume(problemId=*{id})}">Resume</a>
-                            <a th:unless="*{disabled}" th:href="@{/admin/problems/{problemId}/disable(problemId=*{id})}">Delete</a>
+                            <a th:if="*{disabled}" th:href="@{/admin/problems/{problemId}/enable(problemId=*{id})}">Enable</a>
+                            <a th:unless="*{disabled}" th:href="@{/admin/problems/{problemId}/disable(problemId=*{id})}">Disable</a>
                         </td>
                     </tr>
                 </tbody>
