@@ -11,7 +11,8 @@
         <!--/*/<th:block layout:fragment="content">/*/-->
         <p>
             <img src="../../../../images/j0293240.png" th:src="@{/images/j0293240.png}" width="50" height="36"/>
-            <font size="4">Congratulations</font></p>
+            <font size="4">Congratulations</font>
+        </p>
         <ul>
             <li>You have added a contest, the id is <font color="#CC9900">[[${contestId}]]</font></li>
             <li>Start time:<font color="#CC9900">[[${#calendars.format(T(java.util.Date).from(startTime),'yyyy-MM-dd HH:mm:ss')}]]</font></li>
