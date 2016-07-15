@@ -32,6 +32,7 @@ public interface MessageMapper {
 
     String COLUMNS = " message_id id,in_date inDate,parent_id parent,user_id user,"
             + "content,title,problem_id problem,depth,thread_id thread,orderNum `order` ";
+    String LIST_COLUMNS = " message_id id,title,depth,user_id user,in_date inDate,thread_id thread,problem_id problem ";
 
     @Deprecated
     @Select("select COALESCE(max(message_id)+1,1000) maxp from message")
@@ -59,5 +60,45 @@ public interface MessageMapper {
             @Param("userId") String userId,
             @Param("title") String title,
             @Param("content") String content);
+
+    @Select("<script>"
+            + "select" + LIST_COLUMNS + "from message"
+            + "<where>"
+            + "<if test='min!=null'>and thread_id&gt;=#{min} </if>"
+            + "<if test='max!=null'>and thread_id&lt;#{max} </if>"
+            + "<if test='problemId!=null'>and problem_id=#{problemId} </if>"
+            + "</where>"
+            + "order by thread_id desc,orderNum"
+            + "<if test='limit!=null'> limit #{limit}</if>"
+            + "</script>")
+    List<Message> findAllByThreadIdBetween(
+            @Param("min") Long min, // inclusive
+            @Param("max") Long max, // exclude
+            @Param("problemId") Long problemId,
+            @Param("limit") Integer limit);
+
+    @Select("<script>"
+            + "select COALESCE(min(thread_id),#{coalesce}) as mint from ("
+            + "select thread_id from message"
+            + "<where>"
+            + "thread_id&lt;#{top}"
+            + "<if test='problemId!=null'> and problem_id=#{problemId} </if>"
+            + "</where>"
+            + " order by thread_id desc limit #{limit}"
+            + ") as temp"
+            + "</script>")
+    long mint(@Param("top") long top, @Param("problemId") Long problemId, @Param("limit") int limit, @Param("coalesce") long coalesce);
+
+    @Select("<script>"
+            + "select COALESCE(max(thread_id),#{coalesce}) as maxt from ("
+            + "select thread_id from message"
+            + "<where>"
+            + "thread_id&gt;=#{top} "
+            + "<if test='problemId!=null'>and problem_id=#{problemId}</if>"
+            + "</where>"
+            + "order by thread_id limit #{limit}"
+            + ") temp"
+            + "</script>")
+    long maxt(@Param("top") long top, @Param("problemId") Long problemId, @Param("limit") int limit, @Param("coalesce") long coalesce);
 
 }
