@@ -704,20 +704,15 @@ public class FileUtils {
      * @throws IOException when io error occurs.
      */
     public static void createPath(final Path file, final boolean asFile) throws IOException {
-        Path path = file.toAbsolutePath();
-
-        Path dir;
         if (asFile) {
-            dir = path.getParent();
-        } else {
-            dir = path;
-        }
-
-        if (!Files.exists(dir)) {
-            Files.createDirectories(dir);
-        }
-        if (asFile) {
+            Path path = file.toAbsolutePath();
+            Path dir = path.getParent();
+            if (dir != null) {
+                Files.createDirectories(dir);
+            }
             Files.createFile(path);
+        } else {
+            Files.createDirectories(file);
         }
     }
 
