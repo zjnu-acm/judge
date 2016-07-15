@@ -36,7 +36,7 @@
                             <td style="width:16.7%"><a href="../index.html" th:href="@{/}" style="width:16.7%">Home Page</a></td>
                             <td style="width:16.7%"><a th:href="@{/bbs}" target="_blank">Web Board</a></td>
                             <td style="width:16.7%"><a href="../contests/problems.html" th:href="@{/showcontest(contest_id=${contestId})}">Problems</a></td>
-                            <td style="width:16.7%"><a href="../contests/standing.html" th:href="@{/contests/{contestId}/standing(contestId=${contestId})}">Standing</a></td>
+                            <td style="width:16.7%"><a href="../contests/standing.html" th:href="@{/conteststanding?contest_id={contestId}(contestId=${contestId})}">Standing</a></td>
                             <td style="width:16.7%"><a th:href="@{/status(contest_id=${contestId})}">Status</a></td>
 
                             <td th:if="${#request.userPrincipal != null}">

@@ -27,14 +27,19 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * @author zhanhb
  */
 @Controller
-@Secured("ROLE_ADMIN")
 public class LegacySupport {
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value = "/admin.showproblem", method = {RequestMethod.GET, RequestMethod.HEAD})
     public String showproblem(@RequestParam("problem_id") long problemId,
             RedirectAttributes redirectAttributes) {
         redirectAttributes.addAttribute("problemId", problemId);
         return "redirect:/admin/problems/{problemId}";
+    }
+
+    @RequestMapping(value = "/conteststanding", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public String contestStanding(@RequestParam("contest_id") long contestId) {
+        return "forward:/contests/" + contestId + "/standing";
     }
 
 }

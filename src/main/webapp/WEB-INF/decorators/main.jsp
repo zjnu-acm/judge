@@ -54,10 +54,10 @@
                     </jsp:scriptlet>
                     <table border="0" width="100%" class="table-back">
                         <tr>
-                            <td style="width:16.7%"><a href="${pageContext.request.contextPath}/" style="width:16.7%">Home Page</a></td>
+                            <td style="width:16.7%"><a href="${pageContext.request.contextPath}/">Home Page</a></td>
                             <td style="width:16.7%"><a href="${pageContext.request.contextPath}/bbs" target="_blank">Web Board</a></td>
                             <td style="width:16.7%"><a href="${pageContext.request.contextPath}/showcontest?contest_id=${contestId}">Problems</a></td>
-                            <td style="width:16.7%"><a href="${pageContext.request.contextPath}/contests/${contestId}/standing">Standing</a></td>
+                            <td style="width:16.7%"><a href="${pageContext.request.contextPath}/conteststanding?contest_id=${contestId}">Standing</a></td>
                             <td style="width:16.7%"><a href="${pageContext.request.contextPath}/status?contest_id=${contestId}">Status</a></td>
                             <jsp:scriptlet>/*<![CDATA[*/
                                 {
