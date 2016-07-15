@@ -127,9 +127,8 @@ public final class ConfigurationFactory {
         }
 
         Path file = Paths.get(baseFolder);
-        if (!Files.exists(file) && !request.getParameter("command").equals("Init")) {
-            Files.createDirectories(file);
-        }
+        Files.createDirectories(file);
+
         conf.setThumbsPath(file.toAbsolutePath().toString());
 
         String thumbUrl = conf.getThumbsURL();
@@ -165,9 +164,9 @@ public final class ConfigurationFactory {
             }
 
             file = Paths.get(resourcePath);
-            if (!Files.exists(file) && !request.getParameter("command").equals("Init")) {
-                FileUtils.createPath(file, false);
-            }
+
+            FileUtils.createPath(file, false);
+
             item.setPath(file.toAbsolutePath().toString());
         }
 
