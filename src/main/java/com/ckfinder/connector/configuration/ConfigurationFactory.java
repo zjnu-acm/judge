@@ -35,6 +35,7 @@ public final class ConfigurationFactory {
      *
      * @return configuration instance.
      */
+    @Deprecated
     public static ConfigurationFactory getInstace() {
         return instance;
     }

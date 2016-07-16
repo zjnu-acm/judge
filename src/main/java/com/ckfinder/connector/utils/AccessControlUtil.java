@@ -63,6 +63,7 @@ public final class AccessControlUtil {
      *
      * @return current instance
      */
+    @Deprecated
     public static AccessControlUtil getInstance() {
         return util;
     }
