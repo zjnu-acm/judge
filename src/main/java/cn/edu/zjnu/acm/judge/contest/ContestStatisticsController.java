@@ -72,10 +72,14 @@ public class ContestStatisticsController {
         sql.append("problem_id,num,sum(if(score=100,1,0)) A,sum(if(score<100 and score >=70,1,0)) B,sum(if(score<70 and score >30,1,0)) D,sum(if(score>0 and score <=30,1,0)) C,sum(if(score=0,1,0)) E,sum(if(score=-7,1,0)) F,sum(if(score<-7 or score > 100,1,0)) G,count(*) Total from solution where contest_id=? group by problem_id order by num");
 
         String[] judgeStatus = {"A", "B", "C", "D", "E", "F", "G", "Total"};
-        long[] arrayOfLong1 = new long[judgeStatus.length];
-        long[] arrayOfLong2 = new long[languageCount];
+        long[] byScore = new long[judgeStatus.length];
+        long[] byLanguage = new long[languageCount];
         sb.append("<th>&nbsp;</th>");
-        languages.values().forEach(language -> sb.append("<th>").append(StringUtils.escapeXml(language.getName())).append("</th>"));
+        languages.values()
+                .stream()
+                .map(Language::getName)
+                .map(StringUtils::escapeXml)
+                .forEach(languageName -> sb.append("<th>").append(languageName).append("</th>"));
         sb.append("</tr>");
         log.debug("{}", sql);
         try (Connection conn = dataSource.getConnection();
@@ -87,24 +91,24 @@ public class ContestStatisticsController {
                     long num = rs.getLong("num");
                     sb.append("<tr><th><a href=showproblem?problem_id=").append(problemId).append(">").append((char) ('A' + num)).append("</a></th>");
                     for (int i = 0; i < judgeStatus.length; ++i) {
-                        long l6 = rs.getLong(judgeStatus[i]);
-                        arrayOfLong1[i] += l6;
-                        if (l6 == 0) {
+                        long value = rs.getLong(judgeStatus[i]);
+                        byScore[i] += value;
+                        if (value == 0) {
                             sb.append("<td>&nbsp;</td>");
                         } else if (i == judgeStatus.length - 1) {
-                            sb.append("<th><a href=status?contest_id=").append(contestId).append("&problem_id=").append(problemId).append(">").append(l6).append("</a></th>");
+                            sb.append("<th><a href=status?contest_id=").append(contestId).append("&problem_id=").append(problemId).append(">").append(value).append("</a></th>");
                         } else {
-                            sb.append("<td>").append(l6).append("</td>");
+                            sb.append("<td>").append(value).append("</td>");
                         }
                     }
                     sb.append("<td>&nbsp;</td>");
                     for (int i = 0; i < languageCount; ++i) {
-                        long l6 = rs.getLong(i + 1);
-                        arrayOfLong2[i] += l6;
-                        if (l6 == 0) {
+                        long value = rs.getLong(i + 1);
+                        byLanguage[i] += value;
+                        if (value == 0) {
                             sb.append("<td>&nbsp;</td>");
                         } else {
-                            sb.append("<td>").append(l6).append("</td>");
+                            sb.append("<td>").append(value).append("</td>");
                         }
                     }
                     sb.append("</tr>");
@@ -113,20 +117,20 @@ public class ContestStatisticsController {
         }
         sb.append("<tr><th>Total</th>");
         for (int i = 0; i < judgeStatus.length; ++i) {
-            if (arrayOfLong1[i] == 0) {
+            if (byScore[i] == 0) {
                 sb.append("<td>&nbsp;</td>");
             } else if (i == judgeStatus.length - 1) {
-                sb.append("<th>").append(arrayOfLong1[i]).append("</th>");
+                sb.append("<th>").append(byScore[i]).append("</th>");
             } else {
-                sb.append("<td>").append(arrayOfLong1[i]).append("</td>");
+                sb.append("<td>").append(byScore[i]).append("</td>");
             }
         }
         sb.append("<td>&nbsp;</td>");
         for (int i = 0; i < languageCount; ++i) {
-            if (arrayOfLong2[i] == 0) {
+            if (byLanguage[i] == 0) {
                 sb.append("<td>&nbsp;</td>");
             } else {
-                sb.append("<td>").append(arrayOfLong2[i]).append("</td>");
+                sb.append("<td>").append(byLanguage[i]).append("</td>");
             }
         }
         sb.append("</tr></table></body></html>");

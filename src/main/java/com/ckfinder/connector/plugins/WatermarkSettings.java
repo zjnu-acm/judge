@@ -55,6 +55,7 @@ class WatermarkSettings {
                             break;
                         case MARGIN_BOTTOM:
                             settings.setMarginBottom(Integer.parseInt(value));
+                            break;
                         case MARGIN_RIGHT:
                             settings.setMarginRight(Integer.parseInt(value));
                     }
