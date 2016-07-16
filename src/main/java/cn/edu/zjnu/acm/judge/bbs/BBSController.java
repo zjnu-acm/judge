@@ -73,11 +73,6 @@ public class BBSController {
             sb.append("</ul>");
         }
         sb.append("</ul></td></tr></table><center>");
-        String sql3 = "select thread_id from message where thread_id>=? ";
-        if (problemId != null) {
-            sql3 += " and problem_id=? ";
-        }
-        sql3 = sql3 + " order by thread_id limit " + threadLimit;
         long maxt = messageMapper.maxt(top, problemId, threadLimit, 999999999999L);
         String query = "";
         if (problemId != null) {
