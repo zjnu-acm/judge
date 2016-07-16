@@ -306,23 +306,10 @@ public interface IConfiguration {
     public void setThumbsDir(String dir);
 
     /**
-     * checks if connector is in debug mode.
-     *
-     * @return true if is
-     */
-    public boolean isDebugMode();
-
-    /**
-     * sets connector debug mode.
-     *
-     * @param mode debug mode flag
-     */
-    public void setDebugMode(final boolean mode);
-
-    /**
      * gets UserFilePathBuilder implementation from configuration.
      *
      * @return IUserFilePathBuilder implementation
      */
     public IBasePathBuilder getBasePathBuilder();
+
 }

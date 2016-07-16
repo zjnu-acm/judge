@@ -32,8 +32,10 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Element;
 
+@Slf4j
 public class ImageResizeCommad extends XMLCommand implements IEventHandler {
 
     private static final String[] SIZES = {"small", "medium", "large"};
@@ -145,9 +147,7 @@ public class ImageResizeCommad extends XMLCommand implements IEventHandler {
                             this.width, this.height, configuration.getImgQuality());
 
                 } catch (IOException e) {
-                    if (configuration.isDebugMode()) {
-                        this.exception = e;
-                    }
+                    log.error("", e);
                     return Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED;
                 }
             }
@@ -167,9 +167,7 @@ public class ImageResizeCommad extends XMLCommand implements IEventHandler {
                                     ImageUtils.createResizedImage(file, thumbFile, Integer.valueOf(params[0]),
                                             Integer.valueOf(params[1]), configuration.getImgQuality());
                                 } catch (IOException e) {
-                                    if (configuration.isDebugMode()) {
-                                        this.exception = e;
-                                    }
+                                    log.error("", e);
                                     return Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED;
                                 }
                             }
@@ -178,9 +176,7 @@ public class ImageResizeCommad extends XMLCommand implements IEventHandler {
                 }
             }
         } catch (SecurityException e) {
-            if (configuration.isDebugMode()) {
-                this.exception = e;
-            }
+            log.error("", e);
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED;
         }
 

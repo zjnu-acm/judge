@@ -73,9 +73,6 @@ public abstract class XMLCommand extends Command {
      * @throws ConnectorException to handle in error handler.
      */
     private void createXMLResponse(final int errorNum) throws ConnectorException, IOException {
-        if (configuration.isDebugMode() && this.exception != null) {
-            throw new ConnectorException(this.exception);
-        }
         Element rootElement = creator.getDocument().createElement("Connector");
         if (this.type != null && !type.isEmpty()) {
             rootElement.setAttribute("resourceType", this.type);

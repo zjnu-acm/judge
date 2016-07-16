@@ -33,10 +33,12 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Class to handle <code>FileUpload</code> command.
  */
+@Slf4j
 public class FileUploadCommand extends Command implements IPostCommand {
 
     /**
@@ -100,9 +102,6 @@ public class FileUploadCommand extends Command implements IPostCommand {
      */
     @Override
     public void execute(final OutputStream out) throws ConnectorException {
-        if (configuration.isDebugMode() && this.exception != null) {
-            throw new ConnectorException(this.errorCode, this.exception);
-        }
         try {
             String errorMsg = this.errorCode == Constants.Errors.CKFINDER_CONNECTOR_ERROR_NONE ? "" : (this.errorCode == Constants.Errors.CKFINDER_CONNECTOR_ERROR_CUSTOM_ERROR ? this.customErrorMsg
                     : ErrorUtils.getInstance().getErrorMsgByLangAndCode(this.langCode, this.errorCode, this.configuration));
@@ -250,12 +249,11 @@ public class FileUploadCommand extends Command implements IPostCommand {
         } catch (Exception e) {
             String message = e.getMessage().toLowerCase();
             if (message.contains("sizelimit") || message.contains("size limit")) {
+                log.info("", e);
                 this.errorCode = Constants.Errors.CKFINDER_CONNECTOR_ERROR_UPLOADED_TOO_BIG;
                 return false;
             }
-            if (configuration.isDebugMode()) {
-                this.exception = e;
-            }
+            log.error("", e);
             this.errorCode = Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED;
             return false;
         }
@@ -413,9 +411,7 @@ public class FileUploadCommand extends Command implements IPostCommand {
                 return false;
             }
         } catch (SecurityException | IOException e) {
-            if (configuration.isDebugMode()) {
-                this.exception = e;
-            }
+            log.error("", e);
             this.errorCode = Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED;
             return false;
         }

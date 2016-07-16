@@ -24,11 +24,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Element;
 
 /**
  * Class used to handle <code>DeleteFiles</code> command.
  */
+@Slf4j
 public class DeleteFilesCommand extends XMLCommand implements IPostCommand {
 
     private List<FilePostParam> files;
@@ -136,11 +138,9 @@ public class DeleteFilesCommand extends XMLCommand implements IPostCommand {
                             fileItem.getName(), fileItem.getFolder(), fileItem.getType());
                 }
             } catch (SecurityException e) {
-                if (configuration.isDebugMode()) {
-                    throw e;
-                } else {
-                    return Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED;
-                }
+                log.error("", e);
+                return Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED;
+
             }
         }
         if (creator.hasErrors()) {

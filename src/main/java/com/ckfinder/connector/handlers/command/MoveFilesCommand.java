@@ -25,11 +25,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Element;
 
 /**
  * Class to handle <code>MoveFiles</code> command.
  */
+@Slf4j
 public class MoveFilesCommand extends XMLCommand implements IPostCommand {
 
     private List<FilePostParam> files;
@@ -84,7 +86,7 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
         try {
             return moveFiles();
         } catch (Exception e) {
-            this.exception = e;
+            log.error("", e);
         }
         //this code should never be reached
         return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNKNOWN;
@@ -95,9 +97,8 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
      * move files.
      *
      * @return error code.
-     * @throws IOException when io error in debug mode occurs
      */
-    private int moveFiles() throws IOException {
+    private int moveFiles() {
         this.filesMoved = 0;
         this.addMoveNode = false;
         for (FilePostParam file : files) {
@@ -210,13 +211,10 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
                     moveThumb(file);
                 }
             } catch (SecurityException | IOException e) {
-                if (configuration.isDebugMode()) {
-                    throw e;
-                } else {
-                    creator.appendErrorNodeChild(
-                            Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED,
-                            file.getName(), file.getFolder(), file.getType());
-                }
+                log.error("", e);
+                creator.appendErrorNodeChild(
+                        Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED,
+                        file.getName(), file.getFolder(), file.getType());
             }
 
         }

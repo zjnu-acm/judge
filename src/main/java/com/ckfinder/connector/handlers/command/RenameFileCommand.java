@@ -21,11 +21,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import javax.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Element;
 
 /**
  * Class to handle <code>RenameFile</code> command.
  */
+@Slf4j
 public class RenameFileCommand extends XMLCommand implements IPostCommand {
 
     private String fileName;
@@ -140,11 +142,8 @@ public class RenameFileCommand extends XMLCommand implements IPostCommand {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED;
             }
         } catch (SecurityException e) {
-            if (configuration.isDebugMode()) {
-                throw e;
-            } else {
-                return Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED;
-            }
+            log.error("", e);
+            return Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED;
         }
 
     }

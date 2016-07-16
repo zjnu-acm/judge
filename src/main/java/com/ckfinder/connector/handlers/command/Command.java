@@ -34,11 +34,6 @@ import javax.servlet.http.HttpServletResponse;
 public abstract class Command {
 
     /**
-     * Exception caught during file upload which in debug mode should be thrown
-     * to servlet response.
-     */
-    protected Exception exception;
-    /**
      * Connector configuration.
      */
     protected IConfiguration configuration;
