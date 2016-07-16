@@ -31,10 +31,12 @@ import java.util.TimeZone;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Class to handle <code>Thumbnail</code> command.
  */
+@Slf4j
 public class ThumbnailCommand extends Command {
 
     /**
@@ -161,9 +163,7 @@ public class ThumbnailCommand extends Command {
             try {
                 FileUtils.printFileContentToResponse(thumbFile, out);
             } catch (IOException e) {
-                if (configuration.isDebugMode()) {
-                    throw new ConnectorException(e);
-                }
+                log.error("", e);
                 try {
                     this.response.sendError(HttpServletResponse.SC_FORBIDDEN);
                 } catch (IOException e1) {

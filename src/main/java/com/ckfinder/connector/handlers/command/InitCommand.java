@@ -19,6 +19,7 @@ import com.ckfinder.connector.errors.ConnectorException;
 import com.ckfinder.connector.utils.AccessControlUtil;
 import com.ckfinder.connector.utils.FileUtils;
 import com.ckfinder.connector.utils.PathUtils;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -26,11 +27,13 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Element;
 
 /**
  * Class to handle <code>Init</code> command.
  */
+@Slf4j
 public class InitCommand extends XMLCommand {
 
     /**
@@ -61,9 +64,7 @@ public class InitCommand extends XMLCommand {
             try {
                 createResouceTypesData(rootElement);
             } catch (Exception e) {
-                if (configuration.isDebugMode()) {
-                    throw new ConnectorException(e);
-                }
+                log.error("", e);
             }
             createPluginsData(rootElement);
         }
@@ -239,9 +240,8 @@ public class InitCommand extends XMLCommand {
      *
      * @param folder folder
      * @return hash value
-     * @throws Exception when error occurs and debug mode is on
      */
-    private String randomHash(final String folder) throws Exception {
+    private String randomHash(final String folder) {
 
         try {
             MessageDigest algorithm = MessageDigest.getInstance("SHA-256");
@@ -255,10 +255,10 @@ public class InitCommand extends XMLCommand {
             }
             return hexString.substring(0, 15);
         } catch (NoSuchAlgorithmException e) {
-            if (configuration.isDebugMode()) {
-                throw e;
-            }
+            log.error("", e);
             return "";
+        } catch (UnsupportedEncodingException ex) {
+            throw new AssertionError(ex);
         }
     }
 

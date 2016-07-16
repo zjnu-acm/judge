@@ -25,11 +25,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Element;
 
 /**
  * Class to handle <code>CopyFiles</code> command.
  */
+@Slf4j
 public class CopyFilesCommand extends XMLCommand implements IPostCommand {
 
     private List<FilePostParam> files;
@@ -85,7 +87,7 @@ public class CopyFilesCommand extends XMLCommand implements IPostCommand {
         try {
             return copyFiles();
         } catch (Exception e) {
-            this.exception = e;
+            log.error("", e);
         }
         //this code should never be reached
         return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNKNOWN;
@@ -96,9 +98,8 @@ public class CopyFilesCommand extends XMLCommand implements IPostCommand {
      * copy files from request.
      *
      * @return error code
-     * @throws IOException when ioexception in debug mode occurs
      */
-    private int copyFiles() throws IOException {
+    private int copyFiles() {
         this.filesCopied = 0;
         this.addCopyNode = false;
         for (FilePostParam file : files) {
@@ -204,15 +205,11 @@ public class CopyFilesCommand extends XMLCommand implements IPostCommand {
                     copyThumb(file);
                 }
             } catch (SecurityException | IOException e) {
-                if (configuration.isDebugMode()) {
-                    throw e;
-                } else {
-                    creator.appendErrorNodeChild(
-                            Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED,
-                            file.getName(), file.getFolder(), file.getType());
-                }
+                log.error("", e);
+                creator.appendErrorNodeChild(
+                        Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED,
+                        file.getName(), file.getFolder(), file.getType());
             }
-
         }
         this.addCopyNode = true;
         if (creator.hasErrors()) {

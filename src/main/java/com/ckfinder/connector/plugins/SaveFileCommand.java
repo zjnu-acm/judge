@@ -26,8 +26,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import javax.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Element;
 
+@Slf4j
 public class SaveFileCommand extends XMLCommand implements IEventHandler {
 
     private String fileName;
@@ -82,9 +84,7 @@ public class SaveFileCommand extends XMLCommand implements IEventHandler {
         } catch (FileNotFoundException e) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_FILE_NOT_FOUND;
         } catch (SecurityException | IOException e) {
-            if (configuration.isDebugMode()) {
-                this.exception = e;
-            }
+            log.error("", e);
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED;
         }
 

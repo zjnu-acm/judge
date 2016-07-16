@@ -24,11 +24,13 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Element;
 
 /**
  * Class to handle <code>GetFolders</code> command.
  */
+@Slf4j
 public class GetFoldersCommand extends XMLCommand {
 
     /**
@@ -77,11 +79,8 @@ public class GetFoldersCommand extends XMLCommand {
 
             directories = FileUtils.findChildrensList(dir, true);
         } catch (SecurityException e) {
-            if (configuration.isDebugMode()) {
-                throw e;
-            } else {
-                return Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED;
-            }
+            log.error("", e);
+            return Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED;
         }
         filterListByHiddenAndNotAllowed();
         Collections.sort(directories);

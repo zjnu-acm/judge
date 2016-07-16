@@ -27,11 +27,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Element;
 
 /**
  * Class to handle <code>GetFiles</code> command.
  */
+@Slf4j
 public class GetFilesCommand extends XMLCommand {
 
     /**
@@ -106,11 +108,8 @@ public class GetFilesCommand extends XMLCommand {
             }
             files = FileUtils.findChildrensList(dir, false);
         } catch (SecurityException e) {
-            if (configuration.isDebugMode()) {
-                throw e;
-            } else {
-                return Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED;
-            }
+            log.error("", e);
+            return Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED;
         }
         filterListByHiddenAndNotAllowed();
         Collections.sort(files);
