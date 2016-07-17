@@ -59,18 +59,14 @@ public class ConnectorServlet extends HttpServlet {
     /**
      */
     private static final long serialVersionUID = 2960665641425153638L;
-    /**
-     * holds exception if any occurs during CKFinder start.
-     */
-    private Exception startException;
 
     /**
      * Handling get requests.
      *
      * @param request request
      * @param response response
-     * @throws IOException .
-     * @throws ServletException .
+     * @throws IOException
+     * @throws ServletException
      */
     @Override
     protected void doGet(final HttpServletRequest request,
@@ -109,10 +105,6 @@ public class ConnectorServlet extends HttpServlet {
     private void getResponse(final HttpServletRequest request,
             final HttpServletResponse response, final boolean post)
             throws ServletException {
-        if (startException != null
-                && Boolean.valueOf(getServletConfig().getInitParameter("debug"))) {
-            throw new ServletException(startException);
-        }
         boolean isNativeCommand;
         String command = request.getParameter("command");
         IConfiguration configuration = null;
@@ -122,9 +114,6 @@ public class ConnectorServlet extends HttpServlet {
                 throw new Exception("Configuration wasn't initialized correctly. Check server logs.");
             }
         } catch (Exception e) {
-            if (Boolean.valueOf(getServletConfig().getInitParameter("debug"))) {
-                log.error("Configuration wasn't initialized correctly. Check server logs.", e);
-            }
             throw new ServletException(e);
         }
         try {
@@ -133,9 +122,6 @@ public class ConnectorServlet extends HttpServlet {
                 throw new ConnectorException(
                         Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_COMMAND, false);
             }
-
-            configuration.setDebugMode(
-                    Boolean.valueOf(getServletConfig().getInitParameter("debug")));
 
             if (CommandHandlerEnum.contains(command.toUpperCase())) {
                 CommandHandlerEnum cmd;
@@ -172,24 +158,14 @@ public class ConnectorServlet extends HttpServlet {
                 executeNativeCommand(command, request, response, configuration, isNativeCommand);
             }
         } catch (IllegalArgumentException e) {
-            if (Boolean.valueOf(getServletConfig().getInitParameter("debug"))) {
-                log.error("Couldn't execute native command.", e);
-                response.reset();
-                throw new ServletException(e);
-            } else {
-                handleError(
-                        new ConnectorException(
-                                Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_COMMAND, false),
-                        configuration, request, response, command);
-            }
+            log.error("", e);
+            handleError(
+                    new ConnectorException(
+                            Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_COMMAND, false),
+                    configuration, request, response, command);
         } catch (ConnectorException e) {
-            if (Boolean.valueOf(getServletConfig().getInitParameter("debug"))) {
-                log.error(e.getErrorMessage(), e.getException() != null ? e.getException() : e);
-                response.reset();
-                throw new ServletException(e.getException());
-            } else {
-                handleError(e, configuration, request, response, command);
-            }
+            log.error("", e);
+            handleError(e, configuration, request, response, command);
         }
     }
 
@@ -246,6 +222,7 @@ public class ConnectorServlet extends HttpServlet {
      * @param currentCommand current command
      * @throws ServletException when error handling fails.
      */
+    @SuppressWarnings({"BroadCatchBlock", "TooBroadCatch"})
     private void handleError(final ConnectorException e,
             final IConfiguration configuration,
             final HttpServletRequest request, final HttpServletResponse response,
@@ -273,7 +250,7 @@ public class ConnectorServlet extends HttpServlet {
     }
 
     @Override
-    @SuppressWarnings("UseSpecificCatch")
+    @SuppressWarnings({"UseSpecificCatch", "BroadCatchBlock", "TooBroadCatch"})
     public void init() throws ServletException {
         ServletContextFactory.setServletContext(getServletContext());
         IConfiguration configuration;
@@ -301,11 +278,7 @@ public class ConnectorServlet extends HttpServlet {
             configuration.init();
             AccessControlUtil.getInstance().loadConfiguration(configuration);
         } catch (Exception e) {
-            if (Boolean.valueOf(getServletConfig().getInitParameter("debug"))) {
-                log.error("Couldn't initialize configuration object.", e);
-            }
-            this.startException = e;
-            configuration = null;
+            throw new ServletException(e);
         }
         ConfigurationFactory.getInstace().setConfiguration(configuration);
     }

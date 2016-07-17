@@ -1,10 +1,10 @@
 package cn.edu.zjnu.acm.judge.admin;
 
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,8 +18,8 @@ public class AdminContestListController {
     private ContestMapper contestMapper;
 
     @RequestMapping(value = "/admin/contests", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public String contests(HttpServletRequest request) {
-        request.setAttribute("list", contestMapper.findAll());
+    public String contests(Model model) {
+        model.addAttribute("list", contestMapper.findAll());
         return "admin/contests/list";
     }
 

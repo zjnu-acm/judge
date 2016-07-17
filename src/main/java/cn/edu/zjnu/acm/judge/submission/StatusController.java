@@ -23,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -53,7 +54,8 @@ public class StatusController {
             final @RequestParam(value = "bottom", required = false) Long bottom,
             @RequestParam(value = "score", required = false) Integer sc,
             @RequestParam(value = "user_id", defaultValue = "") String userId,
-            final @RequestParam(value = "top", required = false) Long top) {
+            final @RequestParam(value = "top", required = false) Long top,
+            Authentication authentication) {
         long problemId = 0;
         String query;
         try {
@@ -180,7 +182,7 @@ public class StatusController {
             } else {
                 sb.append("<td>&nbsp;</td><td>&nbsp;</td>");
             }
-            if (admin || sourceBrowser || UserDetailService.isUser(request, user_id1)) {
+            if (admin || sourceBrowser || UserDetailService.isUser(authentication, user_id1)) {
                 sb.append("<td><a href=showsource?solution_id=").append(id).append(" target=_blank>").append(language1).append("</a></td>");
             } else {
                 sb.append("<td>").append(language1).append("</td>");

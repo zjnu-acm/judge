@@ -24,11 +24,11 @@ import cn.edu.zjnu.acm.judge.mapper.UserProblemMapper;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -63,22 +63,22 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/admin/problems/{problemId}/disable", method = {RequestMethod.GET, RequestMethod.HEAD})
-    protected String disableProblem(HttpServletRequest request, @PathVariable("problemId") long problemId) {
+    protected String disableProblem(Model model, @PathVariable("problemId") long problemId) {
 
-        problemMapper.disable(problemId);
+        problemMapper.setDisabled(problemId, true);
 
-        request.setAttribute("problemId", problemId);
-        return "admin/problems/delete";
+        model.addAttribute("problemId", problemId);
+        return "admin/problems/disable";
     }
 
     // TODO request method
-    @RequestMapping(value = "/admin/problems/{problemId}/resume", method = {RequestMethod.GET, RequestMethod.HEAD})
-    protected String resumeProblem(HttpServletRequest request,
+    @RequestMapping(value = "/admin/problems/{problemId}/enable", method = {RequestMethod.GET, RequestMethod.HEAD})
+    protected String enableProblem(Model model,
             @PathVariable("problemId") long problemId) {
-        problemMapper.enable(problemId);
+        problemMapper.setDisabled(problemId, false);
 
-        request.setAttribute("problemId", problemId);
-        return "admin/problems/resume";
+        model.addAttribute("problemId", problemId);
+        return "admin/problems/enable";
     }
 
     @RequestMapping(value = "/admin/contests", method = RequestMethod.POST)
@@ -87,7 +87,7 @@ public class AdminController {
             int eyear, int emonth, int eday, int ehour, int eminute,
             @RequestParam(value = "title", required = false) String title,
             @RequestParam(value = "description", required = false) String description,
-            HttpServletRequest request) {
+            Model model) {
 
         Instant startTime = LocalDateTime.of(syear, smonth, sday, shour, sminute).atZone(ZoneId.systemDefault()).toInstant();
         Instant endTime = LocalDateTime.of(eyear, emonth, eday, ehour, eminute).atZone(ZoneId.systemDefault()).toInstant();
@@ -100,9 +100,9 @@ public class AdminController {
                 .build();
         contestMapper.save(contest);
 
-        request.setAttribute("contestId", contest.getId());
-        request.setAttribute("startTime", startTime);
-        request.setAttribute("endTime", endTime);
+        model.addAttribute("contestId", contest.getId());
+        model.addAttribute("startTime", startTime);
+        model.addAttribute("endTime", endTime);
 
         return "admin/contests/add";
     }

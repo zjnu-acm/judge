@@ -5,11 +5,11 @@ import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserProblemMapper;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,7 +25,7 @@ public class UserStatusController {
     private UserProblemMapper userProblemMapper;
 
     @RequestMapping(value = "/userstatus", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public String userstatus(HttpServletRequest request,
+    public String userstatus(Model model,
             @RequestParam(value = "size", defaultValue = "3") int display,
             @RequestParam(value = "user_id", required = false) String userId) {
         if (StringUtils.isEmptyOrWhitespace(userId)) {
@@ -41,11 +41,11 @@ public class UserStatusController {
         long rankFirst = Math.max(rank - display, 1);
         List<User> neighbours = userMapper.neighbours(userId, display);
         List<Long> solvedProblems = userProblemMapper.findAllByUserIdAndAcceptedNot0(userId);
-        request.setAttribute("neighbours", neighbours);
-        request.setAttribute("solvedProblems", solvedProblems);
-        request.setAttribute("rankFirst", rankFirst);
-        request.setAttribute("user", user);
-        request.setAttribute("rank", rank);
+        model.addAttribute("neighbours", neighbours);
+        model.addAttribute("solvedProblems", solvedProblems);
+        model.addAttribute("rankFirst", rankFirst);
+        model.addAttribute("user", user);
+        model.addAttribute("rank", rank);
 
         log.debug("rankFirst = {}", rankFirst);
         return "users/status";

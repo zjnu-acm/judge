@@ -11,12 +11,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Locale;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,7 +35,7 @@ public class ShowProblemController {
     private JudgeConfiguration judgeConfiguration;
 
     @RequestMapping(value = "/showproblem", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = TEXT_HTML_VALUE)
-    public ResponseEntity<String> showproblem(HttpServletRequest request,
+    public ResponseEntity<String> showproblem(Model model,
             @RequestParam("problem_id") long problemId,
             Locale locale) {
         Problem problem = problemMapper.findOne(problemId, locale.getLanguage());
@@ -92,7 +92,7 @@ public class ShowProblemController {
                     .append(title)
                     .append("</div>");
         } else {
-            request.setAttribute("contestId", contestId);
+            model.addAttribute("contestId", contestId);
             sb.append("<html><head><title>").append((char) (contestNum + 'A')).append(":").append(problemId).append(" -- ").append(title).append("</title></head><body>"
                     + "<table border=0 width=100% class=table-back><tr><td><table border=0 width=100%><tr>");
             List<Problem> problems = contestMapper.getProblems(contestId, null, locale.getLanguage());

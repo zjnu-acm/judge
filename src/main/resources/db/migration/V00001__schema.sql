@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `contest` (
 CREATE TABLE IF NOT EXISTS `contest_problem` (
   `contest_id` bigint(20) NOT NULL,
   `problem_id` bigint(20) NOT NULL,
-  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `title` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
   `num` int(11) NOT NULL,
   PRIMARY KEY (`contest_id`,`problem_id`) USING HASH,
   UNIQUE KEY `UQ_contest_num` (`contest_id`,`num`),

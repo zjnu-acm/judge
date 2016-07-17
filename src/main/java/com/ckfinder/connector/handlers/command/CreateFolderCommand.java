@@ -21,11 +21,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import javax.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Element;
 
 /**
  * Class to handle <code>CreateFolder</code> command.
  */
+@Slf4j
 public class CreateFolderCommand extends XMLCommand implements IPostCommand {
 
     /**
@@ -101,11 +103,8 @@ public class CreateFolderCommand extends XMLCommand implements IPostCommand {
             }
 
         } catch (SecurityException e) {
-            if (configuration.isDebugMode()) {
-                throw e;
-            } else {
-                return Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED;
-            }
+            log.error("", e);
+            return Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED;
         } catch (ConnectorException e) {
             return e.getErrorCode();
         }

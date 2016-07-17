@@ -24,11 +24,13 @@ import java.util.Arrays;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.servlet.http.Part;
+import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
 
 /**
  * Utils to operate on images.
  */
+@Slf4j
 public class ImageUtils {
 
     /**
@@ -88,8 +90,8 @@ public class ImageUtils {
                     resizeImage(image, dimension.width, dimension.height,
                             conf.getThumbsQuality(), file);
                 }
-            } else if (conf.isDebugMode()) {
-                throw new IOException("Wrong image file");
+            } else {
+                log.error("Wrong image file");
             }
         }
     }

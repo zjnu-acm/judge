@@ -92,7 +92,6 @@ public class Configuration implements IConfiguration {
     protected boolean disallowUnsafeCharacters;
     private boolean loading;
     private Events events;
-    private boolean debug;
     protected ServletConfig servletConf;
 
     /**
@@ -115,7 +114,6 @@ public class Configuration implements IConfiguration {
      * Resets all configuration values.
      */
     private void clearConfiguration() {
-        this.debug = false;
         this.enabled = false;
         this.baseDir = "";
         this.baseURL = "";
@@ -922,16 +920,6 @@ public class Configuration implements IConfiguration {
     }
 
     /**
-     * Checks if debug mode is enabled.
-     *
-     * @return true if is debug mode
-     */
-    @Override
-    public boolean isDebugMode() {
-        return this.debug;
-    }
-
-    /**
      * Gets path builder for baseDir and baseURL.
      *
      * @return path builder.
@@ -954,19 +942,9 @@ public class Configuration implements IConfiguration {
      */
     @Override
     public boolean checkIfReloadConfig() throws ConnectorException {
-        Path cfgFile;
         String path = FileUtils.getFullPath(xmlFilePath, false, true);
-        if (path == null) {
-            if (this.debug) {
-                throw new ConnectorException(Constants.Errors.CKFINDER_CONNECTOR_ERROR_FILE_NOT_FOUND,
-                        "Configuration file could not be found under specified location.");
-            } else {
-                log.error("Configuration file could not be found under specified location.");
-                return false;
-            }
-        } else {
-            cfgFile = Paths.get(path);
-        }
+
+        Path cfgFile = Paths.get(path);
 
         try {
             return (Files.getLastModifiedTime(cfgFile).compareTo(this.lastCfgModificationDate) > 0);
@@ -1036,8 +1014,7 @@ public class Configuration implements IConfiguration {
                             for (int k = 0, o = map.getLength(); k < o; k++) {
                                 if ("name".equals(map.item(k).getNodeName())) {
                                     pp.setName(nullNodeToString(map.item(k)));
-                                }
-                                if ("value".equals(map.item(k).getNodeName())) {
+                                } else if ("value".equals(map.item(k).getNodeName())) {
                                     pp.setValue(nullNodeToString(map.item(k)));
                                 }
                             }
@@ -1067,16 +1044,6 @@ public class Configuration implements IConfiguration {
     @Override
     public void setThumbsDir(final String dir) {
         this.thumbsDir = dir;
-    }
-
-    /**
-     * Sets debug mode.
-     *
-     * @param mode current debug mode
-     */
-    @Override
-    public final void setDebugMode(final boolean mode) {
-        this.debug = mode;
     }
 
     /**
@@ -1110,7 +1077,6 @@ public class Configuration implements IConfiguration {
     protected void copyConfFields(final Configuration configuration) {
         configuration.loading = this.loading;
         configuration.xmlFilePath = this.xmlFilePath;
-        configuration.debug = this.debug;
         configuration.lastCfgModificationDate = this.lastCfgModificationDate;
         configuration.enabled = this.enabled;
         configuration.xmlFilePath = this.xmlFilePath;

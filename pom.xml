@@ -46,6 +46,7 @@
     <properties>
         <flyway.version>4.0.3</flyway.version>
         <java.version>1.8</java.version>
+        <lombok.version>1.16.10</lombok.version>
         <start-class>cn.edu.zjnu.acm.judge.Application</start-class>
         <thymeleaf-extras-springsecurity4.version>3.0.0.RELEASE</thymeleaf-extras-springsecurity4.version>
         <thymeleaf-layout-dialect.version>2.0.0</thymeleaf-layout-dialect.version>

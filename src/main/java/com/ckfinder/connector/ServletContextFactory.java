@@ -18,6 +18,7 @@ import javax.servlet.ServletContext;
 /**
  * Access to servlet context outside from servlet.
  */
+@Deprecated
 public class ServletContextFactory {
 
     /**

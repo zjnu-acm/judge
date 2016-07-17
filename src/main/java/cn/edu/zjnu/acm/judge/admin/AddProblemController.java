@@ -7,10 +7,10 @@ import cn.edu.zjnu.acm.judge.service.ContestService;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -26,7 +26,7 @@ public class AddProblemController {
     private JudgeConfiguration judgeConfiguration;
 
     @RequestMapping(value = "/admin/problems", method = RequestMethod.POST)
-    public String addProblem(HttpServletRequest request, Problem problem) {
+    public String addProblem(Model model, Problem problem) {
         problemMapper.save(problem);
         long id = problem.getId();
         Path problemDir = judgeConfiguration.getDataDirectory(id);
@@ -38,8 +38,8 @@ public class AddProblemController {
             Files.createDirectories(problemDir);
         } catch (IOException ex) {
         }
-        request.setAttribute("id", id);
-        request.setAttribute("dir", problemDir);
+        model.addAttribute("id", id);
+        model.addAttribute("dir", problemDir);
 
         return "admin/problems/add";
     }

@@ -16,10 +16,13 @@
 package cn.edu.zjnu.acm.judge.config;
 
 import cn.edu.zjnu.acm.judge.mapper.MailMapper;
-import cn.edu.zjnu.acm.judge.service.UserDetailService;
+import java.util.Optional;
+import java.util.function.Function;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,29 +36,42 @@ import org.thymeleaf.util.StringUtils;
 @Slf4j
 public class JudgeHandlerInterceptor {
 
+    private static final String APPLIED_ONCE_KEY = JudgeHandlerInterceptor.class.getName().concat(".APPLIED_ONCE");
     public static final String BACK_URL_ATTRIBUTE_NAME = "backUrl";
+
+    private static String getString(String attributeName, Function<HttpServletRequest, String> supplier, HttpServletRequest request) {
+        String value = (String) request.getAttribute(attributeName);
+        if (value != null) {
+            return value;
+        }
+        return supplier.apply(request);
+    }
 
     @Autowired
     private MailMapper mailMapper;
 
     @ModelAttribute
     public void addAttributes(HttpServletRequest request,
-            @RequestParam(value = "url", required = false) String url) {
-        if (request.getAttribute(BACK_URL_ATTRIBUTE_NAME) == null) {
-            if (!StringUtils.isEmptyOrWhitespace(url)) {
-                request.setAttribute(BACK_URL_ATTRIBUTE_NAME, url);
-            } else {
-                String uri = request.getRequestURI();
-                String query = request.getQueryString();
-                if (query != null) {
-                    uri = uri + '?' + query;
-                }
-                request.setAttribute(BACK_URL_ATTRIBUTE_NAME, uri);
-            }
-            UserDetailService.getCurrentUserId(request)
-                    .map(mailMapper::getMailInfo)
-                    .ifPresent(mailInfo -> request.setAttribute("mailInfo", mailInfo));
+            @RequestParam(value = "url", required = false) String url,
+            Authentication authentication) {
+        if (Boolean.TRUE.equals(request.getAttribute(APPLIED_ONCE_KEY))) {
+            return;
         }
+        request.setAttribute(APPLIED_ONCE_KEY, true);
+
+        if (!StringUtils.isEmptyOrWhitespace(url)) {
+            request.setAttribute(BACK_URL_ATTRIBUTE_NAME, url);
+        } else {
+            String uri = getString(RequestDispatcher.FORWARD_REQUEST_URI, HttpServletRequest::getRequestURI, request);
+            String query = getString(RequestDispatcher.FORWARD_QUERY_STRING, HttpServletRequest::getQueryString, request);
+            if (query != null) {
+                uri = uri + '?' + query;
+            }
+            request.setAttribute(BACK_URL_ATTRIBUTE_NAME, uri);
+        }
+        Optional.ofNullable(authentication).map(Authentication::getName)
+                .map(mailMapper::getMailInfo)
+                .ifPresent(mailInfo -> request.setAttribute("mailInfo", mailInfo));
     }
 
 }

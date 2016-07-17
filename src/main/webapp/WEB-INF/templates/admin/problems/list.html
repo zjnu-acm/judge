@@ -11,36 +11,42 @@
         <p align="center">
             <font size="4" color="#333399">Problem List</font>
         </p>
-        <table class="table table-striped table-hover table-bordered">
-            <tr align="center">
-                <td width="10%">Id</td>
-                <td width="25%">Title</td>
-                <td width="10%">Contest</td>
-                <td width="8%">Edit</td>
-                <td width="20%">Date</td>
-                <td width="8%">Defunct</td>
-            </tr>
-            <tr align="center" th:each="problem:${page}" th:object="${problem}">
-                <td th:text="*{id}">problem.id</td>
-                <td align="left">
-                    <a th:href="@{/admin/problems/{problemId}(problemId=*{id})}"
-                       th:text="*{title}">problem.title</a>
-                </td>
-                <td>
-                    <a th:if="*{contest}"
-                       th:href="@{/admin/contests/{contestId}(contestId=*{contest})}"
-                       th:text="*{contest}">contest.id</a>
-                </td>
-                <td>
-                    <a th:href="@{/admin/problems/{problemId}/edit(problemId=*{id})}">Edit</a>
-                </td>
-                <td th:text="*{#calendars.format(T(java.util.Date).from(inDate),'yyyy-MM-dd HH:mm:ss')}">2016-03-09 22:28:54</td>
-                <td>
-                    <a th:if="*{disabled}" th:href="@{/admin/problems/{problemId}/resume(problemId=*{id})}">Resume</a>
-                    <a th:unless="*{disabled}" th:href="@{/admin/problems/{problemId}/disable(problemId=*{id})}">Delete</a>
-                </td>
-            </tr>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-bordered">
+                <thead>
+                    <tr align="center">
+                        <th width="10%">Id</th>
+                        <th width="25%">Title</th>
+                        <th width="10%">Contest</th>
+                        <th width="8%">Edit</th>
+                        <th width="20%">Date</th>
+                        <th width="8%">Defunct</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr align="center" th:each="problem:${page}" th:object="${problem}">
+                        <td th:text="*{id}">problem.id</td>
+                        <td align="left">
+                            <a th:href="@{/admin/problems/{problemId}(problemId=*{id})}"
+                               th:text="*{title}">problem.title</a>
+                        </td>
+                        <td>
+                            <a th:if="*{contest}"
+                               th:href="@{/admin/contests/{contestId}(contestId=*{contest})}"
+                               th:text="*{contest}">contest.id</a>
+                        </td>
+                        <td>
+                            <a th:href="@{/admin/problems/{problemId}/edit(problemId=*{id})}">Edit</a>
+                        </td>
+                        <td th:text="*{#calendars.format(T(java.util.Date).from(inDate),'yyyy-MM-dd HH:mm:ss')}">2016-03-09 22:28:54</td>
+                        <td>
+                            <a th:if="*{disabled}" th:href="@{/admin/problems/{problemId}/enable(problemId=*{id})}">Enable</a>
+                            <a th:unless="*{disabled}" th:href="@{/admin/problems/{problemId}/disable(problemId=*{id})}">Disable</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <p align="center" th:if="${page.totalPages&gt;1}">
             <a style="margin: 10px;"
                th:each="it:${#numbers.sequence(0,page.totalPages-1)}"

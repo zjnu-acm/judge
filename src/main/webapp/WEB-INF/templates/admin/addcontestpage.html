@@ -3,28 +3,30 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorate="~{layout/admin}">
-    <head><title>Add a contest</title></head>
+    <head>
+        <title>Add a contest</title>
+    </head>
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
         <form method="post" th:action="@{/admin/contests}">
-            <p align="center" style="color: #333399;font-size: large;">Add a Contest</p>
-            <p align="left">
+            <p class="text-center" style="color: #333399;font-size: large;">Add a Contest</p>
+            <p class="text-left">
                 <label th:for="${#ids.next('title')}">Title:</label>
                 <input th:id="${#ids.seq('title')}" type="text" name="title" size="71"/>
             </p>
-            <p align="left">
+            <p class="text-left">
                 <label th:for="${#ids.next('description')}">Description:</label>
                 <br/>
                 <textarea th:id="${#ids.seq('description')}" rows="8" name="description" cols="76"></textarea>
             </p>
-            <p align="left">
+            <p class="text-left">
                 <span>Start Time:</span>
                 <br/>
                 <span>&nbsp;&nbsp;&nbsp;</span>
                 <span>Year:</span>
-                <input type="text" name="syear" th:value="${#calendars.format(execInfo.now,'yyyy')}" size="7"/>
+                <input type="text" name="syear" th:value="${#calendars.format(#execInfo.now,'yyyy')}" size="7"/>
                 <span> Month:</span>
-                <input type="text" name="smonth" th:value="${#calendars.format(execInfo.now,'M')}" size="7"/>
+                <input type="text" name="smonth" th:value="${#calendars.format(#execInfo.now,'M')}" size="7"/>
                 <span> Day:</span>
                 <input type="text" name="sday" size="7"/>
                 <span> Hour:</span>
@@ -32,13 +34,13 @@
                 <span> Minute:</span>
                 <input type="text" name="sminute" value="0" size="7"/>
             </p>
-            <p align="left">
+            <p class="text-left">
                 <span>End Time:</span>
                 <br/><span>&nbsp;&nbsp;&nbsp;</span>
                 <span>Year:</span>
-                <input type="text" name="eyear" th:value="${#calendars.format(execInfo.now,'yyyy')}" size="7"/>
+                <input type="text" name="eyear" th:value="${#calendars.format(#execInfo.now,'yyyy')}" size="7"/>
                 <span> Month:</span>
-                <input type="text" name="emonth" th:value="${#calendars.format(execInfo.now,'M')}" size="7"/>
+                <input type="text" name="emonth" th:value="${#calendars.format(#execInfo.now,'M')}" size="7"/>
                 <span> Day:</span>
                 <input type="text" name="eday" size="7"/>
                 <span> Hour:</span>

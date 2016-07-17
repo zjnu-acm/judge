@@ -14,10 +14,12 @@ package com.ckfinder.connector.errors;
 import com.ckfinder.connector.configuration.IConfiguration;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Error utils.
  */
+@Slf4j
 public final class ErrorUtils {
 
     private static final ErrorUtils errorUtils = new ErrorUtils();
@@ -54,7 +56,8 @@ public final class ErrorUtils {
                     .getName().concat(".LocalStrings"), new Locale(lang))
                     .getString(Integer.toString(errorCode));
         } catch (RuntimeException ex) {
-            return conf.isDebugMode() ? "Unable to load error message" : "";
+            log.error("", ex);
+            return "";
         }
     }
 

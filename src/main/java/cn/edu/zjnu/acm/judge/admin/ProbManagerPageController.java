@@ -9,12 +9,12 @@ import cn.edu.zjnu.acm.judge.util.JudgeUtils;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,23 +31,23 @@ public class ProbManagerPageController {
     private ProblemMapper problemMapper;
 
     @RequestMapping(value = "/admin/problems/new", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public String newProblem(HttpServletRequest request) {
-        request.setAttribute("title", "New Problem");
-        request.setAttribute("hint", "Add New problem");
-        request.setAttribute("url", "/admin/problems");
-        request.setAttribute("method", "POST");
-        request.setAttribute("hint2", "Add a Problem");
+    public String newProblem(Model model) {
+        model.addAttribute("title", "New Problem");
+        model.addAttribute("hint", "Add New problem");
+        model.addAttribute("url", "/admin/problems");
+        model.addAttribute("method", "POST");
+        model.addAttribute("hint2", "Add a Problem");
         Problem problem = Problem
                 .builder()
                 .memoryLimit(65536)
                 .timeLimit(3000)
                 .build();
-        return finalBlock(problem, request);
+        return finalBlock(problem, model);
     }
 
     // TODO this page requires to be updated, for the page will modify the content in default language
     @RequestMapping(value = "/admin/problems/{problemId}/edit", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public String probmanagerpage(HttpServletRequest request,
+    public String probmanagerpage(Model model,
             @PathVariable("problemId") long problemId,
             @RequestParam("problemLang") Optional<String> problemLang,
             Locale locale) {
@@ -65,21 +65,21 @@ public class ProbManagerPageController {
                 .source(JudgeUtils.getHtmlFormattedString(problem.getSource()))
                 .build();
 
-        request.setAttribute("title", "Modify " + problemId);
-        request.setAttribute("hint", "Modify problem " + problemId);
-        request.setAttribute("url", "/admin/problems/" + problemId);
-        request.setAttribute("method", "PUT");
-        request.setAttribute("hint2", "Modify problem");
-        request.setAttribute("problemLang", lang);
-        return finalBlock(problem, request);
+        model.addAttribute("title", "Modify " + problemId);
+        model.addAttribute("hint", "Modify problem " + problemId);
+        model.addAttribute("url", "/admin/problems/" + problemId);
+        model.addAttribute("method", "PUT");
+        model.addAttribute("hint2", "Modify problem");
+        model.addAttribute("problemLang", lang);
+        return finalBlock(problem, model);
     }
 
-    private String finalBlock(Problem problem, HttpServletRequest request) {
+    private String finalBlock(Problem problem, Model model) {
         List<Contest> contests = problem.getContest() == null
                 ? contestMapper.pending()
                 : contestMapper.runningAndScheduling();
-        request.setAttribute("problem", problem);
-        request.setAttribute("contests", contests);
+        model.addAttribute("problem", problem);
+        model.addAttribute("contests", contests);
         return "admin/problems/edit";
     }
 

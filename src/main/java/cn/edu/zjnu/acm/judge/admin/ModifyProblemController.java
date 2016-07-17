@@ -8,11 +8,11 @@ import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.service.ContestService;
 import java.util.Locale;
 import java.util.Objects;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,7 +31,7 @@ public class ModifyProblemController {
     private ProblemMapper problemMapper;
 
     @RequestMapping(value = "/admin/problems/{problemId}", method = RequestMethod.PUT)
-    public String modifyproblem(HttpServletRequest request,
+    public String modifyproblem(Model model,
             @PathVariable("problemId") long problemId,
             Locale locale,
             @RequestParam("problemLang") String problemLang,
@@ -80,7 +80,7 @@ public class ModifyProblemController {
                 }
             }
         }
-        request.setAttribute("problemId", problemId);
+        model.addAttribute("problemId", problemId);
         return "admin/problems/modify";
     }
 
