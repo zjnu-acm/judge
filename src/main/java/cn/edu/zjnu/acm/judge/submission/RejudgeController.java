@@ -7,8 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -19,7 +18,7 @@ public class RejudgeController {
     private Rejudger rejudger;
 
     // TODO request method
-    @RequestMapping(value = "/admin.rejudge", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("/admin.rejudge")
     public String rejudge(
             @RequestParam(value = "problem_id", defaultValue = "0") long problemId,
             @RequestParam(value = "solution_id", defaultValue = "0") long submissionId)

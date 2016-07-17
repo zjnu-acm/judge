@@ -11,8 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
@@ -23,7 +22,7 @@ public class ContestProblemListController {
     @Autowired
     private ContestMapper contestMapper;
 
-    @RequestMapping(value = "/showcontest", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = TEXT_HTML_VALUE)
+    @GetMapping(value = "/showcontest", produces = TEXT_HTML_VALUE)
     public String showcontest(Model model, @RequestParam("contest_id") long contestId,
             Locale locale, Authentication authentication) {
         Contest contest = contestMapper.findOneByIdAndDisabledFalse(contestId);

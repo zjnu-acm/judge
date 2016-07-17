@@ -12,8 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.util.StringUtils;
 
@@ -26,7 +25,7 @@ public class ModifyUserController {
     private PasswordEncoder passwordEncoder;
 
     @Secured("ROLE_USER")
-    @RequestMapping(value = "/modifyuser", method = RequestMethod.POST)
+    @PostMapping("/modifyuser")
     public String modifyuser(Model model,
             @RequestParam("oldPassword") String oldPassword,
             @RequestParam("newPassword") String newPassword,

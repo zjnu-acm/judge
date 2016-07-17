@@ -8,8 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -18,7 +17,7 @@ public class SearchUserController {
     @Autowired
     private UserMapper userMapper;
 
-    @RequestMapping(value = "/searchuser", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("/searchuser")
     protected String searchuser(Model model,
             @RequestParam(value = "user_id", defaultValue = "") String keyword,
             @RequestParam(value = "position", required = false) String position) {

@@ -9,8 +9,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class ModifyUserPageController {
@@ -19,7 +18,7 @@ public class ModifyUserPageController {
     private UserMapper userMapper;
 
     @Secured("ROLE_USER")
-    @RequestMapping(value = "/modifyuserpage", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("/modifyuserpage")
     protected String modifyuserpage(Model model,
             Authentication authentication) {
         String userId = authentication != null ? authentication.getName() : null;

@@ -17,8 +17,7 @@ package cn.edu.zjnu.acm.judge.controller;
 
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -30,14 +29,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class LegacySupport {
 
     @Secured("ROLE_ADMIN")
-    @RequestMapping(value = "/admin.showproblem", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("/admin.showproblem")
     public String showproblem(@RequestParam("problem_id") long problemId,
             RedirectAttributes redirectAttributes) {
         redirectAttributes.addAttribute("problemId", problemId);
         return "redirect:/admin/problems/{problemId}";
     }
 
-    @RequestMapping(value = "/conteststanding", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("/conteststanding")
     public String contestStanding(@RequestParam("contest_id") long contestId) {
         return "forward:/contests/" + contestId + "/standing";
     }

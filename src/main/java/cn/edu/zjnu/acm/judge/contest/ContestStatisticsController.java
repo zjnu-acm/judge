@@ -20,8 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.util.StringUtils;
 
@@ -38,7 +37,7 @@ public class ContestStatisticsController {
     @Autowired
     private LanguageService languageService;
 
-    @RequestMapping(value = "/conteststatistics", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = TEXT_HTML_VALUE)
+    @GetMapping(value = "/conteststatistics", produces = TEXT_HTML_VALUE)
     public ResponseEntity<String> conteststatistics(Model model,
             @RequestParam("contest_id") long contestId) throws SQLException {
         Instant now = Instant.now();

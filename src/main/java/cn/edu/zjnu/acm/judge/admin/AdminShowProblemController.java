@@ -9,9 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @Secured("ROLE_ADMIN")
@@ -21,7 +20,7 @@ public class AdminShowProblemController {
     private ProblemMapper problemMapper;
 
     // TODO
-    @RequestMapping(value = "/admin/problems/{problemId}", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("/admin/problems/{problemId}")
     public String view(Model model,
             @PathVariable("problemId") long problemId,
             Locale locale) {

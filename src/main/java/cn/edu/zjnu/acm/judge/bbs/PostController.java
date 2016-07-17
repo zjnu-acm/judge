@@ -8,8 +8,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.thymeleaf.util.StringUtils;
@@ -21,7 +20,7 @@ public class PostController {
     @Autowired
     private MessageService messageService;
 
-    @RequestMapping(value = "/post", method = RequestMethod.POST)
+    @PostMapping("/post")
     @Transactional
     public String post(@RequestParam(value = "problem_id", required = false) Long problemId,
             @RequestParam(value = "parent_id", required = false) Long parentId,

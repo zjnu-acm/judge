@@ -14,8 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -32,7 +31,7 @@ public class ShowSourceController {
     private LanguageService languageService;
 
     @Secured("ROLE_USER")
-    @RequestMapping(value = "/showsource", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("/showsource")
     public String showsource(HttpServletRequest request,
             @RequestParam("solution_id") long submissionId,
             @RequestParam(value = "style", required = false) Integer style,

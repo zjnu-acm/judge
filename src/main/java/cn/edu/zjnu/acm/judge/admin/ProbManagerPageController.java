@@ -15,9 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -30,7 +29,7 @@ public class ProbManagerPageController {
     @Autowired
     private ProblemMapper problemMapper;
 
-    @RequestMapping(value = "/admin/problems/new", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("/admin/problems/new")
     public String newProblem(Model model) {
         model.addAttribute("title", "New Problem");
         model.addAttribute("hint", "Add New problem");
@@ -46,7 +45,7 @@ public class ProbManagerPageController {
     }
 
     // TODO this page requires to be updated, for the page will modify the content in default language
-    @RequestMapping(value = "/admin/problems/{problemId}/edit", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("/admin/problems/{problemId}/edit")
     public String probmanagerpage(Model model,
             @PathVariable("problemId") long problemId,
             @RequestParam("problemLang") Optional<String> problemLang,
