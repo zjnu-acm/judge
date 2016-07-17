@@ -30,3 +30,9 @@ Files.isRegularFile($1)
 
 ([a-zA-Z]+)\.length\(\)
 Files.size($1)
+
+@RequestMapping\(value = "(([^"])+)", method = \{RequestMethod\.GET, RequestMethod\.HEAD\}\)
+@GetMapping("$1")
+
+@RequestMapping\(value = "(([^"])+)", method = RequestMethod\.POST\)
+@PostMapping("$1")

@@ -29,9 +29,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.util.StringUtils;
 
@@ -52,17 +52,17 @@ public class AdminController {
     @Autowired
     private JudgeConfiguration judgeConfiguration;
 
-    @RequestMapping(value = "/admin/contests/new", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("/admin/contests/new")
     protected String addcontestpage() {
         return "admin/addcontestpage";
     }
 
-    @RequestMapping(value = "/admin", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("/admin")
     protected String index() {
         return "admin/index";
     }
 
-    @RequestMapping(value = "/admin/problems/{problemId}/disable", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("/admin/problems/{problemId}/disable")
     protected String disableProblem(Model model, @PathVariable("problemId") long problemId) {
 
         problemMapper.setDisabled(problemId, true);
@@ -72,7 +72,7 @@ public class AdminController {
     }
 
     // TODO request method
-    @RequestMapping(value = "/admin/problems/{problemId}/enable", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("/admin/problems/{problemId}/enable")
     protected String enableProblem(Model model,
             @PathVariable("problemId") long problemId) {
         problemMapper.setDisabled(problemId, false);
@@ -81,7 +81,7 @@ public class AdminController {
         return "admin/problems/enable";
     }
 
-    @RequestMapping(value = "/admin/contests", method = RequestMethod.POST)
+    @PostMapping("/admin/contests")
     protected String addContest(
             int syear, int smonth, int sday, int shour, int sminute,
             int eyear, int emonth, int eday, int ehour, int eminute,
@@ -107,7 +107,7 @@ public class AdminController {
         return "admin/contests/add";
     }
 
-    @RequestMapping(value = "/admin/tools", method = RequestMethod.POST)
+    @PostMapping("/admin/tools")
     public String tools(
             @RequestParam(value = "op", required = false) String op,
             @RequestParam(value = "sinfo", required = false) String sinfo,

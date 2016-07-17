@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -29,7 +29,7 @@ public class ContestManagerController {
                 .orElseThrow(() -> new MessageException("onlinejudge.contest.nosuchcontest", HttpStatus.NOT_FOUND));
     }
 
-    @RequestMapping(value = "/admin/contests/{contestId}/problems", method = RequestMethod.POST)
+    @PostMapping("/admin/contests/{contestId}/problems")
     public String addProblem(
             @PathVariable("contestId") long contestId,
             @RequestParam("problemId") long problemId,
@@ -43,7 +43,7 @@ public class ContestManagerController {
         return "redirect:/admin/contests/{contestId}";
     }
 
-    @RequestMapping(value = "/admin/contests/{contestId}/problems/{problemId}", method = RequestMethod.DELETE)
+    @DeleteMapping("/admin/contests/{contestId}/problems/{problemId}")
     public String deleteProblem(
             @PathVariable("contestId") long contestId,
             @PathVariable("problemId") long problemId,

@@ -29,8 +29,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  *
@@ -49,7 +48,7 @@ public class UserListController {
     @Autowired
     private UserMapper userMapper;
 
-    @RequestMapping(value = {"/userlist", "/users"}, method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping({"/userlist", "/users"})
     public String userlist(HttpServletRequest request, @PageableDefault(50) Pageable pageable) {
         Sort sort = pageable.getSort();
         int pageSize = Math.min(pageable.getPageSize(), 500);
