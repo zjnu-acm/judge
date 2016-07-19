@@ -15,7 +15,7 @@
                 </p>
                 <p align="center">
                     <label th:for="${#ids.next('pid')}">Problem ID:</label>
-                    <input th:id="${#ids.seq('pid')}" type="number" name="problem_id" th:value="${problemId}" size="20" accesskey="p" required="required"/>
+                    <input th:id="${#ids.seq('pid')}" type="number" name="problem_id" th:value="${problemId}" accesskey="p" required="required"/>
                     <br/>
                     <label th:for="${#ids.next('language')}">Language:</label>
                     <select th:id="${#ids.seq('language')}" size="1" name="language" style="width:100px;" accesskey="l">

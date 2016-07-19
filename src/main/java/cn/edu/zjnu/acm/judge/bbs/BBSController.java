@@ -52,10 +52,10 @@ public class BBSController {
                 top = threadId;
             }
 
-            for (long l7 = currentDepth; l7 < depth; l7++) {
+            for (; currentDepth < depth; currentDepth++) {
                 sb.append("<ul>");
             }
-            for (long l7 = depth; l7 < currentDepth; l7++) {
+            for (; currentDepth > depth; currentDepth--) {
                 sb.append("</ul>");
             }
             if ((lastThreadId != 0) && (threadId != lastThreadId) && (depth == 0)) {
@@ -66,9 +66,8 @@ public class BBSController {
             if (problem != null && problem != 0L && depth == 0) {
                 sb.append(" <b><a href=showproblem?problem_id=").append(problem).append("><font color=#000>Problem ").append(problem).append("</font></a></b>");
             }
-            currentDepth = depth;
         }
-        for (long l7 = 0; l7 < currentDepth; l7++) {
+        for (; currentDepth > 0; currentDepth--) {
             sb.append("</ul>");
         }
         sb.append("</ul></td></tr></table><center>");
