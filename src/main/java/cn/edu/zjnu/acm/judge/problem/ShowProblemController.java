@@ -67,7 +67,7 @@ public class ShowProblemController {
             }
         }
         if (!started) {
-            throw new MessageException("Can not find prob lem (ID:" + problemId + ")", HttpStatus.NOT_FOUND);
+            throw new MessageException("Can not find problem (ID:" + problemId + ")", HttpStatus.NOT_FOUND);
         }
         String title = problem.getTitle();
         long timeLimit = problem.getTimeLimit();
