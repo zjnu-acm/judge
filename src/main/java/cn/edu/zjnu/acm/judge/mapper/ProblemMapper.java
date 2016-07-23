@@ -76,7 +76,7 @@ public interface ProblemMapper {
     String FROM = " from problem p left join problem_i18n pi on p.problem_id=pi.id and pi.locale=#{lang} ";
 
     @Update("update problem set disabled=#{disabled} where problem_id=#{id}")
-    long setDisabled(@Param(value = "id") long id, @Param("disabled") boolean disabled);
+    long setDisabled(@Param("id") long id, @Param("disabled") boolean disabled);
 
     @Deprecated
     @Select("select COALESCE(max(problem_id)+1,1000) maxp from problem")

@@ -10,8 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.util.StringUtils;
 
@@ -24,7 +23,7 @@ public class BBSController {
     @Autowired
     private MessageMapper messageMapper;
 
-    @RequestMapping(value = "/bbs", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = TEXT_HTML_VALUE)
+    @GetMapping(value = "/bbs", produces = TEXT_HTML_VALUE)
     protected ResponseEntity<String> bbs(
             @RequestParam(value = "problem_id", required = false) Long problemId,
             @RequestParam(value = "size", defaultValue = "50") int threadLimit,
@@ -53,10 +52,10 @@ public class BBSController {
                 top = threadId;
             }
 
-            for (long l7 = currentDepth; l7 < depth; l7++) {
+            for (; currentDepth < depth; currentDepth++) {
                 sb.append("<ul>");
             }
-            for (long l7 = depth; l7 < currentDepth; l7++) {
+            for (; currentDepth > depth; currentDepth--) {
                 sb.append("</ul>");
             }
             if ((lastThreadId != 0) && (threadId != lastThreadId) && (depth == 0)) {
@@ -67,9 +66,8 @@ public class BBSController {
             if (problem != null && problem != 0L && depth == 0) {
                 sb.append(" <b><a href=showproblem?problem_id=").append(problem).append("><font color=#000>Problem ").append(problem).append("</font></a></b>");
             }
-            currentDepth = depth;
         }
-        for (long l7 = 0; l7 < currentDepth; l7++) {
+        for (; currentDepth > 0; currentDepth--) {
             sb.append("</ul>");
         }
         sb.append("</ul></td></tr></table><center>");

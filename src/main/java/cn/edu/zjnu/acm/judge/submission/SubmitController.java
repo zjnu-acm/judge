@@ -19,13 +19,13 @@ import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import cn.edu.zjnu.acm.judge.util.ResultType;
 import java.nio.file.Path;
 import java.time.Instant;
+import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -48,7 +48,7 @@ public class SubmitController {
     private LanguageService languageService;
 
     @Secured("ROLE_USER")
-    @RequestMapping(value = "/submit", method = RequestMethod.POST)
+    @PostMapping("/submit")
     public String submit(HttpServletRequest request,
             @RequestParam("language") int languageId,
             @RequestParam("problem_id") long problemId,
@@ -67,7 +67,6 @@ public class SubmitController {
             throw new MessageException("Source code too short, submit FAILED;if you really need submit this source please contact administrator", HttpStatus.BAD_REQUEST);
         }
         UserModel userModel = UserDetailService.getCurrentUser(request).orElseThrow(ForbiddenException::new);
-        assert userModel != null;
         Instant instant = Instant.now();
         long now = instant.toEpochMilli();  //获取当前时间
 
@@ -107,10 +106,7 @@ public class SubmitController {
                 problemMapper.setContest(problemId, null);
                 contestId = null;
             } else { //num为竞赛中的题目编号
-                Long problemIdInContest = contestMapper.getProblemIdInContest(contestId, problemId);
-                if (problemIdInContest != null) {
-                    num = problemIdInContest;
-                }
+                num = Optional.ofNullable(contestMapper.getProblemIdInContest(contestId, problemId)).orElse(-1L);
             }
         }
 

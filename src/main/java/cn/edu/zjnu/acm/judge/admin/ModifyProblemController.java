@@ -14,8 +14,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.util.StringUtils;
 
@@ -30,7 +29,7 @@ public class ModifyProblemController {
     @Autowired
     private ProblemMapper problemMapper;
 
-    @RequestMapping(value = "/admin/problems/{problemId}", method = RequestMethod.PUT)
+    @PutMapping("/admin/problems/{problemId}")
     public String modifyproblem(Model model,
             @PathVariable("problemId") long problemId,
             Locale locale,

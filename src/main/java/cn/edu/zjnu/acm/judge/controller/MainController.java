@@ -19,10 +19,7 @@ import cn.edu.zjnu.acm.judge.exception.GlobalExceptionHandler;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  *
@@ -31,37 +28,37 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Controller
 public class MainController {
 
-    @RequestMapping(value = "/", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("/")
     public String index() {
         return "index";
     }
 
-    @RequestMapping(value = "/faq", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("/faq")
     public String faq() {
         return "faq";
     }
 
-    @RequestMapping(value = "/findpassword", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("/findpassword")
     public String findpassword() {
         return "findpassword";
     }
 
-    @RequestMapping(value = "/notice", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("/notice")
     public String notice() {
         return "fragment/notice";
     }
 
-    @RequestMapping(value = {"/registerpage", "/register"}, method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping({"/registerpage", "/register"})
     public String registerpage() {
         return "registerpage";
     }
 
-    @RequestMapping(value = "/navigation", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("/navigation")
     public String navigation() {
         return "fragment/navigation";
     }
 
-    @RequestMapping(value = "/unauthorized", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = APPLICATION_JSON_VALUE)
+    @GetMapping("/unauthorized")
     public String unauthorized(HttpServletRequest request) throws IOException {
         return GlobalExceptionHandler.unauthorized(request);
     }

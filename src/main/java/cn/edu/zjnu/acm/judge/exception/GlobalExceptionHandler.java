@@ -31,6 +31,10 @@ import org.springframework.web.servlet.LocaleResolver;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    public static String unauthorized(HttpServletRequest request) throws IOException {
+        return "redirect:/login?url=" + URLEncoder.encode((String) request.getAttribute(JudgeHandlerInterceptor.BACK_URL_ATTRIBUTE_NAME), "UTF-8");
+    }
+
     @Autowired
     private MessageSource messageSource;
     @Autowired
@@ -54,10 +58,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ForbiddenException.class)
     public String forbiddenExceptionHandler(HttpServletRequest request) throws IOException {
         return unauthorized(request);
-    }
-
-    public static String unauthorized(HttpServletRequest request) throws IOException {
-        return "redirect:/login?url=" + URLEncoder.encode((String) request.getAttribute(JudgeHandlerInterceptor.BACK_URL_ATTRIBUTE_NAME), "UTF-8");
     }
 
 }

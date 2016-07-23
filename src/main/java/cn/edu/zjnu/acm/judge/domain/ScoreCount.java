@@ -15,16 +15,13 @@
  */
 package cn.edu.zjnu.acm.judge.domain;
 
-import lombok.AccessLevel;
 import lombok.Data;
-import lombok.Setter;
 
 /**
  *
  * @author zhanhb
  */
 @Data
-@Setter(value = AccessLevel.PRIVATE)
 public class ScoreCount {
 
     private int score;

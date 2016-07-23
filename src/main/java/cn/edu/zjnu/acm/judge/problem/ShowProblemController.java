@@ -17,8 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.util.StringUtils;
 
@@ -34,7 +33,7 @@ public class ShowProblemController {
     @Autowired
     private JudgeConfiguration judgeConfiguration;
 
-    @RequestMapping(value = "/showproblem", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = TEXT_HTML_VALUE)
+    @GetMapping(value = "/showproblem", produces = TEXT_HTML_VALUE)
     public ResponseEntity<String> showproblem(Model model,
             @RequestParam("problem_id") long problemId,
             Locale locale) {
@@ -68,7 +67,7 @@ public class ShowProblemController {
             }
         }
         if (!started) {
-            throw new MessageException("Can not find prob lem (ID:" + problemId + ")", HttpStatus.NOT_FOUND);
+            throw new MessageException("Can not find problem (ID:" + problemId + ")", HttpStatus.NOT_FOUND);
         }
         String title = problem.getTitle();
         long timeLimit = problem.getTimeLimit();

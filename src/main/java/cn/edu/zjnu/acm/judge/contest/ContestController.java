@@ -33,9 +33,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -71,7 +71,7 @@ public class ContestController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "standing", produces = APPLICATION_JSON_VALUE, method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping(value = "standing", produces = APPLICATION_JSON_VALUE)
     public UserStanding[] standing(@PathVariable("contestId") long contestId) {
         Map<String, UserStanding> hashMap = new HashMap<>(80);
         contestMapper.standing(contestId).forEach(standing
@@ -87,7 +87,7 @@ public class ContestController {
         return standings;
     }
 
-    @RequestMapping(value = "standing", produces = {TEXT_HTML_VALUE, ALL_VALUE}, method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping(value = "standing", produces = {TEXT_HTML_VALUE, ALL_VALUE})
     public String standingHtml(@PathVariable("contestId") long id, Model model, Locale locale) {
         Contest contest = contestMapper.findOneByIdAndDisabledFalse(id);
         // TODO
@@ -108,19 +108,19 @@ public class ContestController {
     }
 
     //@ResponseBody
-    //@RequestMapping(value = "problems", produces = APPLICATION_JSON_VALUE, method = {RequestMethod.GET, RequestMethod.HEAD})
+    //@GetMapping(value = "problems", produces = APPLICATION_JSON_VALUE)
     public List<Problem> problems(@PathVariable("contestId") long contest, Locale locale) {
         // TODO user is empty
         return contestMapper.getProblems(contest, null, locale.getLanguage());
     }
 
-    @RequestMapping(value = "", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("")
     public String index(@PathVariable("contestId") long contestId, RedirectAttributes redirectAttributes) {
         redirectAttributes.addAttribute("contestId", contestId);
         return "redirect:/contests/{contestId}/problems";
     }
 
-    @RequestMapping(value = "problems/{pid}", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("problems/{pid}")
     public String showProblem(@PathVariable("contestId") long contestId,
             @PathVariable("pid") long problemOrder,
             RedirectAttributes redirectAttributes) {

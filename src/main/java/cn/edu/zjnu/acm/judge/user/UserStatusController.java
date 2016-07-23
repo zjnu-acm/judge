@@ -10,8 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.util.StringUtils;
 
@@ -24,7 +23,7 @@ public class UserStatusController {
     @Autowired
     private UserProblemMapper userProblemMapper;
 
-    @RequestMapping(value = "/userstatus", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("/userstatus")
     public String userstatus(Model model,
             @RequestParam(value = "size", defaultValue = "3") int display,
             @RequestParam(value = "user_id", required = false) String userId) {

@@ -36,8 +36,8 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -58,7 +58,7 @@ public class ResetPasswordController {
     @Autowired
     private JudgeConfiguration judgeConfiguration;
 
-    @RequestMapping(value = "/resetPassword", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("/resetPassword")
     protected String doGet(HttpServletRequest request) {
         if (checkVcode(request)) {
             return "resetPassword";
@@ -67,7 +67,7 @@ public class ResetPasswordController {
         }
     }
 
-    @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
+    @PostMapping("/resetPassword")
     protected void doPost(HttpServletRequest request, HttpServletResponse response,
             @RequestParam(value = "action", required = false) String action,
             @RequestParam(value = "verify", required = false) String verify,
@@ -130,7 +130,7 @@ public class ResetPasswordController {
         out.print("alert('已经将邮件发送到" + user.getEmail() + "，请点击链接重设密码');");
     }
 
-    @RequestMapping(value = "/resetPassword", method = RequestMethod.POST, params = "action=changePassword")
+    @PostMapping(value = "/resetPassword", params = "action=changePassword")
     public void changePassword(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         response.setContentType("text/javascript;charset=UTF-8");

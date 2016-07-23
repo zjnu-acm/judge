@@ -11,8 +11,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 @Secured("ROLE_ADMIN")
@@ -21,7 +20,7 @@ public class AdminProblemListController {
     @Autowired
     private ProblemMapper problemMapper;
 
-    @RequestMapping(value = "/admin/problems", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("/admin/problems")
     public String problemlist(Model model, @PageableDefault(100) Pageable pageable, Locale locale) {
 
         long total = problemMapper.count();

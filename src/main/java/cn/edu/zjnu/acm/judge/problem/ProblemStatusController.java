@@ -38,8 +38,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -59,7 +58,7 @@ public class ProblemStatusController {
     @Autowired
     private LanguageService languageService;
 
-    @RequestMapping(value = "/gotoproblem", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("/gotoproblem")
     public String gotoProblem(@RequestParam(value = "pid", required = false) String pid,
             RedirectAttributes redirectAttributes) {
         try {
@@ -71,7 +70,7 @@ public class ProblemStatusController {
         }
     }
 
-    @RequestMapping(value = "/problemstatus", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = TEXT_HTML_VALUE)
+    @GetMapping(value = "/problemstatus", produces = TEXT_HTML_VALUE)
     public ResponseEntity<String> status(HttpServletRequest request,
             @RequestParam("problem_id") long id,
             @RequestParam(value = "start", defaultValue = "0") long start,

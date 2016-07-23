@@ -28,8 +28,8 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.util.StringUtils;
 
@@ -46,7 +46,7 @@ public class MailController {
     @Autowired
     private MailMapper mailMapper;
 
-    @RequestMapping(value = "/deletemail", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("/deletemail")
     public String delete(@RequestParam("mail_id") long mailId, Authentication authentication) {
         Mail mail = mailMapper.findOne(mailId);
         if (mail == null) {
@@ -59,7 +59,7 @@ public class MailController {
         return "redirect:/mail";
     }
 
-    @RequestMapping(value = "/mail", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("/mail")
     public String mail(Model model,
             @RequestParam(value = "size", defaultValue = "20") int size,
             @RequestParam(value = "start", defaultValue = "1") long start,
@@ -78,7 +78,7 @@ public class MailController {
         return "mails/list";
     }
 
-    @RequestMapping(value = "/send", method = RequestMethod.POST)
+    @PostMapping("/send")
     public String send(@RequestParam("title") String title,
             @RequestParam("to") String to,
             @RequestParam("content") String content,
@@ -103,7 +103,7 @@ public class MailController {
         return "mails/sendsuccess";
     }
 
-    @RequestMapping(value = {"/sendpage", "/send"}, method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping({"/sendpage", "/send"})
     public String sendpage(Model model,
             @RequestParam(value = "reply", defaultValue = "-1") long reply,
             @RequestParam(value = "to", defaultValue = "") String userId,
@@ -134,7 +134,7 @@ public class MailController {
         return "mails/sendpage";
     }
 
-    @RequestMapping(value = "/showmail", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("/showmail")
     public String showmail(Model model,
             @RequestParam("mail_id") long mailId,
             Authentication authentication) {

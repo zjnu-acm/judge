@@ -24,8 +24,7 @@ import java.nio.file.Paths;
 import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Slf4j
@@ -34,7 +33,7 @@ public class CKFinderController {
 
     @Nullable
     @ToDownload
-    @RequestMapping(value = "/support/ckfinder", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("/support/ckfinder")
     public Resource ckfinder(@RequestParam("path") String path) {
         Path imagePath;
         try {
