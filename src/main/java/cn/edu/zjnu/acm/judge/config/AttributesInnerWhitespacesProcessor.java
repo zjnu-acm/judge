@@ -39,11 +39,10 @@ class AttributesInnerWhitespacesProcessor extends AbstractProcessor implements I
     public void process(ITemplateContext context, IProcessableElementTag tag, IElementTagStructureHandler structureHandler) {
         IAttribute[] attributes = tag.getAllAttributes();
         for (int i = attributes.length - 1; i >= 0; --i) {
-            structureHandler.removeAttribute(attributes[i].getAttributeCompleteName());
+            structureHandler.removeAttribute(attributes[i].getAttributeDefinition().getAttributeName());
         }
         for (IAttribute attribute : attributes) {
-            attribute.getAttributeDefinition().getAttributeName();
-            structureHandler.setAttribute(attribute.getAttributeCompleteName(), attribute.getValue(), attribute.getValueQuotes());
+            structureHandler.replaceAttribute(attribute.getAttributeDefinition().getAttributeName(), attribute.getAttributeCompleteName(), attribute.getValue(), attribute.getValueQuotes());
         }
     }
 
