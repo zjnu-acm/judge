@@ -44,10 +44,9 @@ public class ShowMessageController {
         final Instant inDate = message.getInDate();
         final Long parentId = message.getParent();
         final String uid = message.getUser();
-        final String content = message.getContent();
-        String title = message.getTitle();
+        final String title = message.getTitle();
         final Long pid = message.getProblem();
-        long depth = message.getDepth() + 1;
+        final long depth = message.getDepth() + 1;
         final long thread = message.getThread();
         final long order = message.getOrder();
 
@@ -64,9 +63,9 @@ public class ShowMessageController {
             }
         }
         sb.append("<HR noshade color=#FFF><pre>");
-        sb.append(StringUtils.escapeXml(content));
+        sb.append(StringUtils.escapeXml(message.getContent()));
         sb.append("</pre><HR noshade color='#FFF'><b>Followed by:</b><br/><ul>");
-        final long l8 = depth;
+        long dep = depth;
         List<Message> messages = messageMapper.findAllByThreadIdAndOrderNumGreaterThanOrderByOrderNum(thread, order);
         for (Message m : messages) {
             String user = m.getUser();
@@ -74,20 +73,20 @@ public class ShowMessageController {
             String title1 = m.getTitle();
             Instant inDate1 = m.getInDate();
             final long depth1 = m.getDepth();
-            if (depth1 < l8) {
+            if (depth1 < depth) {
                 break;
             }
-            for (long i = depth; i < depth1; ++i) {
+            for (long i = dep; i < depth1; ++i) {
                 sb.append("<ul>");
             }
-            for (long i = depth1; i < depth; i++) {
+            for (long i = depth1; i < dep; i++) {
                 sb.append("</ul>");
             }
             sb.append("<li><a href=showmessage?message_id=").append(id).append("><font color=blue>").append(StringUtils.escapeXml(title1)).append("</font></a>" + " -- <b><a href=userstatus?user_id=").append(user).append("><font color=black>").append(user).append("</font></a></b> ");
             sb.append(formatter.format(inDate1));
-            depth = depth1;
+            dep = depth1;
         }
-        for (long i = l8; i < depth; ++i) {
+        for (long i = depth; i < dep; ++i) {
             sb.append("</ul>");
         }
         sb.append("</ul>" + "<HR noshade color=#FFF>" + "<font color=blue>Post your reply here:</font><br/>" + "<form method=POST action=post>");
@@ -95,10 +94,7 @@ public class ShowMessageController {
             sb.append("<input type=hidden name=problem_id value=").append(pid).append(">");
         }
         sb.append("<input type=hidden name=parent_id value=").append(messageId).append(">");
-        if (!title.regionMatches(true, 0, "re:", 0, 3)) {
-            title = "Reply:" + title;
-        }
-        sb.append("Title:<br/><input type=text name=title value=\"").append(StringUtils.escapeXml(title)).append("\" size=75><br/>" + "Content:<br/><textarea rows=15 name=content cols=75>").append(JudgeUtils.getReplyString(content)).append("</textarea><br/><button type=Submit>reply</button></td></tr></table></body></html>");
+        sb.append("Title:<br/><input type=text name=title value=\"").append(StringUtils.escapeXml(!title.regionMatches(true, 0, "re:", 0, 3) ? "Reply:" + title : title)).append("\" size=75><br/>" + "Content:<br/><textarea rows=15 name=content cols=75>").append(JudgeUtils.getReplyString(message.getContent())).append("</textarea><br/><button type=Submit>reply</button></td></tr></table></body></html>");
         return ResponseEntity.ok().contentType(MediaType.valueOf("text/html;charset=UTF-8")).body(sb.toString());
     }
 

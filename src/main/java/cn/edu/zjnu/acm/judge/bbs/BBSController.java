@@ -39,7 +39,8 @@ public class BBSController {
 
         StringBuilder sb = new StringBuilder("<html><head><title>Messages</title></head><body>"
                 + "<table border=0 width=100% class=table-back><tr><td><ul>");
-        top = 0;
+        top = messages.stream().mapToLong(Message::getThread).max().orElse(0);
+        final long maxt = messageMapper.maxt(top, problemId, threadLimit, 999999999999L);
         for (Message message : messages) {
             long depth = message.getDepth();
             String title = message.getTitle();
@@ -48,9 +49,6 @@ public class BBSController {
             Timestamp timestamp = Timestamp.from(message.getInDate());
             long threadId = message.getThread();
             Long problem = message.getProblem();
-            if (threadId > top) {
-                top = threadId;
-            }
 
             for (; currentDepth < depth; currentDepth++) {
                 sb.append("<ul>");
@@ -71,10 +69,9 @@ public class BBSController {
             sb.append("</ul>");
         }
         sb.append("</ul></td></tr></table><center>");
-        long maxt = messageMapper.maxt(top, problemId, threadLimit, 999999999999L);
         String query = "";
         if (problemId != null) {
-            query = query + "?problem_id=" + problemId;
+            query = "?problem_id=" + problemId;
         }
         sb.append("<hr/>[<a href=bbs").append(query).append(">Top</a>]");
         query = "?top=" + maxt;

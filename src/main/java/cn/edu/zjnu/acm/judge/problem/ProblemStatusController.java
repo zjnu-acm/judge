@@ -133,7 +133,7 @@ public class ProblemStatusController {
             String language = languageService.getLanguage(s.getLanguage()).getName();
             String length = df.format(s.getSourceLength() / 1024.);
             sb.append("<tr align=center><td>").append(rank).append("</td><td>").append(submissionId).append("</td>" + "<td><a href=userstatus?user_id=").append(userId).append(">").append(userId).append("</a></td>");
-            if (canView || (contestId == null)) {
+            if (canView || contestId == null) {
                 sb.append("<td>").append(memory).append("K</td><td>").append(time).append("MS</td>");
             } else {
                 sb.append("<td>&nbsp;</td><td>&nbsp;</td>");
@@ -143,15 +143,15 @@ public class ProblemStatusController {
             } else {
                 sb.append("<td>").append(language).append("</td>");
             }
-            if (canView || (contestId == null)) {
+            if (canView || contestId == null) {
                 sb.append("<td>").append(length).append("K</td>");
             } else {
                 sb.append("<td>&nbsp;</td>");
             }
             sb.append("<td>").append(formatter.format(inDate)).append("</td></tr>");
         }
-        String str10 = "[<a href=\"problemstatus?problem_id=" + id + "&size=" + size + "&orderby=" + orderby;
-        sb.append("</table><p align=center>").append(str10).append("\">Top</a>]").append(str10).append("&start=").append(Math.max(start - size, 0)).append("\">Previous Page</a>]").append(str10).append("&start=").append(start + size).append("\">Next Page</a>]</p></td></tr></table></body></html>");
+        String html = "[<a href=\"problemstatus?problem_id=" + id + "&size=" + size + "&orderby=" + orderby;
+        sb.append("</table><p align=center>").append(html).append("\">Top</a>]").append(html).append("&start=").append(Math.max(start - size, 0)).append("\">Previous Page</a>]").append(html).append("&start=").append(start + size).append("\">Next Page</a>]</p></td></tr></table></body></html>");
         return ResponseEntity.ok().contentType(MediaType.valueOf("text/html;charset=UTF-8")).body(sb.toString());
     }
 
