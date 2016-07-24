@@ -50,10 +50,10 @@ public class StatusController {
             @RequestParam(value = "contest_id", required = false) Long contestId,
             @RequestParam(value = "language", defaultValue = "-1") int language,
             @RequestParam(value = "size", defaultValue = "20") int size,
-            final @RequestParam(value = "bottom", required = false) Long bottom,
+            @RequestParam(value = "bottom", required = false) final Long bottom,
             @RequestParam(value = "score", required = false) Integer sc,
             @RequestParam(value = "user_id", defaultValue = "") String userId,
-            final @RequestParam(value = "top", required = false) Long top,
+            @RequestParam(value = "top", required = false) final Long top,
             Authentication authentication) {
         long problemId = 0;
         String query;

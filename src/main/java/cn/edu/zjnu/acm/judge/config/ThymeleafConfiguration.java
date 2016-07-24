@@ -15,42 +15,16 @@
  */
 package cn.edu.zjnu.acm.judge.config;
 
-import java.util.Collections;
-import java.util.Set;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.util.StringUtils;
-import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
-import org.thymeleaf.model.IText;
-import org.thymeleaf.processor.IProcessor;
-import org.thymeleaf.processor.text.AbstractTextProcessor;
-import org.thymeleaf.processor.text.ITextStructureHandler;
-import org.thymeleaf.templatemode.TemplateMode;
 
 @Configuration
 public class ThymeleafConfiguration {
 
     @Bean
     public AbstractProcessorDialect whiteSpaceNormalizedDialect() {
-        TemplateMode templateMode = TemplateMode.HTML;
-        int processorPrecedence = 100000;
-        String dialectName = "spaces";
-        String dialectPrefix = dialectName;
-        return new AbstractProcessorDialect(dialectName, dialectPrefix, processorPrecedence) {
-            @Override
-            public Set<IProcessor> getProcessors(String dialectPrefix) {
-                return Collections.singleton(new AbstractTextProcessor(templateMode, processorPrecedence) {
-                    @Override
-                    public void doProcess(ITemplateContext context, IText text, ITextStructureHandler structureHandler) {
-                        String content = text.getText();
-                        if (!StringUtils.hasText(content)) {
-                            structureHandler.removeText();
-                        }
-                    }
-                });
-            }
-        };
+        return new SpacesDialect();
     }
 
 }
