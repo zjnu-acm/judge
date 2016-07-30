@@ -4,7 +4,7 @@
     <parent>
         <artifactId>platform-bom</artifactId>
         <groupId>io.spring.platform</groupId>
-        <version>Athens-BUILD-SNAPSHOT</version>
+        <version>Athens-RC1</version>
         <relativePath />
     </parent>
     <groupId>cn.edu.zjnu.acm</groupId>
@@ -260,31 +260,7 @@
             <id>spring-milestone</id>
             <url>https://repo.spring.io/milestone</url>
         </repository>
-        <repository>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <id>spring-snapshot</id>
-            <url>https://repo.spring.io/snapshot</url>
-        </repository>
     </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>spring-milestone</id>
-            <url>https://repo.spring.io/milestone</url>
-        </pluginRepository>
-        <pluginRepository>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <id>spring-snapshot</id>
-            <url>https://repo.spring.io/snapshot</url>
-        </pluginRepository>
-    </pluginRepositories>
 
     <build>
         <plugins>
