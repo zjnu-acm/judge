@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.InterruptedIOException;
+import java.io.UncheckedIOException;
 import java.nio.charset.Charset;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -48,15 +49,18 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
 
@@ -67,15 +71,6 @@ import org.thymeleaf.util.StringUtils;
 @Service
 @Slf4j
 public class Judger {
-
-    private static final Object JUDGE_LOCK = new Object();
-
-    /**
-     * use blocking queue instead of LinkedList
-     */
-    private static final PriorityBlockingQueue<RunRecord> QUEUE = new PriorityBlockingQueue<>(40, Comparator.comparingLong(RunRecord::getSubmissionId));
-    private static final ThreadGroup GROUP = new ThreadGroup("judge group");
-    private static final AtomicInteger COUNTER = new AtomicInteger();
 
     private static String collectLines(Path path) throws IOException {
         Charset charset = Platform.getCharset();
@@ -101,6 +96,22 @@ public class Judger {
     private JudgeConfiguration judgeConfiguration;
     @Autowired
     private LanguageService languageService;
+
+    @Bean
+    public ExecutorService judgeService() {
+        /**
+         * use blocking queue instead of LinkedList
+         */
+        final PriorityBlockingQueue<Runnable> QUEUE = new PriorityBlockingQueue<>(40);
+        final ThreadGroup GROUP = new ThreadGroup("judge group");
+        final AtomicInteger COUNTER = new AtomicInteger();
+        ThreadFactory threadFactory = runnable
+                -> new Thread(GROUP, runnable, "judge thread " + COUNTER.incrementAndGet());
+        return new ThreadPoolExecutor(1, 1,
+                0L, TimeUnit.MILLISECONDS,
+                QUEUE,
+                threadFactory);
+    }
 
     private void updateSubmissionStatus(RunRecord runRecord) {
         userProblemMapper.update(runRecord.getUserId(), runRecord.getProblemId());
@@ -303,33 +314,16 @@ public class Judger {
     }
 
     public void judge(RunRecord runRecord) {
-        QUEUE.add(runRecord);
-        synchronized (GROUP) {
-            if (GROUP.activeCount() < 1) {
-                new Thread(GROUP, this::run, "judge thread " + COUNTER.incrementAndGet()).start();
-            }
-        }
+        judgeService().submit(new JudgeTask(runRecord, () -> judgeInternal(runRecord)));
     }
 
-    private void judgeInternal(RunRecord runRecord) throws IOException {
-        synchronized (JUDGE_LOCK) {
+    private void judgeInternal(RunRecord runRecord) {
+        try {
             if (compile(runRecord)) {
                 runProcess(runRecord);
             }
-        }
-    }
-
-    private void run() {
-        try {
-            while (true) {
-                RunRecord runRecord = QUEUE.take();
-                try {
-                    judgeInternal(runRecord);
-                } catch (IOException | RuntimeException | Error ex) {
-                    log.error("", ex);
-                }
-            }
-        } catch (InterruptedException ex) {
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
         }
     }
 
