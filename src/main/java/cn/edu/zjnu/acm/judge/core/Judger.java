@@ -51,16 +51,18 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
 
@@ -96,21 +98,19 @@ public class Judger {
     private JudgeConfiguration judgeConfiguration;
     @Autowired
     private LanguageService languageService;
+    private ExecutorService executorService;
 
-    @Bean
-    public ExecutorService judgeService() {
-        /**
-         * use blocking queue instead of LinkedList
-         */
-        final PriorityBlockingQueue<Runnable> QUEUE = new PriorityBlockingQueue<>(40);
-        final ThreadGroup GROUP = new ThreadGroup("judge group");
-        final AtomicInteger COUNTER = new AtomicInteger();
-        ThreadFactory threadFactory = runnable
-                -> new Thread(GROUP, runnable, "judge thread " + COUNTER.incrementAndGet());
-        return new ThreadPoolExecutor(1, 1,
-                0L, TimeUnit.MILLISECONDS,
-                QUEUE,
-                threadFactory);
+    @PostConstruct
+    public void init() {
+        final ThreadGroup group = new ThreadGroup("judge group");
+        final AtomicInteger countet = new AtomicInteger();
+        final ThreadFactory threadFactory = runnable -> new Thread(group, runnable, "judge thread " + countet.incrementAndGet());
+        executorService = Executors.newSingleThreadExecutor(threadFactory);
+    }
+
+    @PreDestroy
+    public void destroy() {
+        executorService.shutdownNow();
     }
 
     private void updateSubmissionStatus(RunRecord runRecord) {
@@ -119,32 +119,32 @@ public class Judger {
         userProblemMapper.updateProblem(runRecord.getProblemId());
     }
 
-    public void reJudge(long submissionId) throws IOException {
+    public void reJudge(long submissionId) throws InterruptedException, ExecutionException {
         Submission submission = submissionMapper.findOne(submissionId);
         if (submission == null) {
             return;
         }
+        Problem problem = problemMapper.findOneNoI18n(submission.getProblem());
+        if (problem == null) {
+            return;
+        }
+        Path dataPath = judgeConfiguration.getDataDirectory(problem.getId());
         RunRecord runRecord = RunRecord.builder()
                 .submissionId(submission.getId())
                 .language(languageService.getLanguage(submission.getLanguage()))
                 .problemId(submission.getProblem())
                 .userId(submission.getUser())
                 .source(submissionMapper.findSourceById(submissionId))
-                .build();
-        Problem problem = problemMapper.findOneNoI18n(submission.getProblem());
-        if (problem == null) {
-            return;
-        }
-        Path dataPath = judgeConfiguration.getDataDirectory(problem.getId());
-        runRecord = runRecord.toBuilder()
                 .dataPath(dataPath)
                 .memoryLimit(problem.getMemoryLimit())
                 .timeLimit(problem.getTimeLimit())
                 .build();
-        Path workDirectory = judgeConfiguration.getWorkDirectory(submissionId);
-        judgeServerService.delete(workDirectory);
-        judgeInternal(runRecord);
-        judgeServerService.delete(workDirectory);
+        executorService.submit(() -> {
+            Path workDirectory = judgeConfiguration.getWorkDirectory(submissionId);
+            judgeServerService.delete(workDirectory);
+            judgeInternal(runRecord);
+            judgeServerService.delete(workDirectory);
+        }).get();
     }
 
     private boolean runProcess(RunRecord runRecord) throws IOException {
@@ -313,8 +313,8 @@ public class Judger {
         return compileOK;
     }
 
-    public void judge(RunRecord runRecord) {
-        judgeService().submit(new JudgeTask(runRecord, () -> judgeInternal(runRecord)));
+    public Future<?> judge(RunRecord runRecord) {
+        return executorService.submit(() -> judgeInternal(runRecord));
     }
 
     private void judgeInternal(RunRecord runRecord) {

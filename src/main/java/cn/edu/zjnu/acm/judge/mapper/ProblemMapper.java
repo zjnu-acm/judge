@@ -106,7 +106,7 @@ public interface ProblemMapper {
     List<Problem> findAll(@Param("pageable") Pageable pageable, @Param("lang") String lang);
 
     // TODO not used
-    @Select({"<script>"
+    @Select("<script>"
         + "select" + LIST_COLUMNS
         + STATUS
         + FROM
@@ -114,7 +114,7 @@ public interface ProblemMapper {
         + "on up.user_id=#{userId} and up.problem_id=p.problem_id </if>"
         + "where not p.disabled and p.problem_id&gt;=#{start} and p.problem_id&lt;=#{end}"
         + "</script>"
-    })
+    )
     List<Problem> findAllByDisabledFalse(
             @Nullable @Param("userId") String userId,
             @Param("start") long start,

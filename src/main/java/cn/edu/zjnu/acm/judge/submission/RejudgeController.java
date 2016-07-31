@@ -2,7 +2,7 @@ package cn.edu.zjnu.acm.judge.submission;
 
 import cn.edu.zjnu.acm.judge.core.Rejudger;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
-import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
@@ -22,7 +22,7 @@ public class RejudgeController {
     public String rejudge(
             @RequestParam(value = "problem_id", defaultValue = "0") long problemId,
             @RequestParam(value = "solution_id", defaultValue = "0") long submissionId)
-            throws IOException {
+            throws InterruptedException, ExecutionException {
         if (submissionId != 0) {
             rejudger.rejudge(submissionId);
         } else if (problemId != 0) {

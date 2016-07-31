@@ -2,8 +2,8 @@ package cn.edu.zjnu.acm.judge.core;
 
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserProblemMapper;
-import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,12 +22,12 @@ public class Rejudger {
     public void run(long pid) {
         try {
             rejudgeProblem(pid);
-        } catch (IOException | RuntimeException ex) {
+        } catch (InterruptedException | ExecutionException | RuntimeException ex) {
             log.error("", ex);
         }
     }
 
-    private void rejudgeProblem(long problemId) throws IOException {
+    private void rejudgeProblem(long problemId) throws InterruptedException, ExecutionException {
         List<Long> submissions = submissionMapper.findAllByProblemId(problemId);
         for (long submission : submissions) {
             judger.reJudge(submission);
@@ -36,7 +36,7 @@ public class Rejudger {
         userProblemMapper.updateUsers();
     }
 
-    public void rejudge(long submissionId) throws IOException {
+    public void rejudge(long submissionId) throws InterruptedException, ExecutionException {
         judger.reJudge(submissionId);
     }
 
