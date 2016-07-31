@@ -21,6 +21,8 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 
 /**
  *
@@ -29,9 +31,11 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface LanguageMapper {
 
+    @CacheEvict(value = "languages", allEntries = true)
     @Insert("insert into language(id,name,source_extension,compile_command,execute_command,executable_extension,time_factor,ext_memory,description) values(#{id},#{name},#{sourceExtension},#{compileCommand},#{executeCommand},#{executableExtension},#{timeFactor},#{extMemory},#{description})")
     long save(Language language);
 
+    @CacheEvict(value = "languages", allEntries = true)
     @Delete("<script>delete from language"
             + "<where>"
             + "<if test='id!=null'> and id=#{id}</if><if test='id==null'> and id is null</if>"
@@ -47,9 +51,11 @@ public interface LanguageMapper {
             + "</script>")
     long delete(Language language);
 
+    @Cacheable("languages")
     @Select("select id id,name name,source_extension sourceExtension,compile_command compileCommand,execute_command executeCommand,executable_extension executableExtension,time_factor timeFactor,ext_memory extMemory,description description from language")
     List<Language> findAll();
 
+    @Cacheable("languages")
     @Select("select id id,name name,source_extension sourceExtension,compile_command compileCommand,execute_command executeCommand,executable_extension executableExtension,time_factor timeFactor,ext_memory extMemory,description description from language where id=#{param1}")
     Language findOne(long id);
 
