@@ -54,7 +54,7 @@ public class BBSController {
             for (; currentDepth > depth; currentDepth--) {
                 sb.append("</ul>");
             }
-            if ((lastThreadId != 0) && (threadId != lastThreadId) && (depth == 0)) {
+            if (lastThreadId != 0 && threadId != lastThreadId && depth == 0) {
                 sb.append("<hr/>");
             }
             lastThreadId = threadId;
@@ -67,9 +67,9 @@ public class BBSController {
             sb.append("</ul>");
         }
         sb.append("</ul></td></tr></table><center>");
-        String query = "";
+        String query = "?";
         if (problemId != null) {
-            query = "?problem_id=" + problemId;
+            query = query + "problem_id=" + problemId;
         }
         sb.append("<hr/>[<a href=\"").append(query).append("\">Top</a>]");
         query = "?top=" + maxt;
