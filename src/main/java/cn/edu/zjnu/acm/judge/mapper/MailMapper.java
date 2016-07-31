@@ -24,6 +24,8 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 
 /**
  *
@@ -41,21 +43,26 @@ public interface MailMapper {
             @Param("start") long start,
             @Param("size") int size);
 
+    @CacheEvict(value = "mails", allEntries = true)
     @Update("update mail set new_mail=0 where mail_id=#{id}")
     long readed(@Param("id") long id);
 
+    @CacheEvict(value = "mails", allEntries = true)
     @Update("update mail set disabled=1 where mail_id=#{id}")
     long delete(long id);
 
+    @CacheEvict(value = "mails", allEntries = true)
     @Insert("insert into mail (mail_id,from_user,to_user,title,content,in_date) "
             + "values(#{id},#{from},#{to},#{title},#{content},now())")
     @SelectKey(statement = "select COALESCE(max(mail_id)+1,1000) maxp from mail",
             keyProperty = "id", before = true, resultType = long.class)
     long save(Mail mail);
 
+    @Cacheable("mails")
     @Select("select count(*) total,sum(if(new_mail!=0,1,0)) newMail from mail where to_user=#{user} and not disabled")
     MailInfo getMailInfo(@Param("user") String user);
 
+    @CacheEvict(value = "mails", allEntries = true)
     @Update("update mail set reply=1 where mail_id=#{id}")
     long setReply(@Param("id") long id);
 
