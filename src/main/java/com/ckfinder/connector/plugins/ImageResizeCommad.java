@@ -196,7 +196,7 @@ public class ImageResizeCommad extends XMLCommand implements IEventHandler {
     }
 
     @Override
-    public void initParams(HttpServletRequest request,
+    protected void initParams(HttpServletRequest request,
             IConfiguration configuration1, Object... params)
             throws ConnectorException {
         super.initParams(request, configuration1, params);

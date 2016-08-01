@@ -103,7 +103,7 @@ public class SaveFileCommand extends XMLCommand implements IEventHandler {
     }
 
     @Override
-    public void initParams(HttpServletRequest request,
+    protected void initParams(HttpServletRequest request,
             IConfiguration configuration, Object... params)
             throws ConnectorException {
         super.initParams(request, configuration, params);
