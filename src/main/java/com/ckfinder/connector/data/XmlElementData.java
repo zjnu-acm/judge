@@ -13,12 +13,16 @@ package com.ckfinder.connector.data;
 
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
  * XML element.
  */
+@Getter
+@Setter
 public class XmlElementData {
 
     /**
@@ -83,59 +87,4 @@ public class XmlElementData {
         return document.createElement(this.name);
     }
 
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @param name the name to set
-     */
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    /**
-     * @return the value
-     */
-    public String getValue() {
-        return value;
-    }
-
-    /**
-     * @param value the value to set
-     */
-    public void setValue(final String value) {
-        this.value = value;
-    }
-
-    /**
-     * @return the attributes
-     */
-    public List<XmlAttribute> getAttributes() {
-        return attributes;
-    }
-
-    /**
-     * @param attributes the attributes to set
-     */
-    public void setAttributes(final List<XmlAttribute> attributes) {
-        this.attributes = attributes;
-    }
-
-    /**
-     * @return the children
-     */
-    public List<XmlElementData> getChildrens() {
-        return childrens;
-    }
-
-    /**
-     * @param childrens the children to set
-     */
-    public void setChildrens(final List<XmlElementData> childrens) {
-        this.childrens = childrens;
-    }
 }

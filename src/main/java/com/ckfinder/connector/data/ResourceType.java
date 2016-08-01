@@ -12,10 +12,16 @@
 package com.ckfinder.connector.data;
 
 import com.ckfinder.connector.configuration.Constants;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Resource type entity.
  */
+@AllArgsConstructor
+@Getter
+@Setter
 public class ResourceType {
 
     /**
@@ -48,31 +54,6 @@ public class ResourceType {
     private String deniedExtensions;
 
     /**
-     *
-     */
-    /**
-     * Constructor.
-     *
-     * @param name resource type name.
-     * @param url resource type url.
-     * @param directory resource type directory.
-     * @param maxSize Max size of file in the resource type.
-     * @param allowedExtensions allowed extensions for resource type.
-     * @param deniedExtensions denied extensions for resource type.
-     */
-    public ResourceType(final String name, final String url,
-            final String directory, final String maxSize,
-            final String allowedExtensions,
-            final String deniedExtensions) {
-        this.allowedExtensions = allowedExtensions;
-        this.deniedExtensions = deniedExtensions;
-        this.path = directory;
-        this.maxSize = maxSize;
-        this.name = name;
-        this.url = url;
-    }
-
-    /**
      * constructor.
      *
      * @param name type name
@@ -96,23 +77,9 @@ public class ResourceType {
     }
 
     /**
-     * @return the name
-     */
-    public final String getName() {
-        return name;
-    }
-
-    /**
-     * @param name the name to set
-     */
-    public final void setName(final String name) {
-        this.name = name;
-    }
-
-    /**
      * @return the url
      */
-    public final String getUrl() {
+    public String getUrl() {
         if (url == null) {
             return Constants.BASE_URL_PLACEHOLDER.concat("/").concat(this.name.toLowerCase()).concat("/");
         }
@@ -120,16 +87,9 @@ public class ResourceType {
     }
 
     /**
-     * @param url the url to set
-     */
-    public final void setUrl(final String url) {
-        this.url = url;
-    }
-
-    /**
      * @return the directory
      */
-    public final String getPath() {
+    public String getPath() {
         if (path == null) {
             return Constants.BASE_DIR_PLACEHOLDER.concat(this.name.toLowerCase()).concat("/");
         }
@@ -137,16 +97,9 @@ public class ResourceType {
     }
 
     /**
-     * @param directory the directory to set
-     */
-    public final void setPath(final String directory) {
-        this.path = directory;
-    }
-
-    /**
      * @return the maxSize
      */
-    public final long getMaxSize() {
+    public long getMaxSize() {
         try {
             //No XML node, no value, value equals 0 = no resource type maxSize
             if (maxSize == null
@@ -188,16 +141,9 @@ public class ResourceType {
     }
 
     /**
-     * @param maxSize the maxSize to set
-     */
-    public final void setMaxSize(final String maxSize) {
-        this.maxSize = maxSize;
-    }
-
-    /**
      * @return the allowedExtensions
      */
-    public final String getAllowedExtensions() {
+    public String getAllowedExtensions() {
         if (allowedExtensions == null) {
             return "";
         }
@@ -205,27 +151,13 @@ public class ResourceType {
     }
 
     /**
-     * @param allowedExtensions the allowedExtensions to set
-     */
-    public final void setAllowedExtensions(final String allowedExtensions) {
-        this.allowedExtensions = allowedExtensions;
-    }
-
-    /**
      * @return the deniedExtensions
      */
-    public final String getDeniedExtensions() {
+    public String getDeniedExtensions() {
         if (deniedExtensions == null) {
             return "";
         }
         return deniedExtensions;
-    }
-
-    /**
-     * @param deniedExtensions the deniedExtensions to set
-     */
-    public final void setDeniedExtensions(final String deniedExtensions) {
-        this.deniedExtensions = deniedExtensions;
     }
 
 }

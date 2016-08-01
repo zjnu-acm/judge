@@ -11,9 +11,16 @@
  */
 package com.ckfinder.connector.data;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * XML attribute.
  */
+@AllArgsConstructor
+@Getter
+@Setter
 public class XmlAttribute {
 
     /**
@@ -25,43 +32,4 @@ public class XmlAttribute {
      */
     private String value;
 
-    /**
-     * Constructor.
-     *
-     * @param key1 XML attribute key.
-     * @param value1 XML attribute value.
-     */
-    public XmlAttribute(final String key1, final String value1) {
-        super();
-        this.key = key1;
-        this.value = value1;
-    }
-
-    /**
-     * @return the key
-     */
-    public String getKey() {
-        return key;
-    }
-
-    /**
-     * @param key1 the key to set
-     */
-    public void setKey(final String key1) {
-        this.key = key1;
-    }
-
-    /**
-     * @return the value
-     */
-    public String getValue() {
-        return value;
-    }
-
-    /**
-     * @param value1 the value to set
-     */
-    public void setValue(final String value1) {
-        this.value = value1;
-    }
 }

@@ -11,39 +11,17 @@
  */
 package com.ckfinder.connector.data;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Plugin param data.
  */
+@Getter
+@Setter
 public class PluginParam {
 
     private String name;
     private String value;
 
-    /**
-     * @return the name
-     */
-    public final String getName() {
-        return name;
-    }
-
-    /**
-     * @param name the name to set
-     */
-    public final void setName(final String name) {
-        this.name = name;
-    }
-
-    /**
-     * @return the value
-     */
-    public final String getValue() {
-        return value;
-    }
-
-    /**
-     * @param value the value to set
-     */
-    public final void setValue(final String value) {
-        this.value = value;
-    }
 }
