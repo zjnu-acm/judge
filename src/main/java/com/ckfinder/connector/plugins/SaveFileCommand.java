@@ -33,10 +33,6 @@ public class SaveFileCommand extends XMLCommand implements IEventHandler<BeforeE
 
     private String fileName;
     private String fileContent;
-    /**
-     * Current request object
-     */
-    private HttpServletRequest request;
 
     @Override
     protected void createXMLChildNodes(int arg0, Element arg1)
@@ -109,6 +105,6 @@ public class SaveFileCommand extends XMLCommand implements IEventHandler<BeforeE
         this.type = request.getParameter("type");
         this.fileContent = request.getParameter("content");
         this.fileName = request.getParameter("fileName");
-        this.request = request;
     }
+
 }

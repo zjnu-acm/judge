@@ -23,7 +23,6 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@SuppressWarnings("FinalMethod")
 public class BeforeExecuteCommandEventArgs extends EventArgs {
 
     private String command;
