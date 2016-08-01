@@ -84,7 +84,7 @@ public abstract class Command {
      * @param params execute additional params.
      * @throws ConnectorException to handle in error handler.
      */
-    public void initParams(final HttpServletRequest request,
+    protected void initParams(final HttpServletRequest request,
             final IConfiguration configuration, final Object... params)
             throws ConnectorException {
         if (configuration != null) {

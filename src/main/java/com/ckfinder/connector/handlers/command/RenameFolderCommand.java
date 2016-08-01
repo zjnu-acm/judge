@@ -151,7 +151,7 @@ public class RenameFolderCommand extends XMLCommand implements IPostCommand {
      * @throws ConnectorException when error occurs.
      */
     @Override
-    public void initParams(final HttpServletRequest request,
+    protected void initParams(final HttpServletRequest request,
             final IConfiguration configuration,
             final Object... params) throws ConnectorException {
 

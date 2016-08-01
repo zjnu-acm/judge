@@ -30,7 +30,7 @@ import org.w3c.dom.Element;
 public class DeleteFolderCommand extends XMLCommand implements IPostCommand {
 
     @Override
-    public void initParams(final HttpServletRequest request,
+    protected void initParams(final HttpServletRequest request,
             final IConfiguration configuration, final Object... params)
             throws ConnectorException {
 
