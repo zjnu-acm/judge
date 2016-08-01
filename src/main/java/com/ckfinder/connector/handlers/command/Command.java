@@ -11,7 +11,6 @@
  */
 package com.ckfinder.connector.handlers.command;
 
-import com.ckfinder.connector.ServletContextFactory;
 import com.ckfinder.connector.configuration.Constants;
 import com.ckfinder.connector.configuration.IConfiguration;
 import com.ckfinder.connector.data.ResourceType;
@@ -66,7 +65,7 @@ public abstract class Command {
             final Object... params) throws ConnectorException {
         this.initParams(request, configuration, params);
         try {
-            setResponseHeader(response, ServletContextFactory.getServletContext());
+            setResponseHeader(response, request.getServletContext());
             execute(response.getOutputStream());
             response.getOutputStream().flush();
             response.getOutputStream().close();
