@@ -18,6 +18,7 @@ import com.ckfinder.connector.errors.ConnectorException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -311,5 +312,7 @@ public interface IConfiguration {
      * @return IUserFilePathBuilder implementation
      */
     public IBasePathBuilder getBasePathBuilder();
+
+    public ServletContext getServletContext();
 
 }

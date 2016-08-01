@@ -11,7 +11,6 @@
  */
 package com.ckfinder.connector.plugins;
 
-import com.ckfinder.connector.ServletContextFactory;
 import com.ckfinder.connector.configuration.IConfiguration;
 import com.ckfinder.connector.data.AfterFileUploadEventArgs;
 import com.ckfinder.connector.data.EventArgs;
@@ -37,7 +36,7 @@ public class WatermarkCommand implements IEventHandler {
     public boolean runEventHandler(final EventArgs args, final IConfiguration configuration) throws ConnectorException {
         try {
             final WatermarkSettings settings = WatermarkSettings.createFromConfiguration(configuration,
-                    ServletContextFactory.getServletContext());
+                    configuration.getServletContext());
             final Path originalFile = ((AfterFileUploadEventArgs) args).getFile();
             final WatermarkPosition position = new WatermarkPosition(settings.getMarginBottom(), settings.getMarginRight());
 
