@@ -11,31 +11,33 @@
  */
 package com.ckfinder.connector.configuration;
 
+import com.ckfinder.connector.data.AfterFileUploadEventArgs;
+import com.ckfinder.connector.data.BeforeExecuteCommandEventArgs;
 import com.ckfinder.connector.data.EventArgs;
 import com.ckfinder.connector.data.EventCommandData;
 import com.ckfinder.connector.data.IEventHandler;
+import com.ckfinder.connector.data.InitCommandEventArgs;
 import com.ckfinder.connector.data.PluginInfo;
 import com.ckfinder.connector.errors.ConnectorException;
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Provides support for event handlers.
  */
 public class Events {
 
-    private final Map<EventTypes, List<EventCommandData>> eventHandlers;
+    private final List<EventCommandData<BeforeExecuteCommandEventArgs>> beforeExecuteCommandEventHandlers;
+    private final List<EventCommandData<AfterFileUploadEventArgs>> afterFileUploadEventHandlers;
+    private final List<EventCommandData<InitCommandEventArgs>> initCommandEventHandlers;
 
     /**
      * default constructor.
      */
     public Events() {
-        eventHandlers = new EnumMap<>(EventTypes.class);
-        eventHandlers.put(EventTypes.AfterFileUpload, new ArrayList<>(6));
-        eventHandlers.put(EventTypes.InitCommand, new ArrayList<>(6));
-        eventHandlers.put(EventTypes.BeforeExecuteCommand, new ArrayList<>(6));
+        this.beforeExecuteCommandEventHandlers = new ArrayList<>(6);
+        this.afterFileUploadEventHandlers = new ArrayList<>(6);
+        this.initCommandEventHandlers = new ArrayList<>(6);
     }
 
     /**
@@ -44,10 +46,16 @@ public class Events {
      * @param event selected event
      * @param eventHandler event class to register
      */
-    public void addEventHandler(final EventTypes event,
-            final Class<? extends IEventHandler> eventHandler) {
-        EventCommandData eventCommandData = new EventCommandData(eventHandler);
-        eventHandlers.get(event).add(eventCommandData);
+    public void addBeforeExecuteEventHandler(Class<? extends IEventHandler<BeforeExecuteCommandEventArgs>> eventHandler) {
+        beforeExecuteCommandEventHandlers.add(new EventCommandData<>(eventHandler));
+    }
+
+    public void addAfterFileUploadEventHandler(Class<? extends IEventHandler<AfterFileUploadEventArgs>> eventHandler) {
+        afterFileUploadEventHandlers.add(new EventCommandData<>(eventHandler));
+    }
+
+    public void addInitCommandEventHandler(Class<? extends IEventHandler<InitCommandEventArgs>> eventHandler) {
+        initCommandEventHandlers.add(new EventCommandData<>(eventHandler));
     }
 
     /**
@@ -57,12 +65,19 @@ public class Events {
      * @param eventHandler event class to register
      * @param pluginInfo plugin info
      */
-    public void addEventHandler(final EventTypes event,
-            final Class<? extends IEventHandler> eventHandler,
+    public void addBeforeExecuteEventHandler(Class<? extends IEventHandler<BeforeExecuteCommandEventArgs>> eventHandler,
             final PluginInfo pluginInfo) {
-        EventCommandData eventCommandData = new EventCommandData(eventHandler);
-        eventCommandData.setPluginInfo(pluginInfo);
-        eventHandlers.get(event).add(eventCommandData);
+        beforeExecuteCommandEventHandlers.add(new EventCommandData<>(eventHandler, pluginInfo));
+    }
+
+    public void addAfterFileUploadEventHandler(Class<? extends IEventHandler<AfterFileUploadEventArgs>> eventHandler,
+            final PluginInfo pluginInfo) {
+        afterFileUploadEventHandlers.add(new EventCommandData<>(eventHandler, pluginInfo));
+    }
+
+    public void addInitCommandEventHandler(Class<? extends IEventHandler<InitCommandEventArgs>> eventHandler,
+            final PluginInfo pluginInfo) {
+        initCommandEventHandlers.add(new EventCommandData<>(eventHandler, pluginInfo));
     }
 
     /**
@@ -74,13 +89,26 @@ public class Events {
      * @return false when end executing command.
      * @throws ConnectorException when error occurs.
      */
-    @SuppressWarnings({"UseSpecificCatch", "BroadCatchBlock", "TooBroadCatch"})
-    public boolean run(final EventTypes eventTyp, final EventArgs args,
-            final IConfiguration configuration)
+    public boolean runBeforeExecuteCommand(BeforeExecuteCommandEventArgs args, IConfiguration configuration)
             throws ConnectorException {
-        for (EventCommandData eventCommandData : eventHandlers.get(eventTyp)) {
+        return run(beforeExecuteCommandEventHandlers, args, configuration);
+    }
+
+    public boolean runAfterFileUpload(AfterFileUploadEventArgs args, IConfiguration configuration)
+            throws ConnectorException {
+        return run(afterFileUploadEventHandlers, args, configuration);
+    }
+
+    public boolean runInitCommand(InitCommandEventArgs args, IConfiguration configuration)
+            throws ConnectorException {
+        return run(initCommandEventHandlers, args, configuration);
+    }
+
+    private <T extends EventArgs> boolean run(List<EventCommandData<T>> handlers, T args, IConfiguration configuration)
+            throws ConnectorException {
+        for (EventCommandData<T> eventCommandData : handlers) {
             try {
-                IEventHandler events;
+                IEventHandler<T> events;
                 if (eventCommandData.getPluginInfo() != null) {
                     events = eventCommandData.getEventListener().getConstructor(PluginInfo.class).newInstance(eventCommandData.getPluginInfo());
                 } else {
@@ -94,18 +122,8 @@ public class Events {
             } catch (Exception e) {
                 throw new ConnectorException(e);
             }
-
         }
         return true;
     }
 
-    /**
-     * The list of events.
-     */
-    @SuppressWarnings("PublicInnerClass")
-    public enum EventTypes {
-
-        BeforeExecuteCommand, AfterFileUpload, InitCommand;
-
-    }
 }

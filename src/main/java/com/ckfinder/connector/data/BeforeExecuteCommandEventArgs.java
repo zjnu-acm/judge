@@ -18,7 +18,7 @@ import lombok.Setter;
 
 /**
  * Event data for
- * {@link com.ckfinder.connector.configuration.Events.EventTypes#BeforeExecuteCommand}
+ * {@link com.ckfinder.connector.configuration.Events#addBeforeExecuteEventHandler(java.lang.Class) }
  * event.
  */
 @Getter

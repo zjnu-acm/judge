@@ -14,7 +14,6 @@ package com.ckfinder.connector;
 import com.ckfinder.connector.configuration.Configuration;
 import com.ckfinder.connector.configuration.ConfigurationFactory;
 import com.ckfinder.connector.configuration.Constants;
-import com.ckfinder.connector.configuration.Events.EventTypes;
 import com.ckfinder.connector.configuration.IConfiguration;
 import com.ckfinder.connector.data.BeforeExecuteCommandEventArgs;
 import com.ckfinder.connector.errors.ConnectorException;
@@ -144,7 +143,7 @@ public class ConnectorServlet extends HttpServlet {
             args.setResponse(response);
 
             if (configuration.getEvents() != null) {
-                if (configuration.getEvents().run(EventTypes.BeforeExecuteCommand,
+                if (configuration.getEvents().runBeforeExecuteCommand(
                         args, configuration)) {
                     if (!isNativeCommand) {
                         command = null;

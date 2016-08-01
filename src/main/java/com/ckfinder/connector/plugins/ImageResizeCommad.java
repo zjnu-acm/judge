@@ -14,7 +14,6 @@ package com.ckfinder.connector.plugins;
 import com.ckfinder.connector.configuration.Constants;
 import com.ckfinder.connector.configuration.IConfiguration;
 import com.ckfinder.connector.data.BeforeExecuteCommandEventArgs;
-import com.ckfinder.connector.data.EventArgs;
 import com.ckfinder.connector.data.IEventHandler;
 import com.ckfinder.connector.data.PluginInfo;
 import com.ckfinder.connector.data.PluginParam;
@@ -36,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Element;
 
 @Slf4j
-public class ImageResizeCommad extends XMLCommand implements IEventHandler {
+public class ImageResizeCommad extends XMLCommand implements IEventHandler<BeforeExecuteCommandEventArgs> {
 
     private static final String[] SIZES = {"small", "medium", "large"};
 
@@ -61,9 +60,8 @@ public class ImageResizeCommad extends XMLCommand implements IEventHandler {
     }
 
     @Override
-    public boolean runEventHandler(EventArgs eventArgs, IConfiguration configuration1)
+    public boolean runEventHandler(BeforeExecuteCommandEventArgs args, IConfiguration configuration1)
             throws ConnectorException {
-        BeforeExecuteCommandEventArgs args = (BeforeExecuteCommandEventArgs) eventArgs;
         if ("ImageResize".equals(args.getCommand())) {
             this.runCommand(args.getRequest(), args.getResponse(), configuration1);
             return false;

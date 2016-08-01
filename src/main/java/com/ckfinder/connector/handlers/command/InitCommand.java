@@ -12,7 +12,6 @@
 package com.ckfinder.connector.handlers.command;
 
 import com.ckfinder.connector.configuration.Constants;
-import com.ckfinder.connector.configuration.Events.EventTypes;
 import com.ckfinder.connector.data.InitCommandEventArgs;
 import com.ckfinder.connector.data.ResourceType;
 import com.ckfinder.connector.errors.ConnectorException;
@@ -168,7 +167,7 @@ public class InitCommand extends XMLCommand {
         args.setXml(this.creator);
         args.setRootElement(rootElement);
         if (configuration.getEvents() != null) {
-            configuration.getEvents().run(EventTypes.InitCommand, args, configuration);
+            configuration.getEvents().runInitCommand(args, configuration);
         }
 
     }
