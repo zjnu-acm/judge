@@ -18,7 +18,7 @@ import org.w3c.dom.Element;
 
 /**
  * Event data for
- * {@link com.ckfinder.connector.configuration.Events.EventTypes#InitCommand}
+ * {@link com.ckfinder.connector.configuration.Events#addInitCommandEventHandler(java.lang.Class) }
  * event.
  */
 @Getter

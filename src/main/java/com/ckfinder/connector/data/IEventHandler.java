@@ -16,8 +16,10 @@ import com.ckfinder.connector.errors.ConnectorException;
 
 /**
  * Plugin event interface.
+ *
+ * @param <T> actual event arguments type
  */
-public interface IEventHandler {
+public interface IEventHandler<T extends EventArgs> {
 
     /**
      * execute event handler.
@@ -27,7 +29,6 @@ public interface IEventHandler {
      * @return false if break executing command.
      * @throws ConnectorException when error occurs.
      */
-    public boolean runEventHandler(EventArgs args, IConfiguration configuration)
-            throws ConnectorException;
+    public boolean runEventHandler(T args, IConfiguration configuration) throws ConnectorException;
 
 }

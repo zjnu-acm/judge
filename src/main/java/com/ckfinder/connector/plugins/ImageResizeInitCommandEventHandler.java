@@ -12,7 +12,6 @@
 package com.ckfinder.connector.plugins;
 
 import com.ckfinder.connector.configuration.IConfiguration;
-import com.ckfinder.connector.data.EventArgs;
 import com.ckfinder.connector.data.IEventHandler;
 import com.ckfinder.connector.data.InitCommandEventArgs;
 import com.ckfinder.connector.data.PluginInfo;
@@ -22,7 +21,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class ImageResizeInitCommandEventHandler implements IEventHandler {
+public class ImageResizeInitCommandEventHandler implements IEventHandler<InitCommandEventArgs> {
 
     private PluginInfo pluginInfo;
 
@@ -31,9 +30,8 @@ public class ImageResizeInitCommandEventHandler implements IEventHandler {
     }
 
     @Override
-    public boolean runEventHandler(EventArgs eventArgs, IConfiguration arg1)
+    public boolean runEventHandler(InitCommandEventArgs args, IConfiguration arg1)
             throws ConnectorException {
-        InitCommandEventArgs args = (InitCommandEventArgs) eventArgs;
         NodeList list = args.getRootElement().getElementsByTagName("PluginsInfo");
         if (list.getLength() > 0) {
             Node node = list.item(0);

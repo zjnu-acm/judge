@@ -12,7 +12,6 @@
 package com.ckfinder.connector.handlers.command;
 
 import com.ckfinder.connector.configuration.Constants;
-import com.ckfinder.connector.configuration.Events.EventTypes;
 import com.ckfinder.connector.configuration.IConfiguration;
 import com.ckfinder.connector.data.AfterFileUploadEventArgs;
 import com.ckfinder.connector.data.ResourceType;
@@ -278,8 +277,7 @@ public class FileUploadCommand extends Command implements IPostCommand {
         if (!ImageUtils.isImage(file)) {
             item.write(file.toString());
             if (configuration.getEvents() != null) {
-                configuration.getEvents().run(EventTypes.AfterFileUpload,
-                        args, configuration);
+                configuration.getEvents().runAfterFileUpload(args, configuration);
             }
             return true;
         } else if (ImageUtils.checkImageSize(item.getInputStream(), this.configuration)
@@ -289,7 +287,7 @@ public class FileUploadCommand extends Command implements IPostCommand {
             if (!configuration.checkSizeAfterScaling()
                     || FileUtils.checkFileSize(configuration.getTypes().get(this.type), Files.size(file))) {
                 if (configuration.getEvents() != null) {
-                    configuration.getEvents().run(EventTypes.AfterFileUpload, args, configuration);
+                    configuration.getEvents().runAfterFileUpload(args, configuration);
                 }
                 return true;
             } else {

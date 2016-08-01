@@ -14,7 +14,6 @@ package com.ckfinder.connector.plugins;
 import com.ckfinder.connector.configuration.Constants;
 import com.ckfinder.connector.configuration.IConfiguration;
 import com.ckfinder.connector.data.BeforeExecuteCommandEventArgs;
-import com.ckfinder.connector.data.EventArgs;
 import com.ckfinder.connector.data.IEventHandler;
 import com.ckfinder.connector.errors.ConnectorException;
 import com.ckfinder.connector.handlers.command.XMLCommand;
@@ -30,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Element;
 
 @Slf4j
-public class SaveFileCommand extends XMLCommand implements IEventHandler {
+public class SaveFileCommand extends XMLCommand implements IEventHandler<BeforeExecuteCommandEventArgs> {
 
     private String fileName;
     private String fileContent;
@@ -92,11 +91,10 @@ public class SaveFileCommand extends XMLCommand implements IEventHandler {
     }
 
     @Override
-    public boolean runEventHandler(EventArgs args, IConfiguration configuration1)
+    public boolean runEventHandler(BeforeExecuteCommandEventArgs args, IConfiguration configuration1)
             throws ConnectorException {
-        BeforeExecuteCommandEventArgs args1 = (BeforeExecuteCommandEventArgs) args;
-        if ("SaveFile".equals(args1.getCommand())) {
-            this.runCommand(args1.getRequest(), args1.getResponse(), configuration1);
+        if ("SaveFile".equals(args.getCommand())) {
+            this.runCommand(args.getRequest(), args.getResponse(), configuration1);
             return false;
         }
         return true;
