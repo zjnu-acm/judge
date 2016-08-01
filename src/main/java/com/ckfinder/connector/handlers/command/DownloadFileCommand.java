@@ -112,7 +112,7 @@ public class DownloadFileCommand extends Command {
         super.initParams(request, configuration, params);
         // problem with showing filename when dialog window appear
         this.newFileName = request.getParameter("FileName").replaceAll("\"", "\\\\\"");
-        this.fileName = getParameter(request, "FileName");
+        this.fileName = request.getParameter("FileName");
         try {
             if (request.getHeader("User-Agent").contains("MSIE")) {
                 this.newFileName = URLEncoder.encode(this.newFileName, "UTF-8");
@@ -159,6 +159,6 @@ public class DownloadFileCommand extends Command {
         response.setHeader("Cache-Control", "cache, must-revalidate");
         response.setHeader("Pragma", "public");
         response.setHeader("Expires", "0");
-
     }
+
 }

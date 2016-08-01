@@ -203,8 +203,8 @@ public class ImageResizeCommad extends XMLCommand implements IEventHandler {
 
         this.request = request;
         this.sizesFromReq = new HashMap<>();
-        this.fileName = getParameter(request, "fileName");
-        this.newFileName = getParameter(request, "newFileName");
+        this.fileName = request.getParameter("fileName");
+        this.newFileName = request.getParameter("newFileName");
         this.overwrite = request.getParameter("overwrite");
         String reqWidth = request.getParameter("width");
         String reqHeight = request.getParameter("height");

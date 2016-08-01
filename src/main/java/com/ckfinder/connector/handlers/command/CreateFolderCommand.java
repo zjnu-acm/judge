@@ -137,6 +137,7 @@ public class CreateFolderCommand extends XMLCommand implements IPostCommand {
             final IConfiguration configuration, final Object... params)
             throws ConnectorException {
         super.initParams(request, configuration, params);
-        this.newFolderName = getParameter(request, "NewFolderName");
+        this.newFolderName = request.getParameter("NewFolderName");
     }
+
 }

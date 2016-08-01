@@ -313,11 +313,11 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
             String paramName = "files[" + i + "][name]";
             if (request.getParameter(paramName) != null) {
                 FilePostParam file = new FilePostParam();
-                file.setName(getParameter(request, paramName));
-                file.setFolder(getParameter(request, "files[" + i + "][folder]"));
-                file.setOptions(getParameter(request, "files[" + i
+                file.setName(request.getParameter(paramName));
+                file.setFolder(request.getParameter("files[" + i + "][folder]"));
+                file.setOptions(request.getParameter("files[" + i
                         + "][options]"));
-                file.setType(getParameter(request, "files[" + i + "][type]"));
+                file.setType(request.getParameter("files[" + i + "][type]"));
                 files.add(file);
             } else {
                 break;
@@ -325,4 +325,5 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
             i++;
         }
     }
+
 }

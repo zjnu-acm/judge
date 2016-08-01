@@ -156,7 +156,7 @@ public class RenameFolderCommand extends XMLCommand implements IPostCommand {
             final Object... params) throws ConnectorException {
 
         super.initParams(request, configuration);
-        this.newFolderName = getParameter(request, "NewFolderName");
-
+        this.newFolderName = request.getParameter("NewFolderName");
     }
+
 }

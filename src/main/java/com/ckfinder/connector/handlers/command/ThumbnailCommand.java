@@ -185,7 +185,7 @@ public class ThumbnailCommand extends Command {
             final IConfiguration configuration, final Object... params)
             throws ConnectorException {
         super.initParams(request, configuration, params);
-        this.fileName = getParameter(request, "FileName");
+        this.fileName = request.getParameter("FileName");
         try {
             this.ifModifiedSince = request.getDateHeader("If-Modified-Since");
         } catch (IllegalArgumentException e) {
@@ -312,4 +312,5 @@ public class ThumbnailCommand extends Command {
         }
         return true;
     }
+
 }

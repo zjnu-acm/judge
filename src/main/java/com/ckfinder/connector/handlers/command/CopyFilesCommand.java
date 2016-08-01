@@ -311,12 +311,13 @@ public class CopyFilesCommand extends XMLCommand implements IPostCommand {
         String paramName = "files[" + i + "][name]";
         while (request.getParameter(paramName) != null) {
             FilePostParam file = new FilePostParam();
-            file.setName(getParameter(request, paramName));
-            file.setFolder(getParameter(request, "files[" + i + "][folder]"));
-            file.setOptions(getParameter(request, "files[" + i + "][options]"));
-            file.setType(getParameter(request, "files[" + i + "][type]"));
+            file.setName(request.getParameter(paramName));
+            file.setFolder(request.getParameter("files[" + i + "][folder]"));
+            file.setOptions(request.getParameter("files[" + i + "][options]"));
+            file.setType(request.getParameter("files[" + i + "][type]"));
             this.files.add(file);
             paramName = "files[" + (++i) + "][name]";
         }
     }
+
 }
