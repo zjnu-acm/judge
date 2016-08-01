@@ -294,13 +294,12 @@ public class Configuration implements IConfiguration {
      * @throws ConnectorException when absolute path cannot be obtained.
      */
     private String getFullConfigPath() throws ConnectorException {
-        Path cfgFile = null;
         String path = FileUtils.getFullPath(getServletContext(), xmlFilePath, false, true);
         if (path == null) {
             throw new ConnectorException(Constants.Errors.CKFINDER_CONNECTOR_ERROR_FILE_NOT_FOUND,
                     "Configuration file could not be found under specified location.");
         }
-        cfgFile = Paths.get(path);
+        Path cfgFile = Paths.get(path);
 
         if (Files.exists(cfgFile) && Files.isRegularFile(cfgFile)) {
             return cfgFile.toAbsolutePath().toString();
@@ -314,10 +313,10 @@ public class Configuration implements IConfiguration {
      *
      * @param value userPathBuilderImpl configuration value
      */
+    @SuppressWarnings({"BroadCatchBlock", "TooBroadCatch", "UseSpecificCatch"})
     private void setBasePathImpl(final String value) {
         try {
-            @SuppressWarnings("unchecked")
-            Class<IBasePathBuilder> clazz = (Class<IBasePathBuilder>) Class.forName(value);
+            Class<? extends IBasePathBuilder> clazz = Class.forName(value).asSubclass(IBasePathBuilder.class);
             this.basePathBuilder = clazz.newInstance();
         } catch (Exception e) {
             this.basePathBuilder = new ConfigurationPathBuilder();

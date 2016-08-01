@@ -50,10 +50,6 @@ public class ImageResizeCommad extends XMLCommand implements IEventHandler<Befor
     private Integer height;
     private boolean wrongReqSizesParams;
     private Map<String, String> sizesFromReq;
-    /**
-     * Current request object
-     */
-    private HttpServletRequest request;
 
     public ImageResizeCommad(PluginInfo pluginInfo) {
         this.pluginInfo = pluginInfo;
@@ -183,10 +179,7 @@ public class ImageResizeCommad extends XMLCommand implements IEventHandler<Befor
 
     private String[] parseValue(String value) {
         StringTokenizer st = new StringTokenizer(value, "x");
-        String[] res = new String[2];
-        res[0] = st.nextToken();
-        res[1] = st.nextToken();
-        return res;
+        return new String[]{st.nextToken(), st.nextToken()};
     }
 
     private boolean checkParamSize(String value) {
@@ -199,7 +192,6 @@ public class ImageResizeCommad extends XMLCommand implements IEventHandler<Befor
             throws ConnectorException {
         super.initParams(request, configuration1, params);
 
-        this.request = request;
         this.sizesFromReq = new HashMap<>();
         this.fileName = request.getParameter("fileName");
         this.newFileName = request.getParameter("newFileName");

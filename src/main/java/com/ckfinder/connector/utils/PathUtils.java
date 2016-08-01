@@ -31,21 +31,22 @@ public class PathUtils {
         if (string == null || string.isEmpty()) {
             return string;
         }
-        int prefixIndex = string.indexOf("://");
+        final int prefixIndex = string.indexOf("://");
         String prefix = "";
+        String suffix = string;
         if (prefixIndex > -1) {
-            prefix = string.substring(0, prefixIndex + 3);
-            string = string.substring(prefixIndex + 3);
+            prefix = suffix.substring(0, prefixIndex + 3);
+            suffix = suffix.substring(prefixIndex + 3);
         }
-        string = string.replace('\\', '/');
+        suffix = suffix.replace('\\', '/');
 
         // preserve // at the beginning for UNC paths
-        if (string.startsWith("//")) {
-            string = "/" + string.replaceAll("/+", "/");
+        if (suffix.startsWith("//")) {
+            suffix = "/" + suffix.replaceAll("/+", "/");
         } else {
-            string = string.replaceAll("/+", "/");
+            suffix = suffix.replaceAll("/+", "/");
         }
-        return prefix.concat(string);
+        return prefix.concat(suffix);
     }
 
     /**

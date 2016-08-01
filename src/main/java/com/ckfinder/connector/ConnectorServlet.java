@@ -242,7 +242,6 @@ public class ConnectorServlet extends HttpServlet {
                 CommandHandlerEnum.XMLERROR.execute(request, response, configuration,
                         getServletContext(), e);
             }
-
         } catch (Exception e1) {
             throw new ServletException(e1);
         }
@@ -400,10 +399,6 @@ public class ConnectorServlet extends HttpServlet {
             try {
                 com = commandClass.newInstance();
             } catch (IllegalAccessException | InstantiationException e1) {
-                throw new ConnectorException(
-                        Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_COMMAND);
-            }
-            if (com == null) {
                 throw new ConnectorException(
                         Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_COMMAND);
             }

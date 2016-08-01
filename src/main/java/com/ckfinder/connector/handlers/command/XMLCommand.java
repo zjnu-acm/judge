@@ -151,4 +151,5 @@ public abstract class XMLCommand extends Command {
     protected boolean mustAddCurrentFolderNode() {
         return this.type != null && this.currentFolder != null;
     }
+
 }

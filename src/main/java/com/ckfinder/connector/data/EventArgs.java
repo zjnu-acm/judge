@@ -14,5 +14,6 @@ package com.ckfinder.connector.data;
 /**
  * super class for event args.
  */
+@SuppressWarnings("ClassMayBeInterface")
 public abstract class EventArgs {
 }

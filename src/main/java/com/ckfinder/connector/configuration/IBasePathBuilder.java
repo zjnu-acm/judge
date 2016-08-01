@@ -33,4 +33,5 @@ public interface IBasePathBuilder {
      * @return value of baseURL
      */
     public String getBaseUrl(HttpServletRequest request);
+
 }

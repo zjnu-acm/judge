@@ -22,7 +22,7 @@ class WatermarkPosition implements Position {
     private final int insetBottom;
     private final int insetRight;
 
-    public WatermarkPosition(int insetBottom, int insetRight) {
+    WatermarkPosition(int insetBottom, int insetRight) {
         this.insetBottom = insetBottom;
         this.insetRight = insetRight;
     }

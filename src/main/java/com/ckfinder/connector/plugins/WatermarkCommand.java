@@ -46,7 +46,6 @@ public class WatermarkCommand implements IEventHandler<AfterFileUploadEventArgs>
                         .outputQuality(settings.getQuality())
                         .toFiles(Rename.NO_CHANGE);
             }
-
         } catch (Exception ex) {
             // only log error if watermark is not created
             log.error("", ex);
@@ -72,4 +71,5 @@ public class WatermarkCommand implements IEventHandler<AfterFileUploadEventArgs>
         }
         return watermark;
     }
+
 }
