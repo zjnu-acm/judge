@@ -168,7 +168,8 @@ public class RenameFileCommand extends XMLCommand implements IPostCommand {
             final IConfiguration configuration, final Object... params)
             throws ConnectorException {
         super.initParams(request, configuration);
-        this.fileName = getParameter(request, "fileName");
-        this.newFileName = getParameter(request, "newFileName");
+        this.fileName = request.getParameter("fileName");
+        this.newFileName = request.getParameter("newFileName");
     }
+
 }

@@ -489,7 +489,7 @@ public class FileUploadCommand extends Command implements IPostCommand {
     @Override
     protected boolean checkIfCurrFolderExists(final HttpServletRequest request)
             throws ConnectorException {
-        String tmpType = getParameter(request, "type");
+        String tmpType = request.getParameter("type");
         if (checkIfTypeExists(tmpType)) {
             Path currDir = Paths.get(configuration.getTypes().get(tmpType).getPath()
                     + this.currentFolder);

@@ -99,7 +99,7 @@ public abstract class Command {
                 if (!checkHidden()) {
                     if ((this.currentFolder == null || this.currentFolder.isEmpty())
                             || checkIfCurrFolderExists(request)) {
-                        this.type = getParameter(request, "type");
+                        this.type = request.getParameter("type");
                     }
                 }
 
@@ -133,7 +133,7 @@ public abstract class Command {
      */
     protected boolean checkIfCurrFolderExists(final HttpServletRequest request)
             throws ConnectorException {
-        String tmpType = getParameter(request, "type");
+        String tmpType = request.getParameter("type");
         if (tmpType != null) {
             if (checkIfTypeExists(tmpType)) {
                 Path currDir = Paths.get(
@@ -219,24 +219,12 @@ public abstract class Command {
     }
 
     /**
-     * Gets request param value with correct encoding.
-     *
-     * @param request request
-     * @param paramName request param name
-     * @return param value
-     */
-    protected String getParameter(final HttpServletRequest request,
-            final String paramName) {
-        return request.getParameter(paramName);
-    }
-
-    /**
      * gets current folder request param or sets default value if it's not set.
      *
      * @param request request
      */
     protected void getCurrentFolderParam(final HttpServletRequest request) {
-        String currFolder = getParameter(request, "currentFolder");
+        String currFolder = request.getParameter("currentFolder");
         if (currFolder == null || currFolder.isEmpty()) {
             this.currentFolder = "/";
         } else {
@@ -255,4 +243,5 @@ public abstract class Command {
     protected String nullToString(String s) {
         return s == null ? "" : s;
     }
+
 }
