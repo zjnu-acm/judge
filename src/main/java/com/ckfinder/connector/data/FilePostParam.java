@@ -11,9 +11,14 @@
  */
 package com.ckfinder.connector.data;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * File from param entity.
  */
+@Getter
+@Setter
 public class FilePostParam {
 
     /**
@@ -33,65 +38,4 @@ public class FilePostParam {
      */
     private String type;
 
-    /**
-     *
-     * @return the folder
-     */
-    public final String getFolder() {
-        return folder;
-    }
-
-    /**
-     * @param folder the folder to set
-     */
-    public final void setFolder(final String folder) {
-        this.folder = folder;
-    }
-
-    /**
-     *
-     * @return the name
-     */
-    public final String getName() {
-        return name;
-    }
-
-    /**
-     * @param name the name to set
-     */
-    public final void setName(final String name) {
-        this.name = name;
-    }
-
-    /**
-     *
-     * @return the options
-     */
-    public final String getOptions() {
-        return options;
-    }
-
-    /**
-     *
-     * @param options the options to set
-     */
-    public final void setOptions(final String options) {
-        this.options = options;
-    }
-
-    /**
-     *
-     * @return the type
-     */
-    public final String getType() {
-        return type;
-    }
-
-    /**
-     *
-     * @param type the type to set
-     */
-    public final void setType(final String type) {
-        this.type = type;
-    }
 }
