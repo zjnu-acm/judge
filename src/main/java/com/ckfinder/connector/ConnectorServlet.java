@@ -252,7 +252,6 @@ public class ConnectorServlet extends HttpServlet {
     @Override
     @SuppressWarnings({"UseSpecificCatch", "BroadCatchBlock", "TooBroadCatch"})
     public void init() throws ServletException {
-        ServletContextFactory.setServletContext(getServletContext());
         IConfiguration configuration;
         String className = getServletConfig().getInitParameter(
                 "configuration");

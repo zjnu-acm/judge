@@ -121,7 +121,7 @@ public final class ConfigurationFactory {
                 baseFolder);
         baseFolder = PathUtils.escape(baseFolder);
         baseFolder = PathUtils.removeSlashFromEnd(baseFolder);
-        baseFolder = FileUtils.getFullPath(baseFolder, true, false);
+        baseFolder = FileUtils.getFullPath(request.getServletContext(), baseFolder, true, false);
         if (baseFolder == null) {
             throw new ConnectorException(Constants.Errors.CKFINDER_CONNECTOR_ERROR_FOLDER_NOT_FOUND,
                     "Thumbs directory could not be created using specified path.");
@@ -158,7 +158,7 @@ public final class ConfigurationFactory {
             }
 
             String resourcePath = isFromUrl
-                    ? FileUtils.calculatePathFromBaseUrl(baseFolder) : FileUtils.getFullPath(baseFolder, true, false);
+                    ? FileUtils.calculatePathFromBaseUrl(request.getServletContext(), baseFolder) : FileUtils.getFullPath(configuration.getServletContext(), baseFolder, true, false);
             if (resourcePath == null) {
                 throw new ConnectorException(Constants.Errors.CKFINDER_CONNECTOR_ERROR_FOLDER_NOT_FOUND,
                         "Resource directory could not be created using specified path.");
@@ -198,4 +198,5 @@ public final class ConfigurationFactory {
 
         return PathUtils.addSlashToEnd(baseFolder);
     }
+
 }
