@@ -19,17 +19,17 @@ public class ContestListController {
     private ContestMapper contestMapper;
 
     @GetMapping("/contests")
-    protected String contests(Model model, RedirectAttributes redirectAttributes) {
+    public String contests(Model model, RedirectAttributes redirectAttributes) {
         return execute(model, contestMapper::contests, "Contests", "onlinejudge.contests.nocontest", redirectAttributes);
     }
 
     @GetMapping("/scheduledcontests")
-    protected String scheduledcontests(Model model, RedirectAttributes redirectAttributes) {
+    public String scheduledcontests(Model model, RedirectAttributes redirectAttributes) {
         return execute(model, contestMapper::pending, "Scheduled Contests", "onlinejudge.contests.noschedule", redirectAttributes);
     }
 
     @GetMapping("/pastcontests")
-    protected String pastcontests(Model model, RedirectAttributes redirectAttributes) {
+    public String pastcontests(Model model, RedirectAttributes redirectAttributes) {
         return execute(model, contestMapper::past, "Contests", "onlinejudge.contests.nopast", redirectAttributes);
     }
 

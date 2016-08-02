@@ -23,7 +23,7 @@ public class BBSController {
     private MessageMapper messageMapper;
 
     @GetMapping(value = "/bbs", produces = TEXT_HTML_VALUE)
-    protected ResponseEntity<String> bbs(
+    public ResponseEntity<String> bbs(
             @RequestParam(value = "problem_id", required = false) Long problemId,
             @RequestParam(value = "size", defaultValue = "50") final int threadLimit,
             @RequestParam(value = "top", defaultValue = "99999999") final long top) {
