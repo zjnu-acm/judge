@@ -13,7 +13,7 @@ package com.ckfinder.connector.configuration;
 
 import com.ckfinder.connector.data.ResourceType;
 import com.ckfinder.connector.errors.ConnectorException;
-import com.ckfinder.connector.utils.AccessControlUtil;
+import com.ckfinder.connector.utils.AccessControl;
 import com.ckfinder.connector.utils.FileUtils;
 import com.ckfinder.connector.utils.PathUtils;
 import java.io.IOException;
@@ -57,8 +57,8 @@ public final class ConfigurationFactory {
         if (configuration != null
                 && configuration.checkIfReloadConfig()) {
             configuration.init();
-            AccessControlUtil.getInstance().resetConfiguration();
-            AccessControlUtil.getInstance().loadConfiguration(configuration);
+            AccessControl.getInstance().resetConfiguration();
+            AccessControl.getInstance().loadConfiguration(configuration);
         }
         return configuration;
     }
@@ -92,7 +92,7 @@ public final class ConfigurationFactory {
             IConfiguration conf = baseConf.cloneConfiguration();
             conf.prepareConfigurationForRequest(request);
             updateResourceTypesPaths(request, conf);
-            AccessControlUtil.getInstance().loadConfiguration(conf);
+            AccessControl.getInstance().loadConfiguration(conf);
             return conf;
         }
         return null;

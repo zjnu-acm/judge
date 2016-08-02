@@ -14,7 +14,7 @@ package com.ckfinder.connector.handlers.command;
 import com.ckfinder.connector.configuration.Constants;
 import com.ckfinder.connector.configuration.IConfiguration;
 import com.ckfinder.connector.errors.ConnectorException;
-import com.ckfinder.connector.utils.AccessControlUtil;
+import com.ckfinder.connector.utils.AccessControl;
 import com.ckfinder.connector.utils.FileUtils;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -75,9 +75,8 @@ public class CreateFolderCommand extends XMLCommand implements IPostCommand {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
         }
 
-        if (!AccessControlUtil.getInstance().checkFolderACL(
-                this.type, this.currentFolder, this.userRole,
-                AccessControlUtil.CKFINDER_CONNECTOR_ACL_FOLDER_CREATE)) {
+        if (!getAccessControl().checkFolderACL(this.type, this.currentFolder, this.userRole,
+                AccessControl.CKFINDER_CONNECTOR_ACL_FOLDER_CREATE)) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
         }
 

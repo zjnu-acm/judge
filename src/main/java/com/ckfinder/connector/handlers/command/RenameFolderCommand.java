@@ -14,7 +14,7 @@ package com.ckfinder.connector.handlers.command;
 import com.ckfinder.connector.configuration.Constants;
 import com.ckfinder.connector.configuration.IConfiguration;
 import com.ckfinder.connector.errors.ConnectorException;
-import com.ckfinder.connector.utils.AccessControlUtil;
+import com.ckfinder.connector.utils.AccessControl;
 import com.ckfinder.connector.utils.FileUtils;
 import com.ckfinder.connector.utils.PathUtils;
 import java.io.IOException;
@@ -72,10 +72,10 @@ public class RenameFolderCommand extends XMLCommand implements IPostCommand {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
         }
 
-        if (!AccessControlUtil.getInstance().checkFolderACL(this.type,
+        if (!getAccessControl().checkFolderACL(this.type,
                 this.currentFolder,
                 this.userRole,
-                AccessControlUtil.CKFINDER_CONNECTOR_ACL_FOLDER_RENAME)) {
+                AccessControl.CKFINDER_CONNECTOR_ACL_FOLDER_RENAME)) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
         }
 

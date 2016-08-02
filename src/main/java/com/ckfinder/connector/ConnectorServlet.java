@@ -36,7 +36,7 @@ import com.ckfinder.connector.handlers.command.RenameFolderCommand;
 import com.ckfinder.connector.handlers.command.ThumbnailCommand;
 import com.ckfinder.connector.handlers.command.XMLCommand;
 import com.ckfinder.connector.handlers.command.XMLErrorCommand;
-import com.ckfinder.connector.utils.AccessControlUtil;
+import com.ckfinder.connector.utils.AccessControl;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Set;
@@ -273,7 +273,7 @@ public class ConnectorServlet extends HttpServlet {
         }
         try {
             configuration.init();
-            AccessControlUtil.getInstance().loadConfiguration(configuration);
+            AccessControl.getInstance().loadConfiguration(configuration);
         } catch (Exception e) {
             throw new ServletException(e);
         }
@@ -402,6 +402,7 @@ public class ConnectorServlet extends HttpServlet {
                 throw new ConnectorException(
                         Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_COMMAND);
             }
+            com.setAccessControl(AccessControl.getInstance());
             com.runCommand(request, response, configuration, params);
         }
 

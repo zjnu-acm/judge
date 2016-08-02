@@ -15,7 +15,7 @@ import com.ckfinder.connector.configuration.Constants;
 import com.ckfinder.connector.configuration.IConfiguration;
 import com.ckfinder.connector.data.FilePostParam;
 import com.ckfinder.connector.errors.ConnectorException;
-import com.ckfinder.connector.utils.AccessControlUtil;
+import com.ckfinder.connector.utils.AccessControl;
 import com.ckfinder.connector.utils.FileUtils;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -106,8 +106,8 @@ public class DeleteFilesCommand extends XMLCommand implements IPostCommand {
 
             }
 
-            if (!AccessControlUtil.getInstance().checkFolderACL(fileItem.getType(), fileItem.getFolder(), this.userRole,
-                    AccessControlUtil.CKFINDER_CONNECTOR_ACL_FILE_DELETE)) {
+            if (!getAccessControl().checkFolderACL(fileItem.getType(), fileItem.getFolder(), this.userRole,
+                    AccessControl.CKFINDER_CONNECTOR_ACL_FILE_DELETE)) {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
             }
 

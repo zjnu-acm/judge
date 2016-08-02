@@ -16,7 +16,7 @@ import com.ckfinder.connector.configuration.IConfiguration;
 import com.ckfinder.connector.data.XmlAttribute;
 import com.ckfinder.connector.data.XmlElementData;
 import com.ckfinder.connector.errors.ConnectorException;
-import com.ckfinder.connector.utils.AccessControlUtil;
+import com.ckfinder.connector.utils.AccessControl;
 import com.ckfinder.connector.utils.FileUtils;
 import com.ckfinder.connector.utils.ImageUtils;
 import java.io.IOException;
@@ -95,9 +95,8 @@ public class GetFilesCommand extends XMLCommand {
         this.fullCurrentPath = configuration.getTypes().get(this.type).getPath()
                 + this.currentFolder;
 
-        if (!AccessControlUtil.getInstance().checkFolderACL(
-                this.type, this.currentFolder, this.userRole,
-                AccessControlUtil.CKFINDER_CONNECTOR_ACL_FILE_VIEW)) {
+        if (!getAccessControl().checkFolderACL(this.type, this.currentFolder, this.userRole,
+                AccessControl.CKFINDER_CONNECTOR_ACL_FILE_VIEW)) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
         }
 
