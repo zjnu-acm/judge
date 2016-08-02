@@ -1,6 +1,6 @@
 package com.ckfinder.connector.configuration;
 
-import com.ckfinder.connector.utils.AccessControlUtil;
+import com.ckfinder.connector.utils.AccessControl;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -283,6 +283,7 @@ public class AccessControlLevelsList<E> extends ArrayList<E> {
      * instance.
      */
     private void resetACLUtilConfiguration() {
-        AccessControlUtil.getInstance().resetConfiguration();
+        AccessControl.getInstance().resetConfiguration();
     }
+
 }

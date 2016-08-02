@@ -14,7 +14,7 @@ package com.ckfinder.connector.handlers.command;
 import com.ckfinder.connector.configuration.Constants;
 import com.ckfinder.connector.configuration.IConfiguration;
 import com.ckfinder.connector.errors.ConnectorException;
-import com.ckfinder.connector.utils.AccessControlUtil;
+import com.ckfinder.connector.utils.AccessControl;
 import com.ckfinder.connector.utils.FileUtils;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -61,9 +61,8 @@ public class DownloadFileCommand extends Command {
         this.file = Paths.get(configuration.getTypes().get(this.type).getPath()
                 + currentFolder, fileName);
 
-        if (!AccessControlUtil.getInstance().checkFolderACL(
-                this.type, this.currentFolder, this.userRole,
-                AccessControlUtil.CKFINDER_CONNECTOR_ACL_FILE_VIEW)) {
+        if (!getAccessControl().checkFolderACL(this.type, this.currentFolder, this.userRole,
+                AccessControl.CKFINDER_CONNECTOR_ACL_FILE_VIEW)) {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED);
         }

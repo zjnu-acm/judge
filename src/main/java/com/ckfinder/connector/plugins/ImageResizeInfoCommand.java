@@ -17,7 +17,7 @@ import com.ckfinder.connector.data.BeforeExecuteCommandEventArgs;
 import com.ckfinder.connector.data.IEventHandler;
 import com.ckfinder.connector.errors.ConnectorException;
 import com.ckfinder.connector.handlers.command.XMLCommand;
-import com.ckfinder.connector.utils.AccessControlUtil;
+import com.ckfinder.connector.utils.AccessControl;
 import com.ckfinder.connector.utils.FileUtils;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -70,8 +70,8 @@ public class ImageResizeInfoCommand extends XMLCommand implements IEventHandler<
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
         }
 
-        if (!AccessControlUtil.getInstance().checkFolderACL(type, this.currentFolder,
-                userRole, AccessControlUtil.CKFINDER_CONNECTOR_ACL_FILE_VIEW)) {
+        if (!getAccessControl().checkFolderACL(type, this.currentFolder,
+                userRole, AccessControl.CKFINDER_CONNECTOR_ACL_FILE_VIEW)) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
         }
 

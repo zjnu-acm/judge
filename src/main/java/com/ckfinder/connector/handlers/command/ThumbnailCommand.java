@@ -14,7 +14,7 @@ package com.ckfinder.connector.handlers.command;
 import com.ckfinder.connector.configuration.Constants;
 import com.ckfinder.connector.configuration.IConfiguration;
 import com.ckfinder.connector.errors.ConnectorException;
-import com.ckfinder.connector.utils.AccessControlUtil;
+import com.ckfinder.connector.utils.AccessControl;
 import com.ckfinder.connector.utils.FileUtils;
 import com.ckfinder.connector.utils.ImageUtils;
 import java.io.IOException;
@@ -210,9 +210,8 @@ public class ThumbnailCommand extends Command {
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE, false);
         }
 
-        if (!AccessControlUtil.getInstance().checkFolderACL(
-                this.type, this.currentFolder, this.userRole,
-                AccessControlUtil.CKFINDER_CONNECTOR_ACL_FILE_VIEW)) {
+        if (!getAccessControl().checkFolderACL(this.type, this.currentFolder, this.userRole,
+                AccessControl.CKFINDER_CONNECTOR_ACL_FILE_VIEW)) {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED);
         }

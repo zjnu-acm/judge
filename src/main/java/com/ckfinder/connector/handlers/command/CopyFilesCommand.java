@@ -15,7 +15,7 @@ import com.ckfinder.connector.configuration.Constants;
 import com.ckfinder.connector.configuration.IConfiguration;
 import com.ckfinder.connector.data.FilePostParam;
 import com.ckfinder.connector.errors.ConnectorException;
-import com.ckfinder.connector.utils.AccessControlUtil;
+import com.ckfinder.connector.utils.AccessControl;
 import com.ckfinder.connector.utils.FileUtils;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -74,13 +74,12 @@ public class CopyFilesCommand extends XMLCommand implements IPostCommand {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
         }
 
-        if (!AccessControlUtil.getInstance().checkFolderACL(
-                this.type,
+        if (!getAccessControl().checkFolderACL(this.type,
                 this.currentFolder,
                 this.userRole,
-                AccessControlUtil.CKFINDER_CONNECTOR_ACL_FILE_RENAME
-                | AccessControlUtil.CKFINDER_CONNECTOR_ACL_FILE_DELETE
-                | AccessControlUtil.CKFINDER_CONNECTOR_ACL_FILE_UPLOAD)) {
+                AccessControl.CKFINDER_CONNECTOR_ACL_FILE_RENAME
+                | AccessControl.CKFINDER_CONNECTOR_ACL_FILE_DELETE
+                | AccessControl.CKFINDER_CONNECTOR_ACL_FILE_UPLOAD)) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
         }
 
@@ -145,8 +144,8 @@ public class CopyFilesCommand extends XMLCommand implements IPostCommand {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
             }
 
-            if (!AccessControlUtil.getInstance().checkFolderACL(file.getType(), file.getFolder(), this.userRole,
-                    AccessControlUtil.CKFINDER_CONNECTOR_ACL_FILE_VIEW)) {
+            if (!getAccessControl().checkFolderACL(file.getType(), file.getFolder(), this.userRole,
+                    AccessControl.CKFINDER_CONNECTOR_ACL_FILE_VIEW)) {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
             }
 

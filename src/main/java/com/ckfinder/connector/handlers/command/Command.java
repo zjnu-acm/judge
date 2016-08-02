@@ -15,6 +15,7 @@ import com.ckfinder.connector.configuration.Constants;
 import com.ckfinder.connector.configuration.IConfiguration;
 import com.ckfinder.connector.data.ResourceType;
 import com.ckfinder.connector.errors.ConnectorException;
+import com.ckfinder.connector.utils.AccessControl;
 import com.ckfinder.connector.utils.FileUtils;
 import com.ckfinder.connector.utils.PathUtils;
 import java.io.IOException;
@@ -26,6 +27,9 @@ import java.util.regex.Pattern;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Base class for all command handlers.
@@ -39,6 +43,10 @@ public abstract class Command {
     protected String userRole;
     protected String currentFolder;
     protected String type;
+
+    @Getter(AccessLevel.PROTECTED)
+    @Setter
+    private AccessControl accessControl;
 
     /**
      * standard constructor.
@@ -101,10 +109,8 @@ public abstract class Command {
                         this.type = request.getParameter("type");
                     }
                 }
-
             }
         }
-
     }
 
     /**
