@@ -25,7 +25,7 @@ public class RegisterController {
     private UserMapper userMapper;
 
     @PostMapping("/register")
-    protected String register(
+    public String register(
             HttpServletRequest request,
             @RequestParam("user_id") String userId,
             @RequestParam("school") String school,

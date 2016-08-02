@@ -59,7 +59,7 @@ public class ResetPasswordController {
     private JudgeConfiguration judgeConfiguration;
 
     @GetMapping("/resetPassword")
-    protected String doGet(HttpServletRequest request) {
+    public String doGet(HttpServletRequest request) {
         if (checkVcode(request)) {
             return "resetPassword";
         } else {
@@ -68,7 +68,7 @@ public class ResetPasswordController {
     }
 
     @PostMapping("/resetPassword")
-    protected void doPost(HttpServletRequest request, HttpServletResponse response,
+    public void doPost(HttpServletRequest request, HttpServletResponse response,
             @RequestParam(value = "action", required = false) String action,
             @RequestParam(value = "verify", required = false) String verify,
             @RequestParam(value = "username", required = false) String username,
@@ -161,7 +161,7 @@ public class ResetPasswordController {
                 && user.getVcode().equals(vcode);
     }
 
-    protected String getBasePath(HttpServletRequest request) {
+    private String getBasePath(HttpServletRequest request) {
         int serverPort = request.getServerPort();
         int defaultPort = request.isSecure() ? 443 : 80;
         StringBuilder sb = new StringBuilder(80);

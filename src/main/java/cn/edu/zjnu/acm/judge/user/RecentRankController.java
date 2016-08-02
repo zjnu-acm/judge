@@ -16,7 +16,7 @@ public class RecentRankController {
     private UserMapper userMapper;
 
     @GetMapping("/recentrank")
-    protected String recentrank(Model model,
+    public String recentrank(Model model,
             @RequestParam(value = "count", defaultValue = "10000") int count) {
         count = Math.max(0, Math.min(10000, count));
         List<User> recentrank = userMapper.recentrank(count);

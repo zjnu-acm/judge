@@ -18,7 +18,7 @@ public class SearchUserController {
     private UserMapper userMapper;
 
     @GetMapping("/searchuser")
-    protected String searchuser(Model model,
+    public String searchuser(Model model,
             @RequestParam(value = "user_id", defaultValue = "") String keyword,
             @RequestParam(value = "position", required = false) String position) {
         if (keyword.length() < 2) {
