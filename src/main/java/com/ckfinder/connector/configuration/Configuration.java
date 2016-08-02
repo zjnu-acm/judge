@@ -16,13 +16,10 @@ import com.ckfinder.connector.data.PluginInfo;
 import com.ckfinder.connector.data.PluginParam;
 import com.ckfinder.connector.data.ResourceType;
 import com.ckfinder.connector.errors.ConnectorException;
-import com.ckfinder.connector.utils.FileUtils;
+import com.ckfinder.connector.utils.AccessControl;
 import com.ckfinder.connector.utils.PathUtils;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.attribute.FileTime;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -30,12 +27,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.Resource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -58,7 +56,7 @@ public class Configuration implements IConfiguration {
 
     protected static final int MAX_QUALITY = 100;
     protected static final float MAX_QUALITY_FLOAT = 100f;
-    private FileTime lastCfgModificationDate;
+    private long lastCfgModificationDate;
     protected boolean enabled;
     protected String xmlFilePath;
     protected String baseDir;
@@ -77,7 +75,7 @@ public class Configuration implements IConfiguration {
     protected Integer thumbsMaxHeight;
     protected Integer thumbsMaxWidth;
     protected float thumbsQuality;
-    protected AccessControlLevelsList<AccessControlLevel> accessControlLevels;
+    protected ArrayList<AccessControlLevel> accessControlLevels;
     protected List<String> hiddenFolders;
     protected List<String> hiddenFiles;
     protected boolean doubleExtensions;
@@ -93,22 +91,24 @@ public class Configuration implements IConfiguration {
     protected boolean disallowUnsafeCharacters;
     private boolean loading;
     private Events events;
-    protected ServletConfig servletConf;
+    protected ApplicationContext applicationContext;
 
     /**
      * Constructor.
      *
-     * @param servletConfig ServletConfig object used to get configuration
-     * parameters from web-xml.
+     * @param applicationContext
+     * @param xmlFilePath
+     * @throws java.lang.Exception
      */
-    public Configuration(final ServletConfig servletConfig) {
-        this.servletConf = servletConfig;
-        this.xmlFilePath = servletConfig.getInitParameter("XMLConfig");
+    public Configuration(ApplicationContext applicationContext, String xmlFilePath) throws Exception {
+        this.applicationContext = applicationContext;
+        this.xmlFilePath = xmlFilePath;
         this.plugins = new ArrayList<>();
         this.htmlExtensions = new ArrayList<>();
         this.hiddenFolders = new ArrayList<>();
         this.hiddenFiles = new ArrayList<>();
         this.defaultResourceTypes = new LinkedHashSet<>();
+        init();
     }
 
     /**
@@ -132,7 +132,7 @@ public class Configuration implements IConfiguration {
         this.thumbsDirectAccess = false;
         this.thumbsMaxHeight = DEFAULT_THUMB_MAX_HEIGHT;
         this.thumbsMaxWidth = DEFAULT_THUMB_MAX_WIDTH;
-        this.accessControlLevels = new AccessControlLevelsList<>(true);
+        this.accessControlLevels = new ArrayList<>();
         this.hiddenFolders = new ArrayList<>();
         this.hiddenFiles = new ArrayList<>();
         this.doubleExtensions = false;
@@ -153,15 +153,17 @@ public class Configuration implements IConfiguration {
      *
      * @throws Exception when error occurs.
      */
-    @Override
-    public void init() throws Exception {
+    private void init() throws Exception {
         clearConfiguration();
         this.loading = true;
-        Path file = Paths.get(getFullConfigPath());
-        this.lastCfgModificationDate = Files.getLastModifiedTime(file);
+        Resource resource = getFullConfigPath();
+        this.lastCfgModificationDate = resource.lastModified();
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
-        Document doc = db.parse(file.toFile());
+        Document doc;
+        try (InputStream stream = resource.getInputStream()) {
+            doc = db.parse(stream);
+        }
         doc.normalize();
         Node node = doc.getFirstChild();
         if (node != null) {
@@ -202,7 +204,6 @@ public class Configuration implements IConfiguration {
                         quality = quality.replaceAll("\\D", "");
                         this.imgQuality = adjustQuality(quality);
                         break;
-
                     case "imgHeight":
                         String height = nullNodeToString(childNode);
                         height = height.replaceAll("\\D", "");
@@ -244,14 +245,11 @@ public class Configuration implements IConfiguration {
                             if (val != null && !val.isEmpty()) {
                                 htmlExtensions.add(val.trim().toLowerCase());
                             }
-
                         }
                         break;
-
                     case "secureImageUploads":
                         this.secureImageUploads = Boolean.valueOf(nullNodeToString(childNode));
                         break;
-
                     case "uriEncoding":
                         break;
                     case "userRoleSessionVar":
@@ -268,7 +266,7 @@ public class Configuration implements IConfiguration {
                         setPlugins(childNode);
                         break;
                     case "basePathBuilderImpl":
-                        setBasePathImpl(nullNodeToString(childNode));
+                        setBasePathImpl();
                         break;
                 }
             }
@@ -293,19 +291,13 @@ public class Configuration implements IConfiguration {
      * @return absolute path to XML configuration file
      * @throws ConnectorException when absolute path cannot be obtained.
      */
-    private String getFullConfigPath() throws ConnectorException {
-        String path = FileUtils.getFullPath(getServletContext(), xmlFilePath, false, true);
-        if (path == null) {
+    private Resource getFullConfigPath() throws ConnectorException {
+        Resource resource = applicationContext.getResource(xmlFilePath);
+        if (!resource.exists()) {
             throw new ConnectorException(Constants.Errors.CKFINDER_CONNECTOR_ERROR_FILE_NOT_FOUND,
                     "Configuration file could not be found under specified location.");
         }
-        Path cfgFile = Paths.get(path);
-
-        if (Files.exists(cfgFile) && Files.isRegularFile(cfgFile)) {
-            return cfgFile.toAbsolutePath().toString();
-        } else {
-            return xmlFilePath;
-        }
+        return resource;
     }
 
     /**
@@ -313,14 +305,8 @@ public class Configuration implements IConfiguration {
      *
      * @param value userPathBuilderImpl configuration value
      */
-    @SuppressWarnings({"BroadCatchBlock", "TooBroadCatch", "UseSpecificCatch"})
-    private void setBasePathImpl(final String value) {
-        try {
-            Class<? extends IBasePathBuilder> clazz = Class.forName(value).asSubclass(IBasePathBuilder.class);
-            this.basePathBuilder = clazz.newInstance();
-        } catch (Exception e) {
-            this.basePathBuilder = new ConfigurationPathBuilder();
-        }
+    private void setBasePathImpl() {
+        basePathBuilder = applicationContext.getBean(IBasePathBuilder.class);
     }
 
     /**
@@ -411,7 +397,7 @@ public class Configuration implements IConfiguration {
             if (childNode.getNodeName().equals("accessControl")) {
                 AccessControlLevel acl = getACLFromNode(childNode);
                 if (acl != null) {
-                    this.accessControlLevels.addItem(acl, false);
+                    this.accessControlLevels.add(acl);
                 }
             }
         }
@@ -802,7 +788,7 @@ public class Configuration implements IConfiguration {
      * @return list of access control levels.
      */
     @Override
-    public AccessControlLevelsList<AccessControlLevel> getAccessConrolLevels() {
+    public ArrayList<AccessControlLevel> getAccessConrolLevels() {
         return this.accessControlLevels;
     }
 
@@ -925,9 +911,6 @@ public class Configuration implements IConfiguration {
      */
     @Override
     public IBasePathBuilder getBasePathBuilder() {
-        if (this.basePathBuilder == null) {
-            this.basePathBuilder = new ConfigurationPathBuilder();
-        }
         return this.basePathBuilder;
     }
 
@@ -941,25 +924,13 @@ public class Configuration implements IConfiguration {
      */
     @Override
     public boolean checkIfReloadConfig() throws ConnectorException {
-        String path = FileUtils.getFullPath(getServletContext(), xmlFilePath, false, true);
-
-        Path cfgFile = Paths.get(path);
+        Resource resource = applicationContext.getResource(xmlFilePath);
 
         try {
-            return (Files.getLastModifiedTime(cfgFile).compareTo(this.lastCfgModificationDate) > 0);
+            return resource.lastModified() > lastCfgModificationDate;
         } catch (IOException ex) {
             return false;
         }
-    }
-
-    /**
-     * Prepares configuration for single request. Empty method. It should be
-     * overridden if needed.
-     *
-     * @param request request
-     */
-    @Override
-    public void prepareConfigurationForRequest(final HttpServletRequest request) {
     }
 
     /**
@@ -1049,9 +1020,10 @@ public class Configuration implements IConfiguration {
      * Clones current configuration instance and copies it's all fields.
      *
      * @return cloned configuration
+     * @throws java.lang.Exception
      */
     @Override
-    public final IConfiguration cloneConfiguration() {
+    public final IConfiguration cloneConfiguration() throws Exception {
         Configuration configuration = createConfigurationInstance();
         copyConfFields(configuration);
         return configuration;
@@ -1062,9 +1034,10 @@ public class Configuration implements IConfiguration {
      * method should be overridden and return new configuration instance.
      *
      * @return new configuration instance
+     * @throws java.lang.Exception
      */
-    protected Configuration createConfigurationInstance() {
-        return new Configuration(this.servletConf);
+    protected Configuration createConfigurationInstance() throws Exception {
+        return new Configuration(applicationContext, xmlFilePath);
     }
 
     /**
@@ -1078,7 +1051,6 @@ public class Configuration implements IConfiguration {
         configuration.xmlFilePath = this.xmlFilePath;
         configuration.lastCfgModificationDate = this.lastCfgModificationDate;
         configuration.enabled = this.enabled;
-        configuration.xmlFilePath = this.xmlFilePath;
         configuration.baseDir = this.baseDir;
         configuration.baseURL = this.baseURL;
         configuration.licenseName = this.licenseName;
@@ -1111,7 +1083,7 @@ public class Configuration implements IConfiguration {
         configuration.defaultResourceTypes = new LinkedHashSet<>();
         configuration.defaultResourceTypes.addAll(this.defaultResourceTypes);
         configuration.types = new LinkedHashMap<>();
-        configuration.accessControlLevels = new AccessControlLevelsList<>(false);
+        configuration.accessControlLevels = new ArrayList<>();
         configuration.plugins = new ArrayList<>();
         copyTypes(configuration.types);
         copyACls(configuration.accessControlLevels);
@@ -1134,9 +1106,9 @@ public class Configuration implements IConfiguration {
      *
      * @param newAccessControlLevels new configuration ACL list.
      */
-    private void copyACls(final AccessControlLevelsList<AccessControlLevel> newAccessControlLevels) {
+    private void copyACls(final List<AccessControlLevel> newAccessControlLevels) {
         for (AccessControlLevel acl : this.accessControlLevels) {
-            newAccessControlLevels.addItem(new AccessControlLevel(acl), false);
+            newAccessControlLevels.add(new AccessControlLevel(acl));
         }
     }
 
@@ -1153,7 +1125,12 @@ public class Configuration implements IConfiguration {
 
     @Override
     public ServletContext getServletContext() {
-        return servletConf.getServletContext();
+        return applicationContext.getBean(ServletContext.class);
+    }
+
+    @Override
+    public AccessControl getAccessControl() {
+        return applicationContext.getBean(AccessControl.class);
     }
 
 }

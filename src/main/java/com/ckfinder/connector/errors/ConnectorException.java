@@ -24,17 +24,15 @@ public class ConnectorException extends Exception {
      */
     private static final long serialVersionUID = -8643752550259111562L;
     private int errorCode;
-    private String errorMsg;
     private boolean addCurrentFolder;
-    private Exception exception;
 
     /**
      * standard constructor.
      *
      * @param errorCode error code number
      */
-    public ConnectorException(final int errorCode) {
-        super();
+    public ConnectorException(int errorCode) {
+        super(null, null);
         addCurrentFolder = true;
         this.errorCode = errorCode;
     }
@@ -57,8 +55,7 @@ public class ConnectorException extends Exception {
      * @param errorMsg error text message
      */
     public ConnectorException(final int errorCode, final String errorMsg) {
-        this(errorCode);
-        this.errorMsg = errorMsg;
+        super(errorMsg, null);
     }
 
     /**
@@ -68,10 +65,8 @@ public class ConnectorException extends Exception {
      * @param e exception
      */
     public ConnectorException(final int errorCode, final Exception e) {
-        this(errorCode);
-        this.exception = e;
+        super(e.getMessage(), e);
         addCurrentFolder = false;
-        this.errorMsg = e.getMessage();
     }
 
     /**
@@ -80,14 +75,13 @@ public class ConnectorException extends Exception {
      * @param e Exception
      */
     public ConnectorException(final Exception e) {
-        this.exception = e;
+        super(e.getMessage(), e);
         if (e instanceof ConnectorException) {
             errorCode = ((ConnectorException) e).getErrorCode();
             addCurrentFolder = ((ConnectorException) e).addCurrentFolder;
         } else {
             addCurrentFolder = false;
             errorCode = Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNKNOWN;
-            this.errorMsg = e.getMessage();
         }
     }
 
@@ -106,7 +100,7 @@ public class ConnectorException extends Exception {
      * @return error message.
      */
     public String getErrorMessage() {
-        return this.errorMsg;
+        return super.getMessage();
     }
 
     /**
@@ -122,28 +116,7 @@ public class ConnectorException extends Exception {
      * @return the errorMsg
      */
     public final String getErrorMsg() {
-        return errorMsg;
-    }
-
-    /**
-     * @param errorMsg the errorMsg to set
-     */
-    public final void setErrorMsg(final String errorMsg) {
-        this.errorMsg = errorMsg;
-    }
-
-    /**
-     * @return the exception
-     */
-    public final Exception getException() {
-        return exception;
-    }
-
-    /**
-     * @param exception the exception to set
-     */
-    public final void setException(final Exception exception) {
-        this.exception = exception;
+        return super.getMessage();
     }
 
 }

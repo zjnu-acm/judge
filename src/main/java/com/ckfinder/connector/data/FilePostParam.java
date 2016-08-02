@@ -21,21 +21,9 @@ import lombok.Setter;
 @Setter
 public class FilePostParam {
 
-    /**
-     *
-     */
     private String folder;
-    /**
-     *
-     */
     private String name;
-    /**
-     *
-     */
     private String options;
-    /**
-     *
-     */
     private String type;
 
 }

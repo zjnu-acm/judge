@@ -11,6 +11,7 @@
  */
 package com.ckfinder.connector.configuration;
 
+import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -23,8 +24,9 @@ public interface IBasePathBuilder {
      *
      * @param request request
      * @return value of baseDir
+     * @throws java.io.IOException
      */
-    public String getBaseDir(HttpServletRequest request);
+    public String getBaseDir(HttpServletRequest request) throws IOException;
 
     /**
      * create baseURL value.

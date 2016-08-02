@@ -82,4 +82,5 @@ public interface Constants {
         int CKFINDER_CONNECTOR_ERROR_CONNECTOR_DISABLED = 500;
         int CKFINDER_CONNECTOR_ERROR_THUMBNAILS_DISABLED = 501;
     }
+
 }

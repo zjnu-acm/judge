@@ -11,6 +11,7 @@
  */
 package com.ckfinder.connector.data;
 
+import java.util.function.Supplier;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -22,16 +23,6 @@ import lombok.Getter;
 @Getter
 public class EventCommandData<T extends EventArgs> {
 
-    private Class<? extends IEventHandler<T>> eventListener;
-    private PluginInfo pluginInfo;
-
-    /**
-     * constructor with class parameter.
-     *
-     * @param eventListener name of plugin command class
-     */
-    public EventCommandData(final Class<? extends IEventHandler<T>> eventListener) {
-        this.eventListener = eventListener;
-    }
+    private final Supplier<? extends IEventHandler<T>> eventListener;
 
 }

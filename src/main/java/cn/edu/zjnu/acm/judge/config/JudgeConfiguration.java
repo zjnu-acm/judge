@@ -37,11 +37,7 @@ public class JudgeConfiguration {
     private static final String WEB_PROPERTIES = "web";
     private static final ResourceBundle BUNDLE = ResourceBundle.getBundle(SERVER_CONFIG_PROPERTIES, Locale.US);
 
-    private static Path uploadDirectory; // TODO
-
-    public static Path getUploadDirectory() {
-        return uploadDirectory;
-    }
+    private Path uploadDirectory;
 
     private Path dataFilesPath;
     private volatile String systemInfo;
@@ -51,6 +47,10 @@ public class JudgeConfiguration {
 
     @Autowired
     private ServletContext servletContext;
+
+    public Path getUploadDirectory() {
+        return uploadDirectory;
+    }
 
     public String getValue(String key) {
         String property = BUNDLE.getString(key);
