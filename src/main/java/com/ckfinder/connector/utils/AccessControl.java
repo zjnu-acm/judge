@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 /**
  * Class to generate ACL values.
  */
+@SuppressWarnings("FinalClass")
 public final class AccessControl {
 
     /**
@@ -53,33 +54,19 @@ public final class AccessControl {
      * File delete mask.
      */
     public static final int CKFINDER_CONNECTOR_ACL_FILE_DELETE = 1 << 7;
-    /**
-     * current instance.
-     */
-    private static final AccessControl util = new AccessControl();
 
-    /**
-     * Gets current util instance.
-     *
-     * @return current instance
-     */
-    @Deprecated
-    public static AccessControl getInstance() {
-        return util;
-    }
     /**
      * acl configuration.
      */
-    private List<ACLEntry> aclEntries;
+    private final List<ACLEntry> aclEntries;
     /**
      * connector configuration.
      */
-    private IConfiguration configuration;
+    private final IConfiguration configuration;
 
-    /**
-     * private constructor.
-     */
-    private AccessControl() {
+    public AccessControl(IConfiguration configuration) {
+        this.configuration = configuration;
+        this.aclEntries = loadACLConfig();
     }
 
     /**
@@ -94,7 +81,7 @@ public final class AccessControl {
     public boolean checkFolderACL(final String resourceType,
             final String folder, final String currentUserRole,
             final int acl) {
-        return ((checkACLForRole(resourceType, folder, currentUserRole) & acl) == acl);
+        return (checkACLForRole(resourceType, folder, currentUserRole) & acl) == acl;
     }
 
     /**
@@ -129,7 +116,6 @@ public final class AccessControl {
                     if (cuttedPath.length() > 1
                             && cuttedPath.lastIndexOf('/') == cuttedPath.length() - 1) {
                         cuttedPath = cuttedPath.substring(0, cuttedPath.length() - 1);
-
                     }
                     if (aclEntry.folder.equals(cuttedPath)) {
                         acl = checkACLForFolder(aclEntry, cuttedPath);
@@ -149,44 +135,12 @@ public final class AccessControl {
     }
 
     /**
-     * Resets the configuration and ACL Entries for this
-     * {@code AccessControl} instance.<br>
-     * This method is required due to dynamic nature of configuration object and
-     * need to avoid any unnecessary overhead related to loading ACL
-     * settings.<br>
-     * It should only be used when ACL's in configuration object were changed.
-     * It happens when new configuration is loaded (CKFinder handles it) or
-     * whenever new {@code AccessControlLevelsList} is created in
-     * {@link com.ckfinder.connector.configuration.Configuration#prepareConfigurationForRequest(javax.servlet.http.HttpServletRequest)}
-     * method.
-     */
-    public void resetConfiguration() {
-        this.configuration = null;
-        this.aclEntries = null;
-    }
-
-    /**
-     * Loads configuration object and ACL entries for this
-     * {@code AccessControl} instance.<br>
-     * Configuration and ACL Entries will only be used if current configuration
-     * object for this {@code AccessControl} instance is {@code null}.
-     *
-     * @param configuration candidate for new configuration object
-     */
-    public void loadConfiguration(IConfiguration configuration) {
-        if (this.configuration == null || this.aclEntries == null) {
-            this.configuration = configuration;
-            loadACLConfig();
-        }
-    }
-
-    /**
      * Caches ACL configuration from connector's configuration in order to
      * avoid. any unnecessary overhead related with reading/writing ACL's on
      * every request.
      */
-    private void loadACLConfig() {
-        aclEntries = this.configuration.getAccessConrolLevels().stream().map(item -> {
+    private List<ACLEntry> loadACLConfig() {
+        return this.configuration.getAccessConrolLevels().stream().map(item -> {
             ACLEntry aclEntry = new ACLEntry();
             aclEntry.role = item.getRole();
             aclEntry.type = item.getResourceType();
@@ -326,4 +280,5 @@ public final class AccessControl {
             this.type = type;
         }
     }
+
 }

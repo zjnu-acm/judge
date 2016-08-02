@@ -15,6 +15,7 @@ import com.ckfinder.connector.data.AccessControlLevel;
 import com.ckfinder.connector.data.PluginInfo;
 import com.ckfinder.connector.data.ResourceType;
 import com.ckfinder.connector.errors.ConnectorException;
+import com.ckfinder.connector.utils.AccessControl;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -40,15 +41,9 @@ public interface IConfiguration {
      * creates new instance of configuration for request.
      *
      * @return new configuration instance
+     * @throws java.lang.Exception
      */
-    public IConfiguration cloneConfiguration();
-
-    /**
-     * Initializes configuration.
-     *
-     * @throws Exception when error during initialization occurs
-     */
-    public void init() throws Exception;
+    public IConfiguration cloneConfiguration() throws Exception;
 
     /**
      * method to check if user is authenticated.
@@ -241,11 +236,13 @@ public interface IConfiguration {
     public boolean checkSizeAfterScaling();
 
     /**
-     * prepares configuration for single request.
+     * Prepares configuration for single request. Empty method. It should be
+     * overridden if needed.
      *
      * @param request request
      */
-    public void prepareConfigurationForRequest(HttpServletRequest request);
+    default public void prepareConfigurationForRequest(HttpServletRequest request) {
+    }
 
     /**
      * Checks if CKFinder configuration should be reloaded.
@@ -318,5 +315,11 @@ public interface IConfiguration {
      * @return the servlet context
      */
     public ServletContext getServletContext();
+
+    /**
+     *
+     * @return the configuration
+     */
+    public AccessControl getAccessControl();
 
 }

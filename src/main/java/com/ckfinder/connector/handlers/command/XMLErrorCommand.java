@@ -90,8 +90,7 @@ public class XMLErrorCommand extends XMLCommand {
     }
 
     @Override
-    protected boolean checkHidden()
-            throws ConnectorException {
+    protected boolean checkHidden() throws ConnectorException {
         if (FileUtils.checkIfDirIsHidden(this.currentFolder, configuration)) {
             this.connectorException = new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_CONNECTOR_DISABLED);

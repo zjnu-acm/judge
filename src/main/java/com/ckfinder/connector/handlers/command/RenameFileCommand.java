@@ -41,7 +41,6 @@ public class RenameFileCommand extends XMLCommand implements IPostCommand {
         if (this.addRenameNode) {
             createRenamedFileNode(rootElement);
         }
-
     }
 
     /**

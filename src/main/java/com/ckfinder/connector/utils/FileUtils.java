@@ -15,17 +15,14 @@ import cn.edu.zjnu.acm.judge.util.DeleteHelper;
 import com.ckfinder.connector.configuration.Constants;
 import com.ckfinder.connector.configuration.IConfiguration;
 import com.ckfinder.connector.data.ResourceType;
-import com.ckfinder.connector.errors.ConnectorException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -38,13 +35,14 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.servlet.ServletContext;
 import javax.servlet.http.Part;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Utils for files.
  *
  */
+@Slf4j
 public class FileUtils {
 
     /**
@@ -54,14 +52,7 @@ public class FileUtils {
     private static final Map<String, String> UTF8_LOWER_ACCENTS = new HashMap<>(120);
     private static final Map<String, String> UTF8_UPPER_ACCENTS = new HashMap<>(120);
     private static final Map<String, String> encodingMap;
-    private static final Pattern drivePatt = Pattern.compile("^[a-zA-Z]:[/\\\\]");
     private static final Pattern invalidFileNamePatt = Pattern.compile(Constants.INVALID_FILE_NAME_REGEX);
-    private static final String WEB_INF_FOLDER_NAME = "/WEB-INF/";
-    private static final String ROOT_FOLDER_NAME = "/ROOT";
-    private static final String DOMAINS_FOLDER_NAME = "/domains/";
-    private static final String DOCROOT_FOLDER_NAME = "/docroot";
-    private static final String CKFINDER_FOLDER_NAME = "/ckfinder";
-    private static String fuClassPath;
 
     static {
         Map<String, String> mapHelper = new HashMap<>(6);
@@ -192,313 +183,6 @@ public class FileUtils {
         }
         return true;
 
-    }
-
-    /**
-     * Gets an absolute path to CKFinder file or folder for which path was
-     * provided as parameter.
-     *
-     * @param servletContext
-     * @param path relative or absolute path to a CKFinder resource (file or
-     * folder).
-     * @param isAbsolute flag indicating if path to resource is absolute e.g.
-     * /usr/john/userfiles or "C:\\userfiles". If this parameter is set to true
-     * path will be returned as is.
-     * @param shouldExist flag indicating if resource, represented by path
-     * parameter, should exist (e.g. configuration file) in file system or not
-     * (e.g. userfiles folder).<br>
-     * If this parameter is set to true, path to file will only be returned if
-     * such file exists. If file can't be found, method will return null.
-     * @return an absolute path to a resource in CKFinder
-     * @throws ConnectorException when {@code ServletContext} is {@code null} or
-     * full path to resource cannot be obtained.
-     */
-    public static String getFullPath(ServletContext servletContext, String path, boolean isAbsolute, boolean shouldExist) throws ConnectorException {
-        if (path != null && !path.isEmpty()) {
-            if (isAbsolute) {
-                if (path.startsWith("/")) {
-                    //Check if this isn't Windows Path.
-                    String temporary = PathUtils.removeSlashFromBeginning(path);
-                    if (isStartsWithPattern(drivePatt, temporary)) {
-                        path = temporary;
-                    }
-                }
-                return checkAndReturnPath(shouldExist, path);
-            } else {
-                ServletContext sc = servletContext;
-                String tempPath = PathUtils.addSlashToEnd(PathUtils.addSlashToBeginning(path));
-                try {
-                    java.net.URL url = sc.getResource(tempPath);
-                    //For srevers like Tomcat 6-7 the getResource method returns JNDI URL.
-                    if (url != null && url.getProtocol() != null && url.getProtocol().equalsIgnoreCase("jndi")) {
-                        //Assume file is inside application context and try to get path.
-                        //This method will fail if war is not exploaded.
-                        String result = sc.getRealPath(tempPath.replace(sc.getContextPath(), ""));
-                        if (result != null) {
-                            return result;
-                        } else {
-                            //If application is packed, we have to try constructing the path manually.
-                            result = getClassPath();
-                            if (tempPath.contains(sc.getContextPath() + "/")
-                                    && result.contains(sc.getContextPath() + "/")) {
-                                result = result.substring(0, result.indexOf(sc.getContextPath()));
-                                result = result + tempPath;
-                            } else if (result.contains(sc.getContextPath() + "/")) {
-                                result = result.substring(0,
-                                        result.indexOf(sc.getContextPath()) + sc.getContextPath().length());
-                                result = result + tempPath;
-                            }
-
-                            result = checkAndReturnPath(shouldExist, result);
-                            if (result != null) {
-                                return result;
-                            }
-                        }
-
-                        //At this stage path is not in application context and is not absolute.
-                        //We need to reset url as we cannot determine path from it.
-                        if (result == null) {
-                            url = null;
-                        }
-                    }
-
-                    //For servers like Tomact 8 getResource method should return file:// url.
-                    if (path.startsWith("/") || isStartsWithPattern(drivePatt, path)) {
-                        //This is most likely absolute path.
-                        String absolutePath = checkAndReturnPath(shouldExist, path);
-                        if (absolutePath != null && !absolutePath.isEmpty()) {
-                            return absolutePath;
-                        } else {
-                            //If absolute path has failed, give it one last try with relative path.
-                            //Either path or null will be returned.
-                            return sc.getRealPath(path.replace(sc.getContextPath(), ""));
-                        }
-                    }
-                } catch (IOException ioex) {
-                    throw new ConnectorException(ioex);
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Checks and returns path to resource. If shouldExist parameter is set to
-     * true, resource represented by path will be checked for existence. If
-     * resource exists path will be returned, {@code null} otherwise. If
-     * shouldExist parameter is set to false path will be returned as is.
-     *
-     * @param shouldExist flag indicating if file/folder represented by path
-     * parameter should exist in file system
-     * @param path string representing path to file or folder
-     *
-     * @return string representing path to file or null if file should exist in
-     * file system but can't be read with a given path.
-     */
-    private static String checkAndReturnPath(boolean shouldExist, String path) {
-        if (!shouldExist) {
-            return path;
-        } else if (isFileExist(path)) {
-            return path;
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * Checks if file/folder specified by the path exists in file system.
-     *
-     * @param path absolute path to file/folder used to check file existence
-     * @return {@code true} if file/folder exists, {@code false} otherwise.
-     */
-    private static boolean isFileExist(String path) {
-        return Files.exists(Paths.get(path));
-    }
-
-    /**
-     * Gets an absolute path to CKFinder resource folder for which path is
-     * calculated from baseURL configuration property.<br>
-     * This method has limited capabilities. First it will check is folder
-     * should be created in application context. If not it will try to create
-     * folder in Tomcat ROOT folder or GlassFish docroot folder. If this fails
-     * this method will fall back and try to create folder inside application
-     * context (features like gallery may not work in this case as most likely
-     * baseURL and baseDir point to different locations).<br>
-     * Finally if nothing worked this method returns {@code null}.
-     *
-     * @param servletContext
-     * @param path relative or absolute path to a CKFinder folder.
-     * @return an absolute path to a folder in CKFinder
-     * @throws ConnectorException when {@code ServletContext} is {@code null} or
-     * path to resource cannot be obtained.
-     */
-    public static String calculatePathFromBaseUrl(ServletContext servletContext, String path) throws ConnectorException {
-        if (path != null && !path.isEmpty()) {
-            ServletContext sc = servletContext;
-            String tempPath = PathUtils.addSlashToBeginning(path);
-            String finalPath;
-            if (tempPath.startsWith(sc.getContextPath() + "/")) {
-                //Try creating path relative to application context.
-                if ((finalPath = sc.getRealPath(tempPath.replace(sc.getContextPath(), ""))) != null) {
-                    return finalPath;
-                } else if ((finalPath = sc.getRealPath(CKFINDER_FOLDER_NAME)) != null) {
-                    //If above is null, try getting path to direct subfolder in application context.
-                    finalPath = PathUtils.escape(finalPath);
-                    return finalPath.substring(0, finalPath.lastIndexOf(CKFINDER_FOLDER_NAME)) + tempPath.replace(sc.getContextPath(), "");
-                } else {
-                    finalPath = getClassPath();
-                    if (finalPath.contains(sc.getContextPath())) {
-                        finalPath = finalPath.substring(0, finalPath.indexOf(sc.getContextPath()));
-                        finalPath = finalPath + tempPath;
-                        return finalPath;
-                    } else {
-                        finalPath = null;
-                    }
-                }
-            } else {
-                //Try creating path to ROOT on TC or docroot on GF
-                finalPath = getClassPath();
-
-                String tcPath = getTomcatRootPath(sc, finalPath);
-                String gfPath = getGlassFishRootPath(sc, finalPath);
-                if (!tcPath.isEmpty()) {
-                    tempPath = filterRelativePathChars(tempPath);
-                    finalPath = tcPath + tempPath;
-                } else if (!gfPath.isEmpty()) {
-                    tempPath = filterRelativePathChars(tempPath);
-                    finalPath = gfPath + tempPath;
-                } else {
-                    //Fall back and try creating path relative application context
-                    String realPath = sc.getRealPath(tempPath);
-                    if (realPath != null) {
-                        return realPath;
-                    } else if (finalPath.contains(sc.getContextPath() + "/")) {
-                        finalPath = finalPath.substring(0, finalPath.indexOf(sc.getContextPath()) + sc.getContextPath().length());
-                        tempPath = filterRelativePathChars(tempPath);
-                        finalPath = finalPath + tempPath;
-                    } else {
-                        finalPath = null;
-                    }
-                }
-            }
-            return finalPath;
-        }
-        return null;
-    }
-
-    /**
-     * Returns Path to Tomcat ROOT folder.
-     *
-     * @param sc current {@code ServletContext} object.
-     * @param path String from which path to Tomcat ROOT folder will be
-     * calculated
-     * @return path to Tomcat ROOT folder or empty String is path can't be
-     * found.
-     */
-    private static String getTomcatRootPath(ServletContext sc, String path) {
-        String finalPath = "";
-        int index = path.indexOf(sc.getContextPath() + WEB_INF_FOLDER_NAME);
-        if (index >= 0) {
-            path = path.substring(0, index);
-            path = path + ROOT_FOLDER_NAME;
-            if (isFileExist(path)) {
-                finalPath = path;
-            }
-        }
-        return finalPath;
-    }
-
-    /**
-     * Returns Path to GlassFish docroot folder.
-     *
-     * @param sc current {@code ServletContext} object.
-     * @param path String from which path to GlassFish docroot folder will be
-     * calculated
-     * @return path to GlassFish docroot folder or empty String is path can't be
-     * found.
-     */
-    private static String getGlassFishRootPath(ServletContext sc, String path) {
-        String finalPath = "";
-        path = path.toLowerCase();
-        int index = path.indexOf(DOMAINS_FOLDER_NAME);
-        if (index >= 0) {
-            path = PathUtils.addSlashToEnd(path);
-            String key = path.substring(index + DOMAINS_FOLDER_NAME.length());
-            if (!key.isEmpty()) {
-                if (key.indexOf('/') > 0) {
-                    key = key.substring(0, key.indexOf('/'));
-                }
-                path = path.substring(0, path.indexOf(key) + key.length()) + DOCROOT_FOLDER_NAME;
-            }
-            if (isFileExist(path)) {
-                finalPath = path;
-            }
-        }
-        return finalPath;
-    }
-
-    /**
-     * This method removes any ".." characters from the path provided as
-     * parameter.
-     *
-     * @param path string representing path to remove unsafe characters from
-     * @return filtered path without ".." characters.
-     */
-    private static String filterRelativePathChars(String path) {
-        StringBuilder s = new StringBuilder(path);
-        int index = s.indexOf("..");
-        if (index >= 0) {
-            s = s.delete(index, index + 2);
-        }
-        return s.toString();
-    }
-
-    /**
-     * Checks if path starts with particular regular expression pattern.
-     *
-     * @param pattern the regular expression used to test the path
-     * @param path the string representing path to test against regular
-     * expression
-     * @return {@code true} if path starts with given pattern, {@code false}
-     * otherwise.
-     */
-    private static boolean isStartsWithPattern(Pattern pattern, String path) {
-        Matcher m = pattern.matcher(path);
-        return m.find() && m.start() == 0;
-    }
-
-    /**
-     * Gets absolute path to FileUtils.java file. This path is later used to
-     * calculate absolute path to other resources inside application.
-     *
-     * @return absolute path to FileUtils.java file.
-     */
-    private static String getClassPath() throws ConnectorException {
-        if (fuClassPath == null || fuClassPath.isEmpty()) {
-            java.net.URL url = FileUtils.class.getProtectionDomain().getCodeSource().getLocation();
-            String finalPath = null;
-            String filePathPrefix = "file:/";
-
-            try {
-                finalPath = url.toURI().getSchemeSpecificPart();
-            } catch (URISyntaxException ueex) {
-                throw new ConnectorException(ueex);
-            }
-
-            if (finalPath != null && finalPath.startsWith(filePathPrefix)) {
-                finalPath = finalPath.substring(filePathPrefix.length());
-            }
-
-            if (finalPath != null && finalPath.startsWith("/")) {
-                //Check if this isn't Windows Path.
-                String temporary = PathUtils.removeSlashFromBeginning(finalPath);
-                if (isStartsWithPattern(drivePatt, temporary)) {
-                    finalPath = temporary;
-                }
-            }
-            fuClassPath = finalPath;
-        }
-        return fuClassPath;
     }
 
     /**
@@ -663,18 +347,6 @@ public class FileUtils {
             }
         }
         return false;
-    }
-
-    /**
-     * converts filename to connector encoding.
-     *
-     * @param fileName file name
-     * @param configuration connector configuration
-     * @return encoded file name
-     */
-    public static String convertFromUriEncoding(final String fileName,
-            final IConfiguration configuration) {
-        return fileName;
     }
 
     /**
@@ -1114,4 +786,5 @@ public class FileUtils {
 
         }
     }
+
 }

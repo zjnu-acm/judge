@@ -15,10 +15,8 @@
  */
 package cn.edu.zjnu.acm.judge.config;
 
-import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import java.io.IOException;
 import javax.servlet.Filter;
-import javax.servlet.MultipartConfigElement;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -36,16 +34,6 @@ import org.springframework.context.annotation.Configuration;
 public class RegistrationBeanConfiguration {
 
     @Bean
-    public ServletRegistrationBean connectorServlet(MultipartConfigElement multipartConfigElement) {
-        Servlet servlet = new ConnectorServlet();
-        ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(servlet, "/ckfinder/core/connector/java/connector.java");
-        servletRegistrationBean.addInitParameter("XMLConfig", "/WEB-INF/config.xml");
-        servletRegistrationBean.addInitParameter("debug", "false");
-        servletRegistrationBean.setMultipartConfig(multipartConfigElement);
-        return servletRegistrationBean;
-    }
-
-    @Bean
     public ServletRegistrationBean kaptcha() {
         Servlet servlet = new KaptchaServlet();
         ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(servlet, "/images/rand.jpg");
@@ -57,23 +45,6 @@ public class RegistrationBeanConfiguration {
     public FilterRegistrationBean sitemesh() {
         Filter filter = new com.opensymphony.sitemesh.webapp.SiteMeshFilter();
         return new FilterRegistrationBean(filter);
-    }
-
-}
-
-@SuppressWarnings("MultipleTopLevelClassesInFile")
-class ConnectorServlet extends com.ckfinder.connector.ConnectorServlet {
-
-    private static final long serialVersionUID = 1L;
-
-    @Override
-    protected void service(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        if (!UserDetailService.isAdminLoginned(request)) {
-            request.getRequestDispatcher("/unauthorized").forward(request, response);
-            return;
-        }
-        super.service(request, response);
     }
 
 }

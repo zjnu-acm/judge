@@ -40,6 +40,7 @@ public class ImageResizeCommad extends XMLCommand implements IEventHandler<Befor
     private static final String[] SIZES = {"small", "medium", "large"};
 
     private PluginInfo pluginInfo;
+
     /**
      * file name
      */

@@ -36,8 +36,8 @@ public class ImageUtils {
     /**
      * allowed image extensions.
      */
-    private static final String[] ALLOWED_EXT = {"gif", "jpeg", "jpg", "png",
-        "bmp", "xbm"};
+    private static final List<String> ALLOWED_EXT = Arrays.asList("gif", "jpeg", "jpg", "png",
+        "bmp", "xbm");
 
     /**
      * Resizes the image and writes it to the disk.
@@ -191,10 +191,9 @@ public class ImageUtils {
      * @return true if file is image.
      */
     public static boolean isImage(final Path file) {
-        List<String> list = Arrays.asList(ALLOWED_EXT);
         if (file != null) {
             String fileExt = FileUtils.getFileExtension(file.getFileName().toString().toLowerCase());
-            return (fileExt != null) ? list.contains(fileExt) : false;
+            return (fileExt != null) ? ALLOWED_EXT.contains(fileExt) : false;
         } else {
             return false;
         }
@@ -239,7 +238,7 @@ public class ImageUtils {
         } catch (IOException e) {
             return false;
         }
-        return (bi != null);
+        return bi != null;
     }
 
     /**

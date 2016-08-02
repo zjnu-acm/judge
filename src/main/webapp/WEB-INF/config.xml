@@ -211,5 +211,5 @@
         </plugin>
         -->
     </plugins>
-    <basePathBuilderImpl>cn.edu.zjnu.acm.judge.support.ckfinder.ConfigurationPathBuilder</basePathBuilderImpl>
+    <basePathBuilderImpl/>
 </config>

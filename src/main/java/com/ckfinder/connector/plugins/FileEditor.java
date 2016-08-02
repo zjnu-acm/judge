@@ -18,7 +18,7 @@ public class FileEditor extends Plugin {
 
     @Override
     public void registerEventHandlers(Events events) {
-        events.addBeforeExecuteEventHandler(SaveFileCommand.class);
+        events.addBeforeExecuteEventHandler(() -> new SaveFileCommand());
     }
 
 }
