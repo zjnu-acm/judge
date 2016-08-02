@@ -245,7 +245,7 @@ public class FileUploadCommand extends Command implements IPostCommand {
         } catch (ConnectorException e) {
             this.errorCode = e.getErrorCode();
             if (this.errorCode == Constants.Errors.CKFINDER_CONNECTOR_ERROR_CUSTOM_ERROR) {
-                this.customErrorMsg = e.getErrorMsg();
+                this.customErrorMsg = e.getMessage();
             }
             return false;
         } catch (Exception e) {
