@@ -22,6 +22,9 @@ import com.ckfinder.connector.utils.FileUtils;
 import com.ckfinder.connector.utils.ImageUtils;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -115,14 +118,15 @@ public class FileUploadCommand extends Command implements IPostCommand {
                         + this.currentFolder;
             }
 
+            OutputStreamWriter writer = new OutputStreamWriter(out, StandardCharsets.UTF_8);
             if (this.responseType != null && this.responseType.equals("txt")) {
-                out.write((this.newFileName + "|" + errorMsg).getBytes("UTF-8"));
+                writer.write(this.newFileName + "|" + errorMsg);
             } else if (checkFuncNum()) {
-                handleOnUploadCompleteCallFuncResponse(out, errorMsg, path);
+                handleOnUploadCompleteCallFuncResponse(writer, errorMsg, path);
             } else {
-                handleOnUploadCompleteResponse(out, errorMsg);
+                handleOnUploadCompleteResponse(writer, errorMsg);
             }
-
+            out.flush();
         } catch (IOException e) {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED, e);
@@ -147,38 +151,38 @@ public class FileUploadCommand extends Command implements IPostCommand {
      * @param path path
      * @throws IOException when error occurs.
      */
-    protected void handleOnUploadCompleteCallFuncResponse(final OutputStream out,
+    protected void handleOnUploadCompleteCallFuncResponse(final Writer out,
             final String errorMsg,
             final String path)
             throws IOException {
         this.ckFinderFuncNum = this.ckFinderFuncNum.replaceAll(
                 "[^\\d]", "");
-        out.write("<script type=\"text/javascript\">".getBytes("UTF-8"));
-        out.write(("window.parent.CKFinder.tools.callFunction("
+        out.write("<script type=\"text/javascript\">");
+        out.write("window.parent.CKFinder.tools.callFunction("
                 + this.ckFinderFuncNum + ", '"
                 + path
                 + FileUtils.backupWithBackSlash(this.newFileName, "'")
-                + "', '" + errorMsg + "');").getBytes("UTF-8"));
-        out.write("</script>".getBytes("UTF-8"));
+                + "', '" + errorMsg + "');");
+        out.write("</script>");
     }
 
     /**
      *
-     * @param out out put stream
+     * @param writer out put stream
      * @param errorMsg error message
      * @throws IOException when error occurs
      */
-    protected void handleOnUploadCompleteResponse(final OutputStream out,
+    protected void handleOnUploadCompleteResponse(final Writer writer,
             final String errorMsg) throws IOException {
-        out.write("<script type=\"text/javascript\">".getBytes("UTF-8"));
-        out.write("window.parent.OnUploadCompleted(".getBytes("UTF-8"));
-        out.write(("\'" + FileUtils.backupWithBackSlash(this.newFileName, "'") + "\'").getBytes("UTF-8"));
-        out.write((", \'"
+        writer.write("<script type=\"text/javascript\">");
+        writer.write("window.parent.OnUploadCompleted(");
+        writer.write("'" + FileUtils.backupWithBackSlash(this.newFileName, "'") + "'");
+        writer.write(", '"
                 + (this.errorCode
                 != Constants.Errors.CKFINDER_CONNECTOR_ERROR_NONE ? errorMsg
-                        : "") + "\'").getBytes("UTF-8"));
-        out.write(");".getBytes("UTF-8"));
-        out.write("</script>".getBytes("UTF-8"));
+                        : "") + "'");
+        writer.write(");");
+        writer.write("</script>");
     }
 
     /**
