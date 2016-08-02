@@ -198,6 +198,7 @@ public class FileUtils {
      * Gets an absolute path to CKFinder file or folder for which path was
      * provided as parameter.
      *
+     * @param servletContext
      * @param path relative or absolute path to a CKFinder resource (file or
      * folder).
      * @param isAbsolute flag indicating if path to resource is absolute e.g.
@@ -325,6 +326,7 @@ public class FileUtils {
      * baseURL and baseDir point to different locations).<br>
      * Finally if nothing worked this method returns {@code null}.
      *
+     * @param servletContext
      * @param path relative or absolute path to a CKFinder folder.
      * @return an absolute path to a folder in CKFinder
      * @throws ConnectorException when {@code ServletContext} is {@code null} or
@@ -803,6 +805,7 @@ public class FileUtils {
      * Checks if folder has any subfolders but respects ACL and hideFolders
      * setting from configuration.
      *
+     * @param accessControl
      * @param dirPath path to current folder.
      * @param dir current folder being checked. Represented by File object.
      * @param configuration configuration object.

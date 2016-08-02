@@ -18,7 +18,7 @@ package com.github.zhanhb.download;
 /**
  *
  * @author zhanhb
- * @see https://tools.ietf.org/html/rfc6266#section-4.1
+ * @see <a href="https://tools.ietf.org/html/rfc6266#section-4.1">RFC6266#section-4.1</a>
  */
 public enum SimpleContentDisposition implements ContentDisposition {
 
