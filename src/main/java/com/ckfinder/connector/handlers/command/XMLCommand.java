@@ -14,7 +14,6 @@ package com.ckfinder.connector.handlers.command;
 import com.ckfinder.connector.configuration.Constants;
 import com.ckfinder.connector.configuration.IConfiguration;
 import com.ckfinder.connector.errors.ConnectorException;
-import com.ckfinder.connector.utils.AccessControlUtil;
 import com.ckfinder.connector.utils.XMLCreator;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -128,13 +127,13 @@ public abstract class XMLCommand extends Command {
         element.setAttribute("path", this.currentFolder);
         element.setAttribute("url", configuration.getTypes().get(this.type).getUrl()
                 + this.currentFolder);
-        element.setAttribute("acl", String.valueOf(AccessControlUtil.getInstance().checkACLForRole(this.type,
+        element.setAttribute("acl", String.valueOf(getAccessControl().checkACLForRole(this.type,
                 this.currentFolder, this.userRole)));
         rootElement.appendChild(element);
     }
 
     @Override
-    public void initParams(final HttpServletRequest request,
+    protected void initParams(final HttpServletRequest request,
             final IConfiguration configuration, final Object... params)
             throws ConnectorException {
         super.initParams(request, configuration, params);
@@ -151,4 +150,5 @@ public abstract class XMLCommand extends Command {
     protected boolean mustAddCurrentFolderNode() {
         return this.type != null && this.currentFolder != null;
     }
+
 }

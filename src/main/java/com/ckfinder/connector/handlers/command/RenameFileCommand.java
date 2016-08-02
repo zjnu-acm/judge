@@ -14,7 +14,7 @@ package com.ckfinder.connector.handlers.command;
 import com.ckfinder.connector.configuration.Constants;
 import com.ckfinder.connector.configuration.IConfiguration;
 import com.ckfinder.connector.errors.ConnectorException;
-import com.ckfinder.connector.utils.AccessControlUtil;
+import com.ckfinder.connector.utils.AccessControl;
 import com.ckfinder.connector.utils.FileUtils;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -72,9 +72,8 @@ public class RenameFileCommand extends XMLCommand implements IPostCommand {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
         }
 
-        if (!AccessControlUtil.getInstance().checkFolderACL(
-                this.type, this.currentFolder, this.userRole,
-                AccessControlUtil.CKFINDER_CONNECTOR_ACL_FILE_RENAME)) {
+        if (!getAccessControl().checkFolderACL(this.type, this.currentFolder, this.userRole,
+                AccessControl.CKFINDER_CONNECTOR_ACL_FILE_RENAME)) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
         }
 
@@ -164,11 +163,12 @@ public class RenameFileCommand extends XMLCommand implements IPostCommand {
     }
 
     @Override
-    public void initParams(final HttpServletRequest request,
+    protected void initParams(final HttpServletRequest request,
             final IConfiguration configuration, final Object... params)
             throws ConnectorException {
         super.initParams(request, configuration);
-        this.fileName = getParameter(request, "fileName");
-        this.newFileName = getParameter(request, "newFileName");
+        this.fileName = request.getParameter("fileName");
+        this.newFileName = request.getParameter("newFileName");
     }
+
 }

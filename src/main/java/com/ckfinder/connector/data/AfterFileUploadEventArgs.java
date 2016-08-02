@@ -12,58 +12,19 @@
 package com.ckfinder.connector.data;
 
 import java.nio.file.Path;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Event data for
- * {@link com.ckfinder.connector.configuration.Events.EventTypes#AfterFileUpload}
+ * {@link com.ckfinder.connector.configuration.Events#addAfterFileUploadEventHandler(java.lang.Class)}
  * event.
  */
-@SuppressWarnings("FinalMethod")
+@Getter
+@Setter
 public class AfterFileUploadEventArgs extends EventArgs {
 
     private String currentFolder;
     private Path file;
-
-    /**
-     * @return the currentFolder
-     */
-    public final String getCurrentFolder() {
-        return currentFolder;
-    }
-
-    /**
-     * @param currentFolder the currentFolder to set
-     */
-    public final void setCurrentFolder(final String currentFolder) {
-        this.currentFolder = currentFolder;
-    }
-
-    /**
-     * @return the fileContent
-     */
-    public final byte[] getFileContent() {
-        throw new NoSuchMethodError();
-    }
-
-    /**
-     * @param fileContent the fileContent to set
-     */
-    public final void setFileContent(final byte[] fileContent) {
-        // noop
-    }
-
-    /**
-     * @return the file
-     */
-    public final Path getFile() {
-        return file;
-    }
-
-    /**
-     * @param file the file to set
-     */
-    public final void setFile(final Path file) {
-        this.file = file;
-    }
 
 }

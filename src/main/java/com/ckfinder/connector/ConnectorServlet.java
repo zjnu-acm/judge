@@ -14,7 +14,6 @@ package com.ckfinder.connector;
 import com.ckfinder.connector.configuration.Configuration;
 import com.ckfinder.connector.configuration.ConfigurationFactory;
 import com.ckfinder.connector.configuration.Constants;
-import com.ckfinder.connector.configuration.Events.EventTypes;
 import com.ckfinder.connector.configuration.IConfiguration;
 import com.ckfinder.connector.data.BeforeExecuteCommandEventArgs;
 import com.ckfinder.connector.errors.ConnectorException;
@@ -37,7 +36,7 @@ import com.ckfinder.connector.handlers.command.RenameFolderCommand;
 import com.ckfinder.connector.handlers.command.ThumbnailCommand;
 import com.ckfinder.connector.handlers.command.XMLCommand;
 import com.ckfinder.connector.handlers.command.XMLErrorCommand;
-import com.ckfinder.connector.utils.AccessControlUtil;
+import com.ckfinder.connector.utils.AccessControl;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Set;
@@ -144,7 +143,7 @@ public class ConnectorServlet extends HttpServlet {
             args.setResponse(response);
 
             if (configuration.getEvents() != null) {
-                if (configuration.getEvents().run(EventTypes.BeforeExecuteCommand,
+                if (configuration.getEvents().runBeforeExecuteCommand(
                         args, configuration)) {
                     if (!isNativeCommand) {
                         command = null;
@@ -243,7 +242,6 @@ public class ConnectorServlet extends HttpServlet {
                 CommandHandlerEnum.XMLERROR.execute(request, response, configuration,
                         getServletContext(), e);
             }
-
         } catch (Exception e1) {
             throw new ServletException(e1);
         }
@@ -252,7 +250,6 @@ public class ConnectorServlet extends HttpServlet {
     @Override
     @SuppressWarnings({"UseSpecificCatch", "BroadCatchBlock", "TooBroadCatch"})
     public void init() throws ServletException {
-        ServletContextFactory.setServletContext(getServletContext());
         IConfiguration configuration;
         String className = getServletConfig().getInitParameter(
                 "configuration");
@@ -276,7 +273,7 @@ public class ConnectorServlet extends HttpServlet {
         }
         try {
             configuration.init();
-            AccessControlUtil.getInstance().loadConfiguration(configuration);
+            AccessControl.getInstance().loadConfiguration(configuration);
         } catch (Exception e) {
             throw new ServletException(e);
         }
@@ -405,10 +402,7 @@ public class ConnectorServlet extends HttpServlet {
                 throw new ConnectorException(
                         Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_COMMAND);
             }
-            if (com == null) {
-                throw new ConnectorException(
-                        Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_COMMAND);
-            }
+            com.setAccessControl(AccessControl.getInstance());
             com.runCommand(request, response, configuration, params);
         }
 

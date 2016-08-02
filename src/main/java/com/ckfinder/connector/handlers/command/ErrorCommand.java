@@ -68,7 +68,7 @@ public class ErrorCommand extends Command {
     }
 
     @Override
-    public void initParams(final HttpServletRequest request,
+    protected void initParams(final HttpServletRequest request,
             final IConfiguration configuration, final Object... params)
             throws ConnectorException {
         super.initParams(request, configuration, params);
@@ -114,7 +114,7 @@ public class ErrorCommand extends Command {
     @Override
     protected boolean checkIfCurrFolderExists(final HttpServletRequest request)
             throws ConnectorException {
-        String tmpType = getParameter(request, "type");
+        String tmpType = request.getParameter("type");
         if (checkIfTypeExists(tmpType)) {
             Path currDir = Paths.get(configuration.getTypes().get(tmpType).getPath()
                     + this.currentFolder);
@@ -142,9 +142,10 @@ public class ErrorCommand extends Command {
 
     @Override
     protected void getCurrentFolderParam(final HttpServletRequest request) {
-        String currFolder = getParameter(request, "currentFolder");
+        String currFolder = request.getParameter("currentFolder");
         if (!(currFolder == null || currFolder.isEmpty())) {
             this.currentFolder = PathUtils.addSlashToBeginning(PathUtils.addSlashToEnd(currFolder));
         }
     }
+
 }

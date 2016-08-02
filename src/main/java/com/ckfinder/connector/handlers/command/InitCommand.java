@@ -12,11 +12,10 @@
 package com.ckfinder.connector.handlers.command;
 
 import com.ckfinder.connector.configuration.Constants;
-import com.ckfinder.connector.configuration.Events.EventTypes;
 import com.ckfinder.connector.data.InitCommandEventArgs;
 import com.ckfinder.connector.data.ResourceType;
 import com.ckfinder.connector.errors.ConnectorException;
-import com.ckfinder.connector.utils.AccessControlUtil;
+import com.ckfinder.connector.utils.AccessControl;
 import com.ckfinder.connector.utils.FileUtils;
 import com.ckfinder.connector.utils.PathUtils;
 import java.io.UnsupportedEncodingException;
@@ -168,7 +167,7 @@ public class InitCommand extends XMLCommand {
         args.setXml(this.creator);
         args.setRootElement(rootElement);
         if (configuration.getEvents() != null) {
-            configuration.getEvents().run(EventTypes.InitCommand, args, configuration);
+            configuration.getEvents().runInitCommand(args, configuration);
         }
 
     }
@@ -195,14 +194,13 @@ public class InitCommand extends XMLCommand {
         for (String key : types) {
             ResourceType resourceType = configuration.getTypes().get(key);
             if (((this.type == null || this.type.equals(key)) && resourceType != null)
-                    && AccessControlUtil.getInstance().checkFolderACL(key, "/", this.userRole,
-                            AccessControlUtil.CKFINDER_CONNECTOR_ACL_FOLDER_VIEW)) {
+                    && getAccessControl().checkFolderACL(key, "/", this.userRole,
+                            AccessControl.CKFINDER_CONNECTOR_ACL_FOLDER_VIEW)) {
 
                 Element childElement = creator.getDocument().
                         createElement("ResourceType");
                 childElement.setAttribute("name", resourceType.getName());
-                childElement.setAttribute("acl", String.valueOf(
-                        AccessControlUtil.getInstance().checkACLForRole(key, "/", this.userRole)));
+                childElement.setAttribute("acl", String.valueOf(getAccessControl().checkACLForRole(key, "/", this.userRole)));
                 childElement.setAttribute("hash", randomHash(
                         resourceType.getPath()));
                 childElement.setAttribute(
@@ -215,7 +213,7 @@ public class InitCommand extends XMLCommand {
                 long maxSize = resourceType.getMaxSize();
                 childElement.setAttribute("maxSize", maxSize > 0 ? Long.toString(maxSize) : "0");
                 childElement.setAttribute("hasChildren",
-                        FileUtils.hasChildren("/", Paths.get(PathUtils.escape(resourceType.getPath())),
+                        FileUtils.hasChildren(getAccessControl(), "/", Paths.get(PathUtils.escape(resourceType.getPath())),
                                 configuration, resourceType.getName(), this.userRole).toString());
                 element.appendChild(childElement);
             }

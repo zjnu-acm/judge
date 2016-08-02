@@ -14,7 +14,7 @@ package com.ckfinder.connector.handlers.command;
 import com.ckfinder.connector.configuration.Constants;
 import com.ckfinder.connector.configuration.IConfiguration;
 import com.ckfinder.connector.errors.ConnectorException;
-import com.ckfinder.connector.utils.AccessControlUtil;
+import com.ckfinder.connector.utils.AccessControl;
 import com.ckfinder.connector.utils.FileUtils;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -30,7 +30,7 @@ import org.w3c.dom.Element;
 public class DeleteFolderCommand extends XMLCommand implements IPostCommand {
 
     @Override
-    public void initParams(final HttpServletRequest request,
+    protected void initParams(final HttpServletRequest request,
             final IConfiguration configuration, final Object... params)
             throws ConnectorException {
 
@@ -53,10 +53,10 @@ public class DeleteFolderCommand extends XMLCommand implements IPostCommand {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
         }
 
-        if (!AccessControlUtil.getInstance().checkFolderACL(this.type,
+        if (!getAccessControl().checkFolderACL(this.type,
                 this.currentFolder,
                 this.userRole,
-                AccessControlUtil.CKFINDER_CONNECTOR_ACL_FOLDER_DELETE)) {
+                AccessControl.CKFINDER_CONNECTOR_ACL_FOLDER_DELETE)) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
         }
         if (this.currentFolder.equals("/")) {

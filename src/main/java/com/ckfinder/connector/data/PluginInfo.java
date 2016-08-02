@@ -12,10 +12,16 @@
 package com.ckfinder.connector.data;
 
 import java.util.List;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  *
  */
+@Getter
+@NoArgsConstructor
+@Setter
 public class PluginInfo {
 
     private String name;
@@ -36,82 +42,6 @@ public class PluginInfo {
         this.params = info.params;
         this.enabled = info.enabled;
         this.internal = info.internal;
-    }
-
-    /**
-     * standard constructor.
-     */
-    public PluginInfo() {
-    }
-
-    /**
-     * @return the enabled
-     */
-    public final boolean isEnabled() {
-        return enabled;
-    }
-
-    /**
-     * @param enabled the enabled to set
-     */
-    public final void setEnabled(final boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    /**
-     * @return the internal
-     */
-    public final boolean isInternal() {
-        return internal;
-    }
-
-    /**
-     * @param internal the internal to set
-     */
-    public final void setInternal(final boolean internal) {
-        this.internal = internal;
-    }
-
-    /**
-     * @return the name
-     */
-    public final String getName() {
-        return name;
-    }
-
-    /**
-     * @param name the name to set
-     */
-    public final void setName(final String name) {
-        this.name = name;
-    }
-
-    /**
-     * @return the className
-     */
-    public final String getClassName() {
-        return className;
-    }
-
-    /**
-     * @param className the className to set
-     */
-    public final void setClassName(final String className) {
-        this.className = className;
-    }
-
-    /**
-     * @return the params
-     */
-    public final List<PluginParam> getParams() {
-        return params;
-    }
-
-    /**
-     * @param params the params to set
-     */
-    public final void setParams(final List<PluginParam> params) {
-        this.params = params;
     }
 
 }

@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 /**
  * Class to generate ACL values.
  */
-public final class AccessControlUtil {
+public final class AccessControl {
 
     /**
      * Folder view mask.
@@ -56,7 +56,7 @@ public final class AccessControlUtil {
     /**
      * current instance.
      */
-    private static final AccessControlUtil util = new AccessControlUtil();
+    private static final AccessControl util = new AccessControl();
 
     /**
      * Gets current util instance.
@@ -64,7 +64,7 @@ public final class AccessControlUtil {
      * @return current instance
      */
     @Deprecated
-    public static AccessControlUtil getInstance() {
+    public static AccessControl getInstance() {
         return util;
     }
     /**
@@ -79,7 +79,7 @@ public final class AccessControlUtil {
     /**
      * private constructor.
      */
-    private AccessControlUtil() {
+    private AccessControl() {
     }
 
     /**
@@ -150,7 +150,7 @@ public final class AccessControlUtil {
 
     /**
      * Resets the configuration and ACL Entries for this
-     * {@code AccessControlUtil} instance.<br>
+     * {@code AccessControl} instance.<br>
      * This method is required due to dynamic nature of configuration object and
      * need to avoid any unnecessary overhead related to loading ACL
      * settings.<br>
@@ -167,9 +167,9 @@ public final class AccessControlUtil {
 
     /**
      * Loads configuration object and ACL entries for this
-     * {@code AccessControlUtil} instance.<br>
+     * {@code AccessControl} instance.<br>
      * Configuration and ACL Entries will only be used if current configuration
-     * object for this {@code AccessControlUtil} instance is {@code null}.
+     * object for this {@code AccessControl} instance is {@code null}.
      *
      * @param configuration candidate for new configuration object
      */

@@ -14,11 +14,10 @@ package com.ckfinder.connector.plugins;
 import com.ckfinder.connector.configuration.Constants;
 import com.ckfinder.connector.configuration.IConfiguration;
 import com.ckfinder.connector.data.BeforeExecuteCommandEventArgs;
-import com.ckfinder.connector.data.EventArgs;
 import com.ckfinder.connector.data.IEventHandler;
 import com.ckfinder.connector.errors.ConnectorException;
 import com.ckfinder.connector.handlers.command.XMLCommand;
-import com.ckfinder.connector.utils.AccessControlUtil;
+import com.ckfinder.connector.utils.AccessControl;
 import com.ckfinder.connector.utils.FileUtils;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -30,14 +29,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Element;
 
 @Slf4j
-public class SaveFileCommand extends XMLCommand implements IEventHandler {
+public class SaveFileCommand extends XMLCommand implements IEventHandler<BeforeExecuteCommandEventArgs> {
 
     private String fileName;
     private String fileContent;
-    /**
-     * Current request object
-     */
-    private HttpServletRequest request;
 
     @Override
     protected void createXMLChildNodes(int arg0, Element arg1)
@@ -52,8 +47,8 @@ public class SaveFileCommand extends XMLCommand implements IEventHandler {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
         }
 
-        if (!AccessControlUtil.getInstance().checkFolderACL(this.type, this.currentFolder, this.userRole,
-                AccessControlUtil.CKFINDER_CONNECTOR_ACL_FILE_DELETE)) {
+        if (!getAccessControl().checkFolderACL(this.type, this.currentFolder, this.userRole,
+                AccessControl.CKFINDER_CONNECTOR_ACL_FILE_DELETE)) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
         }
 
@@ -92,18 +87,17 @@ public class SaveFileCommand extends XMLCommand implements IEventHandler {
     }
 
     @Override
-    public boolean runEventHandler(EventArgs args, IConfiguration configuration1)
+    public boolean runEventHandler(BeforeExecuteCommandEventArgs args, IConfiguration configuration1)
             throws ConnectorException {
-        BeforeExecuteCommandEventArgs args1 = (BeforeExecuteCommandEventArgs) args;
-        if ("SaveFile".equals(args1.getCommand())) {
-            this.runCommand(args1.getRequest(), args1.getResponse(), configuration1);
+        if ("SaveFile".equals(args.getCommand())) {
+            this.runCommand(args.getRequest(), args.getResponse(), configuration1);
             return false;
         }
         return true;
     }
 
     @Override
-    public void initParams(HttpServletRequest request,
+    protected void initParams(HttpServletRequest request,
             IConfiguration configuration, Object... params)
             throws ConnectorException {
         super.initParams(request, configuration, params);
@@ -111,6 +105,6 @@ public class SaveFileCommand extends XMLCommand implements IEventHandler {
         this.type = request.getParameter("type");
         this.fileContent = request.getParameter("content");
         this.fileName = request.getParameter("fileName");
-        this.request = request;
     }
+
 }

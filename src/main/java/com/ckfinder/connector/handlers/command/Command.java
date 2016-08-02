@@ -11,11 +11,11 @@
  */
 package com.ckfinder.connector.handlers.command;
 
-import com.ckfinder.connector.ServletContextFactory;
 import com.ckfinder.connector.configuration.Constants;
 import com.ckfinder.connector.configuration.IConfiguration;
 import com.ckfinder.connector.data.ResourceType;
 import com.ckfinder.connector.errors.ConnectorException;
+import com.ckfinder.connector.utils.AccessControl;
 import com.ckfinder.connector.utils.FileUtils;
 import com.ckfinder.connector.utils.PathUtils;
 import java.io.IOException;
@@ -27,6 +27,9 @@ import java.util.regex.Pattern;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Base class for all command handlers.
@@ -40,6 +43,10 @@ public abstract class Command {
     protected String userRole;
     protected String currentFolder;
     protected String type;
+
+    @Getter(AccessLevel.PROTECTED)
+    @Setter
+    private AccessControl accessControl;
 
     /**
      * standard constructor.
@@ -66,7 +73,7 @@ public abstract class Command {
             final Object... params) throws ConnectorException {
         this.initParams(request, configuration, params);
         try {
-            setResponseHeader(response, ServletContextFactory.getServletContext());
+            setResponseHeader(response, request.getServletContext());
             execute(response.getOutputStream());
             response.getOutputStream().flush();
             response.getOutputStream().close();
@@ -84,7 +91,7 @@ public abstract class Command {
      * @param params execute additional params.
      * @throws ConnectorException to handle in error handler.
      */
-    public void initParams(final HttpServletRequest request,
+    protected void initParams(final HttpServletRequest request,
             final IConfiguration configuration, final Object... params)
             throws ConnectorException {
         if (configuration != null) {
@@ -99,13 +106,11 @@ public abstract class Command {
                 if (!checkHidden()) {
                     if ((this.currentFolder == null || this.currentFolder.isEmpty())
                             || checkIfCurrFolderExists(request)) {
-                        this.type = getParameter(request, "type");
+                        this.type = request.getParameter("type");
                     }
                 }
-
             }
         }
-
     }
 
     /**
@@ -133,7 +138,7 @@ public abstract class Command {
      */
     protected boolean checkIfCurrFolderExists(final HttpServletRequest request)
             throws ConnectorException {
-        String tmpType = getParameter(request, "type");
+        String tmpType = request.getParameter("type");
         if (tmpType != null) {
             if (checkIfTypeExists(tmpType)) {
                 Path currDir = Paths.get(
@@ -219,24 +224,12 @@ public abstract class Command {
     }
 
     /**
-     * Gets request param value with correct encoding.
-     *
-     * @param request request
-     * @param paramName request param name
-     * @return param value
-     */
-    protected String getParameter(final HttpServletRequest request,
-            final String paramName) {
-        return request.getParameter(paramName);
-    }
-
-    /**
      * gets current folder request param or sets default value if it's not set.
      *
      * @param request request
      */
     protected void getCurrentFolderParam(final HttpServletRequest request) {
-        String currFolder = getParameter(request, "currentFolder");
+        String currFolder = request.getParameter("currentFolder");
         if (currFolder == null || currFolder.isEmpty()) {
             this.currentFolder = "/";
         } else {
@@ -255,4 +248,5 @@ public abstract class Command {
     protected String nullToString(String s) {
         return s == null ? "" : s;
     }
+
 }

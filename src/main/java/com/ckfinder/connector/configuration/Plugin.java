@@ -33,4 +33,5 @@ public abstract class Plugin {
     public final void setPluginInfo(final PluginInfo pluginInfo) {
         this.pluginInfo = pluginInfo;
     }
+
 }

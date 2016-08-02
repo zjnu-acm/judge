@@ -145,4 +145,5 @@ public class ConnectorException extends Exception {
     public final void setException(final Exception exception) {
         this.exception = exception;
     }
+
 }

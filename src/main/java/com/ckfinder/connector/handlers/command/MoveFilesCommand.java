@@ -15,7 +15,7 @@ import com.ckfinder.connector.configuration.Constants;
 import com.ckfinder.connector.configuration.IConfiguration;
 import com.ckfinder.connector.data.FilePostParam;
 import com.ckfinder.connector.errors.ConnectorException;
-import com.ckfinder.connector.utils.AccessControlUtil;
+import com.ckfinder.connector.utils.AccessControl;
 import com.ckfinder.connector.utils.FileUtils;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -73,13 +73,12 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
         }
 
-        if (!AccessControlUtil.getInstance().checkFolderACL(
-                this.type,
+        if (!getAccessControl().checkFolderACL(this.type,
                 this.currentFolder,
                 this.userRole,
-                AccessControlUtil.CKFINDER_CONNECTOR_ACL_FILE_RENAME
-                | AccessControlUtil.CKFINDER_CONNECTOR_ACL_FILE_DELETE
-                | AccessControlUtil.CKFINDER_CONNECTOR_ACL_FILE_UPLOAD)) {
+                AccessControl.CKFINDER_CONNECTOR_ACL_FILE_RENAME
+                | AccessControl.CKFINDER_CONNECTOR_ACL_FILE_DELETE
+                | AccessControl.CKFINDER_CONNECTOR_ACL_FILE_UPLOAD)) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
         }
 
@@ -145,8 +144,8 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
             }
 
-            if (!AccessControlUtil.getInstance().checkFolderACL(file.getType(), file.getFolder(), this.userRole,
-                    AccessControlUtil.CKFINDER_CONNECTOR_ACL_FILE_VIEW)) {
+            if (!getAccessControl().checkFolderACL(file.getType(), file.getFolder(), this.userRole,
+                    AccessControl.CKFINDER_CONNECTOR_ACL_FILE_VIEW)) {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
 
             }
@@ -291,7 +290,7 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
     }
 
     @Override
-    public void initParams(final HttpServletRequest request,
+    protected void initParams(final HttpServletRequest request,
             final IConfiguration configuration, final Object... params)
             throws ConnectorException {
         super.initParams(request, configuration);
@@ -313,11 +312,11 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
             String paramName = "files[" + i + "][name]";
             if (request.getParameter(paramName) != null) {
                 FilePostParam file = new FilePostParam();
-                file.setName(getParameter(request, paramName));
-                file.setFolder(getParameter(request, "files[" + i + "][folder]"));
-                file.setOptions(getParameter(request, "files[" + i
+                file.setName(request.getParameter(paramName));
+                file.setFolder(request.getParameter("files[" + i + "][folder]"));
+                file.setOptions(request.getParameter("files[" + i
                         + "][options]"));
-                file.setType(getParameter(request, "files[" + i + "][type]"));
+                file.setType(request.getParameter("files[" + i + "][type]"));
                 files.add(file);
             } else {
                 break;
@@ -325,4 +324,5 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
             i++;
         }
     }
+
 }

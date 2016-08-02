@@ -11,13 +11,18 @@
  */
 package com.ckfinder.connector.data;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  *
+ * @param <T>
  */
-@SuppressWarnings("FinalMethod")
-public class EventCommandData {
+@AllArgsConstructor
+@Getter
+public class EventCommandData<T extends EventArgs> {
 
-    private Class<? extends IEventHandler> eventListener;
+    private Class<? extends IEventHandler<T>> eventListener;
     private PluginInfo pluginInfo;
 
     /**
@@ -25,35 +30,8 @@ public class EventCommandData {
      *
      * @param eventListener name of plugin command class
      */
-    public EventCommandData(final Class<? extends IEventHandler> eventListener) {
+    public EventCommandData(final Class<? extends IEventHandler<T>> eventListener) {
         this.eventListener = eventListener;
     }
 
-    /**
-     * @return the eventListener
-     */
-    public final Class<? extends IEventHandler> getEventListener() {
-        return eventListener;
-    }
-
-    /**
-     * @param eventListener the eventListener to set
-     */
-    public final void setEventListener(final Class<? extends IEventHandler> eventListener) {
-        this.eventListener = eventListener;
-    }
-
-    /**
-     * @return the pluginInfo
-     */
-    public final PluginInfo getPluginInfo() {
-        return pluginInfo;
-    }
-
-    /**
-     * @param pluginInfo the pluginInfo to set
-     */
-    public final void setPluginInfo(final PluginInfo pluginInfo) {
-        this.pluginInfo = pluginInfo;
-    }
 }

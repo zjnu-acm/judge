@@ -11,10 +11,8 @@
  */
 package com.ckfinder.connector.plugins;
 
-import com.ckfinder.connector.ServletContextFactory;
 import com.ckfinder.connector.configuration.IConfiguration;
 import com.ckfinder.connector.data.AfterFileUploadEventArgs;
-import com.ckfinder.connector.data.EventArgs;
 import com.ckfinder.connector.data.IEventHandler;
 import com.ckfinder.connector.errors.ConnectorException;
 import java.awt.image.BufferedImage;
@@ -29,16 +27,16 @@ import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.name.Rename;
 
 @Slf4j
-public class WatermarkCommand implements IEventHandler {
+public class WatermarkCommand implements IEventHandler<AfterFileUploadEventArgs> {
 
     private static final String DEFAULT_WATERMARK = "/logo.gif";
 
     @Override
-    public boolean runEventHandler(final EventArgs args, final IConfiguration configuration) throws ConnectorException {
+    public boolean runEventHandler(final AfterFileUploadEventArgs args, final IConfiguration configuration) throws ConnectorException {
         try {
             final WatermarkSettings settings = WatermarkSettings.createFromConfiguration(configuration,
-                    ServletContextFactory.getServletContext());
-            final Path originalFile = ((AfterFileUploadEventArgs) args).getFile();
+                    configuration.getServletContext());
+            final Path originalFile = args.getFile();
             final WatermarkPosition position = new WatermarkPosition(settings.getMarginBottom(), settings.getMarginRight());
 
             try (InputStream stream = Files.newInputStream(originalFile)) {
@@ -48,7 +46,6 @@ public class WatermarkCommand implements IEventHandler {
                         .outputQuality(settings.getQuality())
                         .toFiles(Rename.NO_CHANGE);
             }
-
         } catch (Exception ex) {
             // only log error if watermark is not created
             log.error("", ex);
@@ -74,4 +71,5 @@ public class WatermarkCommand implements IEventHandler {
         }
         return watermark;
     }
+
 }

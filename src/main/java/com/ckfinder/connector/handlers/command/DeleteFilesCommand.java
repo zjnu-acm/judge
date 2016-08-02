@@ -15,7 +15,7 @@ import com.ckfinder.connector.configuration.Constants;
 import com.ckfinder.connector.configuration.IConfiguration;
 import com.ckfinder.connector.data.FilePostParam;
 import com.ckfinder.connector.errors.ConnectorException;
-import com.ckfinder.connector.utils.AccessControlUtil;
+import com.ckfinder.connector.utils.AccessControl;
 import com.ckfinder.connector.utils.FileUtils;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -106,8 +106,8 @@ public class DeleteFilesCommand extends XMLCommand implements IPostCommand {
 
             }
 
-            if (!AccessControlUtil.getInstance().checkFolderACL(fileItem.getType(), fileItem.getFolder(), this.userRole,
-                    AccessControlUtil.CKFINDER_CONNECTOR_ACL_FILE_DELETE)) {
+            if (!getAccessControl().checkFolderACL(fileItem.getType(), fileItem.getFolder(), this.userRole,
+                    AccessControl.CKFINDER_CONNECTOR_ACL_FILE_DELETE)) {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
             }
 
@@ -160,7 +160,7 @@ public class DeleteFilesCommand extends XMLCommand implements IPostCommand {
      * for command handler.
      */
     @Override
-    public void initParams(HttpServletRequest request,
+    protected void initParams(HttpServletRequest request,
             IConfiguration configuration,
             Object... params) throws ConnectorException {
         super.initParams(request, configuration);
@@ -178,12 +178,13 @@ public class DeleteFilesCommand extends XMLCommand implements IPostCommand {
         String paramName = "files[" + i + "][name]";
         while (request.getParameter(paramName) != null) {
             FilePostParam file = new FilePostParam();
-            file.setName(getParameter(request, paramName));
-            file.setFolder(getParameter(request, "files[" + i + "][folder]"));
-            file.setOptions(getParameter(request, "files[" + i + "][options]"));
-            file.setType(getParameter(request, "files[" + i + "][type]"));
+            file.setName(request.getParameter(paramName));
+            file.setFolder(request.getParameter("files[" + i + "][folder]"));
+            file.setOptions(request.getParameter("files[" + i + "][options]"));
+            file.setType(request.getParameter("files[" + i + "][type]"));
             this.files.add(file);
             paramName = "files[" + (++i) + "][name]";
         }
     }
+
 }

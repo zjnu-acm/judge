@@ -14,11 +14,10 @@ package com.ckfinder.connector.plugins;
 import com.ckfinder.connector.configuration.Constants;
 import com.ckfinder.connector.configuration.IConfiguration;
 import com.ckfinder.connector.data.BeforeExecuteCommandEventArgs;
-import com.ckfinder.connector.data.EventArgs;
 import com.ckfinder.connector.data.IEventHandler;
 import com.ckfinder.connector.errors.ConnectorException;
 import com.ckfinder.connector.handlers.command.XMLCommand;
-import com.ckfinder.connector.utils.AccessControlUtil;
+import com.ckfinder.connector.utils.AccessControl;
 import com.ckfinder.connector.utils.FileUtils;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -31,18 +30,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Element;
 
 @Slf4j
-public class ImageResizeInfoCommand extends XMLCommand implements IEventHandler {
+public class ImageResizeInfoCommand extends XMLCommand implements IEventHandler<BeforeExecuteCommandEventArgs> {
 
     private int imageWidth;
     private int imageHeight;
     private String fileName;
 
     @Override
-    public boolean runEventHandler(EventArgs args, IConfiguration configuration1)
+    public boolean runEventHandler(BeforeExecuteCommandEventArgs args, IConfiguration configuration1)
             throws ConnectorException {
-        BeforeExecuteCommandEventArgs args1 = (BeforeExecuteCommandEventArgs) args;
-        if ("ImageResizeInfo".equals(args1.getCommand())) {
-            this.runCommand(args1.getRequest(), args1.getResponse(), configuration1);
+        if ("ImageResizeInfo".equals(args.getCommand())) {
+            this.runCommand(args.getRequest(), args.getResponse(), configuration1);
             return false;
         }
         return true;
@@ -72,8 +70,8 @@ public class ImageResizeInfoCommand extends XMLCommand implements IEventHandler 
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
         }
 
-        if (!AccessControlUtil.getInstance().checkFolderACL(type, this.currentFolder,
-                userRole, AccessControlUtil.CKFINDER_CONNECTOR_ACL_FILE_VIEW)) {
+        if (!getAccessControl().checkFolderACL(type, this.currentFolder,
+                userRole, AccessControl.CKFINDER_CONNECTOR_ACL_FILE_VIEW)) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
         }
 
@@ -108,7 +106,7 @@ public class ImageResizeInfoCommand extends XMLCommand implements IEventHandler 
     }
 
     @Override
-    public void initParams(HttpServletRequest request,
+    protected void initParams(HttpServletRequest request,
             IConfiguration configuration, Object... params)
             throws ConnectorException {
         super.initParams(request, configuration, params);

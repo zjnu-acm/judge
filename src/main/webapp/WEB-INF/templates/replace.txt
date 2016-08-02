@@ -36,3 +36,6 @@ Files.size($1)
 
 @RequestMapping\(value = "(([^"])+)", method = RequestMethod\.POST\)
 @PostMapping("$1")
+
+getParameter\(request,\s*"([^)]+)\)
+request.getParameter($1)

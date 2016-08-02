@@ -12,13 +12,12 @@
 package com.ckfinder.connector.handlers.command;
 
 import com.ckfinder.connector.configuration.Constants;
-import com.ckfinder.connector.configuration.Events.EventTypes;
 import com.ckfinder.connector.configuration.IConfiguration;
 import com.ckfinder.connector.data.AfterFileUploadEventArgs;
 import com.ckfinder.connector.data.ResourceType;
 import com.ckfinder.connector.errors.ConnectorException;
 import com.ckfinder.connector.errors.ErrorUtils;
-import com.ckfinder.connector.utils.AccessControlUtil;
+import com.ckfinder.connector.utils.AccessControl;
 import com.ckfinder.connector.utils.FileUtils;
 import com.ckfinder.connector.utils.ImageUtils;
 import java.io.IOException;
@@ -191,7 +190,7 @@ public class FileUploadCommand extends Command implements IPostCommand {
      * @throws ConnectorException when error occurs.
      */
     @Override
-    public void initParams(final HttpServletRequest request,
+    protected void initParams(final HttpServletRequest request,
             final IConfiguration configuration, final Object... params)
             throws ConnectorException {
         super.initParams(request, configuration, params);
@@ -214,9 +213,8 @@ public class FileUploadCommand extends Command implements IPostCommand {
      * @return true if uploaded correctly.
      */
     private boolean uploadFile(final HttpServletRequest request) {
-        if (!AccessControlUtil.getInstance().checkFolderACL(
-                this.type, this.currentFolder, this.userRole,
-                AccessControlUtil.CKFINDER_CONNECTOR_ACL_FILE_UPLOAD)) {
+        if (!getAccessControl().checkFolderACL(this.type, this.currentFolder, this.userRole,
+                AccessControl.CKFINDER_CONNECTOR_ACL_FILE_UPLOAD)) {
             this.errorCode = Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
             return false;
         }
@@ -278,8 +276,7 @@ public class FileUploadCommand extends Command implements IPostCommand {
         if (!ImageUtils.isImage(file)) {
             item.write(file.toString());
             if (configuration.getEvents() != null) {
-                configuration.getEvents().run(EventTypes.AfterFileUpload,
-                        args, configuration);
+                configuration.getEvents().runAfterFileUpload(args, configuration);
             }
             return true;
         } else if (ImageUtils.checkImageSize(item.getInputStream(), this.configuration)
@@ -289,7 +286,7 @@ public class FileUploadCommand extends Command implements IPostCommand {
             if (!configuration.checkSizeAfterScaling()
                     || FileUtils.checkFileSize(configuration.getTypes().get(this.type), Files.size(file))) {
                 if (configuration.getEvents() != null) {
-                    configuration.getEvents().run(EventTypes.AfterFileUpload, args, configuration);
+                    configuration.getEvents().runAfterFileUpload(args, configuration);
                 }
                 return true;
             } else {
@@ -489,7 +486,7 @@ public class FileUploadCommand extends Command implements IPostCommand {
     @Override
     protected boolean checkIfCurrFolderExists(final HttpServletRequest request)
             throws ConnectorException {
-        String tmpType = getParameter(request, "type");
+        String tmpType = request.getParameter("type");
         if (checkIfTypeExists(tmpType)) {
             Path currDir = Paths.get(configuration.getTypes().get(tmpType).getPath()
                     + this.currentFolder);

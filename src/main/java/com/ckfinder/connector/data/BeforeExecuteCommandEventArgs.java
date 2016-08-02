@@ -18,12 +18,11 @@ import lombok.Setter;
 
 /**
  * Event data for
- * {@link com.ckfinder.connector.configuration.Events.EventTypes#BeforeExecuteCommand}
+ * {@link com.ckfinder.connector.configuration.Events#addBeforeExecuteEventHandler(java.lang.Class) }
  * event.
  */
 @Getter
 @Setter
-@SuppressWarnings("FinalMethod")
 public class BeforeExecuteCommandEventArgs extends EventArgs {
 
     private String command;

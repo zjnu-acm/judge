@@ -46,7 +46,7 @@ public class DefaultPathBuilder implements IBasePathBuilder {
         }
 
         try {
-            return FileUtils.calculatePathFromBaseUrl(newBaseUrl);
+            return FileUtils.calculatePathFromBaseUrl(request.getServletContext(), newBaseUrl);
         } catch (Exception e) {
             log.error("Could not create path for: " + newBaseUrl, e);
             return newBaseUrl;

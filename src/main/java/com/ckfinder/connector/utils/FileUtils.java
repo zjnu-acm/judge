@@ -12,7 +12,6 @@
 package com.ckfinder.connector.utils;
 
 import cn.edu.zjnu.acm.judge.util.DeleteHelper;
-import com.ckfinder.connector.ServletContextFactory;
 import com.ckfinder.connector.configuration.Constants;
 import com.ckfinder.connector.configuration.IConfiguration;
 import com.ckfinder.connector.data.ResourceType;
@@ -213,7 +212,7 @@ public class FileUtils {
      * @throws ConnectorException when {@code ServletContext} is {@code null} or
      * full path to resource cannot be obtained.
      */
-    public static String getFullPath(String path, boolean isAbsolute, boolean shouldExist) throws ConnectorException {
+    public static String getFullPath(ServletContext servletContext, String path, boolean isAbsolute, boolean shouldExist) throws ConnectorException {
         if (path != null && !path.isEmpty()) {
             if (isAbsolute) {
                 if (path.startsWith("/")) {
@@ -225,7 +224,7 @@ public class FileUtils {
                 }
                 return checkAndReturnPath(shouldExist, path);
             } else {
-                ServletContext sc = ServletContextFactory.getServletContext();
+                ServletContext sc = servletContext;
                 String tempPath = PathUtils.addSlashToEnd(PathUtils.addSlashToBeginning(path));
                 try {
                     java.net.URL url = sc.getResource(tempPath);
@@ -331,9 +330,9 @@ public class FileUtils {
      * @throws ConnectorException when {@code ServletContext} is {@code null} or
      * path to resource cannot be obtained.
      */
-    public static String calculatePathFromBaseUrl(String path) throws ConnectorException {
+    public static String calculatePathFromBaseUrl(ServletContext servletContext, String path) throws ConnectorException {
         if (path != null && !path.isEmpty()) {
-            ServletContext sc = ServletContextFactory.getServletContext();
+            ServletContext sc = servletContext;
             String tempPath = PathUtils.addSlashToBeginning(path);
             String finalPath;
             if (tempPath.startsWith(sc.getContextPath() + "/")) {
@@ -812,15 +811,15 @@ public class FileUtils {
      * @return true if there are any allowed and non-hidden subfolders.
      * @throws java.io.IOException
      */
-    public static Boolean hasChildren(String dirPath, Path dir, IConfiguration configuration, String resourceType, String currentUserRole) throws IOException {
+    public static Boolean hasChildren(AccessControl accessControl, String dirPath, Path dir, IConfiguration configuration, String resourceType, String currentUserRole) throws IOException {
         DirectoryStream<Path> subDirsList = Files.newDirectoryStream(dir, Files::isDirectory);
 
         if (subDirsList != null) {
             for (Path subDirsList1 : subDirsList) {
                 String subDirName = subDirsList1.getFileName().toString();
                 if (!FileUtils.checkIfDirIsHidden(subDirName, configuration)
-                        && AccessControlUtil.getInstance().checkFolderACL(resourceType,
-                                dirPath + subDirName, currentUserRole, AccessControlUtil.CKFINDER_CONNECTOR_ACL_FOLDER_VIEW)) {
+                        && accessControl.checkFolderACL(resourceType,
+                                dirPath + subDirName, currentUserRole, AccessControl.CKFINDER_CONNECTOR_ACL_FOLDER_VIEW)) {
                     return true;
                 }
             }

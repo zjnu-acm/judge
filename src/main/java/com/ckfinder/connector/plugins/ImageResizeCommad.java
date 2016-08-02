@@ -14,13 +14,12 @@ package com.ckfinder.connector.plugins;
 import com.ckfinder.connector.configuration.Constants;
 import com.ckfinder.connector.configuration.IConfiguration;
 import com.ckfinder.connector.data.BeforeExecuteCommandEventArgs;
-import com.ckfinder.connector.data.EventArgs;
 import com.ckfinder.connector.data.IEventHandler;
 import com.ckfinder.connector.data.PluginInfo;
 import com.ckfinder.connector.data.PluginParam;
 import com.ckfinder.connector.errors.ConnectorException;
 import com.ckfinder.connector.handlers.command.XMLCommand;
-import com.ckfinder.connector.utils.AccessControlUtil;
+import com.ckfinder.connector.utils.AccessControl;
 import com.ckfinder.connector.utils.FileUtils;
 import com.ckfinder.connector.utils.ImageUtils;
 import java.io.IOException;
@@ -36,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Element;
 
 @Slf4j
-public class ImageResizeCommad extends XMLCommand implements IEventHandler {
+public class ImageResizeCommad extends XMLCommand implements IEventHandler<BeforeExecuteCommandEventArgs> {
 
     private static final String[] SIZES = {"small", "medium", "large"};
 
@@ -51,19 +50,14 @@ public class ImageResizeCommad extends XMLCommand implements IEventHandler {
     private Integer height;
     private boolean wrongReqSizesParams;
     private Map<String, String> sizesFromReq;
-    /**
-     * Current request object
-     */
-    private HttpServletRequest request;
 
     public ImageResizeCommad(PluginInfo pluginInfo) {
         this.pluginInfo = pluginInfo;
     }
 
     @Override
-    public boolean runEventHandler(EventArgs eventArgs, IConfiguration configuration1)
+    public boolean runEventHandler(BeforeExecuteCommandEventArgs args, IConfiguration configuration1)
             throws ConnectorException {
-        BeforeExecuteCommandEventArgs args = (BeforeExecuteCommandEventArgs) eventArgs;
         if ("ImageResize".equals(args.getCommand())) {
             this.runCommand(args.getRequest(), args.getResponse(), configuration1);
             return false;
@@ -84,9 +78,9 @@ public class ImageResizeCommad extends XMLCommand implements IEventHandler {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
         }
 
-        if (!AccessControlUtil.getInstance().checkFolderACL(type, currentFolder, userRole,
-                AccessControlUtil.CKFINDER_CONNECTOR_ACL_FILE_DELETE
-                | AccessControlUtil.CKFINDER_CONNECTOR_ACL_FILE_UPLOAD)) {
+        if (!getAccessControl().checkFolderACL(type, currentFolder, userRole,
+                AccessControl.CKFINDER_CONNECTOR_ACL_FILE_DELETE
+                | AccessControl.CKFINDER_CONNECTOR_ACL_FILE_UPLOAD)) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
         }
 
@@ -185,10 +179,7 @@ public class ImageResizeCommad extends XMLCommand implements IEventHandler {
 
     private String[] parseValue(String value) {
         StringTokenizer st = new StringTokenizer(value, "x");
-        String[] res = new String[2];
-        res[0] = st.nextToken();
-        res[1] = st.nextToken();
-        return res;
+        return new String[]{st.nextToken(), st.nextToken()};
     }
 
     private boolean checkParamSize(String value) {
@@ -196,15 +187,14 @@ public class ImageResizeCommad extends XMLCommand implements IEventHandler {
     }
 
     @Override
-    public void initParams(HttpServletRequest request,
+    protected void initParams(HttpServletRequest request,
             IConfiguration configuration1, Object... params)
             throws ConnectorException {
         super.initParams(request, configuration1, params);
 
-        this.request = request;
         this.sizesFromReq = new HashMap<>();
-        this.fileName = getParameter(request, "fileName");
-        this.newFileName = getParameter(request, "newFileName");
+        this.fileName = request.getParameter("fileName");
+        this.newFileName = request.getParameter("newFileName");
         this.overwrite = request.getParameter("overwrite");
         String reqWidth = request.getParameter("width");
         String reqHeight = request.getParameter("height");
