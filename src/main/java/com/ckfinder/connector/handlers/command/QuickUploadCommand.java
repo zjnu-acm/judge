@@ -15,7 +15,7 @@ import com.ckfinder.connector.utils.FileUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.ServletContext;
@@ -27,45 +27,45 @@ import javax.servlet.http.HttpServletResponse;
 public class QuickUploadCommand extends FileUploadCommand {
 
     @Override
-    protected void handleOnUploadCompleteResponse(final OutputStream out,
+    protected void handleOnUploadCompleteResponse(final Writer writer,
             final String errorMsg) throws IOException {
         if (this.responseType != null && this.responseType.equalsIgnoreCase("json")) {
-            handleJSONResponse(out, errorMsg, null);
+            handleJSONResponse(writer, errorMsg, null);
         } else {
-            out.write("<script type=\"text/javascript\">".getBytes("UTF-8"));
-            out.write("window.parent.OnUploadCompleted(".getBytes("UTF-8"));
-            out.write(("" + this.errorCode + ", ").getBytes("UTF-8"));
+            writer.write("<script type=\"text/javascript\">");
+            writer.write("window.parent.OnUploadCompleted(");
+            writer.write("" + this.errorCode + ", ");
             if (uploaded) {
-                out.write(("\'" + configuration.getTypes().get(this.type).getUrl()
+                writer.write("'" + configuration.getTypes().get(this.type).getUrl()
                         + this.currentFolder
                         + FileUtils.backupWithBackSlash(FileUtils.encodeURIComponent(this.newFileName), "'")
-                        + "\', ").getBytes("UTF-8"));
-                out.write(("\'" + FileUtils.backupWithBackSlash(this.newFileName, "'")
-                        + "\', ").getBytes("UTF-8"));
+                        + "', ");
+                writer.write("'" + FileUtils.backupWithBackSlash(this.newFileName, "'")
+                        + "', ");
             } else {
-                out.write("\'\', \'\', ".getBytes("UTF-8"));
+                writer.write("'', '', ");
             }
-            out.write("\'\'".getBytes("UTF-8"));
-            out.write(");".getBytes("UTF-8"));
-            out.write("</script>".getBytes("UTF-8"));
+            writer.write("''");
+            writer.write(");");
+            writer.write("</script>");
         }
     }
 
     @Override
-    protected void handleOnUploadCompleteCallFuncResponse(final OutputStream out,
+    protected void handleOnUploadCompleteCallFuncResponse(final Writer writer,
             final String errorMsg, final String path) throws IOException {
         if (this.responseType != null && this.responseType.equalsIgnoreCase("json")) {
-            handleJSONResponse(out, errorMsg, path);
+            handleJSONResponse(writer, errorMsg, path);
         } else {
-            out.write("<script type=\"text/javascript\">".getBytes("UTF-8"));
+            writer.write("<script type=\"text/javascript\">");
             this.ckEditorFuncNum = this.ckEditorFuncNum.replaceAll(
                     "[^\\d]", "");
-            out.write(("window.parent.CKEDITOR.tools.callFunction("
+            writer.write(("window.parent.CKEDITOR.tools.callFunction("
                     + this.ckEditorFuncNum + ", '"
                     + path
                     + FileUtils.backupWithBackSlash(FileUtils.encodeURIComponent(this.newFileName), "'")
-                    + "', '" + errorMsg + "');").getBytes("UTF-8"));
-            out.write("</script>".getBytes("UTF-8"));
+                    + "', '" + errorMsg + "');"));
+            writer.write("</script>");
         }
     }
 
@@ -89,12 +89,12 @@ public class QuickUploadCommand extends FileUploadCommand {
      * Writes JSON object into response stream after uploading file which was
      * dragged and dropped in to CKEditor 4.5 or higher.
      *
-     * @param out the response stream
+     * @param writer the response stream
      * @param errorMsg string representing error message which indicates that
      * there was an error during upload or uploaded file was renamed
      * @param path path to uploaded file
      */
-    private void handleJSONResponse(final OutputStream out,
+    private void handleJSONResponse(final Writer writer,
             final String errorMsg, final String path) throws IOException {
 
         Gson gson = new GsonBuilder().serializeNulls().create();
@@ -129,6 +129,7 @@ public class QuickUploadCommand extends FileUploadCommand {
             jsonObj.put("error", jsonErrObj);
         }
 
-        out.write((gson.toJson(jsonObj)).getBytes("UTF-8"));
+        writer.write(gson.toJson(jsonObj));
     }
+
 }
