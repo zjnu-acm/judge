@@ -25,7 +25,6 @@ import java.util.Date;
 /**
  *
  * @author zhanhb
- * @date Jun 6, 2015, 0:36:42
  */
 public class Resources {
 

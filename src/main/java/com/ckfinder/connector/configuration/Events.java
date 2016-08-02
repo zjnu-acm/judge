@@ -43,7 +43,6 @@ public class Events {
     /**
      * register events handlers for event.
      *
-     * @param event selected event
      * @param eventHandler event class to register
      */
     public void addBeforeExecuteEventHandler(Class<? extends IEventHandler<BeforeExecuteCommandEventArgs>> eventHandler) {
@@ -61,7 +60,6 @@ public class Events {
     /**
      * register events handlers for event.
      *
-     * @param event selected event
      * @param eventHandler event class to register
      * @param pluginInfo plugin info
      */
@@ -83,7 +81,6 @@ public class Events {
     /**
      * run event handlers for selected event.
      *
-     * @param eventTyp selected event.
      * @param args event execute arguments.
      * @param configuration connector configuration
      * @return false when end executing command.

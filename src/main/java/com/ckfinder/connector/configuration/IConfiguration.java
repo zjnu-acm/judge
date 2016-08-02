@@ -313,6 +313,10 @@ public interface IConfiguration {
      */
     public IBasePathBuilder getBasePathBuilder();
 
+    /**
+     *
+     * @return the servlet context
+     */
     public ServletContext getServletContext();
 
 }
