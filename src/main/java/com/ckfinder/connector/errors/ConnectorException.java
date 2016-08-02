@@ -12,11 +12,12 @@
 package com.ckfinder.connector.errors;
 
 import com.ckfinder.connector.configuration.Constants;
+import lombok.Getter;
 
 /**
  * Connector Exception.
  */
-@SuppressWarnings("FinalMethod")
+@Getter
 public class ConnectorException extends Exception {
 
     /**
@@ -43,7 +44,7 @@ public class ConnectorException extends Exception {
      * @param addCurrentFolder add current node flag
      * @param errorCode error code number
      */
-    public ConnectorException(final int errorCode, final boolean addCurrentFolder) {
+    public ConnectorException(int errorCode, boolean addCurrentFolder) {
         this(errorCode);
         this.addCurrentFolder = addCurrentFolder;
     }
@@ -54,7 +55,7 @@ public class ConnectorException extends Exception {
      * @param errorCode error code number
      * @param errorMsg error text message
      */
-    public ConnectorException(final int errorCode, final String errorMsg) {
+    public ConnectorException(int errorCode, String errorMsg) {
         super(errorMsg, null);
     }
 
@@ -64,7 +65,7 @@ public class ConnectorException extends Exception {
      * @param errorCode error code number
      * @param e exception
      */
-    public ConnectorException(final int errorCode, final Exception e) {
+    public ConnectorException(int errorCode, Exception e) {
         super(e.getMessage(), e);
         addCurrentFolder = false;
     }
@@ -74,49 +75,20 @@ public class ConnectorException extends Exception {
      *
      * @param e Exception
      */
-    public ConnectorException(final Exception e) {
+    public ConnectorException(Exception e) {
         super(e.getMessage(), e);
         if (e instanceof ConnectorException) {
             errorCode = ((ConnectorException) e).getErrorCode();
-            addCurrentFolder = ((ConnectorException) e).addCurrentFolder;
+            addCurrentFolder = ((ConnectorException) e).isAddCurrentFolder();
         } else {
             addCurrentFolder = false;
             errorCode = Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNKNOWN;
         }
     }
 
-    /**
-     * gets error code.
-     *
-     * @return error code.
-     */
-    public int getErrorCode() {
-        return this.errorCode;
-    }
-
-    /**
-     * gets error message.
-     *
-     * @return error message.
-     */
-    public String getErrorMessage() {
-        return super.getMessage();
-    }
-
-    /**
-     * add current folder node.
-     *
-     * @return true if add current folder node
-     */
-    public boolean isAddCurrentFolder() {
-        return addCurrentFolder;
-    }
-
-    /**
-     * @return the errorMsg
-     */
-    public final String getErrorMsg() {
-        return super.getMessage();
+    @Override
+    public final String getMessage() {
+        return super.getMessage(); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

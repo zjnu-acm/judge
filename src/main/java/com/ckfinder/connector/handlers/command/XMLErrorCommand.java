@@ -60,7 +60,7 @@ public class XMLErrorCommand extends XMLCommand {
 
     @Override
     protected String getErrorMsg(final int errorNum) {
-        return connectorException.getErrorMessage();
+        return connectorException.getMessage();
     }
 
     /**
