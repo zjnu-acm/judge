@@ -20,7 +20,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.StringTokenizer;
 import javax.annotation.Nullable;
 import javax.servlet.RequestDispatcher;
@@ -28,7 +32,9 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.web.servlet.resource.VersionedResource;
 
 @Slf4j
 public class Downloader {
@@ -44,9 +50,20 @@ public class Downloader {
      */
     private static final String MIME_SEPARATION = "DOWNLOADER_MIME_BOUNDARY";
     private static final ThreadLocal<byte[]> INPUT_BUFFER_POOL = ThreadLocal.withInitial(() -> new byte[8192]);
+    private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss zzz")
+            .withZone(ZoneId.of("GMT")).withLocale(Locale.US);
 
     public static Downloader newInstance() {
         return new Downloader();
+    }
+
+    private static String getETag(Resource resource) throws IOException {
+        if (resource instanceof VersionedResource) {
+            return ((VersionedResource) resource).getVersion();
+        }
+        long contentLength = resource.contentLength();
+        long lastModified = resource.lastModified();
+        return "W/\"" + contentLength + "-" + lastModified + "\"";
     }
 
     // ----------------------------------------------------- Instance Variables
@@ -147,6 +164,7 @@ public class Downloader {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, requestUri);
             return;
         }
+
         boolean isError = response.getStatus() >= HttpServletResponse.SC_BAD_REQUEST;
         // Check if the conditions specified in the optional If headers are
         // satisfied.
@@ -156,7 +174,8 @@ public class Downloader {
             return;
         }
         // Find content type.
-        String contentType = resource.getMimeType();
+        // TODO mime type
+        String contentType = null;
         if (contentType == null) {
             contentType = request.getServletContext().getMimeType(resource.getFilename());
         }
@@ -170,12 +189,12 @@ public class Downloader {
             // Parse range specifier
             ranges = parseRange(request, response, resource);
             // ETag header
-            response.setHeader(HttpHeaders.ETAG, resource.getETag());
+            response.setHeader(HttpHeaders.ETAG, getETag(resource));
             // Last-Modified header
-            response.setHeader(HttpHeaders.LAST_MODIFIED, resource.getLastModifiedHttp());
+            response.setHeader(HttpHeaders.LAST_MODIFIED, dtf.format(Instant.ofEpochMilli(resource.lastModified())));
         }
         // Get content length
-        contentLength = resource.getContentLength();
+        contentLength = resource.contentLength();
         // Special case for zero length files, which would cause a
         // (silent) ISE when setting the output buffer size
         if (contentLength == 0L) {
@@ -208,7 +227,7 @@ public class Downloader {
             }
             // Copy the input stream to our output stream (if requested)
             if (serveContent) {
-                try (InputStream stream = resource.openStream()) {
+                try (InputStream stream = resource.getInputStream()) {
                     log.trace("Serving bytes");
                     IOUtils.copyLarge(stream, ostream, INPUT_BUFFER_POOL.get());
                 }
@@ -226,7 +245,7 @@ public class Downloader {
                     response.setContentType(contentType);
                 }
                 if (serveContent) {
-                    try (InputStream stream = resource.openStream()) {
+                    try (InputStream stream = resource.getInputStream()) {
                         copyRange(stream, ostream, range.start, range.end);
                     }
                 }
@@ -260,8 +279,8 @@ public class Downloader {
             } catch (IllegalArgumentException e) {
                 // Ignore
             }
-            String eTag = resource.getETag();
-            long lastModified = resource.getLastModified();
+            String eTag = getETag(resource);
+            long lastModified = resource.lastModified();
             if (headerValueTime == -1) {
                 // If the ETag the client gave does not match the entity
                 // etag, then the entire entity is returned.
@@ -275,7 +294,7 @@ public class Downloader {
                 return FULL;
             }
         }
-        long fileLength = resource.getContentLength();
+        long fileLength = resource.contentLength();
         if (fileLength == 0) {
             return FULL;
         }
@@ -346,7 +365,7 @@ public class Downloader {
      */
     private boolean checkIfMatch(HttpServletRequest request, HttpServletResponse response,
             Resource resource) throws IOException {
-        String eTag = resource.getETag();
+        String eTag = getETag(resource);
         String headerValue = request.getHeader(HttpHeaders.IF_MATCH);
         if (headerValue != null && headerValue.indexOf('*') == -1
                 && !anyMatches(headerValue, eTag)) {
@@ -377,11 +396,11 @@ public class Downloader {
             // is ignored.
             if (request.getHeader(HttpHeaders.IF_NONE_MATCH) == null
                     && (headerValue = request.getDateHeader(HttpHeaders.IF_MODIFIED_SINCE)) != -1
-                    && resource.getLastModified() < headerValue + 1000) {
+                    && resource.lastModified() < headerValue + 1000) {
                 // The entity has not been modified since the date
                 // specified by the client. This is not an error case.
                 response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-                response.setHeader(HttpHeaders.ETAG, resource.getETag());
+                response.setHeader(HttpHeaders.ETAG, getETag(resource));
                 return false;
             }
         } catch (IllegalArgumentException ex) {
@@ -401,7 +420,7 @@ public class Downloader {
      */
     private boolean checkIfNoneMatch(HttpServletRequest request, HttpServletResponse response,
             Resource resource) throws IOException {
-        String eTag = resource.getETag();
+        String eTag = getETag(resource);
         String headerValue = request.getHeader(HttpHeaders.IF_NONE_MATCH);
         if (headerValue != null && (headerValue.equals("*") || anyMatches(headerValue, eTag))) {
             // For GET and HEAD, we should respond with
@@ -434,7 +453,7 @@ public class Downloader {
             Resource resource) throws IOException {
         if (request.getHeader(HttpHeaders.IF_MATCH) == null) {
             try {
-                long lastModified = resource.getLastModified();
+                long lastModified = resource.lastModified();
                 long headerValue = request.getDateHeader(HttpHeaders.IF_UNMODIFIED_SINCE);
                 if (headerValue != -1 && lastModified >= headerValue + 1000) {
                     // The entity has not been modified since the date
@@ -465,7 +484,7 @@ public class Downloader {
             throws IOException {
         IOException exception = null;
         for (Range currentRange : ranges) {
-            try (InputStream stream = resource.openStream()) {
+            try (InputStream stream = resource.getInputStream()) {
                 // Writing MIME header.
                 ostream.println();
                 ostream.println("--" + MIME_SEPARATION);

@@ -16,14 +16,14 @@
 package cn.edu.zjnu.acm.judge.controller;
 
 import cn.edu.zjnu.acm.judge.config.JudgeConfiguration;
-import com.github.zhanhb.download.Resource;
-import com.github.zhanhb.download.Resources;
 import com.github.zhanhb.download.spring.ToDownload;
 import java.io.IOException;
 import java.nio.file.Path;
 import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.PathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -46,7 +46,7 @@ public class CKFinderController {
                 log.debug("absolute path parent='{}' path='{}'", parent, imagePath);
                 return null;
             }
-            return Resources.of(imagePath).build();
+            return new PathResource(imagePath);
         } catch (IllegalArgumentException ex) {
             return null;
         }
