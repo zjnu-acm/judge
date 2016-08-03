@@ -64,14 +64,12 @@ public abstract class Command {
      * @param request request
      * @param response response
      * @param configuration connector configuration
-     * @param params additional execute parameters.
      * @throws ConnectorException when error occurred.
      */
     public void runCommand(HttpServletRequest request,
             HttpServletResponse response,
-            IConfiguration configuration,
-            Object... params) throws ConnectorException {
-        this.initParams(request, configuration, params);
+            IConfiguration configuration) throws ConnectorException {
+        this.initParams(request, configuration);
         try {
             setResponseHeader(response, request.getServletContext());
             execute(response.getOutputStream());
@@ -88,11 +86,10 @@ public abstract class Command {
      *
      * @param request request
      * @param configuration connector configuration
-     * @param params execute additional params.
      * @throws ConnectorException to handle in error handler.
      */
     protected void initParams(HttpServletRequest request,
-            IConfiguration configuration, Object... params)
+            IConfiguration configuration)
             throws ConnectorException {
         if (configuration != null) {
             this.configuration = configuration;

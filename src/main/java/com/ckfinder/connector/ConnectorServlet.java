@@ -26,6 +26,7 @@ import com.ckfinder.connector.handlers.command.ErrorCommand;
 import com.ckfinder.connector.handlers.command.FileUploadCommand;
 import com.ckfinder.connector.handlers.command.GetFilesCommand;
 import com.ckfinder.connector.handlers.command.GetFoldersCommand;
+import com.ckfinder.connector.handlers.command.IErrorCommand;
 import com.ckfinder.connector.handlers.command.IPostCommand;
 import com.ckfinder.connector.handlers.command.InitCommand;
 import com.ckfinder.connector.handlers.command.MoveFilesCommand;
@@ -188,7 +189,7 @@ public class ConnectorServlet extends HttpServlet {
             boolean isNativeCommand) throws IllegalArgumentException, ConnectorException {
         if (isNativeCommand) {
             CommandHandlerEnum cmd = CommandHandlerEnum.valueOf(command.toUpperCase());
-            cmd.execute(request, response, configuration);
+            cmd.execute(request, response, configuration, null);
         } else {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_COMMAND, false);
@@ -357,10 +358,13 @@ public class ConnectorServlet extends HttpServlet {
         private void execute(HttpServletRequest request,
                 HttpServletResponse response,
                 IConfiguration configuration,
-                Object... params) throws ConnectorException {
+                ConnectorException e) throws ConnectorException {
             Command com = supplier.get();
+            if (com instanceof IErrorCommand) {
+                ((IErrorCommand) com).setConnectorException(e);
+            }
             com.setAccessControl(configuration.getAccessControl());
-            com.runCommand(request, response, configuration, params);
+            com.runCommand(request, response, configuration);
         }
 
         /**

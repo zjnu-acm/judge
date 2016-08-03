@@ -147,14 +147,10 @@ public class RenameFolderCommand extends XMLCommand implements IPostCommand {
     /**
      * @param request request
      * @param configuration connector conf
-     * @param params execute additional params.
      * @throws ConnectorException when error occurs.
      */
     @Override
-    protected void initParams(HttpServletRequest request,
-            IConfiguration configuration,
-            Object... params) throws ConnectorException {
-
+    protected void initParams(HttpServletRequest request, IConfiguration configuration) throws ConnectorException {
         super.initParams(request, configuration);
         this.newFolderName = request.getParameter("NewFolderName");
     }

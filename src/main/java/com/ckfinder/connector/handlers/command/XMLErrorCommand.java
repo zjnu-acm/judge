@@ -22,24 +22,24 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
+import lombok.Setter;
 import org.w3c.dom.Element;
 
 /**
  * Class to handle errors from commands returning XML response.
  */
-public class XMLErrorCommand extends XMLCommand {
+public class XMLErrorCommand extends XMLCommand implements IErrorCommand {
 
     /**
      * exception to handle.
      */
+    @Setter
     private ConnectorException connectorException;
 
     @Override
-    protected void initParams(HttpServletRequest request,
-            IConfiguration configuration, Object... params)
+    protected void initParams(HttpServletRequest request, IConfiguration configuration)
             throws ConnectorException {
-        super.initParams(request, configuration, params);
-        this.connectorException = (ConnectorException) params[0];
+        super.initParams(request, configuration);
         if (connectorException.isAddCurrentFolder()) {
             String tmpType = request.getParameter("type");
             if (checkIfTypeExists(tmpType)) {

@@ -12,14 +12,12 @@
 package com.ckfinder.connector.handlers.command;
 
 import com.ckfinder.connector.configuration.Constants;
-import com.ckfinder.connector.configuration.IConfiguration;
 import com.ckfinder.connector.errors.ConnectorException;
 import com.ckfinder.connector.utils.AccessControl;
 import com.ckfinder.connector.utils.FileUtils;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Element;
 
@@ -28,14 +26,6 @@ import org.w3c.dom.Element;
  */
 @Slf4j
 public class DeleteFolderCommand extends XMLCommand implements IPostCommand {
-
-    @Override
-    protected void initParams(HttpServletRequest request,
-            IConfiguration configuration, Object... params)
-            throws ConnectorException {
-
-        super.initParams(request, configuration, params);
-    }
 
     @Override
     protected void createXMLChildNodes(int errorNum, Element rootElement)
