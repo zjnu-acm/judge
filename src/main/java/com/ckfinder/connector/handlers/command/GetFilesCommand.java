@@ -58,12 +58,10 @@ public class GetFilesCommand extends XMLCommand {
      *
      * @param request request
      * @param configuration connector configuration
-     * @param params execute additional params.
      * @throws ConnectorException when error occurs
      */
     @Override
-    protected void initParams(HttpServletRequest request,
-            IConfiguration configuration, Object... params)
+    protected void initParams(HttpServletRequest request, IConfiguration configuration)
             throws ConnectorException {
         super.initParams(request, configuration);
 

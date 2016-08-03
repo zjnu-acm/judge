@@ -155,14 +155,11 @@ public class DeleteFilesCommand extends XMLCommand implements IPostCommand {
      *
      * @param request current response object
      * @param configuration connector configuration object
-     * @param params additional parameters
      * @throws ConnectorException when initialization parameters can't be loaded
      * for command handler.
      */
     @Override
-    protected void initParams(HttpServletRequest request,
-            IConfiguration configuration,
-            Object... params) throws ConnectorException {
+    protected void initParams(HttpServletRequest request, IConfiguration configuration) throws ConnectorException {
         super.initParams(request, configuration);
         this.files = new ArrayList<>();
         getFilesListFromRequest(request);

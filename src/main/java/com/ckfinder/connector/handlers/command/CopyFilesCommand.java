@@ -289,9 +289,7 @@ public class CopyFilesCommand extends XMLCommand implements IPostCommand {
     }
 
     @Override
-    protected void initParams(HttpServletRequest request,
-            IConfiguration configuration,
-            Object... params) throws ConnectorException {
+    protected void initParams(HttpServletRequest request, IConfiguration configuration) throws ConnectorException {
         super.initParams(request, configuration);
         this.files = new ArrayList<>();
         this.copiedAll = (request.getParameter("copied") != null) ? Integer.valueOf(request.getParameter("copied")) : 0;

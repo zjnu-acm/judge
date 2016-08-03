@@ -106,10 +106,9 @@ public class ImageResizeInfoCommand extends XMLCommand implements IEventHandler<
     }
 
     @Override
-    protected void initParams(HttpServletRequest request,
-            IConfiguration configuration, Object... params)
+    protected void initParams(HttpServletRequest request, IConfiguration configuration)
             throws ConnectorException {
-        super.initParams(request, configuration, params);
+        super.initParams(request, configuration);
         this.imageHeight = 0;
         this.imageWidth = 0;
         this.currentFolder = request.getParameter("currentFolder");

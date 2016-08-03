@@ -26,20 +26,22 @@ import java.util.regex.Pattern;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.Setter;
 
 /**
  * Class to handle errors via HTTP headers (for non-XML commands).
  */
-public class ErrorCommand extends Command {
+public class ErrorCommand extends Command implements IErrorCommand {
 
-    private ConnectorException e;
+    @Setter
+    private ConnectorException connectorException;
     private HttpServletResponse response;
 
     @Override
     public void execute(OutputStream out) throws ConnectorException {
         try {
-            response.setHeader("X-CKFinder-Error", String.valueOf(e.getErrorCode()));
-            switch (e.getErrorCode()) {
+            response.setHeader("X-CKFinder-Error", String.valueOf(connectorException.getErrorCode()));
+            switch (connectorException.getErrorCode()) {
                 case Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST:
                 case Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_NAME:
                 case Constants.Errors.CKFINDER_CONNECTOR_ERROR_THUMBNAILS_DISABLED:
@@ -69,10 +71,9 @@ public class ErrorCommand extends Command {
 
     @Override
     protected void initParams(HttpServletRequest request,
-            IConfiguration configuration, Object... params)
+            IConfiguration configuration)
             throws ConnectorException {
-        super.initParams(request, configuration, params);
-        e = (ConnectorException) params[0];
+        super.initParams(request, configuration);
     }
 
     /**
@@ -93,7 +94,7 @@ public class ErrorCommand extends Command {
     protected boolean checkHidden()
             throws ConnectorException {
         if (FileUtils.checkIfDirIsHidden(this.currentFolder, configuration)) {
-            this.e = new ConnectorException(
+            this.connectorException = new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_CONNECTOR_DISABLED);
             return true;
         }
@@ -104,7 +105,7 @@ public class ErrorCommand extends Command {
     protected boolean checkConnector(HttpServletRequest request)
             throws ConnectorException {
         if (!configuration.enabled() || !configuration.checkAuthentication(request)) {
-            this.e = new ConnectorException(
+            this.connectorException = new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_CONNECTOR_DISABLED);
             return false;
         }
@@ -121,7 +122,7 @@ public class ErrorCommand extends Command {
             if (Files.exists(currDir) && Files.isDirectory(currDir)) {
                 return true;
             } else {
-                this.e = new ConnectorException(
+                this.connectorException = new ConnectorException(
                         Constants.Errors.CKFINDER_CONNECTOR_ERROR_FOLDER_NOT_FOUND);
                 return false;
             }
@@ -133,7 +134,7 @@ public class ErrorCommand extends Command {
     protected boolean checkIfTypeExists(String type) {
         ResourceType testType = configuration.getTypes().get(type);
         if (testType == null) {
-            this.e = new ConnectorException(
+            this.connectorException = new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE, false);
             return false;
         }
