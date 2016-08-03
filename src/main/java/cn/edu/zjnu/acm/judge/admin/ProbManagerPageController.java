@@ -7,8 +7,6 @@ import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.util.JudgeUtils;
 import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -48,9 +46,7 @@ public class ProbManagerPageController {
     @GetMapping("/admin/problems/{problemId}/edit")
     public String probmanagerpage(Model model,
             @PathVariable("problemId") long problemId,
-            @RequestParam("problemLang") Optional<String> problemLang,
-            Locale locale) {
-        String lang = problemLang.orElseGet(locale::getLanguage);
+            @RequestParam(value = "problemLang", defaultValue = "") String lang) {
         log.debug(lang);
         Problem problem = problemMapper.findOne(problemId, lang);
         if (problem == null) {
