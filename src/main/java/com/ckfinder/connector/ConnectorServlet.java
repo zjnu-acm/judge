@@ -253,67 +253,67 @@ public class ConnectorServlet extends HttpServlet {
         /**
          * init command.
          */
-        INIT(() -> new InitCommand()),
+        INIT(InitCommand::new),
         /**
          * get subfolders for selected location command.
          */
-        GETFOLDERS(() -> new GetFoldersCommand()),
+        GETFOLDERS(GetFoldersCommand::new),
         /**
          * get files from current folder command.
          */
-        GETFILES(() -> new GetFilesCommand()),
+        GETFILES(GetFilesCommand::new),
         /**
          * get thumbnail for file command.
          */
-        THUMBNAIL(() -> new ThumbnailCommand()),
+        THUMBNAIL(ThumbnailCommand::new),
         /**
          * download file command.
          */
-        DOWNLOADFILE(() -> new DownloadFileCommand()),
+        DOWNLOADFILE(DownloadFileCommand::new),
         /**
          * create subfolder.
          */
-        CREATEFOLDER(() -> new CreateFolderCommand()),
+        CREATEFOLDER(CreateFolderCommand::new),
         /**
          * rename file.
          */
-        RENAMEFILE(() -> new RenameFileCommand()),
+        RENAMEFILE(RenameFileCommand::new),
         /**
          * rename folder.
          */
-        RENAMEFOLDER(() -> new RenameFolderCommand()),
+        RENAMEFOLDER(RenameFolderCommand::new),
         /**
          * delete folder.
          */
-        DELETEFOLDER(() -> new DeleteFolderCommand()),
+        DELETEFOLDER(DeleteFolderCommand::new),
         /**
          * copy files.
          */
-        COPYFILES(() -> new CopyFilesCommand()),
+        COPYFILES(CopyFilesCommand::new),
         /**
          * move files.
          */
-        MOVEFILES(() -> new MoveFilesCommand()),
+        MOVEFILES(MoveFilesCommand::new),
         /**
          * delete files.
          */
-        DELETEFILES(() -> new DeleteFilesCommand()),
+        DELETEFILES(DeleteFilesCommand::new),
         /**
          * file upload.
          */
-        FILEUPLOAD(() -> new FileUploadCommand()),
+        FILEUPLOAD(FileUploadCommand::new),
         /**
          * quick file upload.
          */
-        QUICKUPLOAD(() -> new QuickUploadCommand()),
+        QUICKUPLOAD(QuickUploadCommand::new),
         /**
          * XML error command.
          */
-        XMLERROR(() -> new XMLErrorCommand()),
+        XMLERROR(XMLErrorCommand::new),
         /**
          * error command.
          */
-        ERROR(() -> new ErrorCommand());
+        ERROR(ErrorCommand::new);
         /**
          * command class for enum field.
          */
