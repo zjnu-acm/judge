@@ -51,7 +51,6 @@ public class CopyFilesCommand extends XMLCommand implements IPostCommand {
         if (addCopyNode) {
             createCopyFielsNode(rootElement);
         }
-
     }
 
     /**
@@ -90,7 +89,6 @@ public class CopyFilesCommand extends XMLCommand implements IPostCommand {
         }
         //this code should never be reached
         return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNKNOWN;
-
     }
 
     /**
@@ -292,10 +290,9 @@ public class CopyFilesCommand extends XMLCommand implements IPostCommand {
     protected void initParams(HttpServletRequest request, IConfiguration configuration) throws ConnectorException {
         super.initParams(request, configuration);
         this.files = new ArrayList<>();
-        this.copiedAll = (request.getParameter("copied") != null) ? Integer.valueOf(request.getParameter("copied")) : 0;
+        this.copiedAll = (request.getParameter("copied") != null) ? Integer.parseInt(request.getParameter("copied")) : 0;
 
         getFilesListFromRequest(request);
-
     }
 
     /**

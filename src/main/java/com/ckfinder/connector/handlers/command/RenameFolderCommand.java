@@ -129,7 +129,6 @@ public class RenameFolderCommand extends XMLCommand implements IPostCommand {
                 this.type
                 + this.newFolderPath);
         Files.move(thumbDir, newThumbDir);
-
     }
 
     /**
@@ -141,7 +140,6 @@ public class RenameFolderCommand extends XMLCommand implements IPostCommand {
         this.newFolderPath = tmp1.substring(0,
                 tmp1.lastIndexOf('/') + 1).concat(this.newFolderName);
         this.newFolderPath = PathUtils.addSlashToEnd(this.newFolderPath);
-
     }
 
     /**

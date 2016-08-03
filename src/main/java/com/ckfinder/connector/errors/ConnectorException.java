@@ -86,9 +86,4 @@ public class ConnectorException extends Exception {
         }
     }
 
-    @Override
-    public final String getMessage() {
-        return super.getMessage(); //To change body of generated methods, choose Tools | Templates.
-    }
-
 }

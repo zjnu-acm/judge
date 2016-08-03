@@ -84,7 +84,6 @@ public class GetFilesCommand extends XMLCommand {
      */
     @Override
     protected int getDataForXml() throws IOException {
-
         if (!checkIfTypeExists(this.type)) {
             this.type = null;
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;

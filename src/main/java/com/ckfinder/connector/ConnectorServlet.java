@@ -209,7 +209,6 @@ public class ConnectorServlet extends HttpServlet {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST, true);
         }
-
     }
 
     /**

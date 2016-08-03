@@ -240,7 +240,6 @@ public class InitCommand extends XMLCommand {
      * @return hash value
      */
     private String randomHash(String folder) {
-
         try {
             MessageDigest algorithm = MessageDigest.getInstance("SHA-256");
             algorithm.update(folder.getBytes("UTF8"));
@@ -269,4 +268,5 @@ public class InitCommand extends XMLCommand {
     protected void getCurrentFolderParam(HttpServletRequest request) {
         this.currentFolder = null;
     }
+
 }

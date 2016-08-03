@@ -295,9 +295,7 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
         super.initParams(request, configuration);
         this.files = new ArrayList<>();
         this.movedAll = (request.getParameter("moved") != null) ? Integer.valueOf(request.getParameter("moved")) : 0;
-
         getFilesListFromRequest(request);
-
     }
 
     /**

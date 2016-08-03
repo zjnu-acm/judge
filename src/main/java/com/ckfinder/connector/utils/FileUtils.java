@@ -448,7 +448,7 @@ public class FileUtils {
                 }
             }
 
-            if (Pattern.compile("type\\s*=\\s*[\'\"]?\\s*(?:\\w*/)?(?:ecma|java)",
+            if (Pattern.compile("type\\s*=\\s*['\"]?\\s*(?:\\w*/)?(?:ecma|java)",
                     Pattern.CASE_INSENSITIVE
                     | Pattern.DOTALL
                     | Pattern.MULTILINE).matcher(content).find()) {
@@ -456,14 +456,14 @@ public class FileUtils {
             }
 
             if (Pattern.compile(
-                    "(?:href|src|data)\\s*=\\s*[\'\"]?\\s*(?:ecma|java)script:",
+                    "(?:href|src|data)\\s*=\\s*['\"]?\\s*(?:ecma|java)script:",
                     Pattern.CASE_INSENSITIVE
                     | Pattern.DOTALL
                     | Pattern.MULTILINE).matcher(content).find()) {
                 return true;
             }
 
-            if (Pattern.compile("url\\s*\\(\\s*[\'\"]?\\s*(?:ecma|java)script:",
+            if (Pattern.compile("url\\s*\\(\\s*['\"]?\\s*(?:ecma|java)script:",
                     Pattern.CASE_INSENSITIVE
                     | Pattern.DOTALL
                     | Pattern.MULTILINE).matcher(content).find()) {
