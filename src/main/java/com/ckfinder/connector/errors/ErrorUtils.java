@@ -48,9 +48,9 @@ public final class ErrorUtils {
      * @param conf connector configuration object
      * @return localized error message.
      */
-    public String getErrorMsgByLangAndCode(final String lang,
-            final int errorCode,
-            final IConfiguration conf) {
+    public String getErrorMsgByLangAndCode(String lang,
+            int errorCode,
+            IConfiguration conf) {
         try {
             return ResourceBundle.getBundle(ErrorUtils.class.getPackage()
                     .getName().concat(".LocalStrings"), new Locale(lang))

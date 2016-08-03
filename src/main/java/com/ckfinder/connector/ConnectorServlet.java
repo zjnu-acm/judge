@@ -69,8 +69,8 @@ public class ConnectorServlet extends HttpServlet {
      * @throws ServletException
      */
     @Override
-    protected void doGet(final HttpServletRequest request,
-            final HttpServletResponse response) throws ServletException,
+    protected void doGet(HttpServletRequest request,
+            HttpServletResponse response) throws ServletException,
             IOException {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
@@ -86,8 +86,8 @@ public class ConnectorServlet extends HttpServlet {
      * @throws ServletException .
      */
     @Override
-    protected void doPost(final HttpServletRequest request,
-            final HttpServletResponse response) throws ServletException,
+    protected void doPost(HttpServletRequest request,
+            HttpServletResponse response) throws ServletException,
             IOException {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
@@ -102,8 +102,8 @@ public class ConnectorServlet extends HttpServlet {
      * @param post if it's post command.
      * @throws ServletException when error occurs.
      */
-    private void getResponse(final HttpServletRequest request,
-            final HttpServletResponse response, final boolean post)
+    private void getResponse(HttpServletRequest request,
+            HttpServletResponse response, boolean post)
             throws ServletException {
         boolean isNativeCommand;
         String command = request.getParameter("command");
@@ -183,8 +183,8 @@ public class ConnectorServlet extends HttpServlet {
      * @throws IllegalArgumentException when provided command is not found in
      * enumeration object
      */
-    private void executeNativeCommand(String command, final HttpServletRequest request,
-            final HttpServletResponse response, IConfiguration configuration,
+    private void executeNativeCommand(String command, HttpServletRequest request,
+            HttpServletResponse response, IConfiguration configuration,
             boolean isNativeCommand) throws IllegalArgumentException, ConnectorException {
         if (isNativeCommand) {
             CommandHandlerEnum cmd = CommandHandlerEnum.valueOf(command.toUpperCase());
@@ -201,7 +201,7 @@ public class ConnectorServlet extends HttpServlet {
      * @param request request
      * @throws ConnectorException when param isn't set or has wrong value.
      */
-    private void checkPostRequest(final HttpServletRequest request)
+    private void checkPostRequest(HttpServletRequest request)
             throws ConnectorException {
         if (request.getParameter("CKFinderCommand") == null
                 || !(request.getParameter("CKFinderCommand").equals("true"))) {
@@ -222,10 +222,10 @@ public class ConnectorServlet extends HttpServlet {
      * @throws ServletException when error handling fails.
      */
     @SuppressWarnings({"BroadCatchBlock", "TooBroadCatch"})
-    private void handleError(final ConnectorException e,
-            final IConfiguration configuration,
-            final HttpServletRequest request, final HttpServletResponse response,
-            final String currentCommand) throws ServletException {
+    private void handleError(ConnectorException e,
+            IConfiguration configuration,
+            HttpServletRequest request, HttpServletResponse response,
+            String currentCommand) throws ServletException {
         try {
             if (currentCommand != null && !currentCommand.isEmpty()) {
                 Command command = CommandHandlerEnum.valueOf(
@@ -328,7 +328,7 @@ public class ConnectorServlet extends HttpServlet {
          *
          * @param command1 command name
          */
-        private CommandHandlerEnum(final Supplier<? extends Command> supplier) {
+        private CommandHandlerEnum(Supplier<? extends Command> supplier) {
             this.supplier = supplier;
         }
 

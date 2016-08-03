@@ -58,7 +58,7 @@ public class ResourceType {
      *
      * @param name type name
      */
-    public ResourceType(final String name) {
+    public ResourceType(String name) {
         this.name = name;
     }
 
@@ -67,7 +67,7 @@ public class ResourceType {
      *
      * @param type source type
      */
-    public ResourceType(final ResourceType type) {
+    public ResourceType(ResourceType type) {
         this.name = type.name;
         this.url = type.url;
         this.path = type.path;

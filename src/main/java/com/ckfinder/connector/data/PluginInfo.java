@@ -32,7 +32,7 @@ public class PluginInfo {
      *
      * @param info source plugin info
      */
-    public PluginInfo(final PluginInfo info) {
+    public PluginInfo(PluginInfo info) {
         super();
         this.name = info.name;
         this.className = info.className;

@@ -51,7 +51,7 @@ public class DownloadFileCommand extends Command {
      * @throws ConnectorException when something went wrong during reading file.
      */
     @Override
-    public void execute(final OutputStream out) throws ConnectorException {
+    public void execute(OutputStream out) throws ConnectorException {
         if (!checkIfTypeExists(this.type)) {
             this.type = null;
             throw new ConnectorException(
@@ -104,8 +104,8 @@ public class DownloadFileCommand extends Command {
      * @throws ConnectorException when error occurs.
      */
     @Override
-    protected void initParams(final HttpServletRequest request,
-            final IConfiguration configuration, final Object... params)
+    protected void initParams(HttpServletRequest request,
+            IConfiguration configuration, Object... params)
             throws ConnectorException {
 
         super.initParams(request, configuration, params);
@@ -131,8 +131,8 @@ public class DownloadFileCommand extends Command {
      * @param sc servlet context
      */
     @Override
-    public void setResponseHeader(final HttpServletResponse response,
-            final ServletContext sc) {
+    public void setResponseHeader(HttpServletResponse response,
+            ServletContext sc) {
         String mimetype = sc.getMimeType(fileName);
         response.setCharacterEncoding("utf-8");
         if (this.format != null && this.format.equals("text")) {

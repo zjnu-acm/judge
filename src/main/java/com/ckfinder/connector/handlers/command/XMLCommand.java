@@ -39,8 +39,8 @@ public abstract class XMLCommand extends Command {
      * @param sc servlet context
      */
     @Override
-    public void setResponseHeader(final HttpServletResponse response,
-            final ServletContext sc) {
+    public void setResponseHeader(HttpServletResponse response,
+            ServletContext sc) {
         response.setContentType("text/xml");
         response.setHeader("Cache-Control", "no-cache");
         response.setCharacterEncoding("utf-8");
@@ -54,7 +54,7 @@ public abstract class XMLCommand extends Command {
      * @throws ConnectorException to handle in error handler.
      */
     @Override
-    public void execute(final OutputStream out) throws ConnectorException {
+    public void execute(OutputStream out) throws ConnectorException {
         try {
             createXMLResponse(getDataForXml());
             out.write(creator.getDocumentAsText().getBytes("UTF-8"));
@@ -71,7 +71,7 @@ public abstract class XMLCommand extends Command {
      * @param errorNum error code from method getDataForXml()
      * @throws ConnectorException to handle in error handler.
      */
-    private void createXMLResponse(final int errorNum) throws ConnectorException, IOException {
+    private void createXMLResponse(int errorNum) throws ConnectorException, IOException {
         Element rootElement = creator.getDocument().createElement("Connector");
         if (this.type != null && !type.isEmpty()) {
             rootElement.setAttribute("resourceType", this.type);
@@ -90,7 +90,7 @@ public abstract class XMLCommand extends Command {
      * @param errorNum error code
      * @return error message
      */
-    protected String getErrorMsg(final int errorNum) {
+    protected String getErrorMsg(int errorNum) {
         return null;
     }
 
@@ -102,8 +102,8 @@ public abstract class XMLCommand extends Command {
      * @throws ConnectorException to handle in error handler.
      * @throws java.io.IOException
      */
-    protected abstract void createXMLChildNodes(final int errorNum,
-            final Element rootElement)
+    protected abstract void createXMLChildNodes(int errorNum,
+            Element rootElement)
             throws ConnectorException, IOException;
 
     /**
@@ -122,7 +122,7 @@ public abstract class XMLCommand extends Command {
      *
      * @param rootElement XML root node.
      */
-    protected void createCurrentFolderNode(final Element rootElement) {
+    protected void createCurrentFolderNode(Element rootElement) {
         Element element = creator.getDocument().createElement("CurrentFolder");
         element.setAttribute("path", this.currentFolder);
         element.setAttribute("url", configuration.getTypes().get(this.type).getUrl()
@@ -133,8 +133,8 @@ public abstract class XMLCommand extends Command {
     }
 
     @Override
-    protected void initParams(final HttpServletRequest request,
-            final IConfiguration configuration, final Object... params)
+    protected void initParams(HttpServletRequest request,
+            IConfiguration configuration, Object... params)
             throws ConnectorException {
         super.initParams(request, configuration, params);
         creator = new XMLCreator();

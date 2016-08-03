@@ -35,8 +35,8 @@ public class XMLErrorCommand extends XMLCommand {
     private ConnectorException connectorException;
 
     @Override
-    protected void initParams(final HttpServletRequest request,
-            final IConfiguration configuration, final Object... params)
+    protected void initParams(HttpServletRequest request,
+            IConfiguration configuration, Object... params)
             throws ConnectorException {
         super.initParams(request, configuration, params);
         this.connectorException = (ConnectorException) params[0];
@@ -54,12 +54,12 @@ public class XMLErrorCommand extends XMLCommand {
     }
 
     @Override
-    protected void createXMLChildNodes(final int errorNum,
-            final Element rootElement) throws ConnectorException {
+    protected void createXMLChildNodes(int errorNum,
+            Element rootElement) throws ConnectorException {
     }
 
     @Override
-    protected String getErrorMsg(final int errorNum) {
+    protected String getErrorMsg(int errorNum) {
         return connectorException.getMessage();
     }
 
@@ -72,14 +72,14 @@ public class XMLErrorCommand extends XMLCommand {
      * @throws ConnectorException it should never throw an exception
      */
     @Override
-    protected boolean checkParam(final String reqParam)
+    protected boolean checkParam(String reqParam)
             throws ConnectorException {
         return reqParam == null || reqParam.isEmpty()
                 || !Pattern.compile(Constants.INVALID_PATH_REGEX).matcher(reqParam).find();
     }
 
     @Override
-    protected boolean checkConnector(final HttpServletRequest request)
+    protected boolean checkConnector(HttpServletRequest request)
             throws ConnectorException {
         if (!configuration.enabled() || !configuration.checkAuthentication(request)) {
             this.connectorException = new ConnectorException(
@@ -100,7 +100,7 @@ public class XMLErrorCommand extends XMLCommand {
     }
 
     @Override
-    protected boolean checkIfCurrFolderExists(final HttpServletRequest request)
+    protected boolean checkIfCurrFolderExists(HttpServletRequest request)
             throws ConnectorException {
         String tmpType = request.getParameter("type");
         if (checkIfTypeExists(tmpType)) {
@@ -118,7 +118,7 @@ public class XMLErrorCommand extends XMLCommand {
     }
 
     @Override
-    protected boolean checkIfTypeExists(final String type) {
+    protected boolean checkIfTypeExists(String type) {
         ResourceType testType = configuration.getTypes().get(type);
         if (testType == null) {
             this.connectorException = new ConnectorException(
@@ -134,7 +134,7 @@ public class XMLErrorCommand extends XMLCommand {
     }
 
     @Override
-    protected void getCurrentFolderParam(final HttpServletRequest request) {
+    protected void getCurrentFolderParam(HttpServletRequest request) {
         String currFolder = request.getParameter("currentFolder");
         if (!(currFolder == null || currFolder.isEmpty())) {
             this.currentFolder = PathUtils.addSlashToBeginning(PathUtils.addSlashToEnd(currFolder));

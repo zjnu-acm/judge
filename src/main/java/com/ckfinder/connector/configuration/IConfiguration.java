@@ -51,7 +51,7 @@ public interface IConfiguration {
      * @param request current request
      * @return true if is
      */
-    public boolean checkAuthentication(final HttpServletRequest request);
+    public boolean checkAuthentication(HttpServletRequest request);
 
     /**
      * gets user role name sets in config.
@@ -163,7 +163,7 @@ public interface IConfiguration {
      *
      * @param directory thumbs directory
      */
-    public void setThumbsPath(final String directory);
+    public void setThumbsPath(String directory);
 
     /**
      * checks if thumbs are accessed direct.

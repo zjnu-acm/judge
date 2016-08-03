@@ -47,7 +47,7 @@ public class ImageResizeInfoCommand extends XMLCommand implements IEventHandler<
     }
 
     @Override
-    protected void createXMLChildNodes(final int errorNum, final Element rootElement)
+    protected void createXMLChildNodes(int errorNum, Element rootElement)
             throws ConnectorException {
         if (errorNum == Constants.Errors.CKFINDER_CONNECTOR_ERROR_NONE) {
             createImageInfoNode(rootElement);

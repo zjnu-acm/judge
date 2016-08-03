@@ -42,7 +42,7 @@ public final class ConfigurationFactory {
      * @return the configuration
      * @throws Exception when error occurs
      */
-    public final IConfiguration getConfiguration(final HttpServletRequest request)
+    public final IConfiguration getConfiguration(HttpServletRequest request)
             throws Exception {
         IConfiguration baseConf = getConfiguration();
         return prepareConfiguration(request, baseConf);
@@ -56,8 +56,8 @@ public final class ConfigurationFactory {
      * @return prepared configuration
      * @throws Exception when error occurs
      */
-    public IConfiguration prepareConfiguration(final HttpServletRequest request,
-            final IConfiguration baseConf) throws Exception {
+    public IConfiguration prepareConfiguration(HttpServletRequest request,
+            IConfiguration baseConf) throws Exception {
         if (baseConf != null) {
             IConfiguration conf = baseConf.cloneConfiguration();
             conf.prepareConfigurationForRequest(request);
@@ -74,8 +74,8 @@ public final class ConfigurationFactory {
      * @param conf connector configuration.
      * @throws Exception when error occurs
      */
-    private void updateResourceTypesPaths(final HttpServletRequest request,
-            final IConfiguration conf) throws Exception {
+    private void updateResourceTypesPaths(HttpServletRequest request,
+            IConfiguration conf) throws Exception {
 
         String baseFolder = getBaseFolder(conf, request);
         baseFolder = conf.getThumbsDir().replace(Constants.BASE_DIR_PLACEHOLDER, baseFolder);
@@ -137,8 +137,8 @@ public final class ConfigurationFactory {
      * @return path to base dir from conf
      * @throws ConnectorException when error during creating folder occurs
      */
-    private String getBaseFolder(final IConfiguration conf,
-            final HttpServletRequest request)
+    private String getBaseFolder(IConfiguration conf,
+            HttpServletRequest request)
             throws ConnectorException {
         try {
             String baseFolder = conf.getBasePathBuilder().getBaseDir(request);
