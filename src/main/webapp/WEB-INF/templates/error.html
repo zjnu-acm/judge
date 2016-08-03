@@ -1,15 +1,21 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{layout/main}">
     <head>
         <title>[[${message}]]</title>
-        <meta charset="UTF-8"/>
+        <!--/*--><meta charset="UTF-8"/><!--*/-->
     </head>
     <body>
-        <h1>Whitelabel Error Page</h1>
-        <p>This application has no explicit mapping for /error, so you are seeing this as a fallback.</p>
-        <div id='created'>[[${timestamp}]]</div>
-        <div>There was an unexpected error (type=[[${error}]], status=[[${status}]]).</div>
-        <div>[[${message}]]</div>
+        <div class="container" layout:fragment="content">
+            <p>
+                <img border="0" th:src="@{/images/j0293240.png}" width="50" height="36"/>
+                <font size="4">Error Occurred</font>
+            </p>
+            <div id='created'>[[${timestamp}]]</div>
+            <div>There was an unexpected error (type=[[${error}]], status=[[${status}]]).</div>
+            <div>[[${message}]]</div>
+        </div>
     </body>
 </html>
