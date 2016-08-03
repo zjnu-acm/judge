@@ -51,47 +51,46 @@ import static com.ckfinder.connector.configuration.IConfiguration.DEFAULT_THUMB_
  * Class loads configuration from XML file.
  */
 @Slf4j
-@SuppressWarnings({"ProtectedField", "CollectionWithoutInitialCapacity", "ReturnOfCollectionOrArrayField", "FinalMethod"})
+@SuppressWarnings({"CollectionWithoutInitialCapacity", "ReturnOfCollectionOrArrayField", "FinalMethod"})
 public class Configuration implements IConfiguration {
 
-    protected static final int MAX_QUALITY = 100;
-    protected static final float MAX_QUALITY_FLOAT = 100f;
+    private static final int MAX_QUALITY = 100;
+    private static final float MAX_QUALITY_FLOAT = 100f;
     private long lastCfgModificationDate;
-    protected boolean enabled;
-    protected String xmlFilePath;
-    protected String baseDir;
-    protected String baseURL;
-    protected String licenseName;
-    protected String licenseKey;
-    protected Integer imgWidth;
-    protected Integer imgHeight;
-    protected float imgQuality;
-    protected Map<String, ResourceType> types;
-    protected boolean thumbsEnabled;
-    protected String thumbsURL;
-    protected String thumbsDir;
-    protected String thumbsPath;
-    protected boolean thumbsDirectAccess;
-    protected Integer thumbsMaxHeight;
-    protected Integer thumbsMaxWidth;
-    protected float thumbsQuality;
-    protected ArrayList<AccessControlLevel> accessControlLevels;
-    protected List<String> hiddenFolders;
-    protected List<String> hiddenFiles;
-    protected boolean doubleExtensions;
-    protected boolean forceASCII;
-    protected boolean checkSizeAfterScaling;
-    protected String uriEncoding;
-    protected String userRoleSessionVar;
-    protected List<PluginInfo> plugins;
-    protected boolean secureImageUploads;
-    protected List<String> htmlExtensions;
-    protected Set<String> defaultResourceTypes;
-    protected IBasePathBuilder basePathBuilder;
-    protected boolean disallowUnsafeCharacters;
+    private boolean enabled;
+    private String xmlFilePath;
+    private String baseDir;
+    private String baseURL;
+    private String licenseName;
+    private String licenseKey;
+    private Integer imgWidth;
+    private Integer imgHeight;
+    private float imgQuality;
+    private Map<String, ResourceType> types;
+    private boolean thumbsEnabled;
+    private String thumbsURL;
+    private String thumbsDir;
+    private String thumbsPath;
+    private boolean thumbsDirectAccess;
+    private Integer thumbsMaxHeight;
+    private Integer thumbsMaxWidth;
+    private float thumbsQuality;
+    private ArrayList<AccessControlLevel> accessControlLevels;
+    private List<String> hiddenFolders;
+    private List<String> hiddenFiles;
+    private boolean doubleExtensions;
+    private boolean forceASCII;
+    private boolean checkSizeAfterScaling;
+    private String userRoleSessionVar;
+    private List<PluginInfo> plugins;
+    private boolean secureImageUploads;
+    private List<String> htmlExtensions;
+    private Set<String> defaultResourceTypes;
+    private IBasePathBuilder basePathBuilder;
+    private boolean disallowUnsafeCharacters;
     private boolean loading;
     private Events events;
-    protected ApplicationContext applicationContext;
+    private final ApplicationContext applicationContext;
 
     /**
      * Constructor.
@@ -337,7 +336,7 @@ public class Configuration implements IConfiguration {
     /**
      * Registers event handlers from all plugins.
      */
-    protected void registerEventHandlers() {
+    private void registerEventHandlers() {
         for (PluginInfo item : this.plugins) {
             try {
                 Class<? extends Plugin> clazz = Class.forName(item.getClassName()).asSubclass(Plugin.class);
@@ -1036,7 +1035,7 @@ public class Configuration implements IConfiguration {
      * @return new configuration instance
      * @throws java.lang.Exception
      */
-    protected Configuration createConfigurationInstance() throws Exception {
+    private Configuration createConfigurationInstance() throws Exception {
         return new Configuration(applicationContext, xmlFilePath);
     }
 
@@ -1046,7 +1045,7 @@ public class Configuration implements IConfiguration {
      * @param configuration destination configuration
      */
     @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
-    protected void copyConfFields(Configuration configuration) {
+    private void copyConfFields(Configuration configuration) {
         configuration.loading = this.loading;
         configuration.xmlFilePath = this.xmlFilePath;
         configuration.lastCfgModificationDate = this.lastCfgModificationDate;
