@@ -40,7 +40,7 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
     private boolean addMoveNode;
 
     @Override
-    protected void createXMLChildNodes(final int errorNum, final Element rootElement)
+    protected void createXMLChildNodes(int errorNum, Element rootElement)
             throws ConnectorException {
         if (creator.hasErrors()) {
             Element errorsNode = creator.getDocument().createElement("Errors");
@@ -58,7 +58,7 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
      *
      * @param rootElement XML root element.
      */
-    private void createMoveFielsNode(final Element rootElement) {
+    private void createMoveFielsNode(Element rootElement) {
         Element element = creator.getDocument().createElement("MoveFiles");
         element.setAttribute("moved", String.valueOf(this.filesMoved));
         element.setAttribute("movedTotal",
@@ -233,7 +233,7 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
      * @return true if moved correctly
      * @throws IOException when ioerror occurs
      */
-    private boolean handleAutoRename(final Path sourceFile, final Path destFile)
+    private boolean handleAutoRename(Path sourceFile, Path destFile)
             throws IOException {
         int counter = 1;
         Path newDestFile;
@@ -262,7 +262,7 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
      * @return true if moved correctly
      * @throws IOException when ioerror occurs
      */
-    private boolean handleOverwrite(final Path sourceFile, final Path destFile)
+    private boolean handleOverwrite(Path sourceFile, Path destFile)
             throws IOException {
         return FileUtils.delete(destFile)
                 && FileUtils.copyFromSourceToDestFile(sourceFile, destFile,
@@ -275,7 +275,7 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
      * @param file file to move.
      * @throws IOException when ioerror occurs
      */
-    private void moveThumb(final FilePostParam file) throws IOException {
+    private void moveThumb(FilePostParam file) throws IOException {
         Path sourceThumbFile = Paths.get(configuration.getThumbsPath(),
                 file.getType()
                 + file.getFolder() + file.getName());
@@ -290,8 +290,8 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
     }
 
     @Override
-    protected void initParams(final HttpServletRequest request,
-            final IConfiguration configuration, final Object... params)
+    protected void initParams(HttpServletRequest request,
+            IConfiguration configuration, Object... params)
             throws ConnectorException {
         super.initParams(request, configuration);
         this.files = new ArrayList<>();
@@ -306,7 +306,7 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
      *
      * @param request request
      */
-    private void getFilesListFromRequest(final HttpServletRequest request) {
+    private void getFilesListFromRequest(HttpServletRequest request) {
         int i = 0;
         while (true) {
             String paramName = "files[" + i + "][name]";

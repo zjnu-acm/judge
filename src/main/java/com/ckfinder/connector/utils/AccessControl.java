@@ -78,9 +78,9 @@ public final class AccessControl {
      * @param currentUserRole user role
      * @return true if acl flag is true
      */
-    public boolean checkFolderACL(final String resourceType,
-            final String folder, final String currentUserRole,
-            final int acl) {
+    public boolean checkFolderACL(String resourceType,
+            String folder, String currentUserRole,
+            int acl) {
         return (checkACLForRole(resourceType, folder, currentUserRole) & acl) == acl;
     }
 
@@ -92,8 +92,8 @@ public final class AccessControl {
      * @param currentUserRole current user role
      * @return acl value
      */
-    public int checkACLForRole(final String resourceType, final String folder,
-            final String currentUserRole) {
+    public int checkACLForRole(String resourceType, String folder,
+            String currentUserRole) {
         CheckEntry[] ce = new CheckEntry[currentUserRole != null ? 4 : 2];
 
         ce[0] = new CheckEntry("*", "*");
@@ -164,7 +164,7 @@ public final class AccessControl {
      * @param folder current folder
      * @return acl value
      */
-    private int checkACLForFolder(final ACLEntry entry, final String folder) {
+    private int checkACLForFolder(ACLEntry entry, String folder) {
         int acl = 0;
         if (folder.contains(entry.folder) || entry.folder.equals(File.separator)) {
             acl ^= entry.countACL();
@@ -179,8 +179,8 @@ public final class AccessControl {
      * @param role current user role
      * @return list of ACL entries.
      */
-    private List<ACLEntry> findACLEntryByRoleAndType(final String type,
-            final String role) {
+    private List<ACLEntry> findACLEntryByRoleAndType(String type,
+            String role) {
         return aclEntries.stream()
                 .filter(item -> (item.role.equals(role) && item.type.equals(type)))
                 .collect(Collectors.toList());
@@ -275,7 +275,7 @@ public final class AccessControl {
          * @param role current user role.
          * @param type resource type.
          */
-        public CheckEntry(final String role, final String type) {
+        public CheckEntry(String role, String type) {
             this.role = role;
             this.type = type;
         }

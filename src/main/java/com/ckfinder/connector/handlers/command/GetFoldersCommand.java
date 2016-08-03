@@ -39,7 +39,7 @@ public class GetFoldersCommand extends XMLCommand {
     private List<String> directories;
 
     @Override
-    protected void createXMLChildNodes(final int errorNum, final Element rootElement)
+    protected void createXMLChildNodes(int errorNum, Element rootElement)
             throws ConnectorException, IOException {
 
         if (errorNum == Constants.Errors.CKFINDER_CONNECTOR_ERROR_NONE) {
@@ -113,7 +113,7 @@ public class GetFoldersCommand extends XMLCommand {
      *
      * @param rootElement root element in XML document
      */
-    private void createFoldersData(final Element rootElement) throws IOException {
+    private void createFoldersData(Element rootElement) throws IOException {
         Element element = creator.getDocument().createElement("Folders");
         for (String dirPath : directories) {
             Path dir = Paths.get(this.configuration.getTypes().get(this.type).getPath()

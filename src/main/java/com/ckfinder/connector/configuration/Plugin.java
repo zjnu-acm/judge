@@ -34,7 +34,7 @@ public abstract class Plugin {
      * @param pluginInfo the pluginInfo to set
      */
     @SuppressWarnings("FinalMethod")
-    public final void setPluginInfo(final PluginInfo pluginInfo) {
+    public final void setPluginInfo(PluginInfo pluginInfo) {
         this.pluginInfo = pluginInfo;
     }
 

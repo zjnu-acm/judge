@@ -27,8 +27,8 @@ import javax.servlet.http.HttpServletResponse;
 public class QuickUploadCommand extends FileUploadCommand {
 
     @Override
-    protected void handleOnUploadCompleteResponse(final Writer writer,
-            final String errorMsg) throws IOException {
+    protected void handleOnUploadCompleteResponse(Writer writer,
+            String errorMsg) throws IOException {
         if (this.responseType != null && this.responseType.equalsIgnoreCase("json")) {
             handleJSONResponse(writer, errorMsg, null);
         } else {
@@ -52,8 +52,8 @@ public class QuickUploadCommand extends FileUploadCommand {
     }
 
     @Override
-    protected void handleOnUploadCompleteCallFuncResponse(final Writer writer,
-            final String errorMsg, final String path) throws IOException {
+    protected void handleOnUploadCompleteCallFuncResponse(Writer writer,
+            String errorMsg, String path) throws IOException {
         if (this.responseType != null && this.responseType.equalsIgnoreCase("json")) {
             handleJSONResponse(writer, errorMsg, path);
         } else {
@@ -75,8 +75,8 @@ public class QuickUploadCommand extends FileUploadCommand {
     }
 
     @Override
-    public void setResponseHeader(final HttpServletResponse response,
-            final ServletContext sc) {
+    public void setResponseHeader(HttpServletResponse response,
+            ServletContext sc) {
         response.setCharacterEncoding("utf-8");
         if (this.responseType != null && this.responseType.equalsIgnoreCase("json")) {
             response.setContentType("application/json");
@@ -94,8 +94,8 @@ public class QuickUploadCommand extends FileUploadCommand {
      * there was an error during upload or uploaded file was renamed
      * @param path path to uploaded file
      */
-    private void handleJSONResponse(final Writer writer,
-            final String errorMsg, final String path) throws IOException {
+    private void handleJSONResponse(Writer writer,
+            String errorMsg, String path) throws IOException {
 
         Gson gson = new GsonBuilder().serializeNulls().create();
         Map<String, Object> jsonObj = new HashMap<>();

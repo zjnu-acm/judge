@@ -36,8 +36,8 @@ public class RenameFileCommand extends XMLCommand implements IPostCommand {
     private boolean addRenameNode;
 
     @Override
-    protected void createXMLChildNodes(final int errorNum,
-            final Element rootElement) throws ConnectorException {
+    protected void createXMLChildNodes(int errorNum,
+            Element rootElement) throws ConnectorException {
         if (this.addRenameNode) {
             createRenamedFileNode(rootElement);
         }
@@ -48,7 +48,7 @@ public class RenameFileCommand extends XMLCommand implements IPostCommand {
      *
      * @param rootElement XML root node
      */
-    private void createRenamedFileNode(final Element rootElement) {
+    private void createRenamedFileNode(Element rootElement) {
         Element element = creator.getDocument().createElement("RenamedFile");
         element.setAttribute("name", this.fileName);
         if (renamed) {
@@ -162,8 +162,8 @@ public class RenameFileCommand extends XMLCommand implements IPostCommand {
     }
 
     @Override
-    protected void initParams(final HttpServletRequest request,
-            final IConfiguration configuration, final Object... params)
+    protected void initParams(HttpServletRequest request,
+            IConfiguration configuration, Object... params)
             throws ConnectorException {
         super.initParams(request, configuration);
         this.fileName = request.getParameter("fileName");

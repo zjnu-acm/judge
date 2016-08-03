@@ -75,8 +75,8 @@ public class FileUtils {
      * @return list of files or subdirectories in selected directory
      * @throws java.io.IOException
      */
-    public static List<String> findChildrensList(final Path dir,
-            final boolean searchDirs) throws IOException {
+    public static List<String> findChildrensList(Path dir,
+            boolean searchDirs) throws IOException {
         List<String> files = new ArrayList<>();
         for (Path file : Files.newDirectoryStream(dir, file -> searchDirs == Files.isDirectory(file))) {
             files.add(file.getFileName().toString());
@@ -91,7 +91,7 @@ public class FileUtils {
      * @param shortExtensionMode
      * @return file extension
      */
-    public static String getFileExtension(final String fileName, final boolean shortExtensionMode) {
+    public static String getFileExtension(String fileName, boolean shortExtensionMode) {
         if (shortExtensionMode) {
             return FileUtils.getFileExtension(fileName);
         }
@@ -109,7 +109,7 @@ public class FileUtils {
      * @param fileName name of file.
      * @return file extension
      */
-    public static String getFileExtension(final String fileName) {
+    public static String getFileExtension(String fileName) {
         if (fileName == null
                 || fileName.lastIndexOf('.') == -1
                 || fileName.lastIndexOf('.') == fileName.length() - 1) {
@@ -125,7 +125,7 @@ public class FileUtils {
      * @param shortExtensionMode
      * @return file extension
      */
-    public static String getFileNameWithoutExtension(final String fileName, final boolean shortExtensionMode) {
+    public static String getFileNameWithoutExtension(String fileName, boolean shortExtensionMode) {
         if (shortExtensionMode) {
             return FileUtils.getFileNameWithoutExtension(fileName);
         }
@@ -142,7 +142,7 @@ public class FileUtils {
      * @param fileName name of file
      * @return file extension
      */
-    public static String getFileNameWithoutExtension(final String fileName) {
+    public static String getFileNameWithoutExtension(String fileName) {
         if (fileName == null || fileName.lastIndexOf('.') == -1) {
             return null;
         }
@@ -156,8 +156,8 @@ public class FileUtils {
      * @param out outputstream.
      * @throws IOException when io error occurs.
      */
-    public static void printFileContentToResponse(final Path file,
-            final OutputStream out) throws IOException {
+    public static void printFileContentToResponse(Path file,
+            OutputStream out) throws IOException {
         Files.copy(file, out);
     }
 
@@ -170,10 +170,10 @@ public class FileUtils {
      * @return true if file moved/copied correctly
      * @throws IOException when IOerror occurs
      */
-    public static boolean copyFromSourceToDestFile(final Path sourceFile,
-            final Path destFile,
-            final boolean move,
-            final IConfiguration conf)
+    public static boolean copyFromSourceToDestFile(Path sourceFile,
+            Path destFile,
+            boolean move,
+            IConfiguration conf)
             throws IOException {
         createPath(destFile, true);
         if (move) {
@@ -193,7 +193,7 @@ public class FileUtils {
      * @return parsed file modification date.
      * @throws java.io.IOException
      */
-    public static String parseLastModifDate(final Path file) throws IOException {
+    public static String parseLastModifDate(Path file) throws IOException {
         Date date = Date.from(Files.getLastModifiedTime(file).toInstant());
         DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
         return dateFormat.format(date);
@@ -206,8 +206,8 @@ public class FileUtils {
      * @param conf connector configuration
      * @return true if matches.
      */
-    public static boolean checkIfDirIsHidden(final String dirName,
-            final IConfiguration conf) {
+    public static boolean checkIfDirIsHidden(String dirName,
+            IConfiguration conf) {
         if (dirName == null || dirName.isEmpty()) {
             return false;
         }
@@ -230,8 +230,8 @@ public class FileUtils {
      * @param conf connector configuration
      * @return true if matches.
      */
-    public static boolean checkIfFileIsHidden(final String fileName,
-            final IConfiguration conf) {
+    public static boolean checkIfFileIsHidden(String fileName,
+            IConfiguration conf) {
         return Pattern.compile(getHiddenFileOrFolderRegex(
                 conf.getHiddenFiles())).matcher(fileName).matches();
     }
@@ -242,7 +242,7 @@ public class FileUtils {
      * @param hiddenList list of hidden file or files patterns.
      * @return full folder regex pattern
      */
-    private static String getHiddenFileOrFolderRegex(final List<String> hiddenList) {
+    private static String getHiddenFileOrFolderRegex(List<String> hiddenList) {
         StringBuilder sb = new StringBuilder("(");
         for (String item : hiddenList) {
             if (sb.length() > 3) {
@@ -264,7 +264,7 @@ public class FileUtils {
      * @param file file or directory to delete.
      * @return true if all files are deleted.
      */
-    public static boolean delete(final Path file) {
+    public static boolean delete(Path file) {
         try {
             DeleteHelper.delete(file);
             return true;
@@ -279,7 +279,7 @@ public class FileUtils {
      * @param fileName file name
      * @return true if file name is correct
      */
-    public static boolean checkFileName(final String fileName) {
+    public static boolean checkFileName(String fileName) {
         return !(fileName == null || fileName.isEmpty()
                 || fileName.charAt(fileName.length() - 1) == '.'
                 || fileName.contains("..")
@@ -292,7 +292,7 @@ public class FileUtils {
      * @param fileName file name
      * @return true if it does contain disallowed characters.
      */
-    private static boolean checkFolderNamePattern(final String fileName) {
+    private static boolean checkFolderNamePattern(String fileName) {
         return invalidFileNamePatt.matcher(fileName).find();
     }
 
@@ -303,8 +303,8 @@ public class FileUtils {
      * @param type resource type
      * @return 0 if ok, 1 if not ok, 2 if rename required
      */
-    public static int checkFileExtension(final String fileName,
-            final ResourceType type) {
+    public static int checkFileExtension(String fileName,
+            ResourceType type) {
         if (type == null || fileName == null) {
             return 1;
         }
@@ -326,8 +326,8 @@ public class FileUtils {
      * allowed extensions is empty. The {@code false} is returned when file is
      * on denied extensions list or if none of the above conditions is met.
      */
-    private static boolean checkSingleExtension(final String fileExt,
-            final ResourceType type) {
+    private static boolean checkSingleExtension(String fileExt,
+            ResourceType type) {
         StringTokenizer scanner = new StringTokenizer(type.getDeniedExtensions(), ",");
         while (scanner.hasMoreTokens()) {
             if (scanner.nextToken().equalsIgnoreCase(fileExt)) {
@@ -355,7 +355,7 @@ public class FileUtils {
      * @param fileName file name
      * @return encoded file name
      */
-    public static String convertToASCII(final String fileName) {
+    public static String convertToASCII(String fileName) {
         String newFileName = fileName;
         fillLowerAccents();
         fillUpperAccents();
@@ -376,7 +376,7 @@ public class FileUtils {
      * @param asFile if it is path to folder.
      * @throws IOException when io error occurs.
      */
-    public static void createPath(final Path file, final boolean asFile) throws IOException {
+    public static void createPath(Path file, boolean asFile) throws IOException {
         if (asFile) {
             Path path = file.toAbsolutePath();
             Path dir = path.getParent();
@@ -396,7 +396,7 @@ public class FileUtils {
      * @param fileSize file size
      * @return true if file size isn't bigger then max size for type.
      */
-    public static boolean checkFileSize(final ResourceType type, final long fileSize) {
+    public static boolean checkFileSize(ResourceType type, long fileSize) {
         final long maxSize = type.getMaxSize();
         return (maxSize == 0 || maxSize > fileSize);
     }
@@ -408,8 +408,8 @@ public class FileUtils {
      * @param configuration connector configuration
      * @return true if has
      */
-    public static boolean checkIfFileIsHtmlFile(final String file,
-            final IConfiguration configuration) {
+    public static boolean checkIfFileIsHtmlFile(String file,
+            IConfiguration configuration) {
 
         return configuration.getHTMLExtensions().contains(
                 getFileExtension(file).toLowerCase());
@@ -425,7 +425,7 @@ public class FileUtils {
      * @return true if detected.
      * @throws IOException when io error occurs.
      */
-    public static boolean detectHtml(final Part item) throws IOException {
+    public static boolean detectHtml(Part item) throws IOException {
         byte[] buff = new byte[MAX_BUFFER_SIZE];
         try (InputStream is = item.getInputStream()) {
             is.read(buff, 0, MAX_BUFFER_SIZE);
@@ -510,7 +510,7 @@ public class FileUtils {
      * @param fileName file name
      * @return new file name with . replaced with _ (but not last)
      */
-    public static String renameFileWithBadExt(final ResourceType type, final String fileName) {
+    public static String renameFileWithBadExt(ResourceType type, String fileName) {
         if (type == null || fileName == null) {
             return null;
         }
@@ -534,7 +534,7 @@ public class FileUtils {
         return cfileName;
     }
 
-    public static String encodeURIComponent(final String fileName) throws UnsupportedEncodingException {
+    public static String encodeURIComponent(String fileName) throws UnsupportedEncodingException {
         String fileNameHelper = URLEncoder.encode(fileName, "utf-8");
         for (Map.Entry<String, String> entry : encodingMap.entrySet()) {
             fileNameHelper = fileNameHelper.replaceAll(entry.getKey(), entry.getValue());
@@ -542,18 +542,18 @@ public class FileUtils {
         return fileNameHelper;
     }
 
-    public static boolean checkFolderName(final String folderName, final IConfiguration configuration) {
+    public static boolean checkFolderName(String folderName, IConfiguration configuration) {
         return !((configuration.isDisallowUnsafeCharacters()
                 && (folderName.contains(".") || folderName.contains(";")))
                 || FileUtils.checkFolderNamePattern(folderName));
     }
 
-    public static boolean checkFileName(final String fileName, final IConfiguration configuration) {
+    public static boolean checkFileName(String fileName, IConfiguration configuration) {
         return !((configuration.isDisallowUnsafeCharacters() && fileName.contains(";"))
                 || !FileUtils.checkFileName(fileName));
     }
 
-    public static String backupWithBackSlash(final String fileName, final String toReplace) {
+    public static String backupWithBackSlash(String fileName, String toReplace) {
         return fileName.replaceAll(toReplace, "\\\\" + Matcher.quoteReplacement(toReplace));
     }
 

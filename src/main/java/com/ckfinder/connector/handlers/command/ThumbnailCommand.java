@@ -116,7 +116,7 @@ public class ThumbnailCommand extends Command {
     private String fullCurrentPath;
 
     @Override
-    public void setResponseHeader(final HttpServletResponse response, final ServletContext sc) {
+    public void setResponseHeader(HttpServletResponse response, ServletContext sc) {
         response.setHeader("Cache-Control", "public");
         String mimetype = getMimeTypeOfImage(sc, response);
         if (mimetype != null) {
@@ -135,7 +135,7 @@ public class ThumbnailCommand extends Command {
      * @param response currect response object
      * @return mime type of the image.
      */
-    private String getMimeTypeOfImage(final ServletContext sc, final HttpServletResponse response) {
+    private String getMimeTypeOfImage(ServletContext sc, HttpServletResponse response) {
         if (this.fileName == null || this.fileName.length() == 0) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return null;
@@ -156,7 +156,7 @@ public class ThumbnailCommand extends Command {
     }
 
     @Override
-    public void execute(final OutputStream out) throws ConnectorException, IOException {
+    public void execute(OutputStream out) throws ConnectorException, IOException {
         validate();
         createThumb();
         if (setResponseHeadersAfterCreatingFile()) {
@@ -181,8 +181,8 @@ public class ThumbnailCommand extends Command {
     }
 
     @Override
-    protected void initParams(final HttpServletRequest request,
-            final IConfiguration configuration, final Object... params)
+    protected void initParams(HttpServletRequest request,
+            IConfiguration configuration, Object... params)
             throws ConnectorException {
         super.initParams(request, configuration, params);
         this.fileName = request.getParameter("FileName");

@@ -315,7 +315,7 @@ public class Configuration implements IConfiguration {
      * @param imgQuality Image quality
      * @return Adjusted image quality
      */
-    private float adjustQuality(final String imgQuality) {
+    private float adjustQuality(String imgQuality) {
         float helper;
         try {
             helper = Math.abs(Float.parseFloat(imgQuality));
@@ -357,7 +357,7 @@ public class Configuration implements IConfiguration {
      *
      * @param childNodes list of files nodes.
      */
-    private void setHiddenFiles(final NodeList childNodes) {
+    private void setHiddenFiles(NodeList childNodes) {
         for (int i = 0, j = childNodes.getLength(); i < j; i++) {
             Node node = childNodes.item(i);
             if (node.getNodeName().equals("file")) {
@@ -374,7 +374,7 @@ public class Configuration implements IConfiguration {
      *
      * @param childNodes list of folder nodes.
      */
-    private void setHiddenFolders(final NodeList childNodes) {
+    private void setHiddenFolders(NodeList childNodes) {
         for (int i = 0, j = childNodes.getLength(); i < j; i++) {
             Node node = childNodes.item(i);
             if (node.getNodeName().equals("folder")) {
@@ -391,7 +391,7 @@ public class Configuration implements IConfiguration {
      *
      * @param childNodes nodes with ACL configuration.
      */
-    private void setACLs(final NodeList childNodes) {
+    private void setACLs(NodeList childNodes) {
         for (int i = 0, j = childNodes.getLength(); i < j; i++) {
             Node childNode = childNodes.item(i);
             if (childNode.getNodeName().equals("accessControl")) {
@@ -409,7 +409,7 @@ public class Configuration implements IConfiguration {
      * @param childNode XML accessControl node.
      * @return access control level object.
      */
-    private AccessControlLevel getACLFromNode(final Node childNode) {
+    private AccessControlLevel getACLFromNode(Node childNode) {
         AccessControlLevel acl = new AccessControlLevel();
         for (int i = 0, j = childNode.getChildNodes().getLength(); i < j; i++) {
             Node childChildNode = childNode.getChildNodes().item(i);
@@ -467,7 +467,7 @@ public class Configuration implements IConfiguration {
      *
      * @param childNodes list of thumb XML nodes
      */
-    private void setThumbs(final NodeList childNodes) {
+    private void setThumbs(NodeList childNodes) {
         for (int i = 0, j = childNodes.getLength(); i < j; i++) {
             Node childNode = childNodes.item(i);
             switch (childNode.getNodeName()) {
@@ -516,7 +516,7 @@ public class Configuration implements IConfiguration {
      *
      * @param doc XML document.
      */
-    private void setTypes(final Document doc) {
+    private void setTypes(Document doc) {
         types = new LinkedHashMap<>();
         NodeList list = doc.getElementsByTagName("type");
 
@@ -538,8 +538,8 @@ public class Configuration implements IConfiguration {
      * @param childNodes type XML child nodes.
      * @return resource type
      */
-    private ResourceType createTypeFromXml(final String typeName,
-            final NodeList childNodes) {
+    private ResourceType createTypeFromXml(String typeName,
+            NodeList childNodes) {
         ResourceType resourceType = new ResourceType(typeName);
         for (int i = 0, j = childNodes.getLength(); i < j; i++) {
             Node childNode = childNodes.item(i);
@@ -572,7 +572,7 @@ public class Configuration implements IConfiguration {
      * @return true if user is authenticated and false otherwise.
      */
     @Override
-    public boolean checkAuthentication(final HttpServletRequest request) {
+    public boolean checkAuthentication(HttpServletRequest request) {
         return DEFAULT_CHECKAUTHENTICATION;
     }
 
@@ -778,7 +778,7 @@ public class Configuration implements IConfiguration {
      * @param directory directory name for thumbnails.
      */
     @Override
-    public void setThumbsPath(final String directory) {
+    public void setThumbsPath(String directory) {
         this.thumbsPath = directory;
     }
 
@@ -938,7 +938,7 @@ public class Configuration implements IConfiguration {
      *
      * @param childNode child of XML node 'plugins'.
      */
-    private void setPlugins(final Node childNode) {
+    private void setPlugins(Node childNode) {
         NodeList nodeList = childNode.getChildNodes();
         for (int i = 0, j = nodeList.getLength(); i < j; i++) {
             Node childChildNode = nodeList.item(i);
@@ -954,7 +954,7 @@ public class Configuration implements IConfiguration {
      * @param element XML plugin node.
      * @return PluginInfo data
      */
-    private PluginInfo createPluginFromNode(final Node element) {
+    private PluginInfo createPluginFromNode(Node element) {
         PluginInfo info = new PluginInfo();
         NodeList list = element.getChildNodes();
         for (int i = 0, l = list.getLength(); i < l; i++) {
@@ -1002,7 +1002,7 @@ public class Configuration implements IConfiguration {
      * @param url current thumbs url
      */
     @Override
-    public void setThumbsURL(final String url) {
+    public void setThumbsURL(String url) {
         this.thumbsURL = url;
     }
 
@@ -1012,7 +1012,7 @@ public class Configuration implements IConfiguration {
      * @param dir current thumbs directory.
      */
     @Override
-    public void setThumbsDir(final String dir) {
+    public void setThumbsDir(String dir) {
         this.thumbsDir = dir;
     }
 
@@ -1046,7 +1046,7 @@ public class Configuration implements IConfiguration {
      * @param configuration destination configuration
      */
     @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
-    protected void copyConfFields(final Configuration configuration) {
+    protected void copyConfFields(Configuration configuration) {
         configuration.loading = this.loading;
         configuration.xmlFilePath = this.xmlFilePath;
         configuration.lastCfgModificationDate = this.lastCfgModificationDate;
@@ -1095,7 +1095,7 @@ public class Configuration implements IConfiguration {
      *
      * @param newPlugins new configuration plugins list.
      */
-    private void copyPlugins(final List<PluginInfo> newPlugins) {
+    private void copyPlugins(List<PluginInfo> newPlugins) {
         for (PluginInfo pluginInfo : this.plugins) {
             newPlugins.add(new PluginInfo(pluginInfo));
         }
@@ -1106,7 +1106,7 @@ public class Configuration implements IConfiguration {
      *
      * @param newAccessControlLevels new configuration ACL list.
      */
-    private void copyACls(final List<AccessControlLevel> newAccessControlLevels) {
+    private void copyACls(List<AccessControlLevel> newAccessControlLevels) {
         for (AccessControlLevel acl : this.accessControlLevels) {
             newAccessControlLevels.add(new AccessControlLevel(acl));
         }
@@ -1117,7 +1117,7 @@ public class Configuration implements IConfiguration {
      *
      * @param newTypes new configuration resource types list.
      */
-    private void copyTypes(final Map<String, ResourceType> newTypes) {
+    private void copyTypes(Map<String, ResourceType> newTypes) {
         for (String name : this.types.keySet()) {
             newTypes.put(name, new ResourceType(this.types.get(name)));
         }

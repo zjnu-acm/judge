@@ -40,7 +40,7 @@ public class CopyFilesCommand extends XMLCommand implements IPostCommand {
     private boolean addCopyNode;
 
     @Override
-    protected void createXMLChildNodes(final int errorNum, final Element rootElement)
+    protected void createXMLChildNodes(int errorNum, Element rootElement)
             throws ConnectorException {
         if (creator.hasErrors()) {
             Element errorsNode = creator.getDocument().createElement("Errors");
@@ -59,7 +59,7 @@ public class CopyFilesCommand extends XMLCommand implements IPostCommand {
      *
      * @param rootElement XML root node.
      */
-    private void createCopyFielsNode(final Element rootElement) {
+    private void createCopyFielsNode(Element rootElement) {
         Element element = creator.getDocument().createElement("CopyFiles");
         element.setAttribute("copied", String.valueOf(this.filesCopied));
         element.setAttribute("copiedTotal", String.valueOf(this.copiedAll
@@ -226,7 +226,7 @@ public class CopyFilesCommand extends XMLCommand implements IPostCommand {
      * @return true if copied correctly
      * @throws IOException when ioerror occurs
      */
-    private boolean handleAutoRename(final Path sourceFile, final Path destFile)
+    private boolean handleAutoRename(Path sourceFile, Path destFile)
             throws IOException {
         int counter = 1;
         Path newDestFile;
@@ -260,7 +260,7 @@ public class CopyFilesCommand extends XMLCommand implements IPostCommand {
      * @return true if copied correctly
      * @throws IOException when ioerror occurs
      */
-    private boolean handleOverwrite(final Path sourceFile, final Path destFile)
+    private boolean handleOverwrite(Path sourceFile, Path destFile)
             throws IOException {
         return FileUtils.delete(destFile)
                 && FileUtils.copyFromSourceToDestFile(sourceFile, destFile,
@@ -273,7 +273,7 @@ public class CopyFilesCommand extends XMLCommand implements IPostCommand {
      * @param file file to copy.
      * @throws IOException when ioerror occurs
      */
-    private void copyThumb(final FilePostParam file) throws IOException {
+    private void copyThumb(FilePostParam file) throws IOException {
         Path sourceThumbFile = Paths.get(configuration.getThumbsPath(),
                 file.getType()
                 + file.getFolder(), file.getName());
@@ -289,9 +289,9 @@ public class CopyFilesCommand extends XMLCommand implements IPostCommand {
     }
 
     @Override
-    protected void initParams(final HttpServletRequest request,
-            final IConfiguration configuration,
-            final Object... params) throws ConnectorException {
+    protected void initParams(HttpServletRequest request,
+            IConfiguration configuration,
+            Object... params) throws ConnectorException {
         super.initParams(request, configuration);
         this.files = new ArrayList<>();
         this.copiedAll = (request.getParameter("copied") != null) ? Integer.valueOf(request.getParameter("copied")) : 0;
@@ -305,7 +305,7 @@ public class CopyFilesCommand extends XMLCommand implements IPostCommand {
      *
      * @param request - request object.
      */
-    private void getFilesListFromRequest(final HttpServletRequest request) {
+    private void getFilesListFromRequest(HttpServletRequest request) {
         int i = 0;
         String paramName = "files[" + i + "][name]";
         while (request.getParameter(paramName) != null) {

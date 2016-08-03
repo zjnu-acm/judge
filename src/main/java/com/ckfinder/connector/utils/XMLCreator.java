@@ -105,8 +105,8 @@ public class XMLCreator {
      * @param errorNum error code number.
      * @param errorText error text.
      */
-    public void addErrorCommandToRoot(final Element rootElement,
-            final int errorNum, final String errorText) {
+    public void addErrorCommandToRoot(Element rootElement,
+            int errorNum, String errorText) {
         // errors
         Element element = this.getDocument().createElement("Error");
         element.setAttribute("number", String.valueOf(errorNum));
@@ -124,8 +124,8 @@ public class XMLCreator {
      * @param path current folder
      * @param type resource type
      */
-    public void appendErrorNodeChild(final int errorCode, final String name,
-            final String path, final String type) {
+    public void appendErrorNodeChild(int errorCode, String name,
+            String path, String type) {
         ErrorNode errorNode = new ErrorNode(path, type, name, errorCode);
         errorList.add(errorNode);
     }
@@ -135,7 +135,7 @@ public class XMLCreator {
      *
      * @param errorsNode XML errors node
      */
-    public void addErrors(final Element errorsNode) {
+    public void addErrors(Element errorsNode) {
         for (ErrorNode item : this.errorList) {
             Element childElem = this.getDocument().createElement("Error");
             childElem.setAttribute("code", String.valueOf(item.errorCode));

@@ -36,7 +36,7 @@ public class ErrorCommand extends Command {
     private HttpServletResponse response;
 
     @Override
-    public void execute(final OutputStream out) throws ConnectorException {
+    public void execute(OutputStream out) throws ConnectorException {
         try {
             response.setHeader("X-CKFinder-Error", String.valueOf(e.getErrorCode()));
             switch (e.getErrorCode()) {
@@ -60,16 +60,16 @@ public class ErrorCommand extends Command {
     }
 
     @Override
-    public void setResponseHeader(final HttpServletResponse response,
-            final ServletContext sc) {
+    public void setResponseHeader(HttpServletResponse response,
+            ServletContext sc) {
         response.reset();
         this.response = response;
 
     }
 
     @Override
-    protected void initParams(final HttpServletRequest request,
-            final IConfiguration configuration, final Object... params)
+    protected void initParams(HttpServletRequest request,
+            IConfiguration configuration, Object... params)
             throws ConnectorException {
         super.initParams(request, configuration, params);
         e = (ConnectorException) params[0];
@@ -84,7 +84,7 @@ public class ErrorCommand extends Command {
      * @throws ConnectorException it should never throw an exception
      */
     @Override
-    protected boolean checkParam(final String reqParam) throws ConnectorException {
+    protected boolean checkParam(String reqParam) throws ConnectorException {
         return reqParam == null || reqParam.isEmpty()
                 || !Pattern.compile(Constants.INVALID_PATH_REGEX).matcher(reqParam).find();
     }
@@ -101,7 +101,7 @@ public class ErrorCommand extends Command {
     }
 
     @Override
-    protected boolean checkConnector(final HttpServletRequest request)
+    protected boolean checkConnector(HttpServletRequest request)
             throws ConnectorException {
         if (!configuration.enabled() || !configuration.checkAuthentication(request)) {
             this.e = new ConnectorException(
@@ -112,7 +112,7 @@ public class ErrorCommand extends Command {
     }
 
     @Override
-    protected boolean checkIfCurrFolderExists(final HttpServletRequest request)
+    protected boolean checkIfCurrFolderExists(HttpServletRequest request)
             throws ConnectorException {
         String tmpType = request.getParameter("type");
         if (checkIfTypeExists(tmpType)) {
@@ -130,7 +130,7 @@ public class ErrorCommand extends Command {
     }
 
     @Override
-    protected boolean checkIfTypeExists(final String type) {
+    protected boolean checkIfTypeExists(String type) {
         ResourceType testType = configuration.getTypes().get(type);
         if (testType == null) {
             this.e = new ConnectorException(
@@ -141,7 +141,7 @@ public class ErrorCommand extends Command {
     }
 
     @Override
-    protected void getCurrentFolderParam(final HttpServletRequest request) {
+    protected void getCurrentFolderParam(HttpServletRequest request) {
         String currFolder = request.getParameter("currentFolder");
         if (!(currFolder == null || currFolder.isEmpty())) {
             this.currentFolder = PathUtils.addSlashToBeginning(PathUtils.addSlashToEnd(currFolder));
