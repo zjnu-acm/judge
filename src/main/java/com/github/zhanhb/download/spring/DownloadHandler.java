@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
+import org.springframework.core.io.Resource;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.method.support.ModelAndViewContainer;
@@ -40,7 +41,7 @@ public class DownloadHandler implements HandlerMethodReturnValueHandler {
     @Override
     public boolean supportsReturnType(MethodParameter returnType) {
         return returnType.getMethodAnnotation(ToDownload.class) != null
-                && com.github.zhanhb.download.Resource.class.isAssignableFrom(
+                && Resource.class.isAssignableFrom(
                         returnType.getMethod().getReturnType());
     }
 
@@ -54,10 +55,8 @@ public class DownloadHandler implements HandlerMethodReturnValueHandler {
         ToDownload toDownload = returnType.getMethodAnnotation(ToDownload.class);
 
         Downloader d = toDownload.attachment() ? downloader : viewer;
-        d.service(request, response,
-                com.github.zhanhb.download.Resource.class.cast(returnValue));
+        d.service(request, response, Resource.class.cast(returnValue));
         mavContainer.setRequestHandled(true);
-
     }
 
 }

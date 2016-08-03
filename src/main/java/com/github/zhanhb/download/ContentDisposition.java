@@ -23,6 +23,7 @@ import javax.annotation.Nullable;
  */
 public interface ContentDisposition {
 
+    // https://tools.ietf.org/html/rfc6266
     @Nullable
     String getContentDisposition(String filename);
 
