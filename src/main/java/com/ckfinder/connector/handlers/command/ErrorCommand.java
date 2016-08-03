@@ -66,7 +66,6 @@ public class ErrorCommand extends Command implements IErrorCommand {
             ServletContext sc) {
         response.reset();
         this.response = response;
-
     }
 
     @Override

@@ -41,7 +41,6 @@ public class CreateFolderCommand extends XMLCommand implements IPostCommand {
         if (errorNum == Constants.Errors.CKFINDER_CONNECTOR_ERROR_NONE) {
             createNewFolderElement(rootElement);
         }
-
     }
 
     /**
@@ -53,7 +52,6 @@ public class CreateFolderCommand extends XMLCommand implements IPostCommand {
         Element element = creator.getDocument().createElement("NewFolder");
         element.setAttribute("name", this.newFolderName);
         rootElement.appendChild(element);
-
     }
 
     /**
@@ -63,7 +61,6 @@ public class CreateFolderCommand extends XMLCommand implements IPostCommand {
      */
     @Override
     protected int getDataForXml() {
-
         try {
             checkParam(newFolderName);
         } catch (ConnectorException e) {

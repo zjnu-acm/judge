@@ -958,8 +958,8 @@ public class Configuration implements IConfiguration {
         NodeList list = element.getChildNodes();
         for (int i = 0, l = list.getLength(); i < l; i++) {
             Node childElem = list.item(i);
-            final String nodeName = childElem.getNodeName();
-            final String textContent = nullNodeToString(childElem);
+            String nodeName = childElem.getNodeName();
+            String textContent = nullNodeToString(childElem);
             switch (nodeName) {
                 case "name":
                     info.setName(textContent);

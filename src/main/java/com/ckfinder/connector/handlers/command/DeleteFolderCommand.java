@@ -80,4 +80,5 @@ public class DeleteFolderCommand extends XMLCommand implements IPostCommand {
 
         return Constants.Errors.CKFINDER_CONNECTOR_ERROR_NONE;
     }
+
 }
