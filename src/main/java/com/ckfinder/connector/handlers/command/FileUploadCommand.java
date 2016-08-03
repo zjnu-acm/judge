@@ -106,7 +106,7 @@ public class FileUploadCommand extends Command implements IPostCommand {
     public void execute(OutputStream out) throws ConnectorException {
         try {
             String errorMsg = this.errorCode == Constants.Errors.CKFINDER_CONNECTOR_ERROR_NONE ? "" : (this.errorCode == Constants.Errors.CKFINDER_CONNECTOR_ERROR_CUSTOM_ERROR ? this.customErrorMsg
-                    : ErrorUtils.getInstance().getErrorMsgByLangAndCode(this.langCode, this.errorCode, this.configuration));
+                    : ErrorUtils.INSTANCE.getErrorMsgByLangAndCode(this.langCode, this.errorCode, this.configuration));
             errorMsg = errorMsg.replaceAll("%1", Matcher.quoteReplacement(this.newFileName));
             String path = "";
 
