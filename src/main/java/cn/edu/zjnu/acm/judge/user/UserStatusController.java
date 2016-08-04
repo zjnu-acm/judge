@@ -24,6 +24,7 @@ public class UserStatusController {
     private UserProblemMapper userProblemMapper;
 
     @GetMapping("/userstatus")
+    @SuppressWarnings("AssignmentToMethodParameter")
     public String userstatus(Model model,
             @RequestParam(value = "size", defaultValue = "3") int display,
             @RequestParam(value = "user_id", required = false) String userId) {

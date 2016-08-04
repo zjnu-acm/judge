@@ -79,6 +79,7 @@ public class MailController {
     }
 
     @PostMapping("/send")
+    @SuppressWarnings("AssignmentToMethodParameter")
     public String send(@RequestParam("title") String title,
             @RequestParam("to") String to,
             @RequestParam("content") String content,

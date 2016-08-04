@@ -16,7 +16,8 @@ public interface Psapi extends StdCallLibrary {
     /**
      * Memory statistics for a process.
      *
-     * @see <a href="http://msdn.microsoft.com/en-us/library/ms684877(VS.85).aspx">PROCESS_MEMORY_COUNTERS</a>
+     * @see
+     * <a href="http://msdn.microsoft.com/en-us/library/ms684877(VS.85).aspx">PROCESS_MEMORY_COUNTERS</a>
      */
     @SuppressWarnings({"PublicField", "PublicInnerClass"})
     public static class PROCESS_MEMORY_COUNTERS extends Structure {
@@ -98,7 +99,8 @@ public interface Psapi extends StdCallLibrary {
      * @return If the function succeeds, the return value is nonzero. If the
      * function fails, the return value is zero. To get extended error
      * information, call GetLastError.
-     * @see <a href="http://msdn.microsoft.com/en-us/library/ms683219(VS.85).aspx">GetProcessMemoryInfo</a>
+     * @see
+     * <a href="http://msdn.microsoft.com/en-us/library/ms683219(VS.85).aspx">GetProcessMemoryInfo</a>
      */
     boolean GetProcessMemoryInfo(HANDLE hProcess, PROCESS_MEMORY_COUNTERS ppsmemCounters, int cb);
 
