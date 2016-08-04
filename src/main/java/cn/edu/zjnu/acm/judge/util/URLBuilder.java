@@ -32,7 +32,7 @@ public class URLBuilder {
         return new URLBuilder(request.getServletPath(), request.getParameterMap());
     }
 
-    private final String path;
+    private String path;
     private final Map<String, String[]> query;
 
     private URLBuilder(String path, Map<String, String[]> query) {
@@ -46,6 +46,11 @@ public class URLBuilder {
         } else {
             query.put(name, values.clone());
         }
+        return this;
+    }
+
+    public URLBuilder replacePath(String path) {
+        this.path = path != null ? path : "";
         return this;
     }
 

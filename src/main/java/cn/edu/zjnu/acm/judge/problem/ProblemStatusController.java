@@ -20,9 +20,11 @@ import cn.edu.zjnu.acm.judge.domain.ScoreCount;
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
+import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.service.LanguageService;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import cn.edu.zjnu.acm.judge.util.ResultType;
+import cn.edu.zjnu.acm.judge.util.URLBuilder;
 import com.google.gson.Gson;
 import java.text.DecimalFormat;
 import java.time.Instant;
@@ -32,7 +34,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -49,12 +55,15 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
  * @author zhanhb
  */
 @Controller
+@Slf4j
 public class ProblemStatusController {
 
     private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Autowired
     private ProblemMapper problemMapper;
+    @Autowired
+    private SubmissionMapper submissionMapper;
     @Autowired
     private LanguageService languageService;
 
@@ -71,25 +80,15 @@ public class ProblemStatusController {
     }
 
     @GetMapping(value = "/problemstatus", produces = TEXT_HTML_VALUE)
+    @SuppressWarnings("AssignmentToMethodParameter")
     public ResponseEntity<String> status(HttpServletRequest request,
             @RequestParam("problem_id") long id,
-            @RequestParam(value = "start", defaultValue = "0") long start,
-            @RequestParam(value = "size", defaultValue = "20") int size,
-            @RequestParam(value = "orderby", defaultValue = "time") String orderby,
+            @PageableDefault(size = 20, sort = {"time", "memory", "code_length"}) Pageable pageable,
             Authentication authentication) {
-        if (size > 500) {
-            size = 500;
+        log.debug("{}", pageable);
+        if (pageable.getPageSize() > 500) {
+            pageable = new PageRequest(pageable.getPageNumber(), 500, pageable.getSort());
         }
-        String groupBy;
-        if (orderby.equalsIgnoreCase("memory")) {
-            groupBy = " memory,time,code_length";
-        } else if (orderby.equalsIgnoreCase("clen")) {
-            groupBy = " code_length,time,memory";
-        } else {
-            groupBy = " time,memory,code_length";
-            orderby = "time";
-        }
-        groupBy += ",user_id ";
         Problem problem = problemMapper.findOneNoI18n(id);
         if (problem == null) {
             throw new MessageException("No such problem", HttpStatus.NOT_FOUND);
@@ -111,17 +110,17 @@ public class ProblemStatusController {
             counts.add(scoreCount.getCount());
             urls.add("status?problem_id=" + id + "&score=" + score);
         }
-        StringBuilder sb = new StringBuilder(groupBy);
+        StringBuilder sb = new StringBuilder();
 
         sb.append("<html><head><title>").append(id).append("'s Status List</title></head><body>" + "<STYLE> v\\:* { Behavior: url(#default#VML) }o\\:* { behavior: url(#default#VML) }</STYLE>" + "<table><tr><td valign=top><div style='position:relative; height:650px; width:260px'>" + "<script src='js/problemstatus.js'></script>" + "<script>var sa = ").append(new Gson().toJson(Arrays.asList(counts, scores, urls))).append(";var len = 0;");
-        sb.append("if (sa[0].length > sa[1].length){ len = sa[1].length; }else { len = sa[0].length; }" + "table(len,0,0,600,600,'Statistics','',200,250,").append(submitUser).append(",").append(solved).append(",'status?problem_id=").append(id).append("'); </script></div></td>" + "<td valign=top><p align=center><font size=5 color=#333399>Best solutions of Problem <a href=showproblem?problem_id=").append(id).append(">").append(id).append("</a></font></p>" + "<TABLE cellSpacing='0' cellPadding='0' width='700' border='1' class='problem-status table-back' bordercolor='#FFF'>" + "<tr class=inc><th width=5%>Rank</th><th align=center width=15%>Run ID</th>" + "<th width=15%>User</th>" + "<th width=10%><a class=sortable href=problemstatus?problem_id=").append(id).append("&orderby=memory>Memory</a></th>" + "<th width=10%><a class=sortable href=problemstatus?problem_id=").append(id).append("&orderby=time>Time</a></th>" + "<th width=10%>Language</td>" + "<th width=10%><a class=sortable href=problemstatus?problem_id=").append(id).append("&orderby=clen>Code Length</a></th>"
+        sb.append("if (sa[0].length > sa[1].length){ len = sa[1].length; }else { len = sa[0].length; }" + "table(len,0,0,600,600,'Statistics','',200,250,").append(submitUser).append(",").append(solved).append(",'status?problem_id=").append(id).append("'); </script></div></td>" + "<td valign=top><p align=center><font size=5 color=#333399>Best solutions of Problem <a href=showproblem?problem_id=").append(id).append(">").append(id).append("</a></font></p>" + "<TABLE cellSpacing='0' cellPadding='0' width='700' border='1' class='problem-status table-back' bordercolor='#FFF'>" + "<tr class=inc><th width=5%>Rank</th><th align=center width=15%>Run ID</th>" + "<th width=15%>User</th>" + "<th width=10%><a class=sortable href=problemstatus?problem_id=").append(id).append("&sort=memory,time,code_length>Memory</a></th>" + "<th width=10%><a class=sortable href=problemstatus?problem_id=").append(id).append("&sort=time,memory,code_length>Time</a></th>" + "<th width=10%>Language</td>" + "<th width=10%><a class=sortable href=problemstatus?problem_id=").append(id).append("&sort=code_length,time,memory>Code Length</a></th>"
                 + "<th width=25%>Submit Time</th></tr>");
-        List<Submission> bestSubmissions = problemMapper.bestSubmissions(groupBy, id, start, size);
+        List<Submission> bestSubmissions = submissionMapper.bestSubmission(id, pageable);
 
         boolean isAdmin = UserDetailService.isAdminLoginned(request);
         boolean isSourceBrowser = UserDetailService.isSourceBrowser(request);
         boolean canView = isAdmin || isSourceBrowser;
-        long rank = start;
+        long rank = pageable.getOffset();
         DecimalFormat df = new DecimalFormat("0.00");
         for (Submission s : bestSubmissions) {
             rank++;
@@ -150,8 +149,9 @@ public class ProblemStatusController {
             }
             sb.append("<td>").append(formatter.format(inDate)).append("</td></tr>");
         }
-        String html = "[<a href=\"problemstatus?problem_id=" + id + "&size=" + size + "&orderby=" + orderby;
-        sb.append("</table><p align=center>").append(html).append("\">Top</a>]").append(html).append("&start=").append(Math.max(start - size, 0)).append("\">Previous Page</a>]").append(html).append("&start=").append(start + size).append("\">Next Page</a>]</p></td></tr></table></body></html>");
+        String url = request.getContextPath() + URLBuilder.fromRequest(request).replaceQueryParam("page").toString();
+
+        sb.append("</table><p align=center>" + "[<a href=\"").append(url).append("\">Top</a>]" + "[<a href=\"").append(url).append("&page=").append(Math.max(pageable.getPageNumber() - 1, 0)).append("\">Previous Page</a>]" + "[<a href=\"").append(url).append("&page=").append(pageable.getPageNumber() + 1).append("\">Next Page</a>]</p></td></tr></table></body></html>");
         return ResponseEntity.ok().contentType(MediaType.valueOf("text/html;charset=UTF-8")).body(sb.toString());
     }
 
