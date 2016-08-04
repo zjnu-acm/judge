@@ -80,8 +80,7 @@ public class Events {
         return run(initCommandEventHandlers, args, configuration);
     }
 
-    private <T extends EventArgs> boolean run(List<EventCommandData<T>> handlers, T args, IConfiguration configuration)
-            throws ConnectorException {
+    private <T extends EventArgs> boolean run(List<EventCommandData<T>> handlers, T args, IConfiguration configuration) throws ConnectorException {
         for (EventCommandData<T> eventCommandData : handlers) {
             try {
                 IEventHandler<T> events = eventCommandData.getEventListener().get();
