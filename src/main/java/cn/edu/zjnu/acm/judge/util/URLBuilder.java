@@ -26,7 +26,10 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class URLBuilder {
 
-    private static final URLEncoder ENCODER = new URLEncoder("-_.*~-<>");
+    /**
+     * https://tools.ietf.org/html/rfc3986#section-3.4
+     */
+    private static final URLEncoder ENCODER = new URLEncoder("-._~!$'()*,;:@");
 
     public static URLBuilder fromRequest(HttpServletRequest request) {
         return new URLBuilder(request.getServletPath(), request.getParameterMap());
