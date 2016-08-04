@@ -24,6 +24,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
@@ -62,8 +64,10 @@ public class SubmissionMapperTest {
     @Test
     public void testBestSubmission() {
         log.info("bestSubmission");
-        long problemId = 1252;
-        instance.bestSubmission(problemId);
+        long problemId = 1000;
+        Sort sort = new Sort(Sort.Direction.DESC, "time", "memory", "code_length");
+        PageRequest pageRequest = new PageRequest(5, 20, sort);
+        instance.bestSubmission(problemId, pageRequest);
     }
 
 }

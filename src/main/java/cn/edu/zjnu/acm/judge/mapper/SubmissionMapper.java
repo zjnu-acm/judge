@@ -23,7 +23,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.Update;
+import org.springframework.data.domain.Pageable;
 
 /**
  *
@@ -32,8 +34,8 @@ import org.apache.ibatis.annotations.Update;
 @Mapper
 public interface SubmissionMapper {
 
-    String COLUMNS = " solution_id id,problem_id problem,user_id user,contest_id contest,time,memory,score,language,ip,code_length sourceLength,in_date inDate,num ";
-    String LIST_COLUMNS = " solution_id id,user_id user,time,memory,language,code_length sourceLength,in_date inDate";
+    String COLUMNS = " s.solution_id id,s.problem_id problem,s.user_id user,s.contest_id contest,s.time,s.memory,s.score,s.language,s.ip,s.code_length sourceLength,s.in_date inDate,s.num ";
+    String LIST_COLUMNS = " s.solution_id id,s.problem_id problem,s.user_id user,s.contest_id contest,s.time,s.memory,s.score,s.language,s.code_length sourceLength,s.in_date inDate,s.num ";
 
     @Select("select uncompress(source) source from source_code where solution_id=#{id}")
     String findSourceById(@Param("id") long id);
@@ -47,7 +49,7 @@ public interface SubmissionMapper {
             before = true, keyProperty = "id", resultType = long.class)
     long save(Submission submission);
 
-    @Select("SELECT" + COLUMNS + "FROM solution WHERE solution_id=#{id}")
+    @Select("SELECT" + COLUMNS + "FROM solution s WHERE solution_id=#{id}")
     Submission findOne(@Param("id") long id);
 
     @Insert("insert into source_code (solution_id,source) values(#{id},compress(#{source}))")
@@ -72,7 +74,7 @@ public interface SubmissionMapper {
     @Select({
         "<script>",
         "<if test='bottom!=null'>select * from (</if>",
-        "select" + COLUMNS + "from solution ",
+        "select" + LIST_COLUMNS + "from solution s ",
         "<where>",
         "<if test='contest!=null'>and contest_id=#{contest}</if>",
         "<if test='problem!=null'>and problem_id=#{problem}</if>",
@@ -90,19 +92,10 @@ public interface SubmissionMapper {
     })
     List<Submission> findAllByCriteria(SubmissionCriteria submissionCriteria);
 
-    @Select("select solution_id from solution where problem_id=#{problemId} order by solution_id desc")
+    @Select("select solution_id from solution s where problem_id=#{problemId} order by solution_id desc")
     List<Long> findAllByProblemId(@Param("problemId") long problemId);
 
-    @Select("select t2.* from solution t2 join ("
-            + "select t2.user_id,t2.time,min(t2.memory) memory from solution t2 "
-            + "join ("
-            + "select user_id,min(time) time from solution t2 "
-            + "where t2.score=100 and t2.problem_id=#{problemId} "
-            + "group by t2.user_id"
-            + ") t1 on t2.problem_id=#{problemId} and t1.user_id=t2.user_id and t1.time=t2.time and t2.score=100 "
-            + "group by t2.user_id"
-            + ") t1 on t2.problem_id=#{problemId} and t1.user_id=t2.user_id and t2.time=t1.time and t2.score=100 and t2.memory=t1.memory group by user_id "
-            + "order by time,memory")
-    List<Submission> bestSubmission(@Param("problemId") long problemId);
+    @SelectProvider(type = BestSubmissionsBuilder.class, method = "bestSubmissions")
+    List<Submission> bestSubmission(@Param("problemId") long problemId, @Param("pageable") Pageable pageable);
 
 }
