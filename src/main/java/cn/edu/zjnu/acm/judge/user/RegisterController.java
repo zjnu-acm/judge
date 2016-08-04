@@ -25,6 +25,7 @@ public class RegisterController {
     private UserMapper userMapper;
 
     @PostMapping("/register")
+    @SuppressWarnings("AssignmentToMethodParameter")
     public String register(
             HttpServletRequest request,
             @RequestParam("user_id") String userId,

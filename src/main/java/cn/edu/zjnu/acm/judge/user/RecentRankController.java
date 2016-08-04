@@ -16,6 +16,7 @@ public class RecentRankController {
     private UserMapper userMapper;
 
     @GetMapping("/recentrank")
+    @SuppressWarnings("AssignmentToMethodParameter")
     public String recentrank(Model model,
             @RequestParam(value = "count", defaultValue = "10000") int count) {
         count = Math.max(0, Math.min(10000, count));

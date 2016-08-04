@@ -36,8 +36,7 @@ public class ImageUtils {
     /**
      * allowed image extensions.
      */
-    private static final List<String> ALLOWED_EXT = Arrays.asList("gif", "jpeg", "jpg", "png",
-        "bmp", "xbm");
+    private static final List<String> ALLOWED_EXT = Arrays.asList("gif", "jpeg", "jpg", "png", "bmp", "xbm");
 
     /**
      * Resizes the image and writes it to the disk.

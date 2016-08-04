@@ -19,7 +19,7 @@ public class AdminShowProblemController {
     @Autowired
     private ProblemMapper problemMapper;
 
-    // TODO
+    // TODO for admin only
     @GetMapping("/admin/problems/{problemId}")
     public String view(Model model,
             @PathVariable("problemId") long problemId,
