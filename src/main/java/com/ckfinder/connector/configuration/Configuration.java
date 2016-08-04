@@ -75,7 +75,7 @@ public class Configuration implements IConfiguration {
     private Integer thumbsMaxHeight;
     private Integer thumbsMaxWidth;
     private float thumbsQuality;
-    private ArrayList<AccessControlLevel> accessControlLevels;
+    private List<AccessControlLevel> accessControlLevels;
     private List<String> hiddenFolders;
     private List<String> hiddenFiles;
     private boolean doubleExtensions;
@@ -787,7 +787,7 @@ public class Configuration implements IConfiguration {
      * @return list of access control levels.
      */
     @Override
-    public ArrayList<AccessControlLevel> getAccessConrolLevels() {
+    public List<AccessControlLevel> getAccessConrolLevels() {
         return this.accessControlLevels;
     }
 

@@ -24,6 +24,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.StringTokenizer;
 import javax.annotation.Nullable;
@@ -42,7 +43,7 @@ public class Downloader {
     /**
      * Full range marker.
      */
-    private static final Range[] FULL = new Range[0];
+    private static final Range[] FULL = {};
 
     // ----------------------------------------------------- Static Initializer
     /**
@@ -310,7 +311,7 @@ public class Downloader {
         }
         // Vector which will contain all the ranges which are successfully
         // parsed.
-        ArrayList<Range> result = new ArrayList<>(4);
+        List<Range> result = new ArrayList<>(4);
         // Parsing the range list
         // "bytes=".length() = 6
         for (int index, last = 6;; last = index + 1) {

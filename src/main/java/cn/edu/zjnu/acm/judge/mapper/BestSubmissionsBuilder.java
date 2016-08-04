@@ -16,7 +16,6 @@
 package cn.edu.zjnu.acm.judge.mapper;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.StreamSupport;
