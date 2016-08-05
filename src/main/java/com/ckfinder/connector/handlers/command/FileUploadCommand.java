@@ -216,7 +216,7 @@ public class FileUploadCommand extends Command implements IPostCommand {
      * @return true if uploaded correctly.
      */
     private boolean uploadFile(HttpServletRequest request) {
-        if (!getAccessControl().checkFolderACL(this.type, this.currentFolder, this.userRole,
+        if (!configuration.getAccessControl().checkFolderACL(this.type, this.currentFolder, this.userRole,
                 AccessControl.CKFINDER_CONNECTOR_ACL_FILE_UPLOAD)) {
             this.errorCode = Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
             return false;

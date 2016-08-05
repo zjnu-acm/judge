@@ -106,7 +106,7 @@ public class DeleteFilesCommand extends XMLCommand implements IPostCommand {
 
             }
 
-            if (!getAccessControl().checkFolderACL(fileItem.getType(), fileItem.getFolder(), this.userRole,
+            if (!configuration.getAccessControl().checkFolderACL(fileItem.getType(), fileItem.getFolder(), this.userRole,
                     AccessControl.CKFINDER_CONNECTOR_ACL_FILE_DELETE)) {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
             }
