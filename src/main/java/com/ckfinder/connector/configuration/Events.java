@@ -80,6 +80,7 @@ public class Events {
         return run(initCommandEventHandlers, args, configuration);
     }
 
+    @SuppressWarnings({"BroadCatchBlock", "TooBroadCatch"})
     private <T extends EventArgs> boolean run(List<EventCommandData<T>> handlers, T args, IConfiguration configuration) throws ConnectorException {
         for (EventCommandData<T> eventCommandData : handlers) {
             try {

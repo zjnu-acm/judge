@@ -16,7 +16,6 @@
 package cn.edu.zjnu.acm.judge.config;
 
 import cn.edu.zjnu.acm.judge.Application;
-import java.nio.file.Path;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,8 +44,7 @@ public class JudgeConfigurationTest {
     public void testGetDataDirectory() {
         log.info("getDataDirectory");
         long problemId = 0L;
-        Path expResult = null;
-        Path result = judgeConfiguration.getDataDirectory(problemId);
+        judgeConfiguration.getDataDirectory(problemId);
     }
 
     /**
@@ -56,8 +54,7 @@ public class JudgeConfigurationTest {
     public void testGetWorkDirectory() {
         log.info("getWorkDirectory");
         long solutionId = 0L;
-        Path expResult = null;
-        Path result = judgeConfiguration.getWorkDirectory(solutionId);
+        judgeConfiguration.getWorkDirectory(solutionId);
     }
 
     /**
@@ -75,8 +72,7 @@ public class JudgeConfigurationTest {
     @Test
     public void testGetContextPath() {
         log.info("getContextPath");
-        String expResult = "";
-        String result = judgeConfiguration.getContextPath();
+        judgeConfiguration.getContextPath();
     }
 
 }

@@ -15,7 +15,6 @@
  */
 package cn.edu.zjnu.acm.judge;
 
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,6 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
  *
  * @author zhanhb
  */
-@Slf4j
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration

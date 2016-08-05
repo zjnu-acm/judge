@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -39,7 +38,6 @@ import org.springframework.stereotype.Service;
  * @author zhanhb
  */
 @Service
-@Slf4j
 public class UserDetailService {
 
     private static final List<GrantedAuthority> ROLE_ADMIN = Collections.unmodifiableList(AuthorityUtils.createAuthorityList("ROLE_ADMIN", "ROLE_SOURCE_BROWSER", "ROLE_USER"));

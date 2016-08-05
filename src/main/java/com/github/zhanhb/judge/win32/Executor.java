@@ -18,9 +18,12 @@ import com.sun.jna.platform.win32.WinNT.HANDLE;
 import com.sun.jna.platform.win32.WinNT.TOKEN_INFORMATION_CLASS;
 import java.nio.file.Path;
 
-import static com.github.zhanhb.judge.common.Constants.*;
-import static com.github.zhanhb.judge.jna.win32.Advapi32.*;
-import static com.github.zhanhb.judge.jna.win32.Kernel32.*;
+import static com.github.zhanhb.judge.common.Constants.TERMINATE_TIMEOUT;
+import static com.github.zhanhb.judge.common.Constants.UPDATE_TIME_THRESHOLD;
+import static com.github.zhanhb.judge.jna.win32.Advapi32.SANDBOX_INERT;
+import static com.github.zhanhb.judge.jna.win32.Advapi32.SECURITY_MANDATORY_LOW_RID;
+import static com.github.zhanhb.judge.jna.win32.Advapi32.SE_GROUP_INTEGRITY;
+import static com.github.zhanhb.judge.jna.win32.Kernel32.HIGH_PRIORITY_CLASS;
 import static com.sun.jna.platform.win32.WinBase.CREATE_BREAKAWAY_FROM_JOB;
 import static com.sun.jna.platform.win32.WinBase.CREATE_NEW_PROCESS_GROUP;
 import static com.sun.jna.platform.win32.WinBase.CREATE_NO_WINDOW;
@@ -60,7 +63,7 @@ public class Executor {
     public static final int _O_SEQUENTIAL = 0x0020;
     public static final int _O_TEMPORARY = 0x0040;
     /* Make the file dissappear after closing.
-				 * WARNING: Even if not created by _open! */
+     * WARNING: Even if not created by _open! */
     public static final int _O_NOINHERIT = 0x0080;
 
     public static final int _O_CREAT = 0x0100;

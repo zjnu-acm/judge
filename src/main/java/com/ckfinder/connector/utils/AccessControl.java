@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 /**
  * Class to generate ACL values.
  */
-@SuppressWarnings("FinalClass")
+@SuppressWarnings({"FinalClass", "AccessingNonPublicFieldOfAnotherObject"})
 public final class AccessControl {
 
     /**

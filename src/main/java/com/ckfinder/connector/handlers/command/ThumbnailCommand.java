@@ -246,6 +246,7 @@ public class ThumbnailCommand extends Command {
      *
      * @throws ConnectorException when thumbnail creation fails.
      */
+    @SuppressWarnings({"BroadCatchBlock", "TooBroadCatch"})
     private void createThumb() throws ConnectorException {
         this.thumbFile = Paths.get(fullCurrentPath, this.fileName);
         try {

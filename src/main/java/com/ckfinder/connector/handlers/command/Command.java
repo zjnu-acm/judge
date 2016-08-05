@@ -34,6 +34,7 @@ import lombok.Setter;
 /**
  * Base class for all command handlers.
  */
+@SuppressWarnings("ProtectedField")
 public abstract class Command {
 
     /**

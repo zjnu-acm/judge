@@ -135,6 +135,7 @@ public class InitCommand extends XMLCommand {
      */
     private String createLicenseKey(String licenseKey) {
         if (validateLicenseKey(licenseKey)) {
+            @SuppressWarnings("StringBufferWithoutInitialCapacity")
             StringBuilder sb = new StringBuilder();
             for (int i : LICENSE_CHARS) {
                 sb.append(licenseKey.charAt(i));
@@ -178,6 +179,7 @@ public class InitCommand extends XMLCommand {
      * @param rootElement root element in XML
      * @throws Exception when error occurs
      */
+    @SuppressWarnings("CollectionWithoutInitialCapacity")
     private void createResouceTypesData(Element rootElement) throws Exception {
         //resurcetypes
         Element element = creator.getDocument().createElement("ResourceTypes");
@@ -245,6 +247,7 @@ public class InitCommand extends XMLCommand {
             algorithm.update(folder.getBytes("UTF8"));
             byte[] messageDigest = algorithm.digest();
 
+            @SuppressWarnings("StringBufferWithoutInitialCapacity")
             StringBuilder hexString = new StringBuilder();
 
             for (int i = 0; i < messageDigest.length; i++) {

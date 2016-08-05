@@ -16,8 +16,6 @@
 package cn.edu.zjnu.acm.judge.mapper;
 
 import cn.edu.zjnu.acm.judge.Application;
-import cn.edu.zjnu.acm.judge.domain.UserProblem;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,8 +54,7 @@ public class UserProblemMapperTest {
         log.info("findOne");
         String userId = "coach";
         long problemId = 1000;
-        UserProblem expResult = null;
-        UserProblem result = instance.findOne(userId, problemId);
+        instance.findOne(userId, problemId);
     }
 
     /**
@@ -68,8 +65,7 @@ public class UserProblemMapperTest {
         log.info("update");
         String userId = "coach";
         long problemId = 1000L;
-        long expResult = 0L;
-        long result = instance.update(userId, problemId);
+        instance.update(userId, problemId);
     }
 
     /**
@@ -79,8 +75,7 @@ public class UserProblemMapperTest {
     public void testUpdateUser() {
         log.info("updateUser");
         String userId = "coach";
-        long expResult = 0L;
-        long result = instance.updateUser(userId);
+        instance.updateUser(userId);
     }
 
     /**
@@ -90,8 +85,7 @@ public class UserProblemMapperTest {
     public void testUpdateProblem() {
         log.info("updateProblem");
         long problemId = 1000;
-        long expResult = 0L;
-        long result = instance.updateProblem(problemId);
+        instance.updateProblem(problemId);
     }
 
     /**
@@ -109,8 +103,7 @@ public class UserProblemMapperTest {
     @Test
     public void testUpdateProblems() {
         log.info("updateProblems");
-        long expResult = 0L;
-        long result = instance.updateProblems();
+        instance.updateProblems();
     }
 
     /**
@@ -120,8 +113,7 @@ public class UserProblemMapperTest {
     public void testFindAllByUserIdAndAcceptedNot0() {
         log.info("findAllByUserIdAndAcceptedNot0");
         String userId = "";
-        List<Long> expResult = null;
-        List<Long> result = instance.findAllByUserIdAndAcceptedNot0(userId);
+        instance.findAllByUserIdAndAcceptedNot0(userId);
     }
 
     /**
@@ -131,8 +123,7 @@ public class UserProblemMapperTest {
     public void testFindAllByUserId() {
         log.info("findAllByUserId");
         String userId = "";
-        List<UserProblem> expResult = null;
-        List<UserProblem> result = instance.findAllByUserId(userId);
+        instance.findAllByUserId(userId);
     }
 
 }

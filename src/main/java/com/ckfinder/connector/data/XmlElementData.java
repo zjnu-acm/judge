@@ -47,6 +47,7 @@ public class XmlElementData {
      *
      * @param name XML element name.
      */
+    @SuppressWarnings("CollectionWithoutInitialCapacity")
     public XmlElementData(String name) {
         super();
         this.name = name;

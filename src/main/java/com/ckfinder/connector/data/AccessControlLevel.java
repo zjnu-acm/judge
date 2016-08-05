@@ -73,6 +73,7 @@ public class AccessControlLevel {
      *
      * @param acl source acl
      */
+    @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
     public AccessControlLevel(AccessControlLevel acl) {
         this.role = acl.role;
         this.resourceType = acl.resourceType;

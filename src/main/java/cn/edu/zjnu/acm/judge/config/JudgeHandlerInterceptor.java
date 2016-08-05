@@ -20,7 +20,6 @@ import java.util.Optional;
 import java.util.function.Function;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -33,7 +32,6 @@ import org.thymeleaf.util.StringUtils;
  * @author zhanhb
  */
 @ControllerAdvice
-@Slf4j
 public class JudgeHandlerInterceptor {
 
     private static final String APPLIED_ONCE_KEY = JudgeHandlerInterceptor.class.getName().concat(".APPLIED_ONCE");

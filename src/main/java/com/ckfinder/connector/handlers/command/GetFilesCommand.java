@@ -23,9 +23,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Element;
@@ -117,13 +117,10 @@ public class GetFilesCommand extends XMLCommand {
      *
      */
     private void filterListByHiddenAndNotAllowed() {
-        List<String> tmpFiles = new ArrayList<>();
-        for (String file : this.files) {
-            if (FileUtils.checkFileExtension(file, this.configuration.getTypes().get(this.type)) == 0
-                    && !FileUtils.checkIfFileIsHidden(file, this.configuration)) {
-                tmpFiles.add(file);
-            }
-        }
+        List<String> tmpFiles = this.files.stream()
+                .filter(file -> (FileUtils.checkFileExtension(file, this.configuration.getTypes().get(this.type)) == 0
+                && !FileUtils.checkIfFileIsHidden(file, this.configuration)))
+                .collect(Collectors.toList());
 
         this.files.clear();
         this.files.addAll(tmpFiles);

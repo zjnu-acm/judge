@@ -115,4 +115,5 @@ public class ImageResizeInfoCommand extends XMLCommand implements IEventHandler<
         this.type = request.getParameter("type");
         this.fileName = request.getParameter("fileName");
     }
+
 }

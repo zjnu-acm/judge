@@ -159,8 +159,8 @@ public class ImageResizeCommad extends XMLCommand implements IEventHandler<Befor
                             if (checkParamSize(param.getValue())) {
                                 String[] params = parseValue(param.getValue());
                                 try {
-                                    ImageUtils.createResizedImage(file, thumbFile, Integer.valueOf(params[0]),
-                                            Integer.valueOf(params[1]), configuration.getImgQuality());
+                                    ImageUtils.createResizedImage(file, thumbFile, Integer.parseInt(params[0]),
+                                            Integer.parseInt(params[1]), configuration.getImgQuality());
                                 } catch (IOException e) {
                                     log.error("", e);
                                     return Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED;
@@ -188,6 +188,7 @@ public class ImageResizeCommad extends XMLCommand implements IEventHandler<Befor
     }
 
     @Override
+    @SuppressWarnings("CollectionWithoutInitialCapacity")
     protected void initParams(HttpServletRequest request, IConfiguration configuration1)
             throws ConnectorException {
         super.initParams(request, configuration1);

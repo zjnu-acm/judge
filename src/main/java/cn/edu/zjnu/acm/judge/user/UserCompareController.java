@@ -25,6 +25,7 @@ public class UserCompareController {
     private UserMapper userMapper;
 
     @GetMapping("/usercmp")
+    @SuppressWarnings("CollectionWithoutInitialCapacity")
     public String compare(Model model,
             @RequestParam("uid1") String userId1,
             @RequestParam("uid2") String userId2) {

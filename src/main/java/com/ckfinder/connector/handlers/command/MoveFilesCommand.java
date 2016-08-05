@@ -290,11 +290,12 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
     }
 
     @Override
+    @SuppressWarnings("CollectionWithoutInitialCapacity")
     protected void initParams(HttpServletRequest request, IConfiguration configuration)
             throws ConnectorException {
         super.initParams(request, configuration);
         this.files = new ArrayList<>();
-        this.movedAll = (request.getParameter("moved") != null) ? Integer.valueOf(request.getParameter("moved")) : 0;
+        this.movedAll = (request.getParameter("moved") != null) ? Integer.parseInt(request.getParameter("moved")) : 0;
         getFilesListFromRequest(request);
     }
 

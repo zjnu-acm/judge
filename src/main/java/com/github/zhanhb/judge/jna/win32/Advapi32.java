@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+@SuppressWarnings({"PublicInnerClass", "PublicField"})
 public interface Advapi32 extends com.sun.jna.platform.win32.Advapi32 {
 
     @SuppressWarnings("FieldNameHidesFieldInSuperclass")
@@ -42,7 +43,6 @@ public interface Advapi32 extends com.sun.jna.platform.win32.Advapi32 {
             int /*DWORD*/ dwSubAuthority7,
             PSIDByReference pSid);
 
-    @SuppressWarnings({"PublicField", "PublicInnerClass"})
     class SID_IDENTIFIER_AUTHORITY extends Structure {
 
         public byte[] Value = new byte[6]; // the length of the value must be 6
@@ -81,7 +81,6 @@ public interface Advapi32 extends com.sun.jna.platform.win32.Advapi32 {
             int /*DWORD*/ tokenInformationLength
     );
 
-    @SuppressWarnings({"PublicField", "PublicInnerClass"})
     class TOKEN_MANDATORY_LABEL extends Structure {
 
         public SID_AND_ATTRIBUTES Label;
@@ -93,7 +92,6 @@ public interface Advapi32 extends com.sun.jna.platform.win32.Advapi32 {
 
     }
 
-    @SuppressWarnings({"PublicField", "PublicInnerClass"})
     class SID_AND_ATTRIBUTES extends Structure {
 
         /**

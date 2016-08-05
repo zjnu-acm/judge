@@ -59,7 +59,7 @@ public class URLBuilder {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder(path);
+        StringBuilder sb = new StringBuilder(encode(path));
         boolean first = true;
         for (Map.Entry<String, String[]> entry : query.entrySet()) {
             String key = encode(entry.getKey());

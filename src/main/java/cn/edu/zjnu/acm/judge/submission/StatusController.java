@@ -45,6 +45,7 @@ public class StatusController {
     private LanguageService languageService;
 
     @GetMapping(value = {"/status", "/submissions"}, produces = TEXT_HTML_VALUE)
+    @SuppressWarnings("AssignmentToMethodParameter")
     public ResponseEntity<String> status(HttpServletRequest request,
             @RequestParam(value = "problem_id", defaultValue = "") String pid,
             @RequestParam(value = "contest_id", required = false) Long contestId,

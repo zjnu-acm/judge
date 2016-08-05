@@ -41,6 +41,7 @@ import lombok.extern.slf4j.Slf4j;
  * Class to handle <code>FileUpload</code> command.
  */
 @Slf4j
+@SuppressWarnings("ProtectedField")
 public class FileUploadCommand extends Command implements IPostCommand {
 
     /**
@@ -228,7 +229,6 @@ public class FileUploadCommand extends Command implements IPostCommand {
      * @param request http request
      * @return true if uploaded correctly
      */
-    @SuppressWarnings("unchecked")
     private boolean fileUpload(HttpServletRequest request) {
         try {
             Collection<Part> parts = request.getParts();
@@ -321,6 +321,7 @@ public class FileUploadCommand extends Command implements IPostCommand {
         while (true) {
             if (Files.exists(file) || protectedName) {
                 number++;
+                @SuppressWarnings("StringBufferWithoutInitialCapacity")
                 StringBuilder sb = new StringBuilder();
                 sb.append(FileUtils.getFileNameWithoutExtension(name, false));
                 sb.append("(").append(number).append(").");

@@ -146,7 +146,6 @@ public class Downloader {
      * @param resource the resource to serve
      *
      * @exception IOException if an input/output error occurs
-     * @exception ServletException if a servlet-specified error occurs
      */
     private void serveResource(HttpServletRequest request, HttpServletResponse response,
             boolean content, Resource resource) throws IOException {

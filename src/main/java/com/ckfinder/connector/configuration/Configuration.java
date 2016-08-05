@@ -31,7 +31,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 import org.w3c.dom.Document;
@@ -40,17 +39,9 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import static com.ckfinder.connector.configuration.IConfiguration.DEFAULT_CHECKAUTHENTICATION;
-import static com.ckfinder.connector.configuration.IConfiguration.DEFAULT_IMG_HEIGHT;
-import static com.ckfinder.connector.configuration.IConfiguration.DEFAULT_IMG_QUALITY;
-import static com.ckfinder.connector.configuration.IConfiguration.DEFAULT_IMG_WIDTH;
-import static com.ckfinder.connector.configuration.IConfiguration.DEFAULT_THUMB_MAX_HEIGHT;
-import static com.ckfinder.connector.configuration.IConfiguration.DEFAULT_THUMB_MAX_WIDTH;
-
 /**
  * Class loads configuration from XML file.
  */
-@Slf4j
 @SuppressWarnings({"CollectionWithoutInitialCapacity", "ReturnOfCollectionOrArrayField", "FinalMethod"})
 public class Configuration implements IConfiguration {
 
