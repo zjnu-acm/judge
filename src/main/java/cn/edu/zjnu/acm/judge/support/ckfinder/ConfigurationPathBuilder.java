@@ -1,7 +1,7 @@
 package cn.edu.zjnu.acm.judge.support.ckfinder;
 
 import cn.edu.zjnu.acm.judge.config.JudgeConfiguration;
-import com.ckfinder.connector.configuration.IBasePathBuilder;
+import com.github.zhanhb.ckfinder.connector.configuration.IBasePathBuilder;
 import java.io.IOException;
 import java.nio.file.Path;
 import javax.servlet.http.HttpServletRequest;
