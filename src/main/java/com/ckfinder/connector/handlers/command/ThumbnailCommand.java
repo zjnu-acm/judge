@@ -209,7 +209,7 @@ public class ThumbnailCommand extends Command {
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE, false);
         }
 
-        if (!getAccessControl().checkFolderACL(this.type, this.currentFolder, this.userRole,
+        if (!configuration.getAccessControl().checkFolderACL(this.type, this.currentFolder, this.userRole,
                 AccessControl.CKFINDER_CONNECTOR_ACL_FILE_VIEW)) {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED);

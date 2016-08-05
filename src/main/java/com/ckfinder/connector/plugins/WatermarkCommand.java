@@ -18,8 +18,6 @@ import com.ckfinder.connector.errors.ConnectorException;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import javax.imageio.ImageIO;
 import lombok.extern.slf4j.Slf4j;
@@ -39,13 +37,11 @@ public class WatermarkCommand implements IEventHandler<AfterFileUploadEventArgs>
             final Path originalFile = args.getFile();
             final WatermarkPosition position = new WatermarkPosition(settings.getMarginBottom(), settings.getMarginRight());
 
-            try (InputStream stream = Files.newInputStream(originalFile)) {
-                Thumbnails.of(stream)
-                        .watermark(position, getWatermakImage(settings), settings.getTransparency())
-                        .scale(1)
-                        .outputQuality(settings.getQuality())
-                        .toFiles(Rename.NO_CHANGE);
-            }
+            Thumbnails.of(originalFile.toFile())
+                    .watermark(position, getWatermakImage(settings), settings.getTransparency())
+                    .scale(1)
+                    .outputQuality(settings.getQuality())
+                    .toFiles(Rename.NO_CHANGE);
         } catch (Exception ex) {
             // only log error if watermark is not created
             log.error("", ex);

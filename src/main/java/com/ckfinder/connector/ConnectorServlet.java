@@ -106,7 +106,6 @@ public class ConnectorServlet extends HttpServlet {
     private void getResponse(HttpServletRequest request,
             HttpServletResponse response, boolean post)
             throws ServletException {
-        boolean isNativeCommand;
         String command = request.getParameter("command");
         IConfiguration configuration = null;
         try {
@@ -124,10 +123,15 @@ public class ConnectorServlet extends HttpServlet {
                         Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_COMMAND, false);
             }
 
+            BeforeExecuteCommandEventArgs args = new BeforeExecuteCommandEventArgs();
+            args.setCommand(command);
+            args.setRequest(request);
+            args.setResponse(response);
+
+            boolean isNativeCommand;
             if (CommandHandlerEnum.contains(command.toUpperCase())) {
-                CommandHandlerEnum cmd;
                 isNativeCommand = true;
-                cmd = CommandHandlerEnum.valueOf(command.toUpperCase());
+                CommandHandlerEnum cmd = CommandHandlerEnum.valueOf(command.toUpperCase());
                 // checks if command should go via POST request or it's a post request
                 // and it's not upload command
                 if ((IPostCommand.class.isInstance(cmd.getCommand()) || post)
@@ -137,25 +141,14 @@ public class ConnectorServlet extends HttpServlet {
                 }
             } else {
                 isNativeCommand = false;
+                command = null;
             }
 
-            BeforeExecuteCommandEventArgs args = new BeforeExecuteCommandEventArgs();
-            args.setCommand(command);
-            args.setRequest(request);
-            args.setResponse(response);
-
             if (configuration.getEvents() != null) {
-                if (configuration.getEvents().runBeforeExecuteCommand(
-                        args, configuration)) {
-                    if (!isNativeCommand) {
-                        command = null;
-                    }
+                if (configuration.getEvents().runBeforeExecuteCommand(args, configuration)) {
                     executeNativeCommand(command, request, response, configuration, isNativeCommand);
                 }
             } else {
-                if (!isNativeCommand) {
-                    command = null;
-                }
                 executeNativeCommand(command, request, response, configuration, isNativeCommand);
             }
         } catch (IllegalArgumentException e) {
@@ -204,8 +197,7 @@ public class ConnectorServlet extends HttpServlet {
      */
     private void checkPostRequest(HttpServletRequest request)
             throws ConnectorException {
-        if (request.getParameter("CKFinderCommand") == null
-                || !(request.getParameter("CKFinderCommand").equals("true"))) {
+        if (!"true".equals(request.getParameter("CKFinderCommand"))) {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST, true);
         }
@@ -226,11 +218,11 @@ public class ConnectorServlet extends HttpServlet {
             IConfiguration configuration,
             HttpServletRequest request, HttpServletResponse response,
             String currentCommand) throws ServletException {
+        log.debug(currentCommand);
         try {
             if (currentCommand != null && !currentCommand.isEmpty()) {
-                Command command = CommandHandlerEnum.valueOf(
-                        currentCommand.toUpperCase()).getCommand();
-                if (XMLCommand.class.isInstance(command)) {
+                Command command = CommandHandlerEnum.valueOf(currentCommand.toUpperCase()).getCommand();
+                if (command instanceof XMLCommand) {
                     CommandHandlerEnum.XMLERROR.execute(request, response, configuration, e);
                 } else {
                     CommandHandlerEnum.ERROR.execute(request, response, configuration, e);
@@ -238,8 +230,8 @@ public class ConnectorServlet extends HttpServlet {
             } else {
                 CommandHandlerEnum.XMLERROR.execute(request, response, configuration, e);
             }
-        } catch (Exception e1) {
-            throw new ServletException(e1);
+        } catch (Exception ex) {
+            throw new ServletException(ex);
         }
     }
 
@@ -362,7 +354,6 @@ public class ConnectorServlet extends HttpServlet {
             if (com instanceof IErrorCommand) {
                 ((IErrorCommand) com).setConnectorException(e);
             }
-            com.setAccessControl(configuration.getAccessControl());
             com.runCommand(request, response, configuration);
         }
 

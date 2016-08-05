@@ -31,15 +31,17 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Element;
 
+@RequiredArgsConstructor
 @Slf4j
 public class ImageResizeCommad extends XMLCommand implements IEventHandler<BeforeExecuteCommandEventArgs> {
 
     private static final String[] SIZES = {"small", "medium", "large"};
 
-    private PluginInfo pluginInfo;
+    private final PluginInfo pluginInfo;
 
     /**
      * file name
@@ -52,15 +54,11 @@ public class ImageResizeCommad extends XMLCommand implements IEventHandler<Befor
     private boolean wrongReqSizesParams;
     private Map<String, String> sizesFromReq;
 
-    public ImageResizeCommad(PluginInfo pluginInfo) {
-        this.pluginInfo = pluginInfo;
-    }
-
     @Override
-    public boolean runEventHandler(BeforeExecuteCommandEventArgs args, IConfiguration configuration1)
+    public boolean runEventHandler(BeforeExecuteCommandEventArgs args, IConfiguration configuration)
             throws ConnectorException {
         if ("ImageResize".equals(args.getCommand())) {
-            this.runCommand(args.getRequest(), args.getResponse(), configuration1);
+            this.runCommand(args.getRequest(), args.getResponse(), configuration);
             return false;
         }
         return true;
@@ -79,7 +77,7 @@ public class ImageResizeCommad extends XMLCommand implements IEventHandler<Befor
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
         }
 
-        if (!getAccessControl().checkFolderACL(type, currentFolder, userRole,
+        if (!configuration.getAccessControl().checkFolderACL(type, currentFolder, userRole,
                 AccessControl.CKFINDER_CONNECTOR_ACL_FILE_DELETE
                 | AccessControl.CKFINDER_CONNECTOR_ACL_FILE_UPLOAD)) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;

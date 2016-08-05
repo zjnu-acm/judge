@@ -59,7 +59,7 @@ public class GetFoldersCommand extends XMLCommand {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
         }
 
-        if (!getAccessControl().checkFolderACL(this.type,
+        if (!configuration.getAccessControl().checkFolderACL(this.type,
                 this.currentFolder,
                 this.userRole,
                 AccessControl.CKFINDER_CONNECTOR_ACL_FOLDER_VIEW)) {
@@ -92,7 +92,7 @@ public class GetFoldersCommand extends XMLCommand {
      */
     private void filterListByHiddenAndNotAllowed() {
         List<String> tmpDirs = this.directories.stream()
-                .filter(dir -> (getAccessControl().checkFolderACL(this.type, this.currentFolder + dir,
+                .filter(dir -> (configuration.getAccessControl().checkFolderACL(this.type, this.currentFolder + dir,
                         this.userRole,
                         AccessControl.CKFINDER_CONNECTOR_ACL_FOLDER_VIEW)
                         && !FileUtils.checkIfDirIsHidden(dir, this.configuration)))
@@ -119,10 +119,10 @@ public class GetFoldersCommand extends XMLCommand {
                 xmlElementData.getAttributes().add(new XmlAttribute("name", dirPath));
 
                 xmlElementData.getAttributes().add(new XmlAttribute("hasChildren",
-                        FileUtils.hasChildren(getAccessControl(), this.currentFolder + dirPath + "/", dir, configuration, this.type, this.userRole).toString()));
+                        FileUtils.hasChildren(configuration.getAccessControl(), this.currentFolder + dirPath + "/", dir, configuration, this.type, this.userRole).toString()));
 
                 xmlElementData.getAttributes().add(new XmlAttribute("acl",
-                        String.valueOf(getAccessControl().checkACLForRole(this.type,
+                        String.valueOf(configuration.getAccessControl().checkACLForRole(this.type,
                                 this.currentFolder
                                 + dirPath,
                                 this.userRole))));

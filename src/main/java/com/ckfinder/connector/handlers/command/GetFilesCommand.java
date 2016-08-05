@@ -92,7 +92,7 @@ public class GetFilesCommand extends XMLCommand {
         this.fullCurrentPath = configuration.getTypes().get(this.type).getPath()
                 + this.currentFolder;
 
-        if (!getAccessControl().checkFolderACL(this.type, this.currentFolder, this.userRole,
+        if (!configuration.getAccessControl().checkFolderACL(this.type, this.currentFolder, this.userRole,
                 AccessControl.CKFINDER_CONNECTOR_ACL_FILE_VIEW)) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
         }

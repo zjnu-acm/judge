@@ -47,7 +47,7 @@ public class SaveFileCommand extends XMLCommand implements IEventHandler<BeforeE
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
         }
 
-        if (!getAccessControl().checkFolderACL(this.type, this.currentFolder, this.userRole,
+        if (!configuration.getAccessControl().checkFolderACL(this.type, this.currentFolder, this.userRole,
                 AccessControl.CKFINDER_CONNECTOR_ACL_FILE_DELETE)) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
         }

@@ -128,7 +128,7 @@ public abstract class XMLCommand extends Command {
         element.setAttribute("path", this.currentFolder);
         element.setAttribute("url", configuration.getTypes().get(this.type).getUrl()
                 + this.currentFolder);
-        element.setAttribute("acl", String.valueOf(getAccessControl().checkACLForRole(this.type,
+        element.setAttribute("acl", String.valueOf(configuration.getAccessControl().checkACLForRole(this.type,
                 this.currentFolder, this.userRole)));
         rootElement.appendChild(element);
     }

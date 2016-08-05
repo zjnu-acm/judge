@@ -43,7 +43,7 @@ public class DeleteFolderCommand extends XMLCommand implements IPostCommand {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
         }
 
-        if (!getAccessControl().checkFolderACL(this.type,
+        if (!configuration.getAccessControl().checkFolderACL(this.type,
                 this.currentFolder,
                 this.userRole,
                 AccessControl.CKFINDER_CONNECTOR_ACL_FOLDER_DELETE)) {
