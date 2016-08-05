@@ -135,6 +135,7 @@ public class XMLCreator {
      *
      * @param errorsNode XML errors node
      */
+    @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
     public void addErrors(Element errorsNode) {
         for (ErrorNode item : this.errorList) {
             Element childElem = this.getDocument().createElement("Error");

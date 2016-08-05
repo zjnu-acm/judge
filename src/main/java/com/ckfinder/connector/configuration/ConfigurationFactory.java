@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @RequiredArgsConstructor
 @Slf4j
-@SuppressWarnings({"FinalClass", "FinalMethod", "FinalMethodInFinalClass"})
+@SuppressWarnings("FinalClass")
 public final class ConfigurationFactory {
 
     @Getter
@@ -42,6 +42,7 @@ public final class ConfigurationFactory {
      * @return the configuration
      * @throws Exception when error occurs
      */
+    @SuppressWarnings({"FinalMethod", "FinalMethodInFinalClass"})
     public final IConfiguration getConfiguration(HttpServletRequest request)
             throws Exception {
         IConfiguration baseConf = getConfiguration();

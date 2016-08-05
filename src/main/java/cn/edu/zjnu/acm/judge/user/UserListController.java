@@ -21,7 +21,6 @@ import cn.edu.zjnu.acm.judge.mapper.UserMapper;
 import cn.edu.zjnu.acm.judge.util.URLBuilder;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -36,7 +35,6 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @author zhanhb
  */
 @Controller
-@Slf4j
 public class UserListController {
 
     private static final Sort DEFAULT_SORT = new Sort(

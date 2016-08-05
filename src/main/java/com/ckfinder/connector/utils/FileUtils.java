@@ -36,13 +36,12 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.servlet.http.Part;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * Utils for files.
  *
  */
-@Slf4j
+@SuppressWarnings("UtilityClassWithoutPrivateConstructor")
 public class FileUtils {
 
     /**
@@ -77,6 +76,7 @@ public class FileUtils {
      */
     public static List<String> findChildrensList(Path dir,
             boolean searchDirs) throws IOException {
+        @SuppressWarnings("CollectionWithoutInitialCapacity")
         List<String> files = new ArrayList<>();
         for (Path file : Files.newDirectoryStream(dir, file -> searchDirs == Files.isDirectory(file))) {
             files.add(file.getFileName().toString());

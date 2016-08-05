@@ -8,8 +8,17 @@ import com.sun.jna.platform.win32.WinNT;
 import com.sun.jna.platform.win32.WinNT.HANDLE;
 import java.io.Closeable;
 
-import static com.github.zhanhb.judge.jna.win32.Kernel32.*;
-import static com.github.zhanhb.judge.jna.win32.Kernel32.JOBOBJECTINFOCLASS.*;
+import static com.github.zhanhb.judge.jna.win32.Kernel32.JOBOBJECTINFOCLASS.JobObjectBasicLimitInformation;
+import static com.github.zhanhb.judge.jna.win32.Kernel32.JOBOBJECTINFOCLASS.JobObjectBasicUIRestrictions;
+import static com.github.zhanhb.judge.jna.win32.Kernel32.JOB_OBJECT_LIMIT_ACTIVE_PROCESS;
+import static com.github.zhanhb.judge.jna.win32.Kernel32.JOB_OBJECT_UILIMIT_DESKTOP;
+import static com.github.zhanhb.judge.jna.win32.Kernel32.JOB_OBJECT_UILIMIT_DISPLAYSETTINGS;
+import static com.github.zhanhb.judge.jna.win32.Kernel32.JOB_OBJECT_UILIMIT_EXITWINDOWS;
+import static com.github.zhanhb.judge.jna.win32.Kernel32.JOB_OBJECT_UILIMIT_GLOBALATOMS;
+import static com.github.zhanhb.judge.jna.win32.Kernel32.JOB_OBJECT_UILIMIT_HANDLES;
+import static com.github.zhanhb.judge.jna.win32.Kernel32.JOB_OBJECT_UILIMIT_READCLIPBOARD;
+import static com.github.zhanhb.judge.jna.win32.Kernel32.JOB_OBJECT_UILIMIT_SYSTEMPARAMETERS;
+import static com.github.zhanhb.judge.jna.win32.Kernel32.JOB_OBJECT_UILIMIT_WRITECLIPBOARD;
 
 public class Sandbox implements Closeable {
 

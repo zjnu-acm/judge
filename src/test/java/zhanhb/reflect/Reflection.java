@@ -24,7 +24,7 @@ import java.security.PrivilegedAction;
  *
  * @author zhanhb
  */
-@SuppressWarnings({"UtilityClassWithoutPrivateConstructor", "ClassWithoutLogger"})
+@SuppressWarnings("UtilityClassWithoutPrivateConstructor")
 public class Reflection {
 
     public static Class<?> getCallerClass() {

@@ -67,6 +67,7 @@ public class ResourceType {
      *
      * @param type source type
      */
+    @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
     public ResourceType(ResourceType type) {
         this.name = type.name;
         this.url = type.url;

@@ -30,6 +30,7 @@ public abstract class XMLCommand extends Command {
     /**
      * util to create XML document.
      */
+    @SuppressWarnings("ProtectedField")
     protected XMLCreator creator;
 
     /**

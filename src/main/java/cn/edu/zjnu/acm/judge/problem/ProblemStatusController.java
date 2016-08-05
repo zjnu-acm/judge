@@ -110,6 +110,7 @@ public class ProblemStatusController {
             counts.add(scoreCount.getCount());
             urls.add("status?problem_id=" + id + "&score=" + score);
         }
+        @SuppressWarnings("StringBufferWithoutInitialCapacity")
         StringBuilder sb = new StringBuilder();
 
         sb.append("<html><head><title>").append(id).append("'s Status List</title></head><body>" + "<STYLE> v\\:* { Behavior: url(#default#VML) }o\\:* { behavior: url(#default#VML) }</STYLE>" + "<table><tr><td valign=top><div style='position:relative; height:650px; width:260px'>" + "<script src='js/problemstatus.js'></script>" + "<script>var sa = ").append(new Gson().toJson(Arrays.asList(counts, scores, urls))).append(";var len = 0;");

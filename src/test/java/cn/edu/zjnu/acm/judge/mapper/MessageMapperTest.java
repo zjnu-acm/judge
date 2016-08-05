@@ -17,7 +17,6 @@ package cn.edu.zjnu.acm.judge.mapper;
 
 import cn.edu.zjnu.acm.judge.Application;
 import cn.edu.zjnu.acm.judge.domain.Message;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,7 +25,7 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  *
@@ -35,6 +34,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @Slf4j
 @SpringApplicationConfiguration(classes = Application.class)
+@SuppressWarnings("deprecation")
 @WebAppConfiguration
 public class MessageMapperTest {
 
@@ -44,7 +44,7 @@ public class MessageMapperTest {
     /**
      * Test of nextId method, of class MessageMapper.
      */
-    @Test
+	@Test
     public void testNextId() {
         log.info("nextId");
         instance.nextId();
@@ -71,8 +71,7 @@ public class MessageMapperTest {
         log.info("findAllByThreadIdAndOrderNumGreaterThanOrderByOrderNum");
         long thread = -1;
         long orderNum = -1;
-        List<Message> expResult = null;
-        List<Message> result = instance.findAllByThreadIdAndOrderNumGreaterThanOrderByOrderNum(thread, orderNum);
+        instance.findAllByThreadIdAndOrderNumGreaterThanOrderByOrderNum(thread, orderNum);
     }
 
     /**
@@ -83,8 +82,7 @@ public class MessageMapperTest {
         log.info("updateOrderNumByThreadIdAndOrderNumGreaterThan");
         long thread = -1L;
         long orderNum = -1L;
-        long expResult = -1L;
-        long result = instance.updateOrderNumByThreadIdAndOrderNumGreaterThan(thread, orderNum);
+        instance.updateOrderNumByThreadIdAndOrderNumGreaterThan(thread, orderNum);
     }
 
     /**

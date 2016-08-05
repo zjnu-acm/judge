@@ -19,7 +19,6 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.StreamSupport;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -28,7 +27,6 @@ import org.springframework.data.domain.Sort;
  *
  * @author zhanhb
  */
-@Slf4j
 public class BestSubmissionsBuilder {
 
     private final Set<String> allowColumns;

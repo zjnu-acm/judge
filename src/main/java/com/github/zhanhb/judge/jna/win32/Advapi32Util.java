@@ -7,6 +7,7 @@ import java.util.Arrays;
  *
  * @author zhanhb
  */
+@SuppressWarnings("UtilityClassWithoutPrivateConstructor")
 public class Advapi32Util {
 
     public static WinNT.PSID newPSID(Advapi32.SID_IDENTIFIER_AUTHORITY pIdentifierAuthority,

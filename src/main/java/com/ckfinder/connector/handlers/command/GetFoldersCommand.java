@@ -21,9 +21,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Element;
 
@@ -91,16 +91,12 @@ public class GetFoldersCommand extends XMLCommand {
      * ACL.
      */
     private void filterListByHiddenAndNotAllowed() {
-        List<String> tmpDirs = new ArrayList<>();
-        for (String dir : this.directories) {
-            if (getAccessControl().checkFolderACL(this.type, this.currentFolder + dir,
-                    this.userRole,
-                    AccessControl.CKFINDER_CONNECTOR_ACL_FOLDER_VIEW)
-                    && !FileUtils.checkIfDirIsHidden(dir, this.configuration)) {
-                tmpDirs.add(dir);
-            }
-
-        }
+        List<String> tmpDirs = this.directories.stream()
+                .filter(dir -> (getAccessControl().checkFolderACL(this.type, this.currentFolder + dir,
+                        this.userRole,
+                        AccessControl.CKFINDER_CONNECTOR_ACL_FOLDER_VIEW)
+                        && !FileUtils.checkIfDirIsHidden(dir, this.configuration)))
+                .collect(Collectors.toList());
 
         this.directories.clear();
         this.directories.addAll(tmpDirs);

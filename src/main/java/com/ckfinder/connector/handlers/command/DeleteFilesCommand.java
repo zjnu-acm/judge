@@ -159,6 +159,7 @@ public class DeleteFilesCommand extends XMLCommand implements IPostCommand {
      * for command handler.
      */
     @Override
+    @SuppressWarnings("CollectionWithoutInitialCapacity")
     protected void initParams(HttpServletRequest request, IConfiguration configuration) throws ConnectorException {
         super.initParams(request, configuration);
         this.files = new ArrayList<>();
@@ -170,6 +171,7 @@ public class DeleteFilesCommand extends XMLCommand implements IPostCommand {
      *
      * @param request current request object
      */
+    @SuppressWarnings("ValueOfIncrementOrDecrementUsed")
     private void getFilesListFromRequest(HttpServletRequest request) {
         int i = 0;
         String paramName = "files[" + i + "][name]";

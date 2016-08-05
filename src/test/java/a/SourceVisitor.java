@@ -34,6 +34,7 @@ import java.util.stream.Collectors;
  */
 public class SourceVisitor {
 
+    @SuppressWarnings("UseOfSystemOutOrSystemErr")
     public static void main(String[] args) throws IOException {
         System.setOut(new PrintStream("target/test.txt", "ISO-8859-1"));
         String dashes = Strings.repeat("-", 45);

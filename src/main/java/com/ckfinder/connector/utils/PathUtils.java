@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 /**
  * Utility class used to change paths in connector.
  */
+@SuppressWarnings("UtilityClassWithoutPrivateConstructor")
 public class PathUtils {
 
     /**

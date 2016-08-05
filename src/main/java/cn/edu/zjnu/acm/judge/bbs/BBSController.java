@@ -4,7 +4,6 @@ import cn.edu.zjnu.acm.judge.domain.Message;
 import cn.edu.zjnu.acm.judge.mapper.MessageMapper;
 import java.sql.Timestamp;
 import java.util.List;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +15,6 @@ import org.thymeleaf.util.StringUtils;
 import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 
 @Controller
-@Slf4j
 public class BBSController {
 
     @Autowired

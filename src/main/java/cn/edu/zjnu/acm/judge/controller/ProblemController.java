@@ -32,7 +32,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  * @author zhanhb
  */
 @RestController
-@RequestMapping("problems")
+@RequestMapping("/problems")
 @Secured("ROLE_ADMIN")
 public class ProblemController {
 

@@ -31,6 +31,7 @@ import net.coobird.thumbnailator.Thumbnails;
  * Utils to operate on images.
  */
 @Slf4j
+@SuppressWarnings("UtilityClassWithoutPrivateConstructor")
 public class ImageUtils {
 
     /**
@@ -59,7 +60,7 @@ public class ImageUtils {
             // When http://code.google.com/p/thumbnailator/issues/detail?id=9
             // will be fixed this try catch can be deleted. Only:
             //Thumbnails.of(sourceImage).size(width, height).keepAspectRatio(false)
-            //	.outputQuality(quality).toFile(destFile);
+            //  .outputQuality(quality).toFile(destFile);
             // should remain.
         } catch (IllegalStateException e) {
             Thumbnails.of(sourceImage).size(width, height).keepAspectRatio(false).toFile(destFile.toFile());
