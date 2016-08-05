@@ -32,7 +32,7 @@ class WatermarkSettings {
      * @return
      * @throws Exception
      */
-    public static WatermarkSettings createFromConfiguration(final IConfiguration configuration, ServletContext servletContext) throws Exception {
+    public static WatermarkSettings createFromConfiguration(IConfiguration configuration, ServletContext servletContext) throws Exception {
         WatermarkSettings settings = new WatermarkSettings();
 
         for (PluginInfo pluginInfo : configuration.getPlugins()) {

@@ -17,17 +17,15 @@ import com.ckfinder.connector.data.InitCommandEventArgs;
 import com.ckfinder.connector.data.PluginInfo;
 import com.ckfinder.connector.data.PluginParam;
 import com.ckfinder.connector.errors.ConnectorException;
+import lombok.RequiredArgsConstructor;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+@RequiredArgsConstructor
 public class ImageResizeInitCommandEventHandler implements IEventHandler<InitCommandEventArgs> {
 
-    private PluginInfo pluginInfo;
-
-    public ImageResizeInitCommandEventHandler(PluginInfo info) {
-        this.pluginInfo = info;
-    }
+    private final PluginInfo pluginInfo;
 
     @Override
     public boolean runEventHandler(InitCommandEventArgs args, IConfiguration arg1)
@@ -43,4 +41,5 @@ public class ImageResizeInitCommandEventHandler implements IEventHandler<InitCom
         }
         return false;
     }
+
 }

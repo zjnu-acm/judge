@@ -40,6 +40,7 @@ public class ImageResizeCommad extends XMLCommand implements IEventHandler<Befor
     private static final String[] SIZES = {"small", "medium", "large"};
 
     private PluginInfo pluginInfo;
+
     /**
      * file name
      */
@@ -187,10 +188,9 @@ public class ImageResizeCommad extends XMLCommand implements IEventHandler<Befor
     }
 
     @Override
-    protected void initParams(HttpServletRequest request,
-            IConfiguration configuration1, Object... params)
+    protected void initParams(HttpServletRequest request, IConfiguration configuration1)
             throws ConnectorException {
-        super.initParams(request, configuration1, params);
+        super.initParams(request, configuration1);
 
         this.sizesFromReq = new HashMap<>();
         this.fileName = request.getParameter("fileName");

@@ -17,7 +17,7 @@ import lombok.Setter;
 
 /**
  * Event data for
- * {@link com.ckfinder.connector.configuration.Events#addAfterFileUploadEventHandler(java.lang.Class)}
+ * {@link com.ckfinder.connector.configuration.Events#addAfterFileUploadEventHandler(java.util.function.Supplier) }
  * event.
  */
 @Getter

@@ -12,25 +12,29 @@
 package com.ckfinder.connector.configuration;
 
 import com.ckfinder.connector.data.PluginInfo;
+import lombok.AccessLevel;
+import lombok.Getter;
 
 /**
  * Base class for plugins.
  */
 public abstract class Plugin {
 
-    protected PluginInfo pluginInfo;
+    @Getter(AccessLevel.PROTECTED)
+    private PluginInfo pluginInfo;
 
     /**
      * register event handlers for plugin.
      *
      * @param eventHandler available event handlers.
      */
-    public abstract void registerEventHandlers(Events eventHandler);
+    protected abstract void registerEventHandlers(Events eventHandler);
 
     /**
      * @param pluginInfo the pluginInfo to set
      */
-    public final void setPluginInfo(final PluginInfo pluginInfo) {
+    @SuppressWarnings("FinalMethod")
+    public final void setPluginInfo(PluginInfo pluginInfo) {
         this.pluginInfo = pluginInfo;
     }
 

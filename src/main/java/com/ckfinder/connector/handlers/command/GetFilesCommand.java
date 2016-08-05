@@ -58,12 +58,10 @@ public class GetFilesCommand extends XMLCommand {
      *
      * @param request request
      * @param configuration connector configuration
-     * @param params execute additional params.
      * @throws ConnectorException when error occurs
      */
     @Override
-    protected void initParams(final HttpServletRequest request,
-            final IConfiguration configuration, final Object... params)
+    protected void initParams(HttpServletRequest request, IConfiguration configuration)
             throws ConnectorException {
         super.initParams(request, configuration);
 
@@ -71,7 +69,7 @@ public class GetFilesCommand extends XMLCommand {
     }
 
     @Override
-    protected void createXMLChildNodes(final int errorNum, final Element rootElement)
+    protected void createXMLChildNodes(int errorNum, Element rootElement)
             throws ConnectorException, IOException {
         if (errorNum == Constants.Errors.CKFINDER_CONNECTOR_ERROR_NONE) {
             createFilesData(rootElement);
@@ -86,7 +84,6 @@ public class GetFilesCommand extends XMLCommand {
      */
     @Override
     protected int getDataForXml() throws IOException {
-
         if (!checkIfTypeExists(this.type)) {
             this.type = null;
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
@@ -138,7 +135,7 @@ public class GetFilesCommand extends XMLCommand {
      *
      * @param rootElement root element from XML.
      */
-    private void createFilesData(final Element rootElement) throws IOException {
+    private void createFilesData(Element rootElement) throws IOException {
         Element element = creator.getDocument().createElement("Files");
         for (String filePath : files) {
             Path file = Paths.get(this.fullCurrentPath, filePath);
@@ -170,7 +167,7 @@ public class GetFilesCommand extends XMLCommand {
      * @param file file to check if has thumb.
      * @return thumb attribute values
      */
-    private String createThumbAttr(final Path file) {
+    private String createThumbAttr(Path file) {
         Path thumbFile = Paths.get(configuration.getThumbsPath(),
                 this.type + this.currentFolder,
                 file.getFileName().toString());
@@ -189,7 +186,7 @@ public class GetFilesCommand extends XMLCommand {
      * @param file file
      * @return file size
      */
-    private String getSize(final Path file) throws IOException {
+    private String getSize(Path file) throws IOException {
         long size = Files.size(file);
         if (size > 0 && size < BYTES) {
             return "1";

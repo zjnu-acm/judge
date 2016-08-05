@@ -22,6 +22,9 @@ import com.ckfinder.connector.utils.FileUtils;
 import com.ckfinder.connector.utils.ImageUtils;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -100,10 +103,10 @@ public class FileUploadCommand extends Command implements IPostCommand {
      * @throws ConnectorException when error occurs.
      */
     @Override
-    public void execute(final OutputStream out) throws ConnectorException {
+    public void execute(OutputStream out) throws ConnectorException {
         try {
             String errorMsg = this.errorCode == Constants.Errors.CKFINDER_CONNECTOR_ERROR_NONE ? "" : (this.errorCode == Constants.Errors.CKFINDER_CONNECTOR_ERROR_CUSTOM_ERROR ? this.customErrorMsg
-                    : ErrorUtils.getInstance().getErrorMsgByLangAndCode(this.langCode, this.errorCode, this.configuration));
+                    : ErrorUtils.INSTANCE.getErrorMsgByLangAndCode(this.langCode, this.errorCode, this.configuration));
             errorMsg = errorMsg.replaceAll("%1", Matcher.quoteReplacement(this.newFileName));
             String path = "";
 
@@ -115,14 +118,15 @@ public class FileUploadCommand extends Command implements IPostCommand {
                         + this.currentFolder;
             }
 
+            OutputStreamWriter writer = new OutputStreamWriter(out, StandardCharsets.UTF_8);
             if (this.responseType != null && this.responseType.equals("txt")) {
-                out.write((this.newFileName + "|" + errorMsg).getBytes("UTF-8"));
+                writer.write(this.newFileName + "|" + errorMsg);
             } else if (checkFuncNum()) {
-                handleOnUploadCompleteCallFuncResponse(out, errorMsg, path);
+                handleOnUploadCompleteCallFuncResponse(writer, errorMsg, path);
             } else {
-                handleOnUploadCompleteResponse(out, errorMsg);
+                handleOnUploadCompleteResponse(writer, errorMsg);
             }
-
+            out.flush();
         } catch (IOException e) {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED, e);
@@ -147,38 +151,38 @@ public class FileUploadCommand extends Command implements IPostCommand {
      * @param path path
      * @throws IOException when error occurs.
      */
-    protected void handleOnUploadCompleteCallFuncResponse(final OutputStream out,
-            final String errorMsg,
-            final String path)
+    protected void handleOnUploadCompleteCallFuncResponse(Writer out,
+            String errorMsg,
+            String path)
             throws IOException {
         this.ckFinderFuncNum = this.ckFinderFuncNum.replaceAll(
                 "[^\\d]", "");
-        out.write("<script type=\"text/javascript\">".getBytes("UTF-8"));
-        out.write(("window.parent.CKFinder.tools.callFunction("
+        out.write("<script type=\"text/javascript\">");
+        out.write("window.parent.CKFinder.tools.callFunction("
                 + this.ckFinderFuncNum + ", '"
                 + path
                 + FileUtils.backupWithBackSlash(this.newFileName, "'")
-                + "', '" + errorMsg + "');").getBytes("UTF-8"));
-        out.write("</script>".getBytes("UTF-8"));
+                + "', '" + errorMsg + "');");
+        out.write("</script>");
     }
 
     /**
      *
-     * @param out out put stream
+     * @param writer out put stream
      * @param errorMsg error message
      * @throws IOException when error occurs
      */
-    protected void handleOnUploadCompleteResponse(final OutputStream out,
-            final String errorMsg) throws IOException {
-        out.write("<script type=\"text/javascript\">".getBytes("UTF-8"));
-        out.write("window.parent.OnUploadCompleted(".getBytes("UTF-8"));
-        out.write(("\'" + FileUtils.backupWithBackSlash(this.newFileName, "'") + "\'").getBytes("UTF-8"));
-        out.write((", \'"
+    protected void handleOnUploadCompleteResponse(Writer writer,
+            String errorMsg) throws IOException {
+        writer.write("<script type=\"text/javascript\">");
+        writer.write("window.parent.OnUploadCompleted(");
+        writer.write("'" + FileUtils.backupWithBackSlash(this.newFileName, "'") + "'");
+        writer.write(", '"
                 + (this.errorCode
                 != Constants.Errors.CKFINDER_CONNECTOR_ERROR_NONE ? errorMsg
-                        : "") + "\'").getBytes("UTF-8"));
-        out.write(");".getBytes("UTF-8"));
-        out.write("</script>".getBytes("UTF-8"));
+                        : "") + "'");
+        writer.write(");");
+        writer.write("</script>");
     }
 
     /**
@@ -186,14 +190,12 @@ public class FileUploadCommand extends Command implements IPostCommand {
      *
      * @param request request
      * @param configuration connector configuration.
-     * @param params execute additional params.
      * @throws ConnectorException when error occurs.
      */
     @Override
-    protected void initParams(final HttpServletRequest request,
-            final IConfiguration configuration, final Object... params)
+    protected void initParams(HttpServletRequest request, IConfiguration configuration)
             throws ConnectorException {
-        super.initParams(request, configuration, params);
+        super.initParams(request, configuration);
         this.ckFinderFuncNum = request.getParameter("CKFinderFuncNum");
         this.ckEditorFuncNum = request.getParameter("CKEditorFuncNum");
         this.responseType = request.getParameter("response_type") != null
@@ -212,7 +214,7 @@ public class FileUploadCommand extends Command implements IPostCommand {
      * @param request request
      * @return true if uploaded correctly.
      */
-    private boolean uploadFile(final HttpServletRequest request) {
+    private boolean uploadFile(HttpServletRequest request) {
         if (!getAccessControl().checkFolderACL(this.type, this.currentFolder, this.userRole,
                 AccessControl.CKFINDER_CONNECTOR_ACL_FILE_UPLOAD)) {
             this.errorCode = Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
@@ -227,7 +229,7 @@ public class FileUploadCommand extends Command implements IPostCommand {
      * @return true if uploaded correctly
      */
     @SuppressWarnings("unchecked")
-    private boolean fileUpload(final HttpServletRequest request) {
+    private boolean fileUpload(HttpServletRequest request) {
         try {
             Collection<Part> parts = request.getParts();
             for (Part part : parts) {
@@ -241,7 +243,7 @@ public class FileUploadCommand extends Command implements IPostCommand {
         } catch (ConnectorException e) {
             this.errorCode = e.getErrorCode();
             if (this.errorCode == Constants.Errors.CKFINDER_CONNECTOR_ERROR_CUSTOM_ERROR) {
-                this.customErrorMsg = e.getErrorMsg();
+                this.customErrorMsg = e.getMessage();
             }
             return false;
         } catch (Exception e) {
@@ -266,7 +268,7 @@ public class FileUploadCommand extends Command implements IPostCommand {
      * @return result of saving, true if saved correctly
      * @throws Exception when error occurs.
      */
-    private boolean saveTemporaryFile(final String path, final Part item)
+    private boolean saveTemporaryFile(String path, Part item)
             throws Exception {
         Path file = Paths.get(path, this.newFileName);
 
@@ -307,7 +309,7 @@ public class FileUploadCommand extends Command implements IPostCommand {
      * @param name file name
      * @return new file name.
      */
-    private String getFinalFileName(final String path, final String name) {
+    private String getFinalFileName(String path, String name) {
         Path file = Paths.get(path, name);
         int number = 0;
 
@@ -341,7 +343,7 @@ public class FileUploadCommand extends Command implements IPostCommand {
      * @param path file path
      * @return true if validation
      */
-    private boolean validateUploadItem(final Part item, final String path) {
+    private boolean validateUploadItem(Part item, String path) {
 
         if (item.getSubmittedFileName() != null && item.getSubmittedFileName().length() > 0) {
             this.fileName = getFileItemName(item);
@@ -423,8 +425,8 @@ public class FileUploadCommand extends Command implements IPostCommand {
      * @param sc servlet context
      */
     @Override
-    public void setResponseHeader(final HttpServletResponse response,
-            final ServletContext sc) {
+    public void setResponseHeader(HttpServletResponse response,
+            ServletContext sc) {
         response.setCharacterEncoding("utf-8");
         response.setContentType("text/html");
     }
@@ -435,7 +437,7 @@ public class FileUploadCommand extends Command implements IPostCommand {
      * @param item file upload item
      * @return file name of uploaded item
      */
-    private String getFileItemName(final Part item) {
+    private String getFileItemName(Part item) {
         Pattern p = Pattern.compile("[^\\\\/]+$");
         Matcher m = p.matcher(item.getSubmittedFileName());
 
@@ -450,7 +452,7 @@ public class FileUploadCommand extends Command implements IPostCommand {
      * @throws ConnectorException if validation error occurs.
      */
     @Override
-    protected boolean checkParam(final String reqParam)
+    protected boolean checkParam(String reqParam)
             throws ConnectorException {
         if (reqParam == null || reqParam.isEmpty()) {
             return true;
@@ -473,7 +475,7 @@ public class FileUploadCommand extends Command implements IPostCommand {
     }
 
     @Override
-    protected boolean checkConnector(final HttpServletRequest request)
+    protected boolean checkConnector(HttpServletRequest request)
             throws ConnectorException {
         if (!configuration.enabled() || !configuration.checkAuthentication(request)) {
             this.errorCode
@@ -484,7 +486,7 @@ public class FileUploadCommand extends Command implements IPostCommand {
     }
 
     @Override
-    protected boolean checkIfCurrFolderExists(final HttpServletRequest request)
+    protected boolean checkIfCurrFolderExists(HttpServletRequest request)
             throws ConnectorException {
         String tmpType = request.getParameter("type");
         if (checkIfTypeExists(tmpType)) {
@@ -501,7 +503,7 @@ public class FileUploadCommand extends Command implements IPostCommand {
     }
 
     @Override
-    protected boolean checkIfTypeExists(final String type) {
+    protected boolean checkIfTypeExists(String type) {
         ResourceType testType = configuration.getTypes().get(type);
         if (testType == null) {
             this.errorCode = Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;

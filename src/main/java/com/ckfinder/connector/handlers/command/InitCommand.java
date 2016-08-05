@@ -55,8 +55,8 @@ public class InitCommand extends XMLCommand {
     }
 
     @Override
-    protected void createXMLChildNodes(final int errorNum,
-            final Element rootElement)
+    protected void createXMLChildNodes(int errorNum,
+            Element rootElement)
             throws ConnectorException {
         if (errorNum == Constants.Errors.CKFINDER_CONNECTOR_ERROR_NONE) {
             createConnectorData(rootElement);
@@ -74,7 +74,7 @@ public class InitCommand extends XMLCommand {
      *
      * @param rootElement root element in XML
      */
-    private void createConnectorData(final Element rootElement) {
+    private void createConnectorData(Element rootElement) {
         // connector info
         Element element = creator.getDocument().createElement("ConnectorInfo");
         element.setAttribute("enabled", String.valueOf(configuration.enabled()));
@@ -133,7 +133,7 @@ public class InitCommand extends XMLCommand {
      * @param licenseKey license key from configuration
      * @return hashed license key
      */
-    private String createLicenseKey(final String licenseKey) {
+    private String createLicenseKey(String licenseKey) {
         if (validateLicenseKey(licenseKey)) {
             StringBuilder sb = new StringBuilder();
             for (int i : LICENSE_CHARS) {
@@ -150,7 +150,7 @@ public class InitCommand extends XMLCommand {
      * @param licenseKey config license key
      * @return true if has correct length
      */
-    private boolean validateLicenseKey(final String licenseKey) {
+    private boolean validateLicenseKey(String licenseKey) {
         return licenseKey != null && licenseKey.length() == LICENSE_KEY_LENGTH;
     }
 
@@ -160,7 +160,7 @@ public class InitCommand extends XMLCommand {
      * @param rootElement root element in XML
      * @throws ConnectorException when error in event handler occurs.
      */
-    public void createPluginsData(final Element rootElement) throws ConnectorException {
+    public void createPluginsData(Element rootElement) throws ConnectorException {
         Element element = creator.getDocument().createElement("PluginsInfo");
         rootElement.appendChild(element);
         InitCommandEventArgs args = new InitCommandEventArgs();
@@ -178,7 +178,7 @@ public class InitCommand extends XMLCommand {
      * @param rootElement root element in XML
      * @throws Exception when error occurs
      */
-    private void createResouceTypesData(final Element rootElement) throws Exception {
+    private void createResouceTypesData(Element rootElement) throws Exception {
         //resurcetypes
         Element element = creator.getDocument().createElement("ResourceTypes");
         rootElement.appendChild(element);
@@ -239,8 +239,7 @@ public class InitCommand extends XMLCommand {
      * @param folder folder
      * @return hash value
      */
-    private String randomHash(final String folder) {
-
+    private String randomHash(String folder) {
         try {
             MessageDigest algorithm = MessageDigest.getInstance("SHA-256");
             algorithm.update(folder.getBytes("UTF8"));
@@ -266,7 +265,8 @@ public class InitCommand extends XMLCommand {
     }
 
     @Override
-    protected void getCurrentFolderParam(final HttpServletRequest request) {
+    protected void getCurrentFolderParam(HttpServletRequest request) {
         this.currentFolder = null;
     }
+
 }

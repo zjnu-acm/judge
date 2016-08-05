@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 zhanhb.
+ * Copyright 2016 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.zhanhb.download;
+package com.ckfinder.connector.handlers.command;
 
-import javax.annotation.Nullable;
+import com.ckfinder.connector.errors.ConnectorException;
 
 /**
  *
  * @author zhanhb
  */
-public interface ContentDisposition {
+public interface IErrorCommand {
 
-    // https://tools.ietf.org/html/rfc6266
-    @Nullable
-    String getContentDisposition(String filename);
+    void setConnectorException(ConnectorException connectorException);
 
 }

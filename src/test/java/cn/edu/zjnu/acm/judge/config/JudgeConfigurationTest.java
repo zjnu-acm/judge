@@ -66,8 +66,7 @@ public class JudgeConfigurationTest {
     @Test
     public void testGetUploadDirectory() {
         log.info("getUploadDirectory");
-        Path expResult = null;
-        Path result = JudgeConfiguration.getUploadDirectory();
+        judgeConfiguration.getUploadDirectory();
     }
 
     /**

@@ -53,17 +53,17 @@ public class AdminController {
     private JudgeConfiguration judgeConfiguration;
 
     @GetMapping("/admin/contests/new")
-    protected String addcontestpage() {
+    public String addcontestpage() {
         return "admin/addcontestpage";
     }
 
     @GetMapping("/admin")
-    protected String index() {
+    public String index() {
         return "admin/index";
     }
 
     @GetMapping("/admin/problems/{problemId}/disable")
-    protected String disableProblem(Model model, @PathVariable("problemId") long problemId) {
+    public String disableProblem(Model model, @PathVariable("problemId") long problemId) {
 
         problemMapper.setDisabled(problemId, true);
 
@@ -73,7 +73,7 @@ public class AdminController {
 
     // TODO request method
     @GetMapping("/admin/problems/{problemId}/enable")
-    protected String enableProblem(Model model,
+    public String enableProblem(Model model,
             @PathVariable("problemId") long problemId) {
         problemMapper.setDisabled(problemId, false);
 
@@ -82,7 +82,7 @@ public class AdminController {
     }
 
     @PostMapping("/admin/contests")
-    protected String addContest(
+    public String addContest(
             int syear, int smonth, int sday, int shour, int sminute,
             int eyear, int emonth, int eday, int ehour, int eminute,
             @RequestParam(value = "title", required = false) String title,

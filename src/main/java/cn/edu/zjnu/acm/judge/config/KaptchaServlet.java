@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 zhanhb.
+ * Copyright 2016 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.zhanhb.download;
+package cn.edu.zjnu.acm.judge.config;
 
-import javax.annotation.Nullable;
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  *
  * @author zhanhb
  */
-public interface ContentDisposition {
+class KaptchaServlet extends com.google.code.kaptcha.servlet.KaptchaServlet {
 
-    // https://tools.ietf.org/html/rfc6266
-    @Nullable
-    String getContentDisposition(String filename);
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    public void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        req.getSession(); // create session for kaptcha servlet
+        super.doGet(req, resp);
+    }
 
 }

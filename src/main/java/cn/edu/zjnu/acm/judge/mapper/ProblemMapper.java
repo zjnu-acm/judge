@@ -17,7 +17,6 @@ package cn.edu.zjnu.acm.judge.mapper;
 
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.domain.ScoreCount;
-import cn.edu.zjnu.acm.judge.domain.Submission;
 import java.time.Instant;
 import java.util.List;
 import javax.annotation.Nullable;
@@ -107,13 +106,13 @@ public interface ProblemMapper {
 
     // TODO not used
     @Select("<script>"
-        + "select" + LIST_COLUMNS
-        + STATUS
-        + FROM
-        + "<if test='userId!=null'>left join user_problem up "
-        + "on up.user_id=#{userId} and up.problem_id=p.problem_id </if>"
-        + "where not p.disabled and p.problem_id&gt;=#{start} and p.problem_id&lt;=#{end}"
-        + "</script>"
+            + "select" + LIST_COLUMNS
+            + STATUS
+            + FROM
+            + "<if test='userId!=null'>left join user_problem up "
+            + "on up.user_id=#{userId} and up.problem_id=p.problem_id </if>"
+            + "where not p.disabled and p.problem_id&gt;=#{start} and p.problem_id&lt;=#{end}"
+            + "</script>"
     )
     List<Problem> findAllByDisabledFalse(
             @Nullable @Param("userId") String userId,
@@ -178,13 +177,6 @@ public interface ProblemMapper {
 
     @Select("select score,count(*) count from solution where problem_id=#{problemId} group by score")
     List<ScoreCount> groupByScore(@Param("problemId") long problemId);
-
-    @Select("select solution_id id,user_id user,in_date inDate,language,memory,time,code_length sourceLength from solution where problem_id=#{problemId} and score=100 group by ${groupBy} limit #{start},#{size}")
-    List<Submission> bestSubmissions(
-            @Param("groupBy") String groupBy,
-            @Param("problemId") long problemId,
-            @Param("start") long start,
-            @Param("size") int size);
 
     @Insert("insert ignore into problem_i18n(id,locale) values(#{problemId},#{lang})")
     long touchI18n(

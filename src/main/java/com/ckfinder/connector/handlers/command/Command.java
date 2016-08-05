@@ -64,14 +64,12 @@ public abstract class Command {
      * @param request request
      * @param response response
      * @param configuration connector configuration
-     * @param params additional execute parameters.
      * @throws ConnectorException when error occurred.
      */
-    public void runCommand(final HttpServletRequest request,
-            final HttpServletResponse response,
-            final IConfiguration configuration,
-            final Object... params) throws ConnectorException {
-        this.initParams(request, configuration, params);
+    public void runCommand(HttpServletRequest request,
+            HttpServletResponse response,
+            IConfiguration configuration) throws ConnectorException {
+        this.initParams(request, configuration);
         try {
             setResponseHeader(response, request.getServletContext());
             execute(response.getOutputStream());
@@ -88,11 +86,10 @@ public abstract class Command {
      *
      * @param request request
      * @param configuration connector configuration
-     * @param params execute additional params.
      * @throws ConnectorException to handle in error handler.
      */
-    protected void initParams(final HttpServletRequest request,
-            final IConfiguration configuration, final Object... params)
+    protected void initParams(HttpServletRequest request,
+            IConfiguration configuration)
             throws ConnectorException {
         if (configuration != null) {
             this.configuration = configuration;
@@ -120,7 +117,7 @@ public abstract class Command {
      * @return true if connector is enabled and user is authenticated
      * @throws ConnectorException when connector is disabled
      */
-    protected boolean checkConnector(final HttpServletRequest request)
+    protected boolean checkConnector(HttpServletRequest request)
             throws ConnectorException {
         if (!configuration.enabled() || !configuration.checkAuthentication(request)) {
             throw new ConnectorException(
@@ -136,7 +133,7 @@ public abstract class Command {
      * @return {@code true} if current folder exists
      * @throws ConnectorException if current folder doesn't exist
      */
-    protected boolean checkIfCurrFolderExists(final HttpServletRequest request)
+    protected boolean checkIfCurrFolderExists(HttpServletRequest request)
             throws ConnectorException {
         String tmpType = request.getParameter("type");
         if (tmpType != null) {
@@ -163,7 +160,7 @@ public abstract class Command {
      * @param type name of the resource type to check if it exists
      * @return {@code true} if provided type exists, {@code false} otherwise.
      */
-    protected boolean checkIfTypeExists(final String type) {
+    protected boolean checkIfTypeExists(String type) {
         ResourceType testType = configuration.getTypes().get(type);
         return testType != null;
     }
@@ -190,7 +187,7 @@ public abstract class Command {
      * @throws ConnectorException when error occurs
      * @throws java.io.IOException
      */
-    public abstract void execute(final OutputStream out)
+    public abstract void execute(OutputStream out)
             throws ConnectorException, IOException;
 
     /**
@@ -199,8 +196,8 @@ public abstract class Command {
      * @param response servlet response
      * @param sc servlet context
      */
-    public abstract void setResponseHeader(final HttpServletResponse response,
-            final ServletContext sc);
+    public abstract void setResponseHeader(HttpServletResponse response,
+            ServletContext sc);
 
     /**
      * check request for security issue.
@@ -209,7 +206,7 @@ public abstract class Command {
      * @return true if validation passed
      * @throws ConnectorException if validation error occurs.
      */
-    protected boolean checkParam(final String reqParam)
+    protected boolean checkParam(String reqParam)
             throws ConnectorException {
         if (reqParam == null || reqParam.isEmpty()) {
             return true;
@@ -228,7 +225,7 @@ public abstract class Command {
      *
      * @param request request
      */
-    protected void getCurrentFolderParam(final HttpServletRequest request) {
+    protected void getCurrentFolderParam(HttpServletRequest request) {
         String currFolder = request.getParameter("currentFolder");
         if (currFolder == null || currFolder.isEmpty()) {
             this.currentFolder = "/";

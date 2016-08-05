@@ -32,7 +32,7 @@ public class WatermarkCommand implements IEventHandler<AfterFileUploadEventArgs>
     private static final String DEFAULT_WATERMARK = "/logo.gif";
 
     @Override
-    public boolean runEventHandler(final AfterFileUploadEventArgs args, final IConfiguration configuration) throws ConnectorException {
+    public boolean runEventHandler(AfterFileUploadEventArgs args, IConfiguration configuration) throws ConnectorException {
         try {
             final WatermarkSettings settings = WatermarkSettings.createFromConfiguration(configuration,
                     configuration.getServletContext());
@@ -61,7 +61,7 @@ public class WatermarkCommand implements IEventHandler<AfterFileUploadEventArgs>
      * @return
      * @throws IOException
      */
-    private BufferedImage getWatermakImage(final WatermarkSettings settings) throws IOException {
+    private BufferedImage getWatermakImage(WatermarkSettings settings) throws IOException {
         final String source = settings.getSource();
         final BufferedImage watermark;
         if (source == null || source.isEmpty()) {

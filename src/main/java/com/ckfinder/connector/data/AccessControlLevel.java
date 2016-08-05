@@ -73,7 +73,7 @@ public class AccessControlLevel {
      *
      * @param acl source acl
      */
-    public AccessControlLevel(final AccessControlLevel acl) {
+    public AccessControlLevel(AccessControlLevel acl) {
         this.role = acl.role;
         this.resourceType = acl.resourceType;
         this.folder = acl.folder;

@@ -16,13 +16,10 @@ import com.ckfinder.connector.data.PluginInfo;
 import com.ckfinder.connector.data.PluginParam;
 import com.ckfinder.connector.data.ResourceType;
 import com.ckfinder.connector.errors.ConnectorException;
-import com.ckfinder.connector.utils.FileUtils;
+import com.ckfinder.connector.utils.AccessControl;
 import com.ckfinder.connector.utils.PathUtils;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.attribute.FileTime;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -30,12 +27,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.Resource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -53,62 +51,63 @@ import static com.ckfinder.connector.configuration.IConfiguration.DEFAULT_THUMB_
  * Class loads configuration from XML file.
  */
 @Slf4j
-@SuppressWarnings({"ProtectedField", "CollectionWithoutInitialCapacity", "ReturnOfCollectionOrArrayField", "FinalMethod"})
+@SuppressWarnings({"CollectionWithoutInitialCapacity", "ReturnOfCollectionOrArrayField", "FinalMethod"})
 public class Configuration implements IConfiguration {
 
-    protected static final int MAX_QUALITY = 100;
-    protected static final float MAX_QUALITY_FLOAT = 100f;
-    private FileTime lastCfgModificationDate;
-    protected boolean enabled;
-    protected String xmlFilePath;
-    protected String baseDir;
-    protected String baseURL;
-    protected String licenseName;
-    protected String licenseKey;
-    protected Integer imgWidth;
-    protected Integer imgHeight;
-    protected float imgQuality;
-    protected Map<String, ResourceType> types;
-    protected boolean thumbsEnabled;
-    protected String thumbsURL;
-    protected String thumbsDir;
-    protected String thumbsPath;
-    protected boolean thumbsDirectAccess;
-    protected Integer thumbsMaxHeight;
-    protected Integer thumbsMaxWidth;
-    protected float thumbsQuality;
-    protected AccessControlLevelsList<AccessControlLevel> accessControlLevels;
-    protected List<String> hiddenFolders;
-    protected List<String> hiddenFiles;
-    protected boolean doubleExtensions;
-    protected boolean forceASCII;
-    protected boolean checkSizeAfterScaling;
-    protected String uriEncoding;
-    protected String userRoleSessionVar;
-    protected List<PluginInfo> plugins;
-    protected boolean secureImageUploads;
-    protected List<String> htmlExtensions;
-    protected Set<String> defaultResourceTypes;
-    protected IBasePathBuilder basePathBuilder;
-    protected boolean disallowUnsafeCharacters;
+    private static final int MAX_QUALITY = 100;
+    private static final float MAX_QUALITY_FLOAT = 100f;
+    private long lastCfgModificationDate;
+    private boolean enabled;
+    private String xmlFilePath;
+    private String baseDir;
+    private String baseURL;
+    private String licenseName;
+    private String licenseKey;
+    private Integer imgWidth;
+    private Integer imgHeight;
+    private float imgQuality;
+    private Map<String, ResourceType> types;
+    private boolean thumbsEnabled;
+    private String thumbsURL;
+    private String thumbsDir;
+    private String thumbsPath;
+    private boolean thumbsDirectAccess;
+    private Integer thumbsMaxHeight;
+    private Integer thumbsMaxWidth;
+    private float thumbsQuality;
+    private List<AccessControlLevel> accessControlLevels;
+    private List<String> hiddenFolders;
+    private List<String> hiddenFiles;
+    private boolean doubleExtensions;
+    private boolean forceASCII;
+    private boolean checkSizeAfterScaling;
+    private String userRoleSessionVar;
+    private List<PluginInfo> plugins;
+    private boolean secureImageUploads;
+    private List<String> htmlExtensions;
+    private Set<String> defaultResourceTypes;
+    private IBasePathBuilder basePathBuilder;
+    private boolean disallowUnsafeCharacters;
     private boolean loading;
     private Events events;
-    protected ServletConfig servletConf;
+    private final ApplicationContext applicationContext;
 
     /**
      * Constructor.
      *
-     * @param servletConfig ServletConfig object used to get configuration
-     * parameters from web-xml.
+     * @param applicationContext
+     * @param xmlFilePath
+     * @throws java.lang.Exception
      */
-    public Configuration(final ServletConfig servletConfig) {
-        this.servletConf = servletConfig;
-        this.xmlFilePath = servletConfig.getInitParameter("XMLConfig");
+    public Configuration(ApplicationContext applicationContext, String xmlFilePath) throws Exception {
+        this.applicationContext = applicationContext;
+        this.xmlFilePath = xmlFilePath;
         this.plugins = new ArrayList<>();
         this.htmlExtensions = new ArrayList<>();
         this.hiddenFolders = new ArrayList<>();
         this.hiddenFiles = new ArrayList<>();
         this.defaultResourceTypes = new LinkedHashSet<>();
+        init();
     }
 
     /**
@@ -132,7 +131,7 @@ public class Configuration implements IConfiguration {
         this.thumbsDirectAccess = false;
         this.thumbsMaxHeight = DEFAULT_THUMB_MAX_HEIGHT;
         this.thumbsMaxWidth = DEFAULT_THUMB_MAX_WIDTH;
-        this.accessControlLevels = new AccessControlLevelsList<>(true);
+        this.accessControlLevels = new ArrayList<>();
         this.hiddenFolders = new ArrayList<>();
         this.hiddenFiles = new ArrayList<>();
         this.doubleExtensions = false;
@@ -153,15 +152,17 @@ public class Configuration implements IConfiguration {
      *
      * @throws Exception when error occurs.
      */
-    @Override
-    public void init() throws Exception {
+    private void init() throws Exception {
         clearConfiguration();
         this.loading = true;
-        Path file = Paths.get(getFullConfigPath());
-        this.lastCfgModificationDate = Files.getLastModifiedTime(file);
+        Resource resource = getFullConfigPath();
+        this.lastCfgModificationDate = resource.lastModified();
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
-        Document doc = db.parse(file.toFile());
+        Document doc;
+        try (InputStream stream = resource.getInputStream()) {
+            doc = db.parse(stream);
+        }
         doc.normalize();
         Node node = doc.getFirstChild();
         if (node != null) {
@@ -202,7 +203,6 @@ public class Configuration implements IConfiguration {
                         quality = quality.replaceAll("\\D", "");
                         this.imgQuality = adjustQuality(quality);
                         break;
-
                     case "imgHeight":
                         String height = nullNodeToString(childNode);
                         height = height.replaceAll("\\D", "");
@@ -244,14 +244,11 @@ public class Configuration implements IConfiguration {
                             if (val != null && !val.isEmpty()) {
                                 htmlExtensions.add(val.trim().toLowerCase());
                             }
-
                         }
                         break;
-
                     case "secureImageUploads":
                         this.secureImageUploads = Boolean.valueOf(nullNodeToString(childNode));
                         break;
-
                     case "uriEncoding":
                         break;
                     case "userRoleSessionVar":
@@ -268,7 +265,7 @@ public class Configuration implements IConfiguration {
                         setPlugins(childNode);
                         break;
                     case "basePathBuilderImpl":
-                        setBasePathImpl(nullNodeToString(childNode));
+                        setBasePathImpl();
                         break;
                 }
             }
@@ -293,19 +290,13 @@ public class Configuration implements IConfiguration {
      * @return absolute path to XML configuration file
      * @throws ConnectorException when absolute path cannot be obtained.
      */
-    private String getFullConfigPath() throws ConnectorException {
-        String path = FileUtils.getFullPath(getServletContext(), xmlFilePath, false, true);
-        if (path == null) {
+    private Resource getFullConfigPath() throws ConnectorException {
+        Resource resource = applicationContext.getResource(xmlFilePath);
+        if (!resource.exists()) {
             throw new ConnectorException(Constants.Errors.CKFINDER_CONNECTOR_ERROR_FILE_NOT_FOUND,
                     "Configuration file could not be found under specified location.");
         }
-        Path cfgFile = Paths.get(path);
-
-        if (Files.exists(cfgFile) && Files.isRegularFile(cfgFile)) {
-            return cfgFile.toAbsolutePath().toString();
-        } else {
-            return xmlFilePath;
-        }
+        return resource;
     }
 
     /**
@@ -313,14 +304,8 @@ public class Configuration implements IConfiguration {
      *
      * @param value userPathBuilderImpl configuration value
      */
-    @SuppressWarnings({"BroadCatchBlock", "TooBroadCatch", "UseSpecificCatch"})
-    private void setBasePathImpl(final String value) {
-        try {
-            Class<? extends IBasePathBuilder> clazz = Class.forName(value).asSubclass(IBasePathBuilder.class);
-            this.basePathBuilder = clazz.newInstance();
-        } catch (Exception e) {
-            this.basePathBuilder = new ConfigurationPathBuilder();
-        }
+    private void setBasePathImpl() {
+        basePathBuilder = applicationContext.getBean(IBasePathBuilder.class);
     }
 
     /**
@@ -329,7 +314,7 @@ public class Configuration implements IConfiguration {
      * @param imgQuality Image quality
      * @return Adjusted image quality
      */
-    private float adjustQuality(final String imgQuality) {
+    private float adjustQuality(String imgQuality) {
         float helper;
         try {
             helper = Math.abs(Float.parseFloat(imgQuality));
@@ -351,7 +336,7 @@ public class Configuration implements IConfiguration {
     /**
      * Registers event handlers from all plugins.
      */
-    protected void registerEventHandlers() {
+    private void registerEventHandlers() {
         for (PluginInfo item : this.plugins) {
             try {
                 Class<? extends Plugin> clazz = Class.forName(item.getClassName()).asSubclass(Plugin.class);
@@ -371,7 +356,7 @@ public class Configuration implements IConfiguration {
      *
      * @param childNodes list of files nodes.
      */
-    private void setHiddenFiles(final NodeList childNodes) {
+    private void setHiddenFiles(NodeList childNodes) {
         for (int i = 0, j = childNodes.getLength(); i < j; i++) {
             Node node = childNodes.item(i);
             if (node.getNodeName().equals("file")) {
@@ -388,7 +373,7 @@ public class Configuration implements IConfiguration {
      *
      * @param childNodes list of folder nodes.
      */
-    private void setHiddenFolders(final NodeList childNodes) {
+    private void setHiddenFolders(NodeList childNodes) {
         for (int i = 0, j = childNodes.getLength(); i < j; i++) {
             Node node = childNodes.item(i);
             if (node.getNodeName().equals("folder")) {
@@ -405,13 +390,13 @@ public class Configuration implements IConfiguration {
      *
      * @param childNodes nodes with ACL configuration.
      */
-    private void setACLs(final NodeList childNodes) {
+    private void setACLs(NodeList childNodes) {
         for (int i = 0, j = childNodes.getLength(); i < j; i++) {
             Node childNode = childNodes.item(i);
             if (childNode.getNodeName().equals("accessControl")) {
                 AccessControlLevel acl = getACLFromNode(childNode);
                 if (acl != null) {
-                    this.accessControlLevels.addItem(acl, false);
+                    this.accessControlLevels.add(acl);
                 }
             }
         }
@@ -423,7 +408,7 @@ public class Configuration implements IConfiguration {
      * @param childNode XML accessControl node.
      * @return access control level object.
      */
-    private AccessControlLevel getACLFromNode(final Node childNode) {
+    private AccessControlLevel getACLFromNode(Node childNode) {
         AccessControlLevel acl = new AccessControlLevel();
         for (int i = 0, j = childNode.getChildNodes().getLength(); i < j; i++) {
             Node childChildNode = childNode.getChildNodes().item(i);
@@ -481,7 +466,7 @@ public class Configuration implements IConfiguration {
      *
      * @param childNodes list of thumb XML nodes
      */
-    private void setThumbs(final NodeList childNodes) {
+    private void setThumbs(NodeList childNodes) {
         for (int i = 0, j = childNodes.getLength(); i < j; i++) {
             Node childNode = childNodes.item(i);
             switch (childNode.getNodeName()) {
@@ -530,7 +515,7 @@ public class Configuration implements IConfiguration {
      *
      * @param doc XML document.
      */
-    private void setTypes(final Document doc) {
+    private void setTypes(Document doc) {
         types = new LinkedHashMap<>();
         NodeList list = doc.getElementsByTagName("type");
 
@@ -552,8 +537,8 @@ public class Configuration implements IConfiguration {
      * @param childNodes type XML child nodes.
      * @return resource type
      */
-    private ResourceType createTypeFromXml(final String typeName,
-            final NodeList childNodes) {
+    private ResourceType createTypeFromXml(String typeName,
+            NodeList childNodes) {
         ResourceType resourceType = new ResourceType(typeName);
         for (int i = 0, j = childNodes.getLength(); i < j; i++) {
             Node childNode = childNodes.item(i);
@@ -586,7 +571,7 @@ public class Configuration implements IConfiguration {
      * @return true if user is authenticated and false otherwise.
      */
     @Override
-    public boolean checkAuthentication(final HttpServletRequest request) {
+    public boolean checkAuthentication(HttpServletRequest request) {
         return DEFAULT_CHECKAUTHENTICATION;
     }
 
@@ -792,7 +777,7 @@ public class Configuration implements IConfiguration {
      * @param directory directory name for thumbnails.
      */
     @Override
-    public void setThumbsPath(final String directory) {
+    public void setThumbsPath(String directory) {
         this.thumbsPath = directory;
     }
 
@@ -802,7 +787,7 @@ public class Configuration implements IConfiguration {
      * @return list of access control levels.
      */
     @Override
-    public AccessControlLevelsList<AccessControlLevel> getAccessConrolLevels() {
+    public List<AccessControlLevel> getAccessConrolLevels() {
         return this.accessControlLevels;
     }
 
@@ -925,9 +910,6 @@ public class Configuration implements IConfiguration {
      */
     @Override
     public IBasePathBuilder getBasePathBuilder() {
-        if (this.basePathBuilder == null) {
-            this.basePathBuilder = new ConfigurationPathBuilder();
-        }
         return this.basePathBuilder;
     }
 
@@ -941,25 +923,13 @@ public class Configuration implements IConfiguration {
      */
     @Override
     public boolean checkIfReloadConfig() throws ConnectorException {
-        String path = FileUtils.getFullPath(getServletContext(), xmlFilePath, false, true);
-
-        Path cfgFile = Paths.get(path);
+        Resource resource = applicationContext.getResource(xmlFilePath);
 
         try {
-            return (Files.getLastModifiedTime(cfgFile).compareTo(this.lastCfgModificationDate) > 0);
+            return resource.lastModified() > lastCfgModificationDate;
         } catch (IOException ex) {
             return false;
         }
-    }
-
-    /**
-     * Prepares configuration for single request. Empty method. It should be
-     * overridden if needed.
-     *
-     * @param request request
-     */
-    @Override
-    public void prepareConfigurationForRequest(final HttpServletRequest request) {
     }
 
     /**
@@ -967,7 +937,7 @@ public class Configuration implements IConfiguration {
      *
      * @param childNode child of XML node 'plugins'.
      */
-    private void setPlugins(final Node childNode) {
+    private void setPlugins(Node childNode) {
         NodeList nodeList = childNode.getChildNodes();
         for (int i = 0, j = nodeList.getLength(); i < j; i++) {
             Node childChildNode = nodeList.item(i);
@@ -983,13 +953,13 @@ public class Configuration implements IConfiguration {
      * @param element XML plugin node.
      * @return PluginInfo data
      */
-    private PluginInfo createPluginFromNode(final Node element) {
+    private PluginInfo createPluginFromNode(Node element) {
         PluginInfo info = new PluginInfo();
         NodeList list = element.getChildNodes();
         for (int i = 0, l = list.getLength(); i < l; i++) {
             Node childElem = list.item(i);
-            final String nodeName = childElem.getNodeName();
-            final String textContent = nullNodeToString(childElem);
+            String nodeName = childElem.getNodeName();
+            String textContent = nullNodeToString(childElem);
             switch (nodeName) {
                 case "name":
                     info.setName(textContent);
@@ -1031,7 +1001,7 @@ public class Configuration implements IConfiguration {
      * @param url current thumbs url
      */
     @Override
-    public void setThumbsURL(final String url) {
+    public void setThumbsURL(String url) {
         this.thumbsURL = url;
     }
 
@@ -1041,7 +1011,7 @@ public class Configuration implements IConfiguration {
      * @param dir current thumbs directory.
      */
     @Override
-    public void setThumbsDir(final String dir) {
+    public void setThumbsDir(String dir) {
         this.thumbsDir = dir;
     }
 
@@ -1049,9 +1019,10 @@ public class Configuration implements IConfiguration {
      * Clones current configuration instance and copies it's all fields.
      *
      * @return cloned configuration
+     * @throws java.lang.Exception
      */
     @Override
-    public final IConfiguration cloneConfiguration() {
+    public final IConfiguration cloneConfiguration() throws Exception {
         Configuration configuration = createConfigurationInstance();
         copyConfFields(configuration);
         return configuration;
@@ -1062,9 +1033,10 @@ public class Configuration implements IConfiguration {
      * method should be overridden and return new configuration instance.
      *
      * @return new configuration instance
+     * @throws java.lang.Exception
      */
-    protected Configuration createConfigurationInstance() {
-        return new Configuration(this.servletConf);
+    private Configuration createConfigurationInstance() throws Exception {
+        return new Configuration(applicationContext, xmlFilePath);
     }
 
     /**
@@ -1073,12 +1045,11 @@ public class Configuration implements IConfiguration {
      * @param configuration destination configuration
      */
     @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
-    protected void copyConfFields(final Configuration configuration) {
+    private void copyConfFields(Configuration configuration) {
         configuration.loading = this.loading;
         configuration.xmlFilePath = this.xmlFilePath;
         configuration.lastCfgModificationDate = this.lastCfgModificationDate;
         configuration.enabled = this.enabled;
-        configuration.xmlFilePath = this.xmlFilePath;
         configuration.baseDir = this.baseDir;
         configuration.baseURL = this.baseURL;
         configuration.licenseName = this.licenseName;
@@ -1111,7 +1082,7 @@ public class Configuration implements IConfiguration {
         configuration.defaultResourceTypes = new LinkedHashSet<>();
         configuration.defaultResourceTypes.addAll(this.defaultResourceTypes);
         configuration.types = new LinkedHashMap<>();
-        configuration.accessControlLevels = new AccessControlLevelsList<>(false);
+        configuration.accessControlLevels = new ArrayList<>();
         configuration.plugins = new ArrayList<>();
         copyTypes(configuration.types);
         copyACls(configuration.accessControlLevels);
@@ -1123,7 +1094,7 @@ public class Configuration implements IConfiguration {
      *
      * @param newPlugins new configuration plugins list.
      */
-    private void copyPlugins(final List<PluginInfo> newPlugins) {
+    private void copyPlugins(List<PluginInfo> newPlugins) {
         for (PluginInfo pluginInfo : this.plugins) {
             newPlugins.add(new PluginInfo(pluginInfo));
         }
@@ -1134,9 +1105,9 @@ public class Configuration implements IConfiguration {
      *
      * @param newAccessControlLevels new configuration ACL list.
      */
-    private void copyACls(final AccessControlLevelsList<AccessControlLevel> newAccessControlLevels) {
+    private void copyACls(List<AccessControlLevel> newAccessControlLevels) {
         for (AccessControlLevel acl : this.accessControlLevels) {
-            newAccessControlLevels.addItem(new AccessControlLevel(acl), false);
+            newAccessControlLevels.add(new AccessControlLevel(acl));
         }
     }
 
@@ -1145,7 +1116,7 @@ public class Configuration implements IConfiguration {
      *
      * @param newTypes new configuration resource types list.
      */
-    private void copyTypes(final Map<String, ResourceType> newTypes) {
+    private void copyTypes(Map<String, ResourceType> newTypes) {
         for (String name : this.types.keySet()) {
             newTypes.put(name, new ResourceType(this.types.get(name)));
         }
@@ -1153,7 +1124,12 @@ public class Configuration implements IConfiguration {
 
     @Override
     public ServletContext getServletContext() {
-        return servletConf.getServletContext();
+        return applicationContext.getBean(ServletContext.class);
+    }
+
+    @Override
+    public AccessControl getAccessControl() {
+        return applicationContext.getBean(AccessControl.class);
     }
 
 }

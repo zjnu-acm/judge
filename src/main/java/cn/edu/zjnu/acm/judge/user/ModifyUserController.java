@@ -26,6 +26,7 @@ public class ModifyUserController {
 
     @Secured("ROLE_USER")
     @PostMapping("/modifyuser")
+    @SuppressWarnings("AssignmentToMethodParameter")
     public String modifyuser(Model model,
             @RequestParam("oldPassword") String oldPassword,
             @RequestParam("newPassword") String newPassword,

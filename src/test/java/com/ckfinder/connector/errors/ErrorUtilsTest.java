@@ -36,7 +36,7 @@ public class ErrorUtilsTest {
     public static void main(String[] args) throws Exception {
         URL location = ErrorUtils.class.getProtectionDomain().getCodeSource().getLocation();
         Path base = Paths.get(location.toURI()).resolve(ErrorUtils.class.getPackage().getName().replace('.', '/'));
-        ErrorUtils instance = ErrorUtils.getInstance();
+        ErrorUtils instance = ErrorUtils.INSTANCE;
         Field field = ErrorUtils.class.getDeclaredField("langMap");
         field.setAccessible(true);
         Object obj = field.get(instance);

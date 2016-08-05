@@ -35,7 +35,7 @@ public class RenameFolderCommand extends XMLCommand implements IPostCommand {
     private String newFolderPath;
 
     @Override
-    protected void createXMLChildNodes(final int errorNum, final Element rootElement)
+    protected void createXMLChildNodes(int errorNum, Element rootElement)
             throws ConnectorException {
         if (errorNum == Constants.Errors.CKFINDER_CONNECTOR_ERROR_NONE) {
             createRenamedFolderNode(rootElement);
@@ -48,7 +48,7 @@ public class RenameFolderCommand extends XMLCommand implements IPostCommand {
      *
      * @param rootElement XML root element.
      */
-    private void createRenamedFolderNode(final Element rootElement) {
+    private void createRenamedFolderNode(Element rootElement) {
         Element element = creator.getDocument().createElement("RenamedFolder");
         element.setAttribute("newName", this.newFolderName);
         element.setAttribute("newPath", this.newFolderPath);
@@ -129,7 +129,6 @@ public class RenameFolderCommand extends XMLCommand implements IPostCommand {
                 this.type
                 + this.newFolderPath);
         Files.move(thumbDir, newThumbDir);
-
     }
 
     /**
@@ -141,20 +140,15 @@ public class RenameFolderCommand extends XMLCommand implements IPostCommand {
         this.newFolderPath = tmp1.substring(0,
                 tmp1.lastIndexOf('/') + 1).concat(this.newFolderName);
         this.newFolderPath = PathUtils.addSlashToEnd(this.newFolderPath);
-
     }
 
     /**
      * @param request request
      * @param configuration connector conf
-     * @param params execute additional params.
      * @throws ConnectorException when error occurs.
      */
     @Override
-    protected void initParams(final HttpServletRequest request,
-            final IConfiguration configuration,
-            final Object... params) throws ConnectorException {
-
+    protected void initParams(HttpServletRequest request, IConfiguration configuration) throws ConnectorException {
         super.initParams(request, configuration);
         this.newFolderName = request.getParameter("NewFolderName");
     }

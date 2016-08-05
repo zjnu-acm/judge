@@ -26,20 +26,22 @@ import java.util.regex.Pattern;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.Setter;
 
 /**
  * Class to handle errors via HTTP headers (for non-XML commands).
  */
-public class ErrorCommand extends Command {
+public class ErrorCommand extends Command implements IErrorCommand {
 
-    private ConnectorException e;
+    @Setter
+    private ConnectorException connectorException;
     private HttpServletResponse response;
 
     @Override
-    public void execute(final OutputStream out) throws ConnectorException {
+    public void execute(OutputStream out) throws ConnectorException {
         try {
-            response.setHeader("X-CKFinder-Error", String.valueOf(e.getErrorCode()));
-            switch (e.getErrorCode()) {
+            response.setHeader("X-CKFinder-Error", String.valueOf(connectorException.getErrorCode()));
+            switch (connectorException.getErrorCode()) {
                 case Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST:
                 case Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_NAME:
                 case Constants.Errors.CKFINDER_CONNECTOR_ERROR_THUMBNAILS_DISABLED:
@@ -60,19 +62,17 @@ public class ErrorCommand extends Command {
     }
 
     @Override
-    public void setResponseHeader(final HttpServletResponse response,
-            final ServletContext sc) {
+    public void setResponseHeader(HttpServletResponse response,
+            ServletContext sc) {
         response.reset();
         this.response = response;
-
     }
 
     @Override
-    protected void initParams(final HttpServletRequest request,
-            final IConfiguration configuration, final Object... params)
+    protected void initParams(HttpServletRequest request,
+            IConfiguration configuration)
             throws ConnectorException {
-        super.initParams(request, configuration, params);
-        e = (ConnectorException) params[0];
+        super.initParams(request, configuration);
     }
 
     /**
@@ -84,7 +84,7 @@ public class ErrorCommand extends Command {
      * @throws ConnectorException it should never throw an exception
      */
     @Override
-    protected boolean checkParam(final String reqParam) throws ConnectorException {
+    protected boolean checkParam(String reqParam) throws ConnectorException {
         return reqParam == null || reqParam.isEmpty()
                 || !Pattern.compile(Constants.INVALID_PATH_REGEX).matcher(reqParam).find();
     }
@@ -93,7 +93,7 @@ public class ErrorCommand extends Command {
     protected boolean checkHidden()
             throws ConnectorException {
         if (FileUtils.checkIfDirIsHidden(this.currentFolder, configuration)) {
-            this.e = new ConnectorException(
+            this.connectorException = new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_CONNECTOR_DISABLED);
             return true;
         }
@@ -101,10 +101,10 @@ public class ErrorCommand extends Command {
     }
 
     @Override
-    protected boolean checkConnector(final HttpServletRequest request)
+    protected boolean checkConnector(HttpServletRequest request)
             throws ConnectorException {
         if (!configuration.enabled() || !configuration.checkAuthentication(request)) {
-            this.e = new ConnectorException(
+            this.connectorException = new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_CONNECTOR_DISABLED);
             return false;
         }
@@ -112,7 +112,7 @@ public class ErrorCommand extends Command {
     }
 
     @Override
-    protected boolean checkIfCurrFolderExists(final HttpServletRequest request)
+    protected boolean checkIfCurrFolderExists(HttpServletRequest request)
             throws ConnectorException {
         String tmpType = request.getParameter("type");
         if (checkIfTypeExists(tmpType)) {
@@ -121,7 +121,7 @@ public class ErrorCommand extends Command {
             if (Files.exists(currDir) && Files.isDirectory(currDir)) {
                 return true;
             } else {
-                this.e = new ConnectorException(
+                this.connectorException = new ConnectorException(
                         Constants.Errors.CKFINDER_CONNECTOR_ERROR_FOLDER_NOT_FOUND);
                 return false;
             }
@@ -130,10 +130,10 @@ public class ErrorCommand extends Command {
     }
 
     @Override
-    protected boolean checkIfTypeExists(final String type) {
+    protected boolean checkIfTypeExists(String type) {
         ResourceType testType = configuration.getTypes().get(type);
         if (testType == null) {
-            this.e = new ConnectorException(
+            this.connectorException = new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE, false);
             return false;
         }
@@ -141,7 +141,7 @@ public class ErrorCommand extends Command {
     }
 
     @Override
-    protected void getCurrentFolderParam(final HttpServletRequest request) {
+    protected void getCurrentFolderParam(HttpServletRequest request) {
         String currFolder = request.getParameter("currentFolder");
         if (!(currFolder == null || currFolder.isEmpty())) {
             this.currentFolder = PathUtils.addSlashToBeginning(PathUtils.addSlashToEnd(currFolder));

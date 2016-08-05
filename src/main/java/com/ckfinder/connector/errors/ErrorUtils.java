@@ -20,25 +20,9 @@ import lombok.extern.slf4j.Slf4j;
  * Error utils.
  */
 @Slf4j
-public final class ErrorUtils {
+public enum ErrorUtils {
 
-    private static final ErrorUtils errorUtils = new ErrorUtils();
-
-    /**
-     * Returns or creates and returns {@code ErrorUtils} instance.
-     *
-     * @return {@code ErrorUtils} instance.
-     */
-    public static ErrorUtils getInstance() {
-        return errorUtils;
-    }
-
-    /**
-     * Default constructor which creates {@code ErrorUtils} instance and
-     * initializes list of available languages supported by CKFinder.
-     */
-    private ErrorUtils() {
-    }
+    INSTANCE;
 
     /**
      * Gets error message by locale code.
@@ -48,9 +32,9 @@ public final class ErrorUtils {
      * @param conf connector configuration object
      * @return localized error message.
      */
-    public String getErrorMsgByLangAndCode(final String lang,
-            final int errorCode,
-            final IConfiguration conf) {
+    public String getErrorMsgByLangAndCode(String lang,
+            int errorCode,
+            IConfiguration conf) {
         try {
             return ResourceBundle.getBundle(ErrorUtils.class.getPackage()
                     .getName().concat(".LocalStrings"), new Locale(lang))

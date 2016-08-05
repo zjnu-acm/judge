@@ -11,7 +11,6 @@
  */
 package com.ckfinder.connector;
 
-import com.ckfinder.connector.configuration.Configuration;
 import com.ckfinder.connector.configuration.ConfigurationFactory;
 import com.ckfinder.connector.configuration.Constants;
 import com.ckfinder.connector.configuration.IConfiguration;
@@ -27,6 +26,7 @@ import com.ckfinder.connector.handlers.command.ErrorCommand;
 import com.ckfinder.connector.handlers.command.FileUploadCommand;
 import com.ckfinder.connector.handlers.command.GetFilesCommand;
 import com.ckfinder.connector.handlers.command.GetFoldersCommand;
+import com.ckfinder.connector.handlers.command.IErrorCommand;
 import com.ckfinder.connector.handlers.command.IPostCommand;
 import com.ckfinder.connector.handlers.command.InitCommand;
 import com.ckfinder.connector.handlers.command.MoveFilesCommand;
@@ -36,28 +36,30 @@ import com.ckfinder.connector.handlers.command.RenameFolderCommand;
 import com.ckfinder.connector.handlers.command.ThumbnailCommand;
 import com.ckfinder.connector.handlers.command.XMLCommand;
 import com.ckfinder.connector.handlers.command.XMLErrorCommand;
-import com.ckfinder.connector.utils.AccessControl;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Set;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * Main connector servlet for handling CKFinder requests.
  */
+@RequiredArgsConstructor
 @Slf4j
 public class ConnectorServlet extends HttpServlet {
 
     /**
      */
     private static final long serialVersionUID = 2960665641425153638L;
+
+    private final ConfigurationFactory configurationFactory;
 
     /**
      * Handling get requests.
@@ -68,8 +70,8 @@ public class ConnectorServlet extends HttpServlet {
      * @throws ServletException
      */
     @Override
-    protected void doGet(final HttpServletRequest request,
-            final HttpServletResponse response) throws ServletException,
+    protected void doGet(HttpServletRequest request,
+            HttpServletResponse response) throws ServletException,
             IOException {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
@@ -85,8 +87,8 @@ public class ConnectorServlet extends HttpServlet {
      * @throws ServletException .
      */
     @Override
-    protected void doPost(final HttpServletRequest request,
-            final HttpServletResponse response) throws ServletException,
+    protected void doPost(HttpServletRequest request,
+            HttpServletResponse response) throws ServletException,
             IOException {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
@@ -101,14 +103,14 @@ public class ConnectorServlet extends HttpServlet {
      * @param post if it's post command.
      * @throws ServletException when error occurs.
      */
-    private void getResponse(final HttpServletRequest request,
-            final HttpServletResponse response, final boolean post)
+    private void getResponse(HttpServletRequest request,
+            HttpServletResponse response, boolean post)
             throws ServletException {
         boolean isNativeCommand;
         String command = request.getParameter("command");
         IConfiguration configuration = null;
         try {
-            configuration = ConfigurationFactory.getInstace().getConfiguration(request);
+            configuration = configurationFactory.getConfiguration(request);
             if (configuration == null) {
                 throw new Exception("Configuration wasn't initialized correctly. Check server logs.");
             }
@@ -128,7 +130,7 @@ public class ConnectorServlet extends HttpServlet {
                 cmd = CommandHandlerEnum.valueOf(command.toUpperCase());
                 // checks if command should go via POST request or it's a post request
                 // and it's not upload command
-                if ((IPostCommand.class.isAssignableFrom(cmd.getCommandClass()) || post)
+                if ((IPostCommand.class.isInstance(cmd.getCommand()) || post)
                         && !CommandHandlerEnum.FILEUPLOAD.equals(cmd)
                         && !CommandHandlerEnum.QUICKUPLOAD.equals(cmd)) {
                     checkPostRequest(request);
@@ -182,13 +184,12 @@ public class ConnectorServlet extends HttpServlet {
      * @throws IllegalArgumentException when provided command is not found in
      * enumeration object
      */
-    private void executeNativeCommand(String command, final HttpServletRequest request,
-            final HttpServletResponse response, IConfiguration configuration,
+    private void executeNativeCommand(String command, HttpServletRequest request,
+            HttpServletResponse response, IConfiguration configuration,
             boolean isNativeCommand) throws IllegalArgumentException, ConnectorException {
         if (isNativeCommand) {
             CommandHandlerEnum cmd = CommandHandlerEnum.valueOf(command.toUpperCase());
-            cmd.execute(
-                    request, response, configuration, getServletContext());
+            cmd.execute(request, response, configuration, null);
         } else {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_COMMAND, false);
@@ -201,14 +202,13 @@ public class ConnectorServlet extends HttpServlet {
      * @param request request
      * @throws ConnectorException when param isn't set or has wrong value.
      */
-    private void checkPostRequest(final HttpServletRequest request)
+    private void checkPostRequest(HttpServletRequest request)
             throws ConnectorException {
         if (request.getParameter("CKFinderCommand") == null
                 || !(request.getParameter("CKFinderCommand").equals("true"))) {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST, true);
         }
-
     }
 
     /**
@@ -222,138 +222,101 @@ public class ConnectorServlet extends HttpServlet {
      * @throws ServletException when error handling fails.
      */
     @SuppressWarnings({"BroadCatchBlock", "TooBroadCatch"})
-    private void handleError(final ConnectorException e,
-            final IConfiguration configuration,
-            final HttpServletRequest request, final HttpServletResponse response,
-            final String currentCommand)
-            throws ServletException {
+    private void handleError(ConnectorException e,
+            IConfiguration configuration,
+            HttpServletRequest request, HttpServletResponse response,
+            String currentCommand) throws ServletException {
         try {
             if (currentCommand != null && !currentCommand.isEmpty()) {
-                Class<? extends Command> commandClass = CommandHandlerEnum.valueOf(
-                        currentCommand.toUpperCase()).getCommandClass();
-                if (XMLCommand.class.isAssignableFrom(commandClass)) {
-                    CommandHandlerEnum.XMLERROR.execute(request, response, configuration,
-                            getServletContext(), e);
+                Command command = CommandHandlerEnum.valueOf(
+                        currentCommand.toUpperCase()).getCommand();
+                if (XMLCommand.class.isInstance(command)) {
+                    CommandHandlerEnum.XMLERROR.execute(request, response, configuration, e);
                 } else {
-                    CommandHandlerEnum.ERROR.execute(request, response, configuration,
-                            getServletContext(), e);
+                    CommandHandlerEnum.ERROR.execute(request, response, configuration, e);
                 }
             } else {
-                CommandHandlerEnum.XMLERROR.execute(request, response, configuration,
-                        getServletContext(), e);
+                CommandHandlerEnum.XMLERROR.execute(request, response, configuration, e);
             }
         } catch (Exception e1) {
             throw new ServletException(e1);
         }
     }
 
-    @Override
-    @SuppressWarnings({"UseSpecificCatch", "BroadCatchBlock", "TooBroadCatch"})
-    public void init() throws ServletException {
-        IConfiguration configuration;
-        String className = getServletConfig().getInitParameter(
-                "configuration");
-        if (className != null) {
-            try {
-                Class<? extends IConfiguration> clazz = Class.forName(className).asSubclass(IConfiguration.class);
-
-                try {
-                    configuration = clazz.getConstructor(
-                            ServletConfig.class).newInstance(getServletConfig());
-
-                } catch (NoSuchMethodException ex) {
-                    configuration = clazz.newInstance();
-                }
-            } catch (Exception e) {
-                log.error("Couldn't initialize custom configuration. Rolling back to the default one.", e);
-                configuration = new Configuration(getServletConfig());
-            }
-        } else {
-            configuration = new Configuration(getServletConfig());
-        }
-        try {
-            configuration.init();
-            AccessControl.getInstance().loadConfiguration(configuration);
-        } catch (Exception e) {
-            throw new ServletException(e);
-        }
-        ConfigurationFactory.getInstace().setConfiguration(configuration);
-    }
-
     /**
      * Enum with all command handles by servlet.
      *
      */
-    private enum CommandHandlerEnum {
+    private static enum CommandHandlerEnum {
 
         /**
          * init command.
          */
-        INIT(InitCommand.class),
+        INIT(InitCommand::new),
         /**
          * get subfolders for selected location command.
          */
-        GETFOLDERS(GetFoldersCommand.class),
+        GETFOLDERS(GetFoldersCommand::new),
         /**
          * get files from current folder command.
          */
-        GETFILES(GetFilesCommand.class),
+        GETFILES(GetFilesCommand::new),
         /**
          * get thumbnail for file command.
          */
-        THUMBNAIL(ThumbnailCommand.class),
+        THUMBNAIL(ThumbnailCommand::new),
         /**
          * download file command.
          */
-        DOWNLOADFILE(DownloadFileCommand.class),
+        DOWNLOADFILE(DownloadFileCommand::new),
         /**
          * create subfolder.
          */
-        CREATEFOLDER(CreateFolderCommand.class),
+        CREATEFOLDER(CreateFolderCommand::new),
         /**
          * rename file.
          */
-        RENAMEFILE(RenameFileCommand.class),
+        RENAMEFILE(RenameFileCommand::new),
         /**
          * rename folder.
          */
-        RENAMEFOLDER(RenameFolderCommand.class),
+        RENAMEFOLDER(RenameFolderCommand::new),
         /**
          * delete folder.
          */
-        DELETEFOLDER(DeleteFolderCommand.class),
+        DELETEFOLDER(DeleteFolderCommand::new),
         /**
          * copy files.
          */
-        COPYFILES(CopyFilesCommand.class),
+        COPYFILES(CopyFilesCommand::new),
         /**
          * move files.
          */
-        MOVEFILES(MoveFilesCommand.class),
+        MOVEFILES(MoveFilesCommand::new),
         /**
          * delete files.
          */
-        DELETEFILES(DeleteFilesCommand.class),
+        DELETEFILES(DeleteFilesCommand::new),
         /**
          * file upload.
          */
-        FILEUPLOAD(FileUploadCommand.class),
+        FILEUPLOAD(FileUploadCommand::new),
         /**
          * quick file upload.
          */
-        QUICKUPLOAD(QuickUploadCommand.class),
+        QUICKUPLOAD(QuickUploadCommand::new),
         /**
          * XML error command.
          */
-        XMLERROR(XMLErrorCommand.class),
+        XMLERROR(XMLErrorCommand::new),
         /**
          * error command.
          */
-        ERROR(ErrorCommand.class);
+        ERROR(ErrorCommand::new);
         /**
          * command class for enum field.
          */
-        private final Class<? extends Command> commandClass;
+        private final Supplier<? extends Command> supplier;
         /**
          * {@code Set} holding enumeration values,
          */
@@ -365,8 +328,8 @@ public class ConnectorServlet extends HttpServlet {
          *
          * @param command1 command name
          */
-        private CommandHandlerEnum(final Class<? extends Command> commandClass) {
-            this.commandClass = commandClass;
+        private CommandHandlerEnum(Supplier<? extends Command> supplier) {
+            this.supplier = supplier;
         }
 
         /**
@@ -391,19 +354,16 @@ public class ConnectorServlet extends HttpServlet {
          * @param params params for command.
          * @throws ConnectorException when error occurs
          */
-        private void execute(final HttpServletRequest request,
-                final HttpServletResponse response, final IConfiguration configuration,
-                final ServletContext sc, final Object... params)
-                throws ConnectorException {
-            Command com = null;
-            try {
-                com = commandClass.newInstance();
-            } catch (IllegalAccessException | InstantiationException e1) {
-                throw new ConnectorException(
-                        Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_COMMAND);
+        private void execute(HttpServletRequest request,
+                HttpServletResponse response,
+                IConfiguration configuration,
+                ConnectorException e) throws ConnectorException {
+            Command com = supplier.get();
+            if (com instanceof IErrorCommand) {
+                ((IErrorCommand) com).setConnectorException(e);
             }
-            com.setAccessControl(AccessControl.getInstance());
-            com.runCommand(request, response, configuration, params);
+            com.setAccessControl(configuration.getAccessControl());
+            com.runCommand(request, response, configuration);
         }
 
         /**
@@ -411,13 +371,8 @@ public class ConnectorServlet extends HttpServlet {
          *
          * @return command
          */
-        @Deprecated
         public Command getCommand() {
-            throw new NoSuchMethodError();
-        }
-
-        public Class<? extends Command> getCommandClass() {
-            return commandClass;
+            return supplier.get();
         }
 
     }

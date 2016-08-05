@@ -13,7 +13,6 @@ package com.ckfinder.connector.configuration;
 
 import com.ckfinder.connector.data.ResourceType;
 import com.ckfinder.connector.errors.ConnectorException;
-import com.ckfinder.connector.utils.AccessControl;
 import com.ckfinder.connector.utils.FileUtils;
 import com.ckfinder.connector.utils.PathUtils;
 import java.io.IOException;
@@ -21,47 +20,20 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import javax.servlet.http.HttpServletRequest;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Factory returning configuration instance.
  */
+@RequiredArgsConstructor
+@Slf4j
 @SuppressWarnings({"FinalClass", "FinalMethod", "FinalMethodInFinalClass"})
 public final class ConfigurationFactory {
 
-    private static final ConfigurationFactory instance = new ConfigurationFactory();
-
-    /**
-     * if instance is null creates one and returns it.
-     *
-     * @return configuration instance.
-     */
-    @Deprecated
-    public static ConfigurationFactory getInstace() {
-        return instance;
-    }
-    private IConfiguration configuration;
-
-    /**
-     * private constructor.
-     */
-    private ConfigurationFactory() {
-    }
-
-    /**
-     * Gets base configuration prepared in {@code IConfiguration.init} method.
-     *
-     * @return CKFinder configuration object.
-     * @throws Exception when configuration cannot be obtained.
-     */
-    public final IConfiguration getConfiguration() throws Exception {
-        if (configuration != null
-                && configuration.checkIfReloadConfig()) {
-            configuration.init();
-            AccessControl.getInstance().resetConfiguration();
-            AccessControl.getInstance().loadConfiguration(configuration);
-        }
-        return configuration;
-    }
+    @Getter
+    private final IConfiguration configuration;
 
     /**
      * Gets and prepares configuration.
@@ -70,11 +42,10 @@ public final class ConfigurationFactory {
      * @return the configuration
      * @throws Exception when error occurs
      */
-    public final IConfiguration getConfiguration(final HttpServletRequest request)
+    public final IConfiguration getConfiguration(HttpServletRequest request)
             throws Exception {
         IConfiguration baseConf = getConfiguration();
         return prepareConfiguration(request, baseConf);
-
     }
 
     /**
@@ -85,25 +56,15 @@ public final class ConfigurationFactory {
      * @return prepared configuration
      * @throws Exception when error occurs
      */
-    public IConfiguration prepareConfiguration(final HttpServletRequest request,
-            final IConfiguration baseConf)
-            throws Exception {
+    public IConfiguration prepareConfiguration(HttpServletRequest request,
+            IConfiguration baseConf) throws Exception {
         if (baseConf != null) {
             IConfiguration conf = baseConf.cloneConfiguration();
             conf.prepareConfigurationForRequest(request);
             updateResourceTypesPaths(request, conf);
-            AccessControl.getInstance().loadConfiguration(conf);
             return conf;
         }
         return null;
-
-    }
-
-    /**
-     * @param configuration the configuration to set
-     */
-    public final void setConfiguration(final IConfiguration configuration) {
-        this.configuration = configuration;
     }
 
     /**
@@ -113,21 +74,20 @@ public final class ConfigurationFactory {
      * @param conf connector configuration.
      * @throws Exception when error occurs
      */
-    private void updateResourceTypesPaths(final HttpServletRequest request,
-            final IConfiguration conf) throws Exception {
+    private void updateResourceTypesPaths(HttpServletRequest request,
+            IConfiguration conf) throws Exception {
 
         String baseFolder = getBaseFolder(conf, request);
-        baseFolder = conf.getThumbsDir().replace(Constants.BASE_DIR_PLACEHOLDER,
-                baseFolder);
+        baseFolder = conf.getThumbsDir().replace(Constants.BASE_DIR_PLACEHOLDER, baseFolder);
         baseFolder = PathUtils.escape(baseFolder);
         baseFolder = PathUtils.removeSlashFromEnd(baseFolder);
-        baseFolder = FileUtils.getFullPath(request.getServletContext(), baseFolder, true, false);
-        if (baseFolder == null) {
+        Path file = Paths.get(baseFolder);
+        if (file == null) {
             throw new ConnectorException(Constants.Errors.CKFINDER_CONNECTOR_ERROR_FOLDER_NOT_FOUND,
                     "Thumbs directory could not be created using specified path.");
         }
 
-        Path file = Paths.get(baseFolder);
+        log.debug("{}", file);
         Files.createDirectories(file);
 
         conf.setThumbsPath(file.toAbsolutePath().toString());
@@ -146,31 +106,26 @@ public final class ConfigurationFactory {
             url = PathUtils.removeSlashFromEnd(url);
             item.setUrl(url);
 
-            baseFolder = getBaseFolder(conf, request);
-            baseFolder = item.getPath().replace(Constants.BASE_DIR_PLACEHOLDER, baseFolder);
-            baseFolder = PathUtils.escape(baseFolder);
-            baseFolder = PathUtils.removeSlashFromEnd(baseFolder);
+            String s = getBaseFolder(conf, request);
+            s = item.getPath().replace(Constants.BASE_DIR_PLACEHOLDER, s);
+            s = PathUtils.escape(s);
+            s = PathUtils.removeSlashFromEnd(s);
 
             boolean isFromUrl = false;
-            if (baseFolder == null || baseFolder.isEmpty()) {
-                baseFolder = PathUtils.removeSlashFromBeginning(url);
-                isFromUrl = true;
+            if (s == null || s.isEmpty()) {
+                throw new IllegalStateException("baseFolder is empty");
             }
-
-            String resourcePath = isFromUrl
-                    ? FileUtils.calculatePathFromBaseUrl(request.getServletContext(), baseFolder) : FileUtils.getFullPath(configuration.getServletContext(), baseFolder, true, false);
-            if (resourcePath == null) {
+            log.debug("isFromUrl: {}", isFromUrl);
+            Path p = Paths.get(s);
+            if (p == null) {
                 throw new ConnectorException(Constants.Errors.CKFINDER_CONNECTOR_ERROR_FOLDER_NOT_FOUND,
                         "Resource directory could not be created using specified path.");
             }
 
-            file = Paths.get(resourcePath);
+            FileUtils.createPath(p, false);
 
-            FileUtils.createPath(file, false);
-
-            item.setPath(file.toAbsolutePath().toString());
+            item.setPath(p.toAbsolutePath().toString());
         }
-
     }
 
     /**
@@ -182,21 +137,19 @@ public final class ConfigurationFactory {
      * @return path to base dir from conf
      * @throws ConnectorException when error during creating folder occurs
      */
-    private String getBaseFolder(final IConfiguration conf,
-            final HttpServletRequest request)
+    private String getBaseFolder(IConfiguration conf,
+            HttpServletRequest request)
             throws ConnectorException {
-        String baseFolder = conf.getBasePathBuilder().getBaseDir(request);
-
-        Path baseDir = Paths.get(baseFolder);
-        if (!Files.exists(baseDir)) {
-            try {
+        try {
+            String baseFolder = conf.getBasePathBuilder().getBaseDir(request);
+            Path baseDir = Paths.get(baseFolder);
+            if (!Files.exists(baseDir)) {
                 FileUtils.createPath(baseDir, false);
-            } catch (IOException e) {
-                throw new ConnectorException(e);
             }
+            return PathUtils.addSlashToEnd(baseFolder);
+        } catch (IOException e) {
+            throw new ConnectorException(e);
         }
-
-        return PathUtils.addSlashToEnd(baseFolder);
     }
 
 }

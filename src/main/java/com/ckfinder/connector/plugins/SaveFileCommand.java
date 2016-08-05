@@ -97,10 +97,9 @@ public class SaveFileCommand extends XMLCommand implements IEventHandler<BeforeE
     }
 
     @Override
-    protected void initParams(HttpServletRequest request,
-            IConfiguration configuration, Object... params)
+    protected void initParams(HttpServletRequest request, IConfiguration configuration)
             throws ConnectorException {
-        super.initParams(request, configuration, params);
+        super.initParams(request, configuration);
         this.currentFolder = request.getParameter("currentFolder");
         this.type = request.getParameter("type");
         this.fileContent = request.getParameter("content");

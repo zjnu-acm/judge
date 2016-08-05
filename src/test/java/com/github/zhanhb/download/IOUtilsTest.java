@@ -33,6 +33,7 @@ public class IOUtilsTest {
 
     /**
      * Test of copyLarge method, of class IOUtils.
+     * @throws java.lang.Exception
      */
     @Test
     public void testCopyLarge_5args() throws Exception {

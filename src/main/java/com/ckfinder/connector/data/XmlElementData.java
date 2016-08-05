@@ -47,7 +47,7 @@ public class XmlElementData {
      *
      * @param name XML element name.
      */
-    public XmlElementData(final String name) {
+    public XmlElementData(String name) {
         super();
         this.name = name;
         this.attributes = new ArrayList<>();
@@ -60,8 +60,8 @@ public class XmlElementData {
      * @param document XML document.
      * @param parent Parent node for element.
      */
-    public void addToDocument(final Document document,
-            final Element parent) {
+    public void addToDocument(Document document,
+            Element parent) {
         Element element = this.toElement(document);
         for (XmlElementData xmlElementData : this.childrens) {
             element.appendChild(xmlElementData.toElement(document));
@@ -83,7 +83,7 @@ public class XmlElementData {
      * @param document XML document
      * @return creates a element in document
      */
-    private Element toElement(final Document document) {
+    private Element toElement(Document document) {
         return document.createElement(this.name);
     }
 

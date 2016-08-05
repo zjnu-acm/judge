@@ -36,12 +36,11 @@ public class CreateFolderCommand extends XMLCommand implements IPostCommand {
     private String newFolderName;
 
     @Override
-    protected void createXMLChildNodes(final int errorNum, final Element rootElement)
+    protected void createXMLChildNodes(int errorNum, Element rootElement)
             throws ConnectorException {
         if (errorNum == Constants.Errors.CKFINDER_CONNECTOR_ERROR_NONE) {
             createNewFolderElement(rootElement);
         }
-
     }
 
     /**
@@ -49,11 +48,10 @@ public class CreateFolderCommand extends XMLCommand implements IPostCommand {
      *
      * @param rootElement XML root element.
      */
-    private void createNewFolderElement(final Element rootElement) {
+    private void createNewFolderElement(Element rootElement) {
         Element element = creator.getDocument().createElement("NewFolder");
         element.setAttribute("name", this.newFolderName);
         rootElement.appendChild(element);
-
     }
 
     /**
@@ -63,7 +61,6 @@ public class CreateFolderCommand extends XMLCommand implements IPostCommand {
      */
     @Override
     protected int getDataForXml() {
-
         try {
             checkParam(newFolderName);
         } catch (ConnectorException e) {
@@ -132,10 +129,9 @@ public class CreateFolderCommand extends XMLCommand implements IPostCommand {
     }
 
     @Override
-    protected void initParams(final HttpServletRequest request,
-            final IConfiguration configuration, final Object... params)
+    protected void initParams(HttpServletRequest request, IConfiguration configuration)
             throws ConnectorException {
-        super.initParams(request, configuration, params);
+        super.initParams(request, configuration);
         this.newFolderName = request.getParameter("NewFolderName");
     }
 

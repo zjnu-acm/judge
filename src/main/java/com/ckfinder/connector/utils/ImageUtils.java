@@ -36,8 +36,7 @@ public class ImageUtils {
     /**
      * allowed image extensions.
      */
-    private static final String[] ALLOWED_EXT = {"gif", "jpeg", "jpg", "png",
-        "bmp", "xbm"};
+    private static final List<String> ALLOWED_EXT = Arrays.asList("gif", "jpeg", "jpg", "png", "bmp", "xbm");
 
     /**
      * Resizes the image and writes it to the disk.
@@ -49,9 +48,9 @@ public class ImageUtils {
      * @param destFile file to write to
      * @throws IOException when error occurs.
      */
-    private static void resizeImage(final BufferedImage sourceImage, final int width,
-            final int height, final float quality,
-            final Path destFile) throws IOException {
+    private static void resizeImage(BufferedImage sourceImage, int width,
+            int height, float quality,
+            Path destFile) throws IOException {
         try {
             Thumbnails.of(sourceImage).size(width, height).keepAspectRatio(false).outputQuality(quality).toFile(destFile.toFile());
             // for some special files outputQuality couses error:
@@ -75,8 +74,8 @@ public class ImageUtils {
      * @param conf connector configuration
      * @throws IOException when error occurs.
      */
-    public static void createThumb(final Path orginFile, final Path file,
-            final IConfiguration conf) throws IOException {
+    public static void createThumb(Path orginFile, Path file,
+            IConfiguration conf) throws IOException {
         try (InputStream is = Files.newInputStream(orginFile)) {
             BufferedImage image = ImageIO.read(is);
             if (image != null) {
@@ -106,8 +105,8 @@ public class ImageUtils {
      * @param conf connector configuration
      * @throws IOException when error occurs.
      */
-    public static void createTmpThumb(final InputStream stream,
-            final Path file, final String fileName, final IConfiguration conf)
+    public static void createTmpThumb(InputStream stream,
+            Path file, String fileName, IConfiguration conf)
             throws IOException {
         try (BufferedInputStream bufferedIS = new BufferedInputStream(stream)) {
             bufferedIS.mark(Integer.MAX_VALUE);
@@ -138,9 +137,9 @@ public class ImageUtils {
      * @param quality image quality
      * @throws IOException when error occurs.
      */
-    public static void createResizedImage(final Path sourceFile,
-            final Path destFile, final int width, final int height,
-            final float quality) throws IOException {
+    public static void createResizedImage(Path sourceFile,
+            Path destFile, int width, int height,
+            float quality) throws IOException {
 
         BufferedImage image = ImageIO.read(sourceFile.toFile());
         Dimension dimension = new Dimension(width, height);
@@ -163,8 +162,8 @@ public class ImageUtils {
      * @param maxHeight max thumb height
      * @return dimension of thumb image.
      */
-    private static Dimension createThumbDimension(final BufferedImage image,
-            final int maxWidth, final int maxHeight) {
+    private static Dimension createThumbDimension(BufferedImage image,
+            int maxWidth, int maxHeight) {
         Dimension dimension = new Dimension();
         if (image.getWidth() >= image.getHeight()) {
             if (image.getWidth() >= maxWidth) {
@@ -190,11 +189,10 @@ public class ImageUtils {
      * @param file file to check
      * @return true if file is image.
      */
-    public static boolean isImage(final Path file) {
-        List<String> list = Arrays.asList(ALLOWED_EXT);
+    public static boolean isImage(Path file) {
         if (file != null) {
             String fileExt = FileUtils.getFileExtension(file.getFileName().toString().toLowerCase());
-            return (fileExt != null) ? list.contains(fileExt) : false;
+            return (fileExt != null) ? ALLOWED_EXT.contains(fileExt) : false;
         } else {
             return false;
         }
@@ -208,8 +206,8 @@ public class ImageUtils {
      * @return true if image size isn't bigger then biggest allowed.
      * @throws IOException when error occurs during reading image.
      */
-    public static boolean checkImageSize(final InputStream stream,
-            final IConfiguration conf) throws IOException {
+    public static boolean checkImageSize(InputStream stream,
+            IConfiguration conf) throws IOException {
         final Integer maxWidth;
         final Integer maxHeight;
         BufferedImage bi;
@@ -232,14 +230,14 @@ public class ImageUtils {
      * @param item file upload item
      * @return true if file is image.
      */
-    public static boolean checkImageFile(final Part item) {
+    public static boolean checkImageFile(Part item) {
         BufferedImage bi;
         try (InputStream is = item.getInputStream()) {
             bi = ImageIO.read(is);
         } catch (IOException e) {
             return false;
         }
-        return (bi != null);
+        return bi != null;
     }
 
     /**
@@ -251,7 +249,7 @@ public class ImageUtils {
      *
      * @throws IOException when error occurs.
      */
-    private static void writeUntouchedImage(final Path sourceFile, final Path destFile)
+    private static void writeUntouchedImage(Path sourceFile, Path destFile)
             throws IOException {
         Files.copy(sourceFile, destFile, StandardCopyOption.REPLACE_EXISTING);
     }

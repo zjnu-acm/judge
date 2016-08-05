@@ -32,6 +32,7 @@ public class ShowSourceController {
 
     @Secured("ROLE_USER")
     @GetMapping("/showsource")
+    @SuppressWarnings("AssignmentToMethodParameter")
     public String showsource(HttpServletRequest request,
             @RequestParam("solution_id") long submissionId,
             @RequestParam(value = "style", required = false) Integer style,

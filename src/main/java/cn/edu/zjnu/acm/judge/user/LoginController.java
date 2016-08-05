@@ -11,7 +11,7 @@ import org.thymeleaf.util.StringUtils;
 public class LoginController {
 
     @GetMapping({"/loginpage", "/login"})
-    protected String login(Model model,
+    public String login(Model model,
             @RequestParam(value = "url", required = false) String back,
             @RequestHeader(value = "Referer", required = false) String referrer,
             @RequestParam(value = "contest_id", required = false) String contestId) {

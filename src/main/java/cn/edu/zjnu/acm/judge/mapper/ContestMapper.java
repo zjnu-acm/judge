@@ -128,8 +128,7 @@ public interface ContestMapper {
 
     @Nullable
     @Select("select" + COLUMNS + "from contest where contest_id=#{id}")
-    Contest findOne(
-            @Param("id") long contestId);
+    Contest findOne(@Param("id") long contestId);
 
     // TODO not necessary support for i18n,
     // for return value only the id is used

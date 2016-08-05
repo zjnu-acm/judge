@@ -47,7 +47,7 @@ public class ImageResizeInfoCommand extends XMLCommand implements IEventHandler<
     }
 
     @Override
-    protected void createXMLChildNodes(final int errorNum, final Element rootElement)
+    protected void createXMLChildNodes(int errorNum, Element rootElement)
             throws ConnectorException {
         if (errorNum == Constants.Errors.CKFINDER_CONNECTOR_ERROR_NONE) {
             createImageInfoNode(rootElement);
@@ -106,10 +106,9 @@ public class ImageResizeInfoCommand extends XMLCommand implements IEventHandler<
     }
 
     @Override
-    protected void initParams(HttpServletRequest request,
-            IConfiguration configuration, Object... params)
+    protected void initParams(HttpServletRequest request, IConfiguration configuration)
             throws ConnectorException {
-        super.initParams(request, configuration, params);
+        super.initParams(request, configuration);
         this.imageHeight = 0;
         this.imageWidth = 0;
         this.currentFolder = request.getParameter("currentFolder");

@@ -6,7 +6,6 @@
         <pattern>/conteststatistics</pattern>
         <pattern>/problemstatus</pattern>
         <pattern>/showmessage</pattern>
-        <pattern>/showproblem</pattern>
         <pattern>/status</pattern>
     </decorator>
 </decorators>
