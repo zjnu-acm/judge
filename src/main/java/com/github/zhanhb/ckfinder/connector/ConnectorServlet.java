@@ -134,7 +134,7 @@ public class ConnectorServlet extends HttpServlet {
                 CommandHandlerEnum cmd = CommandHandlerEnum.valueOf(command.toUpperCase());
                 // checks if command should go via POST request or it's a post request
                 // and it's not upload command
-                if ((IPostCommand.class.isInstance(cmd.getCommand()) || post)
+                if ((cmd.getCommand() instanceof IPostCommand || post)
                         && !CommandHandlerEnum.FILEUPLOAD.equals(cmd)
                         && !CommandHandlerEnum.QUICKUPLOAD.equals(cmd)) {
                     checkPostRequest(request);
