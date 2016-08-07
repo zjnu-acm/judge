@@ -46,44 +46,42 @@ public class BestSubmissionsBuilder {
         Sort.Order[] orders = StreamSupport.stream(sort.spliterator(), false)
                 .filter(order -> ALLOW_COLUMNS.contains(order.getProperty()) && dejaVu.add(order.getProperty()))
                 .toArray(Sort.Order[]::new);
+        final int length = orders.length;
+        log.debug("{}", Arrays.asList(orders));
 
-        StringBuilder sb = new StringBuilder("select " + SubmissionMapper.LIST_COLUMNS + " from solution s where solution_id in(select max(s.solution_id)solution_id from");
-        for (int i = orders.length - 1; i >= 0; --i) {
-            sb.append("(select s.user_id");
+        StringBuilder sb = new StringBuilder("select ");
+        sb.append(SubmissionMapper.LIST_COLUMNS + " from solution s where problem_id=").append(problemId).append(" and score=100 ");
+        for (int i = length - 1; i >= 0; --i) {
+            sb.append("and(user_id");
+            for (int j = 0; j <= i; ++j) {
+                sb.append(',').append(orders[j].getProperty());
+            }
+            sb.append(")in(select user_id");
             for (int j = 0; j < i; ++j) {
-                sb.append(",s.").append(orders[j].getProperty());
+                sb.append(',').append(orders[j].getProperty());
             }
-            sb.append(',').append(orders[i].isAscending() ? "min" : "max").append("(s.").append(orders[i].getProperty()).append(")").append(orders[i].getProperty());
-            sb.append(" from");
+            sb.append(',').append(orders[i].isAscending() ? "min" : "max").append("(").append(orders[i].getProperty()).append(")").append(orders[i].getProperty()).append(" from solution where problem_id=").append(problemId).append(" and score=100 ");
         }
-        sb.append(" solution s where s.problem_id=").append(problemId).append(" and score=100 group by user_id");
-        for (int i = 0, length = orders.length; i < length; ++i) {
-            sb.append(")t join solution s on s.problem_id=").append(problemId).append(" and score=100 and s.user_id=t.user_id");
-            for (int j = 0; j <= i; ++j) {
-                String property = orders[i].getProperty();
-                sb.append(" and s.").append(property).append("=t.").append(property);
-            }
-            sb.append(" group by t.user_id");
-            for (int j = 0; j <= i; ++j) {
-                String property = orders[i].getProperty();
-                sb.append(",t.").append(property);
-            }
+        for (int i = 0; i < length; ++i) {
+            sb.append("group by user_id)");
         }
-        sb.append(')');
-        if (orders.length > 0) {
+        if (length > 0) {
             sb.append(" order by ");
-            for (int i = 0, len = orders.length; i < len; ++i) {
+            for (int i = 0; i < length; ++i) {
                 if (i > 0) {
                     sb.append(",");
                 }
-                sb.append("s.").append(orders[i].getProperty());
+                sb.append(orders[i].getProperty());
                 if (!orders[i].isAscending()) {
                     sb.append(" desc");
                 }
             }
         }
-        sb.append(" limit ").append(pageable.getOffset()).append(",").append(pageable.getPageSize());
-        return sb.toString();
+        return sb.append(" limit ")
+                .append(pageable.getOffset())
+                .append(",")
+                .append(pageable.getPageSize())
+                .toString();
     }
 
 }
