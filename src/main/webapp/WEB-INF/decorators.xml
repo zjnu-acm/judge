@@ -4,7 +4,6 @@
     <decorator name="main" page="main.jsp">
         <pattern>/bbs</pattern>
         <pattern>/conteststatistics</pattern>
-        <pattern>/problemstatus</pattern>
         <pattern>/showmessage</pattern>
         <pattern>/status</pattern>
     </decorator>
