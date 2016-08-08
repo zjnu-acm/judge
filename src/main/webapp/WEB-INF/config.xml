@@ -201,7 +201,7 @@
             <name>watermark</name>
             <class>com.github.zhanhb.ckfinder.connector.plugins.Watermark</class>
             <params>
-                <param name="source" value="/path/in/servlet/context/logo.gif"></param>
+                <param name="source" value="classpath:/path/in/spring/application/context/logo.gif"></param>
                 <param name="transparency" value="0.8"></param>
                 <param name="quality" value="100"></param>
                 <param name="marginRight" value="5"></param>

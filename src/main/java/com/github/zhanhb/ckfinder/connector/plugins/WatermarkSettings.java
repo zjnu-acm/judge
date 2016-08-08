@@ -14,7 +14,8 @@ package com.github.zhanhb.ckfinder.connector.plugins;
 import com.github.zhanhb.ckfinder.connector.configuration.IConfiguration;
 import com.github.zhanhb.ckfinder.connector.data.PluginInfo;
 import com.github.zhanhb.ckfinder.connector.data.PluginParam;
-import javax.servlet.ServletContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.Resource;
 
 class WatermarkSettings {
 
@@ -24,7 +25,6 @@ class WatermarkSettings {
     public static final String QUALITY = "quality";
     public static final String MARGIN_BOTTOM = "marginBottom";
     public static final String MARGIN_RIGHT = "marginRight";
-    public static final String DEFULT_WATERMARK = "";
 
     /**
      * @param configuration
@@ -32,7 +32,7 @@ class WatermarkSettings {
      * @return
      * @throws Exception
      */
-    public static WatermarkSettings createFromConfiguration(IConfiguration configuration, ServletContext servletContext) throws Exception {
+    public static WatermarkSettings createFromConfiguration(IConfiguration configuration, ApplicationContext applicationContext) throws Exception {
         WatermarkSettings settings = new WatermarkSettings();
 
         for (PluginInfo pluginInfo : configuration.getPlugins()) {
@@ -42,7 +42,7 @@ class WatermarkSettings {
                     final String value = param.getValue();
                     switch (name) {
                         case SOURCE:
-                            settings.setSource(servletContext.getRealPath(value));
+                            settings.setSource(applicationContext.getResource(value));
                             break;
                         case TRANSPARENCY:
                             settings.setTransprancy(Float.parseFloat(value));
@@ -64,14 +64,15 @@ class WatermarkSettings {
         }
         return settings;
     }
-    private String source;
+
+    private Resource source;
     private float transparency;
     private float quality;
     private int marginBottom;
     private int marginRight;
 
-    public WatermarkSettings() {
-        this.source = DEFULT_WATERMARK;
+    WatermarkSettings() {
+        this.source = null;
         this.marginRight = 0;
         this.marginBottom = 0;
         this.quality = 90;
