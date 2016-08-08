@@ -161,7 +161,7 @@ public class Configuration implements IConfiguration {
                 Node childNode = nodeList.item(i);
                 switch (childNode.getNodeName()) {
                     case "enabled":
-                        this.enabled = Boolean.valueOf(nullNodeToString(childNode));
+                        this.enabled = Boolean.parseBoolean(nullNodeToString(childNode));
                         break;
                     case "baseDir":
                         this.baseDir = nullNodeToString(childNode);
@@ -215,16 +215,16 @@ public class Configuration implements IConfiguration {
                         setHiddenFiles(childNode.getChildNodes());
                         break;
                     case "checkDoubleExtension":
-                        this.doubleExtensions = Boolean.valueOf(nullNodeToString(childNode));
+                        this.doubleExtensions = Boolean.parseBoolean(nullNodeToString(childNode));
                         break;
                     case "disallowUnsafeCharacters":
-                        this.disallowUnsafeCharacters = Boolean.valueOf(nullNodeToString(childNode));
+                        this.disallowUnsafeCharacters = Boolean.parseBoolean(nullNodeToString(childNode));
                         break;
                     case "forceASCII":
-                        this.forceASCII = Boolean.valueOf(nullNodeToString(childNode));
+                        this.forceASCII = Boolean.parseBoolean(nullNodeToString(childNode));
                         break;
                     case "checkSizeAfterScaling":
-                        this.checkSizeAfterScaling = Boolean.valueOf(nullNodeToString(childNode));
+                        this.checkSizeAfterScaling = Boolean.parseBoolean(nullNodeToString(childNode));
                         break;
                     case "htmlExtensions":
                         String htmlExt = nullNodeToString(childNode);
@@ -237,7 +237,7 @@ public class Configuration implements IConfiguration {
                         }
                         break;
                     case "secureImageUploads":
-                        this.secureImageUploads = Boolean.valueOf(nullNodeToString(childNode));
+                        this.secureImageUploads = Boolean.parseBoolean(nullNodeToString(childNode));
                         break;
                     case "uriEncoding":
                         break;
@@ -414,28 +414,28 @@ public class Configuration implements IConfiguration {
                     acl.setFolder(nullNodeToString(childChildNode));
                     break;
                 case "folderView":
-                    acl.setFolderView(Boolean.valueOf(nullNodeToString(childChildNode)));
+                    acl.setFolderView(Boolean.parseBoolean(nullNodeToString(childChildNode)));
                     break;
                 case "folderCreate":
-                    acl.setFolderCreate(Boolean.valueOf(nullNodeToString(childChildNode)));
+                    acl.setFolderCreate(Boolean.parseBoolean(nullNodeToString(childChildNode)));
                     break;
                 case "folderRename":
-                    acl.setFolderRename(Boolean.valueOf(nullNodeToString(childChildNode)));
+                    acl.setFolderRename(Boolean.parseBoolean(nullNodeToString(childChildNode)));
                     break;
                 case "folderDelete":
-                    acl.setFolderDelete(Boolean.valueOf(nullNodeToString(childChildNode)));
+                    acl.setFolderDelete(Boolean.parseBoolean(nullNodeToString(childChildNode)));
                     break;
                 case "fileView":
-                    acl.setFileView(Boolean.valueOf(nullNodeToString(childChildNode)));
+                    acl.setFileView(Boolean.parseBoolean(nullNodeToString(childChildNode)));
                     break;
                 case "fileUpload":
-                    acl.setFileUpload(Boolean.valueOf(nullNodeToString(childChildNode)));
+                    acl.setFileUpload(Boolean.parseBoolean(nullNodeToString(childChildNode)));
                     break;
                 case "fileRename":
-                    acl.setFileRename(Boolean.valueOf(nullNodeToString(childChildNode)));
+                    acl.setFileRename(Boolean.parseBoolean(nullNodeToString(childChildNode)));
                     break;
                 case "fileDelete":
-                    acl.setFileDelete(Boolean.valueOf(nullNodeToString(childChildNode)));
+                    acl.setFileDelete(Boolean.parseBoolean(nullNodeToString(childChildNode)));
                     break;
             }
         }
@@ -461,7 +461,7 @@ public class Configuration implements IConfiguration {
             Node childNode = childNodes.item(i);
             switch (childNode.getNodeName()) {
                 case "enabled":
-                    this.thumbsEnabled = Boolean.valueOf(nullNodeToString(childNode));
+                    this.thumbsEnabled = Boolean.parseBoolean(nullNodeToString(childNode));
                     break;
                 case "url":
                     this.thumbsURL = nullNodeToString(childNode);
@@ -470,7 +470,7 @@ public class Configuration implements IConfiguration {
                     this.thumbsDir = nullNodeToString(childNode);
                     break;
                 case "directAccess":
-                    this.thumbsDirectAccess = Boolean.valueOf(nullNodeToString(childNode));
+                    this.thumbsDirectAccess = Boolean.parseBoolean(nullNodeToString(childNode));
                     break;
                 case "maxHeight":
                     String width = nullNodeToString(childNode);

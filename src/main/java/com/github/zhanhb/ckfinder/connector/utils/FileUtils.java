@@ -48,21 +48,7 @@ public class FileUtils {
      * max read file buffer size.
      */
     private static final int MAX_BUFFER_SIZE = 1024;
-    private static final Map<String, String> UTF8_LOWER_ACCENTS = new HashMap<>(120);
-    private static final Map<String, String> UTF8_UPPER_ACCENTS = new HashMap<>(120);
-    private static final Map<String, String> encodingMap;
     private static final Pattern invalidFileNamePatt = Pattern.compile(Constants.INVALID_FILE_NAME_REGEX);
-
-    static {
-        Map<String, String> mapHelper = new HashMap<>(6);
-        mapHelper.put("%21", "!");
-        mapHelper.put("%27", "'");
-        mapHelper.put("%28", "(");
-        mapHelper.put("%29", ")");
-        mapHelper.put("%7E", "~");
-        mapHelper.put("[+]", "%20");
-        encodingMap = Collections.unmodifiableMap(mapHelper);
-    }
 
     /**
      * Gets list of children folder or files for dir, according to searchDirs
@@ -250,9 +236,8 @@ public class FileUtils {
             }
 
             sb.append("(");
-            sb.append(item.replaceAll("\\.", "\\\\.").replaceAll("\\*", ".+").replaceAll("\\?", "."));
+            sb.append(item.replace(".", "\\.").replace("*", ".+").replace("?", "."));
             sb.append(")");
-
         }
         sb.append(")+");
         return sb.toString();
@@ -357,14 +342,11 @@ public class FileUtils {
      */
     public static String convertToASCII(String fileName) {
         String newFileName = fileName;
-        fillLowerAccents();
-        fillUpperAccents();
-        for (String s : UTF8_LOWER_ACCENTS.keySet()) {
-            newFileName = newFileName.replace(s, UTF8_LOWER_ACCENTS.get(s));
+        for (Map.Entry<String, String> entry : Utf8AccentsHolder.UTF8_LOWER_ACCENTS.entrySet()) {
+            newFileName = newFileName.replace(entry.getKey(), entry.getValue());
         }
-
-        for (String s : UTF8_UPPER_ACCENTS.keySet()) {
-            newFileName = newFileName.replace(s, UTF8_UPPER_ACCENTS.get(s));
+        for (Map.Entry<String, String> entry : Utf8AccentsHolder.UTF8_UPPER_ACCENTS.entrySet()) {
+            newFileName = newFileName.replace(entry.getKey(), entry.getValue());
         }
         return newFileName;
     }
@@ -536,8 +518,8 @@ public class FileUtils {
 
     public static String encodeURIComponent(String fileName) throws UnsupportedEncodingException {
         String fileNameHelper = URLEncoder.encode(fileName, "utf-8");
-        for (Map.Entry<String, String> entry : encodingMap.entrySet()) {
-            fileNameHelper = fileNameHelper.replaceAll(entry.getKey(), entry.getValue());
+        for (Map.Entry<String, String> entry : EncodingMapHolder.encodingMap.entrySet()) {
+            fileNameHelper = fileNameHelper.replace(entry.getKey(), entry.getValue());
         }
         return fileNameHelper;
     }
@@ -557,11 +539,29 @@ public class FileUtils {
         return fileName.replaceAll(toReplace, "\\\\" + Matcher.quoteReplacement(toReplace));
     }
 
-    /**
-     * fills data for upper accents map.
-     */
-    private static void fillUpperAccents() {
-        if (UTF8_UPPER_ACCENTS.isEmpty()) {
+    private static class EncodingMapHolder {
+
+        private static final Map<String, String> encodingMap;
+
+        static {
+            Map<String, String> mapHelper = new HashMap<>(6);
+            mapHelper.put("%21", "!");
+            mapHelper.put("%27", "'");
+            mapHelper.put("%28", "(");
+            mapHelper.put("%29", ")");
+            mapHelper.put("%7E", "~");
+            mapHelper.put("[+]", "%20");
+            encodingMap = Collections.unmodifiableMap(mapHelper);
+        }
+
+    }
+
+    private static class Utf8AccentsHolder {
+
+        private static final Map<String, String> UTF8_LOWER_ACCENTS = new HashMap<>(120);
+        private static final Map<String, String> UTF8_UPPER_ACCENTS = new HashMap<>(120);
+
+        static {
             UTF8_UPPER_ACCENTS.put("À", "A");
             UTF8_UPPER_ACCENTS.put("Ô", "O");
             UTF8_UPPER_ACCENTS.put("Ď", "D");
@@ -671,14 +671,7 @@ public class FileUtils {
             UTF8_UPPER_ACCENTS.put("Ð", "Dh");
             UTF8_UPPER_ACCENTS.put("Æ", "Ae");
             UTF8_UPPER_ACCENTS.put("Ĕ", "E");
-        }
-    }
 
-    /**
-     * fills data for lower accents map.
-     */
-    private static void fillLowerAccents() {
-        if (UTF8_LOWER_ACCENTS.isEmpty()) {
             UTF8_LOWER_ACCENTS.put("à", "a");
             UTF8_LOWER_ACCENTS.put("ô", "o");
             UTF8_LOWER_ACCENTS.put("ď", "d");
@@ -783,8 +776,8 @@ public class FileUtils {
             UTF8_LOWER_ACCENTS.put("æ", "ae");
             UTF8_LOWER_ACCENTS.put("µ", "u");
             UTF8_LOWER_ACCENTS.put("ĕ", "e");
-
         }
+
     }
 
 }

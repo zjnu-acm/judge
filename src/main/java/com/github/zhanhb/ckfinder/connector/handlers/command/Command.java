@@ -181,8 +181,7 @@ public abstract class Command {
      * @throws ConnectorException when error occurs
      * @throws java.io.IOException
      */
-    public abstract void execute(OutputStream out)
-            throws ConnectorException, IOException;
+    public abstract void execute(OutputStream out) throws ConnectorException, IOException;
 
     /**
      * sets header in response.
@@ -190,8 +189,7 @@ public abstract class Command {
      * @param response servlet response
      * @param sc servlet context
      */
-    public abstract void setResponseHeader(HttpServletResponse response,
-            ServletContext sc);
+    public abstract void setResponseHeader(HttpServletResponse response, ServletContext sc);
 
     /**
      * check request for security issue.

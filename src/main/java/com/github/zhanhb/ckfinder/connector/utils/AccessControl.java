@@ -15,6 +15,7 @@ import com.github.zhanhb.ckfinder.connector.configuration.IConfiguration;
 import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
 
 /**
  * Class to generate ACL values.
@@ -59,14 +60,28 @@ public final class AccessControl {
      * acl configuration.
      */
     private final List<ACLEntry> aclEntries;
-    /**
-     * connector configuration.
-     */
-    private final IConfiguration configuration;
 
     public AccessControl(IConfiguration configuration) {
-        this.configuration = configuration;
-        this.aclEntries = loadACLConfig();
+        this.aclEntries = configuration.getAccessConrolLevels().stream().map(item -> {
+            ACLEntry aclEntry = new ACLEntry();
+            aclEntry.role = item.getRole();
+            aclEntry.type = item.getResourceType();
+            aclEntry.folder = item.getFolder();
+            int acl = 0;
+
+            acl |= (item.isFolderView()) ? CKFINDER_CONNECTOR_ACL_FOLDER_VIEW : 0;
+            acl |= (item.isFolderCreate()) ? CKFINDER_CONNECTOR_ACL_FOLDER_CREATE : 0;
+            acl |= (item.isFolderRename()) ? CKFINDER_CONNECTOR_ACL_FOLDER_RENAME : 0;
+            acl |= (item.isFolderDelete()) ? CKFINDER_CONNECTOR_ACL_FOLDER_DELETE : 0;
+
+            acl |= (item.isFileView()) ? CKFINDER_CONNECTOR_ACL_FILE_VIEW : 0;
+            acl |= (item.isFileUpload()) ? CKFINDER_CONNECTOR_ACL_FILE_UPLOAD : 0;
+            acl |= (item.isFileRename()) ? CKFINDER_CONNECTOR_ACL_FILE_RENAME : 0;
+            acl |= (item.isFileDelete()) ? CKFINDER_CONNECTOR_ACL_FILE_DELETE : 0;
+
+            aclEntry.acl = acl;
+            return aclEntry;
+        }).collect(Collectors.toList());
     }
 
     /**
@@ -78,9 +93,7 @@ public final class AccessControl {
      * @param currentUserRole user role
      * @return true if acl flag is true
      */
-    public boolean checkFolderACL(String resourceType,
-            String folder, String currentUserRole,
-            int acl) {
+    public boolean checkFolderACL(String resourceType, String folder, String currentUserRole, int acl) {
         return (checkACLForRole(resourceType, folder, currentUserRole) & acl) == acl;
     }
 
@@ -92,8 +105,7 @@ public final class AccessControl {
      * @param currentUserRole current user role
      * @return acl value
      */
-    public int checkACLForRole(String resourceType, String folder,
-            String currentUserRole) {
+    public int checkACLForRole(String resourceType, String folder, String currentUserRole) {
         CheckEntry[] ce = new CheckEntry[currentUserRole != null ? 4 : 2];
 
         ce[0] = new CheckEntry("*", "*");
@@ -106,8 +118,7 @@ public final class AccessControl {
 
         int acl = 0;
         for (CheckEntry checkEntry : ce) {
-            List<ACLEntry> aclEntrieForType = findACLEntryByRoleAndType(checkEntry.type,
-                    checkEntry.role);
+            List<ACLEntry> aclEntrieForType = findACLEntryByRoleAndType(checkEntry.type, checkEntry.role);
 
             for (ACLEntry aclEntry : aclEntrieForType) {
                 String cuttedPath = folder;
@@ -135,29 +146,6 @@ public final class AccessControl {
     }
 
     /**
-     * Caches ACL configuration from connector's configuration in order to
-     * avoid. any unnecessary overhead related with reading/writing ACL's on
-     * every request.
-     */
-    private List<ACLEntry> loadACLConfig() {
-        return this.configuration.getAccessConrolLevels().stream().map(item -> {
-            ACLEntry aclEntry = new ACLEntry();
-            aclEntry.role = item.getRole();
-            aclEntry.type = item.getResourceType();
-            aclEntry.folder = item.getFolder();
-            aclEntry.fileDelete = item.isFileDelete();
-            aclEntry.fileRename = item.isFileRename();
-            aclEntry.fileUpload = item.isFileUpload();
-            aclEntry.fileView = item.isFileView();
-            aclEntry.folderCreate = item.isFolderCreate();
-            aclEntry.folderDelete = item.isFolderDelete();
-            aclEntry.folderRename = item.isFolderRename();
-            aclEntry.folderView = item.isFolderView();
-            return aclEntry;
-        }).collect(Collectors.toList());
-    }
-
-    /**
      * Checks ACL for given folder.
      *
      * @param entry current ACL entry
@@ -167,7 +155,7 @@ public final class AccessControl {
     private int checkACLForFolder(ACLEntry entry, String folder) {
         int acl = 0;
         if (folder.contains(entry.folder) || entry.folder.equals(File.separator)) {
-            acl ^= entry.countACL();
+            acl ^= entry.getAcl();
         }
         return acl;
     }
@@ -179,8 +167,7 @@ public final class AccessControl {
      * @param role current user role
      * @return list of ACL entries.
      */
-    private List<ACLEntry> findACLEntryByRoleAndType(String type,
-            String role) {
+    private List<ACLEntry> findACLEntryByRoleAndType(String type, String role) {
         return aclEntries.stream()
                 .filter(item -> (item.role.equals(role) && item.type.equals(type)))
                 .collect(Collectors.toList());
@@ -204,54 +191,16 @@ public final class AccessControl {
          */
         private String folder;
         /**
-         * folder view flag.
+         * acl
          */
-        private boolean folderView;
-        /**
-         * folder create flag.
-         */
-        private boolean folderCreate;
-        /**
-         * folder rename flag.
-         */
-        private boolean folderRename;
-        /**
-         * folder delete flag.
-         */
-        private boolean folderDelete;
-        /**
-         * file view flag.
-         */
-        private boolean fileView;
-        /**
-         * file upload flag.
-         */
-        private boolean fileUpload;
-        /**
-         * file rename flag.
-         */
-        private boolean fileRename;
-        /**
-         * file delete flag.
-         */
-        private boolean fileDelete;
+        private int acl;
 
         /**
-         * count entry ACL.
+         * returns the entry ACL.
          *
          * @return entry acl
          */
-        private int countACL() {
-            int acl = 0;
-            acl |= (folderView) ? CKFINDER_CONNECTOR_ACL_FOLDER_VIEW : 0;
-            acl |= (folderCreate) ? CKFINDER_CONNECTOR_ACL_FOLDER_CREATE : 0;
-            acl |= (folderRename) ? CKFINDER_CONNECTOR_ACL_FOLDER_RENAME : 0;
-            acl |= (folderDelete) ? CKFINDER_CONNECTOR_ACL_FOLDER_DELETE : 0;
-
-            acl |= (fileView) ? CKFINDER_CONNECTOR_ACL_FILE_VIEW : 0;
-            acl |= (fileUpload) ? CKFINDER_CONNECTOR_ACL_FILE_UPLOAD : 0;
-            acl |= (fileRename) ? CKFINDER_CONNECTOR_ACL_FILE_RENAME : 0;
-            acl |= (fileDelete) ? CKFINDER_CONNECTOR_ACL_FILE_DELETE : 0;
+        int getAcl() {
             return acl;
         }
 
@@ -264,21 +213,12 @@ public final class AccessControl {
     /**
      * simple check ACL entry.
      */
+    @AllArgsConstructor
     private static class CheckEntry {
 
         private String role;
         private String type;
 
-        /**
-         * Constructor.
-         *
-         * @param role current user role.
-         * @param type resource type.
-         */
-        public CheckEntry(String role, String type) {
-            this.role = role;
-            this.type = type;
-        }
     }
 
 }
