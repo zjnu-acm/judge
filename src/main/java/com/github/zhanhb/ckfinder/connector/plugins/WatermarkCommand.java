@@ -16,13 +16,14 @@ import com.github.zhanhb.ckfinder.connector.data.AfterFileUploadEventArgs;
 import com.github.zhanhb.ckfinder.connector.data.IEventHandler;
 import com.github.zhanhb.ckfinder.connector.errors.ConnectorException;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import javax.imageio.ImageIO;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.name.Rename;
+import org.springframework.core.io.Resource;
 
 @Slf4j
 public class WatermarkCommand implements IEventHandler<AfterFileUploadEventArgs> {
@@ -33,7 +34,7 @@ public class WatermarkCommand implements IEventHandler<AfterFileUploadEventArgs>
     public boolean runEventHandler(AfterFileUploadEventArgs args, IConfiguration configuration) throws ConnectorException {
         try {
             final WatermarkSettings settings = WatermarkSettings.createFromConfiguration(configuration,
-                    configuration.getServletContext());
+                    configuration.getApplicationContext());
             final Path originalFile = args.getFile();
             final WatermarkPosition position = new WatermarkPosition(settings.getMarginBottom(), settings.getMarginRight());
 
@@ -58,12 +59,14 @@ public class WatermarkCommand implements IEventHandler<AfterFileUploadEventArgs>
      * @throws IOException
      */
     private BufferedImage getWatermakImage(WatermarkSettings settings) throws IOException {
-        final String source = settings.getSource();
+        final Resource source = settings.getSource();
         final BufferedImage watermark;
-        if (source == null || source.isEmpty()) {
+        if (source == null) {
             watermark = ImageIO.read(getClass().getResourceAsStream(DEFAULT_WATERMARK));
         } else {
-            watermark = ImageIO.read(new File(source));
+            try (InputStream is = source.getInputStream()) {
+                watermark = ImageIO.read(is);
+            }
         }
         return watermark;
     }

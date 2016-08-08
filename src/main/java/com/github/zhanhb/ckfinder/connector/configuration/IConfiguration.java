@@ -19,8 +19,8 @@ import com.github.zhanhb.ckfinder.connector.utils.AccessControl;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import org.springframework.context.ApplicationContext;
 
 /**
  * Interface for configuration.
@@ -312,9 +312,9 @@ public interface IConfiguration {
 
     /**
      *
-     * @return the servlet context
+     * @return the application context
      */
-    public ServletContext getServletContext();
+    public ApplicationContext getApplicationContext();
 
     /**
      *

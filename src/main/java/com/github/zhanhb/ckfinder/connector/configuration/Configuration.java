@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -1114,8 +1113,8 @@ public class Configuration implements IConfiguration {
     }
 
     @Override
-    public ServletContext getServletContext() {
-        return applicationContext.getBean(ServletContext.class);
+    public ApplicationContext getApplicationContext() {
+        return applicationContext;
     }
 
     @Override
