@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.config;
+package cn.edu.zjnu.acm.judge.config.thymeleaf;
 
 import java.util.Arrays;
 import java.util.Collections;

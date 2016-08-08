@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.config;
+package cn.edu.zjnu.acm.judge.config.thymeleaf;
 
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.model.IAttribute;
