@@ -14,9 +14,13 @@ package com.github.zhanhb.ckfinder.connector.plugins;
 import com.github.zhanhb.ckfinder.connector.configuration.IConfiguration;
 import com.github.zhanhb.ckfinder.connector.data.PluginInfo;
 import com.github.zhanhb.ckfinder.connector.data.PluginParam;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 
+@Getter
+@Setter
 class WatermarkSettings {
 
     public static final String WATERMARK = "watermark";
@@ -45,7 +49,7 @@ class WatermarkSettings {
                             settings.setSource(applicationContext.getResource(value));
                             break;
                         case TRANSPARENCY:
-                            settings.setTransprancy(Float.parseFloat(value));
+                            settings.setTransparency(Float.parseFloat(value));
                             break;
                         case QUALITY:
                             final int parseInt = Integer.parseInt(value);
@@ -77,76 +81,6 @@ class WatermarkSettings {
         this.marginBottom = 0;
         this.quality = 90;
         this.transparency = 1.0f;
-    }
-
-    /**
-     * @return the source
-     */
-    public String getSource() {
-        return source;
-    }
-
-    /**
-     * @param source the source to set
-     */
-    public void setSource(String source) {
-        this.source = source;
-    }
-
-    /**
-     * @return the transparency
-     */
-    public float getTransparency() {
-        return transparency;
-    }
-
-    /**
-     * @param transparency the transparency to set
-     */
-    public void setTransprancy(float transparency) {
-        this.transparency = transparency;
-    }
-
-    /**
-     * @return the quality
-     */
-    public float getQuality() {
-        return quality;
-    }
-
-    /**
-     * @param quality the quality to set
-     */
-    public void setQuality(float quality) {
-        this.quality = quality;
-    }
-
-    /**
-     * @return the marginBottom
-     */
-    public int getMarginBottom() {
-        return marginBottom;
-    }
-
-    /**
-     * @param marginBottom the marginBottom to set
-     */
-    public void setMarginBottom(int marginBottom) {
-        this.marginBottom = marginBottom;
-    }
-
-    /**
-     * @return the marginRight
-     */
-    public int getMarginRight() {
-        return marginRight;
-    }
-
-    /**
-     * @param marginRight the marginRight to set
-     */
-    public void setMarginRight(int marginRight) {
-        this.marginRight = marginRight;
     }
 
 }

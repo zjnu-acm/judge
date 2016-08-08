@@ -108,7 +108,7 @@ public class DownloadFileCommand extends Command {
 
         super.initParams(request, configuration);
         // problem with showing filename when dialog window appear
-        this.newFileName = request.getParameter("FileName").replaceAll("\"", "\\\\\"");
+        this.newFileName = request.getParameter("FileName").replace("\"", "\\\"");
         this.fileName = request.getParameter("FileName");
         try {
             if (request.getHeader("User-Agent").contains("MSIE")) {

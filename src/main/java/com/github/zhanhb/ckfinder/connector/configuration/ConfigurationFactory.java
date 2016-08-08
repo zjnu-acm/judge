@@ -112,11 +112,9 @@ public final class ConfigurationFactory {
             s = PathUtils.escape(s);
             s = PathUtils.removeSlashFromEnd(s);
 
-            boolean isFromUrl = false;
             if (s == null || s.isEmpty()) {
                 throw new IllegalStateException("baseFolder is empty");
             }
-            log.debug("isFromUrl: {}", isFromUrl);
             Path p = Paths.get(s);
             if (p == null) {
                 throw new ConnectorException(Constants.Errors.CKFINDER_CONNECTOR_ERROR_FOLDER_NOT_FOUND,

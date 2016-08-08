@@ -12,20 +12,17 @@
 package com.github.zhanhb.ckfinder.connector.plugins;
 
 import java.awt.Point;
+import lombok.RequiredArgsConstructor;
 import net.coobird.thumbnailator.geometry.Position;
 
 /**
  * Class that calculates Watermark position from bottom right side of image.
  */
+@RequiredArgsConstructor
 class WatermarkPosition implements Position {
 
     private final int insetBottom;
     private final int insetRight;
-
-    WatermarkPosition(int insetBottom, int insetRight) {
-        this.insetBottom = insetBottom;
-        this.insetRight = insetRight;
-    }
 
     @Override
     public Point calculate(
@@ -35,4 +32,5 @@ class WatermarkPosition implements Position {
         int y = enclosingHeight - height - this.insetBottom;
         return new Point(x, y);
     }
+
 }
