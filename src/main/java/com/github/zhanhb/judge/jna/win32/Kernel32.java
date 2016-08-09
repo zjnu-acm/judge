@@ -3,18 +3,15 @@ package com.github.zhanhb.judge.jna.win32;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
-import com.sun.jna.platform.win32.BaseTSD.SIZE_T;
-import com.sun.jna.platform.win32.BaseTSD.ULONG_PTR;
 import com.sun.jna.platform.win32.WinBase;
-import com.sun.jna.platform.win32.WinBase.SECURITY_ATTRIBUTES;
 import com.sun.jna.platform.win32.WinDef;
-import com.sun.jna.platform.win32.WinNT.HANDLE;
 import com.sun.jna.win32.W32APIOptions;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nullable;
 
+@SuppressWarnings({"PublicInnerClass", "PublicField"})
 public interface Kernel32 extends com.sun.jna.platform.win32.Kernel32 {
 
     @SuppressWarnings("FieldNameHidesFieldInSuperclass")
@@ -103,7 +100,6 @@ public interface Kernel32 extends com.sun.jna.platform.win32.Kernel32 {
     @Nullable
     HANDLE CreateJobObject(SECURITY_ATTRIBUTES lpJobAttributes, String lpName);
 
-    @SuppressWarnings("PublicInnerClass")
     abstract class JOBOBJECT_INFORMATION extends Structure {
     }
 
@@ -114,7 +110,6 @@ public interface Kernel32 extends com.sun.jna.platform.win32.Kernel32 {
      * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms684147(v=vs.85).aspx">JOBOBJECT_BASIC_LIMIT_INFORMATION
      * </a>
      */
-    @SuppressWarnings({"PublicInnerClass", "PublicField"})
     class JOBOBJECT_BASIC_LIMIT_INFORMATION extends JOBOBJECT_INFORMATION {
 
         public long PerProcessUserTimeLimit;
@@ -193,7 +188,6 @@ public interface Kernel32 extends com.sun.jna.platform.win32.Kernel32 {
     int JOB_OBJECT_MSG_PROCESS_MEMORY_LIMIT = 9;
     int JOB_OBJECT_MSG_JOB_MEMORY_LIMIT = 10;
 
-    @SuppressWarnings("PublicInnerClass")
     interface JOBOBJECTINFOCLASS {
 
         int JobObjectBasicAccountingInformation = 1;
@@ -239,7 +233,6 @@ public interface Kernel32 extends com.sun.jna.platform.win32.Kernel32 {
      * @see
      * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms684152(v=vs.85).aspx">JOBOBJECT_BASIC_UI_RESTRICTIONS</a>
      */
-    @SuppressWarnings({"PublicInnerClass", "PublicField"})
     class JOBOBJECT_BASIC_UI_RESTRICTIONS extends JOBOBJECT_INFORMATION {
 
         public int /*DWORD*/ UIRestrictionsClass;

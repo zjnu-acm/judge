@@ -182,7 +182,7 @@
     <plugins>
         <plugin>
             <name>imageresize</name>
-            <class>com.ckfinder.connector.plugins.ImageResize</class>
+            <class>com.github.zhanhb.ckfinder.connector.plugins.ImageResize</class>
             <params>
                 <param name="smallThumb" value="90x90"></param>
                 <param name="mediumThumb" value="120x120"></param>
@@ -191,7 +191,7 @@
         </plugin>
         <plugin>
             <name>fileeditor</name>
-            <class>com.ckfinder.connector.plugins.FileEditor</class>
+            <class>com.github.zhanhb.ckfinder.connector.plugins.FileEditor</class>
             <params></params>
         </plugin>
         <!-- Before enabling the watermark plugin make sure to specify path to source image -->
@@ -199,9 +199,9 @@
         <!--
         <plugin>
             <name>watermark</name>
-            <class>com.ckfinder.connector.plugins.Watermark</class>
+            <class>com.github.zhanhb.ckfinder.connector.plugins.Watermark</class>
             <params>
-                <param name="source" value="/path/in/servlet/context/logo.gif"></param>
+                <param name="source" value="classpath:/path/in/spring/application/context/logo.gif"></param>
                 <param name="transparency" value="0.8"></param>
                 <param name="quality" value="100"></param>
                 <param name="marginRight" value="5"></param>

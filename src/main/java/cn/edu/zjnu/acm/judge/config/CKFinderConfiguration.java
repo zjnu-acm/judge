@@ -16,10 +16,10 @@
 package cn.edu.zjnu.acm.judge.config;
 
 import cn.edu.zjnu.acm.judge.support.ckfinder.ConfigurationPathBuilder;
-import com.ckfinder.connector.configuration.ConfigurationFactory;
-import com.ckfinder.connector.configuration.IBasePathBuilder;
-import com.ckfinder.connector.configuration.IConfiguration;
-import com.ckfinder.connector.utils.AccessControl;
+import com.github.zhanhb.ckfinder.connector.configuration.ConfigurationFactory;
+import com.github.zhanhb.ckfinder.connector.configuration.IBasePathBuilder;
+import com.github.zhanhb.ckfinder.connector.configuration.IConfiguration;
+import com.github.zhanhb.ckfinder.connector.utils.AccessControl;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.Servlet;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
@@ -36,7 +36,7 @@ public class CKFinderConfiguration {
 
     @Bean
     public IConfiguration configuration(ApplicationContext applicationContext) throws Exception {
-        return new com.ckfinder.connector.configuration.Configuration(applicationContext, "/WEB-INF/config.xml");
+        return new com.github.zhanhb.ckfinder.connector.configuration.Configuration(applicationContext, "/WEB-INF/config.xml");
     }
 
     @Bean

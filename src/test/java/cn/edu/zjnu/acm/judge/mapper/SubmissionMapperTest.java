@@ -68,6 +68,11 @@ public class SubmissionMapperTest {
         Sort sort = new Sort(Sort.Direction.DESC, "time", "memory", "code_length");
         PageRequest pageRequest = new PageRequest(5, 20, sort);
         instance.bestSubmission(problemId, pageRequest);
+        sort = new Sort(Sort.Direction.DESC, "solution_id");
+        pageRequest = new PageRequest(5, 20, sort);
+        instance.bestSubmission(problemId, pageRequest);
+        pageRequest = new PageRequest(9, 1);
+        instance.bestSubmission(problemId, pageRequest);
     }
 
 }

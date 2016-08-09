@@ -41,7 +41,7 @@ public class CKFinderController {
     public Resource ckfinder(@RequestParam("path") String path) throws IOException {
         try {
             Path parent = judgeConfiguration.getUploadDirectory();
-            Path imagePath = parent.resolve(path);
+            Path imagePath = parent.resolve(path).normalize();
             if (!imagePath.startsWith(parent)) {
                 log.debug("absolute path parent='{}' path='{}'", parent, imagePath);
                 return null;

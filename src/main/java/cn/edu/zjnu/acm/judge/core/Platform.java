@@ -24,6 +24,7 @@ import java.security.PrivilegedAction;
  *
  * @author zhanhb
  */
+@SuppressWarnings("UtilityClassWithoutPrivateConstructor")
 class Platform {
 
     private static String getProperty(String name) {

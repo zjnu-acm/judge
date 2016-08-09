@@ -15,7 +15,6 @@
  */
 package cn.edu.zjnu.acm.judge.config;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
@@ -27,7 +26,6 @@ import org.springframework.stereotype.Service;
  * @author zhanhb
  */
 @Service
-@Slf4j
 public class TokenRepositoryConfiguration {
 
     @Bean

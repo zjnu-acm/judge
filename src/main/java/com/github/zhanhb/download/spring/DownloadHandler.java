@@ -19,7 +19,6 @@ import com.github.zhanhb.download.Downloader;
 import com.github.zhanhb.download.SimpleContentDisposition;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.io.Resource;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -30,7 +29,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  *
  * @author zhanhb
  */
-@Slf4j
 public class DownloadHandler implements HandlerMethodReturnValueHandler {
 
     private final Downloader viewer = Downloader.newInstance()

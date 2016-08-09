@@ -29,7 +29,8 @@ public class URLBuilder {
     /**
      * https://tools.ietf.org/html/rfc3986#section-3.4
      */
-    private static final URLEncoder ENCODER = new URLEncoder("-._~!$'()*,;:@");
+    private static final URLEncoder QUERY_ENCODER = new URLEncoder("-._~!$'()*,;:@/?");
+    private static final URLEncoder PATH_ENCODER = new URLEncoder("-._~!$'()*,;:@/");
 
     public static URLBuilder fromRequest(HttpServletRequest request) {
         return new URLBuilder(request.getServletPath(), request.getParameterMap());
@@ -59,28 +60,19 @@ public class URLBuilder {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder(path);
+        StringBuilder sb = new StringBuilder(PATH_ENCODER.encode(path));
         boolean first = true;
         for (Map.Entry<String, String[]> entry : query.entrySet()) {
-            String key = encode(entry.getKey());
+            String key = QUERY_ENCODER.encode(entry.getKey());
             String[] value = entry.getValue();
             if (value != null) {
                 for (String string : value) {
-                    if (first) {
-                        first = false;
-                        sb.append('?');
-                    } else {
-                        sb.append('&');
-                    }
-                    sb.append(key).append("=").append(encode(string));
+                    sb.append(first ? '?' : '&').append(QUERY_ENCODER.encode(key)).append("=").append(QUERY_ENCODER.encode(string));
+                    first = false;
                 }
             }
         }
         return sb.toString();
-    }
-
-    private String encode(String string) {
-        return ENCODER.encode(string);
     }
 
 }

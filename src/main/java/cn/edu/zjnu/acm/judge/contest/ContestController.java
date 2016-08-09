@@ -28,7 +28,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.ObjIntConsumer;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -46,7 +45,6 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 /**
  * @author zhanhb
  */
-@Slf4j
 @Controller
 @RequestMapping("/contests/{contestId}")
 public class ContestController {

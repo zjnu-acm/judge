@@ -60,6 +60,7 @@ public class MailController {
     }
 
     @GetMapping("/mail")
+    @SuppressWarnings("AssignmentToMethodParameter")
     public String mail(Model model,
             @RequestParam(value = "size", defaultValue = "20") int size,
             @RequestParam(value = "start", defaultValue = "1") long start,
@@ -105,6 +106,7 @@ public class MailController {
     }
 
     @GetMapping({"/sendpage", "/send"})
+    @SuppressWarnings("AssignmentToMethodParameter")
     public String sendpage(Model model,
             @RequestParam(value = "reply", defaultValue = "-1") long reply,
             @RequestParam(value = "to", defaultValue = "") String userId,

@@ -28,7 +28,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -53,7 +52,6 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
  */
 @Configuration
 @EnableGlobalMethodSecurity(securedEnabled = true)
-@Slf4j
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired

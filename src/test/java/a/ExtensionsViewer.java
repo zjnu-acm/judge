@@ -34,6 +34,7 @@ public class ExtensionsViewer {
      * @param args the command line arguments
      * @throws java.io.IOException
      */
+    @SuppressWarnings("UseOfSystemOutOrSystemErr")
     public static void main(String[] args) throws IOException {
         Path path = Paths.get(".");
         Set<String> set = new HashSet<>(20);

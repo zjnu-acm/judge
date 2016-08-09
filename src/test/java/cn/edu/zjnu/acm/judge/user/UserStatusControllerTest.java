@@ -16,7 +16,6 @@
 package cn.edu.zjnu.acm.judge.user;
 
 import cn.edu.zjnu.acm.judge.Application;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,7 +37,6 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
  */
 @Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
-@Slf4j
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
 public class UserStatusControllerTest {
