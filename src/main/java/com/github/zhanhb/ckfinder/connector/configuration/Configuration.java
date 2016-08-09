@@ -18,7 +18,6 @@ import com.github.zhanhb.ckfinder.connector.data.ResourceType;
 import com.github.zhanhb.ckfinder.connector.errors.ConnectorException;
 import com.github.zhanhb.ckfinder.connector.utils.AccessControl;
 import com.github.zhanhb.ckfinder.connector.utils.PathUtils;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -46,7 +45,6 @@ public class Configuration implements IConfiguration {
 
     private static final int MAX_QUALITY = 100;
     private static final float MAX_QUALITY_FLOAT = 100f;
-    private long lastCfgModificationDate;
     private boolean enabled;
     private String xmlFilePath;
     private String baseDir;
@@ -146,7 +144,6 @@ public class Configuration implements IConfiguration {
         clearConfiguration();
         this.loading = true;
         Resource resource = getFullConfigPath();
-        this.lastCfgModificationDate = resource.lastModified();
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc;
@@ -904,25 +901,6 @@ public class Configuration implements IConfiguration {
     }
 
     /**
-     * Checks if CKFinder configuration should be reloaded. It is reloaded when
-     * modification date is greater than the date of last configuration
-     * initialization.
-     *
-     * @return true if reloading configuration is necessary.
-     * @throws ConnectorException when configuration file cannot be reloaded.
-     */
-    @Override
-    public boolean checkIfReloadConfig() throws ConnectorException {
-        Resource resource = applicationContext.getResource(xmlFilePath);
-
-        try {
-            return resource.lastModified() > lastCfgModificationDate;
-        } catch (IOException ex) {
-            return false;
-        }
-    }
-
-    /**
      * Sets plugins list from XML configuration file.
      *
      * @param childNode child of XML node 'plugins'.
@@ -1038,7 +1016,6 @@ public class Configuration implements IConfiguration {
     private void copyConfFields(Configuration configuration) {
         configuration.loading = this.loading;
         configuration.xmlFilePath = this.xmlFilePath;
-        configuration.lastCfgModificationDate = this.lastCfgModificationDate;
         configuration.enabled = this.enabled;
         configuration.baseDir = this.baseDir;
         configuration.baseURL = this.baseURL;
