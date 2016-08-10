@@ -274,7 +274,7 @@ public class FileUploadCommand extends Command implements IPostCommand {
             throws Exception {
         Path file = Paths.get(path, this.getNewFileName());
 
-        if (!ImageUtils.isImage(file)) {
+        if (!ImageUtils.isImageExtension(file)) {
             item.write(file.toString());
             if (getConfiguration().getEvents() != null) {
                 AfterFileUploadEventArgs args = new AfterFileUploadEventArgs(this.getCurrentFolder(), file);
@@ -388,14 +388,14 @@ public class FileUploadCommand extends Command implements IPostCommand {
 
         try {
             Path file = Paths.get(path, getFinalFileName(path, this.getNewFileName()));
-            if (!(ImageUtils.isImage(file) && getConfiguration().checkSizeAfterScaling())
+            if (!(ImageUtils.isImageExtension(file) && getConfiguration().checkSizeAfterScaling())
                     && !FileUtils.checkFileSize(resourceType, item.getSize())) {
                 this.setErrorCode(Constants.Errors.CKFINDER_CONNECTOR_ERROR_UPLOADED_TOO_BIG);
                 return false;
             }
 
-            if (getConfiguration().getSecureImageUploads() && ImageUtils.isImage(file)
-                    && !ImageUtils.checkImageFile(item)) {
+            if (getConfiguration().getSecureImageUploads() && ImageUtils.isImageExtension(file)
+                    && !ImageUtils.isValid(item)) {
                 this.setErrorCode(Constants.Errors.CKFINDER_CONNECTOR_ERROR_UPLOADED_CORRUPT);
                 return false;
             }
