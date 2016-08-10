@@ -190,7 +190,7 @@ public class ImageUtils {
      * @param file file to check
      * @return true if file is image.
      */
-    public static boolean isImage(Path file) {
+    public static boolean isImageExtension(Path file) {
         if (file != null) {
             String fileExt = FileUtils.getFileExtension(file.getFileName().toString().toLowerCase());
             return (fileExt != null) ? ALLOWED_EXT.contains(fileExt) : false;
@@ -231,7 +231,7 @@ public class ImageUtils {
      * @param item file upload item
      * @return true if file is image.
      */
-    public static boolean checkImageFile(Part item) {
+    public static boolean isValid(Part item) {
         BufferedImage bi;
         try (InputStream is = item.getInputStream()) {
             bi = ImageIO.read(is);

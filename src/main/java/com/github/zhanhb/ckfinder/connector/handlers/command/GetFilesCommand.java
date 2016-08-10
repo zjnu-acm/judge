@@ -145,7 +145,7 @@ public class GetFilesCommand extends XMLCommand {
                 elementData.getAttributes().add(attribute);
                 attribute = new XmlAttribute("size", getSize(file));
                 elementData.getAttributes().add(attribute);
-                if (ImageUtils.isImage(file) && isAddThumbsAttr()) {
+                if (ImageUtils.isImageExtension(file) && isAddThumbsAttr()) {
                     String attr = createThumbAttr(file);
                     if (!attr.isEmpty()) {
                         attribute = new XmlAttribute("thumb", attr);
