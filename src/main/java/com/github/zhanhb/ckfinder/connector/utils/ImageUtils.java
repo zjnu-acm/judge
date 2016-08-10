@@ -17,7 +17,6 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -52,20 +51,18 @@ public class ImageUtils {
      */
     private static void resizeImage(BufferedImage sourceImage, int width,
             int height, float quality, Path destFile) throws IOException {
-        try (OutputStream os = Files.newOutputStream(destFile)) {
-            try {
-                Thumbnails.of(sourceImage).size(width, height).keepAspectRatio(false).outputQuality(quality).toOutputStream(os);
-                // for some special files outputQuality couses error:
-                //IllegalStateException inner Thumbnailator jar. When exception is thrown
-                // image is resized without quality
-                // When http://code.google.com/p/thumbnailator/issues/detail?id=9
-                // will be fixed this try catch can be deleted. Only:
-                //Thumbnails.of(sourceImage).size(width, height).keepAspectRatio(false)
-                //  .outputQuality(quality).toFile(destFile);
-                // should remain.
-            } catch (IllegalStateException e) {
-                Thumbnails.of(sourceImage).size(width, height).keepAspectRatio(false).toOutputStream(os);
-            }
+        try {
+            Thumbnails.of(sourceImage).size(width, height).keepAspectRatio(false).outputQuality(quality).toFile(destFile.toFile());
+            // for some special files outputQuality couses error:
+            //IllegalStateException inner Thumbnailator jar. When exception is thrown
+            // image is resized without quality
+            // When http://code.google.com/p/thumbnailator/issues/detail?id=9
+            // will be fixed this try catch can be deleted. Only:
+            //Thumbnails.of(sourceImage).size(width, height).keepAspectRatio(false)
+            //  .outputQuality(quality).toFile(destFile);
+            // should remain.
+        } catch (IllegalStateException e) {
+            Thumbnails.of(sourceImage).size(width, height).keepAspectRatio(false).determineOutputFormat().toFile(destFile.toFile());
         }
     }
 
