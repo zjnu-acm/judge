@@ -13,7 +13,7 @@ package com.github.zhanhb.ckfinder.connector.plugins;
 
 import com.github.zhanhb.ckfinder.connector.configuration.IConfiguration;
 import com.github.zhanhb.ckfinder.connector.data.AfterFileUploadEventArgs;
-import com.github.zhanhb.ckfinder.connector.data.IEventHandler;
+import com.github.zhanhb.ckfinder.connector.data.AfterFileUploadEventHandler;
 import com.github.zhanhb.ckfinder.connector.errors.ConnectorException;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -26,7 +26,7 @@ import net.coobird.thumbnailator.name.Rename;
 import org.springframework.core.io.Resource;
 
 @Slf4j
-public class WatermarkCommand implements IEventHandler<AfterFileUploadEventArgs> {
+public class WatermarkCommand implements AfterFileUploadEventHandler {
 
     private static final String DEFAULT_WATERMARK = "/logo.gif";
 

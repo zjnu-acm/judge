@@ -14,7 +14,7 @@ package com.github.zhanhb.ckfinder.connector.plugins;
 import com.github.zhanhb.ckfinder.connector.configuration.Constants;
 import com.github.zhanhb.ckfinder.connector.configuration.IConfiguration;
 import com.github.zhanhb.ckfinder.connector.data.BeforeExecuteCommandEventArgs;
-import com.github.zhanhb.ckfinder.connector.data.IEventHandler;
+import com.github.zhanhb.ckfinder.connector.data.BeforeExecuteCommandEventHandler;
 import com.github.zhanhb.ckfinder.connector.errors.ConnectorException;
 import com.github.zhanhb.ckfinder.connector.handlers.command.XMLCommand;
 import com.github.zhanhb.ckfinder.connector.utils.AccessControl;
@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Element;
 
 @Slf4j
-public class SaveFileCommand extends XMLCommand implements IEventHandler<BeforeExecuteCommandEventArgs> {
+public class SaveFileCommand extends XMLCommand implements BeforeExecuteCommandEventHandler {
 
     private String fileName;
     private String fileContent;

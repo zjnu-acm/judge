@@ -14,7 +14,7 @@ package com.github.zhanhb.ckfinder.connector.plugins;
 import com.github.zhanhb.ckfinder.connector.configuration.Constants;
 import com.github.zhanhb.ckfinder.connector.configuration.IConfiguration;
 import com.github.zhanhb.ckfinder.connector.data.BeforeExecuteCommandEventArgs;
-import com.github.zhanhb.ckfinder.connector.data.IEventHandler;
+import com.github.zhanhb.ckfinder.connector.data.BeforeExecuteCommandEventHandler;
 import com.github.zhanhb.ckfinder.connector.data.PluginInfo;
 import com.github.zhanhb.ckfinder.connector.data.PluginParam;
 import com.github.zhanhb.ckfinder.connector.errors.ConnectorException;
@@ -37,7 +37,7 @@ import org.w3c.dom.Element;
 
 @RequiredArgsConstructor
 @Slf4j
-public class ImageResizeCommad extends XMLCommand implements IEventHandler<BeforeExecuteCommandEventArgs> {
+public class ImageResizeCommad extends XMLCommand implements BeforeExecuteCommandEventHandler {
 
     private static final String[] SIZES = {"small", "medium", "large"};
 
