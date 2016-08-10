@@ -12,14 +12,14 @@
 package com.github.zhanhb.ckfinder.connector.data;
 
 import java.util.function.Supplier;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
  *
  * @param <T>
  */
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Getter
 public class EventCommandData<T extends EventArgs> {
 

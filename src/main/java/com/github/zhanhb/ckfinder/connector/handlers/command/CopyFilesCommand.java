@@ -256,8 +256,7 @@ public class CopyFilesCommand extends XMLCommand implements IPostCommand {
      * @return true if copied correctly
      * @throws IOException when ioerror occurs
      */
-    private boolean handleOverwrite(Path sourceFile, Path destFile)
-            throws IOException {
+    private boolean handleOverwrite(Path sourceFile, Path destFile) throws IOException {
         return FileUtils.delete(destFile)
                 && FileUtils.copyFromSourceToDestFile(sourceFile, destFile,
                         false, getConfiguration());
@@ -304,11 +303,11 @@ public class CopyFilesCommand extends XMLCommand implements IPostCommand {
         int i = 0;
         String paramName = "files[" + i + "][name]";
         while (request.getParameter(paramName) != null) {
-            String name = request.getParameter(paramName);
             String folder = request.getParameter("files[" + i + "][folder]");
+            String name = request.getParameter(paramName);
             String options = request.getParameter("files[" + i + "][options]");
             String type = request.getParameter("files[" + i + "][type]");
-            this.files.add(new FilePostParam(name, folder, options, type));
+            this.files.add(FilePostParam.builder().folder(folder).name(name).options(options).type(type).build());
             paramName = "files[" + (++i) + "][name]";
         }
     }

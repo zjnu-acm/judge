@@ -66,8 +66,7 @@ public abstract class Command {
      * @param configuration connector configuration
      * @throws ConnectorException when error occurred.
      */
-    public void runCommand(HttpServletRequest request,
-            HttpServletResponse response,
+    public void runCommand(HttpServletRequest request, HttpServletResponse response,
             IConfiguration configuration) throws ConnectorException {
         this.initParams(request, configuration);
         try {
@@ -201,8 +200,7 @@ public abstract class Command {
      * @return true if validation passed
      * @throws ConnectorException if validation error occurs.
      */
-    protected boolean checkParam(String reqParam)
-            throws ConnectorException {
+    protected boolean checkParam(String reqParam) throws ConnectorException {
         if (reqParam == null || reqParam.isEmpty()) {
             return true;
         }

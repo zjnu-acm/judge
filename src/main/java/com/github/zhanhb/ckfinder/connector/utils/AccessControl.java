@@ -15,7 +15,9 @@ import com.github.zhanhb.ckfinder.connector.configuration.IConfiguration;
 import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 
 /**
  * Class to generate ACL values.
@@ -63,10 +65,9 @@ public final class AccessControl {
 
     public AccessControl(IConfiguration configuration) {
         this.aclEntries = configuration.getAccessConrolLevels().stream().map(item -> {
-            ACLEntry aclEntry = new ACLEntry();
-            aclEntry.role = item.getRole();
-            aclEntry.type = item.getResourceType();
-            aclEntry.folder = item.getFolder();
+            String role = item.getRole();
+            String type = item.getResourceType();
+            String folder = item.getFolder();
             int acl = 0;
 
             acl |= (item.isFolderView()) ? CKFINDER_CONNECTOR_ACL_FOLDER_VIEW : 0;
@@ -79,8 +80,7 @@ public final class AccessControl {
             acl |= (item.isFileRename()) ? CKFINDER_CONNECTOR_ACL_FILE_RENAME : 0;
             acl |= (item.isFileDelete()) ? CKFINDER_CONNECTOR_ACL_FILE_DELETE : 0;
 
-            aclEntry.acl = acl;
-            return aclEntry;
+            return ACLEntry.builder().role(role).type(type).folder(folder).acl(acl).build();
         }).collect(Collectors.toList());
     }
 
@@ -176,24 +176,26 @@ public final class AccessControl {
     /**
      * Simple ACL entry class.
      */
+    @Builder
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
     private static class ACLEntry {
 
         /**
          * role name.
          */
-        private String role;
+        private final String role;
         /**
          * resource type name.
          */
-        private String type;
+        private final String type;
         /**
          * folder name.
          */
-        private String folder;
+        private final String folder;
         /**
          * acl
          */
-        private int acl;
+        private final int acl;
 
         /**
          * returns the entry ACL.

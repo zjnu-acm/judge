@@ -77,7 +77,6 @@ public final class ConfigurationFactory {
      */
     private void updateResourceTypesPaths(HttpServletRequest request,
             IConfiguration conf) throws Exception {
-
         String baseFolder = getBaseFolder(conf, request);
         baseFolder = conf.getThumbsDir().replace(Constants.BASE_DIR_PLACEHOLDER, baseFolder);
         baseFolder = PathUtils.escape(baseFolder);

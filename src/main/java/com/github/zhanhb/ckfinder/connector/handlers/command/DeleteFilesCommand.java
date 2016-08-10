@@ -180,7 +180,7 @@ public class DeleteFilesCommand extends XMLCommand implements IPostCommand {
             String folder = request.getParameter("files[" + i + "][folder]");
             String options = request.getParameter("files[" + i + "][options]");
             String type = request.getParameter("files[" + i + "][type]");
-            this.files.add(new FilePostParam(name, folder, options, type));
+            this.files.add(FilePostParam.builder().name(name).folder(folder).options(options).type(type).build());
             paramName = "files[" + (++i) + "][name]";
         }
     }

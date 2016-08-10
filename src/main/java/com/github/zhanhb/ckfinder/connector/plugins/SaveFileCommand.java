@@ -35,8 +35,7 @@ public class SaveFileCommand extends XMLCommand implements BeforeExecuteCommandE
     private String fileContent;
 
     @Override
-    protected void createXMLChildNodes(int arg0, Element arg1)
-            throws ConnectorException {
+    protected void createXMLChildNodes(int arg0, Element arg1) {
     }
 
     @Override

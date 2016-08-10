@@ -964,21 +964,21 @@ public class Configuration implements IConfiguration {
     /**
      * Sets thumbs URL used by ConfigurationFacotry.
      *
-     * @param url current thumbs url
+     * @param thumbsURL current thumbs url
      */
     @Override
-    public void setThumbsURL(String url) {
-        this.thumbsURL = url;
+    public void setThumbsURL(String thumbsURL) {
+        this.thumbsURL = thumbsURL;
     }
 
     /**
      * Sets thumbnails directory used by ConfigurationFacotry.
      *
-     * @param dir current thumbs directory.
+     * @param thumbsDir current thumbs directory.
      */
     @Override
-    public void setThumbsDir(String dir) {
-        this.thumbsDir = dir;
+    public void setThumbsDir(String thumbsDir) {
+        this.thumbsDir = thumbsDir;
     }
 
     /**
@@ -989,20 +989,9 @@ public class Configuration implements IConfiguration {
      */
     @Override
     public final IConfiguration cloneConfiguration() throws Exception {
-        Configuration configuration = createConfigurationInstance();
+        Configuration configuration = new Configuration(applicationContext, xmlFilePath);
         copyConfFields(configuration);
         return configuration;
-    }
-
-    /**
-     * Creates current configuration class instance. In every subclass this
-     * method should be overridden and return new configuration instance.
-     *
-     * @return new configuration instance
-     * @throws java.lang.Exception
-     */
-    private Configuration createConfigurationInstance() throws Exception {
-        return new Configuration(applicationContext, xmlFilePath);
     }
 
     /**

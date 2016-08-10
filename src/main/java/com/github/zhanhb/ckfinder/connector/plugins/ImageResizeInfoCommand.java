@@ -38,22 +38,20 @@ public class ImageResizeInfoCommand extends XMLCommand implements BeforeExecuteC
     private String fileName;
 
     @Override
-    public boolean runEventHandler(BeforeExecuteCommandEventArgs args, IConfiguration configuration1)
+    public boolean runEventHandler(BeforeExecuteCommandEventArgs args, IConfiguration configuration)
             throws ConnectorException {
         if ("ImageResizeInfo".equals(args.getCommand())) {
-            this.runCommand(args.getRequest(), args.getResponse(), configuration1);
+            this.runCommand(args.getRequest(), args.getResponse(), configuration);
             return false;
         }
         return true;
     }
 
     @Override
-    protected void createXMLChildNodes(int errorNum, Element rootElement)
-            throws ConnectorException {
+    protected void createXMLChildNodes(int errorNum, Element rootElement) {
         if (errorNum == Constants.Errors.CKFINDER_CONNECTOR_ERROR_NONE) {
             createImageInfoNode(rootElement);
         }
-
     }
 
     private void createImageInfoNode(Element rootElement) {
@@ -61,7 +59,6 @@ public class ImageResizeInfoCommand extends XMLCommand implements BeforeExecuteC
         element.setAttribute("width", String.valueOf(imageWidth));
         element.setAttribute("height", String.valueOf(imageHeight));
         rootElement.appendChild(element);
-
     }
 
     @Override

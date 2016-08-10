@@ -78,9 +78,13 @@ public class Events {
         return run(afterFileUploadEventHandlers, args, configuration);
     }
 
-    public boolean runInitCommand(InitCommandEventArgs args, IConfiguration configuration)
-            throws ConnectorException {
-        return run(initCommandEventHandlers, args, configuration);
+    public boolean runInitCommand(InitCommandEventArgs args, IConfiguration configuration) {
+        try {
+            return run(initCommandEventHandlers, args, configuration);
+        } catch (ConnectorException ex) {
+            // impossible
+            throw new AssertionError(ex);
+        }
     }
 
     @SuppressWarnings({"BroadCatchBlock", "TooBroadCatch"})

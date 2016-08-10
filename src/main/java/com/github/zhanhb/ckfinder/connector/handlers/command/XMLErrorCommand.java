@@ -54,8 +54,7 @@ public class XMLErrorCommand extends XMLCommand implements IErrorCommand {
     }
 
     @Override
-    protected void createXMLChildNodes(int errorNum,
-            Element rootElement) throws ConnectorException {
+    protected void createXMLChildNodes(int errorNum, Element rootElement) {
     }
 
     @Override

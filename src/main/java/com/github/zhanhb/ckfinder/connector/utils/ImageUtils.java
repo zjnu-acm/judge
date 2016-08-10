@@ -17,6 +17,7 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -50,20 +51,21 @@ public class ImageUtils {
      * @throws IOException when error occurs.
      */
     private static void resizeImage(BufferedImage sourceImage, int width,
-            int height, float quality,
-            Path destFile) throws IOException {
-        try {
-            Thumbnails.of(sourceImage).size(width, height).keepAspectRatio(false).outputQuality(quality).toFile(destFile.toFile());
-            // for some special files outputQuality couses error:
-            //IllegalStateException inner Thumbnailator jar. When exception is thrown
-            // image is resized without quality
-            // When http://code.google.com/p/thumbnailator/issues/detail?id=9
-            // will be fixed this try catch can be deleted. Only:
-            //Thumbnails.of(sourceImage).size(width, height).keepAspectRatio(false)
-            //  .outputQuality(quality).toFile(destFile);
-            // should remain.
-        } catch (IllegalStateException e) {
-            Thumbnails.of(sourceImage).size(width, height).keepAspectRatio(false).toFile(destFile.toFile());
+            int height, float quality, Path destFile) throws IOException {
+        try (OutputStream os = Files.newOutputStream(destFile)) {
+            try {
+                Thumbnails.of(sourceImage).size(width, height).keepAspectRatio(false).outputQuality(quality).toOutputStream(os);
+                // for some special files outputQuality couses error:
+                //IllegalStateException inner Thumbnailator jar. When exception is thrown
+                // image is resized without quality
+                // When http://code.google.com/p/thumbnailator/issues/detail?id=9
+                // will be fixed this try catch can be deleted. Only:
+                //Thumbnails.of(sourceImage).size(width, height).keepAspectRatio(false)
+                //  .outputQuality(quality).toFile(destFile);
+                // should remain.
+            } catch (IllegalStateException e) {
+                Thumbnails.of(sourceImage).size(width, height).keepAspectRatio(false).toOutputStream(os);
+            }
         }
     }
 
@@ -75,8 +77,8 @@ public class ImageUtils {
      * @param conf connector configuration
      * @throws IOException when error occurs.
      */
-    public static void createThumb(Path orginFile, Path file,
-            IConfiguration conf) throws IOException {
+    public static void createThumb(Path orginFile, Path file, IConfiguration conf)
+            throws IOException {
         try (InputStream is = Files.newInputStream(orginFile)) {
             BufferedImage image = ImageIO.read(is);
             if (image != null) {
@@ -141,8 +143,10 @@ public class ImageUtils {
     public static void createResizedImage(Path sourceFile,
             Path destFile, int width, int height,
             float quality) throws IOException {
-
-        BufferedImage image = ImageIO.read(sourceFile.toFile());
+        BufferedImage image;
+        try (InputStream is = Files.newInputStream(sourceFile)) {
+            image = ImageIO.read(is);
+        }
         Dimension dimension = new Dimension(width, height);
         if (image.getHeight() == dimension.height
                 && image.getWidth() == dimension.width) {
@@ -150,9 +154,7 @@ public class ImageUtils {
         } else {
             resizeImage(image, dimension.width, dimension.height, quality,
                     destFile);
-
         }
-
     }
 
     /**
@@ -165,23 +167,23 @@ public class ImageUtils {
      */
     private static Dimension createThumbDimension(BufferedImage image,
             int maxWidth, int maxHeight) {
-        Dimension dimension = new Dimension();
+        int width, height;
         if (image.getWidth() >= image.getHeight()) {
             if (image.getWidth() >= maxWidth) {
-                dimension.width = maxWidth;
-                dimension.height = Math.round(((float) maxWidth / image.getWidth()) * image.getHeight());
+                width = maxWidth;
+                height = Math.round(((float) maxWidth / image.getWidth()) * image.getHeight());
             } else {
-                dimension.height = image.getHeight();
-                dimension.width = image.getWidth();
+                height = image.getHeight();
+                width = image.getWidth();
             }
         } else if (image.getHeight() >= maxHeight) {
-            dimension.height = maxHeight;
-            dimension.width = Math.round((((float) maxHeight / image.getHeight()) * image.getWidth()));
+            height = maxHeight;
+            width = Math.round((((float) maxHeight / image.getHeight()) * image.getWidth()));
         } else {
-            dimension.height = image.getHeight();
-            dimension.width = image.getWidth();
+            height = image.getHeight();
+            width = image.getWidth();
         }
-        return dimension;
+        return new Dimension(width, height);
     }
 
     /**

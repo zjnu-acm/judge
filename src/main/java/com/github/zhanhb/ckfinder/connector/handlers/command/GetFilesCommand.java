@@ -69,8 +69,7 @@ public class GetFilesCommand extends XMLCommand {
     }
 
     @Override
-    protected void createXMLChildNodes(int errorNum, Element rootElement)
-            throws ConnectorException, IOException {
+    protected void createXMLChildNodes(int errorNum, Element rootElement) throws IOException {
         if (errorNum == Constants.Errors.CKFINDER_CONNECTOR_ERROR_NONE) {
             createFilesData(rootElement);
         }
