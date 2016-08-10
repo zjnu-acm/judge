@@ -18,7 +18,6 @@ import com.github.zhanhb.ckfinder.connector.data.ResourceType;
 import com.github.zhanhb.ckfinder.connector.errors.ConnectorException;
 import com.github.zhanhb.ckfinder.connector.utils.AccessControl;
 import com.github.zhanhb.ckfinder.connector.utils.PathUtils;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -46,7 +45,6 @@ public class Configuration implements IConfiguration {
 
     private static final int MAX_QUALITY = 100;
     private static final float MAX_QUALITY_FLOAT = 100f;
-    private long lastCfgModificationDate;
     private boolean enabled;
     private String xmlFilePath;
     private String baseDir;
@@ -78,7 +76,6 @@ public class Configuration implements IConfiguration {
     private Set<String> defaultResourceTypes;
     private IBasePathBuilder basePathBuilder;
     private boolean disallowUnsafeCharacters;
-    private boolean loading;
     private Events events;
     private final ApplicationContext applicationContext;
 
@@ -144,9 +141,7 @@ public class Configuration implements IConfiguration {
      */
     private void init() throws Exception {
         clearConfiguration();
-        this.loading = true;
         Resource resource = getFullConfigPath();
-        this.lastCfgModificationDate = resource.lastModified();
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc;
@@ -263,7 +258,6 @@ public class Configuration implements IConfiguration {
         setTypes(doc);
         this.events = new Events();
         registerEventHandlers();
-        this.loading = false;
     }
 
     /**
@@ -572,7 +566,7 @@ public class Configuration implements IConfiguration {
      */
     @Override
     public boolean enabled() {
-        return this.enabled && !this.loading;
+        return this.enabled;
     }
 
     /**
@@ -903,24 +897,6 @@ public class Configuration implements IConfiguration {
         return this.basePathBuilder;
     }
 
-    /**
-     * Checks if CKFinder configuration should be reloaded. It is reloaded when
-     * modification date is greater than the date of last configuration
-     * initialization.
-     *
-     * @return true if reloading configuration is necessary.
-     * @throws ConnectorException when configuration file cannot be reloaded.
-     */
-    @Override
-    public boolean checkIfReloadConfig() throws ConnectorException {
-        Resource resource = applicationContext.getResource(xmlFilePath);
-
-        try {
-            return resource.lastModified() > lastCfgModificationDate;
-        } catch (IOException ex) {
-            return false;
-        }
-    }
 
     /**
      * Sets plugins list from XML configuration file.
@@ -1036,9 +1012,7 @@ public class Configuration implements IConfiguration {
      */
     @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
     private void copyConfFields(Configuration configuration) {
-        configuration.loading = this.loading;
         configuration.xmlFilePath = this.xmlFilePath;
-        configuration.lastCfgModificationDate = this.lastCfgModificationDate;
         configuration.enabled = this.enabled;
         configuration.baseDir = this.baseDir;
         configuration.baseURL = this.baseURL;

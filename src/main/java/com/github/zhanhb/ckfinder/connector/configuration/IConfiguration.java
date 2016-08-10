@@ -14,7 +14,6 @@ package com.github.zhanhb.ckfinder.connector.configuration;
 import com.github.zhanhb.ckfinder.connector.data.AccessControlLevel;
 import com.github.zhanhb.ckfinder.connector.data.PluginInfo;
 import com.github.zhanhb.ckfinder.connector.data.ResourceType;
-import com.github.zhanhb.ckfinder.connector.errors.ConnectorException;
 import com.github.zhanhb.ckfinder.connector.utils.AccessControl;
 import java.util.List;
 import java.util.Map;
@@ -243,16 +242,6 @@ public interface IConfiguration {
      */
     default public void prepareConfigurationForRequest(HttpServletRequest request) {
     }
-
-    /**
-     * Checks if CKFinder configuration should be reloaded.
-     *
-     * @return true if reloading CKFinder configuration is necessary, false
-     * otherwise.
-     * @throws ConnectorException when error occurs while reloading
-     * configuration file.
-     */
-    public boolean checkIfReloadConfig() throws ConnectorException;
 
     /**
      * gets a list of plugins.
