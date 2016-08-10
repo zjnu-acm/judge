@@ -36,9 +36,8 @@ public class BestSubmissionsBuilderTest {
         log.info("bestSubmissions");
         Sort sort = new Sort(Sort.Direction.DESC, "time", "memory", "code_length");
         PageRequest pageRequest = new PageRequest(5, 20, sort);
-        BestSubmissionsBuilder bestSubmissionsBuilder = new BestSubmissionsBuilder();
-        log.debug(bestSubmissionsBuilder.bestSubmissions(1000, pageRequest));
-        log.debug(bestSubmissionsBuilder.bestSubmissions(1001, new PageRequest(6, 21)));
+        log.debug(BestSubmissionsBuilder.bestSubmissions(1000, pageRequest));
+        log.debug(BestSubmissionsBuilder.bestSubmissions(1001, new PageRequest(6, 21)));
     }
 
 }

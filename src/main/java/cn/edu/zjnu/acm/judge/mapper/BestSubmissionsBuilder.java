@@ -31,6 +31,7 @@ import org.springframework.data.domain.Sort;
  * @author zhanhb
  */
 @Slf4j
+@SuppressWarnings("UtilityClassWithoutPrivateConstructor")
 public class BestSubmissionsBuilder {
 
     private static final Set<String> ALLOW_COLUMNS
@@ -39,7 +40,7 @@ public class BestSubmissionsBuilder {
                     .toCollection(() -> new TreeSet<>(String.CASE_INSENSITIVE_ORDER)));
     private static final Sort DEFAULT_SORT = new Sort(Sort.Direction.DESC, "in_date");
 
-    public String bestSubmissions(@Param("problemId") long problemId, @Param("pageable") Pageable pageable) {
+    public static String bestSubmissions(@Param("problemId") long problemId, @Param("pageable") Pageable pageable) {
         Set<String> dejaVu = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
         Sort sort = Optional.ofNullable(pageable.getSort())
                 .map(s -> s.and(DEFAULT_SORT)).orElse(DEFAULT_SORT);
