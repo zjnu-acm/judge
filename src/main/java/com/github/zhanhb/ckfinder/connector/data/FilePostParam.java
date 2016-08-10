@@ -12,18 +12,18 @@
 package com.github.zhanhb.ckfinder.connector.data;
 
 import lombok.Getter;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * File from param entity.
  */
 @Getter
-@Setter
+@RequiredArgsConstructor
 public class FilePostParam {
 
-    private String folder;
-    private String name;
-    private String options;
-    private String type;
+    private final String folder;
+    private final String name;
+    private final String options;
+    private final String type;
 
 }

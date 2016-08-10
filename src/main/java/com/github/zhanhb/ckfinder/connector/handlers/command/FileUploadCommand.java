@@ -272,12 +272,10 @@ public class FileUploadCommand extends Command implements IPostCommand {
             throws Exception {
         Path file = Paths.get(path, this.newFileName);
 
-        AfterFileUploadEventArgs args = new AfterFileUploadEventArgs();
-        args.setCurrentFolder(this.currentFolder);
-        args.setFile(file);
         if (!ImageUtils.isImage(file)) {
             item.write(file.toString());
             if (configuration.getEvents() != null) {
+                AfterFileUploadEventArgs args = new AfterFileUploadEventArgs(this.currentFolder, file);
                 configuration.getEvents().runAfterFileUpload(args, configuration);
             }
             return true;
@@ -288,6 +286,7 @@ public class FileUploadCommand extends Command implements IPostCommand {
             if (!configuration.checkSizeAfterScaling()
                     || FileUtils.checkFileSize(configuration.getTypes().get(this.type), Files.size(file))) {
                 if (configuration.getEvents() != null) {
+                    AfterFileUploadEventArgs args = new AfterFileUploadEventArgs(this.currentFolder, file);
                     configuration.getEvents().runAfterFileUpload(args, configuration);
                 }
                 return true;

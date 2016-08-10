@@ -164,10 +164,8 @@ public class InitCommand extends XMLCommand {
     public void createPluginsData(Element rootElement) throws ConnectorException {
         Element element = creator.getDocument().createElement("PluginsInfo");
         rootElement.appendChild(element);
-        InitCommandEventArgs args = new InitCommandEventArgs();
-        args.setXml(this.creator);
-        args.setRootElement(rootElement);
         if (configuration.getEvents() != null) {
+            InitCommandEventArgs args = new InitCommandEventArgs(this.creator, rootElement);
             configuration.getEvents().runInitCommand(args, configuration);
         }
 

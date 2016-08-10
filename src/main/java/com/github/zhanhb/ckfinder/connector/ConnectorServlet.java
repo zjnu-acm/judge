@@ -13,6 +13,7 @@ package com.github.zhanhb.ckfinder.connector;
 
 import com.github.zhanhb.ckfinder.connector.configuration.ConfigurationFactory;
 import com.github.zhanhb.ckfinder.connector.configuration.Constants;
+import com.github.zhanhb.ckfinder.connector.configuration.Events;
 import com.github.zhanhb.ckfinder.connector.configuration.IConfiguration;
 import com.github.zhanhb.ckfinder.connector.data.BeforeExecuteCommandEventArgs;
 import com.github.zhanhb.ckfinder.connector.errors.ConnectorException;
@@ -123,11 +124,6 @@ public class ConnectorServlet extends HttpServlet {
                         Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_COMMAND, false);
             }
 
-            BeforeExecuteCommandEventArgs args = new BeforeExecuteCommandEventArgs();
-            args.setCommand(command);
-            args.setRequest(request);
-            args.setResponse(response);
-
             boolean isNativeCommand;
             if (CommandHandlerEnum.contains(command.toUpperCase())) {
                 isNativeCommand = true;
@@ -144,8 +140,10 @@ public class ConnectorServlet extends HttpServlet {
                 command = null;
             }
 
-            if (configuration.getEvents() != null) {
-                if (configuration.getEvents().runBeforeExecuteCommand(args, configuration)) {
+            Events events = configuration.getEvents();
+            if (events != null) {
+                BeforeExecuteCommandEventArgs args = new BeforeExecuteCommandEventArgs(command, request, response);
+                if (events.runBeforeExecuteCommand(args, configuration)) {
                     executeNativeCommand(command, request, response, configuration, isNativeCommand);
                 }
             } else {
