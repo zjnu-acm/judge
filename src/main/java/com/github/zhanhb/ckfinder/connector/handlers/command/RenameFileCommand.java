@@ -36,8 +36,7 @@ public class RenameFileCommand extends XMLCommand implements IPostCommand {
     private boolean addRenameNode;
 
     @Override
-    protected void createXMLChildNodes(int errorNum,
-            Element rootElement) throws ConnectorException {
+    protected void createXMLChildNodes(int errorNum, Element rootElement) {
         if (this.addRenameNode) {
             createRenamedFileNode(rootElement);
         }

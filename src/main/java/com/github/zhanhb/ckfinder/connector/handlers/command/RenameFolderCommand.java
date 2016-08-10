@@ -35,8 +35,7 @@ public class RenameFolderCommand extends XMLCommand implements IPostCommand {
     private String newFolderPath;
 
     @Override
-    protected void createXMLChildNodes(int errorNum, Element rootElement)
-            throws ConnectorException {
+    protected void createXMLChildNodes(int errorNum, Element rootElement) {
         if (errorNum == Constants.Errors.CKFINDER_CONNECTOR_ERROR_NONE) {
             createRenamedFolderNode(rootElement);
         }

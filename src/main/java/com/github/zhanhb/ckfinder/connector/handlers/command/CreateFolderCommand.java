@@ -36,8 +36,7 @@ public class CreateFolderCommand extends XMLCommand implements IPostCommand {
     private String newFolderName;
 
     @Override
-    protected void createXMLChildNodes(int errorNum, Element rootElement)
-            throws ConnectorException {
+    protected void createXMLChildNodes(int errorNum, Element rootElement) {
         if (errorNum == Constants.Errors.CKFINDER_CONNECTOR_ERROR_NONE) {
             createNewFolderElement(rootElement);
         }
@@ -118,13 +117,12 @@ public class CreateFolderCommand extends XMLCommand implements IPostCommand {
                 + getCurrentFolder() + newFolderName);
         if (Files.exists(dir)) {
             throw new ConnectorException(Constants.Errors.CKFINDER_CONNECTOR_ERROR_ALREADY_EXIST);
-        } else {
-            try {
-                Files.createDirectories(dir);
-                return true;
-            } catch (IOException ex) {
-                return false;
-            }
+        }
+        try {
+            Files.createDirectories(dir);
+            return true;
+        } catch (IOException ex) {
+            return false;
         }
     }
 

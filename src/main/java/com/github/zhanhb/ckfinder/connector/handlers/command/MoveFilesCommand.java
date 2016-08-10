@@ -40,8 +40,7 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
     private boolean addMoveNode;
 
     @Override
-    protected void createXMLChildNodes(int errorNum, Element rootElement)
-            throws ConnectorException {
+    protected void createXMLChildNodes(int errorNum, Element rootElement) {
         if (getCreator().hasErrors()) {
             Element errorsNode = getCreator().getDocument().createElement("Errors");
             getCreator().addErrors(errorsNode);
@@ -146,7 +145,6 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
             if (!getConfiguration().getAccessControl().checkFolderACL(file.getType(), file.getFolder(), getUserRole(),
                     AccessControl.CKFINDER_CONNECTOR_ACL_FILE_VIEW)) {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
-
             }
             Path sourceFile = Paths.get(getConfiguration().getTypes().get(file.getType()).getPath()
                     + file.getFolder(), file.getName());
@@ -312,7 +310,7 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
                 String folder = request.getParameter("files[" + i + "][folder]");
                 String options = request.getParameter("files[" + i + "][options]");
                 String type = request.getParameter("files[" + i + "][type]");
-                files.add(new FilePostParam(name, folder, options, type));
+                files.add(FilePostParam.builder().name(name).folder(folder).options(options).type(type).build());
             } else {
                 break;
             }

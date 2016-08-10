@@ -65,8 +65,7 @@ public class ImageResizeCommad extends XMLCommand implements BeforeExecuteComman
     }
 
     @Override
-    protected void createXMLChildNodes(int arg0, Element arg1)
-            throws ConnectorException {
+    protected void createXMLChildNodes(int arg0, Element arg1) {
     }
 
     @Override

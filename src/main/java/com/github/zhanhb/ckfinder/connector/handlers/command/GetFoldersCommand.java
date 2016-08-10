@@ -14,7 +14,6 @@ package com.github.zhanhb.ckfinder.connector.handlers.command;
 import com.github.zhanhb.ckfinder.connector.configuration.Constants;
 import com.github.zhanhb.ckfinder.connector.data.XmlAttribute;
 import com.github.zhanhb.ckfinder.connector.data.XmlElementData;
-import com.github.zhanhb.ckfinder.connector.errors.ConnectorException;
 import com.github.zhanhb.ckfinder.connector.utils.AccessControl;
 import com.github.zhanhb.ckfinder.connector.utils.FileUtils;
 import java.io.IOException;
@@ -39,8 +38,7 @@ public class GetFoldersCommand extends XMLCommand {
     private List<String> directories;
 
     @Override
-    protected void createXMLChildNodes(int errorNum, Element rootElement)
-            throws ConnectorException, IOException {
+    protected void createXMLChildNodes(int errorNum, Element rootElement) throws IOException {
         if (errorNum == Constants.Errors.CKFINDER_CONNECTOR_ERROR_NONE) {
             createFoldersData(rootElement);
         }
@@ -130,4 +128,5 @@ public class GetFoldersCommand extends XMLCommand {
         }
         rootElement.appendChild(element);
     }
+
 }

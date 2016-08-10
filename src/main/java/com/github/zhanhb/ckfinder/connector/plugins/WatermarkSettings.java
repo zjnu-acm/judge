@@ -14,13 +14,14 @@ package com.github.zhanhb.ckfinder.connector.plugins;
 import com.github.zhanhb.ckfinder.connector.configuration.IConfiguration;
 import com.github.zhanhb.ckfinder.connector.data.PluginInfo;
 import com.github.zhanhb.ckfinder.connector.data.PluginParam;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 
 @Getter
-@Setter
+@Setter(AccessLevel.PRIVATE)
 class WatermarkSettings {
 
     public static final String WATERMARK = "watermark";

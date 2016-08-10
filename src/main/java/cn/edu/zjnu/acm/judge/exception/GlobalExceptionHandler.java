@@ -46,7 +46,7 @@ public class GlobalExceptionHandler {
         HttpStatus code = ex.getHttpStatus();
         try {
             message = messageSource.getMessage(message, null, localeResolver.resolveLocale(request));
-        } catch (NoSuchMessageException exception) {
+        } catch (NoSuchMessageException ignore) {
         }
         request.setAttribute("message", message);
         if (code.is4xxClientError()) {

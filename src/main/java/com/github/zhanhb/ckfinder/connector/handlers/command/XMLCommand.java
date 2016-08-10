@@ -27,11 +27,11 @@ import org.w3c.dom.Element;
  */
 public abstract class XMLCommand extends Command {
 
-    /**
-     * util to create XML document.
-     */
-    @SuppressWarnings("ProtectedField")
-    protected XMLCreator creator;
+    private final XMLCreator creator;
+
+    public XMLCommand() {
+        creator = new XMLCreator();
+    }
 
     /**
      * sets response headers for XML response.
@@ -40,8 +40,7 @@ public abstract class XMLCommand extends Command {
      * @param sc servlet context
      */
     @Override
-    public void setResponseHeader(HttpServletResponse response,
-            ServletContext sc) {
+    public void setResponseHeader(HttpServletResponse response, ServletContext sc) {
         response.setContentType("text/xml");
         response.setHeader("Cache-Control", "no-cache");
         response.setCharacterEncoding("utf-8");
@@ -100,18 +99,16 @@ public abstract class XMLCommand extends Command {
      *
      * @param errorNum error code
      * @param rootElement XML root node
-     * @throws ConnectorException to handle in error handler.
      * @throws java.io.IOException
      */
-    protected abstract void createXMLChildNodes(int errorNum,
-            Element rootElement)
-            throws ConnectorException, IOException;
+    protected abstract void createXMLChildNodes(int errorNum, Element rootElement) throws IOException;
 
     /**
      * gets all necessary data to create XML response.
      *
      * @return error code
-     * {@link com.github.zhanhb.ckfinder.connector.configuration.Constants.Errors} or
+     * {@link com.github.zhanhb.ckfinder.connector.configuration.Constants.Errors}
+     * or
      * {@link com.github.zhanhb.ckfinder.connector.configuration.Constants.Errors#CKFINDER_CONNECTOR_ERROR_NONE}
      * if no error occurred.
      * @throws java.io.IOException

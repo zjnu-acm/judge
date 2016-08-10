@@ -11,14 +11,17 @@
  */
 package com.github.zhanhb.ckfinder.connector.data;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 /**
  * File from param entity.
  */
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
 @Getter
-@RequiredArgsConstructor
 public class FilePostParam {
 
     private final String folder;

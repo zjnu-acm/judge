@@ -49,7 +49,7 @@ public class FileUploadCommand extends Command implements IPostCommand {
     /**
      * Array containing unsafe characters which can't be used in file name.
      */
-    private static final char[] UNSAFE_FILE_NAME_CHARS = {':', '*', '?', '|', '/'};
+    private static final Pattern UNSAFE_FILE_NAME_PATTERN = Pattern.compile("[:*?|/]");
 
     /**
      * Uploading file name request.
@@ -135,7 +135,6 @@ public class FileUploadCommand extends Command implements IPostCommand {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED, e);
         }
-
     }
 
     /**
@@ -353,9 +352,7 @@ public class FileUploadCommand extends Command implements IPostCommand {
         }
         this.newFileName = this.fileName;
 
-        for (char c : UNSAFE_FILE_NAME_CHARS) {
-            this.newFileName = this.newFileName.replace(c, '_');
-        }
+        newFileName = UNSAFE_FILE_NAME_PATTERN.matcher(this.getNewFileName()).replaceAll("_");
 
         if (getConfiguration().isDisallowUnsafeCharacters()) {
             newFileName = this.getNewFileName().replace(';', '_');

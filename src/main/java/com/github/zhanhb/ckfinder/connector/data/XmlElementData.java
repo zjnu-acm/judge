@@ -61,8 +61,7 @@ public class XmlElementData {
      * @param document XML document.
      * @param parent Parent node for element.
      */
-    public void addToDocument(Document document,
-            Element parent) {
+    public void addToDocument(Document document, Element parent) {
         Element element = this.toElement(document);
         for (XmlElementData xmlElementData : this.childrens) {
             element.appendChild(xmlElementData.toElement(document));
@@ -75,7 +74,6 @@ public class XmlElementData {
         } else {
             document.appendChild(element);
         }
-
     }
 
     /**

@@ -14,7 +14,6 @@ package com.github.zhanhb.ckfinder.connector.handlers.command;
 import com.github.zhanhb.ckfinder.connector.configuration.Constants;
 import com.github.zhanhb.ckfinder.connector.data.InitCommandEventArgs;
 import com.github.zhanhb.ckfinder.connector.data.ResourceType;
-import com.github.zhanhb.ckfinder.connector.errors.ConnectorException;
 import com.github.zhanhb.ckfinder.connector.utils.AccessControl;
 import com.github.zhanhb.ckfinder.connector.utils.FileUtils;
 import com.github.zhanhb.ckfinder.connector.utils.PathUtils;
@@ -55,9 +54,7 @@ public class InitCommand extends XMLCommand {
     }
 
     @Override
-    protected void createXMLChildNodes(int errorNum,
-            Element rootElement)
-            throws ConnectorException {
+    protected void createXMLChildNodes(int errorNum, Element rootElement) {
         if (errorNum == Constants.Errors.CKFINDER_CONNECTOR_ERROR_NONE) {
             createConnectorData(rootElement);
             try {
@@ -159,16 +156,14 @@ public class InitCommand extends XMLCommand {
      * Creates plugins node in XML.
      *
      * @param rootElement root element in XML
-     * @throws ConnectorException when error in event handler occurs.
      */
-    public void createPluginsData(Element rootElement) throws ConnectorException {
+    public void createPluginsData(Element rootElement) {
         Element element = getCreator().getDocument().createElement("PluginsInfo");
         rootElement.appendChild(element);
         if (getConfiguration().getEvents() != null) {
             InitCommandEventArgs args = new InitCommandEventArgs(this.getCreator(), rootElement);
             getConfiguration().getEvents().runInitCommand(args, getConfiguration());
         }
-
     }
 
     /**

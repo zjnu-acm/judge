@@ -55,15 +55,13 @@ public class ErrorCommand extends Command implements IErrorCommand {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
                     break;
             }
-
         } catch (IOException ioex) {
             throw new ConnectorException(ioex);
         }
     }
 
     @Override
-    public void setResponseHeader(HttpServletResponse response,
-            ServletContext sc) {
+    public void setResponseHeader(HttpServletResponse response, ServletContext sc) {
         response.reset();
         this.response = response;
     }
