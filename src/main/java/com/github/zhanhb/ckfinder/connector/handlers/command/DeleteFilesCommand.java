@@ -38,10 +38,10 @@ public class DeleteFilesCommand extends XMLCommand implements IPostCommand {
     private boolean addDeleteNode;
 
     @Override
-    protected void createXMLChildNodes(int errorNum, Element rootElement) throws ConnectorException {
-        if (creator.hasErrors()) {
-            Element errorsNode = creator.getDocument().createElement("Errors");
-            creator.addErrors(errorsNode);
+    protected void createXMLChildNodes(int errorNum, Element rootElement) {
+        if (getCreator().hasErrors()) {
+            Element errorsNode = getCreator().getDocument().createElement("Errors");
+            getCreator().addErrors(errorsNode);
             rootElement.appendChild(errorsNode);
         }
 
@@ -56,7 +56,7 @@ public class DeleteFilesCommand extends XMLCommand implements IPostCommand {
      * @param rootElement root element in XML response
      */
     private void createDeleteFielsNode(Element rootElement) {
-        Element element = creator.getDocument().createElement("DeleteFiles");
+        Element element = getCreator().getDocument().createElement("DeleteFiles");
         element.setAttribute("deleted", String.valueOf(this.filesDeleted));
         rootElement.appendChild(element);
     }
@@ -73,8 +73,8 @@ public class DeleteFilesCommand extends XMLCommand implements IPostCommand {
 
         this.addDeleteNode = false;
 
-        if (!checkIfTypeExists(this.type)) {
-            this.type = null;
+        if (!checkIfTypeExists(getType())) {
+            this.setType(null);
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
         }
 
@@ -83,7 +83,7 @@ public class DeleteFilesCommand extends XMLCommand implements IPostCommand {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
             }
 
-            if (configuration.getTypes().get(fileItem.getType()) == null) {
+            if (getConfiguration().getTypes().get(fileItem.getType()) == null) {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
             }
 
@@ -93,38 +93,38 @@ public class DeleteFilesCommand extends XMLCommand implements IPostCommand {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
             }
 
-            if (FileUtils.checkIfDirIsHidden(fileItem.getFolder(), this.configuration)) {
+            if (FileUtils.checkIfDirIsHidden(fileItem.getFolder(), this.getConfiguration())) {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
             }
 
-            if (FileUtils.checkIfFileIsHidden(fileItem.getName(), this.configuration)) {
+            if (FileUtils.checkIfFileIsHidden(fileItem.getName(), this.getConfiguration())) {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
             }
 
-            if (FileUtils.checkFileExtension(fileItem.getName(), this.configuration.getTypes().get(fileItem.getType())) == 1) {
+            if (FileUtils.checkFileExtension(fileItem.getName(), this.getConfiguration().getTypes().get(fileItem.getType())) == 1) {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
 
             }
 
-            if (!configuration.getAccessControl().checkFolderACL(fileItem.getType(), fileItem.getFolder(), this.userRole,
+            if (!getConfiguration().getAccessControl().checkFolderACL(fileItem.getType(), fileItem.getFolder(), getUserRole(),
                     AccessControl.CKFINDER_CONNECTOR_ACL_FILE_DELETE)) {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
             }
 
-            Path file = Paths.get(configuration.getTypes().get(fileItem.getType()).getPath() + fileItem.getFolder(), fileItem.getName());
+            Path file = Paths.get(getConfiguration().getTypes().get(fileItem.getType()).getPath() + fileItem.getFolder(), fileItem.getName());
 
             try {
                 this.addDeleteNode = true;
                 if (!Files.exists(file)) {
-                    creator.appendErrorNodeChild(
+                    getCreator().appendErrorNodeChild(
                             Constants.Errors.CKFINDER_CONNECTOR_ERROR_FILE_NOT_FOUND,
                             fileItem.getName(), fileItem.getFolder(), fileItem.getType());
                     continue;
                 }
 
                 if (FileUtils.delete(file)) {
-                    Path thumbFile = Paths.get(configuration.getThumbsPath(),
-                            fileItem.getType() + this.currentFolder, fileItem.getName());
+                    Path thumbFile = Paths.get(getConfiguration().getThumbsPath(),
+                            fileItem.getType() + this.getCurrentFolder(), fileItem.getName());
                     this.filesDeleted++;
 
                     try {
@@ -133,7 +133,7 @@ public class DeleteFilesCommand extends XMLCommand implements IPostCommand {
                         // No errors if we are not able to delete the thumb.
                     }
                 } else { //If access is denied, report error and try to delete rest of files.
-                    creator.appendErrorNodeChild(
+                    getCreator().appendErrorNodeChild(
                             Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED,
                             fileItem.getName(), fileItem.getFolder(), fileItem.getType());
                 }
@@ -143,7 +143,7 @@ public class DeleteFilesCommand extends XMLCommand implements IPostCommand {
 
             }
         }
-        if (creator.hasErrors()) {
+        if (getCreator().hasErrors()) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_DELETE_FAILED;
         } else {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_NONE;
