@@ -17,8 +17,13 @@ import com.github.zhanhb.ckfinder.connector.data.PluginParam;
 import com.github.zhanhb.ckfinder.connector.data.ResourceType;
 import com.github.zhanhb.ckfinder.connector.errors.ConnectorException;
 import com.github.zhanhb.ckfinder.connector.utils.AccessControl;
+import com.github.zhanhb.ckfinder.connector.utils.FileUtils;
 import com.github.zhanhb.ckfinder.connector.utils.PathUtils;
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -29,6 +34,7 @@ import java.util.StringTokenizer;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 import org.w3c.dom.Document;
@@ -40,11 +46,13 @@ import org.w3c.dom.NodeList;
 /**
  * Class loads configuration from XML file.
  */
+@Slf4j
 @SuppressWarnings({"CollectionWithoutInitialCapacity", "ReturnOfCollectionOrArrayField", "FinalMethod"})
 public class Configuration implements IConfiguration {
 
     private static final int MAX_QUALITY = 100;
     private static final float MAX_QUALITY_FLOAT = 100f;
+
     private boolean enabled;
     private String xmlFilePath;
     private String baseDir;
@@ -95,6 +103,7 @@ public class Configuration implements IConfiguration {
         this.hiddenFiles = new ArrayList<>();
         this.defaultResourceTypes = new LinkedHashSet<>();
         init();
+        updateResourceTypesPaths();
     }
 
     /**
@@ -141,7 +150,7 @@ public class Configuration implements IConfiguration {
      */
     private void init() throws Exception {
         clearConfiguration();
-        Resource resource = getFullConfigPath();
+        Resource resource = getFullConfigPath(xmlFilePath);
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc;
@@ -274,7 +283,7 @@ public class Configuration implements IConfiguration {
      * @return absolute path to XML configuration file
      * @throws ConnectorException when absolute path cannot be obtained.
      */
-    private Resource getFullConfigPath() throws ConnectorException {
+    private Resource getFullConfigPath(String xmlFilePath) throws ConnectorException {
         Resource resource = applicationContext.getResource(xmlFilePath);
         if (!resource.exists()) {
             throw new ConnectorException(Constants.Errors.CKFINDER_CONNECTOR_ERROR_FILE_NOT_FOUND,
@@ -897,7 +906,6 @@ public class Configuration implements IConfiguration {
         return this.basePathBuilder;
     }
 
-
     /**
      * Sets plugins list from XML configuration file.
      *
@@ -1083,6 +1091,84 @@ public class Configuration implements IConfiguration {
     @Override
     public AccessControl getAccessControl() {
         return applicationContext.getBean(AccessControl.class);
+    }
+
+    /**
+     * Updates resources types paths by request.
+     *
+     * @param request request
+     * @param conf connector configuration.
+     * @throws Exception when error occurs
+     */
+    private void updateResourceTypesPaths() throws Exception {
+        String baseFolder = getBaseFolder();
+        baseFolder = this.getThumbsDir().replace(Constants.BASE_DIR_PLACEHOLDER, baseFolder);
+        baseFolder = PathUtils.escape(baseFolder);
+        baseFolder = PathUtils.removeSlashFromEnd(baseFolder);
+        Path file = Paths.get(baseFolder);
+        if (file == null) {
+            throw new ConnectorException(Constants.Errors.CKFINDER_CONNECTOR_ERROR_FOLDER_NOT_FOUND,
+                    "Thumbs directory could not be created using specified path.");
+        }
+
+        log.debug("{}", file);
+        Files.createDirectories(file);
+
+        this.setThumbsPath(file.toAbsolutePath().toString());
+
+        String thumbUrl = this.getThumbsURL();
+        thumbUrl = thumbUrl.replaceAll(Constants.BASE_URL_PLACEHOLDER,
+                this.getBasePathBuilder().getBaseUrl());
+        this.setThumbsURL(PathUtils.escape(thumbUrl));
+
+        for (ResourceType item : this.getTypes().values()) {
+            String url = item.getUrl();
+            url = url.replaceAll(Constants.BASE_URL_PLACEHOLDER,
+                    this.getBasePathBuilder().getBaseUrl());
+            url = PathUtils.escape(url);
+            url = PathUtils.removeSlashFromEnd(url);
+            item.setUrl(url);
+
+            String s = getBaseFolder();
+            s = item.getPath().replace(Constants.BASE_DIR_PLACEHOLDER, s);
+            s = PathUtils.escape(s);
+            s = PathUtils.removeSlashFromEnd(s);
+
+            if (s == null || s.isEmpty()) {
+                throw new IllegalStateException("baseFolder is empty");
+            }
+            Path p = Paths.get(s);
+            if (p == null) {
+                throw new ConnectorException(Constants.Errors.CKFINDER_CONNECTOR_ERROR_FOLDER_NOT_FOUND,
+                        "Resource directory could not be created using specified path.");
+            }
+
+            FileUtils.createPath(p, false);
+
+            item.setPath(p.toAbsolutePath().toString());
+        }
+    }
+
+    /**
+     * Gets the path to base dir from configuration Crates the base dir folder
+     * if it doesn't exists.
+     *
+     * @param this connector configuration
+     * @param request request
+     * @return path to base dir from conf
+     * @throws ConnectorException when error during creating folder occurs
+     */
+    private String getBaseFolder() throws ConnectorException {
+        try {
+            String baseFolder = this.getBasePathBuilder().getBaseDir();
+            Path baseDir = Paths.get(baseFolder);
+            if (!Files.exists(baseDir)) {
+                FileUtils.createPath(baseDir, false);
+            }
+            return PathUtils.addSlashToEnd(baseFolder);
+        } catch (IOException e) {
+            throw new ConnectorException(e);
+        }
     }
 
 }
