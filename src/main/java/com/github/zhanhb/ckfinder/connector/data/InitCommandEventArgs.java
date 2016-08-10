@@ -13,7 +13,7 @@ package com.github.zhanhb.ckfinder.connector.data;
 
 import com.github.zhanhb.ckfinder.connector.utils.XMLCreator;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 import org.w3c.dom.Element;
 
 /**
@@ -22,10 +22,10 @@ import org.w3c.dom.Element;
  * event.
  */
 @Getter
-@Setter
+@RequiredArgsConstructor
 public class InitCommandEventArgs extends EventArgs {
 
-    private XMLCreator xml;
-    private Element rootElement;
+    private final XMLCreator xml;
+    private final Element rootElement;
 
 }

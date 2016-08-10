@@ -41,8 +41,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
-
 /**
  *
  * @author zhanhb

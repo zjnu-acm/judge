@@ -12,11 +12,14 @@
 package com.github.zhanhb.ckfinder.connector.configuration;
 
 import com.github.zhanhb.ckfinder.connector.data.AfterFileUploadEventArgs;
+import com.github.zhanhb.ckfinder.connector.data.AfterFileUploadEventHandler;
 import com.github.zhanhb.ckfinder.connector.data.BeforeExecuteCommandEventArgs;
+import com.github.zhanhb.ckfinder.connector.data.BeforeExecuteCommandEventHandler;
 import com.github.zhanhb.ckfinder.connector.data.EventArgs;
 import com.github.zhanhb.ckfinder.connector.data.EventCommandData;
 import com.github.zhanhb.ckfinder.connector.data.IEventHandler;
 import com.github.zhanhb.ckfinder.connector.data.InitCommandEventArgs;
+import com.github.zhanhb.ckfinder.connector.data.InitCommandEventHandler;
 import com.github.zhanhb.ckfinder.connector.errors.ConnectorException;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,15 +48,15 @@ public class Events {
      *
      * @param eventHandler event class to register
      */
-    public void addBeforeExecuteEventHandler(Supplier<? extends IEventHandler<BeforeExecuteCommandEventArgs>> eventHandler) {
+    public void addBeforeExecuteEventHandler(Supplier<? extends BeforeExecuteCommandEventHandler> eventHandler) {
         beforeExecuteCommandEventHandlers.add(new EventCommandData<>(eventHandler));
     }
 
-    public void addAfterFileUploadEventHandler(Supplier<? extends IEventHandler<AfterFileUploadEventArgs>> eventHandler) {
+    public void addAfterFileUploadEventHandler(Supplier<? extends AfterFileUploadEventHandler> eventHandler) {
         afterFileUploadEventHandlers.add(new EventCommandData<>(eventHandler));
     }
 
-    public void addInitCommandEventHandler(Supplier<? extends IEventHandler<InitCommandEventArgs>> eventHandler) {
+    public void addInitCommandEventHandler(Supplier<? extends InitCommandEventHandler> eventHandler) {
         initCommandEventHandlers.add(new EventCommandData<>(eventHandler));
     }
 
@@ -75,9 +78,13 @@ public class Events {
         return run(afterFileUploadEventHandlers, args, configuration);
     }
 
-    public boolean runInitCommand(InitCommandEventArgs args, IConfiguration configuration)
-            throws ConnectorException {
-        return run(initCommandEventHandlers, args, configuration);
+    public boolean runInitCommand(InitCommandEventArgs args, IConfiguration configuration) {
+        try {
+            return run(initCommandEventHandlers, args, configuration);
+        } catch (ConnectorException ex) {
+            // impossible
+            throw new AssertionError(ex);
+        }
     }
 
     @SuppressWarnings({"BroadCatchBlock", "TooBroadCatch"})

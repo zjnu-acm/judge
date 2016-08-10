@@ -12,24 +12,22 @@
 package com.github.zhanhb.ckfinder.connector.plugins;
 
 import com.github.zhanhb.ckfinder.connector.configuration.IConfiguration;
-import com.github.zhanhb.ckfinder.connector.data.IEventHandler;
 import com.github.zhanhb.ckfinder.connector.data.InitCommandEventArgs;
+import com.github.zhanhb.ckfinder.connector.data.InitCommandEventHandler;
 import com.github.zhanhb.ckfinder.connector.data.PluginInfo;
 import com.github.zhanhb.ckfinder.connector.data.PluginParam;
-import com.github.zhanhb.ckfinder.connector.errors.ConnectorException;
 import lombok.RequiredArgsConstructor;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 @RequiredArgsConstructor
-public class ImageResizeInitCommandEventHandler implements IEventHandler<InitCommandEventArgs> {
+public class ImageResizeInitCommandEventHandler implements InitCommandEventHandler {
 
     private final PluginInfo pluginInfo;
 
     @Override
-    public boolean runEventHandler(InitCommandEventArgs args, IConfiguration arg1)
-            throws ConnectorException {
+    public boolean runEventHandler(InitCommandEventArgs args, IConfiguration arg1) {
         NodeList list = args.getRootElement().getElementsByTagName("PluginsInfo");
         if (list.getLength() > 0) {
             Node node = list.item(0);

@@ -36,8 +36,7 @@ public class RenameFileCommand extends XMLCommand implements IPostCommand {
     private boolean addRenameNode;
 
     @Override
-    protected void createXMLChildNodes(int errorNum,
-            Element rootElement) throws ConnectorException {
+    protected void createXMLChildNodes(int errorNum, Element rootElement) {
         if (this.addRenameNode) {
             createRenamedFileNode(rootElement);
         }
@@ -49,7 +48,7 @@ public class RenameFileCommand extends XMLCommand implements IPostCommand {
      * @param rootElement XML root node
      */
     private void createRenamedFileNode(Element rootElement) {
-        Element element = creator.getDocument().createElement("RenamedFile");
+        Element element = getCreator().getDocument().createElement("RenamedFile");
         element.setAttribute("name", this.fileName);
         if (renamed) {
             element.setAttribute("newName", this.newFileName);
@@ -66,17 +65,17 @@ public class RenameFileCommand extends XMLCommand implements IPostCommand {
     @Override
     protected int getDataForXml() throws IOException {
 
-        if (!checkIfTypeExists(this.type)) {
-            this.type = null;
+        if (!checkIfTypeExists(getType())) {
+            this.setType(null);
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
         }
 
-        if (!configuration.getAccessControl().checkFolderACL(this.type, this.currentFolder, this.userRole,
+        if (!getConfiguration().getAccessControl().checkFolderACL(getType(), getCurrentFolder(), getUserRole(),
                 AccessControl.CKFINDER_CONNECTOR_ACL_FILE_RENAME)) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
         }
 
-        if (configuration.forceASCII()) {
+        if (getConfiguration().forceASCII()) {
             this.newFileName = FileUtils.convertToASCII(this.newFileName);
         }
 
@@ -86,33 +85,31 @@ public class RenameFileCommand extends XMLCommand implements IPostCommand {
         }
 
         int checkFileExt = FileUtils.checkFileExtension(this.newFileName,
-                this.configuration.getTypes().get(this.type));
+                this.getConfiguration().getTypes().get(this.getType()));
         if (checkFileExt == 1) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_EXTENSION;
         }
-        if (configuration.ckeckDoubleFileExtensions()) {
-            this.newFileName = FileUtils.renameFileWithBadExt(this.configuration.getTypes().get(this.type), this.newFileName);
+        if (getConfiguration().ckeckDoubleFileExtensions()) {
+            this.newFileName = FileUtils.renameFileWithBadExt(this.getConfiguration().getTypes().get(this.getType()), this.newFileName);
         }
 
         if (!FileUtils.checkFileName(this.fileName)
-                || FileUtils.checkIfFileIsHidden(this.fileName,
-                        configuration)) {
+                || FileUtils.checkIfFileIsHidden(this.fileName, getConfiguration())) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
         }
 
-        if (!FileUtils.checkFileName(this.newFileName, configuration)
-                || FileUtils.checkIfFileIsHidden(this.newFileName,
-                        configuration)) {
+        if (!FileUtils.checkFileName(this.newFileName, getConfiguration())
+                || FileUtils.checkIfFileIsHidden(this.newFileName, getConfiguration())) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_NAME;
         }
 
         if (FileUtils.checkFileExtension(this.fileName,
-                this.configuration.getTypes().get(this.type)) == 1) {
+                this.getConfiguration().getTypes().get(this.getType())) == 1) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
         }
 
-        String dirPath = configuration.getTypes().get(this.type).getPath()
-                + this.currentFolder;
+        String dirPath = getConfiguration().getTypes().get(this.getType()).getPath()
+                + this.getCurrentFolder();
 
         Path file = Paths.get(dirPath, this.fileName);
         Path newFile = Paths.get(dirPath, this.newFileName);
@@ -150,11 +147,11 @@ public class RenameFileCommand extends XMLCommand implements IPostCommand {
      * rename thumb file.
      */
     private void renameThumb() throws IOException {
-        Path thumbFile = Paths.get(configuration.getThumbsPath(),
-                this.type + this.currentFolder,
+        Path thumbFile = Paths.get(getConfiguration().getThumbsPath(),
+                this.getType() + this.getCurrentFolder(),
                 this.fileName);
-        Path newThumbFile = Paths.get(configuration.getThumbsPath(),
-                this.type + this.currentFolder,
+        Path newThumbFile = Paths.get(getConfiguration().getThumbsPath(),
+                this.getType() + this.getCurrentFolder(),
                 this.newFileName);
 
         Files.move(thumbFile, newThumbFile);

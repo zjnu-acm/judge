@@ -14,7 +14,7 @@ package com.github.zhanhb.ckfinder.connector.data;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Event data for
@@ -22,11 +22,11 @@ import lombok.Setter;
  * event.
  */
 @Getter
-@Setter
+@RequiredArgsConstructor
 public class BeforeExecuteCommandEventArgs extends EventArgs {
 
-    private String command;
-    private HttpServletRequest request;
-    private HttpServletResponse response;
+    private final String command;
+    private final HttpServletRequest request;
+    private final HttpServletResponse response;
 
 }

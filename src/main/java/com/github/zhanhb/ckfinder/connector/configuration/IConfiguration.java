@@ -235,15 +235,6 @@ public interface IConfiguration {
     public boolean checkSizeAfterScaling();
 
     /**
-     * Prepares configuration for single request. Empty method. It should be
-     * overridden if needed.
-     *
-     * @param request request
-     */
-    default public void prepareConfigurationForRequest(HttpServletRequest request) {
-    }
-
-    /**
      * gets a list of plugins.
      *
      * @return list of plugins.

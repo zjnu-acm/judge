@@ -14,7 +14,6 @@ package com.github.zhanhb.ckfinder.connector.handlers.command;
 import com.github.zhanhb.ckfinder.connector.configuration.Constants;
 import com.github.zhanhb.ckfinder.connector.data.InitCommandEventArgs;
 import com.github.zhanhb.ckfinder.connector.data.ResourceType;
-import com.github.zhanhb.ckfinder.connector.errors.ConnectorException;
 import com.github.zhanhb.ckfinder.connector.utils.AccessControl;
 import com.github.zhanhb.ckfinder.connector.utils.FileUtils;
 import com.github.zhanhb.ckfinder.connector.utils.PathUtils;
@@ -55,9 +54,7 @@ public class InitCommand extends XMLCommand {
     }
 
     @Override
-    protected void createXMLChildNodes(int errorNum,
-            Element rootElement)
-            throws ConnectorException {
+    protected void createXMLChildNodes(int errorNum, Element rootElement) {
         if (errorNum == Constants.Errors.CKFINDER_CONNECTOR_ERROR_NONE) {
             createConnectorData(rootElement);
             try {
@@ -76,24 +73,24 @@ public class InitCommand extends XMLCommand {
      */
     private void createConnectorData(Element rootElement) {
         // connector info
-        Element element = creator.getDocument().createElement("ConnectorInfo");
-        element.setAttribute("enabled", String.valueOf(configuration.enabled()));
+        Element element = getCreator().getDocument().createElement("ConnectorInfo");
+        element.setAttribute("enabled", String.valueOf(getConfiguration().enabled()));
         element.setAttribute("s", getLicenseName());
         element.setAttribute("c",
-                createLicenseKey(configuration.getLicenseKey()));
+                createLicenseKey(getConfiguration().getLicenseKey()));
         element.setAttribute("thumbsEnabled", String.valueOf(
-                configuration.getThumbsEnabled()));
-        element.setAttribute("uploadCheckImages", configuration.checkSizeAfterScaling() ? "false" : "true");
-        if (configuration.getThumbsEnabled()) {
-            element.setAttribute("thumbsUrl", configuration.getThumbsURL());
+                getConfiguration().getThumbsEnabled()));
+        element.setAttribute("uploadCheckImages", getConfiguration().checkSizeAfterScaling() ? "false" : "true");
+        if (getConfiguration().getThumbsEnabled()) {
+            element.setAttribute("thumbsUrl", getConfiguration().getThumbsURL());
             element.setAttribute("thumbsDirectAccess", String.valueOf(
-                    configuration.getThumbsDirectAccess()));
-            element.setAttribute("thumbsWidth", String.valueOf(configuration.getMaxThumbWidth()));
-            element.setAttribute("thumbsHeight", String.valueOf(configuration.getMaxThumbHeight()));
+                    getConfiguration().getThumbsDirectAccess()));
+            element.setAttribute("thumbsWidth", String.valueOf(getConfiguration().getMaxThumbWidth()));
+            element.setAttribute("thumbsHeight", String.valueOf(getConfiguration().getMaxThumbHeight()));
         }
-        element.setAttribute("imgWidth", String.valueOf(configuration.getImgWidth()));
-        element.setAttribute("imgHeight", String.valueOf(configuration.getImgHeight()));
-        if (configuration.getPlugins().size() > 0) {
+        element.setAttribute("imgWidth", String.valueOf(getConfiguration().getImgWidth()));
+        element.setAttribute("imgHeight", String.valueOf(getConfiguration().getImgHeight()));
+        if (getConfiguration().getPlugins().size() > 0) {
             element.setAttribute("plugins", getPlugins());
         }
         rootElement.appendChild(element);
@@ -105,7 +102,7 @@ public class InitCommand extends XMLCommand {
      * @return plugins names.
      */
     private String getPlugins() {
-        return configuration.getPlugins().stream()
+        return getConfiguration().getPlugins().stream()
                 .filter(item -> item.isEnabled() && !item.isInternal())
                 .map(item -> item.getName())
                 .collect(Collectors.joining(","));
@@ -117,11 +114,11 @@ public class InitCommand extends XMLCommand {
      * @return license name if key is ok, or empty string if not.
      */
     private String getLicenseName() {
-        if (validateLicenseKey(configuration.getLicenseKey())) {
-            int index = Constants.CKFINDER_CHARS.indexOf(configuration.getLicenseKey().charAt(0))
+        if (validateLicenseKey(getConfiguration().getLicenseKey())) {
+            int index = Constants.CKFINDER_CHARS.indexOf(getConfiguration().getLicenseKey().charAt(0))
                     % LICENSE_CHAR_NR;
             if (index == 1 || index == 4) {
-                return configuration.getLicenseName();
+                return getConfiguration().getLicenseName();
             }
         }
         return "";
@@ -159,18 +156,14 @@ public class InitCommand extends XMLCommand {
      * Creates plugins node in XML.
      *
      * @param rootElement root element in XML
-     * @throws ConnectorException when error in event handler occurs.
      */
-    public void createPluginsData(Element rootElement) throws ConnectorException {
-        Element element = creator.getDocument().createElement("PluginsInfo");
+    public void createPluginsData(Element rootElement) {
+        Element element = getCreator().getDocument().createElement("PluginsInfo");
         rootElement.appendChild(element);
-        InitCommandEventArgs args = new InitCommandEventArgs();
-        args.setXml(this.creator);
-        args.setRootElement(rootElement);
-        if (configuration.getEvents() != null) {
-            configuration.getEvents().runInitCommand(args, configuration);
+        if (getConfiguration().getEvents() != null) {
+            InitCommandEventArgs args = new InitCommandEventArgs(this.getCreator(), rootElement);
+            getConfiguration().getEvents().runInitCommand(args, getConfiguration());
         }
-
     }
 
     /**
@@ -182,27 +175,27 @@ public class InitCommand extends XMLCommand {
     @SuppressWarnings("CollectionWithoutInitialCapacity")
     private void createResouceTypesData(Element rootElement) throws Exception {
         //resurcetypes
-        Element element = creator.getDocument().createElement("ResourceTypes");
+        Element element = getCreator().getDocument().createElement("ResourceTypes");
         rootElement.appendChild(element);
 
         Set<String> types;
-        if (super.type != null && !super.type.isEmpty()) {
+        if (getType() != null && !super.getType().isEmpty()) {
             types = new LinkedHashSet<>();
-            types.add(super.type);
+            types.add(super.getType());
         } else {
             types = getTypes();
         }
 
         for (String key : types) {
-            ResourceType resourceType = configuration.getTypes().get(key);
+            ResourceType resourceType = getConfiguration().getTypes().get(key);
             if (((this.type == null || this.type.equals(key)) && resourceType != null)
-                    && configuration.getAccessControl().checkFolderACL(key, "/", this.userRole,
+                    && getConfiguration().getAccessControl().checkFolderACL(key, "/", this.getUserRole(),
                             AccessControl.CKFINDER_CONNECTOR_ACL_FOLDER_VIEW)) {
 
-                Element childElement = creator.getDocument().
+                Element childElement = getCreator().getDocument().
                         createElement("ResourceType");
                 childElement.setAttribute("name", resourceType.getName());
-                childElement.setAttribute("acl", String.valueOf(configuration.getAccessControl().checkACLForRole(key, "/", this.userRole)));
+                childElement.setAttribute("acl", String.valueOf(getConfiguration().getAccessControl().checkACLForRole(key, "/", this.getUserRole())));
                 childElement.setAttribute("hash", randomHash(
                         resourceType.getPath()));
                 childElement.setAttribute(
@@ -215,8 +208,7 @@ public class InitCommand extends XMLCommand {
                 long maxSize = resourceType.getMaxSize();
                 childElement.setAttribute("maxSize", maxSize > 0 ? Long.toString(maxSize) : "0");
                 childElement.setAttribute("hasChildren",
-                        FileUtils.hasChildren(configuration.getAccessControl(), "/", Paths.get(PathUtils.escape(resourceType.getPath())),
-                                configuration, resourceType.getName(), this.userRole).toString());
+                        FileUtils.hasChildren(getConfiguration().getAccessControl(), "/", Paths.get(PathUtils.escape(resourceType.getPath())), getConfiguration(), resourceType.getName(), this.getUserRole()).toString());
                 element.appendChild(childElement);
             }
         }
@@ -228,10 +220,10 @@ public class InitCommand extends XMLCommand {
      * @return list of types names.
      */
     private Set<String> getTypes() {
-        if (configuration.getDefaultResourceTypes().size() > 0) {
-            return configuration.getDefaultResourceTypes();
+        if (getConfiguration().getDefaultResourceTypes().size() > 0) {
+            return getConfiguration().getDefaultResourceTypes();
         } else {
-            return configuration.getTypes().keySet();
+            return getConfiguration().getTypes().keySet();
         }
     }
 
@@ -269,7 +261,7 @@ public class InitCommand extends XMLCommand {
 
     @Override
     protected void getCurrentFolderParam(HttpServletRequest request) {
-        this.currentFolder = null;
+        this.setCurrentFolder(null);
     }
 
 }

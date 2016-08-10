@@ -52,16 +52,16 @@ public class DownloadFileCommand extends Command {
      */
     @Override
     public void execute(OutputStream out) throws ConnectorException {
-        if (!checkIfTypeExists(this.type)) {
-            this.type = null;
+        if (!checkIfTypeExists(getType())) {
+            this.setType(null);
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE, false);
         }
 
-        this.file = Paths.get(configuration.getTypes().get(this.type).getPath()
-                + currentFolder, fileName);
+        this.file = Paths.get(getConfiguration().getTypes().get(this.getType()).getPath()
+                + getCurrentFolder(), fileName);
 
-        if (!configuration.getAccessControl().checkFolderACL(this.type, this.currentFolder, this.userRole,
+        if (!getConfiguration().getAccessControl().checkFolderACL(getType(), getCurrentFolder(), getUserRole(),
                 AccessControl.CKFINDER_CONNECTOR_ACL_FILE_VIEW)) {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED);
@@ -69,20 +69,19 @@ public class DownloadFileCommand extends Command {
 
         if (!FileUtils.checkFileName(this.fileName)
                 || FileUtils.checkFileExtension(this.fileName,
-                        this.configuration.getTypes().get(this.type)) == 1) {
+                        this.getConfiguration().getTypes().get(this.getType())) == 1) {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST);
         }
 
-        if (FileUtils.checkIfDirIsHidden(this.currentFolder, configuration)) {
+        if (FileUtils.checkIfDirIsHidden(this.getCurrentFolder(), getConfiguration())) {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST);
         }
         try {
             if (!Files.exists(file)
                     || !Files.isRegularFile(file)
-                    || FileUtils.checkIfFileIsHidden(this.fileName,
-                            this.configuration)) {
+                    || FileUtils.checkIfFileIsHidden(this.fileName, this.getConfiguration())) {
                 throw new ConnectorException(
                         Constants.Errors.CKFINDER_CONNECTOR_ERROR_FILE_NOT_FOUND);
             }
@@ -118,6 +117,7 @@ public class DownloadFileCommand extends Command {
                 this.newFileName = MimeUtility.encodeWord(this.newFileName, "utf-8", "Q");
             }
         } catch (UnsupportedEncodingException ex) {
+            throw new AssertionError(ex);
         }
 
     }

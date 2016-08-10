@@ -29,18 +29,18 @@ public class QuickUploadCommand extends FileUploadCommand {
     @Override
     protected void handleOnUploadCompleteResponse(Writer writer,
             String errorMsg) throws IOException {
-        if (this.responseType != null && this.responseType.equalsIgnoreCase("json")) {
+        if (this.getResponseType() != null && this.getResponseType().equalsIgnoreCase("json")) {
             handleJSONResponse(writer, errorMsg, null);
         } else {
             writer.write("<script type=\"text/javascript\">");
             writer.write("window.parent.OnUploadCompleted(");
-            writer.write("" + this.errorCode + ", ");
-            if (uploaded) {
-                writer.write("'" + configuration.getTypes().get(this.type).getUrl()
-                        + this.currentFolder
-                        + FileUtils.backupWithBackSlash(FileUtils.encodeURIComponent(this.newFileName), "'")
+            writer.write("" + this.getErrorCode() + ", ");
+            if (isUploaded()) {
+                writer.write("'" + getConfiguration().getTypes().get(this.getType()).getUrl()
+                        + this.getCurrentFolder()
+                        + FileUtils.backupWithBackSlash(FileUtils.encodeURIComponent(this.getNewFileName()), "'")
                         + "', ");
-                writer.write("'" + FileUtils.backupWithBackSlash(this.newFileName, "'")
+                writer.write("'" + FileUtils.backupWithBackSlash(this.getNewFileName(), "'")
                         + "', ");
             } else {
                 writer.write("'', '', ");
@@ -54,16 +54,15 @@ public class QuickUploadCommand extends FileUploadCommand {
     @Override
     protected void handleOnUploadCompleteCallFuncResponse(Writer writer,
             String errorMsg, String path) throws IOException {
-        if (this.responseType != null && this.responseType.equalsIgnoreCase("json")) {
+        if (this.getResponseType() != null && this.getResponseType().equalsIgnoreCase("json")) {
             handleJSONResponse(writer, errorMsg, path);
         } else {
             writer.write("<script type=\"text/javascript\">");
-            this.ckEditorFuncNum = this.ckEditorFuncNum.replaceAll(
-                    "[^\\d]", "");
+            this.setCkEditorFuncNum(this.getCkEditorFuncNum().replaceAll("[^\\d]", ""));
             writer.write(("window.parent.CKEDITOR.tools.callFunction("
-                    + this.ckEditorFuncNum + ", '"
+                    + this.getCkEditorFuncNum() + ", '"
                     + path
-                    + FileUtils.backupWithBackSlash(FileUtils.encodeURIComponent(this.newFileName), "'")
+                    + FileUtils.backupWithBackSlash(FileUtils.encodeURIComponent(this.getNewFileName()), "'")
                     + "', '" + errorMsg + "');"));
             writer.write("</script>");
         }
@@ -71,14 +70,13 @@ public class QuickUploadCommand extends FileUploadCommand {
 
     @Override
     protected boolean checkFuncNum() {
-        return this.ckEditorFuncNum != null;
+        return this.getCkEditorFuncNum() != null;
     }
 
     @Override
-    public void setResponseHeader(HttpServletResponse response,
-            ServletContext sc) {
+    public void setResponseHeader(HttpServletResponse response, ServletContext sc) {
         response.setCharacterEncoding("utf-8");
-        if (this.responseType != null && this.responseType.equalsIgnoreCase("json")) {
+        if (this.getResponseType() != null && this.getResponseType().equalsIgnoreCase("json")) {
             response.setContentType("application/json");
         } else {
             response.setContentType("text/html");
@@ -101,31 +99,26 @@ public class QuickUploadCommand extends FileUploadCommand {
         @SuppressWarnings("CollectionWithoutInitialCapacity")
         Map<String, Object> jsonObj = new HashMap<>();
 
-        jsonObj.put("fileName", this.newFileName);
-        jsonObj.put("uploaded", this.uploaded ? 1 : 0);
+        jsonObj.put("fileName", this.getNewFileName());
+        jsonObj.put("uploaded", this.isUploaded() ? 1 : 0);
 
-        if (uploaded) {
+        if (isUploaded()) {
             if (path != null && !path.isEmpty()) {
-                jsonObj.put(
-                        "url",
-                        path
-                        + FileUtils.backupWithBackSlash(FileUtils
-                                .encodeURIComponent(this.newFileName),
-                                "'"));
+                jsonObj.put("url", path + FileUtils.backupWithBackSlash(FileUtils.encodeURIComponent(this.getNewFileName()), "'"));
             } else {
                 jsonObj.put(
                         "url",
-                        configuration.getTypes().get(this.type).getUrl()
-                        + this.currentFolder
+                        getConfiguration().getTypes().get(this.getType()).getUrl()
+                        + this.getCurrentFolder()
                         + FileUtils.backupWithBackSlash(FileUtils
-                                .encodeURIComponent(this.newFileName),
+                                .encodeURIComponent(this.getNewFileName()),
                                 "'"));
             }
         }
 
         if (errorMsg != null && !errorMsg.isEmpty()) {
             Map<String, Object> jsonErrObj = new HashMap<>(3);
-            jsonErrObj.put("number", this.errorCode);
+            jsonErrObj.put("number", this.getErrorCode());
             jsonErrObj.put("message", errorMsg);
             jsonObj.put("error", jsonErrObj);
         }

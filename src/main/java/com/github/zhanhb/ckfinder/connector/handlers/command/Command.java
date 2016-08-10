@@ -27,20 +27,26 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Base class for all command handlers.
  */
+@Getter(AccessLevel.PROTECTED)
 @SuppressWarnings("ProtectedField")
 public abstract class Command {
 
     /**
      * Connector configuration.
      */
-    protected IConfiguration configuration;
-    protected String userRole;
-    protected String currentFolder;
-    protected String type;
+    private IConfiguration configuration;
+    private String userRole;
+    @Setter(AccessLevel.PROTECTED)
+    private String currentFolder;
+    @Setter(AccessLevel.PROTECTED)
+    private String type;
 
     /**
      * standard constructor.
@@ -60,8 +66,7 @@ public abstract class Command {
      * @param configuration connector configuration
      * @throws ConnectorException when error occurred.
      */
-    public void runCommand(HttpServletRequest request,
-            HttpServletResponse response,
+    public void runCommand(HttpServletRequest request, HttpServletResponse response,
             IConfiguration configuration) throws ConnectorException {
         this.initParams(request, configuration);
         try {
@@ -87,17 +92,16 @@ public abstract class Command {
             throws ConnectorException {
         if (configuration != null) {
             this.configuration = configuration;
-            this.userRole = (String) request.getSession().getAttribute(
-                    this.configuration.getUserRoleName());
+            userRole = (String) request.getSession().getAttribute(configuration.getUserRoleName());
 
             getCurrentFolderParam(request);
 
-            if (checkConnector(request) && checkParam(this.currentFolder)) {
-                this.currentFolder = PathUtils.escape(this.currentFolder);
+            if (checkConnector(request) && checkParam(this.getCurrentFolder())) {
+                this.setCurrentFolder(PathUtils.escape(this.getCurrentFolder()));
                 if (!checkHidden()) {
-                    if ((this.currentFolder == null || this.currentFolder.isEmpty())
+                    if ((this.getCurrentFolder() == null || this.getCurrentFolder().isEmpty())
                             || checkIfCurrFolderExists(request)) {
-                        this.type = request.getParameter("type");
+                        this.setType(request.getParameter("type"));
                     }
                 }
             }
@@ -113,7 +117,7 @@ public abstract class Command {
      */
     protected boolean checkConnector(HttpServletRequest request)
             throws ConnectorException {
-        if (!configuration.enabled() || !configuration.checkAuthentication(request)) {
+        if (!getConfiguration().enabled() || !getConfiguration().checkAuthentication(request)) {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_CONNECTOR_DISABLED, false);
         }
@@ -132,9 +136,7 @@ public abstract class Command {
         String tmpType = request.getParameter("type");
         if (tmpType != null) {
             if (checkIfTypeExists(tmpType)) {
-                Path currDir = Paths.get(
-                        configuration.getTypes().get(tmpType).getPath()
-                        + this.currentFolder);
+                Path currDir = Paths.get(getConfiguration().getTypes().get(tmpType).getPath() + this.getCurrentFolder());
                 if (!Files.exists(currDir) || !Files.isDirectory(currDir)) {
                     throw new ConnectorException(
                             Constants.Errors.CKFINDER_CONNECTOR_ERROR_FOLDER_NOT_FOUND,
@@ -155,7 +157,7 @@ public abstract class Command {
      * @return {@code true} if provided type exists, {@code false} otherwise.
      */
     protected boolean checkIfTypeExists(String type) {
-        ResourceType testType = configuration.getTypes().get(type);
+        ResourceType testType = getConfiguration().getTypes().get(type);
         return testType != null;
     }
 
@@ -166,7 +168,7 @@ public abstract class Command {
      * @throws ConnectorException when is hidden
      */
     protected boolean checkHidden() throws ConnectorException {
-        if (FileUtils.checkIfDirIsHidden(this.currentFolder, configuration)) {
+        if (FileUtils.checkIfDirIsHidden(this.getCurrentFolder(), getConfiguration())) {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST,
                     false);
@@ -198,8 +200,7 @@ public abstract class Command {
      * @return true if validation passed
      * @throws ConnectorException if validation error occurs.
      */
-    protected boolean checkParam(String reqParam)
-            throws ConnectorException {
+    protected boolean checkParam(String reqParam) throws ConnectorException {
         if (reqParam == null || reqParam.isEmpty()) {
             return true;
         }
@@ -220,9 +221,9 @@ public abstract class Command {
     protected void getCurrentFolderParam(HttpServletRequest request) {
         String currFolder = request.getParameter("currentFolder");
         if (currFolder == null || currFolder.isEmpty()) {
-            this.currentFolder = "/";
+            this.setCurrentFolder("/");
         } else {
-            this.currentFolder = PathUtils.addSlashToBeginning(PathUtils.addSlashToEnd(currFolder));
+            this.setCurrentFolder(PathUtils.addSlashToBeginning(PathUtils.addSlashToEnd(currFolder)));
         }
     }
 

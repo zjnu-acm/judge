@@ -50,8 +50,7 @@ public class ImageUtils {
      * @throws IOException when error occurs.
      */
     private static void resizeImage(BufferedImage sourceImage, int width,
-            int height, float quality,
-            Path destFile) throws IOException {
+            int height, float quality, Path destFile) throws IOException {
         try {
             Thumbnails.of(sourceImage).size(width, height).keepAspectRatio(false).outputQuality(quality).toFile(destFile.toFile());
             // for some special files outputQuality couses error:
@@ -63,7 +62,7 @@ public class ImageUtils {
             //  .outputQuality(quality).toFile(destFile);
             // should remain.
         } catch (IllegalStateException e) {
-            Thumbnails.of(sourceImage).size(width, height).keepAspectRatio(false).toFile(destFile.toFile());
+            Thumbnails.of(sourceImage).size(width, height).keepAspectRatio(false).determineOutputFormat().toFile(destFile.toFile());
         }
     }
 
@@ -75,8 +74,8 @@ public class ImageUtils {
      * @param conf connector configuration
      * @throws IOException when error occurs.
      */
-    public static void createThumb(Path orginFile, Path file,
-            IConfiguration conf) throws IOException {
+    public static void createThumb(Path orginFile, Path file, IConfiguration conf)
+            throws IOException {
         try (InputStream is = Files.newInputStream(orginFile)) {
             BufferedImage image = ImageIO.read(is);
             if (image != null) {
@@ -141,8 +140,10 @@ public class ImageUtils {
     public static void createResizedImage(Path sourceFile,
             Path destFile, int width, int height,
             float quality) throws IOException {
-
-        BufferedImage image = ImageIO.read(sourceFile.toFile());
+        BufferedImage image;
+        try (InputStream is = Files.newInputStream(sourceFile)) {
+            image = ImageIO.read(is);
+        }
         Dimension dimension = new Dimension(width, height);
         if (image.getHeight() == dimension.height
                 && image.getWidth() == dimension.width) {
@@ -150,9 +151,7 @@ public class ImageUtils {
         } else {
             resizeImage(image, dimension.width, dimension.height, quality,
                     destFile);
-
         }
-
     }
 
     /**
@@ -165,23 +164,23 @@ public class ImageUtils {
      */
     private static Dimension createThumbDimension(BufferedImage image,
             int maxWidth, int maxHeight) {
-        Dimension dimension = new Dimension();
+        int width, height;
         if (image.getWidth() >= image.getHeight()) {
             if (image.getWidth() >= maxWidth) {
-                dimension.width = maxWidth;
-                dimension.height = Math.round(((float) maxWidth / image.getWidth()) * image.getHeight());
+                width = maxWidth;
+                height = Math.round(((float) maxWidth / image.getWidth()) * image.getHeight());
             } else {
-                dimension.height = image.getHeight();
-                dimension.width = image.getWidth();
+                height = image.getHeight();
+                width = image.getWidth();
             }
         } else if (image.getHeight() >= maxHeight) {
-            dimension.height = maxHeight;
-            dimension.width = Math.round((((float) maxHeight / image.getHeight()) * image.getWidth()));
+            height = maxHeight;
+            width = Math.round((((float) maxHeight / image.getHeight()) * image.getWidth()));
         } else {
-            dimension.height = image.getHeight();
-            dimension.width = image.getWidth();
+            height = image.getHeight();
+            width = image.getWidth();
         }
-        return dimension;
+        return new Dimension(width, height);
     }
 
     /**
@@ -190,7 +189,7 @@ public class ImageUtils {
      * @param file file to check
      * @return true if file is image.
      */
-    public static boolean isImage(Path file) {
+    public static boolean isImageExtension(Path file) {
         if (file != null) {
             String fileExt = FileUtils.getFileExtension(file.getFileName().toString().toLowerCase());
             return (fileExt != null) ? ALLOWED_EXT.contains(fileExt) : false;
@@ -231,7 +230,7 @@ public class ImageUtils {
      * @param item file upload item
      * @return true if file is image.
      */
-    public static boolean checkImageFile(Part item) {
+    public static boolean isValid(Part item) {
         BufferedImage bi;
         try (InputStream is = item.getInputStream()) {
             bi = ImageIO.read(is);
