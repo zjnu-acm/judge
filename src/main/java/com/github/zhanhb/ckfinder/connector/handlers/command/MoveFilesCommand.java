@@ -308,14 +308,12 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
         int i = 0;
         while (true) {
             String paramName = "files[" + i + "][name]";
-            if (request.getParameter(paramName) != null) {
-                FilePostParam file = new FilePostParam();
-                file.setName(request.getParameter(paramName));
-                file.setFolder(request.getParameter("files[" + i + "][folder]"));
-                file.setOptions(request.getParameter("files[" + i
-                        + "][options]"));
-                file.setType(request.getParameter("files[" + i + "][type]"));
-                files.add(file);
+            String name = request.getParameter(paramName);
+            if (name != null) {
+                String folder = request.getParameter("files[" + i + "][folder]");
+                String options = request.getParameter("files[" + i + "][options]");
+                String type = request.getParameter("files[" + i + "][type]");
+                files.add(new FilePostParam(name, folder, options, type));
             } else {
                 break;
             }
