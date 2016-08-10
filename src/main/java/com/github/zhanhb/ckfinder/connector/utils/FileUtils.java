@@ -64,8 +64,10 @@ public class FileUtils {
             boolean searchDirs) throws IOException {
         @SuppressWarnings("CollectionWithoutInitialCapacity")
         List<String> files = new ArrayList<>();
-        for (Path file : Files.newDirectoryStream(dir, file -> searchDirs == Files.isDirectory(file))) {
-            files.add(file.getFileName().toString());
+        try (DirectoryStream<Path> ds = Files.newDirectoryStream(dir, file -> searchDirs == Files.isDirectory(file))) {
+            for (Path file : ds) {
+                files.add(file.getFileName().toString());
+            }
         }
         return files;
     }
@@ -469,15 +471,15 @@ public class FileUtils {
      * @throws java.io.IOException
      */
     public static Boolean hasChildren(AccessControl accessControl, String dirPath, Path dir, IConfiguration configuration, String resourceType, String currentUserRole) throws IOException {
-        DirectoryStream<Path> subDirsList = Files.newDirectoryStream(dir, Files::isDirectory);
-
-        if (subDirsList != null) {
-            for (Path subDirsList1 : subDirsList) {
-                String subDirName = subDirsList1.getFileName().toString();
-                if (!FileUtils.checkIfDirIsHidden(subDirName, configuration)
-                        && accessControl.checkFolderACL(resourceType,
-                                dirPath + subDirName, currentUserRole, AccessControl.CKFINDER_CONNECTOR_ACL_FOLDER_VIEW)) {
-                    return true;
+        try (DirectoryStream<Path> subDirsList = Files.newDirectoryStream(dir, Files::isDirectory)) {
+            if (subDirsList != null) {
+                for (Path subDirsList1 : subDirsList) {
+                    String subDirName = subDirsList1.getFileName().toString();
+                    if (!FileUtils.checkIfDirIsHidden(subDirName, configuration)
+                            && accessControl.checkFolderACL(resourceType,
+                                    dirPath + subDirName, currentUserRole, AccessControl.CKFINDER_CONNECTOR_ACL_FOLDER_VIEW)) {
+                        return true;
+                    }
                 }
             }
         }

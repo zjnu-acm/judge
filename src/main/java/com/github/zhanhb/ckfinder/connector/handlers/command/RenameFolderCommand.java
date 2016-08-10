@@ -35,8 +35,7 @@ public class RenameFolderCommand extends XMLCommand implements IPostCommand {
     private String newFolderPath;
 
     @Override
-    protected void createXMLChildNodes(int errorNum, Element rootElement)
-            throws ConnectorException {
+    protected void createXMLChildNodes(int errorNum, Element rootElement) {
         if (errorNum == Constants.Errors.CKFINDER_CONNECTOR_ERROR_NONE) {
             createRenamedFolderNode(rootElement);
         }
@@ -49,10 +48,10 @@ public class RenameFolderCommand extends XMLCommand implements IPostCommand {
      * @param rootElement XML root element.
      */
     private void createRenamedFolderNode(Element rootElement) {
-        Element element = creator.getDocument().createElement("RenamedFolder");
+        Element element = getCreator().getDocument().createElement("RenamedFolder");
         element.setAttribute("newName", this.newFolderName);
         element.setAttribute("newPath", this.newFolderPath);
-        element.setAttribute("newUrl", configuration.getTypes().get(this.type).getUrl() + this.newFolderPath);
+        element.setAttribute("newUrl", getConfiguration().getTypes().get(this.getType()).getUrl() + this.newFolderPath);
         rootElement.appendChild(element);
 
     }
@@ -67,39 +66,39 @@ public class RenameFolderCommand extends XMLCommand implements IPostCommand {
             return e.getErrorCode();
         }
 
-        if (!checkIfTypeExists(this.type)) {
-            this.type = null;
+        if (!checkIfTypeExists(getType())) {
+            this.setType(null);
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
         }
 
-        if (!configuration.getAccessControl().checkFolderACL(this.type,
-                this.currentFolder,
-                this.userRole,
+        if (!getConfiguration().getAccessControl().checkFolderACL(getType(),
+                getCurrentFolder(),
+                getUserRole(),
                 AccessControl.CKFINDER_CONNECTOR_ACL_FOLDER_RENAME)) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
         }
 
-        if (configuration.forceASCII()) {
+        if (getConfiguration().forceASCII()) {
             this.newFolderName = FileUtils.convertToASCII(this.newFolderName);
         }
 
-        if (FileUtils.checkIfDirIsHidden(this.newFolderName, configuration)
-                || !FileUtils.checkFolderName(this.newFolderName, configuration)) {
+        if (FileUtils.checkIfDirIsHidden(this.newFolderName, getConfiguration())
+                || !FileUtils.checkFolderName(this.newFolderName, getConfiguration())) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_NAME;
         }
 
-        if (this.currentFolder.equals("/")) {
+        if (this.getCurrentFolder().equals("/")) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
         }
 
-        Path dir = Paths.get(configuration.getTypes().get(this.type).getPath()
-                + this.currentFolder);
+        Path dir = Paths.get(getConfiguration().getTypes().get(this.getType()).getPath()
+                + this.getCurrentFolder());
         try {
             if (!Files.isDirectory(dir)) {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
             }
             setNewFolder();
-            Path newDir = Paths.get(configuration.getTypes().get(this.type).getPath()
+            Path newDir = Paths.get(getConfiguration().getTypes().get(this.getType()).getPath()
                     + this.newFolderPath);
             if (Files.exists(newDir)) {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_ALREADY_EXIST;
@@ -122,11 +121,11 @@ public class RenameFolderCommand extends XMLCommand implements IPostCommand {
      * renames thumb folder.
      */
     private void renameThumb() throws IOException {
-        Path thumbDir = Paths.get(configuration.getThumbsPath(),
-                this.type
-                + this.currentFolder);
-        Path newThumbDir = Paths.get(configuration.getThumbsPath(),
-                this.type
+        Path thumbDir = Paths.get(getConfiguration().getThumbsPath(),
+                this.getType()
+                + this.getCurrentFolder());
+        Path newThumbDir = Paths.get(getConfiguration().getThumbsPath(),
+                this.getType()
                 + this.newFolderPath);
         Files.move(thumbDir, newThumbDir);
     }
@@ -135,8 +134,8 @@ public class RenameFolderCommand extends XMLCommand implements IPostCommand {
      * sets new folder name.
      */
     private void setNewFolder() {
-        String tmp1 = this.currentFolder.substring(0,
-                this.currentFolder.lastIndexOf('/'));
+        String tmp1 = this.getCurrentFolder().substring(0,
+                this.getCurrentFolder().lastIndexOf('/'));
         this.newFolderPath = tmp1.substring(0,
                 tmp1.lastIndexOf('/') + 1).concat(this.newFolderName);
         this.newFolderPath = PathUtils.addSlashToEnd(this.newFolderPath);

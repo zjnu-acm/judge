@@ -14,7 +14,6 @@ package com.github.zhanhb.ckfinder.connector.handlers.command;
 import com.github.zhanhb.ckfinder.connector.configuration.Constants;
 import com.github.zhanhb.ckfinder.connector.data.XmlAttribute;
 import com.github.zhanhb.ckfinder.connector.data.XmlElementData;
-import com.github.zhanhb.ckfinder.connector.errors.ConnectorException;
 import com.github.zhanhb.ckfinder.connector.utils.AccessControl;
 import com.github.zhanhb.ckfinder.connector.utils.FileUtils;
 import java.io.IOException;
@@ -39,8 +38,7 @@ public class GetFoldersCommand extends XMLCommand {
     private List<String> directories;
 
     @Override
-    protected void createXMLChildNodes(int errorNum, Element rootElement)
-            throws ConnectorException, IOException {
+    protected void createXMLChildNodes(int errorNum, Element rootElement) throws IOException {
         if (errorNum == Constants.Errors.CKFINDER_CONNECTOR_ERROR_NONE) {
             createFoldersData(rootElement);
         }
@@ -54,23 +52,23 @@ public class GetFoldersCommand extends XMLCommand {
      */
     @Override
     protected int getDataForXml() throws IOException {
-        if (!checkIfTypeExists(this.type)) {
-            this.type = null;
+        if (!checkIfTypeExists(getType())) {
+            this.setType(null);
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
         }
 
-        if (!configuration.getAccessControl().checkFolderACL(this.type,
-                this.currentFolder,
-                this.userRole,
+        if (!getConfiguration().getAccessControl().checkFolderACL(getType(),
+                getCurrentFolder(),
+                getUserRole(),
                 AccessControl.CKFINDER_CONNECTOR_ACL_FOLDER_VIEW)) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
         }
-        if (FileUtils.checkIfDirIsHidden(this.currentFolder, configuration)) {
+        if (FileUtils.checkIfDirIsHidden(this.getCurrentFolder(), getConfiguration())) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
         }
 
-        Path dir = Paths.get(configuration.getTypes().get(this.type).getPath()
-                + this.currentFolder);
+        Path dir = Paths.get(getConfiguration().getTypes().get(this.getType()).getPath()
+                + this.getCurrentFolder());
         try {
             if (!Files.exists(dir)) {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_FOLDER_NOT_FOUND;
@@ -92,10 +90,9 @@ public class GetFoldersCommand extends XMLCommand {
      */
     private void filterListByHiddenAndNotAllowed() {
         List<String> tmpDirs = this.directories.stream()
-                .filter(dir -> (configuration.getAccessControl().checkFolderACL(this.type, this.currentFolder + dir,
-                        this.userRole,
+                .filter(dir -> (getConfiguration().getAccessControl().checkFolderACL(this.getType(), this.getCurrentFolder() + dir, this.getUserRole(),
                         AccessControl.CKFINDER_CONNECTOR_ACL_FOLDER_VIEW)
-                        && !FileUtils.checkIfDirIsHidden(dir, this.configuration)))
+                        && !FileUtils.checkIfDirIsHidden(dir, getConfiguration())))
                 .collect(Collectors.toList());
 
         this.directories.clear();
@@ -109,27 +106,27 @@ public class GetFoldersCommand extends XMLCommand {
      * @param rootElement root element in XML document
      */
     private void createFoldersData(Element rootElement) throws IOException {
-        Element element = creator.getDocument().createElement("Folders");
+        Element element = getCreator().getDocument().createElement("Folders");
         for (String dirPath : directories) {
-            Path dir = Paths.get(this.configuration.getTypes().get(this.type).getPath()
-                    + this.currentFolder
+            Path dir = Paths.get(this.getConfiguration().getTypes().get(this.getType()).getPath()
+                    + this.getCurrentFolder()
                     + dirPath);
             if (Files.exists(dir)) {
                 XmlElementData xmlElementData = new XmlElementData("Folder");
                 xmlElementData.getAttributes().add(new XmlAttribute("name", dirPath));
 
                 xmlElementData.getAttributes().add(new XmlAttribute("hasChildren",
-                        FileUtils.hasChildren(configuration.getAccessControl(), this.currentFolder + dirPath + "/", dir, configuration, this.type, this.userRole).toString()));
+                        FileUtils.hasChildren(getConfiguration().getAccessControl(), this.getCurrentFolder() + dirPath + "/", dir, getConfiguration(), this.getType(), this.getUserRole()).toString()));
 
                 xmlElementData.getAttributes().add(new XmlAttribute("acl",
-                        String.valueOf(configuration.getAccessControl().checkACLForRole(this.type,
-                                this.currentFolder
-                                + dirPath,
-                                this.userRole))));
-                xmlElementData.addToDocument(creator.getDocument(), element);
+                        String.valueOf(getConfiguration().getAccessControl().checkACLForRole(this.getType(),
+                                this.getCurrentFolder()
+                                + dirPath, this.getUserRole()))));
+                xmlElementData.addToDocument(getCreator().getDocument(), element);
             }
 
         }
         rootElement.appendChild(element);
     }
+
 }

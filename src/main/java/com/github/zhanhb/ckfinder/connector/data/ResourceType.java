@@ -31,7 +31,7 @@ public class ResourceType {
     /**
      * resource name.
      */
-    private String name;
+    private final String name;
     /**
      * resource url.
      */

@@ -69,8 +69,7 @@ public class GetFilesCommand extends XMLCommand {
     }
 
     @Override
-    protected void createXMLChildNodes(int errorNum, Element rootElement)
-            throws ConnectorException, IOException {
+    protected void createXMLChildNodes(int errorNum, Element rootElement) throws IOException {
         if (errorNum == Constants.Errors.CKFINDER_CONNECTOR_ERROR_NONE) {
             createFilesData(rootElement);
         }
@@ -84,15 +83,15 @@ public class GetFilesCommand extends XMLCommand {
      */
     @Override
     protected int getDataForXml() throws IOException {
-        if (!checkIfTypeExists(this.type)) {
-            this.type = null;
+        if (!checkIfTypeExists(getType())) {
+            this.setType(null);
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
         }
 
-        this.fullCurrentPath = configuration.getTypes().get(this.type).getPath()
-                + this.currentFolder;
+        this.fullCurrentPath = getConfiguration().getTypes().get(this.getType()).getPath()
+                + this.getCurrentFolder();
 
-        if (!configuration.getAccessControl().checkFolderACL(this.type, this.currentFolder, this.userRole,
+        if (!getConfiguration().getAccessControl().checkFolderACL(getType(), getCurrentFolder(),getUserRole(),
                 AccessControl.CKFINDER_CONNECTOR_ACL_FILE_VIEW)) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
         }
@@ -118,8 +117,8 @@ public class GetFilesCommand extends XMLCommand {
      */
     private void filterListByHiddenAndNotAllowed() {
         List<String> tmpFiles = this.files.stream()
-                .filter(file -> (FileUtils.checkFileExtension(file, this.configuration.getTypes().get(this.type)) == 0
-                && !FileUtils.checkIfFileIsHidden(file, this.configuration)))
+                .filter(file -> (FileUtils.checkFileExtension(file, this.getConfiguration().getTypes().get(this.getType())) == 0
+                        && !FileUtils.checkIfFileIsHidden(file, getConfiguration())))
                 .collect(Collectors.toList());
 
         this.files.clear();
@@ -133,7 +132,7 @@ public class GetFilesCommand extends XMLCommand {
      * @param rootElement root element from XML.
      */
     private void createFilesData(Element rootElement) throws IOException {
-        Element element = creator.getDocument().createElement("Files");
+        Element element = getCreator().getDocument().createElement("Files");
         for (String filePath : files) {
             Path file = Paths.get(this.fullCurrentPath, filePath);
             if (Files.exists(file)) {
@@ -145,14 +144,14 @@ public class GetFilesCommand extends XMLCommand {
                 elementData.getAttributes().add(attribute);
                 attribute = new XmlAttribute("size", getSize(file));
                 elementData.getAttributes().add(attribute);
-                if (ImageUtils.isImage(file) && isAddThumbsAttr()) {
+                if (ImageUtils.isImageExtension(file) && isAddThumbsAttr()) {
                     String attr = createThumbAttr(file);
                     if (!attr.isEmpty()) {
                         attribute = new XmlAttribute("thumb", attr);
                         elementData.getAttributes().add(attribute);
                     }
                 }
-                elementData.addToDocument(this.creator.getDocument(), element);
+                elementData.addToDocument(this.getCreator().getDocument(), element);
             }
         }
         rootElement.appendChild(element);
@@ -165,8 +164,8 @@ public class GetFilesCommand extends XMLCommand {
      * @return thumb attribute values
      */
     private String createThumbAttr(Path file) {
-        Path thumbFile = Paths.get(configuration.getThumbsPath(),
-                this.type + this.currentFolder,
+        Path thumbFile = Paths.get(getConfiguration().getThumbsPath(),
+                this.getType() + this.getCurrentFolder(),
                 file.getFileName().toString());
         if (Files.exists(thumbFile)) {
             return file.getFileName().toString();
@@ -198,8 +197,8 @@ public class GetFilesCommand extends XMLCommand {
      * @return true if show thumbs
      */
     private boolean isAddThumbsAttr() {
-        return configuration.getThumbsEnabled()
-                && (configuration.getThumbsDirectAccess()
+        return getConfiguration().getThumbsEnabled()
+                && (getConfiguration().getThumbsDirectAccess()
                 || isShowThumbs());
     }
 

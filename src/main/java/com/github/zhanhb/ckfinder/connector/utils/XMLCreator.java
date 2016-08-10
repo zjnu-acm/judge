@@ -24,6 +24,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -40,7 +41,7 @@ public class XMLCreator {
      *
      * errors list.
      */
-    private List<ErrorNode> errorList;
+    private final List<ErrorNode> errorList;
 
     /**
      * standard constructor.
@@ -126,8 +127,7 @@ public class XMLCreator {
      */
     public void appendErrorNodeChild(int errorCode, String name,
             String path, String type) {
-        ErrorNode errorNode = new ErrorNode(path, type, name, errorCode);
-        errorList.add(errorNode);
+        errorList.add(ErrorNode.builder().type(type).name(name).folder(path).errorCode(errorCode).build());
     }
 
     /**
@@ -159,6 +159,7 @@ public class XMLCreator {
     /**
      * error node object.
      */
+    @Builder
     @AllArgsConstructor
     private static class ErrorNode {
 
@@ -168,4 +169,5 @@ public class XMLCreator {
         private int errorCode;
 
     }
+
 }

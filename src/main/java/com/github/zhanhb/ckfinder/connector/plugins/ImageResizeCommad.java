@@ -14,7 +14,7 @@ package com.github.zhanhb.ckfinder.connector.plugins;
 import com.github.zhanhb.ckfinder.connector.configuration.Constants;
 import com.github.zhanhb.ckfinder.connector.configuration.IConfiguration;
 import com.github.zhanhb.ckfinder.connector.data.BeforeExecuteCommandEventArgs;
-import com.github.zhanhb.ckfinder.connector.data.IEventHandler;
+import com.github.zhanhb.ckfinder.connector.data.BeforeExecuteCommandEventHandler;
 import com.github.zhanhb.ckfinder.connector.data.PluginInfo;
 import com.github.zhanhb.ckfinder.connector.data.PluginParam;
 import com.github.zhanhb.ckfinder.connector.errors.ConnectorException;
@@ -37,7 +37,7 @@ import org.w3c.dom.Element;
 
 @RequiredArgsConstructor
 @Slf4j
-public class ImageResizeCommad extends XMLCommand implements IEventHandler<BeforeExecuteCommandEventArgs> {
+public class ImageResizeCommad extends XMLCommand implements BeforeExecuteCommandEventHandler {
 
     private static final String[] SIZES = {"small", "medium", "large"};
 
@@ -65,19 +65,17 @@ public class ImageResizeCommad extends XMLCommand implements IEventHandler<Befor
     }
 
     @Override
-    protected void createXMLChildNodes(int arg0, Element arg1)
-            throws ConnectorException {
+    protected void createXMLChildNodes(int arg0, Element arg1) {
     }
 
     @Override
     protected int getDataForXml() {
-
-        if (!checkIfTypeExists(this.type)) {
-            this.type = null;
+        if (!checkIfTypeExists(getType())) {
+            this.setType(null);
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
         }
 
-        if (!configuration.getAccessControl().checkFolderACL(type, currentFolder, userRole,
+        if (!getConfiguration().getAccessControl().checkFolderACL(getType(), getCurrentFolder(), getUserRole(),
                 AccessControl.CKFINDER_CONNECTOR_ACL_FILE_DELETE
                 | AccessControl.CKFINDER_CONNECTOR_ACL_FILE_UPLOAD)) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
@@ -88,15 +86,15 @@ public class ImageResizeCommad extends XMLCommand implements IEventHandler<Befor
         }
 
         if (!FileUtils.checkFileName(fileName)
-                || FileUtils.checkIfFileIsHidden(fileName, configuration)) {
+                || FileUtils.checkIfFileIsHidden(fileName, getConfiguration())) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
         }
 
-        if (FileUtils.checkFileExtension(fileName, configuration.getTypes().get(type)) == 1) {
+        if (FileUtils.checkFileExtension(fileName, getConfiguration().getTypes().get(getType())) == 1) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
         }
 
-        Path file = Paths.get(configuration.getTypes().get(type).getPath() + this.currentFolder,
+        Path file = Paths.get(getConfiguration().getTypes().get(getType()).getPath() + this.getCurrentFolder(),
                 fileName);
         try {
             if (!(Files.exists(file) && Files.isRegularFile(file))) {
@@ -110,16 +108,16 @@ public class ImageResizeCommad extends XMLCommand implements IEventHandler<Befor
             if (this.width != null && this.height != null) {
 
                 if (!FileUtils.checkFileName(this.newFileName)
-                        && FileUtils.checkIfFileIsHidden(this.newFileName, configuration)) {
+                        && FileUtils.checkIfFileIsHidden(this.newFileName, getConfiguration())) {
                     return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_NAME;
                 }
 
                 if (FileUtils.checkFileExtension(this.newFileName,
-                        configuration.getTypes().get(this.type)) == 1) {
+                        getConfiguration().getTypes().get(this.getType())) == 1) {
                     return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_EXTENSION;
                 }
 
-                Path thumbFile = Paths.get(configuration.getTypes().get(type).getPath() + this.currentFolder,
+                Path thumbFile = Paths.get(getConfiguration().getTypes().get(getType()).getPath() + this.getCurrentFolder(),
                         this.newFileName);
 
                 if (Files.exists(thumbFile) && !Files.isWritable(thumbFile)) {
@@ -128,8 +126,8 @@ public class ImageResizeCommad extends XMLCommand implements IEventHandler<Befor
                 if (!"1".equals(this.overwrite) && Files.exists(thumbFile)) {
                     return Constants.Errors.CKFINDER_CONNECTOR_ERROR_ALREADY_EXIST;
                 }
-                int maxImageHeight = configuration.getImgHeight();
-                int maxImageWidth = configuration.getImgWidth();
+                int maxImageHeight = getConfiguration().getImgHeight();
+                int maxImageWidth = getConfiguration().getImgWidth();
                 if ((maxImageWidth > 0 && this.width > maxImageWidth)
                         || (maxImageHeight > 0 && this.height > maxImageHeight)) {
                     return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
@@ -137,7 +135,7 @@ public class ImageResizeCommad extends XMLCommand implements IEventHandler<Befor
 
                 try {
                     ImageUtils.createResizedImage(file, thumbFile,
-                            this.width, this.height, configuration.getImgQuality());
+                            this.width, this.height, getConfiguration().getImgQuality());
 
                 } catch (IOException e) {
                     log.error("", e);
@@ -151,14 +149,14 @@ public class ImageResizeCommad extends XMLCommand implements IEventHandler<Befor
                 if (sizesFromReq.get(size) != null
                         && sizesFromReq.get(size).equals("1")) {
                     String thumbName = fileNameWithoutExt.concat("_").concat(size).concat(".").concat(fileExt);
-                    Path thumbFile = Paths.get(configuration.getTypes().get(this.type).getPath().concat(this.currentFolder).concat(thumbName));
+                    Path thumbFile = Paths.get(getConfiguration().getTypes().get(this.getType()).getPath().concat(this.getCurrentFolder()).concat(thumbName));
                     for (PluginParam param : pluginInfo.getParams()) {
                         if (size.concat("Thumb").equals(param.getName())) {
                             if (checkParamSize(param.getValue())) {
                                 String[] params = parseValue(param.getValue());
                                 try {
                                     ImageUtils.createResizedImage(file, thumbFile, Integer.parseInt(params[0]),
-                                            Integer.parseInt(params[1]), configuration.getImgQuality());
+                                            Integer.parseInt(params[1]), getConfiguration().getImgQuality());
                                 } catch (IOException e) {
                                     log.error("", e);
                                     return Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED;

@@ -14,13 +14,14 @@ package com.github.zhanhb.ckfinder.connector.plugins;
 import com.github.zhanhb.ckfinder.connector.configuration.Constants;
 import com.github.zhanhb.ckfinder.connector.configuration.IConfiguration;
 import com.github.zhanhb.ckfinder.connector.data.BeforeExecuteCommandEventArgs;
-import com.github.zhanhb.ckfinder.connector.data.IEventHandler;
+import com.github.zhanhb.ckfinder.connector.data.BeforeExecuteCommandEventHandler;
 import com.github.zhanhb.ckfinder.connector.errors.ConnectorException;
 import com.github.zhanhb.ckfinder.connector.handlers.command.XMLCommand;
 import com.github.zhanhb.ckfinder.connector.utils.AccessControl;
 import com.github.zhanhb.ckfinder.connector.utils.FileUtils;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -30,63 +31,60 @@ import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Element;
 
 @Slf4j
-public class ImageResizeInfoCommand extends XMLCommand implements IEventHandler<BeforeExecuteCommandEventArgs> {
+public class ImageResizeInfoCommand extends XMLCommand implements BeforeExecuteCommandEventHandler {
 
     private int imageWidth;
     private int imageHeight;
     private String fileName;
 
     @Override
-    public boolean runEventHandler(BeforeExecuteCommandEventArgs args, IConfiguration configuration1)
+    public boolean runEventHandler(BeforeExecuteCommandEventArgs args, IConfiguration configuration)
             throws ConnectorException {
         if ("ImageResizeInfo".equals(args.getCommand())) {
-            this.runCommand(args.getRequest(), args.getResponse(), configuration1);
+            this.runCommand(args.getRequest(), args.getResponse(), configuration);
             return false;
         }
         return true;
     }
 
     @Override
-    protected void createXMLChildNodes(int errorNum, Element rootElement)
-            throws ConnectorException {
+    protected void createXMLChildNodes(int errorNum, Element rootElement) {
         if (errorNum == Constants.Errors.CKFINDER_CONNECTOR_ERROR_NONE) {
             createImageInfoNode(rootElement);
         }
-
     }
 
     private void createImageInfoNode(Element rootElement) {
-        Element element = creator.getDocument().createElement("ImageInfo");
+        Element element = getCreator().getDocument().createElement("ImageInfo");
         element.setAttribute("width", String.valueOf(imageWidth));
         element.setAttribute("height", String.valueOf(imageHeight));
         rootElement.appendChild(element);
-
     }
 
     @Override
     protected int getDataForXml() {
-        if (!checkIfTypeExists(this.type)) {
-            this.type = null;
+        if (!checkIfTypeExists(getType())) {
+            this.setType(null);
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
         }
 
-        if (!configuration.getAccessControl().checkFolderACL(type, this.currentFolder,
-                userRole, AccessControl.CKFINDER_CONNECTOR_ACL_FILE_VIEW)) {
+        if (!getConfiguration().getAccessControl().checkFolderACL(getType(), getCurrentFolder(),
+                getUserRole(), AccessControl.CKFINDER_CONNECTOR_ACL_FILE_VIEW)) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
         }
 
         if (fileName == null || fileName.isEmpty()
                 || !FileUtils.checkFileName(this.fileName)
-                || FileUtils.checkIfFileIsHidden(this.fileName, this.configuration)) {
+                || FileUtils.checkIfFileIsHidden(this.fileName, this.getConfiguration())) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
         }
 
-        if (FileUtils.checkFileExtension(fileName, configuration.getTypes().get(type)) == 1) {
+        if (FileUtils.checkFileExtension(fileName, getConfiguration().getTypes().get(getType())) == 1) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
         }
 
-        Path imageFile = Paths.get(configuration.getTypes().get(this.type).getPath()
-                + this.currentFolder,
+        Path imageFile = Paths.get(getConfiguration().getTypes().get(this.getType()).getPath()
+                + this.getCurrentFolder(),
                 this.fileName);
 
         try {
@@ -94,7 +92,10 @@ public class ImageResizeInfoCommand extends XMLCommand implements IEventHandler<
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_FILE_NOT_FOUND;
             }
 
-            BufferedImage image = ImageIO.read(imageFile.toFile());
+            BufferedImage image;
+            try (InputStream is = Files.newInputStream(imageFile)) {
+                image = ImageIO.read(is);
+            }
             this.imageWidth = image.getWidth();
             this.imageHeight = image.getHeight();
         } catch (SecurityException | IOException e) {
@@ -111,8 +112,8 @@ public class ImageResizeInfoCommand extends XMLCommand implements IEventHandler<
         super.initParams(request, configuration);
         this.imageHeight = 0;
         this.imageWidth = 0;
-        this.currentFolder = request.getParameter("currentFolder");
-        this.type = request.getParameter("type");
+        this.setCurrentFolder(request.getParameter("currentFolder"));
+        this.setType(request.getParameter("type"));
         this.fileName = request.getParameter("fileName");
     }
 

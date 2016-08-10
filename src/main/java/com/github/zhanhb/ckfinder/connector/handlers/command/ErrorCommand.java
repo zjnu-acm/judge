@@ -55,15 +55,13 @@ public class ErrorCommand extends Command implements IErrorCommand {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
                     break;
             }
-
         } catch (IOException ioex) {
             throw new ConnectorException(ioex);
         }
     }
 
     @Override
-    public void setResponseHeader(HttpServletResponse response,
-            ServletContext sc) {
+    public void setResponseHeader(HttpServletResponse response, ServletContext sc) {
         response.reset();
         this.response = response;
     }
@@ -90,9 +88,8 @@ public class ErrorCommand extends Command implements IErrorCommand {
     }
 
     @Override
-    protected boolean checkHidden()
-            throws ConnectorException {
-        if (FileUtils.checkIfDirIsHidden(this.currentFolder, configuration)) {
+    protected boolean checkHidden() throws ConnectorException {
+        if (FileUtils.checkIfDirIsHidden(this.getCurrentFolder(), getConfiguration())) {
             this.connectorException = new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_CONNECTOR_DISABLED);
             return true;
@@ -103,7 +100,7 @@ public class ErrorCommand extends Command implements IErrorCommand {
     @Override
     protected boolean checkConnector(HttpServletRequest request)
             throws ConnectorException {
-        if (!configuration.enabled() || !configuration.checkAuthentication(request)) {
+        if (!getConfiguration().enabled() || !getConfiguration().checkAuthentication(request)) {
             this.connectorException = new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_CONNECTOR_DISABLED);
             return false;
@@ -116,8 +113,8 @@ public class ErrorCommand extends Command implements IErrorCommand {
             throws ConnectorException {
         String tmpType = request.getParameter("type");
         if (checkIfTypeExists(tmpType)) {
-            Path currDir = Paths.get(configuration.getTypes().get(tmpType).getPath()
-                    + this.currentFolder);
+            Path currDir = Paths.get(getConfiguration().getTypes().get(tmpType).getPath()
+                    + this.getCurrentFolder());
             if (Files.exists(currDir) && Files.isDirectory(currDir)) {
                 return true;
             } else {
@@ -131,7 +128,7 @@ public class ErrorCommand extends Command implements IErrorCommand {
 
     @Override
     protected boolean checkIfTypeExists(String type) {
-        ResourceType testType = configuration.getTypes().get(type);
+        ResourceType testType = getConfiguration().getTypes().get(type);
         if (testType == null) {
             this.connectorException = new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE, false);
@@ -144,7 +141,7 @@ public class ErrorCommand extends Command implements IErrorCommand {
     protected void getCurrentFolderParam(HttpServletRequest request) {
         String currFolder = request.getParameter("currentFolder");
         if (!(currFolder == null || currFolder.isEmpty())) {
-            this.currentFolder = PathUtils.addSlashToBeginning(PathUtils.addSlashToEnd(currFolder));
+            this.setCurrentFolder(PathUtils.addSlashToBeginning(PathUtils.addSlashToEnd(currFolder)));
         }
     }
 

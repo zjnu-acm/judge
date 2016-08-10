@@ -27,11 +27,11 @@ import org.w3c.dom.Element;
  */
 public abstract class XMLCommand extends Command {
 
-    /**
-     * util to create XML document.
-     */
-    @SuppressWarnings("ProtectedField")
-    protected XMLCreator creator;
+    private final XMLCreator creator;
+
+    public XMLCommand() {
+        creator = new XMLCreator();
+    }
 
     /**
      * sets response headers for XML response.
@@ -40,8 +40,7 @@ public abstract class XMLCommand extends Command {
      * @param sc servlet context
      */
     @Override
-    public void setResponseHeader(HttpServletResponse response,
-            ServletContext sc) {
+    public void setResponseHeader(HttpServletResponse response, ServletContext sc) {
         response.setContentType("text/xml");
         response.setHeader("Cache-Control", "no-cache");
         response.setCharacterEncoding("utf-8");
@@ -58,7 +57,7 @@ public abstract class XMLCommand extends Command {
     public void execute(OutputStream out) throws ConnectorException {
         try {
             createXMLResponse(getDataForXml());
-            out.write(creator.getDocumentAsText().getBytes("UTF-8"));
+            out.write(getCreator().getDocumentAsText().getBytes("UTF-8"));
         } catch (ConnectorException e) {
             throw e;
         } catch (IOException e) {
@@ -73,16 +72,16 @@ public abstract class XMLCommand extends Command {
      * @throws ConnectorException to handle in error handler.
      */
     private void createXMLResponse(int errorNum) throws ConnectorException, IOException {
-        Element rootElement = creator.getDocument().createElement("Connector");
-        if (this.type != null && !type.isEmpty()) {
-            rootElement.setAttribute("resourceType", this.type);
+        Element rootElement = getCreator().getDocument().createElement("Connector");
+        if (getType() != null && !getType().isEmpty()) {
+            rootElement.setAttribute("resourceType", getType());
         }
         if (mustAddCurrentFolderNode()) {
             createCurrentFolderNode(rootElement);
         }
-        creator.addErrorCommandToRoot(rootElement, errorNum, getErrorMsg(errorNum));
+        getCreator().addErrorCommandToRoot(rootElement, errorNum, getErrorMsg(errorNum));
         createXMLChildNodes(errorNum, rootElement);
-        creator.getDocument().appendChild(rootElement);
+        getCreator().getDocument().appendChild(rootElement);
     }
 
     /**
@@ -100,18 +99,16 @@ public abstract class XMLCommand extends Command {
      *
      * @param errorNum error code
      * @param rootElement XML root node
-     * @throws ConnectorException to handle in error handler.
      * @throws java.io.IOException
      */
-    protected abstract void createXMLChildNodes(int errorNum,
-            Element rootElement)
-            throws ConnectorException, IOException;
+    protected abstract void createXMLChildNodes(int errorNum, Element rootElement) throws IOException;
 
     /**
      * gets all necessary data to create XML response.
      *
      * @return error code
-     * {@link com.github.zhanhb.ckfinder.connector.configuration.Constants.Errors} or
+     * {@link com.github.zhanhb.ckfinder.connector.configuration.Constants.Errors}
+     * or
      * {@link com.github.zhanhb.ckfinder.connector.configuration.Constants.Errors#CKFINDER_CONNECTOR_ERROR_NONE}
      * if no error occurred.
      * @throws java.io.IOException
@@ -124,12 +121,11 @@ public abstract class XMLCommand extends Command {
      * @param rootElement XML root node.
      */
     protected void createCurrentFolderNode(Element rootElement) {
-        Element element = creator.getDocument().createElement("CurrentFolder");
-        element.setAttribute("path", this.currentFolder);
-        element.setAttribute("url", configuration.getTypes().get(this.type).getUrl()
-                + this.currentFolder);
-        element.setAttribute("acl", String.valueOf(configuration.getAccessControl().checkACLForRole(this.type,
-                this.currentFolder, this.userRole)));
+        Element element = getCreator().getDocument().createElement("CurrentFolder");
+        element.setAttribute("path", getCurrentFolder());
+        element.setAttribute("url", getConfiguration().getTypes().get(getType()).getUrl()
+                + getCurrentFolder());
+        element.setAttribute("acl", String.valueOf(getConfiguration().getAccessControl().checkACLForRole(getType(), getCurrentFolder(), getUserRole())));
         rootElement.appendChild(element);
     }
 
@@ -137,8 +133,7 @@ public abstract class XMLCommand extends Command {
     protected void initParams(HttpServletRequest request, IConfiguration configuration)
             throws ConnectorException {
         super.initParams(request, configuration);
-        creator = new XMLCreator();
-        creator.createDocument();
+        getCreator().createDocument();
     }
 
     /**
@@ -148,7 +143,11 @@ public abstract class XMLCommand extends Command {
      * @return true if must.
      */
     protected boolean mustAddCurrentFolderNode() {
-        return this.type != null && this.currentFolder != null;
+        return getType() != null && getCurrentFolder() != null;
+    }
+
+    protected XMLCreator getCreator() {
+        return creator;
     }
 
 }

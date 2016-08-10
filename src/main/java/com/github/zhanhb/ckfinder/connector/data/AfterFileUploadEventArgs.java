@@ -13,7 +13,7 @@ package com.github.zhanhb.ckfinder.connector.data;
 
 import java.nio.file.Path;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Event data for
@@ -21,10 +21,10 @@ import lombok.Setter;
  * event.
  */
 @Getter
-@Setter
+@RequiredArgsConstructor
 public class AfterFileUploadEventArgs extends EventArgs {
 
-    private String currentFolder;
-    private Path file;
+    private final String currentFolder;
+    private final Path file;
 
 }

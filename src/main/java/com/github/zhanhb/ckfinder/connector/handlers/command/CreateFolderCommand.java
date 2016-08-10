@@ -36,8 +36,7 @@ public class CreateFolderCommand extends XMLCommand implements IPostCommand {
     private String newFolderName;
 
     @Override
-    protected void createXMLChildNodes(int errorNum, Element rootElement)
-            throws ConnectorException {
+    protected void createXMLChildNodes(int errorNum, Element rootElement) {
         if (errorNum == Constants.Errors.CKFINDER_CONNECTOR_ERROR_NONE) {
             createNewFolderElement(rootElement);
         }
@@ -49,7 +48,7 @@ public class CreateFolderCommand extends XMLCommand implements IPostCommand {
      * @param rootElement XML root element.
      */
     private void createNewFolderElement(Element rootElement) {
-        Element element = creator.getDocument().createElement("NewFolder");
+        Element element = getCreator().getDocument().createElement("NewFolder");
         element.setAttribute("name", this.newFolderName);
         rootElement.appendChild(element);
     }
@@ -67,27 +66,27 @@ public class CreateFolderCommand extends XMLCommand implements IPostCommand {
             return e.getErrorCode();
         }
 
-        if (!checkIfTypeExists(this.type)) {
-            this.type = null;
+        if (!checkIfTypeExists(getType())) {
+            this.setType(null);
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
         }
 
-        if (!configuration.getAccessControl().checkFolderACL(this.type, this.currentFolder, this.userRole,
+        if (!getConfiguration().getAccessControl().checkFolderACL(getType(), getCurrentFolder(), getUserRole(),
                 AccessControl.CKFINDER_CONNECTOR_ACL_FOLDER_CREATE)) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
         }
 
-        if (configuration.forceASCII()) {
+        if (getConfiguration().forceASCII()) {
             this.newFolderName = FileUtils.convertToASCII(this.newFolderName);
         }
 
-        if (!FileUtils.checkFolderName(this.newFolderName, configuration)) {
+        if (!FileUtils.checkFolderName(this.newFolderName, getConfiguration())) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_NAME;
         }
-        if (FileUtils.checkIfDirIsHidden(this.currentFolder, configuration)) {
+        if (FileUtils.checkIfDirIsHidden(this.getCurrentFolder(), getConfiguration())) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
         }
-        if (FileUtils.checkIfDirIsHidden(newFolderName, configuration)) {
+        if (FileUtils.checkIfDirIsHidden(newFolderName, getConfiguration())) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_NAME;
         }
 
@@ -114,17 +113,16 @@ public class CreateFolderCommand extends XMLCommand implements IPostCommand {
      * @throws ConnectorException when error occurs or dir exists
      */
     private boolean createFolder() throws ConnectorException {
-        Path dir = Paths.get(configuration.getTypes().get(this.type).getPath()
-                + currentFolder + newFolderName);
+        Path dir = Paths.get(getConfiguration().getTypes().get(this.getType()).getPath()
+                + getCurrentFolder() + newFolderName);
         if (Files.exists(dir)) {
             throw new ConnectorException(Constants.Errors.CKFINDER_CONNECTOR_ERROR_ALREADY_EXIST);
-        } else {
-            try {
-                Files.createDirectories(dir);
-                return true;
-            } catch (IOException ex) {
-                return false;
-            }
+        }
+        try {
+            Files.createDirectories(dir);
+            return true;
+        } catch (IOException ex) {
+            return false;
         }
     }
 
