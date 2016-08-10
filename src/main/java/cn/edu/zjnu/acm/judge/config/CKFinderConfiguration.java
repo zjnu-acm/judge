@@ -16,12 +16,12 @@
 package cn.edu.zjnu.acm.judge.config;
 
 import cn.edu.zjnu.acm.judge.support.ckfinder.ConfigurationPathBuilder;
-import com.github.zhanhb.ckfinder.connector.configuration.ConfigurationFactory;
 import com.github.zhanhb.ckfinder.connector.configuration.IBasePathBuilder;
 import com.github.zhanhb.ckfinder.connector.configuration.IConfiguration;
 import com.github.zhanhb.ckfinder.connector.utils.AccessControl;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.Servlet;
+import javax.servlet.ServletContext;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -45,19 +45,14 @@ public class CKFinderConfiguration {
     }
 
     @Bean
-    public ConfigurationFactory configurationFactory(IConfiguration configuration) {
-        return new ConfigurationFactory(configuration);
-    }
-
-    @Bean
-    public IBasePathBuilder pathBuilder(JudgeConfiguration judgeConfiguration) {
-        return new ConfigurationPathBuilder(judgeConfiguration);
+    public IBasePathBuilder pathBuilder(JudgeConfiguration judgeConfiguration, ServletContext servletContext) {
+        return new ConfigurationPathBuilder(judgeConfiguration, servletContext);
     }
 
     @Bean
     public ServletRegistrationBean connectorServlet(MultipartConfigElement multipartConfigElement,
-            ConfigurationFactory configurationFactory) {
-        Servlet servlet = new ConnectorServlet(configurationFactory);
+            IConfiguration configuration) {
+        Servlet servlet = new ConnectorServlet(configuration);
         ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(servlet, "/ckfinder/core/connector/java/connector.java");
         servletRegistrationBean.setMultipartConfig(multipartConfigElement);
         return servletRegistrationBean;

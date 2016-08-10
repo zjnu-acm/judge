@@ -11,7 +11,6 @@
  */
 package com.github.zhanhb.ckfinder.connector;
 
-import com.github.zhanhb.ckfinder.connector.configuration.ConfigurationFactory;
 import com.github.zhanhb.ckfinder.connector.configuration.Constants;
 import com.github.zhanhb.ckfinder.connector.configuration.Events;
 import com.github.zhanhb.ckfinder.connector.configuration.IConfiguration;
@@ -60,7 +59,7 @@ public class ConnectorServlet extends HttpServlet {
      */
     private static final long serialVersionUID = 2960665641425153638L;
 
-    private final ConfigurationFactory configurationFactory;
+    private final IConfiguration configuration;
 
     /**
      * Handling get requests.
@@ -108,17 +107,7 @@ public class ConnectorServlet extends HttpServlet {
             HttpServletResponse response, boolean post)
             throws ServletException {
         String command = request.getParameter("command");
-        IConfiguration configuration = null;
         try {
-            configuration = configurationFactory.getConfiguration(request);
-            if (configuration == null) {
-                throw new Exception("Configuration wasn't initialized correctly. Check server logs.");
-            }
-        } catch (Exception e) {
-            throw new ServletException(e);
-        }
-        try {
-
             if (command == null || command.isEmpty()) {
                 throw new ConnectorException(
                         Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_COMMAND, false);
