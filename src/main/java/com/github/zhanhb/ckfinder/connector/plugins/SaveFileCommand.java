@@ -42,12 +42,12 @@ public class SaveFileCommand extends XMLCommand implements IEventHandler<BeforeE
     @Override
     protected int getDataForXml() {
 
-        if (!checkIfTypeExists(this.type)) {
-            this.type = null;
+        if (!checkIfTypeExists(getType())) {
+            this.setType(null);
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
         }
 
-        if (!configuration.getAccessControl().checkFolderACL(this.type, this.currentFolder, this.userRole,
+        if (!getConfiguration().getAccessControl().checkFolderACL(getType(), getCurrentFolder(), getUserRole(),
                 AccessControl.CKFINDER_CONNECTOR_ACL_FILE_DELETE)) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
         }
@@ -60,7 +60,7 @@ public class SaveFileCommand extends XMLCommand implements IEventHandler<BeforeE
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
         }
 
-        if (FileUtils.checkFileExtension(fileName, configuration.getTypes().get(type)) == 1) {
+        if (FileUtils.checkFileExtension(fileName, getConfiguration().getTypes().get(getType())) == 1) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_EXTENSION;
         }
 
@@ -68,8 +68,8 @@ public class SaveFileCommand extends XMLCommand implements IEventHandler<BeforeE
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
         }
 
-        Path sourceFile = Paths.get(configuration.getTypes().get(this.type).getPath()
-                + this.currentFolder, this.fileName);
+        Path sourceFile = Paths.get(getConfiguration().getTypes().get(this.getType()).getPath()
+                + this.getCurrentFolder(), this.fileName);
 
         try {
             if (!(Files.exists(sourceFile) && Files.isRegularFile(sourceFile))) {
@@ -100,8 +100,8 @@ public class SaveFileCommand extends XMLCommand implements IEventHandler<BeforeE
     protected void initParams(HttpServletRequest request, IConfiguration configuration)
             throws ConnectorException {
         super.initParams(request, configuration);
-        this.currentFolder = request.getParameter("currentFolder");
-        this.type = request.getParameter("type");
+        this.setCurrentFolder(request.getParameter("currentFolder"));
+        this.setType(request.getParameter("type"));
         this.fileContent = request.getParameter("content");
         this.fileName = request.getParameter("fileName");
     }

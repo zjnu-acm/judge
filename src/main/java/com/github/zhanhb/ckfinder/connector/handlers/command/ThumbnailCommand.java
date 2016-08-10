@@ -199,17 +199,17 @@ public class ThumbnailCommand extends Command {
      * @throws ConnectorException when validation fails.
      */
     private void validate() throws ConnectorException, IOException {
-        if (!this.configuration.getThumbsEnabled()) {
+        if (!this.getConfiguration().getThumbsEnabled()) {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_THUMBNAILS_DISABLED);
         }
-        if (!checkIfTypeExists(this.type)) {
-            this.type = null;
+        if (!checkIfTypeExists(getType())) {
+            this.setType(null);
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE, false);
         }
 
-        if (!configuration.getAccessControl().checkFolderACL(this.type, this.currentFolder, this.userRole,
+        if (!getConfiguration().getAccessControl().checkFolderACL(getType(), getCurrentFolder(), getUserRole(),
                 AccessControl.CKFINDER_CONNECTOR_ACL_FILE_VIEW)) {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED);
@@ -220,16 +220,16 @@ public class ThumbnailCommand extends Command {
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST);
         }
 
-        if (FileUtils.checkIfFileIsHidden(this.fileName, this.configuration)) {
+        if (FileUtils.checkIfFileIsHidden(this.fileName, this.getConfiguration())) {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_FILE_NOT_FOUND);
         }
 
-        Path typeThumbDir = Paths.get(configuration.getThumbsPath(), this.type);
+        Path typeThumbDir = Paths.get(getConfiguration().getThumbsPath(), this.getType());
 
         try {
             this.fullCurrentPath = typeThumbDir.toAbsolutePath().toString()
-                    + currentFolder;
+                    + getCurrentFolder();
             if (!Files.exists(typeThumbDir)) {
                 Files.createDirectories(typeThumbDir);
             }
@@ -251,14 +251,14 @@ public class ThumbnailCommand extends Command {
         this.thumbFile = Paths.get(fullCurrentPath, this.fileName);
         try {
             if (!Files.exists(thumbFile)) {
-                Path orginFile = Paths.get(configuration.getTypes().get(this.type).getPath()
-                        + this.currentFolder, this.fileName);
+                Path orginFile = Paths.get(getConfiguration().getTypes().get(this.getType()).getPath()
+                        + this.getCurrentFolder(), this.fileName);
                 if (!Files.exists(orginFile)) {
                     throw new ConnectorException(
                             Constants.Errors.CKFINDER_CONNECTOR_ERROR_FILE_NOT_FOUND);
                 }
                 try {
-                    ImageUtils.createThumb(orginFile, thumbFile, configuration);
+                    ImageUtils.createThumb(orginFile, thumbFile, getConfiguration());
                 } catch (Exception e) {
                     try {
                         Files.deleteIfExists(thumbFile);
