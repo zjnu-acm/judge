@@ -23,11 +23,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.FileTime;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.TimeZone;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,6 +38,9 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class ThumbnailCommand extends Command {
+
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US)
+            .withZone(ZoneId.of("GMT"));
 
     /**
      * Backup map holding mime types for images just in case if they aren't set
@@ -125,7 +128,6 @@ public class ThumbnailCommand extends Command {
         response.addHeader("Content-Disposition", "attachment; filename=\"" + this.fileName + "\"");
         // set to fill some params later.
         this.response = response;
-
     }
 
     /**
@@ -299,10 +301,8 @@ public class ThumbnailCommand extends Command {
             if (lastModifiedTime.toMillis() <= this.ifModifiedSince) {
                 return false;
             } else {
-                Date date = new Date(System.currentTimeMillis());
-                SimpleDateFormat df = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
-                df.setTimeZone(TimeZone.getTimeZone("GMT"));
-                response.setHeader("Last-Modified", df.format(date));
+                Instant instant = lastModifiedTime.toInstant();
+                response.setHeader("Last-Modified", FORMATTER.format(instant));
             }
             response.setContentLengthLong(Files.size(file));
         } catch (SecurityException e) {
