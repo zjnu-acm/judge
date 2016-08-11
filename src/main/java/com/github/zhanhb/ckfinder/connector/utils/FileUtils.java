@@ -24,17 +24,20 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 import javax.servlet.http.Part;
 
 /**
@@ -130,6 +133,7 @@ public class FileUtils {
      * @param fileName name of file
      * @return file extension
      */
+    @Nullable
     public static String getFileNameWithoutExtension(String fileName) {
         if (fileName == null || fileName.lastIndexOf('.') == -1) {
             return null;
@@ -144,8 +148,8 @@ public class FileUtils {
      * @param out outputstream.
      * @throws IOException when io error occurs.
      */
-    public static void printFileContentToResponse(Path file,
-            OutputStream out) throws IOException {
+    public static void printFileContentToResponse(Path file, OutputStream out)
+            throws IOException {
         Files.copy(file, out);
     }
 
@@ -159,9 +163,7 @@ public class FileUtils {
      * @throws IOException when IOerror occurs
      */
     public static boolean copyFromSourceToDestFile(Path sourceFile,
-            Path destFile,
-            boolean move,
-            IConfiguration conf)
+            Path destFile, boolean move, IConfiguration conf)
             throws IOException {
         createPath(destFile, true);
         if (move) {
@@ -182,9 +184,8 @@ public class FileUtils {
      * @throws java.io.IOException
      */
     public static String parseLastModifDate(Path file) throws IOException {
-        Date date = Date.from(Files.getLastModifiedTime(file).toInstant());
-        DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
-        return dateFormat.format(date);
+        Instant instant = Files.getLastModifiedTime(file).toInstant();
+        return DateTimeFormatterHolder.FORMATTER.format(instant);
     }
 
     /**
@@ -201,10 +202,10 @@ public class FileUtils {
         }
         String dir = PathUtils.removeSlashFromEnd(PathUtils.escape(dirName));
         StringTokenizer sc = new StringTokenizer(dir, "/");
+        Pattern pattern = Pattern.compile(getHiddenFileOrFolderRegex(
+                conf.getHiddenFolders()));
         while (sc.hasMoreTokens()) {
-            boolean check = Pattern.compile(getHiddenFileOrFolderRegex(
-                    conf.getHiddenFolders())).matcher(sc.nextToken()).matches();
-            if (check) {
+            if (pattern.matcher(sc.nextToken()).matches()) {
                 return true;
             }
         }
@@ -218,8 +219,7 @@ public class FileUtils {
      * @param conf connector configuration
      * @return true if matches.
      */
-    public static boolean checkIfFileIsHidden(String fileName,
-            IConfiguration conf) {
+    public static boolean checkIfFileIsHidden(String fileName, IConfiguration conf) {
         return Pattern.compile(getHiddenFileOrFolderRegex(
                 conf.getHiddenFiles())).matcher(fileName).matches();
     }
@@ -543,7 +543,7 @@ public class FileUtils {
 
     private static class EncodingMapHolder {
 
-        private static final Map<String, String> encodingMap;
+        static final Map<String, String> encodingMap;
 
         static {
             Map<String, String> mapHelper = new HashMap<>(6);
@@ -560,8 +560,8 @@ public class FileUtils {
 
     private static class Utf8AccentsHolder {
 
-        private static final Map<String, String> UTF8_LOWER_ACCENTS = new HashMap<>(120);
-        private static final Map<String, String> UTF8_UPPER_ACCENTS = new HashMap<>(120);
+        static final Map<String, String> UTF8_LOWER_ACCENTS = new HashMap<>(120);
+        static final Map<String, String> UTF8_UPPER_ACCENTS = new HashMap<>(120);
 
         static {
             UTF8_UPPER_ACCENTS.put("À", "A");
@@ -779,6 +779,13 @@ public class FileUtils {
             UTF8_LOWER_ACCENTS.put("µ", "u");
             UTF8_LOWER_ACCENTS.put("ĕ", "e");
         }
+
+    }
+
+    private static class DateTimeFormatterHolder {
+
+        static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyyMMddHHmm", Locale.US)
+                .withZone(ZoneId.of("GMT"));
 
     }
 
