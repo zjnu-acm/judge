@@ -11,81 +11,19 @@
  */
 package com.github.zhanhb.ckfinder.connector.data;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  * Access control level entity.
  */
+@Builder(builderClassName = "Builder")
 @Getter
-@NoArgsConstructor
-@Setter
 public class AccessControlLevel {
 
-    /**
-     *
-     */
-    private String role;
-    /**
-     *
-     */
-    private String resourceType;
-    /**
-     *
-     */
-    private String folder;
-    /**
-     *
-     */
-    private boolean folderView;
-    /**
-     *
-     */
-    private boolean folderCreate;
-    /**
-     *
-     */
-    private boolean folderRename;
-    /**
-     *
-     */
-    private boolean folderDelete;
-    /**
-     *
-     */
-    private boolean fileView;
-    /**
-     *
-     */
-    private boolean fileUpload;
-    /**
-     *
-     */
-    private boolean fileRename;
-    /**
-     *
-     */
-    private boolean fileDelete;
-
-    /**
-     * copy constructor.
-     *
-     * @param acl source acl
-     */
-    @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
-    public AccessControlLevel(AccessControlLevel acl) {
-        this.role = acl.role;
-        this.resourceType = acl.resourceType;
-        this.folder = acl.folder;
-        this.folderView = acl.folderView;
-        this.folderCreate = acl.folderCreate;
-        this.folderRename = acl.folderRename;
-        this.folderDelete = acl.folderDelete;
-        this.fileView = acl.fileView;
-        this.fileUpload = acl.fileUpload;
-        this.fileRename = acl.fileRename;
-        this.fileDelete = acl.fileDelete;
-    }
+    private final String role;
+    private final String resourceType;
+    private final String folder;
+    private final int mask;
 
 }

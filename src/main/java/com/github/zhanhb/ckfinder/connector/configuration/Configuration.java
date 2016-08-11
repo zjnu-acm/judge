@@ -37,6 +37,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
+import org.springframework.util.ClassUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -54,7 +55,6 @@ public class Configuration implements IConfiguration {
     private static final float MAX_QUALITY_FLOAT = 100f;
 
     private boolean enabled;
-    private String xmlFilePath;
     private String baseDir;
     private String baseURL;
     private String licenseName;
@@ -96,20 +96,21 @@ public class Configuration implements IConfiguration {
      */
     public Configuration(ApplicationContext applicationContext, String xmlFilePath) throws Exception {
         this.applicationContext = applicationContext;
-        this.xmlFilePath = xmlFilePath;
         this.plugins = new ArrayList<>();
         this.htmlExtensions = new ArrayList<>();
         this.hiddenFolders = new ArrayList<>();
         this.hiddenFiles = new ArrayList<>();
         this.defaultResourceTypes = new LinkedHashSet<>();
-        init();
+        init(xmlFilePath);
         updateResourceTypesPaths();
     }
 
     /**
-     * Resets all configuration values.
+     * Initializes configuration from XML file.
+     *
+     * @throws Exception when error occurs.
      */
-    private void clearConfiguration() {
+    private void init(String xmlFilePath) throws Exception {
         this.enabled = false;
         this.baseDir = "";
         this.baseURL = "";
@@ -141,15 +142,7 @@ public class Configuration implements IConfiguration {
         this.events = new Events();
         this.basePathBuilder = null;
         this.disallowUnsafeCharacters = false;
-    }
 
-    /**
-     * Initializes configuration from XML file.
-     *
-     * @throws Exception when error occurs.
-     */
-    private void init() throws Exception {
-        clearConfiguration();
         Resource resource = getFullConfigPath(xmlFilePath);
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
@@ -274,7 +267,8 @@ public class Configuration implements IConfiguration {
      * empty.
      */
     private String nullNodeToString(Node childNode) {
-        return childNode.getTextContent() == null ? "" : childNode.getTextContent().trim();
+        String textContent = childNode.getTextContent();
+        return textContent == null ? "" : textContent.trim();
     }
 
     /**
@@ -332,14 +326,10 @@ public class Configuration implements IConfiguration {
     private void registerEventHandlers() {
         for (PluginInfo item : this.plugins) {
             try {
-                Class<? extends Plugin> clazz = Class.forName(item.getClassName()).asSubclass(Plugin.class);
-                Plugin plugin = clazz.newInstance();
+                Plugin plugin = item.getClassName().newInstance();
                 plugin.setPluginInfo(item);
                 plugin.registerEventHandlers(this.events);
-                item.setEnabled(true);
-            } catch (ClassCastException | ClassNotFoundException |
-                    IllegalAccessException | InstantiationException e) {
-                item.setEnabled(false);
+            } catch (InstantiationException | IllegalAccessException ex) {
             }
         }
     }
@@ -402,56 +392,80 @@ public class Configuration implements IConfiguration {
      * @return access control level object.
      */
     private AccessControlLevel getACLFromNode(Node childNode) {
-        AccessControlLevel acl = new AccessControlLevel();
+        String role = null;
+        String resourceType = null;
+        String folder = null;
+        int mask = 0;
         for (int i = 0, j = childNode.getChildNodes().getLength(); i < j; i++) {
             Node childChildNode = childNode.getChildNodes().item(i);
             String nodeName = childChildNode.getNodeName();
+            int index = 0;
+            boolean bool = false;
             switch (nodeName) {
                 case "role":
-                    acl.setRole(nullNodeToString(childChildNode));
+                    role = nullNodeToString(childChildNode);
                     break;
                 case "resourceType":
-                    acl.setResourceType(nullNodeToString(childChildNode));
+                    resourceType = nullNodeToString(childChildNode);
                     break;
                 case "folder":
-                    acl.setFolder(nullNodeToString(childChildNode));
+                    folder = nullNodeToString(childChildNode);
                     break;
                 case "folderView":
-                    acl.setFolderView(Boolean.parseBoolean(nullNodeToString(childChildNode)));
+                    bool = Boolean.parseBoolean(nullNodeToString(childChildNode));
+                    index = AccessControl.CKFINDER_CONNECTOR_ACL_FOLDER_VIEW;
                     break;
                 case "folderCreate":
-                    acl.setFolderCreate(Boolean.parseBoolean(nullNodeToString(childChildNode)));
+                    bool = Boolean.parseBoolean(nullNodeToString(childChildNode));
+                    index = AccessControl.CKFINDER_CONNECTOR_ACL_FOLDER_CREATE;
                     break;
                 case "folderRename":
-                    acl.setFolderRename(Boolean.parseBoolean(nullNodeToString(childChildNode)));
+                    bool = Boolean.parseBoolean(nullNodeToString(childChildNode));
+                    index = AccessControl.CKFINDER_CONNECTOR_ACL_FOLDER_RENAME;
                     break;
                 case "folderDelete":
-                    acl.setFolderDelete(Boolean.parseBoolean(nullNodeToString(childChildNode)));
+                    bool = Boolean.parseBoolean(nullNodeToString(childChildNode));
+                    index = AccessControl.CKFINDER_CONNECTOR_ACL_FOLDER_DELETE;
                     break;
                 case "fileView":
-                    acl.setFileView(Boolean.parseBoolean(nullNodeToString(childChildNode)));
+                    bool = Boolean.parseBoolean(nullNodeToString(childChildNode));
+                    index = AccessControl.CKFINDER_CONNECTOR_ACL_FILE_VIEW;
                     break;
                 case "fileUpload":
-                    acl.setFileUpload(Boolean.parseBoolean(nullNodeToString(childChildNode)));
+                    bool = Boolean.parseBoolean(nullNodeToString(childChildNode));
+                    index = AccessControl.CKFINDER_CONNECTOR_ACL_FILE_UPLOAD;
                     break;
                 case "fileRename":
-                    acl.setFileRename(Boolean.parseBoolean(nullNodeToString(childChildNode)));
+                    bool = Boolean.parseBoolean(nullNodeToString(childChildNode));
+                    index = AccessControl.CKFINDER_CONNECTOR_ACL_FILE_RENAME;
                     break;
                 case "fileDelete":
-                    acl.setFileDelete(Boolean.parseBoolean(nullNodeToString(childChildNode)));
+                    bool = Boolean.parseBoolean(nullNodeToString(childChildNode));
+                    index = AccessControl.CKFINDER_CONNECTOR_ACL_FILE_DELETE;
                     break;
+            }
+            if (index != 0) {
+                if (bool) {
+                    mask |= index;
+                } else {
+                    mask &= ~index;
+                }
             }
         }
 
-        if (acl.getResourceType() == null || acl.getRole() == null) {
+        if (resourceType == null || role == null) {
             return null;
         }
 
-        if (acl.getFolder() == null || acl.getFolder().isEmpty()) {
-            acl.setFolder("/");
+        if (folder == null || folder.isEmpty()) {
+            folder = "/";
         }
-
-        return acl;
+        return AccessControlLevel.builder()
+                .folder(folder)
+                .resourceType(resourceType)
+                .role(role)
+                .mask(mask)
+                .build();
     }
 
     /**
@@ -499,7 +513,6 @@ public class Configuration implements IConfiguration {
                     this.thumbsQuality = adjustQuality(quality);
             }
         }
-
     }
 
     /**
@@ -765,16 +778,6 @@ public class Configuration implements IConfiguration {
     }
 
     /**
-     * Sets directory name for thumbnails.
-     *
-     * @param directory directory name for thumbnails.
-     */
-    @Override
-    public void setThumbsPath(String directory) {
-        this.thumbsPath = directory;
-    }
-
-    /**
      * Returns list of access control levels.
      *
      * @return list of access control levels.
@@ -928,7 +931,7 @@ public class Configuration implements IConfiguration {
      * @return PluginInfo data
      */
     private PluginInfo createPluginFromNode(Node element) {
-        PluginInfo info = new PluginInfo();
+        PluginInfo.Builder info = PluginInfo.builder();
         NodeList list = element.getChildNodes();
         for (int i = 0, l = list.getLength(); i < l; i++) {
             Node childElem = list.item(i);
@@ -936,151 +939,37 @@ public class Configuration implements IConfiguration {
             String textContent = nullNodeToString(childElem);
             switch (nodeName) {
                 case "name":
-                    info.setName(textContent);
+                    info.name(textContent);
                     break;
                 case "class":
-                    info.setClassName(textContent);
+                    info.className(ClassUtils.resolveClassName(textContent, null).asSubclass(Plugin.class));
                     break;
                 case "internal":
-                    info.setInternal(Boolean.parseBoolean(textContent));
+                    info.internal(Boolean.parseBoolean(textContent));
                     break;
                 case "params":
                     NodeList paramLlist = childElem.getChildNodes();
-                    if (list.getLength() > 0) {
-                        info.setParams(new ArrayList<>());
-                    }
                     for (int j = 0, m = paramLlist.getLength(); j < m; j++) {
                         Node node = paramLlist.item(j);
                         if ("param".equals(node.getNodeName())) {
                             NamedNodeMap map = node.getAttributes();
-                            PluginParam pp = new PluginParam();
+                            String name = null;
+                            String value = null;
                             for (int k = 0, o = map.getLength(); k < o; k++) {
-                                if ("name".equals(map.item(k).getNodeName())) {
-                                    pp.setName(nullNodeToString(map.item(k)));
-                                } else if ("value".equals(map.item(k).getNodeName())) {
-                                    pp.setValue(nullNodeToString(map.item(k)));
+                                Node item = map.item(k);
+                                String nodeName1 = item.getNodeName();
+                                if ("name".equals(nodeName1)) {
+                                    name = nullNodeToString(item);
+                                } else if ("value".equals(nodeName1)) {
+                                    value = nullNodeToString(item);
                                 }
                             }
-                            info.getParams().add(pp);
+                            info.param(new PluginParam(name, value));
                         }
                     }
             }
         }
-        return info;
-    }
-
-    /**
-     * Sets thumbs URL used by ConfigurationFacotry.
-     *
-     * @param thumbsURL current thumbs url
-     */
-    @Override
-    public void setThumbsURL(String thumbsURL) {
-        this.thumbsURL = thumbsURL;
-    }
-
-    /**
-     * Sets thumbnails directory used by ConfigurationFacotry.
-     *
-     * @param thumbsDir current thumbs directory.
-     */
-    @Override
-    public void setThumbsDir(String thumbsDir) {
-        this.thumbsDir = thumbsDir;
-    }
-
-    /**
-     * Clones current configuration instance and copies it's all fields.
-     *
-     * @return cloned configuration
-     * @throws java.lang.Exception
-     */
-    @Override
-    public final IConfiguration cloneConfiguration() throws Exception {
-        Configuration configuration = new Configuration(applicationContext, xmlFilePath);
-        copyConfFields(configuration);
-        return configuration;
-    }
-
-    /**
-     * Copies configuration fields.
-     *
-     * @param configuration destination configuration
-     */
-    @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
-    private void copyConfFields(Configuration configuration) {
-        configuration.xmlFilePath = this.xmlFilePath;
-        configuration.enabled = this.enabled;
-        configuration.baseDir = this.baseDir;
-        configuration.baseURL = this.baseURL;
-        configuration.licenseName = this.licenseName;
-        configuration.licenseKey = this.licenseKey;
-        configuration.imgWidth = this.imgWidth;
-        configuration.imgHeight = this.imgHeight;
-        configuration.imgQuality = this.imgQuality;
-        configuration.thumbsEnabled = this.thumbsEnabled;
-        configuration.thumbsURL = this.thumbsURL;
-        configuration.thumbsDir = this.thumbsDir;
-        configuration.thumbsDirectAccess = this.thumbsDirectAccess;
-        configuration.thumbsMaxHeight = this.thumbsMaxHeight;
-        configuration.thumbsMaxWidth = this.thumbsMaxWidth;
-        configuration.thumbsQuality = this.thumbsQuality;
-        configuration.doubleExtensions = this.doubleExtensions;
-        configuration.forceASCII = this.forceASCII;
-        configuration.disallowUnsafeCharacters = this.disallowUnsafeCharacters;
-        configuration.checkSizeAfterScaling = this.checkSizeAfterScaling;
-        configuration.secureImageUploads = this.secureImageUploads;
-        configuration.userRoleSessionVar = this.userRoleSessionVar;
-        configuration.events = this.events;
-        configuration.basePathBuilder = this.basePathBuilder;
-
-        configuration.htmlExtensions = new ArrayList<>();
-        configuration.htmlExtensions.addAll(this.htmlExtensions);
-        configuration.hiddenFolders = new ArrayList<>();
-        configuration.hiddenFiles = new ArrayList<>();
-        configuration.hiddenFiles.addAll(this.hiddenFiles);
-        configuration.hiddenFolders.addAll(this.hiddenFolders);
-        configuration.defaultResourceTypes = new LinkedHashSet<>();
-        configuration.defaultResourceTypes.addAll(this.defaultResourceTypes);
-        configuration.types = new LinkedHashMap<>();
-        configuration.accessControlLevels = new ArrayList<>();
-        configuration.plugins = new ArrayList<>();
-        copyTypes(configuration.types);
-        copyACls(configuration.accessControlLevels);
-        copyPlugins(configuration.plugins);
-    }
-
-    /**
-     * Copies plugins for new configuration.
-     *
-     * @param newPlugins new configuration plugins list.
-     */
-    private void copyPlugins(List<PluginInfo> newPlugins) {
-        for (PluginInfo pluginInfo : this.plugins) {
-            newPlugins.add(new PluginInfo(pluginInfo));
-        }
-    }
-
-    /**
-     * Copies ACL for new configuration.
-     *
-     * @param newAccessControlLevels new configuration ACL list.
-     */
-    private void copyACls(List<AccessControlLevel> newAccessControlLevels) {
-        for (AccessControlLevel acl : this.accessControlLevels) {
-            newAccessControlLevels.add(new AccessControlLevel(acl));
-        }
-    }
-
-    /**
-     * Copies resource types for new configuration.
-     *
-     * @param newTypes new configuration resource types list.
-     */
-    private void copyTypes(Map<String, ResourceType> newTypes) {
-        for (String name : this.types.keySet()) {
-            newTypes.put(name, new ResourceType(this.types.get(name)));
-        }
+        return info.build();
     }
 
     @Override
@@ -1114,12 +1003,12 @@ public class Configuration implements IConfiguration {
         log.debug("{}", file);
         Files.createDirectories(file);
 
-        this.setThumbsPath(file.toAbsolutePath().toString());
+        thumbsPath = file.toAbsolutePath().toString();
 
         String thumbUrl = this.getThumbsURL();
         thumbUrl = thumbUrl.replaceAll(Constants.BASE_URL_PLACEHOLDER,
                 this.getBasePathBuilder().getBaseUrl());
-        this.setThumbsURL(PathUtils.escape(thumbUrl));
+        thumbsURL = PathUtils.escape(thumbUrl);
 
         for (ResourceType item : this.getTypes().values()) {
             String url = item.getUrl();
@@ -1156,19 +1045,15 @@ public class Configuration implements IConfiguration {
      * @param this connector configuration
      * @param request request
      * @return path to base dir from conf
-     * @throws ConnectorException when error during creating folder occurs
+     * @throws IOException when error during creating folder occurs
      */
-    private String getBaseFolder() throws ConnectorException {
-        try {
-            String baseFolder = this.getBasePathBuilder().getBaseDir();
-            Path baseDir = Paths.get(baseFolder);
-            if (!Files.exists(baseDir)) {
-                FileUtils.createPath(baseDir, false);
-            }
-            return PathUtils.addSlashToEnd(baseFolder);
-        } catch (IOException e) {
-            throw new ConnectorException(e);
+    private String getBaseFolder() throws IOException {
+        String baseFolder = this.getBasePathBuilder().getBaseDir();
+        Path baseDir = Paths.get(baseFolder);
+        if (!Files.exists(baseDir)) {
+            FileUtils.createPath(baseDir, false);
         }
+        return PathUtils.addSlashToEnd(baseFolder);
     }
 
 }

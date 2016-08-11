@@ -11,19 +11,17 @@
  */
 package com.github.zhanhb.ckfinder.connector.data;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * XML attribute.
  */
-@AllArgsConstructor
 @Getter
-@Setter
+@RequiredArgsConstructor
 public class XmlAttribute {
 
-    private String key;
-    private String value;
+    private final String key;
+    private final String value;
 
 }

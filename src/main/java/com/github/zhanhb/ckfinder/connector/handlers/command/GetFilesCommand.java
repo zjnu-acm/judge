@@ -91,7 +91,7 @@ public class GetFilesCommand extends XMLCommand {
         this.fullCurrentPath = getConfiguration().getTypes().get(this.getType()).getPath()
                 + this.getCurrentFolder();
 
-        if (!getConfiguration().getAccessControl().checkFolderACL(getType(), getCurrentFolder(),getUserRole(),
+        if (!getConfiguration().getAccessControl().checkFolderACL(getType(), getCurrentFolder(), getUserRole(),
                 AccessControl.CKFINDER_CONNECTOR_ACL_FILE_VIEW)) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
         }
@@ -136,22 +136,17 @@ public class GetFilesCommand extends XMLCommand {
         for (String filePath : files) {
             Path file = Paths.get(this.fullCurrentPath, filePath);
             if (Files.exists(file)) {
-                XmlElementData elementData = new XmlElementData("File");
-                XmlAttribute attribute = new XmlAttribute("name", filePath);
-                elementData.getAttributes().add(attribute);
-                attribute = new XmlAttribute("date",
-                        FileUtils.parseLastModifDate(file));
-                elementData.getAttributes().add(attribute);
-                attribute = new XmlAttribute("size", getSize(file));
-                elementData.getAttributes().add(attribute);
+                XmlElementData.Builder elementData = XmlElementData.builder().name("File");
+                elementData.attribute(new XmlAttribute("name", filePath))
+                        .attribute(new XmlAttribute("date", FileUtils.parseLastModifDate(file)))
+                        .attribute(new XmlAttribute("size", getSize(file)));
                 if (ImageUtils.isImageExtension(file) && isAddThumbsAttr()) {
                     String attr = createThumbAttr(file);
                     if (!attr.isEmpty()) {
-                        attribute = new XmlAttribute("thumb", attr);
-                        elementData.getAttributes().add(attribute);
+                        elementData.attribute(new XmlAttribute("thumb", attr));
                     }
                 }
-                elementData.addToDocument(this.getCreator().getDocument(), element);
+                elementData.build().addToDocument(getCreator().getDocument(), element);
             }
         }
         rootElement.appendChild(element);
@@ -210,4 +205,5 @@ public class GetFilesCommand extends XMLCommand {
     private boolean isShowThumbs() {
         return (this.showThumbs != null && this.showThumbs.equals("1"));
     }
+
 }

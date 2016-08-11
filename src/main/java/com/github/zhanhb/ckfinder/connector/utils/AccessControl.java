@@ -15,9 +15,8 @@ import com.github.zhanhb.ckfinder.connector.configuration.IConfiguration;
 import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Class to generate ACL values.
@@ -59,7 +58,7 @@ public final class AccessControl {
     public static final int CKFINDER_CONNECTOR_ACL_FILE_DELETE = 1 << 7;
 
     /**
-     * acl configuration.
+     * mask configuration.
      */
     private final List<ACLEntry> aclEntries;
 
@@ -68,19 +67,9 @@ public final class AccessControl {
             String role = item.getRole();
             String type = item.getResourceType();
             String folder = item.getFolder();
-            int acl = 0;
+            int mask = item.getMask();
 
-            acl |= (item.isFolderView()) ? CKFINDER_CONNECTOR_ACL_FOLDER_VIEW : 0;
-            acl |= (item.isFolderCreate()) ? CKFINDER_CONNECTOR_ACL_FOLDER_CREATE : 0;
-            acl |= (item.isFolderRename()) ? CKFINDER_CONNECTOR_ACL_FOLDER_RENAME : 0;
-            acl |= (item.isFolderDelete()) ? CKFINDER_CONNECTOR_ACL_FOLDER_DELETE : 0;
-
-            acl |= (item.isFileView()) ? CKFINDER_CONNECTOR_ACL_FILE_VIEW : 0;
-            acl |= (item.isFileUpload()) ? CKFINDER_CONNECTOR_ACL_FILE_UPLOAD : 0;
-            acl |= (item.isFileRename()) ? CKFINDER_CONNECTOR_ACL_FILE_RENAME : 0;
-            acl |= (item.isFileDelete()) ? CKFINDER_CONNECTOR_ACL_FILE_DELETE : 0;
-
-            return ACLEntry.builder().role(role).type(type).folder(folder).acl(acl).build();
+            return ACLEntry.builder().role(role).type(type).folder(folder).mask(mask).build();
         }).collect(Collectors.toList());
     }
 
@@ -89,7 +78,7 @@ public final class AccessControl {
      *
      * @param resourceType resource type name
      * @param folder folder name
-     * @param acl acl to check.
+     * @param acl mask to check.
      * @param currentUserRole user role
      * @return true if acl flag is true
      */
@@ -103,7 +92,7 @@ public final class AccessControl {
      * @param resourceType resource type
      * @param folder current folder
      * @param currentUserRole current user role
-     * @return acl value
+     * @return mask value
      */
     public int checkACLForRole(String resourceType, String folder, String currentUserRole) {
         CheckEntry[] ce = new CheckEntry[currentUserRole != null ? 4 : 2];
@@ -150,12 +139,12 @@ public final class AccessControl {
      *
      * @param entry current ACL entry
      * @param folder current folder
-     * @return acl value
+     * @return mask value
      */
     private int checkACLForFolder(ACLEntry entry, String folder) {
         int acl = 0;
         if (folder.contains(entry.folder) || entry.folder.equals(File.separator)) {
-            acl ^= entry.getAcl();
+            acl ^= entry.getMask();
         }
         return acl;
     }
@@ -176,8 +165,7 @@ public final class AccessControl {
     /**
      * Simple ACL entry class.
      */
-    @Builder
-    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    @Builder(builderClassName = "Builder")
     private static class ACLEntry {
 
         /**
@@ -193,17 +181,17 @@ public final class AccessControl {
          */
         private final String folder;
         /**
-         * acl
+         * mask
          */
-        private final int acl;
+        private final int mask;
 
         /**
          * returns the entry ACL.
          *
-         * @return entry acl
+         * @return entry mask
          */
-        int getAcl() {
-            return acl;
+        int getMask() {
+            return mask;
         }
 
         @Override
@@ -215,11 +203,11 @@ public final class AccessControl {
     /**
      * simple check ACL entry.
      */
-    @AllArgsConstructor
+    @RequiredArgsConstructor
     private static class CheckEntry {
 
-        private String role;
-        private String type;
+        private final String role;
+        private final String type;
 
     }
 

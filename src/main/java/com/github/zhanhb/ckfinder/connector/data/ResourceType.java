@@ -63,21 +63,6 @@ public class ResourceType {
     }
 
     /**
-     * clone constructor.
-     *
-     * @param type source type
-     */
-    @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
-    public ResourceType(ResourceType type) {
-        this.name = type.name;
-        this.url = type.url;
-        this.path = type.path;
-        this.maxSize = type.maxSize;
-        this.allowedExtensions = type.allowedExtensions;
-        this.deniedExtensions = type.deniedExtensions;
-    }
-
-    /**
      * @return the url
      */
     public String getUrl() {

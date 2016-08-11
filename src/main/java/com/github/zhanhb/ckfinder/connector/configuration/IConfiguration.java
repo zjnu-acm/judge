@@ -37,14 +37,6 @@ public interface IConfiguration {
     String DEFAULT_BASE_URL = "/userfiles";
 
     /**
-     * creates new instance of configuration for request.
-     *
-     * @return new configuration instance
-     * @throws java.lang.Exception
-     */
-    public IConfiguration cloneConfiguration() throws Exception;
-
-    /**
      * method to check if user is authenticated.
      *
      * @param request current request
@@ -158,13 +150,6 @@ public interface IConfiguration {
     public float getThumbsQuality();
 
     /**
-     * Sets path to thumbs directory.
-     *
-     * @param directory thumbs directory
-     */
-    public void setThumbsPath(String directory);
-
-    /**
      * checks if thumbs are accessed direct.
      *
      * @return true if thumbs can be accessed directly
@@ -268,20 +253,6 @@ public interface IConfiguration {
      * @return list of default resource types
      */
     public Set<String> getDefaultResourceTypes();
-
-    /**
-     * sets new value of thumbs URL.
-     *
-     * @param url new url
-     */
-    public void setThumbsURL(String url);
-
-    /**
-     * sets new value of thumbs folder.
-     *
-     * @param dir new thumbs folder.
-     */
-    public void setThumbsDir(String dir);
 
     /**
      * gets UserFilePathBuilder implementation from configuration.
