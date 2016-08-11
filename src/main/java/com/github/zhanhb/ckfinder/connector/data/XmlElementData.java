@@ -11,49 +11,38 @@
  */
 package com.github.zhanhb.ckfinder.connector.data;
 
-import java.util.ArrayList;
 import java.util.List;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.Singular;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
  * XML element.
  */
+@Builder(builderClassName = "Builder")
 @Getter
-@Setter
 public class XmlElementData {
 
     /**
      * node name.
      */
-    private String name;
+    private final String name;
     /**
      * node text value.
      */
-    private String value;
+    private final String value;
     /**
      * list of attributes of node.
      */
-    private List<XmlAttribute> attributes;
+    @Singular
+    private final List<XmlAttribute> attributes;
     /**
      * list of child nodes.
      */
-    private List<XmlElementData> childrens;
-
-    /**
-     * Constructor.
-     *
-     * @param name XML element name.
-     */
-    @SuppressWarnings("CollectionWithoutInitialCapacity")
-    public XmlElementData(String name) {
-        super();
-        this.name = name;
-        this.attributes = new ArrayList<>();
-        this.childrens = new ArrayList<>();
-    }
+    @Singular
+    private final List<XmlElementData> childrens;
 
     /**
      * Adds element to the document.
@@ -62,7 +51,7 @@ public class XmlElementData {
      * @param parent Parent node for element.
      */
     public void addToDocument(Document document, Element parent) {
-        Element element = this.toElement(document);
+        Element element = toElement(document);
         for (XmlElementData xmlElementData : this.childrens) {
             element.appendChild(xmlElementData.toElement(document));
         }

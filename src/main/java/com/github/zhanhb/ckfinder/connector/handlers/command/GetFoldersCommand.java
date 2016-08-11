@@ -112,19 +112,18 @@ public class GetFoldersCommand extends XMLCommand {
                     + this.getCurrentFolder()
                     + dirPath);
             if (Files.exists(dir)) {
-                XmlElementData xmlElementData = new XmlElementData("Folder");
-                xmlElementData.getAttributes().add(new XmlAttribute("name", dirPath));
+                XmlElementData.Builder xmlElementData = XmlElementData.builder().name("Folder");
+                xmlElementData.attribute(new XmlAttribute("name", dirPath));
 
-                xmlElementData.getAttributes().add(new XmlAttribute("hasChildren",
+                xmlElementData.attribute(new XmlAttribute("hasChildren",
                         FileUtils.hasChildren(getConfiguration().getAccessControl(), this.getCurrentFolder() + dirPath + "/", dir, getConfiguration(), this.getType(), this.getUserRole()).toString()));
 
-                xmlElementData.getAttributes().add(new XmlAttribute("acl",
+                xmlElementData.attribute(new XmlAttribute("acl",
                         String.valueOf(getConfiguration().getAccessControl().checkACLForRole(this.getType(),
                                 this.getCurrentFolder()
                                 + dirPath, this.getUserRole()))));
-                xmlElementData.addToDocument(getCreator().getDocument(), element);
+                xmlElementData.build().addToDocument(getCreator().getDocument(), element);
             }
-
         }
         rootElement.appendChild(element);
     }

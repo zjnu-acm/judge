@@ -12,16 +12,16 @@
 package com.github.zhanhb.ckfinder.connector.data;
 
 import lombok.Getter;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Plugin param data.
  */
 @Getter
-@Setter
+@RequiredArgsConstructor
 public class PluginParam {
 
-    private String name;
-    private String value;
+    private final String name;
+    private final String value;
 
 }

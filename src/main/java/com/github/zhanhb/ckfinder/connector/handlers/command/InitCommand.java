@@ -103,7 +103,7 @@ public class InitCommand extends XMLCommand {
      */
     private String getPlugins() {
         return getConfiguration().getPlugins().stream()
-                .filter(item -> item.isEnabled() && !item.isInternal())
+                .filter(item -> !item.isInternal())
                 .map(item -> item.getName())
                 .collect(Collectors.joining(","));
     }

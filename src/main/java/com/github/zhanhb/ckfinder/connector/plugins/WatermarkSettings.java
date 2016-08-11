@@ -14,14 +14,13 @@ package com.github.zhanhb.ckfinder.connector.plugins;
 import com.github.zhanhb.ckfinder.connector.configuration.IConfiguration;
 import com.github.zhanhb.ckfinder.connector.data.PluginInfo;
 import com.github.zhanhb.ckfinder.connector.data.PluginParam;
-import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 
+@Builder(builderClassName = "Builder")
 @Getter
-@Setter(AccessLevel.PRIVATE)
 class WatermarkSettings {
 
     public static final String WATERMARK = "watermark";
@@ -33,12 +32,12 @@ class WatermarkSettings {
 
     /**
      * @param configuration
-     * @param servletContext
+     * @param applicationContext
      * @return
      * @throws Exception
      */
     public static WatermarkSettings createFromConfiguration(IConfiguration configuration, ApplicationContext applicationContext) throws Exception {
-        WatermarkSettings settings = new WatermarkSettings();
+        Builder settings = WatermarkSettings.builder();
 
         for (PluginInfo pluginInfo : configuration.getPlugins()) {
             if (WATERMARK.equals(pluginInfo.getName())) {
@@ -47,41 +46,46 @@ class WatermarkSettings {
                     final String value = param.getValue();
                     switch (name) {
                         case SOURCE:
-                            settings.setSource(applicationContext.getResource(value));
+                            settings.source(applicationContext.getResource(value));
                             break;
                         case TRANSPARENCY:
-                            settings.setTransparency(Float.parseFloat(value));
+                            settings.transparency(Float.parseFloat(value));
                             break;
                         case QUALITY:
                             final int parseInt = Integer.parseInt(value);
                             final int name1 = parseInt % 101;
                             final float name2 = name1 / 100f;
-                            settings.setQuality(name2);
+                            settings.quality(name2);
                             break;
                         case MARGIN_BOTTOM:
-                            settings.setMarginBottom(Integer.parseInt(value));
+                            settings.marginBottom(Integer.parseInt(value));
                             break;
                         case MARGIN_RIGHT:
-                            settings.setMarginRight(Integer.parseInt(value));
+                            settings.marginRight(Integer.parseInt(value));
                     }
                 }
             }
         }
-        return settings;
+        return settings.build();
     }
 
-    private Resource source;
-    private float transparency;
-    private float quality;
-    private int marginBottom;
-    private int marginRight;
+    private final Resource source;
+    private final float transparency;
+    private final float quality;
+    private final int marginBottom;
+    private final int marginRight;
 
-    WatermarkSettings() {
-        this.source = null;
-        this.marginRight = 0;
-        this.marginBottom = 0;
-        this.quality = 90;
-        this.transparency = 1.0f;
+    @SuppressWarnings("PackageVisibleInnerClass")
+    public static class Builder {
+
+        Builder() {
+            this.source = null;
+            this.marginRight = 0;
+            this.marginBottom = 0;
+            this.quality = 90;
+            this.transparency = 1.0f;
+        }
+
     }
 
 }

@@ -23,7 +23,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -159,14 +158,13 @@ public class XMLCreator {
     /**
      * error node object.
      */
-    @Builder
-    @AllArgsConstructor
+    @Builder(builderClassName = "Builder")
     private static class ErrorNode {
 
-        private String folder;
-        private String type;
-        private String name;
-        private int errorCode;
+        private final String folder;
+        private final String type;
+        private final String name;
+        private final int errorCode;
 
     }
 

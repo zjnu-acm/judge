@@ -11,35 +11,20 @@
  */
 package com.github.zhanhb.ckfinder.connector.data;
 
+import com.github.zhanhb.ckfinder.connector.configuration.Plugin;
 import java.util.List;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Singular;
 
+@Builder(builderClassName = "Builder")
 @Getter
-@NoArgsConstructor
-@Setter
 public class PluginInfo {
 
-    private String name;
-    private String className;
-    private List<PluginParam> params;
-    private boolean enabled;
-    private boolean internal;
-
-    /**
-     * copy constructor.
-     *
-     * @param info source plugin info
-     */
-    @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
-    public PluginInfo(PluginInfo info) {
-        super();
-        this.name = info.name;
-        this.className = info.className;
-        this.params = info.params;
-        this.enabled = info.enabled;
-        this.internal = info.internal;
-    }
+    private final String name;
+    private final Class<? extends Plugin> className;
+    @Singular
+    private final List<PluginParam> params;
+    private final boolean internal;
 
 }
