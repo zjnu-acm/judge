@@ -80,7 +80,7 @@ public class XMLErrorCommand extends XMLCommand implements IErrorCommand {
     @Override
     protected boolean checkConnector(HttpServletRequest request)
             throws ConnectorException {
-        if (!getConfiguration().enabled() || !getConfiguration().checkAuthentication(request)) {
+        if (!getConfiguration().isEnabled() || !getConfiguration().checkAuthentication(request)) {
             this.connectorException = new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_CONNECTOR_DISABLED);
             return false;

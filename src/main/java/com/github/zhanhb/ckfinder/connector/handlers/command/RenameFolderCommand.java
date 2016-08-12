@@ -78,7 +78,7 @@ public class RenameFolderCommand extends XMLCommand implements IPostCommand {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
         }
 
-        if (getConfiguration().forceASCII()) {
+        if (getConfiguration().isForceAscii()) {
             this.newFolderName = FileUtils.convertToASCII(this.newFolderName);
         }
 

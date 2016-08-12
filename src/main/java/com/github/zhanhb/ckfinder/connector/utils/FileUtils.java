@@ -395,7 +395,7 @@ public class FileUtils {
     public static boolean checkIfFileIsHtmlFile(String file,
             IConfiguration configuration) {
 
-        return configuration.getHTMLExtensions().contains(
+        return configuration.getHtmlExtensions().contains(
                 getFileExtension(file).toLowerCase());
 
     }

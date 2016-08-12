@@ -192,8 +192,8 @@ public class GetFilesCommand extends XMLCommand {
      * @return true if show thumbs
      */
     private boolean isAddThumbsAttr() {
-        return getConfiguration().getThumbsEnabled()
-                && (getConfiguration().getThumbsDirectAccess()
+        return getConfiguration().isThumbsEnabled()
+                && (getConfiguration().isThumbsDirectAccess()
                 || isShowThumbs());
     }
 

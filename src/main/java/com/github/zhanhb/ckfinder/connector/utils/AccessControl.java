@@ -63,7 +63,7 @@ public final class AccessControl {
     private final List<ACLEntry> aclEntries;
 
     public AccessControl(IConfiguration configuration) {
-        this.aclEntries = configuration.getAccessConrolLevels().stream().map(item -> {
+        this.aclEntries = configuration.getAccessControlLevels().stream().map(item -> {
             String role = item.getRole();
             String type = item.getResourceType();
             String folder = item.getFolder();

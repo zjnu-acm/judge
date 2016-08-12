@@ -201,7 +201,7 @@ public class ThumbnailCommand extends Command {
      * @throws ConnectorException when validation fails.
      */
     private void validate() throws ConnectorException, IOException {
-        if (!this.getConfiguration().getThumbsEnabled()) {
+        if (!this.getConfiguration().isThumbsEnabled()) {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_THUMBNAILS_DISABLED);
         }
