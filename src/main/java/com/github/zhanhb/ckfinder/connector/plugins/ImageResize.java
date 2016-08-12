@@ -17,10 +17,10 @@ import com.github.zhanhb.ckfinder.connector.configuration.Plugin;
 public class ImageResize extends Plugin {
 
     @Override
-    public void registerEventHandlers(Events events) {
-        events.addBeforeExecuteEventHandler(() -> new ImageResizeCommad(getPluginInfo()));
-        events.addBeforeExecuteEventHandler(ImageResizeInfoCommand::new);
-        events.addInitCommandEventHandler(() -> new ImageResizeInitCommandEventHandler(getPluginInfo()));
+    public void registerEventHandlers(Events.Builder builder) {
+        builder.beforeExecuteCommandEventHandler(() -> new ImageResizeCommad(getPluginInfo()))
+                .beforeExecuteCommandEventHandler(ImageResizeInfoCommand::new)
+                .initCommandEventHandler(() -> new ImageResizeInitCommandEventHandler(getPluginInfo()));
     }
 
 }

@@ -33,8 +33,7 @@ public class WatermarkCommand implements AfterFileUploadEventHandler {
     @Override
     public boolean runEventHandler(AfterFileUploadEventArgs args, IConfiguration configuration) throws ConnectorException {
         try {
-            final WatermarkSettings settings = WatermarkSettings.createFromConfiguration(configuration,
-                    configuration.getApplicationContext());
+            WatermarkSettings settings = configuration.getWatermarkSettings();
             final Path originalFile = args.getFile();
             final WatermarkPosition position = new WatermarkPosition(settings.getMarginBottom(), settings.getMarginRight());
 

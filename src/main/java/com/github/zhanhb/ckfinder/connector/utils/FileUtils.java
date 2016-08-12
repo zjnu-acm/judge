@@ -36,7 +36,6 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import javax.servlet.http.Part;
 
@@ -63,8 +62,8 @@ public class FileUtils {
      * @return list of files or subdirectories in selected directory
      * @throws java.io.IOException
      */
-    public static List<String> findChildrensList(Path dir,
-            boolean searchDirs) throws IOException {
+    public static List<String> findChildrensList(Path dir, boolean searchDirs)
+            throws IOException {
         @SuppressWarnings("CollectionWithoutInitialCapacity")
         List<String> files = new ArrayList<>();
         try (DirectoryStream<Path> ds = Files.newDirectoryStream(dir, file -> searchDirs == Files.isDirectory(file))) {

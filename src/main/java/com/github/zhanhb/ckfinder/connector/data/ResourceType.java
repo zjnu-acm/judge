@@ -12,16 +12,14 @@
 package com.github.zhanhb.ckfinder.connector.data;
 
 import com.github.zhanhb.ckfinder.connector.configuration.Constants;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * Resource type entity.
  */
-@AllArgsConstructor
+@Builder(builderClassName = "Builder")
 @Getter
-@Setter
 public class ResourceType {
 
     /**
@@ -35,32 +33,23 @@ public class ResourceType {
     /**
      * resource url.
      */
-    private String url;
+    private final String url;
     /**
      * resource directory.
      */
-    private String path;
+    private final String path;
     /**
      * max file size in resource.
      */
-    private String maxSize;
+    private final String maxSize;
     /**
      * list of allowed extensions in resource (separated with comma).
      */
-    private String allowedExtensions;
+    private final String allowedExtensions;
     /**
      * list of denied extensions in resource (separated with comma).
      */
-    private String deniedExtensions;
-
-    /**
-     * constructor.
-     *
-     * @param name type name
-     */
-    public ResourceType(String name) {
-        this.name = name;
-    }
+    private final String deniedExtensions;
 
     /**
      * @return the url
@@ -88,12 +77,10 @@ public class ResourceType {
     public long getMaxSize() {
         try {
             //No XML node, no value, value equals 0 = no resource type maxSize
-            if (maxSize == null
-                    || maxSize.isEmpty()
-                    || maxSize.equals("0")) {
+            if (maxSize == null || maxSize.isEmpty() || maxSize.equals("0")) {
                 return 0;
             }
-            return parseMaxSize();
+            return parseMaxSize(maxSize);
         } catch (NumberFormatException e) {
             return 0;
         }
@@ -104,9 +91,8 @@ public class ResourceType {
      *
      * @return number of bytes in max size.
      */
-    private long parseMaxSize() {
-
-        char lastChar = maxSize.toLowerCase().charAt(maxSize.length() - 1);
+    private long parseMaxSize(String maxSize) {
+        char lastChar = Character.toLowerCase(maxSize.charAt(maxSize.length() - 1));
         int a;
         switch (lastChar) {
             case 'k':

@@ -17,8 +17,8 @@ import com.github.zhanhb.ckfinder.connector.configuration.Plugin;
 public class Watermark extends Plugin {
 
     @Override
-    public void registerEventHandlers(Events eventHandler) {
-        eventHandler.addAfterFileUploadEventHandler(WatermarkCommand::new);
+    public void registerEventHandlers(Events.Builder builder) {
+        builder.afterFileUploadEventHandler(WatermarkCommand::new);
     }
 
 }

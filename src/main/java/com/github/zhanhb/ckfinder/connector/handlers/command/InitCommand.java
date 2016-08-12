@@ -76,15 +76,12 @@ public class InitCommand extends XMLCommand {
         Element element = getCreator().getDocument().createElement("ConnectorInfo");
         element.setAttribute("enabled", String.valueOf(getConfiguration().isEnabled()));
         element.setAttribute("s", getLicenseName());
-        element.setAttribute("c",
-                createLicenseKey(getConfiguration().getLicenseKey()));
-        element.setAttribute("thumbsEnabled", String.valueOf(
-                getConfiguration().isThumbsEnabled()));
+        element.setAttribute("c", createLicenseKey(getConfiguration().getLicenseKey()));
+        element.setAttribute("thumbsEnabled", String.valueOf(getConfiguration().isThumbsEnabled()));
         element.setAttribute("uploadCheckImages", getConfiguration().isCheckSizeAfterScaling() ? "false" : "true");
         if (getConfiguration().isThumbsEnabled()) {
             element.setAttribute("thumbsUrl", getConfiguration().getThumbsURL());
-            element.setAttribute("thumbsDirectAccess", String.valueOf(
-                    getConfiguration().isThumbsDirectAccess()));
+            element.setAttribute("thumbsDirectAccess", String.valueOf(getConfiguration().isThumbsDirectAccess()));
             element.setAttribute("thumbsWidth", String.valueOf(getConfiguration().getMaxThumbWidth()));
             element.setAttribute("thumbsHeight", String.valueOf(getConfiguration().getMaxThumbHeight()));
         }
