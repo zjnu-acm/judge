@@ -19,7 +19,6 @@ import com.github.zhanhb.ckfinder.connector.utils.AccessControl;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Interface for configuration.
@@ -35,14 +34,6 @@ public interface IConfiguration {
     String DEFAULT_THUMBS_DIR = "%BASE_DIR%_thumbs/";
     boolean DEFAULT_CHECKAUTHENTICATION = true;
     String DEFAULT_BASE_URL = "/userfiles";
-
-    /**
-     * method to check if user is authenticated.
-     *
-     * @param request current request
-     * @return true if is
-     */
-    public boolean checkAuthentication(HttpServletRequest request);
 
     /**
      * gets user role name sets in config.
