@@ -19,7 +19,6 @@ import cn.edu.zjnu.acm.judge.support.ckfinder.ConfigurationPathBuilder;
 import com.github.zhanhb.ckfinder.connector.configuration.IBasePathBuilder;
 import com.github.zhanhb.ckfinder.connector.configuration.IConfiguration;
 import com.github.zhanhb.ckfinder.connector.configuration.XmlConfigurationParser;
-import com.github.zhanhb.ckfinder.connector.utils.AccessControl;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
@@ -36,18 +35,13 @@ import org.springframework.context.annotation.Configuration;
 public class CKFinderConfiguration {
 
     @Bean
-    public AccessControl accessControl(IConfiguration configuration) {
-        return new AccessControl(configuration);
-    }
-
-    @Bean
     public IBasePathBuilder pathBuilder(JudgeConfiguration judgeConfiguration, ServletContext servletContext) {
         return new ConfigurationPathBuilder(judgeConfiguration, servletContext);
     }
 
     @Bean
     public IConfiguration configuration(ApplicationContext applicationContext, IBasePathBuilder basePathBuilder) throws Exception {
-        return new XmlConfigurationParser().parse(applicationContext, basePathBuilder, "/WEB-INF/config.xml");
+        return XmlConfigurationParser.INSTANCE.parse(applicationContext, basePathBuilder, "/WEB-INF/config.xml");
     }
 
     @Bean

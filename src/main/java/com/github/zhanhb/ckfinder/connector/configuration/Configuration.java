@@ -11,7 +11,6 @@
  */
 package com.github.zhanhb.ckfinder.connector.configuration;
 
-import com.github.zhanhb.ckfinder.connector.data.AccessControlLevel;
 import com.github.zhanhb.ckfinder.connector.data.PluginInfo;
 import com.github.zhanhb.ckfinder.connector.data.ResourceType;
 import com.github.zhanhb.ckfinder.connector.plugins.WatermarkSettings;
@@ -22,7 +21,6 @@ import java.util.Set;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Singular;
-import org.springframework.context.ApplicationContext;
 
 /**
  * Class loads configuration from XML file.
@@ -51,8 +49,6 @@ public class Configuration implements IConfiguration {
     private final int maxThumbWidth;
     private final float thumbsQuality;
     @Singular
-    private final List<AccessControlLevel> accessControlLevels;
-    @Singular
     private final List<String> hiddenFolders;
     @Singular
     private final List<String> hiddenFiles;
@@ -69,12 +65,28 @@ public class Configuration implements IConfiguration {
     private final Set<String> defaultResourceTypes;
     private final boolean disallowUnsafeCharacters;
     private final Events events;
-    private final ApplicationContext applicationContext;
     private final WatermarkSettings watermarkSettings;
+    private final AccessControl accessControl;
 
-    @Override
-    public AccessControl getAccessControl() {
-        return applicationContext.getBean(AccessControl.class);
+    @SuppressWarnings("PublicInnerClass")
+    public static class Builder {
+
+        Builder() {
+            baseDir = "";
+            baseURL = "";
+            licenseName = "";
+            licenseKey = "";
+            imgWidth = DEFAULT_IMG_WIDTH;
+            imgHeight = DEFAULT_IMG_HEIGHT;
+            imgQuality = DEFAULT_IMG_QUALITY;
+            thumbsURL = "";
+            thumbsDir = "";
+            thumbsPath = "";
+            thumbsQuality = DEFAULT_IMG_QUALITY;
+            maxThumbHeight = DEFAULT_THUMB_MAX_HEIGHT;
+            maxThumbWidth = DEFAULT_THUMB_MAX_WIDTH;
+            userRoleName = "";
+        }
     }
 
 }

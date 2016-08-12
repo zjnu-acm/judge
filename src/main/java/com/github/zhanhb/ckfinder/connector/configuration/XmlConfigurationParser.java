@@ -33,8 +33,8 @@ import java.util.StringTokenizer;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.ClassUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -45,7 +45,6 @@ import org.w3c.dom.NodeList;
 import static com.github.zhanhb.ckfinder.connector.configuration.IConfiguration.DEFAULT_IMG_HEIGHT;
 import static com.github.zhanhb.ckfinder.connector.configuration.IConfiguration.DEFAULT_IMG_QUALITY;
 import static com.github.zhanhb.ckfinder.connector.configuration.IConfiguration.DEFAULT_IMG_WIDTH;
-import static com.github.zhanhb.ckfinder.connector.configuration.IConfiguration.DEFAULT_THUMB_MAX_HEIGHT;
 import static com.github.zhanhb.ckfinder.connector.configuration.IConfiguration.DEFAULT_THUMB_MAX_WIDTH;
 
 /**
@@ -53,26 +52,26 @@ import static com.github.zhanhb.ckfinder.connector.configuration.IConfiguration.
  * @author zhanhb
  */
 @Slf4j
-public class XmlConfigurationParser {
+public enum XmlConfigurationParser {
+    INSTANCE;
 
     private static final int MAX_QUALITY = 100;
     private static final float MAX_QUALITY_FLOAT = 100f;
 
     /**
      *
-     * @param applicationContext
+     * @param resourceLoader
      * @param basePathBuilder
      * @param xmlFilePath
      * @return
      * @throws java.lang.Exception
      */
-    public Configuration parse(ApplicationContext applicationContext, IBasePathBuilder basePathBuilder, String xmlFilePath) throws Exception {
-        Configuration.Builder builder = Configuration.builder()
-                .applicationContext(applicationContext);
+    public Configuration parse(ResourceLoader resourceLoader, IBasePathBuilder basePathBuilder, String xmlFilePath) throws Exception {
+        Configuration.Builder builder = Configuration.builder();
         String baseFolder = getBaseFolder(basePathBuilder);
-        init(builder, applicationContext, xmlFilePath, baseFolder, basePathBuilder);
+        init(builder, resourceLoader, xmlFilePath, baseFolder, basePathBuilder);
         final WatermarkSettings settings = WatermarkSettings.createFromConfiguration(builder.build(),
-                applicationContext);
+                resourceLoader);
         return builder.watermarkSettings(settings).build();
     }
 
@@ -81,24 +80,8 @@ public class XmlConfigurationParser {
      *
      * @throws Exception when error occurs.
      */
-    private void init(Configuration.Builder builder, ApplicationContext applicationContext, String xmlFilePath, String baseFolder, IBasePathBuilder basePathBuilder) throws Exception {
-        builder
-                .baseDir("")
-                .baseURL("")
-                .licenseName("")
-                .licenseKey("")
-                .imgWidth(DEFAULT_IMG_WIDTH)
-                .imgHeight(DEFAULT_IMG_HEIGHT)
-                .imgQuality(DEFAULT_IMG_QUALITY)
-                .thumbsURL("")
-                .thumbsDir("")
-                .thumbsPath("")
-                .thumbsQuality(DEFAULT_IMG_QUALITY)
-                .maxThumbHeight(DEFAULT_THUMB_MAX_HEIGHT)
-                .maxThumbWidth(DEFAULT_THUMB_MAX_WIDTH)
-                .userRoleName("");
-
-        Resource resource = getFullConfigPath(applicationContext, xmlFilePath);
+    private void init(Configuration.Builder builder, ResourceLoader resourceLoader, String xmlFilePath, String baseFolder, IBasePathBuilder basePathBuilder) throws Exception {
+        Resource resource = getFullConfigPath(resourceLoader, xmlFilePath);
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc;
@@ -223,8 +206,8 @@ public class XmlConfigurationParser {
      * @return absolute path to XML configuration file
      * @throws ConnectorException when absolute path cannot be obtained.
      */
-    private Resource getFullConfigPath(ApplicationContext applicationContext, String xmlFilePath) throws ConnectorException {
-        Resource resource = applicationContext.getResource(xmlFilePath);
+    private Resource getFullConfigPath(ResourceLoader resourceLoader, String xmlFilePath) throws ConnectorException {
+        Resource resource = resourceLoader.getResource(xmlFilePath);
         if (!resource.exists()) {
             throw new ConnectorException(Constants.Errors.CKFINDER_CONNECTOR_ERROR_FILE_NOT_FOUND,
                     "Configuration file could not be found under specified location.");
@@ -297,15 +280,17 @@ public class XmlConfigurationParser {
      * @param childNodes nodes with ACL configuration.
      */
     private void setACLs(Configuration.Builder builder, NodeList childNodes) {
+        AccessControl.Builder accessControlBuilder = AccessControl.builder();
         for (int i = 0, j = childNodes.getLength(); i < j; i++) {
             Node childNode = childNodes.item(i);
             if (childNode.getNodeName().equals("accessControl")) {
                 AccessControlLevel acl = getACLFromNode(childNode);
                 if (acl != null) {
-                    builder.accessControlLevel(acl);
+                    accessControlBuilder.aclEntry(acl);
                 }
             }
         }
+        builder.accessControl(accessControlBuilder.build());
     }
 
     /**
