@@ -113,6 +113,8 @@ public class ConnectorServlet extends HttpServlet {
                         Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_COMMAND, false);
             }
 
+            BeforeExecuteCommandEventArgs args = new BeforeExecuteCommandEventArgs(command, request, response);
+
             boolean isNativeCommand;
             if (CommandHandlerEnum.contains(command.toUpperCase())) {
                 isNativeCommand = true;
@@ -131,7 +133,6 @@ public class ConnectorServlet extends HttpServlet {
 
             Events events = configuration.getEvents();
             if (events != null) {
-                BeforeExecuteCommandEventArgs args = new BeforeExecuteCommandEventArgs(command, request, response);
                 if (events.runBeforeExecuteCommand(args, configuration)) {
                     executeNativeCommand(command, request, response, configuration, isNativeCommand);
                 }
