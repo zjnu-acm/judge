@@ -14,6 +14,7 @@ package com.github.zhanhb.ckfinder.connector.data;
 import java.nio.file.Path;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 /**
  * Event data for
@@ -22,6 +23,7 @@ import lombok.RequiredArgsConstructor;
  */
 @Getter
 @RequiredArgsConstructor
+@ToString
 public class AfterFileUploadEventArgs extends EventArgs {
 
     private final String currentFolder;

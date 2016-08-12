@@ -40,6 +40,7 @@ public class ImageResizeInfoCommand extends XMLCommand implements BeforeExecuteC
     @Override
     public boolean runEventHandler(BeforeExecuteCommandEventArgs args, IConfiguration configuration)
             throws ConnectorException {
+        log.debug("runEventHandler: {} {}", args, configuration);
         if ("ImageResizeInfo".equals(args.getCommand())) {
             this.runCommand(args.getRequest(), args.getResponse(), configuration);
             return false;

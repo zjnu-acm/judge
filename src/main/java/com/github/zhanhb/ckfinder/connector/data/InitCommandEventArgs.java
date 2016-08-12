@@ -14,6 +14,7 @@ package com.github.zhanhb.ckfinder.connector.data;
 import com.github.zhanhb.ckfinder.connector.utils.XMLCreator;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.w3c.dom.Element;
 
 /**
@@ -23,6 +24,7 @@ import org.w3c.dom.Element;
  */
 @Getter
 @RequiredArgsConstructor
+@ToString
 public class InitCommandEventArgs extends EventArgs {
 
     private final XMLCreator xml;

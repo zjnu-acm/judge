@@ -23,11 +23,31 @@ import com.github.zhanhb.ckfinder.connector.errors.ConnectorException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Provides support for event handlers.
  */
+@Slf4j
 public class Events {
+
+    @SuppressWarnings({"BroadCatchBlock", "TooBroadCatch"})
+    private static <T extends EventArgs> boolean run(List<Supplier<? extends IEventHandler<T>>> handlers, T args, IConfiguration configuration) throws ConnectorException {
+        log.trace("{}", handlers);
+        for (Supplier<? extends IEventHandler<T>> eventCommandData : handlers) {
+            try {
+                IEventHandler<T> events = eventCommandData.get();
+                if (!events.runEventHandler(args, configuration)) {
+                    return false;
+                }
+            } catch (ConnectorException ex) {
+                throw ex;
+            } catch (Exception e) {
+                throw new ConnectorException(e);
+            }
+        }
+        return true;
+    }
 
     private final List<Supplier<? extends IEventHandler<BeforeExecuteCommandEventArgs>>> beforeExecuteCommandEventHandlers;
     private final List<Supplier<? extends IEventHandler<AfterFileUploadEventArgs>>> afterFileUploadEventHandlers;
@@ -84,23 +104,6 @@ public class Events {
             // impossible
             throw new AssertionError(ex);
         }
-    }
-
-    @SuppressWarnings({"BroadCatchBlock", "TooBroadCatch"})
-    private <T extends EventArgs> boolean run(List<Supplier<? extends IEventHandler<T>>> handlers, T args, IConfiguration configuration) throws ConnectorException {
-        for (Supplier<? extends IEventHandler<T>> eventCommandData : handlers) {
-            try {
-                IEventHandler<T> events = eventCommandData.get();
-                if (!events.runEventHandler(args, configuration)) {
-                    return false;
-                }
-            } catch (ConnectorException ex) {
-                throw ex;
-            } catch (Exception e) {
-                throw new ConnectorException(e);
-            }
-        }
-        return true;
     }
 
 }
