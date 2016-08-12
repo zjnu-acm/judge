@@ -16,7 +16,6 @@ import com.github.zhanhb.ckfinder.connector.data.AfterFileUploadEventHandler;
 import com.github.zhanhb.ckfinder.connector.data.BeforeExecuteCommandEventArgs;
 import com.github.zhanhb.ckfinder.connector.data.BeforeExecuteCommandEventHandler;
 import com.github.zhanhb.ckfinder.connector.data.EventArgs;
-import com.github.zhanhb.ckfinder.connector.data.EventCommandData;
 import com.github.zhanhb.ckfinder.connector.data.IEventHandler;
 import com.github.zhanhb.ckfinder.connector.data.InitCommandEventArgs;
 import com.github.zhanhb.ckfinder.connector.data.InitCommandEventHandler;
@@ -30,9 +29,9 @@ import java.util.function.Supplier;
  */
 public class Events {
 
-    private final List<EventCommandData<BeforeExecuteCommandEventArgs>> beforeExecuteCommandEventHandlers;
-    private final List<EventCommandData<AfterFileUploadEventArgs>> afterFileUploadEventHandlers;
-    private final List<EventCommandData<InitCommandEventArgs>> initCommandEventHandlers;
+    private final List<Supplier<? extends IEventHandler<BeforeExecuteCommandEventArgs>>> beforeExecuteCommandEventHandlers;
+    private final List<Supplier<? extends IEventHandler<AfterFileUploadEventArgs>>> afterFileUploadEventHandlers;
+    private final List<Supplier<? extends IEventHandler<InitCommandEventArgs>>> initCommandEventHandlers;
 
     /**
      * default constructor.
@@ -49,15 +48,15 @@ public class Events {
      * @param eventHandler event class to register
      */
     public void addBeforeExecuteEventHandler(Supplier<? extends BeforeExecuteCommandEventHandler> eventHandler) {
-        beforeExecuteCommandEventHandlers.add(new EventCommandData<>(eventHandler));
+        beforeExecuteCommandEventHandlers.add(eventHandler);
     }
 
     public void addAfterFileUploadEventHandler(Supplier<? extends AfterFileUploadEventHandler> eventHandler) {
-        afterFileUploadEventHandlers.add(new EventCommandData<>(eventHandler));
+        afterFileUploadEventHandlers.add(eventHandler);
     }
 
     public void addInitCommandEventHandler(Supplier<? extends InitCommandEventHandler> eventHandler) {
-        initCommandEventHandlers.add(new EventCommandData<>(eventHandler));
+        initCommandEventHandlers.add(eventHandler);
     }
 
     /**
@@ -88,10 +87,10 @@ public class Events {
     }
 
     @SuppressWarnings({"BroadCatchBlock", "TooBroadCatch"})
-    private <T extends EventArgs> boolean run(List<EventCommandData<T>> handlers, T args, IConfiguration configuration) throws ConnectorException {
-        for (EventCommandData<T> eventCommandData : handlers) {
+    private <T extends EventArgs> boolean run(List<Supplier<? extends IEventHandler<T>>> handlers, T args, IConfiguration configuration) throws ConnectorException {
+        for (Supplier<? extends IEventHandler<T>> eventCommandData : handlers) {
             try {
-                IEventHandler<T> events = eventCommandData.getEventListener().get();
+                IEventHandler<T> events = eventCommandData.get();
                 if (!events.runEventHandler(args, configuration)) {
                     return false;
                 }
