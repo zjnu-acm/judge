@@ -12,22 +12,21 @@
 package com.github.zhanhb.ckfinder.connector.configuration;
 
 import com.github.zhanhb.ckfinder.connector.data.AfterFileUploadEventArgs;
-import com.github.zhanhb.ckfinder.connector.data.AfterFileUploadEventHandler;
 import com.github.zhanhb.ckfinder.connector.data.BeforeExecuteCommandEventArgs;
-import com.github.zhanhb.ckfinder.connector.data.BeforeExecuteCommandEventHandler;
 import com.github.zhanhb.ckfinder.connector.data.EventArgs;
 import com.github.zhanhb.ckfinder.connector.data.IEventHandler;
 import com.github.zhanhb.ckfinder.connector.data.InitCommandEventArgs;
-import com.github.zhanhb.ckfinder.connector.data.InitCommandEventHandler;
 import com.github.zhanhb.ckfinder.connector.errors.ConnectorException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
+import lombok.Builder;
+import lombok.Singular;
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * Provides support for event handlers.
  */
+@Builder(builderClassName = "Builder")
 @Slf4j
 public class Events {
 
@@ -49,35 +48,12 @@ public class Events {
         return true;
     }
 
+    @Singular
     private final List<Supplier<? extends IEventHandler<BeforeExecuteCommandEventArgs>>> beforeExecuteCommandEventHandlers;
+    @Singular
     private final List<Supplier<? extends IEventHandler<AfterFileUploadEventArgs>>> afterFileUploadEventHandlers;
+    @Singular
     private final List<Supplier<? extends IEventHandler<InitCommandEventArgs>>> initCommandEventHandlers;
-
-    /**
-     * default constructor.
-     */
-    public Events() {
-        this.beforeExecuteCommandEventHandlers = new ArrayList<>(6);
-        this.afterFileUploadEventHandlers = new ArrayList<>(6);
-        this.initCommandEventHandlers = new ArrayList<>(6);
-    }
-
-    /**
-     * register events handlers for event.
-     *
-     * @param eventHandler event class to register
-     */
-    public void addBeforeExecuteEventHandler(Supplier<? extends BeforeExecuteCommandEventHandler> eventHandler) {
-        beforeExecuteCommandEventHandlers.add(eventHandler);
-    }
-
-    public void addAfterFileUploadEventHandler(Supplier<? extends AfterFileUploadEventHandler> eventHandler) {
-        afterFileUploadEventHandlers.add(eventHandler);
-    }
-
-    public void addInitCommandEventHandler(Supplier<? extends InitCommandEventHandler> eventHandler) {
-        initCommandEventHandlers.add(eventHandler);
-    }
 
     /**
      * run event handlers for selected event.

@@ -11,8 +11,6 @@
  */
 package com.github.zhanhb.ckfinder.connector.configuration;
 
-import java.io.IOException;
-
 /**
  *
  */
@@ -22,9 +20,8 @@ public interface IBasePathBuilder {
      * create baseDir value.
      *
      * @return value of baseDir
-     * @throws java.io.IOException
      */
-    public String getBaseDir() throws IOException;
+    public String getBaseDir();
 
     /**
      * create baseURL value.

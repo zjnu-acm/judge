@@ -14,12 +14,12 @@ package com.github.zhanhb.ckfinder.connector.configuration;
 import com.github.zhanhb.ckfinder.connector.data.AccessControlLevel;
 import com.github.zhanhb.ckfinder.connector.data.PluginInfo;
 import com.github.zhanhb.ckfinder.connector.data.ResourceType;
+import com.github.zhanhb.ckfinder.connector.plugins.WatermarkSettings;
 import com.github.zhanhb.ckfinder.connector.utils.AccessControl;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.context.ApplicationContext;
 
 /**
  * Interface for configuration.
@@ -91,14 +91,14 @@ public interface IConfiguration {
      *
      * @return max image height
      */
-    public Integer getImgWidth();
+    public int getImgWidth();
 
     /**
      * get image max height.
      *
      * @return max image height
      */
-    public Integer getImgHeight();
+    public int getImgHeight();
 
     /**
      * get image quality.
@@ -255,22 +255,11 @@ public interface IConfiguration {
     public Set<String> getDefaultResourceTypes();
 
     /**
-     * gets UserFilePathBuilder implementation from configuration.
-     *
-     * @return IUserFilePathBuilder implementation
-     */
-    public IBasePathBuilder getBasePathBuilder();
-
-    /**
-     *
-     * @return the application context
-     */
-    public ApplicationContext getApplicationContext();
-
-    /**
      *
      * @return the configuration
      */
     public AccessControl getAccessControl();
+
+    public WatermarkSettings getWatermarkSettings();
 
 }

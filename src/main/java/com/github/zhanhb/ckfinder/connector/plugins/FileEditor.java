@@ -17,8 +17,8 @@ import com.github.zhanhb.ckfinder.connector.configuration.Plugin;
 public class FileEditor extends Plugin {
 
     @Override
-    public void registerEventHandlers(Events events) {
-        events.addBeforeExecuteEventHandler(SaveFileCommand::new);
+    public void registerEventHandlers(Events.Builder events) {
+        events.beforeExecuteCommandEventHandler(SaveFileCommand::new);
     }
 
 }

@@ -21,7 +21,7 @@ import org.springframework.core.io.Resource;
 
 @Builder(builderClassName = "Builder")
 @Getter
-class WatermarkSettings {
+public class WatermarkSettings {
 
     public static final String WATERMARK = "watermark";
     public static final String SOURCE = "source";

@@ -28,7 +28,7 @@ public abstract class Plugin {
      *
      * @param eventHandler available event handlers.
      */
-    protected abstract void registerEventHandlers(Events eventHandler);
+    protected abstract void registerEventHandlers(Events.Builder eventHandler);
 
     /**
      * @param pluginInfo the pluginInfo to set
