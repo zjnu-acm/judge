@@ -52,7 +52,7 @@ public class GetFoldersCommand extends XMLCommand {
      */
     @Override
     protected int getDataForXml() throws IOException {
-        if (!checkIfTypeExists(getType())) {
+        if (!isTypeExists(getType())) {
             this.setType(null);
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
         }
@@ -63,7 +63,7 @@ public class GetFoldersCommand extends XMLCommand {
                 AccessControl.CKFINDER_CONNECTOR_ACL_FOLDER_VIEW)) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
         }
-        if (FileUtils.checkIfDirIsHidden(this.getCurrentFolder(), getConfiguration())) {
+        if (FileUtils.isDirectoryHidden(this.getCurrentFolder(), getConfiguration())) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
         }
 
@@ -92,7 +92,7 @@ public class GetFoldersCommand extends XMLCommand {
         List<String> tmpDirs = this.directories.stream()
                 .filter(dir -> (getConfiguration().getAccessControl().checkFolderACL(this.getType(), this.getCurrentFolder() + dir, this.getUserRole(),
                         AccessControl.CKFINDER_CONNECTOR_ACL_FOLDER_VIEW)
-                        && !FileUtils.checkIfDirIsHidden(dir, getConfiguration())))
+                        && !FileUtils.isDirectoryHidden(dir, getConfiguration())))
                 .collect(Collectors.toList());
 
         this.directories.clear();

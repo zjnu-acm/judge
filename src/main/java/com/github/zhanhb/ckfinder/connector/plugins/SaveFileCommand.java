@@ -41,7 +41,7 @@ public class SaveFileCommand extends XMLCommand implements BeforeExecuteCommandE
     @Override
     protected int getDataForXml() {
 
-        if (!checkIfTypeExists(getType())) {
+        if (!isTypeExists(getType())) {
             this.setType(null);
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
         }
@@ -63,7 +63,7 @@ public class SaveFileCommand extends XMLCommand implements BeforeExecuteCommandE
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_EXTENSION;
         }
 
-        if (!FileUtils.checkFileName(fileName)) {
+        if (!FileUtils.isFileNameInvalid(fileName)) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
         }
 

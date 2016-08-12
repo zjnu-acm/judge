@@ -38,7 +38,7 @@ public class ErrorCommand extends Command implements IErrorCommand {
     private HttpServletResponse response;
 
     @Override
-    public void execute(OutputStream out) throws ConnectorException {
+    protected void execute(OutputStream out) throws ConnectorException {
         try {
             response.setHeader("X-CKFinder-Error", String.valueOf(connectorException.getErrorCode()));
             switch (connectorException.getErrorCode()) {
@@ -82,14 +82,14 @@ public class ErrorCommand extends Command implements IErrorCommand {
      * @throws ConnectorException it should never throw an exception
      */
     @Override
-    protected boolean checkParam(String reqParam) throws ConnectorException {
+    protected boolean isRequestPathValid(String reqParam) throws ConnectorException {
         return reqParam == null || reqParam.isEmpty()
                 || !Pattern.compile(Constants.INVALID_PATH_REGEX).matcher(reqParam).find();
     }
 
     @Override
-    protected boolean checkHidden() throws ConnectorException {
-        if (FileUtils.checkIfDirIsHidden(this.getCurrentFolder(), getConfiguration())) {
+    protected boolean isHidden() throws ConnectorException {
+        if (FileUtils.isDirectoryHidden(this.getCurrentFolder(), getConfiguration())) {
             this.connectorException = new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_CONNECTOR_DISABLED);
             return true;
@@ -98,7 +98,7 @@ public class ErrorCommand extends Command implements IErrorCommand {
     }
 
     @Override
-    protected boolean checkConnector()
+    protected boolean isConnectorEnabled()
             throws ConnectorException {
         if (!getConfiguration().isEnabled()) {
             this.connectorException = new ConnectorException(
@@ -109,10 +109,10 @@ public class ErrorCommand extends Command implements IErrorCommand {
     }
 
     @Override
-    protected boolean checkIfCurrFolderExists(HttpServletRequest request)
+    protected boolean isCurrFolderExists(HttpServletRequest request)
             throws ConnectorException {
         String tmpType = request.getParameter("type");
-        if (checkIfTypeExists(tmpType)) {
+        if (isTypeExists(tmpType)) {
             Path currDir = Paths.get(getConfiguration().getTypes().get(tmpType).getPath()
                     + this.getCurrentFolder());
             if (Files.exists(currDir) && Files.isDirectory(currDir)) {
@@ -127,7 +127,7 @@ public class ErrorCommand extends Command implements IErrorCommand {
     }
 
     @Override
-    protected boolean checkIfTypeExists(String type) {
+    protected boolean isTypeExists(String type) {
         ResourceType testType = getConfiguration().getTypes().get(type);
         if (testType == null) {
             this.connectorException = new ConnectorException(

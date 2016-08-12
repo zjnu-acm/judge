@@ -67,7 +67,7 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
 
     @Override
     protected int getDataForXml() {
-        if (!checkIfTypeExists(getType())) {
+        if (!isTypeExists(getType())) {
             this.setType(null);
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
         }
@@ -101,7 +101,7 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
         this.addMoveNode = false;
         for (FilePostParam file : files) {
 
-            if (!FileUtils.checkFileName(file.getName())) {
+            if (!FileUtils.isFileNameInvalid(file.getName())) {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
             }
             if (Pattern.compile(Constants.INVALID_PATH_REGEX).matcher(
@@ -134,11 +134,11 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
                 }
             }
 
-            if (FileUtils.checkIfFileIsHidden(file.getName(), this.getConfiguration())) {
+            if (FileUtils.isFileHidden(file.getName(), this.getConfiguration())) {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
             }
 
-            if (FileUtils.checkIfDirIsHidden(file.getFolder(), this.getConfiguration())) {
+            if (FileUtils.isDirectoryHidden(file.getFolder(), this.getConfiguration())) {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
             }
 

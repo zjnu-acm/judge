@@ -60,13 +60,12 @@ public class RenameFolderCommand extends XMLCommand implements IPostCommand {
     protected int getDataForXml() throws IOException {
 
         try {
-            checkParam(newFolderName);
-
+            isRequestPathValid(newFolderName);
         } catch (ConnectorException e) {
             return e.getErrorCode();
         }
 
-        if (!checkIfTypeExists(getType())) {
+        if (!isTypeExists(getType())) {
             this.setType(null);
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
         }
@@ -82,8 +81,8 @@ public class RenameFolderCommand extends XMLCommand implements IPostCommand {
             this.newFolderName = FileUtils.convertToASCII(this.newFolderName);
         }
 
-        if (FileUtils.checkIfDirIsHidden(this.newFolderName, getConfiguration())
-                || !FileUtils.checkFolderName(this.newFolderName, getConfiguration())) {
+        if (FileUtils.isDirectoryHidden(this.newFolderName, getConfiguration())
+                || !FileUtils.isFolderNameInvalid(this.newFolderName, getConfiguration())) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_NAME;
         }
 

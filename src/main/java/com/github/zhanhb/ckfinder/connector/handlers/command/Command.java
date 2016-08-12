@@ -27,6 +27,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -92,15 +93,16 @@ public abstract class Command {
             throws ConnectorException {
         if (configuration != null) {
             this.configuration = configuration;
-            userRole = (String) request.getSession().getAttribute(configuration.getUserRoleName());
+            HttpSession session = request.getSession(false);
+            userRole = session == null ? null : (String) session.getAttribute(configuration.getUserRoleName());
 
             getCurrentFolderParam(request);
 
-            if (checkConnector() && checkParam(this.getCurrentFolder())) {
+            if (isConnectorEnabled() && isRequestPathValid(this.getCurrentFolder())) {
                 this.setCurrentFolder(PathUtils.escape(this.getCurrentFolder()));
-                if (!checkHidden()) {
+                if (!isHidden()) {
                     if ((this.getCurrentFolder() == null || this.getCurrentFolder().isEmpty())
-                            || checkIfCurrFolderExists(request)) {
+                            || isCurrFolderExists(request)) {
                         this.setType(request.getParameter("type"));
                     }
                 }
@@ -114,8 +116,7 @@ public abstract class Command {
      * @return true if connector is enabled and user is authenticated
      * @throws ConnectorException when connector is disabled
      */
-    protected boolean checkConnector()
-            throws ConnectorException {
+    protected boolean isConnectorEnabled() throws ConnectorException {
         if (!getConfiguration().isEnabled()) {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_CONNECTOR_DISABLED, false);
@@ -130,11 +131,11 @@ public abstract class Command {
      * @return {@code true} if current folder exists
      * @throws ConnectorException if current folder doesn't exist
      */
-    protected boolean checkIfCurrFolderExists(HttpServletRequest request)
+    protected boolean isCurrFolderExists(HttpServletRequest request)
             throws ConnectorException {
         String tmpType = request.getParameter("type");
         if (tmpType != null) {
-            if (checkIfTypeExists(tmpType)) {
+            if (isTypeExists(tmpType)) {
                 Path currDir = Paths.get(getConfiguration().getTypes().get(tmpType).getPath() + this.getCurrentFolder());
                 if (!Files.exists(currDir) || !Files.isDirectory(currDir)) {
                     throw new ConnectorException(
@@ -155,7 +156,7 @@ public abstract class Command {
      * @param type name of the resource type to check if it exists
      * @return {@code true} if provided type exists, {@code false} otherwise.
      */
-    protected boolean checkIfTypeExists(String type) {
+    protected boolean isTypeExists(String type) {
         ResourceType testType = getConfiguration().getTypes().get(type);
         return testType != null;
     }
@@ -166,8 +167,8 @@ public abstract class Command {
      * @return false if isn't.
      * @throws ConnectorException when is hidden
      */
-    protected boolean checkHidden() throws ConnectorException {
-        if (FileUtils.checkIfDirIsHidden(this.getCurrentFolder(), getConfiguration())) {
+    protected boolean isHidden() throws ConnectorException {
+        if (FileUtils.isDirectoryHidden(this.getCurrentFolder(), getConfiguration())) {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST,
                     false);
@@ -182,7 +183,7 @@ public abstract class Command {
      * @throws ConnectorException when error occurs
      * @throws java.io.IOException
      */
-    public abstract void execute(OutputStream out) throws ConnectorException, IOException;
+    protected abstract void execute(OutputStream out) throws ConnectorException, IOException;
 
     /**
      * sets header in response.
@@ -199,7 +200,7 @@ public abstract class Command {
      * @return true if validation passed
      * @throws ConnectorException if validation error occurs.
      */
-    protected boolean checkParam(String reqParam) throws ConnectorException {
+    protected boolean isRequestPathValid(String reqParam) throws ConnectorException {
         if (reqParam == null || reqParam.isEmpty()) {
             return true;
         }

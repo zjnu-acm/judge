@@ -83,7 +83,7 @@ public class GetFilesCommand extends XMLCommand {
      */
     @Override
     protected int getDataForXml() throws IOException {
-        if (!checkIfTypeExists(getType())) {
+        if (!isTypeExists(getType())) {
             this.setType(null);
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
         }
@@ -118,7 +118,7 @@ public class GetFilesCommand extends XMLCommand {
     private void filterListByHiddenAndNotAllowed() {
         List<String> tmpFiles = this.files.stream()
                 .filter(file -> (FileUtils.checkFileExtension(file, this.getConfiguration().getTypes().get(this.getType())) == 0
-                        && !FileUtils.checkIfFileIsHidden(file, getConfiguration())))
+                        && !FileUtils.isFileHidden(file, getConfiguration())))
                 .collect(Collectors.toList());
 
         this.files.clear();

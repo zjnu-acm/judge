@@ -54,7 +54,7 @@ public abstract class XMLCommand extends Command {
      * @throws ConnectorException to handle in error handler.
      */
     @Override
-    public void execute(OutputStream out) throws ConnectorException {
+    protected void execute(OutputStream out) throws ConnectorException {
         try {
             createXMLResponse(getDataForXml());
             out.write(getCreator().getDocumentAsText().getBytes("UTF-8"));
