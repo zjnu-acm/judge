@@ -11,16 +11,18 @@
  */
 package com.github.zhanhb.ckfinder.connector.utils;
 
-import com.github.zhanhb.ckfinder.connector.configuration.IConfiguration;
+import com.github.zhanhb.ckfinder.connector.data.AccessControlLevel;
 import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import lombok.Singular;
 
 /**
  * Class to generate ACL values.
  */
+@Builder(builderClassName = "Builder")
 @SuppressWarnings({"FinalClass", "AccessingNonPublicFieldOfAnotherObject"})
 public final class AccessControl {
 
@@ -60,18 +62,8 @@ public final class AccessControl {
     /**
      * mask configuration.
      */
-    private final List<ACLEntry> aclEntries;
-
-    public AccessControl(IConfiguration configuration) {
-        this.aclEntries = configuration.getAccessControlLevels().stream().map(item -> {
-            String role = item.getRole();
-            String type = item.getResourceType();
-            String folder = item.getFolder();
-            int mask = item.getMask();
-
-            return ACLEntry.builder().role(role).type(type).folder(folder).mask(mask).build();
-        }).collect(Collectors.toList());
-    }
+    @Singular
+    private final List<AccessControlLevel> aclEntries;
 
     /**
      * check ACL for folder.
@@ -107,9 +99,9 @@ public final class AccessControl {
 
         int acl = 0;
         for (CheckEntry checkEntry : ce) {
-            List<ACLEntry> aclEntrieForType = findACLEntryByRoleAndType(checkEntry.type, checkEntry.role);
+            List<AccessControlLevel> aclEntrieForType = findACLEntryByRoleAndType(checkEntry.type, checkEntry.role);
 
-            for (ACLEntry aclEntry : aclEntrieForType) {
+            for (AccessControlLevel aclEntry : aclEntrieForType) {
                 String cuttedPath = folder;
 
                 while (true) {
@@ -117,8 +109,8 @@ public final class AccessControl {
                             && cuttedPath.lastIndexOf('/') == cuttedPath.length() - 1) {
                         cuttedPath = cuttedPath.substring(0, cuttedPath.length() - 1);
                     }
-                    if (aclEntry.folder.equals(cuttedPath)) {
-                        acl = checkACLForFolder(aclEntry, cuttedPath);
+                    if (aclEntry.getFolder().equals(cuttedPath)) {
+                        acl |= checkACLForFolder(aclEntry, cuttedPath);
                         break;
                     } else if (cuttedPath.length() == 1) {
                         break;
@@ -141,9 +133,9 @@ public final class AccessControl {
      * @param folder current folder
      * @return mask value
      */
-    private int checkACLForFolder(ACLEntry entry, String folder) {
+    private int checkACLForFolder(AccessControlLevel entry, String folder) {
         int acl = 0;
-        if (folder.contains(entry.folder) || entry.folder.equals(File.separator)) {
+        if (folder.contains(entry.getFolder()) || entry.getFolder().equals(File.separator)) {
             acl ^= entry.getMask();
         }
         return acl;
@@ -156,48 +148,10 @@ public final class AccessControl {
      * @param role current user role
      * @return list of ACL entries.
      */
-    private List<ACLEntry> findACLEntryByRoleAndType(String type, String role) {
+    private List<AccessControlLevel> findACLEntryByRoleAndType(String type, String role) {
         return aclEntries.stream()
-                .filter(item -> (item.role.equals(role) && item.type.equals(type)))
+                .filter(item -> (item.getRole().equals(role) && item.getResourceType().equals(type)))
                 .collect(Collectors.toList());
-    }
-
-    /**
-     * Simple ACL entry class.
-     */
-    @Builder(builderClassName = "Builder")
-    private static class ACLEntry {
-
-        /**
-         * role name.
-         */
-        private final String role;
-        /**
-         * resource type name.
-         */
-        private final String type;
-        /**
-         * folder name.
-         */
-        private final String folder;
-        /**
-         * mask
-         */
-        private final int mask;
-
-        /**
-         * returns the entry ACL.
-         *
-         * @return entry mask
-         */
-        int getMask() {
-            return mask;
-        }
-
-        @Override
-        public String toString() {
-            return role + " " + type + " " + folder;
-        }
     }
 
     /**

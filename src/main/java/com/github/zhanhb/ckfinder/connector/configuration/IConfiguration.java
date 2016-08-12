@@ -11,7 +11,6 @@
  */
 package com.github.zhanhb.ckfinder.connector.configuration;
 
-import com.github.zhanhb.ckfinder.connector.data.AccessControlLevel;
 import com.github.zhanhb.ckfinder.connector.data.PluginInfo;
 import com.github.zhanhb.ckfinder.connector.data.ResourceType;
 import com.github.zhanhb.ckfinder.connector.plugins.WatermarkSettings;
@@ -160,13 +159,6 @@ public interface IConfiguration {
      * @return max height of thumb
      */
     public int getMaxThumbHeight();
-
-    /**
-     * get list of access control levels.
-     *
-     * @return list of access control levels
-     */
-    public List<AccessControlLevel> getAccessControlLevels();
 
     /**
      * get regex for hidden folders.
