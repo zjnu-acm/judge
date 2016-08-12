@@ -112,14 +112,14 @@ public interface IConfiguration {
      *
      * @return if connector is enabled
      */
-    public boolean enabled();
+    public boolean isEnabled();
 
     /**
      * check if thums are enabled.
      *
      * @return true if thums are enabled
      */
-    public boolean getThumbsEnabled();
+    public boolean isThumbsEnabled();
 
     /**
      * gets url to thumbs dir(path from baseUrl).
@@ -154,7 +154,7 @@ public interface IConfiguration {
      *
      * @return true if thumbs can be accessed directly
      */
-    public boolean getThumbsDirectAccess();
+    public boolean isThumbsDirectAccess();
 
     /**
      * gets max width of thumb.
@@ -175,7 +175,7 @@ public interface IConfiguration {
      *
      * @return list of access control levels
      */
-    public List<AccessControlLevel> getAccessConrolLevels();
+    public List<AccessControlLevel> getAccessControlLevels();
 
     /**
      * get regex for hidden folders.
@@ -196,14 +196,14 @@ public interface IConfiguration {
      *
      * @return configuration value.
      */
-    public boolean ckeckDoubleFileExtensions();
+    public boolean isCheckDoubleFileExtensions();
 
     /**
      * flag to check if force ASCII.
      *
      * @return true if force ASCII.
      */
-    public boolean forceASCII();
+    public boolean isForceAscii();
 
     /**
      * Checks if disallowed characters in file and folder names are turned on.
@@ -217,7 +217,7 @@ public interface IConfiguration {
      *
      * @return true if check.
      */
-    public boolean checkSizeAfterScaling();
+    public boolean isCheckSizeAfterScaling();
 
     /**
      * gets a list of plugins.
@@ -238,14 +238,14 @@ public interface IConfiguration {
      *
      * @return true if is set
      */
-    public boolean getSecureImageUploads();
+    public boolean isSecureImageUploads();
 
     /**
      * gets html extensions.
      *
      * @return list of html extensions.
      */
-    public List<String> getHTMLExtensions();
+    public List<String> getHtmlExtensions();
 
     /**
      * gets a list of default resource types.

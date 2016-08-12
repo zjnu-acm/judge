@@ -281,9 +281,9 @@ public class FileUploadCommand extends Command implements IPostCommand {
             }
             return true;
         } else if (ImageUtils.checkImageSize(item.getInputStream(), this.getConfiguration())
-                || getConfiguration().checkSizeAfterScaling()) {
+                || getConfiguration().isCheckSizeAfterScaling()) {
             ImageUtils.createTmpThumb(item.getInputStream(), file, getFileItemName(item), this.getConfiguration());
-            if (!getConfiguration().checkSizeAfterScaling()
+            if (!getConfiguration().isCheckSizeAfterScaling()
                     || FileUtils.checkFileSize(getConfiguration().getTypes().get(this.getType()), Files.size(file))) {
                 if (getConfiguration().getEvents() != null) {
                     AfterFileUploadEventArgs args = new AfterFileUploadEventArgs(this.getCurrentFolder(), file);
@@ -357,7 +357,7 @@ public class FileUploadCommand extends Command implements IPostCommand {
         if (getConfiguration().isDisallowUnsafeCharacters()) {
             newFileName = this.getNewFileName().replace(';', '_');
         }
-        if (getConfiguration().forceASCII()) {
+        if (getConfiguration().isForceAscii()) {
             newFileName = FileUtils.convertToASCII(this.getNewFileName());
         }
         if (!this.newFileName.equals(this.fileName)) {
@@ -379,19 +379,19 @@ public class FileUploadCommand extends Command implements IPostCommand {
             this.setErrorCode(Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_EXTENSION);
             return false;
         }
-        if (getConfiguration().ckeckDoubleFileExtensions()) {
+        if (getConfiguration().isCheckDoubleFileExtensions()) {
             newFileName = FileUtils.renameFileWithBadExt(resourceType, this.getNewFileName());
         }
 
         try {
             Path file = Paths.get(path, getFinalFileName(path, this.getNewFileName()));
-            if (!(ImageUtils.isImageExtension(file) && getConfiguration().checkSizeAfterScaling())
+            if (!(ImageUtils.isImageExtension(file) && getConfiguration().isCheckSizeAfterScaling())
                     && !FileUtils.checkFileSize(resourceType, item.getSize())) {
                 this.setErrorCode(Constants.Errors.CKFINDER_CONNECTOR_ERROR_UPLOADED_TOO_BIG);
                 return false;
             }
 
-            if (getConfiguration().getSecureImageUploads() && ImageUtils.isImageExtension(file)
+            if (getConfiguration().isSecureImageUploads() && ImageUtils.isImageExtension(file)
                     && !ImageUtils.isValid(item)) {
                 this.setErrorCode(Constants.Errors.CKFINDER_CONNECTOR_ERROR_UPLOADED_CORRUPT);
                 return false;
@@ -470,7 +470,7 @@ public class FileUploadCommand extends Command implements IPostCommand {
     @Override
     protected boolean checkConnector(HttpServletRequest request)
             throws ConnectorException {
-        if (!getConfiguration().enabled() || !getConfiguration().checkAuthentication(request)) {
+        if (!getConfiguration().isEnabled() || !getConfiguration().checkAuthentication(request)) {
             this.setErrorCode(Constants.Errors.CKFINDER_CONNECTOR_ERROR_CONNECTOR_DISABLED);
             return false;
         }

@@ -117,7 +117,7 @@ public abstract class Command {
      */
     protected boolean checkConnector(HttpServletRequest request)
             throws ConnectorException {
-        if (!getConfiguration().enabled() || !getConfiguration().checkAuthentication(request)) {
+        if (!getConfiguration().isEnabled() || !getConfiguration().checkAuthentication(request)) {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_CONNECTOR_DISABLED, false);
         }

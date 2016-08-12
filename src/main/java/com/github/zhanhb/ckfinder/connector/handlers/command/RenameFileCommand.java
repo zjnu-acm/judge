@@ -75,7 +75,7 @@ public class RenameFileCommand extends XMLCommand implements IPostCommand {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED;
         }
 
-        if (getConfiguration().forceASCII()) {
+        if (getConfiguration().isForceAscii()) {
             this.newFileName = FileUtils.convertToASCII(this.newFileName);
         }
 
@@ -89,7 +89,7 @@ public class RenameFileCommand extends XMLCommand implements IPostCommand {
         if (checkFileExt == 1) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_EXTENSION;
         }
-        if (getConfiguration().ckeckDoubleFileExtensions()) {
+        if (getConfiguration().isCheckDoubleFileExtensions()) {
             this.newFileName = FileUtils.renameFileWithBadExt(this.getConfiguration().getTypes().get(this.getType()), this.newFileName);
         }
 

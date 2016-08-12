@@ -34,6 +34,7 @@ import java.util.StringTokenizer;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
@@ -54,37 +55,65 @@ public class Configuration implements IConfiguration {
     private static final int MAX_QUALITY = 100;
     private static final float MAX_QUALITY_FLOAT = 100f;
 
+    @Getter
     private boolean enabled;
+    @Getter
     private String baseDir;
+    @Getter
     private String baseURL;
+    @Getter
     private String licenseName;
+    @Getter
     private String licenseKey;
     private Integer imgWidth;
     private Integer imgHeight;
+    @Getter
     private float imgQuality;
+    @Getter
     private Map<String, ResourceType> types;
+    @Getter
     private boolean thumbsEnabled;
+    @Getter
     private String thumbsURL;
+    @Getter
     private String thumbsDir;
+    @Getter
     private String thumbsPath;
+    @Getter
     private boolean thumbsDirectAccess;
     private Integer thumbsMaxHeight;
     private Integer thumbsMaxWidth;
+    @Getter
     private float thumbsQuality;
+    @Getter
     private List<AccessControlLevel> accessControlLevels;
+    @Getter
     private List<String> hiddenFolders;
+    @Getter
     private List<String> hiddenFiles;
-    private boolean doubleExtensions;
-    private boolean forceASCII;
+    @Getter
+    private boolean checkDoubleFileExtensions;
+    @Getter
+    private boolean forceAscii;
+    @Getter
     private boolean checkSizeAfterScaling;
-    private String userRoleSessionVar;
+    @Getter
+    private String userRoleName;
+    @Getter
     private List<PluginInfo> plugins;
+    @Getter
     private boolean secureImageUploads;
+    @Getter
     private List<String> htmlExtensions;
+    @Getter
     private Set<String> defaultResourceTypes;
+    @Getter
     private IBasePathBuilder basePathBuilder;
+    @Getter
     private boolean disallowUnsafeCharacters;
+    @Getter
     private Events events;
+    @Getter
     private final ApplicationContext applicationContext;
 
     /**
@@ -131,10 +160,10 @@ public class Configuration implements IConfiguration {
         this.accessControlLevels = new ArrayList<>();
         this.hiddenFolders = new ArrayList<>();
         this.hiddenFiles = new ArrayList<>();
-        this.doubleExtensions = false;
-        this.forceASCII = false;
+        this.checkDoubleFileExtensions = false;
+        this.forceAscii = false;
         this.checkSizeAfterScaling = false;
-        this.userRoleSessionVar = "";
+        this.userRoleName = "";
         this.plugins = new ArrayList<>();
         this.secureImageUploads = false;
         this.htmlExtensions = new ArrayList<>();
@@ -212,13 +241,13 @@ public class Configuration implements IConfiguration {
                         setHiddenFiles(childNode.getChildNodes());
                         break;
                     case "checkDoubleExtension":
-                        this.doubleExtensions = Boolean.parseBoolean(nullNodeToString(childNode));
+                        this.checkDoubleFileExtensions = Boolean.parseBoolean(nullNodeToString(childNode));
                         break;
                     case "disallowUnsafeCharacters":
                         this.disallowUnsafeCharacters = Boolean.parseBoolean(nullNodeToString(childNode));
                         break;
                     case "forceASCII":
-                        this.forceASCII = Boolean.parseBoolean(nullNodeToString(childNode));
+                        this.forceAscii = Boolean.parseBoolean(nullNodeToString(childNode));
                         break;
                     case "checkSizeAfterScaling":
                         this.checkSizeAfterScaling = Boolean.parseBoolean(nullNodeToString(childNode));
@@ -239,7 +268,7 @@ public class Configuration implements IConfiguration {
                     case "uriEncoding":
                         break;
                     case "userRoleSessionVar":
-                        this.userRoleSessionVar = nullNodeToString(childNode);
+                        this.userRoleName = nullNodeToString(childNode);
                         break;
                     case "defaultResourceTypes":
                         String value = nullNodeToString(childNode);
@@ -582,46 +611,6 @@ public class Configuration implements IConfiguration {
     }
 
     /**
-     * Checks if connector is enabled.
-     *
-     * @return if connector is enabled.
-     */
-    @Override
-    public boolean enabled() {
-        return this.enabled;
-    }
-
-    /**
-     * Checks if disallowed characters in file and folder names are turned on.
-     *
-     * @return disallowUnsafeCharacters
-     */
-    @Override
-    public boolean isDisallowUnsafeCharacters() {
-        return this.disallowUnsafeCharacters;
-    }
-
-    /**
-     * Gets location of ckfinder in application e.g. /ckfinder/.
-     *
-     * @return base directory.
-     */
-    @Override
-    public String getBaseDir() {
-        return this.baseDir;
-    }
-
-    /**
-     * Returns path to ckfinder with application name e.g. /webapp/ckfinder/.
-     *
-     * @return base url.
-     */
-    @Override
-    public String getBaseURL() {
-        return this.baseURL;
-    }
-
-    /**
      * Gets image max height.
      *
      * @return max image height.
@@ -650,56 +639,6 @@ public class Configuration implements IConfiguration {
     }
 
     /**
-     * Gets image quality.
-     *
-     * @return image quality.
-     */
-    @Override
-    public float getImgQuality() {
-        return this.imgQuality;
-    }
-
-    /**
-     * Returns license key.
-     *
-     * @return license key.
-     */
-    @Override
-    public String getLicenseKey() {
-        return this.licenseKey;
-    }
-
-    /**
-     * Returns license name.
-     *
-     * @return license name.
-     */
-    @Override
-    public String getLicenseName() {
-        return this.licenseName;
-    }
-
-    /**
-     * Gets resource types map with resources names as map keys.
-     *
-     * @return resources map
-     */
-    @Override
-    public Map<String, ResourceType> getTypes() {
-        return this.types;
-    }
-
-    /**
-     * Checks if thumbs are accessed directly.
-     *
-     * @return true if thumbs can be accessed directly.
-     */
-    @Override
-    public boolean getThumbsDirectAccess() {
-        return this.thumbsDirectAccess;
-    }
-
-    /**
      * Gets maximum height of thumb.
      *
      * @return maximum height of thumb.
@@ -725,188 +664,6 @@ public class Configuration implements IConfiguration {
         } else {
             return DEFAULT_THUMB_MAX_WIDTH;
         }
-    }
-
-    /**
-     * Check if thumbs are enabled.
-     *
-     * @return true if thumbs are enabled.
-     */
-    @Override
-    public boolean getThumbsEnabled() {
-        return this.thumbsEnabled;
-    }
-
-    /**
-     * Gets url to thumbs directory (path from baseUrl).
-     *
-     * @return thumbs url.
-     */
-    @Override
-    public String getThumbsURL() {
-        return this.thumbsURL;
-    }
-
-    /**
-     * Gets path to thumbs directory.
-     *
-     * @return thumbs directory.
-     */
-    @Override
-    public String getThumbsDir() {
-        return this.thumbsDir;
-    }
-
-    /**
-     * Gets path to thumbs directory.
-     *
-     * @return thumbs directory.
-     */
-    @Override
-    public String getThumbsPath() {
-        return this.thumbsPath;
-    }
-
-    /**
-     * gets thumbs quality.
-     *
-     * @return thumbs quality
-     */
-    @Override
-    public float getThumbsQuality() {
-        return this.thumbsQuality;
-    }
-
-    /**
-     * Returns list of access control levels.
-     *
-     * @return list of access control levels.
-     */
-    @Override
-    public List<AccessControlLevel> getAccessConrolLevels() {
-        return this.accessControlLevels;
-    }
-
-    /**
-     * Returns regex for hidden folders.
-     *
-     * @return regex for hidden folders
-     */
-    @Override
-    public List<String> getHiddenFolders() {
-        return this.hiddenFolders;
-    }
-
-    /**
-     * Gets regex for hidden files.
-     *
-     * @return regex for hidden files
-     */
-    @Override
-    public List<String> getHiddenFiles() {
-        return this.hiddenFiles;
-    }
-
-    /**
-     * Returns flag that determines whether double extensions should be checked.
-     *
-     * @return flag that determines whether double extensions should be checked.
-     */
-    @Override
-    public boolean ckeckDoubleFileExtensions() {
-        return this.doubleExtensions;
-    }
-
-    /**
-     * Returns flag that determines whether ASCII should be forced.
-     *
-     * @return true ASCII should be forced.
-     */
-    @Override
-    public boolean forceASCII() {
-        return this.forceASCII;
-    }
-
-    /**
-     * Returns flag that determines whether image size after resizing image
-     * should be checked.
-     *
-     * @return true if image size after resizing image should be checked.
-     */
-    @Override
-    public boolean checkSizeAfterScaling() {
-        return this.checkSizeAfterScaling;
-    }
-
-    /**
-     * Gets user role name set in configuration.
-     *
-     * @return role name
-     */
-    @Override
-    public String getUserRoleName() {
-        return this.userRoleSessionVar;
-    }
-
-    /**
-     * Gets list of available plugins.
-     *
-     * @return list of plugins.
-     */
-    @Override
-    public List<PluginInfo> getPlugins() {
-        return this.plugins;
-    }
-
-    /**
-     * Returns flag that determines whether secure image uploads should be
-     * performed.
-     *
-     * @return true if secure image uploads should be performed.
-     */
-    @Override
-    public boolean getSecureImageUploads() {
-        return this.secureImageUploads;
-    }
-
-    /**
-     * Returns HTML extensions list.
-     *
-     * @return HTML extensions list.
-     */
-    @Override
-    public List<String> getHTMLExtensions() {
-        return this.htmlExtensions;
-    }
-
-    /**
-     * Returns events.
-     *
-     * @return Events object
-     */
-    @Override
-    public Events getEvents() {
-        return this.events;
-    }
-
-    /**
-     * Gets default resource types list from configuration.
-     *
-     * @return default resource types list from configuration.
-     */
-    @Override
-    public Set<String> getDefaultResourceTypes() {
-        return this.defaultResourceTypes;
-    }
-
-    /**
-     * Gets path builder for baseDir and baseURL.
-     *
-     * @return path builder.
-     */
-    @Override
-    public IBasePathBuilder getBasePathBuilder() {
-        return this.basePathBuilder;
     }
 
     /**
@@ -970,11 +727,6 @@ public class Configuration implements IConfiguration {
             }
         }
         return info.build();
-    }
-
-    @Override
-    public ApplicationContext getApplicationContext() {
-        return applicationContext;
     }
 
     @Override
