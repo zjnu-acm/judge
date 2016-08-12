@@ -96,7 +96,7 @@ public abstract class Command {
 
             getCurrentFolderParam(request);
 
-            if (checkConnector(request) && checkParam(this.getCurrentFolder())) {
+            if (checkConnector() && checkParam(this.getCurrentFolder())) {
                 this.setCurrentFolder(PathUtils.escape(this.getCurrentFolder()));
                 if (!checkHidden()) {
                     if ((this.getCurrentFolder() == null || this.getCurrentFolder().isEmpty())
@@ -111,13 +111,12 @@ public abstract class Command {
     /**
      * check if connector is enabled and checks authentication.
      *
-     * @param request current request.
      * @return true if connector is enabled and user is authenticated
      * @throws ConnectorException when connector is disabled
      */
-    protected boolean checkConnector(HttpServletRequest request)
+    protected boolean checkConnector()
             throws ConnectorException {
-        if (!getConfiguration().isEnabled() || !getConfiguration().checkAuthentication(request)) {
+        if (!getConfiguration().isEnabled()) {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_CONNECTOR_DISABLED, false);
         }

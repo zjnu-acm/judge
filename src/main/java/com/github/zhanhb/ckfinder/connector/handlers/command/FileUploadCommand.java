@@ -468,9 +468,9 @@ public class FileUploadCommand extends Command implements IPostCommand {
     }
 
     @Override
-    protected boolean checkConnector(HttpServletRequest request)
+    protected boolean checkConnector()
             throws ConnectorException {
-        if (!getConfiguration().isEnabled() || !getConfiguration().checkAuthentication(request)) {
+        if (!getConfiguration().isEnabled()) {
             this.setErrorCode(Constants.Errors.CKFINDER_CONNECTOR_ERROR_CONNECTOR_DISABLED);
             return false;
         }

@@ -19,7 +19,6 @@ import com.github.zhanhb.ckfinder.connector.utils.AccessControl;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.servlet.http.HttpServletRequest;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Singular;
@@ -72,17 +71,6 @@ public class Configuration implements IConfiguration {
     private final Events events;
     private final ApplicationContext applicationContext;
     private final WatermarkSettings watermarkSettings;
-
-    /**
-     * Checks if user is authenticated.
-     *
-     * @param request current request
-     * @return true if user is authenticated and false otherwise.
-     */
-    @Override
-    public boolean checkAuthentication(HttpServletRequest request) {
-        return DEFAULT_CHECKAUTHENTICATION;
-    }
 
     @Override
     public AccessControl getAccessControl() {

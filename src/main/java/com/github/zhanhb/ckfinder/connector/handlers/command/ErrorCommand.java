@@ -98,9 +98,9 @@ public class ErrorCommand extends Command implements IErrorCommand {
     }
 
     @Override
-    protected boolean checkConnector(HttpServletRequest request)
+    protected boolean checkConnector()
             throws ConnectorException {
-        if (!getConfiguration().isEnabled() || !getConfiguration().checkAuthentication(request)) {
+        if (!getConfiguration().isEnabled()) {
             this.connectorException = new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_CONNECTOR_DISABLED);
             return false;
