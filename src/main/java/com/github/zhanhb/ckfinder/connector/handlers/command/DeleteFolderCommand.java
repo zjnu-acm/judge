@@ -35,7 +35,7 @@ public class DeleteFolderCommand extends XMLCommand implements IPostCommand {
      */
     @Override
     protected int getDataForXml() {
-        if (!checkIfTypeExists(getType())) {
+        if (!isTypeExists(getType())) {
             this.setType(null);
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
         }
@@ -50,7 +50,7 @@ public class DeleteFolderCommand extends XMLCommand implements IPostCommand {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
         }
 
-        if (FileUtils.checkIfDirIsHidden(this.getCurrentFolder(), getConfiguration())) {
+        if (FileUtils.isDirectoryHidden(this.getCurrentFolder(), getConfiguration())) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
         }
 

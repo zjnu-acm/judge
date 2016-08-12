@@ -61,12 +61,12 @@ public class CreateFolderCommand extends XMLCommand implements IPostCommand {
     @Override
     protected int getDataForXml() {
         try {
-            checkParam(newFolderName);
+            isRequestPathValid(newFolderName);
         } catch (ConnectorException e) {
             return e.getErrorCode();
         }
 
-        if (!checkIfTypeExists(getType())) {
+        if (!isTypeExists(getType())) {
             this.setType(null);
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
         }
@@ -80,13 +80,13 @@ public class CreateFolderCommand extends XMLCommand implements IPostCommand {
             this.newFolderName = FileUtils.convertToASCII(this.newFolderName);
         }
 
-        if (!FileUtils.checkFolderName(this.newFolderName, getConfiguration())) {
+        if (!FileUtils.isFolderNameInvalid(this.newFolderName, getConfiguration())) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_NAME;
         }
-        if (FileUtils.checkIfDirIsHidden(this.getCurrentFolder(), getConfiguration())) {
+        if (FileUtils.isDirectoryHidden(this.getCurrentFolder(), getConfiguration())) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
         }
-        if (FileUtils.checkIfDirIsHidden(newFolderName, getConfiguration())) {
+        if (FileUtils.isDirectoryHidden(newFolderName, getConfiguration())) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_NAME;
         }
 

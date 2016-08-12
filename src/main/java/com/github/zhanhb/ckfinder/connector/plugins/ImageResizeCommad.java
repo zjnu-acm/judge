@@ -70,7 +70,7 @@ public class ImageResizeCommad extends XMLCommand implements BeforeExecuteComman
 
     @Override
     protected int getDataForXml() {
-        if (!checkIfTypeExists(getType())) {
+        if (!isTypeExists(getType())) {
             this.setType(null);
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
         }
@@ -85,8 +85,8 @@ public class ImageResizeCommad extends XMLCommand implements BeforeExecuteComman
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_NAME;
         }
 
-        if (!FileUtils.checkFileName(fileName)
-                || FileUtils.checkIfFileIsHidden(fileName, getConfiguration())) {
+        if (!FileUtils.isFileNameInvalid(fileName)
+                || FileUtils.isFileHidden(fileName, getConfiguration())) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
         }
 
@@ -107,8 +107,8 @@ public class ImageResizeCommad extends XMLCommand implements BeforeExecuteComman
 
             if (this.width != null && this.height != null) {
 
-                if (!FileUtils.checkFileName(this.newFileName)
-                        && FileUtils.checkIfFileIsHidden(this.newFileName, getConfiguration())) {
+                if (!FileUtils.isFileNameInvalid(this.newFileName)
+                        && FileUtils.isFileHidden(this.newFileName, getConfiguration())) {
                     return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_NAME;
                 }
 

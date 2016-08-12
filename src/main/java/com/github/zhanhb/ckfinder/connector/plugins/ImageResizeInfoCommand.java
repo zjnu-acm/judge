@@ -64,7 +64,7 @@ public class ImageResizeInfoCommand extends XMLCommand implements BeforeExecuteC
 
     @Override
     protected int getDataForXml() {
-        if (!checkIfTypeExists(getType())) {
+        if (!isTypeExists(getType())) {
             this.setType(null);
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
         }
@@ -75,8 +75,8 @@ public class ImageResizeInfoCommand extends XMLCommand implements BeforeExecuteC
         }
 
         if (fileName == null || fileName.isEmpty()
-                || !FileUtils.checkFileName(this.fileName)
-                || FileUtils.checkIfFileIsHidden(this.fileName, this.getConfiguration())) {
+                || !FileUtils.isFileNameInvalid(this.fileName)
+                || FileUtils.isFileHidden(this.fileName, this.getConfiguration())) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
         }
 

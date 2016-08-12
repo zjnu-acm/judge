@@ -50,8 +50,8 @@ public class DownloadFileCommand extends Command {
      * @throws ConnectorException when something went wrong during reading file.
      */
     @Override
-    public void execute(OutputStream out) throws ConnectorException {
-        if (!checkIfTypeExists(getType())) {
+    protected void execute(OutputStream out) throws ConnectorException {
+        if (!isTypeExists(getType())) {
             this.setType(null);
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE, false);
@@ -66,21 +66,21 @@ public class DownloadFileCommand extends Command {
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED);
         }
 
-        if (!FileUtils.checkFileName(this.fileName)
+        if (!FileUtils.isFileNameInvalid(this.fileName)
                 || FileUtils.checkFileExtension(this.fileName,
                         this.getConfiguration().getTypes().get(this.getType())) == 1) {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST);
         }
 
-        if (FileUtils.checkIfDirIsHidden(this.getCurrentFolder(), getConfiguration())) {
+        if (FileUtils.isDirectoryHidden(this.getCurrentFolder(), getConfiguration())) {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST);
         }
         try {
             if (!Files.exists(file)
                     || !Files.isRegularFile(file)
-                    || FileUtils.checkIfFileIsHidden(this.fileName, this.getConfiguration())) {
+                    || FileUtils.isFileHidden(this.fileName, this.getConfiguration())) {
                 throw new ConnectorException(
                         Constants.Errors.CKFINDER_CONNECTOR_ERROR_FILE_NOT_FOUND);
             }

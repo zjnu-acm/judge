@@ -73,13 +73,13 @@ public class DeleteFilesCommand extends XMLCommand implements IPostCommand {
 
         this.addDeleteNode = false;
 
-        if (!checkIfTypeExists(getType())) {
+        if (!isTypeExists(getType())) {
             this.setType(null);
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
         }
 
         for (FilePostParam fileItem : this.files) {
-            if (!FileUtils.checkFileName(fileItem.getName())) {
+            if (!FileUtils.isFileNameInvalid(fileItem.getName())) {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
             }
 
@@ -93,11 +93,11 @@ public class DeleteFilesCommand extends XMLCommand implements IPostCommand {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
             }
 
-            if (FileUtils.checkIfDirIsHidden(fileItem.getFolder(), this.getConfiguration())) {
+            if (FileUtils.isDirectoryHidden(fileItem.getFolder(), this.getConfiguration())) {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
             }
 
-            if (FileUtils.checkIfFileIsHidden(fileItem.getName(), this.getConfiguration())) {
+            if (FileUtils.isFileHidden(fileItem.getName(), this.getConfiguration())) {
                 return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
             }
 

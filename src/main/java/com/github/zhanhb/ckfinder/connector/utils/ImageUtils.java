@@ -208,8 +208,8 @@ public class ImageUtils {
      */
     public static boolean checkImageSize(InputStream stream,
             IConfiguration conf) throws IOException {
-        final Integer maxWidth;
-        final Integer maxHeight;
+        final int maxWidth;
+        final int maxHeight;
         BufferedImage bi;
         try {
             maxWidth = conf.getImgWidth();

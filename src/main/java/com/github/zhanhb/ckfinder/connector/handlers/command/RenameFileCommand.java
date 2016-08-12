@@ -65,7 +65,7 @@ public class RenameFileCommand extends XMLCommand implements IPostCommand {
     @Override
     protected int getDataForXml() throws IOException {
 
-        if (!checkIfTypeExists(getType())) {
+        if (!isTypeExists(getType())) {
             this.setType(null);
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE;
         }
@@ -93,13 +93,13 @@ public class RenameFileCommand extends XMLCommand implements IPostCommand {
             this.newFileName = FileUtils.renameFileWithBadExt(this.getConfiguration().getTypes().get(this.getType()), this.newFileName);
         }
 
-        if (!FileUtils.checkFileName(this.fileName)
-                || FileUtils.checkIfFileIsHidden(this.fileName, getConfiguration())) {
+        if (!FileUtils.isFileNameInvalid(this.fileName)
+                || FileUtils.isFileHidden(this.fileName, getConfiguration())) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST;
         }
 
-        if (!FileUtils.checkFileName(this.newFileName, getConfiguration())
-                || FileUtils.checkIfFileIsHidden(this.newFileName, getConfiguration())) {
+        if (!FileUtils.isFileNameInvalid(this.newFileName, getConfiguration())
+                || FileUtils.isFileHidden(this.newFileName, getConfiguration())) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_NAME;
         }
 

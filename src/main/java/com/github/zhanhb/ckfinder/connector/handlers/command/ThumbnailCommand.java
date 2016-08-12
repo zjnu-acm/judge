@@ -158,7 +158,7 @@ public class ThumbnailCommand extends Command {
     }
 
     @Override
-    public void execute(OutputStream out) throws ConnectorException, IOException {
+    protected void execute(OutputStream out) throws ConnectorException, IOException {
         validate();
         createThumb();
         if (setResponseHeadersAfterCreatingFile()) {
@@ -205,7 +205,7 @@ public class ThumbnailCommand extends Command {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_THUMBNAILS_DISABLED);
         }
-        if (!checkIfTypeExists(getType())) {
+        if (!isTypeExists(getType())) {
             this.setType(null);
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE, false);
@@ -217,12 +217,12 @@ public class ThumbnailCommand extends Command {
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED);
         }
 
-        if (!FileUtils.checkFileName(this.fileName)) {
+        if (!FileUtils.isFileNameInvalid(this.fileName)) {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST);
         }
 
-        if (FileUtils.checkIfFileIsHidden(this.fileName, this.getConfiguration())) {
+        if (FileUtils.isFileHidden(this.fileName, this.getConfiguration())) {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_FILE_NOT_FOUND);
         }
