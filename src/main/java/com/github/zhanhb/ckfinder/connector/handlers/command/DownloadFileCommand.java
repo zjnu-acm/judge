@@ -41,7 +41,6 @@ public class DownloadFileCommand extends Command {
      * filename request param.
      */
     private String fileName;
-    private Object format;
     private String newFileName;
 
     /**
@@ -133,25 +132,21 @@ public class DownloadFileCommand extends Command {
             ServletContext sc) {
         String mimetype = sc.getMimeType(fileName);
         response.setCharacterEncoding("utf-8");
-        if (this.format != null && this.format.equals("text")) {
-            response.setContentType("text/plain; charset=utf-8");
+
+        if (mimetype != null) {
+            response.setContentType(mimetype);
         } else {
-            if (mimetype != null) {
-                response.setContentType(mimetype);
-            } else {
-                response.setContentType("application/octet-stream");
-            }
-            if (file != null) {
-                try {
-                    response.setContentLengthLong(Files.size(file));
-                } catch (IOException ex) {
-                }
-            }
-
-            response.setHeader("Content-Disposition", "attachment; filename=\""
-                    + this.newFileName + "\"");
-
+            response.setContentType("application/octet-stream");
         }
+        if (file != null) {
+            try {
+                response.setContentLengthLong(Files.size(file));
+            } catch (IOException ex) {
+            }
+        }
+
+        response.setHeader("Content-Disposition", "attachment; filename=\""
+                + this.newFileName + "\"");
 
         response.setHeader("Cache-Control", "cache, must-revalidate");
         response.setHeader("Pragma", "public");
