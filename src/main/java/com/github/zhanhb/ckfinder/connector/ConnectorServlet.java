@@ -127,13 +127,15 @@ public class ConnectorServlet extends HttpServlet {
                     checkPostRequest(request);
                 }
             } else {
-                isNativeCommand = false;
                 command = null;
+                isNativeCommand = false;
             }
 
             Events events = configuration.getEvents();
+            log.debug("{} {} {}", isNativeCommand, command, events);
             if (events != null) {
                 if (events.runBeforeExecuteCommand(args, configuration)) {
+                    log.debug("events.runBeforeExecuteCommand(...):true");
                     executeNativeCommand(command, request, response, configuration, isNativeCommand);
                 }
             } else {

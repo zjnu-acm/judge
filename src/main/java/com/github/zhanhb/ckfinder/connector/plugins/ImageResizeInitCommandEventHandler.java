@@ -17,10 +17,12 @@ import com.github.zhanhb.ckfinder.connector.data.InitCommandEventHandler;
 import com.github.zhanhb.ckfinder.connector.data.PluginInfo;
 import com.github.zhanhb.ckfinder.connector.data.PluginParam;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+@Slf4j
 @RequiredArgsConstructor
 public class ImageResizeInitCommandEventHandler implements InitCommandEventHandler {
 
@@ -28,6 +30,7 @@ public class ImageResizeInitCommandEventHandler implements InitCommandEventHandl
 
     @Override
     public boolean runEventHandler(InitCommandEventArgs args, IConfiguration arg1) {
+        log.debug("runEventHandler: {} {}", args, arg1);
         NodeList list = args.getRootElement().getElementsByTagName("PluginsInfo");
         if (list.getLength() > 0) {
             Node node = list.item(0);
