@@ -18,13 +18,11 @@ import com.github.zhanhb.ckfinder.connector.errors.ConnectorException;
 import com.github.zhanhb.ckfinder.connector.utils.FileUtils;
 import com.github.zhanhb.ckfinder.connector.utils.PathUtils;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.regex.Pattern;
 import javax.servlet.ServletContext;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -72,10 +70,7 @@ public abstract class Command {
         this.initParams(request, configuration);
         try {
             setResponseHeader(response, request.getServletContext());
-            try (ServletOutputStream out = response.getOutputStream()) {
-                execute(out);
-                out.flush();
-            }
+            execute(response);
         } catch (IOException e) {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED, e);
@@ -179,11 +174,11 @@ public abstract class Command {
     /**
      * executes command and writes to response.
      *
-     * @param out response output stream
+     * @param response
      * @throws ConnectorException when error occurs
      * @throws java.io.IOException
      */
-    protected abstract void execute(OutputStream out) throws ConnectorException, IOException;
+    protected abstract void execute(HttpServletResponse response) throws ConnectorException, IOException;
 
     /**
      * sets header in response.

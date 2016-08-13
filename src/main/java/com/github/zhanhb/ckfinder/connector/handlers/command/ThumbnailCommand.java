@@ -18,7 +18,6 @@ import com.github.zhanhb.ckfinder.connector.utils.AccessControl;
 import com.github.zhanhb.ckfinder.connector.utils.FileUtils;
 import com.github.zhanhb.ckfinder.connector.utils.ImageUtils;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -29,6 +28,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Locale;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -158,11 +158,11 @@ public class ThumbnailCommand extends Command {
     }
 
     @Override
-    protected void execute(OutputStream out) throws ConnectorException, IOException {
+    protected void execute(HttpServletResponse response) throws ConnectorException, IOException {
         validate();
         createThumb();
         if (setResponseHeadersAfterCreatingFile()) {
-            try {
+            try (ServletOutputStream out = response.getOutputStream()) {
                 FileUtils.printFileContentToResponse(thumbFile, out);
             } catch (IOException e) {
                 log.error("", e);
