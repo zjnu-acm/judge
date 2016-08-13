@@ -48,12 +48,18 @@ import static com.github.zhanhb.ckfinder.connector.configuration.IConfiguration.
 import static com.github.zhanhb.ckfinder.connector.configuration.IConfiguration.DEFAULT_THUMB_MAX_WIDTH;
 
 /**
+ * Class loads configuration from XML file.
  *
  * @author zhanhb
  */
 @Slf4j
 public enum XmlConfigurationParser {
     INSTANCE;
+
+    /**
+     * bytes in KB.
+     */
+    private static final int BYTES = 1024;
 
     private static final int MAX_QUALITY = 100;
     private static final float MAX_QUALITY_FLOAT = 100f;
@@ -464,39 +470,26 @@ public enum XmlConfigurationParser {
      */
     private ResourceType createTypeFromXml(String typeName,
             NodeList childNodes, IBasePathBuilder basePathBuilder) throws IOException, ConnectorException {
-        ResourceType.Builder builder = ResourceType.builder().name(typeName);
+        ResourceType.Builder builder = ResourceType.builder().name(typeName).allowedExtensions("").deniedExtensions("");
+        String path = Constants.BASE_DIR_PLACEHOLDER + "/" + typeName.toLowerCase() + "/";
+        String url = Constants.BASE_URL_PLACEHOLDER + "/" + typeName.toLowerCase() + "/";
+
         for (int i = 0, j = childNodes.getLength(); i < j; i++) {
             Node childNode = childNodes.item(i);
             switch (childNode.getNodeName()) {
                 case "url":
-                    String str = nullNodeToString(childNode);
-                    str = str.replace(Constants.BASE_URL_PLACEHOLDER,
-                            basePathBuilder.getBaseUrl());
-                    str = PathUtils.escape(str);
-                    str = PathUtils.removeSlashFromEnd(str);
-                    builder.url(str);
+                    url = nullNodeToString(childNode);
                     break;
                 case "directory":
-                    str = nullNodeToString(childNode);
-                    str = str.replace(Constants.BASE_DIR_PLACEHOLDER, getBaseFolder(basePathBuilder));
-                    str = PathUtils.escape(str);
-                    str = PathUtils.removeSlashFromEnd(str);
-
-                    if (str == null || str.isEmpty()) {
-                        throw new IllegalStateException("baseFolder is empty");
-                    }
-                    Path p = Paths.get(str);
-                    if (p == null) {
-                        throw new ConnectorException(Constants.Errors.CKFINDER_CONNECTOR_ERROR_FOLDER_NOT_FOUND,
-                                "Resource directory could not be created using specified path.");
-                    }
-
-                    FileUtils.createPath(p, false);
-
-                    builder.path(p.toAbsolutePath().toString());
+                    path = nullNodeToString(childNode);
                     break;
                 case "maxSize":
-                    builder.maxSize(nullNodeToString(childNode));
+                    long maxSize = 0;
+                    try {
+                        parseMaxSize(nullNodeToString(childNode));
+                    } catch (NumberFormatException ex) {
+                    }
+                    builder.maxSize(maxSize);
                     break;
                 case "allowedExtensions":
                     builder.allowedExtensions(nullNodeToString(childNode));
@@ -505,7 +498,53 @@ public enum XmlConfigurationParser {
                     builder.deniedExtensions(nullNodeToString(childNode));
             }
         }
-        return builder.build();
+        url = url.replace(Constants.BASE_URL_PLACEHOLDER,
+                basePathBuilder.getBaseUrl());
+        url = PathUtils.escape(url);
+        url = PathUtils.removeSlashFromEnd(url);
+
+        path = path.replace(Constants.BASE_DIR_PLACEHOLDER, getBaseFolder(basePathBuilder));
+        path = PathUtils.escape(path);
+        path = PathUtils.removeSlashFromEnd(path);
+
+        if (path == null || path.isEmpty()) {
+            throw new IllegalStateException("baseFolder is empty");
+        }
+        Path p = Paths.get(path);
+        if (p == null) {
+            throw new ConnectorException(Constants.Errors.CKFINDER_CONNECTOR_ERROR_FOLDER_NOT_FOUND,
+                    "Resource directory could not be created using specified path.");
+        }
+
+        FileUtils.createPath(p, false);
+
+        return builder.url(url).path(p.toAbsolutePath().toString()).build();
+    }
+
+    /**
+     * parses max size value from config (ex. 16M to number of bytes).
+     *
+     * @return number of bytes in max size.
+     */
+    private long parseMaxSize(String maxSize) {
+        char lastChar = Character.toLowerCase(maxSize.charAt(maxSize.length() - 1));
+        int a = 1, off = 1;
+        switch (lastChar) {
+            case 'k':
+                a = BYTES;
+                break;
+            case 'm':
+                a = BYTES * BYTES;
+                break;
+            case 'g':
+                a = BYTES * BYTES * BYTES;
+                break;
+            default:
+                off = 0;
+                break;
+        }
+        long value = Long.parseLong(maxSize.substring(0, maxSize.length() - off));
+        return value * a;
     }
 
     /**
