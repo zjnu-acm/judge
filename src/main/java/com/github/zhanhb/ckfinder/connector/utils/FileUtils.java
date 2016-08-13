@@ -27,7 +27,6 @@ import java.nio.file.StandardCopyOption;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +35,8 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import javax.annotation.Nullable;
 import javax.servlet.http.Part;
 
@@ -64,14 +65,12 @@ public class FileUtils {
      */
     public static List<String> findChildrensList(Path dir, boolean searchDirs)
             throws IOException {
-        @SuppressWarnings("CollectionWithoutInitialCapacity")
-        List<String> files = new ArrayList<>();
         try (DirectoryStream<Path> ds = Files.newDirectoryStream(dir, file -> searchDirs == Files.isDirectory(file))) {
-            for (Path file : ds) {
-                files.add(file.getFileName().toString());
-            }
+            return StreamSupport.stream(ds.spliterator(), false)
+                    .map(Path::getFileName)
+                    .map(Object::toString)
+                    .collect(Collectors.toList());
         }
-        return files;
     }
 
     /**

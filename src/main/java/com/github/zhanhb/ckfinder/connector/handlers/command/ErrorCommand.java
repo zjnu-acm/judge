@@ -18,12 +18,10 @@ import com.github.zhanhb.ckfinder.connector.errors.ConnectorException;
 import com.github.zhanhb.ckfinder.connector.utils.FileUtils;
 import com.github.zhanhb.ckfinder.connector.utils.PathUtils;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.regex.Pattern;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.Setter;
@@ -35,7 +33,6 @@ public class ErrorCommand extends Command implements IErrorCommand {
 
     @Setter
     private ConnectorException connectorException;
-    private HttpServletResponse response;
 
     @Override
     protected void execute(HttpServletResponse response) throws ConnectorException {
@@ -61,9 +58,8 @@ public class ErrorCommand extends Command implements IErrorCommand {
     }
 
     @Override
-    public void setResponseHeader(HttpServletResponse response, ServletContext sc) {
+    public void setResponseHeader(HttpServletRequest request, HttpServletResponse response) {
         response.reset();
-        this.response = response;
     }
 
     @Override

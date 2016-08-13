@@ -23,7 +23,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import javax.mail.internet.MimeUtility;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -122,12 +121,12 @@ public class DownloadFileCommand extends Command {
     /**
      * Sets response headers.
      *
+     * @param request request
      * @param response response
-     * @param sc servlet context
      */
     @Override
-    public void setResponseHeader(HttpServletResponse response, ServletContext sc) {
-        String mimetype = sc.getMimeType(fileName);
+    public void setResponseHeader(HttpServletRequest request, HttpServletResponse response) {
+        String mimetype = request.getServletContext().getMimeType(fileName);
         response.setCharacterEncoding("utf-8");
 
         if (mimetype != null) {

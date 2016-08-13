@@ -119,9 +119,9 @@ public class ThumbnailCommand extends Command {
     private String fullCurrentPath;
 
     @Override
-    public void setResponseHeader(HttpServletResponse response, ServletContext sc) {
+    public void setResponseHeader(HttpServletRequest request, HttpServletResponse response) {
         response.setHeader("Cache-Control", "public");
-        String mimetype = getMimeTypeOfImage(sc, response);
+        String mimetype = getMimeTypeOfImage(request.getServletContext(), response);
         if (mimetype != null) {
             response.setContentType(mimetype);
         }
