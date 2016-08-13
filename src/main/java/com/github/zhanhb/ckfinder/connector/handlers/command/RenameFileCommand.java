@@ -155,7 +155,6 @@ public class RenameFileCommand extends XMLCommand implements IPostCommand {
                 this.newFileName);
 
         Files.move(thumbFile, newThumbFile);
-
     }
 
     @Override

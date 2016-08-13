@@ -29,7 +29,6 @@ import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
@@ -410,12 +409,11 @@ public class FileUploadCommand extends Command implements IPostCommand {
     /**
      * set response headers. Not user in this command.
      *
+     * @param request request
      * @param response response
-     * @param sc servlet context
      */
     @Override
-    public void setResponseHeader(HttpServletResponse response,
-            ServletContext sc) {
+    public void setResponseHeader(HttpServletRequest request, HttpServletResponse response) {
         response.setCharacterEncoding("utf-8");
         response.setContentType("text/html");
     }

@@ -22,7 +22,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.regex.Pattern;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -48,16 +47,6 @@ public abstract class Command {
     private String type;
 
     /**
-     * standard constructor.
-     */
-    public Command() {
-        configuration = null;
-        userRole = null;
-        currentFolder = null;
-        type = null;
-    }
-
-    /**
      * Runs command. Initialize, sets response and execute command.
      *
      * @param request request
@@ -69,7 +58,7 @@ public abstract class Command {
             IConfiguration configuration) throws ConnectorException {
         this.initParams(request, configuration);
         try {
-            setResponseHeader(response, request.getServletContext());
+            setResponseHeader(request, response);
             execute(response);
         } catch (IOException e) {
             throw new ConnectorException(
@@ -183,10 +172,10 @@ public abstract class Command {
     /**
      * sets header in response.
      *
+     * @param request servlet request
      * @param response servlet response
-     * @param sc servlet context
      */
-    public abstract void setResponseHeader(HttpServletResponse response, ServletContext sc);
+    public abstract void setResponseHeader(HttpServletRequest request, HttpServletResponse response);
 
     /**
      * check request for security issue.

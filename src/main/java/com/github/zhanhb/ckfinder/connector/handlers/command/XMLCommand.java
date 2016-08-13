@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
@@ -44,11 +43,11 @@ public abstract class XMLCommand extends Command {
     /**
      * sets response headers for XML response.
      *
+     * @param request
      * @param response response
-     * @param sc servlet context
      */
     @Override
-    public void setResponseHeader(HttpServletResponse response, ServletContext sc) {
+    public void setResponseHeader(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("text/xml");
         response.setHeader("Cache-Control", "no-cache");
         response.setCharacterEncoding("utf-8");
@@ -163,7 +162,6 @@ public abstract class XMLCommand extends Command {
      * @param path current folder
      * @param type resource type
      */
-    @SuppressWarnings("FinalMethod")
     protected final void appendErrorNodeChild(int errorCode, String name,
             String path, String type) {
         errorList.add(ErrorNode.builder().type(type).name(name).folder(path).errorCode(errorCode).build());
@@ -174,7 +172,6 @@ public abstract class XMLCommand extends Command {
      *
      * @return true if there are any errors.
      */
-    @SuppressWarnings("FinalMethod")
     protected final boolean hasErrors() {
         return !errorList.isEmpty();
     }
@@ -184,7 +181,6 @@ public abstract class XMLCommand extends Command {
      *
      * @param errorsNode XML errors node
      */
-    @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
     protected final void addErrors(Element errorsNode) {
         for (ErrorNode item : errorList) {
             Element childElem = document.createElement("Error");

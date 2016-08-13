@@ -19,6 +19,7 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -74,7 +75,7 @@ public class QuickUploadCommand extends FileUploadCommand {
     }
 
     @Override
-    public void setResponseHeader(HttpServletResponse response, ServletContext sc) {
+    public void setResponseHeader(HttpServletRequest request, HttpServletResponse response) {
         response.setCharacterEncoding("utf-8");
         if (this.getResponseType() != null && this.getResponseType().equalsIgnoreCase("json")) {
             response.setContentType("application/json");
