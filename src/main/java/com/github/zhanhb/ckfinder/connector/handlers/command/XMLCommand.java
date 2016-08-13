@@ -16,7 +16,7 @@ import com.github.zhanhb.ckfinder.connector.configuration.IConfiguration;
 import com.github.zhanhb.ckfinder.connector.errors.ConnectorException;
 import com.github.zhanhb.ckfinder.connector.utils.XMLCreator;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.PrintWriter;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,11 +27,8 @@ import org.w3c.dom.Element;
  */
 public abstract class XMLCommand extends Command {
 
-    private final XMLCreator creator;
-
-    public XMLCommand() {
-        creator = new XMLCreator();
-    }
+    @Deprecated
+    private final XMLCreator creator = new XMLCreator();
 
     /**
      * sets response headers for XML response.
@@ -50,14 +47,14 @@ public abstract class XMLCommand extends Command {
      * executes XML command. Creates XML response and writes it to response
      * output stream.
      *
-     * @param out response output stream
      * @throws ConnectorException to handle in error handler.
      */
     @Override
-    protected void execute(OutputStream out) throws ConnectorException {
-        try {
+    @SuppressWarnings("FinalMethod")
+    protected final void execute(HttpServletResponse response) throws ConnectorException {
+        try (PrintWriter out = response.getWriter()) {
             createXMLResponse(getDataForXml());
-            out.write(getCreator().getDocumentAsText().getBytes("UTF-8"));
+            getCreator().writeTo(out);
         } catch (ConnectorException e) {
             throw e;
         } catch (IOException e) {

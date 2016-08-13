@@ -21,10 +21,8 @@ import com.github.zhanhb.ckfinder.connector.utils.AccessControl;
 import com.github.zhanhb.ckfinder.connector.utils.FileUtils;
 import com.github.zhanhb.ckfinder.connector.utils.ImageUtils;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.io.Writer;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -103,11 +101,10 @@ public class FileUploadCommand extends Command implements IPostCommand {
     /**
      * Executes file upload command.
      *
-     * @param out the response output stream
      * @throws ConnectorException when error occurs.
      */
     @Override
-    protected void execute(OutputStream out) throws ConnectorException {
+    protected void execute(HttpServletResponse response) throws ConnectorException {
         try {
             String errorMsg = this.getErrorCode() == Constants.Errors.CKFINDER_CONNECTOR_ERROR_NONE ? "" : (this.getErrorCode() == Constants.Errors.CKFINDER_CONNECTOR_ERROR_CUSTOM_ERROR ? this.customErrorMsg
                     : ErrorUtils.INSTANCE.getErrorMsgByLangAndCode(this.langCode, this.getErrorCode(), this.getConfiguration()));
@@ -121,8 +118,7 @@ public class FileUploadCommand extends Command implements IPostCommand {
                 path = getConfiguration().getTypes().get(this.getType()).getUrl()
                         + this.getCurrentFolder();
             }
-
-            OutputStreamWriter writer = new OutputStreamWriter(out, StandardCharsets.UTF_8);
+            PrintWriter writer = response.getWriter();
             if (this.getResponseType() != null && this.getResponseType().equals("txt")) {
                 writer.write(this.getNewFileName() + "|" + errorMsg);
             } else if (checkFuncNum()) {
@@ -130,7 +126,7 @@ public class FileUploadCommand extends Command implements IPostCommand {
             } else {
                 handleOnUploadCompleteResponse(writer, errorMsg);
             }
-            out.flush();
+            writer.flush();
         } catch (IOException e) {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED, e);

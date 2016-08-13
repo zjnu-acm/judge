@@ -17,7 +17,6 @@ import com.github.zhanhb.ckfinder.connector.errors.ConnectorException;
 import com.github.zhanhb.ckfinder.connector.utils.AccessControl;
 import com.github.zhanhb.ckfinder.connector.utils.FileUtils;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.file.Files;
@@ -46,11 +45,10 @@ public class DownloadFileCommand extends Command {
     /**
      * executes the download file command. Writes file to response.
      *
-     * @param out output stream
      * @throws ConnectorException when something went wrong during reading file.
      */
     @Override
-    protected void execute(OutputStream out) throws ConnectorException {
+    protected void execute(HttpServletResponse response) throws ConnectorException {
         if (!isTypeExists(getType())) {
             this.setType(null);
             throw new ConnectorException(
@@ -85,7 +83,7 @@ public class DownloadFileCommand extends Command {
                         Constants.Errors.CKFINDER_CONNECTOR_ERROR_FILE_NOT_FOUND);
             }
 
-            FileUtils.printFileContentToResponse(file, out);
+            FileUtils.printFileContentToResponse(file, response.getOutputStream());
         } catch (IOException e) {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED, e);
@@ -128,8 +126,7 @@ public class DownloadFileCommand extends Command {
      * @param sc servlet context
      */
     @Override
-    public void setResponseHeader(HttpServletResponse response,
-            ServletContext sc) {
+    public void setResponseHeader(HttpServletResponse response, ServletContext sc) {
         String mimetype = sc.getMimeType(fileName);
         response.setCharacterEncoding("utf-8");
 

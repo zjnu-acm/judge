@@ -38,7 +38,7 @@ public class ErrorCommand extends Command implements IErrorCommand {
     private HttpServletResponse response;
 
     @Override
-    protected void execute(OutputStream out) throws ConnectorException {
+    protected void execute(HttpServletResponse response) throws ConnectorException {
         try {
             response.setHeader("X-CKFinder-Error", String.valueOf(connectorException.getErrorCode()));
             switch (connectorException.getErrorCode()) {

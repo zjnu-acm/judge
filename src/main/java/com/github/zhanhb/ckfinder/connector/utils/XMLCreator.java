@@ -13,7 +13,7 @@ package com.github.zhanhb.ckfinder.connector.utils;
 
 import com.github.zhanhb.ckfinder.connector.configuration.Constants;
 import com.github.zhanhb.ckfinder.connector.errors.ConnectorException;
-import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
@@ -23,7 +23,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import lombok.Builder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -78,24 +77,14 @@ public class XMLCreator {
         return document;
     }
 
-    /**
-     *
-     * @return XML as text
-     * @throws ConnectorException If an unrecoverable error occurs during the
-     * course of the transformation or when it is not possible to create a
-     * Transformer instance.
-     */
-    public String getDocumentAsText() throws ConnectorException {
+    public void writeTo(Writer writer) throws ConnectorException {
         try {
-            StringWriter stw = new StringWriter();
             Transformer serializer = TransformerFactory.newInstance().newTransformer();
-            serializer.transform(new DOMSource(document), new StreamResult(stw));
-            return stw.toString();
+            serializer.transform(new DOMSource(document), new StreamResult(writer));
         } catch (TransformerException e) {
             throw new ConnectorException(
                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED, e);
         }
-
     }
 
     /**
@@ -138,10 +127,10 @@ public class XMLCreator {
     public void addErrors(Element errorsNode) {
         for (ErrorNode item : this.errorList) {
             Element childElem = this.getDocument().createElement("Error");
-            childElem.setAttribute("code", String.valueOf(item.errorCode));
-            childElem.setAttribute("name", item.name);
-            childElem.setAttribute("type", item.type);
-            childElem.setAttribute("folder", item.folder);
+            childElem.setAttribute("code", String.valueOf(item.getErrorCode()));
+            childElem.setAttribute("name", item.getName());
+            childElem.setAttribute("type", item.getType());
+            childElem.setAttribute("folder", item.getFolder());
             errorsNode.appendChild(childElem);
         }
     }
@@ -153,19 +142,6 @@ public class XMLCreator {
      */
     public boolean hasErrors() {
         return !errorList.isEmpty();
-    }
-
-    /**
-     * error node object.
-     */
-    @Builder(builderClassName = "Builder")
-    private static class ErrorNode {
-
-        private final String folder;
-        private final String type;
-        private final String name;
-        private final int errorCode;
-
     }
 
 }
