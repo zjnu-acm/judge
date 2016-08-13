@@ -92,6 +92,16 @@
         </properties>
     </action>
     <action>
+        <actionName>javadoc</actionName>
+        <packagings>
+            <packaging>*</packaging>
+        </packagings>
+        <goals>
+            <goal>pre-site</goal>
+            <goal>javadoc:javadoc</goal>
+        </goals>
+    </action>
+    <action>
         <actionName>debug.test.single</actionName>
         <packagings>
             <packaging>*</packaging>
