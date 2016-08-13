@@ -34,7 +34,7 @@ public class ImageResizeInitCommandEventHandler implements InitCommandEventHandl
         NodeList list = args.getRootElement().getElementsByTagName("PluginsInfo");
         if (list.getLength() > 0) {
             Node node = list.item(0);
-            Element pluginElem = args.getXml().getDocument().createElement(pluginInfo.getName());
+            Element pluginElem = args.getDocument().createElement(pluginInfo.getName());
             for (PluginParam param : pluginInfo.getParams()) {
                 pluginElem.setAttribute(param.getName(), param.getValue());
             }

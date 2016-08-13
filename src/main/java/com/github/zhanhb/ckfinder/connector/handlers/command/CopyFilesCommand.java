@@ -41,9 +41,9 @@ public class CopyFilesCommand extends XMLCommand implements IPostCommand {
 
     @Override
     protected void createXMLChildNodes(int errorNum, Element rootElement) {
-        if (getCreator().hasErrors()) {
-            Element errorsNode = getCreator().getDocument().createElement("Errors");
-            getCreator().addErrors(errorsNode);
+        if (hasErrors()) {
+            Element errorsNode = getDocument().createElement("Errors");
+            addErrors(errorsNode);
             rootElement.appendChild(errorsNode);
         }
 
@@ -58,7 +58,7 @@ public class CopyFilesCommand extends XMLCommand implements IPostCommand {
      * @param rootElement XML root node.
      */
     private void createCopyFielsNode(Element rootElement) {
-        Element element = getCreator().getDocument().createElement("CopyFiles");
+        Element element = getDocument().createElement("CopyFiles");
         element.setAttribute("copied", String.valueOf(this.filesCopied));
         element.setAttribute("copiedTotal", String.valueOf(this.copiedAll
                 + this.filesCopied));
@@ -116,7 +116,7 @@ public class CopyFilesCommand extends XMLCommand implements IPostCommand {
             }
             if (FileUtils.checkFileExtension(file.getName(),
                     this.getConfiguration().getTypes().get(this.getType())) == 1) {
-                getCreator().appendErrorNodeChild(
+                appendErrorNodeChild(
                         Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_EXTENSION,
                         file.getName(), file.getFolder(), file.getType());
                 continue;
@@ -126,7 +126,7 @@ public class CopyFilesCommand extends XMLCommand implements IPostCommand {
             if (!getType().equals(file.getType())) {
                 if (FileUtils.checkFileExtension(file.getName(),
                         this.getConfiguration().getTypes().get(file.getType())) == 1) {
-                    getCreator().appendErrorNodeChild(
+                    appendErrorNodeChild(
                             Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_EXTENSION,
                             file.getName(), file.getFolder(), file.getType());
                     continue;
@@ -153,7 +153,7 @@ public class CopyFilesCommand extends XMLCommand implements IPostCommand {
 
             try {
                 if (!Files.exists(sourceFile) || !Files.isRegularFile(sourceFile)) {
-                    getCreator().appendErrorNodeChild(
+                    appendErrorNodeChild(
                             Constants.Errors.CKFINDER_CONNECTOR_ERROR_FILE_NOT_FOUND,
                             file.getName(), file.getFolder(), file.getType());
                     continue;
@@ -161,21 +161,21 @@ public class CopyFilesCommand extends XMLCommand implements IPostCommand {
                 if (!getType().equals(file.getType())) {
                     long maxSize = getConfiguration().getTypes().get(this.getType()).getMaxSize();
                     if (maxSize != 0 && maxSize < Files.size(sourceFile)) {
-                        getCreator().appendErrorNodeChild(
+                        appendErrorNodeChild(
                                 Constants.Errors.CKFINDER_CONNECTOR_ERROR_UPLOADED_TOO_BIG,
                                 file.getName(), file.getFolder(), file.getType());
                         continue;
                     }
                 }
                 if (sourceFile.equals(destFile)) {
-                    getCreator().appendErrorNodeChild(
+                    appendErrorNodeChild(
                             Constants.Errors.CKFINDER_CONNECTOR_ERROR_SOURCE_AND_TARGET_PATH_EQUAL,
                             file.getName(), file.getFolder(), file.getType());
                 } else if (Files.exists(destFile)) {
                     if (file.getOptions() != null
                             && file.getOptions().contains("overwrite")) {
                         if (!handleOverwrite(sourceFile, destFile)) {
-                            getCreator().appendErrorNodeChild(
+                            appendErrorNodeChild(
                                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED,
                                     file.getName(), file.getFolder(), file.getType());
                         } else {
@@ -184,14 +184,14 @@ public class CopyFilesCommand extends XMLCommand implements IPostCommand {
                     } else if (file.getOptions() != null
                             && file.getOptions().contains("autorename")) {
                         if (!handleAutoRename(sourceFile, destFile)) {
-                            getCreator().appendErrorNodeChild(
+                            appendErrorNodeChild(
                                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED,
                                     file.getName(), file.getFolder(), file.getType());
                         } else {
                             this.filesCopied++;
                         }
                     } else {
-                        getCreator().appendErrorNodeChild(
+                        appendErrorNodeChild(
                                 Constants.Errors.CKFINDER_CONNECTOR_ERROR_ALREADY_EXIST,
                                 file.getName(), file.getFolder(), file.getType());
                     }
@@ -202,13 +202,13 @@ public class CopyFilesCommand extends XMLCommand implements IPostCommand {
                 }
             } catch (SecurityException | IOException e) {
                 log.error("", e);
-                getCreator().appendErrorNodeChild(
+                appendErrorNodeChild(
                         Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED,
                         file.getName(), file.getFolder(), file.getType());
             }
         }
         this.addCopyNode = true;
-        if (getCreator().hasErrors()) {
+        if (hasErrors()) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_COPY_FAILED;
         } else {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_NONE;

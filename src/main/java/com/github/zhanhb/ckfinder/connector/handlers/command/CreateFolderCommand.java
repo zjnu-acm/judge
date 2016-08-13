@@ -48,7 +48,7 @@ public class CreateFolderCommand extends XMLCommand implements IPostCommand {
      * @param rootElement XML root element.
      */
     private void createNewFolderElement(Element rootElement) {
-        Element element = getCreator().getDocument().createElement("NewFolder");
+        Element element = getDocument().createElement("NewFolder");
         element.setAttribute("name", this.newFolderName);
         rootElement.appendChild(element);
     }

@@ -48,7 +48,7 @@ public class RenameFolderCommand extends XMLCommand implements IPostCommand {
      * @param rootElement XML root element.
      */
     private void createRenamedFolderNode(Element rootElement) {
-        Element element = getCreator().getDocument().createElement("RenamedFolder");
+        Element element = getDocument().createElement("RenamedFolder");
         element.setAttribute("newName", this.newFolderName);
         element.setAttribute("newPath", this.newFolderPath);
         element.setAttribute("newUrl", getConfiguration().getTypes().get(this.getType()).getUrl() + this.newFolderPath);
