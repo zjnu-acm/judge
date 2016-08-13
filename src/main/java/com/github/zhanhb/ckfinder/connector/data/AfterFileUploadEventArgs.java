@@ -18,7 +18,7 @@ import lombok.ToString;
 
 /**
  * Event data for
- * {@link com.github.zhanhb.ckfinder.connector.configuration.Events#addAfterFileUploadEventHandler(java.util.function.Supplier) }
+ * {@link com.github.zhanhb.ckfinder.connector.configuration.Events.Builder#afterFileUploadEventHandler(java.util.function.Supplier) }
  * event.
  */
 @Getter

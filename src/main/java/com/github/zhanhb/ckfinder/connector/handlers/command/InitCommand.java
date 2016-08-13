@@ -233,8 +233,7 @@ public class InitCommand extends XMLCommand {
     private String randomHash(String folder) {
         try {
             MessageDigest algorithm = MessageDigest.getInstance("SHA-256");
-            algorithm.update(folder.getBytes("UTF8"));
-            byte[] messageDigest = algorithm.digest();
+            byte[] messageDigest = algorithm.digest(folder.getBytes("UTF8"));
 
             @SuppressWarnings("StringBufferWithoutInitialCapacity")
             StringBuilder hexString = new StringBuilder();

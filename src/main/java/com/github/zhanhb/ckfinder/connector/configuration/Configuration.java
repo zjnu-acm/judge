@@ -22,9 +22,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Singular;
 
-/**
- * Class loads configuration from XML file.
- */
 @Builder(builderClassName = "Builder")
 @Getter
 @SuppressWarnings({"CollectionWithoutInitialCapacity", "ReturnOfCollectionOrArrayField", "FinalMethod"})
