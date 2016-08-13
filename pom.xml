@@ -391,6 +391,7 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <configuration>
                     <additionalJOption>-J-Dfile.encoding=${file.encoding}</additionalJOption>
+                    <sourcepath>${project.build.directory}/generated-sources/delombok</sourcepath>
                     <locale>en_US</locale>
                 </configuration>
             </plugin>
@@ -442,6 +443,24 @@
                         <exclude>com/github/zhanhb/download/**/*.class</exclude>
                     </excludes>
                     <propertyName>argLine</propertyName>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok-maven-plugin</artifactId>
+                <version>1.16.10.0</version>
+                <executions>
+                    <execution>
+                        <id>delombok</id>
+                        <phase>pre-site</phase>
+                        <goals>
+                            <goal>delombok</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <addOutputDirectory>false</addOutputDirectory>
+                    <sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
                 </configuration>
             </plugin>
             <plugin>

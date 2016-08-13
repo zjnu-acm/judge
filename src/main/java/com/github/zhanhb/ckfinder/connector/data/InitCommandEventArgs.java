@@ -19,7 +19,7 @@ import org.w3c.dom.Element;
 
 /**
  * Event data for
- * {@link com.github.zhanhb.ckfinder.connector.configuration.Events#addInitCommandEventHandler(java.util.function.Supplier) }
+ * {@link com.github.zhanhb.ckfinder.connector.configuration.Events.Builder#initCommandEventHandler(java.util.function.Supplier) }
  * event.
  */
 @Getter

@@ -19,7 +19,7 @@ import lombok.ToString;
 
 /**
  * Event data for
- * {@link com.github.zhanhb.ckfinder.connector.configuration.Events#addBeforeExecuteEventHandler(java.util.function.Supplier) }
+ * {@link com.github.zhanhb.ckfinder.connector.configuration.Events.Builder#beforeExecuteCommandEventHandler(java.util.function.Supplier) }
  * event.
  */
 @Getter
