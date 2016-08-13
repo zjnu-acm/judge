@@ -48,7 +48,7 @@ public class RenameFileCommand extends XMLCommand implements IPostCommand {
      * @param rootElement XML root node
      */
     private void createRenamedFileNode(Element rootElement) {
-        Element element = getCreator().getDocument().createElement("RenamedFile");
+        Element element = getDocument().createElement("RenamedFile");
         element.setAttribute("name", this.fileName);
         if (renamed) {
             element.setAttribute("newName", this.newFileName);

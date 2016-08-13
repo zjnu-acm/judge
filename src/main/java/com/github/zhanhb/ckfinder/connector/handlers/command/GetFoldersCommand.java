@@ -106,7 +106,7 @@ public class GetFoldersCommand extends XMLCommand {
      * @param rootElement root element in XML document
      */
     private void createFoldersData(Element rootElement) throws IOException {
-        Element element = getCreator().getDocument().createElement("Folders");
+        Element element = getDocument().createElement("Folders");
         for (String dirPath : directories) {
             Path dir = Paths.get(this.getConfiguration().getTypes().get(this.getType()).getPath()
                     + this.getCurrentFolder()
@@ -122,7 +122,7 @@ public class GetFoldersCommand extends XMLCommand {
                         String.valueOf(getConfiguration().getAccessControl().checkACLForRole(this.getType(),
                                 this.getCurrentFolder()
                                 + dirPath, this.getUserRole()))));
-                xmlElementData.build().addToDocument(getCreator().getDocument(), element);
+                xmlElementData.build().addToDocument(getDocument(), element);
             }
         }
         rootElement.appendChild(element);

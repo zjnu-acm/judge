@@ -17,9 +17,14 @@ import com.github.zhanhb.ckfinder.connector.errors.ConnectorException;
 import com.github.zhanhb.ckfinder.connector.utils.XMLCreator;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.AccessLevel;
+import lombok.Getter;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
@@ -27,8 +32,14 @@ import org.w3c.dom.Element;
  */
 public abstract class XMLCommand extends Command {
 
-    @Deprecated
-    private final XMLCreator creator = new XMLCreator();
+    @Getter(AccessLevel.PROTECTED)
+    private Document document;
+
+    /**
+     *
+     * errors list.
+     */
+    private final List<ErrorNode> errorList = new ArrayList<>(4);
 
     /**
      * sets response headers for XML response.
@@ -54,7 +65,7 @@ public abstract class XMLCommand extends Command {
     protected final void execute(HttpServletResponse response) throws ConnectorException {
         try (PrintWriter out = response.getWriter()) {
             createXMLResponse(getDataForXml());
-            getCreator().writeTo(out);
+            XMLCreator.INSTANCE.writeTo(document, out);
         } catch (ConnectorException e) {
             throw e;
         } catch (IOException e) {
@@ -69,16 +80,16 @@ public abstract class XMLCommand extends Command {
      * @throws ConnectorException to handle in error handler.
      */
     private void createXMLResponse(int errorNum) throws ConnectorException, IOException {
-        Element rootElement = getCreator().getDocument().createElement("Connector");
+        Element rootElement = document.createElement("Connector");
         if (getType() != null && !getType().isEmpty()) {
             rootElement.setAttribute("resourceType", getType());
         }
         if (mustAddCurrentFolderNode()) {
             createCurrentFolderNode(rootElement);
         }
-        getCreator().addErrorCommandToRoot(rootElement, errorNum, getErrorMsg(errorNum));
+        XMLCreator.INSTANCE.addErrorCommandToRoot(document, rootElement, errorNum, getErrorMsg(errorNum));
         createXMLChildNodes(errorNum, rootElement);
-        getCreator().getDocument().appendChild(rootElement);
+        document.appendChild(rootElement);
     }
 
     /**
@@ -117,8 +128,8 @@ public abstract class XMLCommand extends Command {
      *
      * @param rootElement XML root node.
      */
-    protected void createCurrentFolderNode(Element rootElement) {
-        Element element = getCreator().getDocument().createElement("CurrentFolder");
+    protected final void createCurrentFolderNode(Element rootElement) {
+        Element element = document.createElement("CurrentFolder");
         element.setAttribute("path", getCurrentFolder());
         element.setAttribute("url", getConfiguration().getTypes().get(getType()).getUrl()
                 + getCurrentFolder());
@@ -127,10 +138,11 @@ public abstract class XMLCommand extends Command {
     }
 
     @Override
-    protected void initParams(HttpServletRequest request, IConfiguration configuration)
+    protected void initParams(HttpServletRequest request,
+            IConfiguration configuration)
             throws ConnectorException {
         super.initParams(request, configuration);
-        getCreator().createDocument();
+        document = XMLCreator.INSTANCE.createDocument();
     }
 
     /**
@@ -143,8 +155,45 @@ public abstract class XMLCommand extends Command {
         return getType() != null && getCurrentFolder() != null;
     }
 
-    protected XMLCreator getCreator() {
-        return creator;
+    /**
+     * save errors node to list.
+     *
+     * @param errorCode error code
+     * @param name file name
+     * @param path current folder
+     * @param type resource type
+     */
+    @SuppressWarnings("FinalMethod")
+    protected final void appendErrorNodeChild(int errorCode, String name,
+            String path, String type) {
+        errorList.add(ErrorNode.builder().type(type).name(name).folder(path).errorCode(errorCode).build());
+    }
+
+    /**
+     * checks if error list contains errors.
+     *
+     * @return true if there are any errors.
+     */
+    @SuppressWarnings("FinalMethod")
+    protected final boolean hasErrors() {
+        return !errorList.isEmpty();
+    }
+
+    /**
+     * add all error nodes from saved list to xml.
+     *
+     * @param errorsNode XML errors node
+     */
+    @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
+    protected final void addErrors(Element errorsNode) {
+        for (ErrorNode item : errorList) {
+            Element childElem = document.createElement("Error");
+            childElem.setAttribute("code", String.valueOf(item.getErrorCode()));
+            childElem.setAttribute("name", item.getName());
+            childElem.setAttribute("type", item.getType());
+            childElem.setAttribute("folder", item.getFolder());
+            errorsNode.appendChild(childElem);
+        }
     }
 
 }

@@ -132,7 +132,7 @@ public class GetFilesCommand extends XMLCommand {
      * @param rootElement root element from XML.
      */
     private void createFilesData(Element rootElement) throws IOException {
-        Element element = getCreator().getDocument().createElement("Files");
+        Element element = getDocument().createElement("Files");
         for (String filePath : files) {
             Path file = Paths.get(this.fullCurrentPath, filePath);
             if (Files.exists(file)) {
@@ -146,7 +146,7 @@ public class GetFilesCommand extends XMLCommand {
                         elementData.attribute(new XmlAttribute("thumb", attr));
                     }
                 }
-                elementData.build().addToDocument(getCreator().getDocument(), element);
+                elementData.build().addToDocument(getDocument(), element);
             }
         }
         rootElement.appendChild(element);

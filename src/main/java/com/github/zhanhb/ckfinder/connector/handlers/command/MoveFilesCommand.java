@@ -41,9 +41,9 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
 
     @Override
     protected void createXMLChildNodes(int errorNum, Element rootElement) {
-        if (getCreator().hasErrors()) {
-            Element errorsNode = getCreator().getDocument().createElement("Errors");
-            getCreator().addErrors(errorsNode);
+        if (hasErrors()) {
+            Element errorsNode = getDocument().createElement("Errors");
+            addErrors(errorsNode);
             rootElement.appendChild(errorsNode);
         }
 
@@ -58,7 +58,7 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
      * @param rootElement XML root element.
      */
     private void createMoveFielsNode(Element rootElement) {
-        Element element = getCreator().getDocument().createElement("MoveFiles");
+        Element element = getDocument().createElement("MoveFiles");
         element.setAttribute("moved", String.valueOf(this.filesMoved));
         element.setAttribute("movedTotal",
                 String.valueOf(this.movedAll + this.filesMoved));
@@ -118,7 +118,7 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
             }
             if (FileUtils.checkFileExtension(file.getName(),
                     this.getConfiguration().getTypes().get(this.getType())) == 1) {
-                getCreator().appendErrorNodeChild(
+                appendErrorNodeChild(
                         Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_EXTENSION,
                         file.getName(), file.getFolder(), file.getType());
                 continue;
@@ -127,7 +127,7 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
             if (!getType().equals(file.getType())) {
                 if (FileUtils.checkFileExtension(file.getName(),
                         this.getConfiguration().getTypes().get(file.getType())) == 1) {
-                    getCreator().appendErrorNodeChild(
+                    appendErrorNodeChild(
                             Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_EXTENSION,
                             file.getName(), file.getFolder(), file.getType());
                     continue;
@@ -155,7 +155,7 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
                     + file.getFolder() + file.getName());
             try {
                 if (!Files.exists(sourceFile) || !Files.isRegularFile(sourceFile)) {
-                    getCreator().appendErrorNodeChild(
+                    appendErrorNodeChild(
                             Constants.Errors.CKFINDER_CONNECTOR_ERROR_FILE_NOT_FOUND,
                             file.getName(), file.getFolder(), file.getType());
                     continue;
@@ -163,21 +163,21 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
                 if (!getType().equals(file.getType())) {
                     long maxSize = getConfiguration().getTypes().get(this.getType()).getMaxSize();
                     if (maxSize != 0 && maxSize < Files.size(sourceFile)) {
-                        getCreator().appendErrorNodeChild(
+                        appendErrorNodeChild(
                                 Constants.Errors.CKFINDER_CONNECTOR_ERROR_UPLOADED_TOO_BIG,
                                 file.getName(), file.getFolder(), file.getType());
                         continue;
                     }
                 }
                 if (sourceFile.equals(destFile)) {
-                    getCreator().appendErrorNodeChild(
+                    appendErrorNodeChild(
                             Constants.Errors.CKFINDER_CONNECTOR_ERROR_SOURCE_AND_TARGET_PATH_EQUAL,
                             file.getName(), file.getFolder(), file.getType());
                 } else if (Files.exists(destFile)) {
                     if (file.getOptions() != null
                             && file.getOptions().contains("overwrite")) {
                         if (!handleOverwrite(sourceFile, destFile)) {
-                            getCreator().appendErrorNodeChild(
+                            appendErrorNodeChild(
                                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED,
                                     file.getName(), file.getFolder(),
                                     file.getType());
@@ -188,7 +188,7 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
                     } else if (file.getOptions() != null
                             && file.getOptions().contains("autorename")) {
                         if (!handleAutoRename(sourceFile, destFile)) {
-                            getCreator().appendErrorNodeChild(
+                            appendErrorNodeChild(
                                     Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED,
                                     file.getName(), file.getFolder(),
                                     file.getType());
@@ -197,7 +197,7 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
                             FileUtils.delete(sourceThumb);
                         }
                     } else {
-                        getCreator().appendErrorNodeChild(
+                        appendErrorNodeChild(
                                 Constants.Errors.CKFINDER_CONNECTOR_ERROR_ALREADY_EXIST,
                                 file.getName(), file.getFolder(), file.getType());
                     }
@@ -208,14 +208,14 @@ public class MoveFilesCommand extends XMLCommand implements IPostCommand {
                 }
             } catch (SecurityException | IOException e) {
                 log.error("", e);
-                getCreator().appendErrorNodeChild(
+                appendErrorNodeChild(
                         Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED,
                         file.getName(), file.getFolder(), file.getType());
             }
 
         }
         this.addMoveNode = true;
-        if (getCreator().hasErrors()) {
+        if (hasErrors()) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_MOVE_FAILED;
         } else {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_NONE;

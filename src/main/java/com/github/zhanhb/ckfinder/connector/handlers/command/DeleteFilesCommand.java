@@ -39,9 +39,9 @@ public class DeleteFilesCommand extends XMLCommand implements IPostCommand {
 
     @Override
     protected void createXMLChildNodes(int errorNum, Element rootElement) {
-        if (getCreator().hasErrors()) {
-            Element errorsNode = getCreator().getDocument().createElement("Errors");
-            getCreator().addErrors(errorsNode);
+        if (hasErrors()) {
+            Element errorsNode = getDocument().createElement("Errors");
+            addErrors(errorsNode);
             rootElement.appendChild(errorsNode);
         }
 
@@ -56,7 +56,7 @@ public class DeleteFilesCommand extends XMLCommand implements IPostCommand {
      * @param rootElement root element in XML response
      */
     private void createDeleteFielsNode(Element rootElement) {
-        Element element = getCreator().getDocument().createElement("DeleteFiles");
+        Element element = getDocument().createElement("DeleteFiles");
         element.setAttribute("deleted", String.valueOf(this.filesDeleted));
         rootElement.appendChild(element);
     }
@@ -116,7 +116,7 @@ public class DeleteFilesCommand extends XMLCommand implements IPostCommand {
             try {
                 this.addDeleteNode = true;
                 if (!Files.exists(file)) {
-                    getCreator().appendErrorNodeChild(
+                    appendErrorNodeChild(
                             Constants.Errors.CKFINDER_CONNECTOR_ERROR_FILE_NOT_FOUND,
                             fileItem.getName(), fileItem.getFolder(), fileItem.getType());
                     continue;
@@ -133,7 +133,7 @@ public class DeleteFilesCommand extends XMLCommand implements IPostCommand {
                         // No errors if we are not able to delete the thumb.
                     }
                 } else { //If access is denied, report error and try to delete rest of files.
-                    getCreator().appendErrorNodeChild(
+                    appendErrorNodeChild(
                             Constants.Errors.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED,
                             fileItem.getName(), fileItem.getFolder(), fileItem.getType());
                 }
@@ -143,7 +143,7 @@ public class DeleteFilesCommand extends XMLCommand implements IPostCommand {
 
             }
         }
-        if (getCreator().hasErrors()) {
+        if (hasErrors()) {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_DELETE_FAILED;
         } else {
             return Constants.Errors.CKFINDER_CONNECTOR_ERROR_NONE;

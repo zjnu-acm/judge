@@ -56,7 +56,7 @@ public class ImageResizeInfoCommand extends XMLCommand implements BeforeExecuteC
     }
 
     private void createImageInfoNode(Element rootElement) {
-        Element element = getCreator().getDocument().createElement("ImageInfo");
+        Element element = getDocument().createElement("ImageInfo");
         element.setAttribute("width", String.valueOf(imageWidth));
         element.setAttribute("height", String.valueOf(imageHeight));
         rootElement.appendChild(element);
