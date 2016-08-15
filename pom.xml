@@ -132,7 +132,7 @@
         </dependency>
         <dependency>
             <groupId>com.github.zhanhb</groupId>
-            <artifactId>ckfinder-spring-boot-autoconfigure</artifactId>
+            <artifactId>ckfinder-spring-boot-starter</artifactId>
             <version>0.0.1.BUILD-SNAPSHOT</version>
         </dependency>
         <dependency>
