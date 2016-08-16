@@ -47,7 +47,8 @@ import static com.sun.jna.platform.win32.WinNT.TOKEN_ASSIGN_PRIMARY;
 import static com.sun.jna.platform.win32.WinNT.TOKEN_DUPLICATE;
 import static com.sun.jna.platform.win32.WinNT.TOKEN_QUERY;
 
-public class Executor {
+public enum Executor {
+    INSTANCE;
 
     public static final int _O_RDONLY = 0;
     public static final int _O_WRONLY = 1;
