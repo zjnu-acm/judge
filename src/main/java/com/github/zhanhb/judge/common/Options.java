@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Value;
 
-@Builder
+@Builder(builderClassName = "Builder")
 @Getter
 @Value
 @SuppressWarnings("FinalClass")
@@ -21,5 +21,16 @@ public class Options {
     private boolean redirectErrorStream;
     private String command;
     private Path workDirectory;
+
+    @SuppressWarnings("PublicInnerClass")
+    public static class Builder {
+
+        Builder() {
+            timeLimit = Long.MAX_VALUE;
+            memoryLimit = Long.MAX_VALUE;
+            outputLimit = Long.MAX_VALUE;
+        }
+
+    }
 
 }

@@ -62,7 +62,6 @@ public class JudgeBridgeTest {
 
     private final boolean stopOnError = false;
     private final Validator validator = new SimpleValidator();
-    private final JudgeBridge instance = new JudgeBridge();
     private final String groovy = getGroovy(System.getProperty("java.class.path"));
     private Path program;
     private Path data;
@@ -126,7 +125,7 @@ public class JudgeBridgeTest {
                 .workDirectory(tmp)
                 .timeLimit(6000)
                 .build();
-        ExecuteResult er = instance.execute(new Options[]{options}, stopOnError, validator)[0];
+        ExecuteResult er = JudgeBridge.INSTANCE.execute(new Options[]{options}, stopOnError, validator)[0];
         log.info("{}", er);
         assertEquals(executable, checker.getStatus(), er.getHaltCode());
     }

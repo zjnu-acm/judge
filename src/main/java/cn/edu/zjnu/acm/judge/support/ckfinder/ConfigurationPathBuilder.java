@@ -2,23 +2,23 @@ package cn.edu.zjnu.acm.judge.support.ckfinder;
 
 import cn.edu.zjnu.acm.judge.config.JudgeConfiguration;
 import com.github.zhanhb.ckfinder.connector.configuration.IBasePathBuilder;
-import java.io.IOException;
 import java.nio.file.Path;
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.ServletContext;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class ConfigurationPathBuilder implements IBasePathBuilder {
 
     private final JudgeConfiguration judgeConfiguration;
+    private final ServletContext servletContext;
 
     @Override
-    public String getBaseUrl(HttpServletRequest request) {
-        return request.getContextPath().concat("/support/ckfinder.action?path=");
+    public String getBaseUrl() {
+        return servletContext.getContextPath().concat("/support/ckfinder.action?path=");
     }
 
     @Override
-    public String getBaseDir(HttpServletRequest request) throws IOException {
+    public String getBaseDir() {
         Path resource = judgeConfiguration.getUploadDirectory();
         return resource.toString();
     }

@@ -31,7 +31,7 @@
         <developer>
             <id>zhanhb</id>
             <name>Huangbin Zhan</name>
-            <email>zhanhb88@gmail.com</email>
+            <email>zhanhb88 at gmail.com</email>
             <roles>
                 <role>Project Leader</role>
             </roles>
@@ -44,8 +44,11 @@
     </scm>
 
     <properties>
+        <delombok.directory>${project.build.directory}/delombok</delombok.directory>
         <flyway.version>4.0.3</flyway.version>
+        <jackson.version>2.8.1</jackson.version>
         <java.version>1.8</java.version>
+        <javax-mail.version>1.5.6</javax-mail.version>
         <start-class>cn.edu.zjnu.acm.judge.Application</start-class>
         <thymeleaf-extras-springsecurity4.version>3.0.0.RELEASE</thymeleaf-extras-springsecurity4.version>
         <thymeleaf-layout-dialect.version>2.0.1</thymeleaf-layout-dialect.version>
@@ -113,6 +116,11 @@
         </dependency>
         <dependency>
             <groupId>com.github.zhanhb</groupId>
+            <artifactId>ckfinder-spring-boot-starter</artifactId>
+            <version>0.0.1.BUILD-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.zhanhb</groupId>
             <artifactId>thymeleaf-layout-dialect</artifactId>
             <version>${thymeleaf-layout-dialect.version}</version>
             <scope>runtime</scope>
@@ -121,10 +129,6 @@
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
             <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -260,6 +264,14 @@
             <id>spring-milestone</id>
             <url>https://repo.spring.io/milestone</url>
         </repository>
+        <repository>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </repository>
     </repositories>
 
     <build>
@@ -357,6 +369,7 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <configuration>
                     <additionalJOption>-J-Dfile.encoding=${file.encoding}</additionalJOption>
+                    <sourcepath>${delombok.directory}</sourcepath>
                     <locale>en_US</locale>
                 </configuration>
             </plugin>
@@ -407,6 +420,25 @@
                         <exclude>com/github/zhanhb/download/**/*.class</exclude>
                     </excludes>
                     <propertyName>argLine</propertyName>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok-maven-plugin</artifactId>
+                <version>1.16.10.0</version>
+                <executions>
+                    <execution>
+                        <id>delombok</id>
+                        <phase>pre-site</phase>
+                        <goals>
+                            <goal>delombok</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <addOutputDirectory>false</addOutputDirectory>
+                    <sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
+                    <outputDirectory>${delombok.directory}</outputDirectory>
                 </configuration>
             </plugin>
             <plugin>

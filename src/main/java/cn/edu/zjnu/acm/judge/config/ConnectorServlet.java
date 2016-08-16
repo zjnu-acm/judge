@@ -16,7 +16,7 @@
 package cn.edu.zjnu.acm.judge.config;
 
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
-import com.github.zhanhb.ckfinder.connector.configuration.ConfigurationFactory;
+import com.github.zhanhb.ckfinder.connector.configuration.IConfiguration;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -30,8 +30,8 @@ public class ConnectorServlet extends com.github.zhanhb.ckfinder.connector.Conne
 
     private static final long serialVersionUID = 1L;
 
-    ConnectorServlet(ConfigurationFactory configurationFactory) {
-        super(configurationFactory);
+    ConnectorServlet(IConfiguration iConfiguration) {
+        super(iConfiguration);
     }
 
     @Override

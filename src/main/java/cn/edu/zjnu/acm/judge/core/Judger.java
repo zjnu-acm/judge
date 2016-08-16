@@ -87,7 +87,6 @@ public class Judger {
 
     @Autowired
     private SubmissionMapper submissionMapper;
-    private final JudgeBridge judgeBridge = new JudgeBridge();
     @Autowired
     private UserProblemMapper userProblemMapper;
     @Autowired
@@ -212,7 +211,7 @@ public class Judger {
                 ? new SpecialValidator(specialFile.toString(), work)
                 : new SimpleValidator();
         try {
-            ExecuteResult[] ers = judgeBridge.execute(optionses, false, validator);
+            ExecuteResult[] ers = JudgeBridge.INSTANCE.execute(optionses, false, validator);
             for (ExecuteResult er : ers) {
                 long tim1 = er.getTime() - extTime;
                 tim1 = Math.max(0, tim1);

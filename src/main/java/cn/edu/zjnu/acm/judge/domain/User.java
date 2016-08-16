@@ -13,7 +13,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder(toBuilder = true)
+@Builder(builderClassName = "Builder", toBuilder = true)
 @Data
 @Setter(AccessLevel.PRIVATE)
 @ToString(exclude = "password")
