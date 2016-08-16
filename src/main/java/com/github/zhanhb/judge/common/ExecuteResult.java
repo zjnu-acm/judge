@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Value;
 
-@Builder(toBuilder = true)
+@Builder(builderClassName = "Builder", toBuilder = true)
 @Getter
 @Value
 @SuppressWarnings("FinalClass")
