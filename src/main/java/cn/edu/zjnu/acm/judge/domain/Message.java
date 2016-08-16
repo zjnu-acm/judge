@@ -30,7 +30,7 @@ import lombok.Setter;
  * @author zhanhb
  */
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder
+@Builder(builderClassName = "Builder")
 @Data
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)

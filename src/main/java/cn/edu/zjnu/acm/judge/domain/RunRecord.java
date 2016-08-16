@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Setter;
 
-@Builder(toBuilder = true)
+@Builder(builderClassName = "Builder", toBuilder = true)
 @Data
 @Setter(AccessLevel.PRIVATE)
 public class RunRecord implements Serializable {

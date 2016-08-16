@@ -29,7 +29,7 @@ import lombok.NonNull;
  * @author zhanhb
  */
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder
+@Builder(builderClassName = "Builder")
 @Data
 @NoArgsConstructor
 public class Language implements Serializable {
