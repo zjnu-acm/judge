@@ -28,7 +28,7 @@ import lombok.Setter;
  * @author zhanhb
  */
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder(toBuilder = true)
+@Builder(builderClassName = "Builder", toBuilder = true)
 @Data
 @NoArgsConstructor
 @Setter(AccessLevel.PRIVATE)

@@ -25,7 +25,7 @@ import lombok.Setter;
  *
  * @author zhanhb
  */
-@Builder
+@Builder(builderClassName = "Builder")
 @Data
 @Setter(AccessLevel.PRIVATE)
 public class SubmissionDetail implements Serializable {
