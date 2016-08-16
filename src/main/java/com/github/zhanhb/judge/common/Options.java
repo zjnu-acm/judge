@@ -22,4 +22,15 @@ public class Options {
     private String command;
     private Path workDirectory;
 
+    @SuppressWarnings("PublicInnerClass")
+    public static class Builder {
+
+        Builder() {
+            timeLimit = Long.MAX_VALUE;
+            memoryLimit = Long.MAX_VALUE;
+            outputLimit = Long.MAX_VALUE;
+        }
+
+    }
+
 }
