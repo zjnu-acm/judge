@@ -20,6 +20,7 @@ import java.nio.file.Path;
 
 import static com.github.zhanhb.judge.common.Constants.TERMINATE_TIMEOUT;
 import static com.github.zhanhb.judge.common.Constants.UPDATE_TIME_THRESHOLD;
+import static com.github.zhanhb.judge.jna.win32.Advapi32.DISABLE_MAX_PRIVILEGE;
 import static com.github.zhanhb.judge.jna.win32.Advapi32.SANDBOX_INERT;
 import static com.github.zhanhb.judge.jna.win32.Advapi32.SECURITY_MANDATORY_LOW_RID;
 import static com.github.zhanhb.judge.jna.win32.Advapi32.SE_GROUP_INTEGRITY;
@@ -47,7 +48,8 @@ import static com.sun.jna.platform.win32.WinNT.TOKEN_ASSIGN_PRIMARY;
 import static com.sun.jna.platform.win32.WinNT.TOKEN_DUPLICATE;
 import static com.sun.jna.platform.win32.WinNT.TOKEN_QUERY;
 
-public class Executor {
+public enum Executor {
+    INSTANCE;
 
     public static final int _O_RDONLY = 0;
     public static final int _O_WRONLY = 1;
@@ -294,7 +296,7 @@ public class Executor {
                         TOKEN_DUPLICATE | TOKEN_ASSIGN_PRIMARY | TOKEN_QUERY | TOKEN_ADJUST_DEFAULT))) {
             return Advapi32Util.createRestrictedToken(
                     token.getValue(), // ExistingTokenHandle
-                    SANDBOX_INERT, // Flags
+                    DISABLE_MAX_PRIVILEGE | SANDBOX_INERT, // Flags
                     null, // SidsToDisable
                     null, // PrivilegesToDelete
                     null // SidsToRestrict

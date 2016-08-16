@@ -123,9 +123,13 @@ public interface Advapi32 extends com.sun.jna.platform.win32.Advapi32 {
     /*https://msdn.microsoft.com/en-us/library/windows/desktop/aa446631(v=vs.85).aspx*/
     Pointer FreeSid(PSID pSid);
 
-    int SECURITY_MANDATORY_LOW_RID = 0x1000;
+    int SECURITY_MANDATORY_UNTRUSTED_RID = 0x00000000;
+    int SECURITY_MANDATORY_LOW_RID = 0x00001000;
+    int SECURITY_MANDATORY_MEDIUM_RID = 0x00002000;
+
     int SE_GROUP_INTEGRITY = 0x00000020;
 
+    int DISABLE_MAX_PRIVILEGE = 1;
     int SANDBOX_INERT = 2;
 
 }
