@@ -284,7 +284,7 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>highlightjs</artifactId>
-            <version>9.2.0</version>
+            <version>9.6.0</version>
             <scope>runtime</scope>
         </dependency>
     </dependencies>
