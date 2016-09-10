@@ -14,7 +14,7 @@
                 <tr>
                     <td valign="top">
                         <div style="position:relative; height:650px; width:260px">
-                            <script th:src="@{/js/problemstatus.js(_=${application.startUpDate})}"></script>
+                            <script src="../../../js/problemstatus.js" th:src="@{/js/problemstatus.js(_=${application.startUpDate})}"></script>
                             <script th:inline="javascript">var sa=/*[+[[${sa}]]+]*//*[-*/null/*-]*/;var len=0;if(sa[0].length>sa[1].length){len=sa[1].length;}else{len=sa[0].length;}table(len,0,0,600,600,'Statistics','',200,250,/*[+[[${problem.submitUser}]]+]*//*[-*/5/*-]*/,/*[+[[${problem.solved}]]+]*//*[-*/4/*-]*/,'status?problem_id='+/*[+[[${problem.id}]]+]*//*[-*/1/*-]*/);</script>
                         </div>
                     </td>

@@ -95,7 +95,16 @@
                     </p>
                     <hr/>
                     <p align="center">
-                        <font size="3">All Copyright Reserved 2006-<jsp:expression>java.time.Year.now()</jsp:expression> ZJNU ACM<br/>Any problem, Please Contact <a href="mailto:${applicationScope['admin.mail']}">Administrator</a>
+                        <font size="3">All Copyright Reserved 2006-<jsp:expression>java.time.Year.now()</jsp:expression> ZJNU ACM<br/>Any problem, Please Contact <jsp:scriptlet>
+                            /*<![CDATA[*/
+                            String email = (String) application.getAttribute("admin.mail");
+                            if (email != null && !email.isEmpty()) {
+                                /*]]>*/
+                        </jsp:scriptlet>
+                        <a href="mailto:${applicationScope['admin.mail']}">Administrator</a>
+                        <jsp:scriptlet>} else {</jsp:scriptlet>
+                        <jsp:text>Administrator</jsp:text>
+                        <jsp:scriptlet>}</jsp:scriptlet>
                         </font>
                     </p>
                 </div>
