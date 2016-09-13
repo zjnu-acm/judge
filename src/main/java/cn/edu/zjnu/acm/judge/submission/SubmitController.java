@@ -49,7 +49,7 @@ public class SubmitController {
 
     @Secured("ROLE_USER")
     @PostMapping("/submit")
-    public String submit(HttpServletRequest request,
+    public synchronized String submit(HttpServletRequest request,
             @RequestParam("language") int languageId,
             @RequestParam("problem_id") long problemId,
             @RequestParam("source") String source,

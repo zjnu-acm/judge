@@ -31,7 +31,7 @@ public class LoginlogService {
     private LoginlogMapper loginlogMapper;
 
     @Transactional
-    public long save(LoginLog loginlog) {
+    public synchronized long save(LoginLog loginlog) {
         loginlogMapper.save(loginlog);
         return loginlog.getId();
     }
