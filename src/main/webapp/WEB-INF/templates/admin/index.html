@@ -6,26 +6,34 @@
     <head><title>Welcome to admin model</title></head>
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
-        <p align="left"><font size="4" color="#333399">What can I do:</font></p>
-        <p align="left"><font size="4" color="#333399">
-                <img th:src="@{/images/j0293844.png}" width="25" height="23"/> <a th:href="@{/admin/problems/new}">Add a problem</a>
-            </font></p>
-        <p><font size="4" color="#333399">
-                <img th:src="@{/images/j0293844.png}" width="25" height="23"/> <a th:href="@{/admin/problems}">See the problem list</a>
-            </font></p>
-        <p><font size="4" color="#333399">
-                <img th:src="@{/images/j0293844.png}" width="25" height="23"/> <a th:href="@{/admin/contests/new}">Add a contest</a>
-            </font></p>
-        <p><font size="4" color="#333399">
-                <img th:src="@{/images/j0293844.png}" width="25" height="23"/> <a th:href="@{/admin/contests}">See the contest list</a>
-            </font></p>
-        <p><font size="4" color="#333399">
-                <img th:src="@{/images/j0293844.png}" width="25" height="23"/> <a th:href="@{/logout}">Logout</a><br/></font></p>
+        <p align="left" style="font-size: large; color: #339">What can I do:</p>
+        <p align="left" style="font-size: large; color: #339">
+            <img th:src="@{/images/j0293844.png}" width="25" height="23"/>
+            <a th:href="@{/admin/problems/new}">Add a problem</a>
+        </p>
+        <p style="font-size: large; color: #339">
+            <img th:src="@{/images/j0293844.png}" width="25" height="23"/>
+            <a th:href="@{/admin/problems}">See the problem list</a>
+        </p>
+        <p style="font-size: large; color: #339">
+            <img th:src="@{/images/j0293844.png}" width="25" height="23"/>
+            <a th:href="@{/admin/contests/new}">Add a contest</a>
+        </p>
+        <p style="font-size: large; color: #339">
+            <img th:src="@{/images/j0293844.png}" width="25" height="23"/>
+            <a th:href="@{/admin/contests}">See the contest list</a>
+        </p>
+        <p style="font-size: large; color: #339">
+            <img th:src="@{/images/j0293844.png}" width="25" height="23"/>
+            <a th:href="@{/logout}">Logout</a>
+            <br/>
+        </p>
         <div class="setsysteminfo" style="color: #339">
             <form th:action="@{/admin/tools}" method="POST">
                 <input type="hidden" name="op" value="setsysteminfo"/>
                 <input type="text" name="sinfo"/>
-                <label><input type="checkbox" name="pureText" checked="checked" />纯文本</label>
+                <input th:id="${#ids.seq('pureText')}" type="checkbox" name="pureText" checked="checked" />
+                <label th:for="${#ids.prev('pureText')}">纯文本</label>
                 <button type="submit">set</button>
             </form>
         </div>
