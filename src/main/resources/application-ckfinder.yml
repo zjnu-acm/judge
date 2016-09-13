@@ -1,0 +1,61 @@
+ckfinder:
+  enabled: true
+  base-dir:
+  base-url:
+  license-key:
+  license-name:
+  img-width: 1600
+  img-height: 1200
+  img-quality: 0.8
+  default-resource-types:
+  types:
+    - name: Files
+      url: '%BASE_URL%files/'
+      directory: '%BASE_DIR%/files'
+      max-size: 0
+      allowed-extensions: 7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip
+      denied-extensions: exe,jsp,jspx,asp,aspx
+    - name: Images
+      url: '%BASE_URL%images/'
+      directory: '%BASE_DIR%/images'
+      max-size: 0
+      allowed-extensions: bmp,gif,jpeg,jpg,png
+      denied-extensions:
+  user-role-session-var: CKFinder_UserRole
+  access-controls:
+  - role: '*'
+    resource-type: '*'
+    folder: /
+    folder-view: true
+    folder-create: true
+    folder-rename: true
+    folder-delete: true
+    file-view: true
+    file-upload: true
+    file-rename: true
+    file-delete: true
+  thumbs:
+    enabled: true
+    url: '%BASE_URL%_thumbs/'
+    directory: '%BASE_DIR%/_thumbs'
+    direct-access: false
+    max-height: 100
+    max-width: 100
+    quality: 0.8
+  disallow-unsafe-characters: false
+  check-double-extension: true
+  html-extensions: html,htm,xml,js
+  check-size-after-scaling: true
+  force-ascii: false
+  secure-image-uploads: true
+  enable-csrf-protection: true
+  hide-folders: '.*,CVS'
+  hide-files: '.*'
+  watermark:
+    enabled: false
+    source: classpath:/com/github/zhanhb/ckfinder/connector/logo.gif
+    margin-bottom: 0
+    quality: 0.1
+    transparency: 0.1
+  image-resize:
+    enabled: true
