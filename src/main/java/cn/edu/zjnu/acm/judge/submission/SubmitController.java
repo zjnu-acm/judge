@@ -13,7 +13,7 @@ import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
-import cn.edu.zjnu.acm.judge.mapper.UserPerferenceMapper;
+import cn.edu.zjnu.acm.judge.mapper.UserPreferenceMapper;
 import cn.edu.zjnu.acm.judge.service.LanguageService;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import cn.edu.zjnu.acm.judge.util.ResultType;
@@ -41,7 +41,7 @@ public class SubmitController {
     @Autowired
     private ContestMapper contestMapper;
     @Autowired
-    private UserPerferenceMapper userPerferenceMapper;
+    private UserPreferenceMapper userPerferenceMapper;
     @Autowired
     private JudgeConfiguration judgeConfiguration;
     @Autowired

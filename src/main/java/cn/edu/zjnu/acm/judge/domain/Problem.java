@@ -23,7 +23,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  *
@@ -34,7 +33,6 @@ import lombok.Setter;
 @Data
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Setter(AccessLevel.PUBLIC)
 public class Problem implements Serializable {
 
     private static final long serialVersionUID = 1L;

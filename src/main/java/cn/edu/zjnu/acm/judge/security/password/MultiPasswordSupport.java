@@ -22,9 +22,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  *
  * @author zhanhb
  */
-public class MutiPasswordSupport extends PasswordEncoderWrapper {
+public class MultiPasswordSupport extends PasswordEncoderWrapper {
 
-    public MutiPasswordSupport(PasswordEncoder encoder) {
+    public MultiPasswordSupport(PasswordEncoder encoder) {
         super(encoder);
     }
 

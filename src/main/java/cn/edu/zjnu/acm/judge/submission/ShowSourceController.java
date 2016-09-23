@@ -3,7 +3,7 @@ package cn.edu.zjnu.acm.judge.submission;
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
-import cn.edu.zjnu.acm.judge.mapper.UserPerferenceMapper;
+import cn.edu.zjnu.acm.judge.mapper.UserPreferenceMapper;
 import cn.edu.zjnu.acm.judge.service.LanguageService;
 import cn.edu.zjnu.acm.judge.service.SubmissionService;
 import cn.edu.zjnu.acm.judge.util.ResultType;
@@ -22,7 +22,7 @@ public class ShowSourceController {
     @Autowired
     private SubmissionMapper submissionMapper;
     @Autowired
-    private UserPerferenceMapper userPerferenceMapper;
+    private UserPreferenceMapper userPerferenceMapper;
     @Autowired
     private SubmissionService submissionService;
     @Autowired

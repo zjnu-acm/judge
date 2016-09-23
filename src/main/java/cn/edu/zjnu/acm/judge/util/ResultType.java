@@ -30,7 +30,7 @@ public class ResultType {
     public static final int RUNTIME_ERROR = 5;
     public static final int OUTPUT_LIMIT_EXCEED = 6;
     public static final int COMPILE_ERROR = -7;
-    public static final int SYSYEM_ERROR = -98;
+    public static final int SYSTEM_ERROR = -98;
     public static final int VALIDATE_ERROR = -99;
     public static final int QUEUING = -10000;
     public static final int SCORE_ACCEPT = 100;
@@ -56,7 +56,7 @@ public class ResultType {
                 return "Compile Error";
             case QUEUING:
                 return "<font color=green>Waiting</font>";
-            case SYSYEM_ERROR:
+            case SYSTEM_ERROR:
                 return "System Error";
             case VALIDATE_ERROR:
                 return "Validate Error";

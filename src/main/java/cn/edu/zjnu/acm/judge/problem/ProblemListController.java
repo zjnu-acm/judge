@@ -3,7 +3,7 @@ package cn.edu.zjnu.acm.judge.problem;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
-import cn.edu.zjnu.acm.judge.mapper.UserPerferenceMapper;
+import cn.edu.zjnu.acm.judge.mapper.UserPreferenceMapper;
 import java.text.Collator;
 import java.util.Comparator;
 import java.util.List;
@@ -23,7 +23,7 @@ public class ProblemListController {
     @Autowired
     private ContestMapper contestMapper;
     @Autowired
-    private UserPerferenceMapper userPerferenceMapper;
+    private UserPreferenceMapper userPerferenceMapper;
     @Autowired
     private ProblemMapper problemMapper;
 

@@ -25,7 +25,7 @@ import org.apache.ibatis.annotations.Update;
  * @author zhanhb
  */
 @Mapper
-public interface UserPerferenceMapper {
+public interface UserPreferenceMapper {
 
     @Select("select volume from users where user_id=#{userId}")
     long getVolume(@Param("userId") String userId);

@@ -1,6 +1,6 @@
 package cn.edu.zjnu.acm.judge.submission;
 
-import cn.edu.zjnu.acm.judge.mapper.UserPerferenceMapper;
+import cn.edu.zjnu.acm.judge.mapper.UserPreferenceMapper;
 import cn.edu.zjnu.acm.judge.service.LanguageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class SubmitPageController {
 
     @Autowired
-    private UserPerferenceMapper userPerferenceMapper;
+    private UserPreferenceMapper userPerferenceMapper;
     @Autowired
     private LanguageService languageService;
 

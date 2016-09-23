@@ -238,7 +238,7 @@ public class Judger {
             }
         } catch (JudgeException | RuntimeException | Error ex) {
             log.error("", ex);
-            accept = ResultType.SYSYEM_ERROR;
+            accept = ResultType.SYSTEM_ERROR;
             detailMessageStr = ex.getMessage();
         }
         log.debug("{}", details);

@@ -18,7 +18,7 @@ package cn.edu.zjnu.acm.judge.config;
 import cn.edu.zjnu.acm.judge.security.password.CombinePasswordEncoder;
 import cn.edu.zjnu.acm.judge.security.password.LengthLimitedPasswordEncoder;
 import cn.edu.zjnu.acm.judge.security.password.MessageDigestPasswordEncoder;
-import cn.edu.zjnu.acm.judge.security.password.MutiPasswordSupport;
+import cn.edu.zjnu.acm.judge.security.password.MultiPasswordSupport;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -37,7 +37,7 @@ public class PasswordConfiguration {
         return new LengthLimitedPasswordEncoder(
                 new CombinePasswordEncoder(1,
                         NoOpPasswordEncoder.getInstance(),
-                        new MutiPasswordSupport(
+                        new MultiPasswordSupport(
                                 new CombinePasswordEncoder(
                                         new BCryptPasswordEncoder(6),
                                         MessageDigestPasswordEncoder.SHA1,
