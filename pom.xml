@@ -47,8 +47,6 @@
         <delombok.directory>${project.build.directory}/delombok</delombok.directory>
         <flyway.version>4.0.3</flyway.version>
         <hikaricp.version>2.5.0</hikaricp.version>
-        <jackson.version>2.8.3</jackson.version>
-        <javax-mail.version>1.5.6</javax-mail.version>
         <java.version>1.8</java.version>
         <mariadb.version>1.5.2</mariadb.version>
         <start-class>cn.edu.zjnu.acm.judge.Application</start-class>
@@ -268,17 +266,6 @@
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </repository>
     </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <id>spring-snapshots</id>
-            <name>Spring Snapshots</name>
-            <url>https://repo.spring.io/snapshot</url>
-        </pluginRepository>
-    </pluginRepositories>
 
     <build>
         <plugins>
