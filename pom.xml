@@ -46,7 +46,7 @@
     <properties>
         <delombok.directory>${project.build.directory}/delombok</delombok.directory>
         <flyway.version>4.0.3</flyway.version>
-        <hikaricp.version>2.5.0</hikaricp.version>
+        <hikaricp.version>2.5.1</hikaricp.version>
         <java.version>1.8</java.version>
         <javassist.version>3.21.0-GA</javassist.version>
         <mariadb.version>1.5.3</mariadb.version>
