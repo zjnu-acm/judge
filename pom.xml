@@ -48,7 +48,7 @@
         <flyway.version>4.0.3</flyway.version>
         <hikaricp.version>2.5.0</hikaricp.version>
         <java.version>1.8</java.version>
-        <mariadb.version>1.5.2</mariadb.version>
+        <mariadb.version>1.5.3</mariadb.version>
         <start-class>cn.edu.zjnu.acm.judge.Application</start-class>
         <thymeleaf-extras-springsecurity4.version>3.0.0.RELEASE</thymeleaf-extras-springsecurity4.version>
         <thymeleaf-layout-dialect.version>2.0.3</thymeleaf-layout-dialect.version>
