@@ -35,7 +35,6 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
-import org.springframework.web.servlet.resource.VersionedResource;
 
 @Slf4j
 public class Downloader {
@@ -59,9 +58,6 @@ public class Downloader {
     }
 
     private static String getETag(Resource resource) throws IOException {
-        if (resource instanceof VersionedResource) {
-            return ((VersionedResource) resource).getVersion();
-        }
         long contentLength = resource.contentLength();
         long lastModified = resource.lastModified();
         return "W/\"" + contentLength + "-" + lastModified + "\"";
