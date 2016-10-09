@@ -24,7 +24,7 @@
             <meta http-equiv="Cache-Control" content="no-siteapp"/>
             <meta http-equiv="X-UA-Compatible" content="chrome=1,IE=Edge"/>
             <title><decorator:title default="Welcome to JudgeOnline"/></title>
-            <!--<link href="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>-->
+            <!--<link href="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css" rel="stylesheet"/>-->
 
             <link href="${pageContext.request.contextPath}/css/site.css?_=${applicationScope.startUpDate}" rel="stylesheet"/>
             <link href="${pageContext.request.contextPath}/sample.png" rel="shortcut icon"/>
