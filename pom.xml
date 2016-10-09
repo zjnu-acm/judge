@@ -54,6 +54,8 @@
         <mariadb.version>1.5.3</mariadb.version>
         <spring-data-releasetrain.version>Hopper-SR4</spring-data-releasetrain.version>
         <start-class>cn.edu.zjnu.acm.judge.Application</start-class>
+        <thymeleaf-extras-data-attribute.version>2.0.1</thymeleaf-extras-data-attribute.version>
+        <thymeleaf-extras-java8time.version>3.0.0.RELEASE</thymeleaf-extras-java8time.version>
         <thymeleaf-extras-springsecurity4.version>3.0.0.RELEASE</thymeleaf-extras-springsecurity4.version>
         <thymeleaf-layout-dialect.version>2.0.4</thymeleaf-layout-dialect.version>
         <thymeleaf.version>3.0.2.RELEASE</thymeleaf.version>
