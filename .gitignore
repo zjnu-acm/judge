@@ -1,4 +1,4 @@
-target/
+/target/
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
@@ -58,10 +58,9 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
-/target/
 /.idea/
 *.iml
-/.svn/
+.svn/
 /pom.xml.bak
 /nbproject
 /src/main/webapp/META-INF

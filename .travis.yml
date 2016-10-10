@@ -1,5 +1,6 @@
 language: java
 before_cache:
+- mvn build-helper:remove-project-artifact
 - find $HOME/.m2/ -type d -name '*-SNAPSHOT' -exec rm -rf {} \; 2>/dev/null
 cache:
   directories:
