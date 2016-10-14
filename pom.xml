@@ -48,6 +48,7 @@
         <delombok.directory>${project.build.directory}/delombok</delombok.directory>
         <flyway.version>4.0.3</flyway.version>
         <guava.version>19.0</guava.version>
+        <hibernate-validator.version>5.3.0.Final</hibernate-validator.version>
         <hikaricp.version>2.5.1</hikaricp.version>
         <java.version>1.8</java.version>
         <javassist.version>3.21.0-GA</javassist.version>
