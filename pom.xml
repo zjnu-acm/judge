@@ -60,7 +60,7 @@
         <thymeleaf-extras-data-attribute.version>2.0.1</thymeleaf-extras-data-attribute.version>
         <thymeleaf-extras-java8time.version>3.0.0.RELEASE</thymeleaf-extras-java8time.version>
         <thymeleaf-extras-springsecurity4.version>3.0.0.RELEASE</thymeleaf-extras-springsecurity4.version>
-        <thymeleaf-layout-dialect.version>2.0.5</thymeleaf-layout-dialect.version>
+        <thymeleaf-layout-dialect.version>2.1.1</thymeleaf-layout-dialect.version>
         <thymeleaf.version>3.0.2.RELEASE</thymeleaf.version>
         <tomcat.version>8.5.8</tomcat.version>
         <unbescape.version>1.1.4.RELEASE</unbescape.version>
