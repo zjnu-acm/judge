@@ -4,7 +4,7 @@
     <parent>
         <artifactId>platform-bom</artifactId>
         <groupId>io.spring.platform</groupId>
-        <version>Athens-RELEASE</version>
+        <version>Athens-SR1</version>
         <relativePath />
     </parent>
     <groupId>cn.edu.zjnu.acm</groupId>
@@ -44,7 +44,6 @@
     </scm>
 
     <properties>
-        <classmate.version>1.3.3</classmate.version>
         <delombok.directory>${project.build.directory}/delombok</delombok.directory>
         <flyway.version>4.0.3</flyway.version>
         <gson.version>2.8.0</gson.version>
@@ -55,7 +54,6 @@
         <java.version>1.8</java.version>
         <javassist.version>3.21.0-GA</javassist.version>
         <mariadb.version>1.5.5</mariadb.version>
-        <spring-data-releasetrain.version>Hopper-SR4</spring-data-releasetrain.version>
         <spring-security.version>4.2.0.RELEASE</spring-security.version>
         <start-class>cn.edu.zjnu.acm.judge.Application</start-class>
         <thymeleaf-extras-data-attribute.version>2.0.1</thymeleaf-extras-data-attribute.version>
