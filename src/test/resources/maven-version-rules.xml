@@ -48,11 +48,6 @@
                 <ignoreVersion>01.08.2014</ignoreVersion>
             </ignoreVersions>
         </rule>
-        <rule groupId="org.webjars" artifactId="jquery">
-            <ignoreVersions>
-                <ignoreVersion type="regex">2\..*</ignoreVersion>
-            </ignoreVersions>
-        </rule>
         <rule groupId="xml-apis" artifactId="xml-apis">
             <ignoreVersions>
                 <ignoreVersion>2.0.0</ignoreVersion>
