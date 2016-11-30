@@ -49,7 +49,7 @@ public class LanguageMapperTest {
     @Transactional
     public void test() {
         log.debug("delete");
-        Collection<Language> languages = languageService.getLanguages().values();
+        Collection<Language> languages = languageService.getAvailableLanguages().values();
         languages.forEach(instance::delete);
         log.debug("save");
         languages.forEach(instance::save);

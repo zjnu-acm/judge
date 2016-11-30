@@ -44,7 +44,7 @@ public class ShowSourceController {
         if (!submissionService.canView(request, submission)) {
             throw new MessageException("You have no permission to view the source.", HttpStatus.FORBIDDEN);
         }
-        String language = languageService.getLanguage(submission.getLanguage()).getName();
+        String language = languageService.getAvailableLanguage(submission.getLanguage()).getName();
 
         if (style == null) {
             style = userPerferenceMapper.getStyle(userId);

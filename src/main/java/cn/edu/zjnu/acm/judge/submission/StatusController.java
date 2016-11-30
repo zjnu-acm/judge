@@ -114,7 +114,7 @@ public class StatusController {
                 + " Language:"
                 + "<select size=\"1\" name=\"language\">"
                 + "<option value=\"\">All</option>");
-        for (Map.Entry<Integer, Language> entry : languageService.getLanguages().entrySet()) {
+        for (Map.Entry<Integer, Language> entry : languageService.getAvailableLanguages().entrySet()) {
             int key = entry.getKey();
             Language value = entry.getValue();
             sb.append("<option value=\"").append(key).append("\"").append(key == language ? " selected" : "").append(">").append(StringUtils.escapeXml(value.getName())).append("</option>");

@@ -43,14 +43,19 @@ public class LanguageService {
     @Autowired
     private LanguageMapper languageMapper;
 
-    public Map<Integer, Language> getLanguages() {
+    public Map<Integer, Language> getAvailableLanguages() {
         return languageMapper.findAll().stream()
                 .collect(Collectors.toMap(Language::getId, Function.identity(), throwOnMerge(), LinkedHashMap::new));
     }
 
-    public Language getLanguage(int languageId) {
+    public Language getAvailableLanguage(int languageId) {
         return Optional.ofNullable(languageMapper.findOne(languageId))
                 .orElseThrow(() -> new NoSuchLanguageException("no such language " + languageId));
+    }
+
+    public Language getLanguage(int languageId) {
+        return Optional.ofNullable(languageMapper.findOne(languageId))
+                .orElseGet(() -> Language.builder().name("unknown language " + languageId).build());
     }
 
 }

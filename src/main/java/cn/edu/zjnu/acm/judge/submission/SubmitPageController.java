@@ -26,7 +26,7 @@ public class SubmitPageController {
             Authentication authentication) {
         model.addAttribute("contestId", contestId);
         model.addAttribute("problemId", problemId);
-        model.addAttribute("languages", languageService.getLanguages().values());
+        model.addAttribute("languages", languageService.getAvailableLanguages().values());
         String user = authentication != null ? authentication.getName() : null;
         int languageId = userPerferenceMapper.getLanguage(user);
         model.addAttribute("languageId", languageId);

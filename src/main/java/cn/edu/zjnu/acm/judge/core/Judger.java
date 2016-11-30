@@ -130,7 +130,7 @@ public class Judger {
         Path dataPath = judgeConfiguration.getDataDirectory(problem.getId());
         RunRecord runRecord = RunRecord.builder()
                 .submissionId(submission.getId())
-                .language(languageService.getLanguage(submission.getLanguage()))
+                .language(languageService.getAvailableLanguage(submission.getLanguage()))
                 .problemId(submission.getProblem())
                 .userId(submission.getUser())
                 .source(submissionMapper.findSourceById(submissionId))

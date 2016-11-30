@@ -62,7 +62,7 @@ public class ContestStatisticsController {
                 + "<TABLE align=center cellSpacing=0 cellPadding=0 width=600 border=1 class=table-back style=\"border-collapse: collapse\" bordercolor=#FFF>"
                 + "<tr bgcolor=#6589D1><th>&nbsp;</th><th>100</th><th>99~70</th><th>69~31</th><th>30~1</th><th>0</th><th>CE</th><th>Others</th><th>Total</th>");
 
-        Map<Integer, Language> languages = languageService.getLanguages();
+        Map<Integer, Language> languages = languageService.getAvailableLanguages();
         int languageCount = languages.size();
         StringBuilder sql = new StringBuilder(600).append("select ");
         for (int i : languages.keySet()) {

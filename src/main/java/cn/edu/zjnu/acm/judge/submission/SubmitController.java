@@ -56,7 +56,7 @@ public class SubmitController {
             RedirectAttributes redirectAttributes) {
         Language language;
         try {
-            language = languageService.getLanguage(languageId);
+            language = languageService.getAvailableLanguage(languageId);
         } catch (IllegalArgumentException ex) {
             throw new MessageException("Please choose a language", HttpStatus.BAD_REQUEST);
         }
