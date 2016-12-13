@@ -45,14 +45,7 @@ public class ProcessCreationHelper {
 
     public static <E extends Throwable> void execute(ExceptionRunnable<E> supplier) throws E {
         Objects.requireNonNull(supplier);
-        synchronized (getLock()) {
-            int oldErrorMode = Kernel32.INSTANCE.SetErrorMode(SEM_NOGPFAULTERRORBOX);
-            try {
-                supplier.run();
-            } finally {
-                Kernel32.INSTANCE.SetErrorMode(oldErrorMode);
-            }
-        }
+        execute(ExceptionCallable.wrapper(supplier));
     }
 
     private ProcessCreationHelper() {
@@ -62,6 +55,15 @@ public class ProcessCreationHelper {
     public static interface ExceptionCallable<V, E extends Throwable> {
 
         V call() throws E;
+
+        static <V, E extends Throwable> ExceptionCallable<V, E>
+                wrapper(ExceptionRunnable<E> runnable) {
+            Objects.requireNonNull(runnable);
+            return () -> {
+                runnable.run();
+                return null;
+            };
+        }
 
     }
 

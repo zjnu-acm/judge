@@ -272,6 +272,7 @@ public class Judger {
         if (StringUtils.isEmptyOrWhitespace(compileCommand)) {
             return true;
         }
+        assert compileCommand != null;
         //创建编译进程
         // VC++信息会输出在标准输出
         // G++编译信息输出在标准错误输出
