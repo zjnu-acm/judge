@@ -60,6 +60,7 @@
         <slf4j.version>1.7.22</slf4j.version>
         <spring-data-releasetrain.version>Hopper-SR6</spring-data-releasetrain.version>
         <spring-security.version>4.2.1.RELEASE</spring-security.version>
+        <spring.version>4.3.5.RELEASE</spring.version>
         <start-class>cn.edu.zjnu.acm.judge.Application</start-class>
         <thymeleaf-extras-data-attribute.version>2.0.1</thymeleaf-extras-data-attribute.version>
         <thymeleaf-extras-java8time.version>3.0.0.RELEASE</thymeleaf-extras-java8time.version>
