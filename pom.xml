@@ -4,7 +4,7 @@
     <parent>
         <artifactId>platform-bom</artifactId>
         <groupId>io.spring.platform</groupId>
-        <version>Athens-SR1</version>
+        <version>Athens-SR2</version>
         <relativePath />
     </parent>
     <groupId>cn.edu.zjnu.acm</groupId>
@@ -51,20 +51,15 @@
         <guava.version>20.0</guava.version>
         <hibernate-validator.version>5.3.4.Final</hibernate-validator.version>
         <hikaricp.version>2.5.1</hikaricp.version>
-        <jackson.version>2.8.5</jackson.version>
         <java.version>1.8</java.version>
         <javassist.version>3.21.0-GA</javassist.version>
-        <logback.version>1.1.8</logback.version>
-        <lombok.version>1.16.12</lombok.version>
         <mariadb.version>1.5.6</mariadb.version>
-        <slf4j.version>1.7.22</slf4j.version>
-        <spring-data-releasetrain.version>Hopper-SR6</spring-data-releasetrain.version>
+        <spring-hateoas.version>0.23.0.RELEASE</spring-hateoas.version>
         <spring-security.version>4.2.1.RELEASE</spring-security.version>
-        <spring.version>4.3.5.RELEASE</spring.version>
         <start-class>cn.edu.zjnu.acm.judge.Application</start-class>
         <thymeleaf-extras-data-attribute.version>2.0.1</thymeleaf-extras-data-attribute.version>
         <thymeleaf-extras-java8time.version>3.0.0.RELEASE</thymeleaf-extras-java8time.version>
-        <thymeleaf-extras-springsecurity4.version>3.0.0.RELEASE</thymeleaf-extras-springsecurity4.version>
+        <thymeleaf-extras-springsecurity4.version>3.0.1.RELEASE</thymeleaf-extras-springsecurity4.version>
         <thymeleaf-layout-dialect.version>2.1.2</thymeleaf-layout-dialect.version>
         <thymeleaf.version>3.0.3.RELEASE</thymeleaf.version>
         <tomcat.version>8.5.9</tomcat.version>
@@ -81,7 +76,7 @@
             <dependency>
                 <groupId>com.sun.mail</groupId>
                 <artifactId>javax.mail</artifactId>
-                <version>${javax-mail.version}</version>
+                <version>${sun-mail.version}</version>
                 <exclusions>
                     <exclusion>
                         <artifactId>activation</artifactId>
