@@ -391,20 +391,25 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
             </plugin>
-			<plugin>
-				<groupId>org.basepom.maven</groupId>
-				<artifactId>duplicate-finder-maven-plugin</artifactId>
+            <plugin>
+                <groupId>org.basepom.maven</groupId>
+                <artifactId>duplicate-finder-maven-plugin</artifactId>
                 <version>1.2.1</version>
-				<executions>
-					<execution>
-						<id>duplicate-dependencies</id>
-						<phase>validate</phase>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+                <executions>
+                    <execution>
+                        <id>duplicate-dependencies</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <ignoredResourcePatterns>
+                                <ignoredResourcePattern>.*changelog\.txt$</ignoredResourcePattern>
+                            </ignoredResourcePatterns>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
