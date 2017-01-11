@@ -211,6 +211,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
+            <version>1.4.2.RELEASE</version>
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
