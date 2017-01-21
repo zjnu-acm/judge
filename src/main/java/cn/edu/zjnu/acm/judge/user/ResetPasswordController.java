@@ -102,7 +102,7 @@ public class ResetPasswordController {
         try {
             String basePath = getBasePath(request);
             String vc = user.getVcode();
-            if (vc == null || user.getExpireTime() != null && user.getExpireTime().compareTo(Instant.now()) > 0) {
+            if (vc == null || user.getExpireTime() != null && user.getExpireTime().compareTo(Instant.now()) < 0) {
                 vc = Utility.getRandomString(16);
                 user = user.toBuilder().vcode(vc).expireTime(Instant.now().plus(1, ChronoUnit.HOURS)).build();
                 userMapper.update(user);
