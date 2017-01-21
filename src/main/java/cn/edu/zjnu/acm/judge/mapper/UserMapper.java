@@ -33,7 +33,7 @@ public interface UserMapper {
 
     String LIST_COLUMNS = " user_id id,solved,submit,nick ";
 
-    @Select("select user_id id,nick,email,vcode,password,school,ip,solved,submit,accesstime from users where user_id=#{id}")
+    @Select("select user_id id,nick,email,vcode,expire_time expireTime,password,school,ip,solved,submit,accesstime from users where user_id=#{id}")
     User findOne(@Param("id") String id);
 
     @Insert("insert into users(USER_ID,PASSWORD,EMAIL,REG_TIME,NICK,SCHOOL,ip) values"
@@ -41,7 +41,7 @@ public interface UserMapper {
     long save(User user);
 
     @Update("UPDATE users SET password=#{password},email=#{email},nick=#{nick},"
-            + "school=#{school},ip=#{ip},accesstime=#{accesstime},vcode=#{vcode} "
+            + "school=#{school},ip=#{ip},accesstime=#{accesstime},vcode=#{vcode},expire_time=#{expireTime} "
             + "WHERE user_id=#{id}")
     long update(User user);
 

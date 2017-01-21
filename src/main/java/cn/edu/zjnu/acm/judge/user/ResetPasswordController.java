@@ -22,6 +22,8 @@ import cn.edu.zjnu.acm.judge.util.Utility;
 import cn.edu.zjnu.acm.judge.util.ValueCheck;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Locale;
 import javax.mail.MessagingException;
@@ -100,9 +102,12 @@ public class ResetPasswordController {
         try {
             String basePath = getBasePath(request);
             String vc = user.getVcode();
-            if (vc == null) {
+            if (vc == null || user.getExpireTime() != null && user.getExpireTime().compareTo(Instant.now()) > 0) {
                 vc = Utility.getRandomString(16);
-                user = user.toBuilder().vcode(vc).build();
+                user = user.toBuilder().vcode(vc).expireTime(Instant.now().plus(1, ChronoUnit.HOURS)).build();
+                userMapper.update(user);
+            } else {
+                user = user.toBuilder().expireTime(Instant.now().plus(1, ChronoUnit.HOURS)).build();
                 userMapper.update(user);
             }
             String url = basePath + request.getServletPath() + "?vc=" + vc + "&u=" + user.getId();
@@ -145,11 +150,13 @@ public class ResetPasswordController {
         userMapper.update(user.toBuilder()
                 .password(passwordEncoder.encode(newPassword))
                 .vcode(null)
+                .expireTime(null)
                 .build());
         out.print("alert(\"密码修改成功！\");");
         out.print("document.location='" + request.getContextPath() + "'");
     }
 
+    @SuppressWarnings("NestedAssignment")
     private boolean checkVcode(HttpServletRequest request) {
         String uid = request.getParameter("u");
         String vcode = request.getParameter("vc");
@@ -157,8 +164,12 @@ public class ResetPasswordController {
         if (uid != null) {
             user = userMapper.findOne(uid);
         }
-        return user != null && user.getVcode() != null
-                && user.getVcode().equals(vcode);
+        String code;
+        Instant expire;
+        return user != null && (code = user.getVcode()) != null
+                && code.equals(vcode)
+                && ((expire = user.getExpireTime()) == null ||
+                expire.toEpochMilli() > System.currentTimeMillis());
     }
 
     private String getBasePath(HttpServletRequest request) {

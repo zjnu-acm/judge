@@ -34,6 +34,7 @@ public class User implements Serializable {
     private long solved;
     private Instant accesstime;
     private String ip;
+    private Instant expireTime;
 
     @JsonIgnore
     @XmlTransient
