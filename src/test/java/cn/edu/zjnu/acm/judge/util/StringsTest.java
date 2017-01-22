@@ -16,6 +16,7 @@
 package cn.edu.zjnu.acm.judge.util;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
@@ -32,7 +33,7 @@ import static org.junit.Assert.assertNull;
 @Slf4j
 public class StringsTest {
 
-    private final Random random = new Random();
+    private final Random random = ThreadLocalRandom.current();
     // use null class loader, ensure access of system script engine manager.
     // usually our classloader will extends system class loader.
     // but surefire won't do like this when not forking

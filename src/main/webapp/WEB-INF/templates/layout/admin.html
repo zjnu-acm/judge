@@ -34,7 +34,7 @@
             <br/>
             <hr/>
             <p align="center">
-                <font size="3">All Copyright Reserved 2006-[[${T(java.time.Year).now()}]]<br/>Any problem, Please Contact <a th:href="|mailto:${application.get('admin.mail')}|">Administrator</a>
+                <font size="3">All Copyright Reserved 2006-[[${T(java.time.Year).now()}]]<br/>Any problem, Please Contact <a th:remove="${#strings.isEmpty(application['admin.mail'])?'tag':_}" th:href="|mailto:${application.get('admin.mail')}|">Administrator</a>
                 </font>
             </p>
         </div>
