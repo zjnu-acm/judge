@@ -51,7 +51,7 @@ public class RegisterController {
         }
         User user = User.builder().id(userId)
                 .password(passwordEncoder.encode(password))
-                .email(email)
+                .email(StringUtils.isEmpty(email) ? null : email)
                 .nick(nick)
                 .school(school)
                 .ip(request.getRemoteAddr())
