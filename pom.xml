@@ -38,6 +38,10 @@
         </developer>
     </developers>
 
+    <prerequisites>
+        <maven>3.3.1</maven>
+    </prerequisites>
+
     <scm>
         <connection>scm:git:https://github.com/zjnu-acm/judge</connection>
         <url>https://github.com/zjnu-acm/judge</url>
