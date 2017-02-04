@@ -49,7 +49,8 @@
             <goal>spring-boot:run</goal>
         </goals>
         <properties>
-            <run.jvmArguments>-Dfile.encoding=UTF-8 -Dserver.tomcat.basedir=target -Dserver.port=8082</run.jvmArguments>
+            <run.jvmArguments>-Dfile.encoding=UTF-8 -Dserver.tomcat.basedir=target -Dserver.port=8082 -noverify -XX:TieredStopAtLevel=1</run.jvmArguments>
+            <Env.SPRING_OUTPUT_ANSI_ENABLED>always</Env.SPRING_OUTPUT_ANSI_ENABLED>
         </properties>
     </action>
     <action>
@@ -62,7 +63,8 @@
             <goal>spring-boot:run</goal>
         </goals>
         <properties>
-            <run.jvmArguments>-Dfile.encoding=UTF-8 -Dserver.tomcat.basedir=target -Dserver.port=8082 -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address}</run.jvmArguments>
+            <run.jvmArguments>-Dfile.encoding=UTF-8 -Dserver.tomcat.basedir=target -Dserver.port=8082 -noverify -XX:TieredStopAtLevel=1 -Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address}</run.jvmArguments>
+            <Env.SPRING_OUTPUT_ANSI_ENABLED>always</Env.SPRING_OUTPUT_ANSI_ENABLED>
             <jpda.listen>true</jpda.listen>
         </properties>
     </action>
@@ -216,9 +218,10 @@
             <goal>exec:exec</goal>
         </goals>
         <properties>
-            <exec.args>-Dfile.encoding=UTF-8 -Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address} -classpath %classpath ${packageClassName}</exec.args>
+            <exec.args>-Dfile.encoding=UTF-8 -noverify -XX:TieredStopAtLevel=1 -Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address} -classpath %classpath ${packageClassName}</exec.args>
             <exec.executable>java</exec.executable>
             <exec.classpathScope>${classPathScope}</exec.classpathScope>
+            <Env.SPRING_OUTPUT_ANSI_ENABLED>always</Env.SPRING_OUTPUT_ANSI_ENABLED>
             <jpda.listen>true</jpda.listen>
         </properties>
     </action>

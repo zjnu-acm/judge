@@ -471,7 +471,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <excludeArtifactIds>jsr305,lombok,spring-boot-devtools</excludeArtifactIds>
+                    <excludeArtifactIds>jsr305,lombok</excludeArtifactIds>
                 </configuration>
             </plugin>
             <plugin>
