@@ -36,7 +36,6 @@
         </packagings>
         <goals>
             <goal>clean</goal>
-            <goal>test-compile</goal>
         </goals>
     </action>
     <action>
