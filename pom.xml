@@ -50,7 +50,7 @@
     <properties>
         <aspectj.version>1.8.10</aspectj.version>
         <delombok.directory>${project.build.directory}/delombok</delombok.directory>
-        <flyway.version>4.1.0</flyway.version>
+        <flyway.version>4.1.1</flyway.version>
         <guava.version>21.0</guava.version>
         <hibernate-validator.version>5.4.0.Final</hibernate-validator.version>
         <hikaricp.version>2.6.0</hikaricp.version>
