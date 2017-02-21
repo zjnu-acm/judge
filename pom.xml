@@ -57,6 +57,7 @@
         <java.version>1.8</java.version>
         <logback.version>1.2.1</logback.version>
         <mariadb.version>1.5.8</mariadb.version>
+        <slf4j.version>1.7.23</slf4j.version>
         <start-class>cn.edu.zjnu.acm.judge.Application</start-class>
         <thymeleaf-extras-data-attribute.version>2.0.1</thymeleaf-extras-data-attribute.version>
         <thymeleaf-extras-java8time.version>3.0.0.RELEASE</thymeleaf-extras-java8time.version>
