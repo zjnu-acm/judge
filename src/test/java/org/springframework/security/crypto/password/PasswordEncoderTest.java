@@ -64,6 +64,8 @@ public class PasswordEncoderTest {
         assertFalse(passwordEncoder.matches(p, p));
         p = p.substring(0, 20);
         assertTrue(passwordEncoder.matches(p, p));
+        encodedPassword = String.format("%s,%s", rawPassword, rawPassword);
+        assertFalse(passwordEncoder.matches(rawPassword, encodedPassword));
     }
 
     /**
