@@ -108,11 +108,11 @@ public class StatusController {
 
         StringBuilder sb = new StringBuilder("<html><head><title>Problem Status List</title></head><body>"
                 + "<p align=center><font size=4 color=#333399>Problem Status List</font></p>"
-                + "<form method=get action='status'/>Problem ID:<input type=text name=problem_id size=8 value=\"")
-                .append(StringUtils.escapeXml(pid)).append("\"/> User ID:<input type=text name=user_id size=15 value=\"")
+                + "<form method=get action='status'/><label for='pid'>Problem ID:</label><input id='pid' type=text name=problem_id size=8 value=\"")
+                .append(StringUtils.escapeXml(pid)).append("\"/> <label for='uid'>User ID:</label><input id='uid' type=text name=user_id size=15 value=\"")
                 .append(StringUtils.escapeXml(userId)).append("\"/>"
-                + " Language:"
-                + "<select size=\"1\" name=\"language\">"
+                + " <label for='languag'>Language:</label>"
+                + "<select id='languag' size=\"1\" name=\"language\">"
                 + "<option value=\"\">All</option>");
         for (Map.Entry<Integer, Language> entry : languageService.getAvailableLanguages().entrySet()) {
             int key = entry.getKey();
