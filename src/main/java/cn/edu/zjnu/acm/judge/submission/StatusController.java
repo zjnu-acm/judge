@@ -139,7 +139,7 @@ public class StatusController {
             long num = submission.getNum();
             int score = submission.getScore();
             Instant inDate = submission.getInDate();
-            String language1 = languageService.getLanguage(submission.getLanguage()).getName();
+            String language1 = languageService.getLanguageName(submission.getLanguage());
             String color;
             if (score == 100) {
                 color = "blue";

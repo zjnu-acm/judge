@@ -53,9 +53,9 @@ public class LanguageService {
                 .orElseThrow(() -> new NoSuchLanguageException("no such language " + languageId));
     }
 
-    public Language getLanguage(int languageId) {
+    public String getLanguageName(int languageId) {
         return Optional.ofNullable(languageMapper.findOne(languageId))
-                .orElseGet(() -> Language.builder().name("unknown language " + languageId).build());
+                .map(Language::getName).orElse("unknown language " + languageId);
     }
 
 }
