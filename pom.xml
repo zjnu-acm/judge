@@ -72,7 +72,6 @@
         <thymeleaf-extras-springsecurity4.version>3.0.2.RELEASE</thymeleaf-extras-springsecurity4.version>
         <thymeleaf-layout-dialect.version>2.1.2</thymeleaf-layout-dialect.version>
         <thymeleaf.version>3.0.3.RELEASE</thymeleaf.version>
-        <unbescape.version>1.1.4.RELEASE</unbescape.version>
     </properties>
 
     <dependencyManagement>
@@ -118,11 +117,6 @@
                         <groupId>ognl</groupId>
                     </exclusion>
                 </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.unbescape</groupId>
-                <artifactId>unbescape</artifactId>
-                <version>${unbescape.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.webjars</groupId>
