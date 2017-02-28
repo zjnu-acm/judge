@@ -9,4 +9,4 @@ jdk: oraclejdk8
 sudo: required
 install: sudo -s source .travis/install-mariadb.sh
 before_script: mysql -uroot < .travis/create-db.sql
-script: mvn -Dspring.datasource.password= verify
+script: chmod +x mvnw && ./mvnw -Dspring.datasource.password= verify
