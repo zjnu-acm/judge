@@ -52,7 +52,7 @@
         <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
         <delombok.directory>${project.build.directory}/delombok</delombok.directory>
         <flyway.version>4.1.1</flyway.version>
-        <groovy.version>2.4.8</groovy.version>
+        <groovy.version>2.4.9</groovy.version>
         <guava.version>21.0</guava.version>
         <hibernate-validator.version>5.4.0.Final</hibernate-validator.version>
         <hikaricp.version>2.6.0</hikaricp.version>
