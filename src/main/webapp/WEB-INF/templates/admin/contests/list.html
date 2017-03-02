@@ -10,7 +10,12 @@
         <!--/*/<th:block layout:fragment="content">/*/-->
         <div class="table-responsive">
             <table class="table table-striped table-hover">
-                <tr><th>ID</th><th>Title</th><th>Status</th><th>Defunct</th></tr>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>Defunct</th>
+                </tr>
                 <tr th:each="item:${list}" th:object="${item}">
                     <td width="15%" th:text="*{id}">1068</td>
                     <td>

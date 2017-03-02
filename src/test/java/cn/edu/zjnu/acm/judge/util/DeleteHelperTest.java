@@ -33,10 +33,10 @@ public class DeleteHelperTest {
 
     /**
      * Test of delete method, of class DeleteHelper.
-     * @throws java.lang.Exception
+     * @throws java.io.IOException
      */
     @Test
-    public void testDelete() throws Exception {
+    public void testDelete() throws IOException {
         log.info("delete");
         Path path = Paths.get("target/test1.txt");
         Files.createFile(path);
@@ -46,10 +46,10 @@ public class DeleteHelperTest {
 
     /**
      * Test of delete method, of class DeleteHelper.
-     * @throws java.lang.Exception
+     * @throws java.io.IOException
      */
     @Test
-    public void testDeleteDirectory() throws Exception {
+    public void testDeleteDirectory() throws IOException {
         log.info("delete");
         Path d = Paths.get("target/test1.txt");
         Path path = d.resolve("target/test1.txt");

@@ -20,9 +20,9 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -37,22 +37,19 @@ public class ExtensionsViewer {
     @SuppressWarnings("UseOfSystemOutOrSystemErr")
     public static void main(String[] args) throws IOException {
         Path path = Paths.get(".");
-        Set<String> set = new HashSet<>(20);
-
-        Files.list(path).filter(p -> Files.isDirectory(p)
-                && !p.getFileName().toString().matches("target|\\.(?:git|idea|svn)")).forEach(p -> {
+        Set<String> set = Files.list(path).filter(Files::isDirectory).filter(p
+                -> !p.getFileName().toString().matches("target|\\.(?:git|idea|svn)")).flatMap(p -> {
             try {
-                Files.walk(p)
-                        .map(pp -> pp.getFileName())
+                return Files.walk(p)
+                        .map(Path::getFileName)
                         .map(Object::toString)
-                        .map(str -> str.contains(".") ? str.substring(str.lastIndexOf('.') + 1, str.length()) : "")
+                        .map(str -> str.contains(".") ? str.substring(str.lastIndexOf('.') + 1) : "")
                         .filter(Objects::nonNull)
-                        .filter(string -> !string.isEmpty())
-                        .forEach(set::add);
+                        .filter(string -> !string.isEmpty());
             } catch (IOException ex) {
                 throw new UncheckedIOException(ex);
             }
-        });
+        }).collect(Collectors.toSet());
         System.out.println(set);
     }
 

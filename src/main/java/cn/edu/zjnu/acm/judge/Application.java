@@ -34,8 +34,9 @@ public class Application extends SpringBootServletInitializer {
     public static void main(String[] args) {
         ApplicationContext context = SpringApplication.run(Application.class, args);
         if (log.isInfoEnabled() && context instanceof EmbeddedWebApplicationContext) {
-            int port = ((EmbeddedWebApplicationContext) context).getEmbeddedServletContainer().getPort();
-            String contextPath = context.getApplicationName();
+            EmbeddedWebApplicationContext ctx = (EmbeddedWebApplicationContext) context;
+            int port = ctx.getEmbeddedServletContainer().getPort();
+            String contextPath = ctx.getServletContext().getContextPath();
             String url = String.format(Locale.US, "http://localhost:%d%s", port, contextPath);
             final String dashes = "------------------------------------------------------------------------";
             log.info("Access URLs:\n" + dashes + "\n\tLocal:\t\t{}\n" + dashes, url);

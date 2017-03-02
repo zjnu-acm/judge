@@ -50,8 +50,7 @@ public class BestSubmissionsBuilder {
         final int length = orders.length;
         log.debug("{}", Arrays.asList(orders));
 
-        StringBuilder sb = new StringBuilder("select ");
-        sb.append(SubmissionMapper.LIST_COLUMNS + " from solution s where problem_id=").append(problemId).append(" and score=100 ");
+        StringBuilder sb = new StringBuilder("select " + SubmissionMapper.LIST_COLUMNS + " from solution s where problem_id=").append(problemId).append(" and score=100 ");
         for (int i = length - 1; i >= 0; --i) {
             sb.append("and(user_id");
             for (int j = 0; j <= i; ++j) {
