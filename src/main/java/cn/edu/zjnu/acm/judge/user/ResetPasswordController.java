@@ -168,8 +168,8 @@ public class ResetPasswordController {
         Instant expire;
         return user != null && (code = user.getVcode()) != null
                 && code.equals(vcode)
-                && ((expire = user.getExpireTime()) == null ||
-                expire.toEpochMilli() > System.currentTimeMillis());
+                && ((expire = user.getExpireTime()) == null
+                || expire.toEpochMilli() > System.currentTimeMillis());
     }
 
     private String getBasePath(HttpServletRequest request) {

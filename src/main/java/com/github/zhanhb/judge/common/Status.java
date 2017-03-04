@@ -28,8 +28,8 @@ public enum Status {
         this.finalResult = ordinal() < 1000;
         this.toString = Optional.ofNullable(toString).orElseGet(()
                 -> name().substring(0, 1).toUpperCase().concat(
-                name().substring(1).replaceAll("[A-Z]", " $0").trim() //NOI18N
-        ));
+                        name().substring(1).replaceAll("[A-Z]", " $0").trim() //NOI18N
+                ));
     }
 
     @Override

@@ -56,10 +56,10 @@ public class UserDetailService {
     @Nonnull
     public static Optional<UserModel> getCurrentUser(@Nonnull HttpServletRequest request) {
         return Optional.ofNullable(request.getUserPrincipal())
-                .filter(x->x instanceof Authentication)
+                .filter(x -> x instanceof Authentication)
                 .map(Authentication.class::cast)
                 .map(Authentication::getPrincipal)
-                .filter(x->x instanceof UserModel)
+                .filter(x -> x instanceof UserModel)
                 .map(UserModel.class::cast);
     }
 

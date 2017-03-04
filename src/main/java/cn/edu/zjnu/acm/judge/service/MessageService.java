@@ -43,7 +43,7 @@ public class MessageService {
         final long nextId = messageMapper.nextId();
         final Message parent = parentId != null
                 ? Optional.ofNullable(messageMapper.findOne(parentId))
-                .orElseThrow(() -> new MessageException("No such parent message", HttpStatus.NOT_FOUND))
+                        .orElseThrow(() -> new MessageException("No such parent message", HttpStatus.NOT_FOUND))
                 : null;
         if (parent != null) {
             orderNum = parent.getOrder();

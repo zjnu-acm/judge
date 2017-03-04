@@ -15,7 +15,6 @@
  */
 package cn.edu.zjnu.acm.judge;
 
-import java.util.Locale;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
@@ -37,15 +36,14 @@ public class Application extends SpringBootServletInitializer {
             EmbeddedWebApplicationContext ctx = (EmbeddedWebApplicationContext) context;
             int port = ctx.getEmbeddedServletContainer().getPort();
             String contextPath = ctx.getServletContext().getContextPath();
-            String url = String.format(Locale.US, "http://localhost:%d%s", port, contextPath);
             final String dashes = "------------------------------------------------------------------------";
-            log.info("Access URLs:\n" + dashes + "\n\tLocal:\t\t{}\n" + dashes, url);
+            log.info("Access URLs:\n" + dashes + "\n\tLocal:\t\thttp://localhost:{}{}\n" + dashes, port, contextPath);
         }
     }
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        return builder.sources(Application.class).bannerMode(Banner.Mode.OFF);
+        return builder.bannerMode(Banner.Mode.OFF);
     }
 
 }

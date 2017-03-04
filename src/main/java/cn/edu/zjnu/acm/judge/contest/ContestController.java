@@ -74,11 +74,11 @@ public class ContestController {
         Map<String, UserStanding> hashMap = new HashMap<>(80);
         contestMapper.standing(contestId).forEach(standing
                 -> hashMap.computeIfAbsent(standing.getUser(), UserStanding::new)
-                .add(standing.getProblem(), standing.getTime(), standing.getPenalty())
+                        .add(standing.getProblem(), standing.getTime(), standing.getPenalty())
         );
         contestMapper.attenders(contestId).forEach(attender
                 -> Optional.ofNullable(hashMap.get(attender.getId()))
-                .ifPresent(us -> us.setNick(attender.getNick()))
+                        .ifPresent(us -> us.setNick(attender.getNick()))
         );
         UserStanding[] standings = hashMap.values().stream().sorted(UserStanding.COMPARATOR).toArray(UserStanding[]::new);
         setIndexes(standings, Comparator.nullsFirst(UserStanding.COMPARATOR), UserStanding::setIndex);
