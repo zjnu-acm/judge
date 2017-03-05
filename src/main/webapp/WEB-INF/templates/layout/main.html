@@ -62,13 +62,13 @@
                 <p>
                     <img alt="home" height="29" src="../../../images/home.jpg" th:src="@{/images/home.jpg}" width="40" border="0"/>
                     <font size="3">
-                        <a href="../index.html" th:href="@{/}">Home Page</a>
+                        <a href="../index.html" th:href="@{/}" th:text="#{onlinejudge.homepage}">Home Page</a>
                     </font>
                     <img alt="goback" height="29" src="../../../images/goback.jpg" th:src="@{/images/goback.jpg}" width="40" border="0" style="margin-left: 40px;"/>
                     <font size="3">
-                        <a href="javascript:history.go(-1)">Go Back</a>
+                        <a href="javascript:history.go(-1)" th:text="#{onlinejudge.goback}">Go Back</a>
                         <img alt="top" height="29" width="40" border="0" src="../../../images/top.jpg" th:src="@{/images/top.jpg}" style="margin-left: 40px;"/>
-                        <a href="#top">To top</a>
+                        <a href="#top" th:text="#{onlinejudge.totop}">To top</a>
                     </font>
                 </p>
                 <hr/>

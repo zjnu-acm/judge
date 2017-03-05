@@ -10,7 +10,7 @@
         <!--/*/<th:block layout:fragment="content">/*/-->
         <p>
             <img border="0" th:src="@{/images/j0293240.png}" width="50" height="36"/>
-            <font size="4">Error Occurred</font>
+            <font size="4" th:text="#{onlinejudge.erroroccured}">Error Occurred</font>
         </p>
         <ul>
             <li th:text="${message}">message</li>

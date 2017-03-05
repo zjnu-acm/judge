@@ -19,7 +19,7 @@
         <form method="GET" th:action="@{/searchproblem}">
             <label th:for="${#ids.next('sstr')}" style="color: blue;font-size: x-large;">请输入题目的标题或Source进行搜索:</label>
             <input th:id="${#ids.seq('sstr')}" type="text" name="sstr" size="25"/>
-            <button type="submit">GO</button>
+            <button type="submit" th:text="#{onlinejudge.problem.searchproblem.button}">GO</button>
         </form>
         <table cellspacing="0" cellpadding="0" width="100%" border="1" class="table-back problem-list" style="border-collapse: collapse" bordercolor="#FFF" th:classappend="${#request.isUserInRole('USER')}?'':'notlogined'">
             <tr class="inc">
