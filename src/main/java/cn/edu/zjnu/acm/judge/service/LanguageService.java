@@ -18,6 +18,7 @@ package cn.edu.zjnu.acm.judge.service;
 import cn.edu.zjnu.acm.judge.domain.Language;
 import cn.edu.zjnu.acm.judge.exception.NoSuchLanguageException;
 import cn.edu.zjnu.acm.judge.mapper.LanguageMapper;
+import cn.edu.zjnu.acm.judge.util.SpecialCall;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -53,6 +54,7 @@ public class LanguageService {
                 .orElseThrow(() -> new NoSuchLanguageException("no such language " + languageId));
     }
 
+    @SpecialCall
     public String getLanguageName(int languageId) {
         return Optional.ofNullable(languageMapper.findOne(languageId))
                 .map(Language::getName).orElse("unknown language " + languageId);

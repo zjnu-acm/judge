@@ -15,6 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.config;
 
+import cn.edu.zjnu.acm.judge.util.SpecialCall;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Locale;
@@ -83,6 +84,7 @@ public class JudgeConfiguration {
                 : contextPath.replace("/", "");
     }
 
+    @SpecialCall
     public String getSystemInfo() {
         return systemInfo;
     }
