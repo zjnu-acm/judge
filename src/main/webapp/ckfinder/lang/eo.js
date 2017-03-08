@@ -29,7 +29,7 @@ CKFinder.lang['eo'] =
 	{
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, nedisponebla</span>',
-		confirmCancel	: 'Iuj opcioj estas modifitaj. Ĉu vi certas, ke vi volas fermi tiun fenestron?',
+		confirmCancel	: 'Iuj opcioj estas modifitaj. \u0108u vi certas, ke vi volas fermi tiun fenestron?',
 		ok				: 'Bone',
 		cancel			: 'Rezigni',
 		confirmationTitle	: 'Konfirmo',
@@ -38,7 +38,7 @@ CKFinder.lang['eo'] =
 		undo			: 'Malfari',
 		redo			: 'Refari',
 		skip			: 'Transsalti',
-		skipAll			: 'Transsalti ĉion',
+		skipAll			: 'Transsalti \u0109ion',
 		makeDecision	: 'Kiun agon elekti?',
 		rememberDecision: 'Memori la decidon'
 	},
@@ -69,21 +69,21 @@ CKFinder.lang['eo'] =
 
 	// Folders
 	FoldersTitle	: 'Dosierujoj',
-	FolderLoading	: 'Estas ŝargata...',
+	FolderLoading	: 'Estas \u015Dargata...',
 	FolderNew		: 'Bonvolu entajpi la nomon de la nova dosierujo: ',
 	FolderRename	: 'Bonvolu entajpi la novan nomon de la dosierujo: ',
-	FolderDelete	: 'Ĉu vi certas, ke vi volas forigi la "%1"dosierujon?',
+	FolderDelete	: '\u0108u vi certas, ke vi volas forigi la "%1"dosierujon?',
 	FolderRenaming	: ' (Estas renomata...)',
 	FolderDeleting	: ' (Estas forigata...)',
 	DestinationFolder	: 'Destination Folder', // MISSING
 
 	// Files
 	FileRename		: 'Entajpu la novan nomon de la dosiero: ',
-	FileRenameExt	: 'Ĉu vi certas, ke vi volas ŝanĝi la dosiernoman finaĵon? La dosiero povus fariĝi neuzebla.',
+	FileRenameExt	: '\u0108u vi certas, ke vi volas \u015Dan\u011Di la dosiernoman fina\u0135on? La dosiero povus fari\u011Di neuzebla.',
 	FileRenaming	: 'Estas renomata...',
-	FileDelete		: 'Ĉu vi certas, ke vi volas forigi la dosieron "%1"?',
+	FileDelete		: '\u0108u vi certas, ke vi volas forigi la dosieron "%1"?',
 	FilesDelete	: 'Are you sure you want to delete %1 files?', // MISSING
-	FilesLoading	: 'Estas ŝargata...',
+	FilesLoading	: 'Estas \u015Dargata...',
 	FilesEmpty		: 'La dosierujo estas malplena',
 	DestinationFile	: 'Destination File', // MISSING
 	SkippedFiles	: 'List of skipped files:', // MISSING
@@ -93,8 +93,8 @@ CKFinder.lang['eo'] =
 	BasketClear			: 'Malplenigi la rubujon',
 	BasketRemove		: 'Repreni el la rubujo',
 	BasketOpenFolder	: 'Malfermi la patran dosierujon',
-	BasketTruncateConfirm : 'Ĉu vi certas, ke vi volas forigi ĉiujn dosierojn el la rubujo?',
-	BasketRemoveConfirm	: 'Ĉu vi certas, ke vi volas forigi la dosieron  "%1" el la rubujo?',
+	BasketTruncateConfirm : '\u0108u vi certas, ke vi volas forigi \u0109iujn dosierojn el la rubujo?',
+	BasketRemoveConfirm	: '\u0108u vi certas, ke vi volas forigi la dosieron  "%1" el la rubujo?',
 	BasketRemoveConfirmMultiple	: 'Do you really want to remove %1 files from the basket?', // MISSING
 	BasketEmpty			: 'Neniu dosiero en la rubujo, demetu kelkajn.',
 	BasketCopyFilesHere	: 'Kopii dosierojn el la rubujo',
@@ -112,8 +112,8 @@ CKFinder.lang['eo'] =
 	CopyFailedList		: 'The following files could not be copied:<br />%s', // MISSING
 
 	// Toolbar Buttons (some used elsewhere)
-	Upload		: 'Alŝuti',
-	UploadTip	: 'Alŝuti novan dosieron',
+	Upload		: 'Al\u015Duti',
+	UploadTip	: 'Al\u015Duti novan dosieron',
 	Refresh		: 'Aktualigo',
 	Settings	: 'Agordo',
 	Help		: 'Helpilo',
@@ -123,15 +123,15 @@ CKFinder.lang['eo'] =
 	Select			: 'Selekti',
 	SelectThumbnail : 'Selekti miniaturon',
 	View			: 'Vidi',
-	Download		: 'Elŝuti',
+	Download		: 'El\u015Duti',
 
 	NewSubFolder	: 'Nova subdosierujo',
 	Rename			: 'Renomi',
 	Delete			: 'Forigi',
 	DeleteFiles		: 'Delete Files', // MISSING
 
-	CopyDragDrop	: 'Kopii tien ĉi',
-	MoveDragDrop	: 'Movi tien ĉi',
+	CopyDragDrop	: 'Kopii tien \u0109i',
+	MoveDragDrop	: 'Movi tien \u0109i',
 
 	// Dialogs
 	RenameDlgTitle		: 'Renomi',
@@ -139,8 +139,8 @@ CKFinder.lang['eo'] =
 	FileExistsDlgTitle	: 'Dosiero jam ekzistas',
 	SysErrorDlgTitle : 'Sistemeraro',
 
-	FileOverwrite	: 'Anstataŭigi',
-	FileAutorename	: 'Aŭtomata renomo',
+	FileOverwrite	: 'Anstata\u016Digi',
+	FileAutorename	: 'A\u016Dtomata renomo',
 	ManuallyRename	: 'Manually rename', // MISSING
 
 	// Generic
@@ -149,30 +149,30 @@ CKFinder.lang['eo'] =
 	CloseBtn	: 'Fermi',
 
 	// Upload Panel
-	UploadTitle			: 'Alŝuti novan dosieron',
-	UploadSelectLbl		: 'Selekti la alŝutotan dosieron',
-	UploadProgressLbl	: '(Estas alŝutata, bonvolu pacienci...)',
-	UploadBtn			: 'Alŝuti la selektitan dosieron',
+	UploadTitle			: 'Al\u015Duti novan dosieron',
+	UploadSelectLbl		: 'Selekti la al\u015Dutotan dosieron',
+	UploadProgressLbl	: '(Estas al\u015Dutata, bonvolu pacienci...)',
+	UploadBtn			: 'Al\u015Duti la selektitan dosieron',
 	UploadBtnCancel		: 'Rezigni',
 
 	UploadNoFileMsg		: 'Selekti dosieron el via komputilo.',
-	UploadNoFolder		: 'Bonvolu selekti dosierujon antaŭ la alŝuto.',
-	UploadNoPerms		: 'La dosieralŝuto ne estas permesita.',
-	UploadUnknError		: 'Eraro dum la dosieralŝuto.',
-	UploadExtIncorrect	: 'La dosiernoma finaĵo ne estas permesita en tiu  dosierujo.',
+	UploadNoFolder		: 'Bonvolu selekti dosierujon anta\u016D la al\u015Duto.',
+	UploadNoPerms		: 'La dosieral\u015Duto ne estas permesita.',
+	UploadUnknError		: 'Eraro dum la dosieral\u015Duto.',
+	UploadExtIncorrect	: 'La dosiernoma fina\u0135o ne estas permesita en tiu  dosierujo.',
 
 	// Flash Uploads
-	UploadLabel			: 'Alŝutotaj dosieroj',
+	UploadLabel			: 'Al\u015Dutotaj dosieroj',
 	UploadTotalFiles	: 'Dosieroj:',
 	UploadTotalSize		: 'Grando de la dosieroj:',
-	UploadSend			: 'Alŝuti',
+	UploadSend			: 'Al\u015Duti',
 	UploadAddFiles		: 'Almeti dosierojn',
 	UploadClearFiles	: 'Forigi dosierojn',
-	UploadCancel		: 'Rezigni la alŝuton',
+	UploadCancel		: 'Rezigni la al\u015Duton',
 	UploadRemove		: 'Forigi',
 	UploadRemoveTip		: 'Forigi !f',
-	UploadUploaded		: 'Alŝutita !n%',
-	UploadProcessing	: 'Estas alŝutata...',
+	UploadUploaded		: 'Al\u015Dutita !n%',
+	UploadProcessing	: 'Estas al\u015Dutata...',
 
 	// Settings Panel
 	SetTitle		: 'Agordo',
@@ -184,10 +184,10 @@ CKFinder.lang['eo'] =
 	SetDisplayDate	: 'Dato',
 	SetDisplaySize	: 'Dosiergrando',
 	SetSort			: 'Ordigo:',
-	SetSortName		: 'laŭ dosiernomo',
-	SetSortDate		: 'laŭ dato',
-	SetSortSize		: 'laŭ grando',
-	SetSortExtension		: 'laŭ dosiernoma finaĵo',
+	SetSortName		: 'la\u016D dosiernomo',
+	SetSortDate		: 'la\u016D dato',
+	SetSortSize		: 'la\u016D grando',
+	SetSortExtension		: 'la\u016D dosiernoma fina\u0135o',
 
 	// Status Bar
 	FilesCountEmpty : '<Malplena dosiero>',
@@ -207,24 +207,24 @@ CKFinder.lang['eo'] =
 	 10 : 'Nevalida komando.',
 	 11 : 'La risurctipo ne estas indikita en la komando.',
 	 12 : 'La risurctipo ne estas valida.',
-	102 : 'La dosier- aŭ dosierujnomo ne estas valida.',
+	102 : 'La dosier- a\u016D dosierujnomo ne estas valida.',
 	103 : 'Ne eblis plenumi la peton pro rajtaj limigoj.',
 	104 : 'Ne eblis plenumi la peton pro atingopermesaj limigoj.',
-	105 : 'Nevalida dosiernoma finaĵo.',
+	105 : 'Nevalida dosiernoma fina\u0135o.',
 	109 : 'Nevalida peto.',
 	110 : 'Nekonata eraro.',
 	111 : 'It was not possible to complete the request due to resulting file size.', // MISSING
-	115 : 'Dosiero aŭ dosierujo kun tiu nomo jam ekzistas.',
+	115 : 'Dosiero a\u016D dosierujo kun tiu nomo jam ekzistas.',
 	116 : 'Tiu dosierujo ne ekzistas. Bonvolu aktualigi kaj reprovi.',
 	117 : 'Tiu dosiero ne ekzistas. Bonvolu aktualigi kaj reprovi.',
 	118 : 'La vojoj al la fonto kaj al la celo estas samaj.',
-	201 : 'Dosiero kun la sama nomo jam ekzistas. La alŝutita dosiero estas renomita al "%1".',
+	201 : 'Dosiero kun la sama nomo jam ekzistas. La al\u015Dutita dosiero estas renomita al "%1".',
 	202 : 'Nevalida dosiero.',
 	203 : 'Nevalida dosiero. La grando estas tro alta.',
-	204 : 'La alŝutita dosiero estas difektita.',
-	205 : 'Neniu provizora dosierujo estas disponebla por alŝuto al la servilo.',
-	206 : 'Alŝuto nuligita pro kialoj pri sekureco. La dosiero entenas datenojn de HTMLtipo.',
-	207 : 'La alŝutita dosiero estas renomita al "%1".',
+	204 : 'La al\u015Dutita dosiero estas difektita.',
+	205 : 'Neniu provizora dosierujo estas disponebla por al\u015Duto al la servilo.',
+	206 : 'Al\u015Duto nuligita pro kialoj pri sekureco. La dosiero entenas datenojn de HTMLtipo.',
+	207 : 'La al\u015Dutita dosiero estas renomita al "%1".',
 	300 : 'La movo de la dosieroj malsukcesis.',
 	301 : 'La kopio de la dosieroj malsukcesis.',
 	500 : 'La dosieradministra sistemo estas malvalidigita. Kontaktu vian administranton kaj kontrolu la agordodosieron de CKFinder.',
@@ -243,9 +243,9 @@ CKFinder.lang['eo'] =
 		FileInvChar		: 'La dosiernomo ne povas enhavi la sekvajn signojn : \n\\ / : * ? " < > |',
 		FolderInvChar	: 'La dosierujnomo ne povas enhavi la sekvajn signojn : \n\\ / : * ? " < > |',
 
-		PopupBlockView	: 'Ne eblis malfermi la dosieron en nova fenestro. Agordu vian retumilon kaj malŝaltu vian ŝprucfenestran blokilon por tiu retpaĝaro.',
-		XmlError		: 'Ne eblis kontentige elŝuti la XML respondon el la  servilo.',
-		XmlEmpty		: 'Ne eblis elŝuti la XML respondon el la servilo. La servilo resendis malplenan respondon.',
+		PopupBlockView	: 'Ne eblis malfermi la dosieron en nova fenestro. Agordu vian retumilon kaj mal\u015Daltu vian \u015Dprucfenestran blokilon por tiu retpa\u011Daro.',
+		XmlError		: 'Ne eblis kontentige el\u015Duti la XML respondon el la  servilo.',
+		XmlEmpty		: 'Ne eblis el\u015Duti la XML respondon el la servilo. La servilo resendis malplenan respondon.',
 		XmlRawResponse	: 'Kruda respondo el la servilo: %s'
 	},
 
@@ -253,22 +253,22 @@ CKFinder.lang['eo'] =
 	Imageresize :
 	{
 		dialogTitle		: 'Plimalpligrandigi %s',
-		sizeTooBig		: 'Ne eblas ŝanĝi la alton aŭ larĝon de tiu bildo ĝis valoro pli granda ol la origina grando (%size).',
-		resizeSuccess	: 'La bildgrando estas sukcese ŝanĝita.',
+		sizeTooBig		: 'Ne eblas \u015Dan\u011Di la alton a\u016D lar\u011Don de tiu bildo \u011Dis valoro pli granda ol la origina grando (%size).',
+		resizeSuccess	: 'La bildgrando estas sukcese \u015Dan\u011Dita.',
 		thumbnailNew	: 'Krei novan miniaturon',
 		thumbnailSmall	: 'Malgranda (%s)',
 		thumbnailMedium	: 'Meza (%s)',
 		thumbnailLarge	: 'Granda (%s)',
 		newSize			: 'Fiksi la novajn grando-erojn',
-		width			: 'Larĝo',
+		width			: 'Lar\u011Do',
 		height			: 'Alto',
 		invalidHeight	: 'Nevalida alto.',
-		invalidWidth	: 'Nevalida larĝo.',
+		invalidWidth	: 'Nevalida lar\u011Do.',
 		invalidName		: 'Nevalida dosiernomo.',
 		newImage		: 'Krei novan bildon',
-		noExtensionChange : 'Ne eblas ŝanĝi la dosiernoman finaĵon.',
+		noExtensionChange : 'Ne eblas \u015Dan\u011Di la dosiernoman fina\u0135on.',
 		imageSmall		: 'La bildo estas tro malgranda',
-		contextMenuName	: 'Ŝanĝi la grandon',
+		contextMenuName	: '\u015Can\u011Di la grandon',
 		lockRatio		: 'Konservi proporcion',
 		resetSize		: 'Origina grando'
 	},
@@ -280,7 +280,7 @@ CKFinder.lang['eo'] =
 		fileOpenError	: 'Ne eblas malfermi la dosieron',
 		fileSaveSuccess	: 'La dosiero estas sukcese konservita.',
 		contextMenuName	: 'Redakti',
-		loadingFile		: 'La dosiero estas elŝutata, bonvolu pacienci...'
+		loadingFile		: 'La dosiero estas el\u015Dutata, bonvolu pacienci...'
 	},
 
 	Maximize :
@@ -307,6 +307,6 @@ CKFinder.lang['eo'] =
 
 	Search :
 	{
-		searchPlaceholder : 'Serĉi'
+		searchPlaceholder : 'Ser\u0109i'
 	}
 };

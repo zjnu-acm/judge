@@ -29,18 +29,18 @@ CKFinder.lang['et'] =
 	{
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, pole saadaval</span>',
-		confirmCancel	: 'Mõned valikud on muudetud. Kas oled kindel, et tahad dialoogiakna sulgeda?',
+		confirmCancel	: 'M\xF5ned valikud on muudetud. Kas oled kindel, et tahad dialoogiakna sulgeda?',
 		ok				: 'Olgu',
 		cancel			: 'Loobu',
 		confirmationTitle	: 'Kinnitus',
 		messageTitle	: 'Andmed',
-		inputTitle		: 'Küsimus',
-		undo			: 'Võta tagasi',
+		inputTitle		: 'K\xFCsimus',
+		undo			: 'V\xF5ta tagasi',
 		redo			: 'Tee uuesti',
-		skip			: 'Jäta vahele',
-		skipAll			: 'Jäta kõik vahele',
+		skip			: 'J\xE4ta vahele',
+		skipAll			: 'J\xE4ta k\xF5ik vahele',
 		makeDecision	: 'Mida tuleks teha?',
-		rememberDecision: 'Jäta valik meelde'
+		rememberDecision: 'J\xE4ta valik meelde'
 	},
 
 
@@ -73,30 +73,30 @@ CKFinder.lang['et'] =
 	FolderNew		: 'Palun sisesta uue kataloogi nimi: ',
 	FolderRename	: 'Palun sisesta uue kataloogi nimi: ',
 	FolderDelete	: 'Kas tahad kindlasti kausta "%1" kustutada?',
-	FolderRenaming	: ' (ümbernimetamine...)',
+	FolderRenaming	: ' (\xFCmbernimetamine...)',
 	FolderDeleting	: ' (kustutamine...)',
 	DestinationFolder	: 'Destination Folder', // MISSING
 
 	// Files
 	FileRename		: 'Palun sisesta faili uus nimi: ',
-	FileRenameExt	: 'Kas oled kindel, et tahad faili laiendit muuta? Fail võib muutuda kasutamatuks.',
-	FileRenaming	: 'Ümbernimetamine...',
+	FileRenameExt	: 'Kas oled kindel, et tahad faili laiendit muuta? Fail v\xF5ib muutuda kasutamatuks.',
+	FileRenaming	: '\xDCmbernimetamine...',
 	FileDelete		: 'Kas oled kindel, et tahad kustutada faili "%1"?',
 	FilesDelete	: 'Are you sure you want to delete %1 files?', // MISSING
 	FilesLoading	: 'Laadimine...',
-	FilesEmpty		: 'See kaust on tühi.',
+	FilesEmpty		: 'See kaust on t\xFChi.',
 	DestinationFile	: 'Destination File', // MISSING
 	SkippedFiles	: 'List of skipped files:', // MISSING
 
 	// Basket
 	BasketFolder		: 'Korv',
-	BasketClear			: 'Tühjenda korv',
+	BasketClear			: 'T\xFChjenda korv',
 	BasketRemove		: 'Eemalda korvist',
-	BasketOpenFolder	: 'Ava ülemine kaust',
-	BasketTruncateConfirm : 'Kas tahad tõesti eemaldada korvist kõik failid?',
-	BasketRemoveConfirm	: 'Kas tahad tõesti eemaldada korvist faili "%1"?',
+	BasketOpenFolder	: 'Ava \xFClemine kaust',
+	BasketTruncateConfirm : 'Kas tahad t\xF5esti eemaldada korvist k\xF5ik failid?',
+	BasketRemoveConfirm	: 'Kas tahad t\xF5esti eemaldada korvist faili "%1"?',
 	BasketRemoveConfirmMultiple	: 'Do you really want to remove %1 files from the basket?', // MISSING
-	BasketEmpty			: 'Korvis ei ole ühtegi faili, lohista mõni siia.',
+	BasketEmpty			: 'Korvis ei ole \xFChtegi faili, lohista m\xF5ni siia.',
 	BasketCopyFilesHere	: 'Failide kopeerimine korvist',
 	BasketMoveFilesHere	: 'Failide liigutamine korvist',
 
@@ -112,10 +112,10 @@ CKFinder.lang['et'] =
 	CopyFailedList		: 'The following files could not be copied:<br />%s', // MISSING
 
 	// Toolbar Buttons (some used elsewhere)
-	Upload		: 'Laadi üles',
-	UploadTip	: 'Laadi üles uus fail',
-	Refresh		: 'Värskenda',
-	Settings	: 'Sätted',
+	Upload		: 'Laadi \xFCles',
+	UploadTip	: 'Laadi \xFCles uus fail',
+	Refresh		: 'V\xE4rskenda',
+	Settings	: 'S\xE4tted',
 	Help		: 'Abi',
 	HelpTip		: 'Abi',
 
@@ -126,7 +126,7 @@ CKFinder.lang['et'] =
 	Download		: 'Laadi alla',
 
 	NewSubFolder	: 'Uus alamkaust',
-	Rename			: 'Nimeta ümber',
+	Rename			: 'Nimeta \xFCmber',
 	Delete			: 'Kustuta',
 	DeleteFiles		: 'Delete Files', // MISSING
 
@@ -134,13 +134,13 @@ CKFinder.lang['et'] =
 	MoveDragDrop	: 'Liiguta siia',
 
 	// Dialogs
-	RenameDlgTitle		: 'Ümbernimetamine',
+	RenameDlgTitle		: '\xDCmbernimetamine',
 	NewNameDlgTitle		: 'Uue nime andmine',
 	FileExistsDlgTitle	: 'Fail on juba olemas',
-	SysErrorDlgTitle : 'Süsteemi viga',
+	SysErrorDlgTitle : 'S\xFCsteemi viga',
 
-	FileOverwrite	: 'Kirjuta üle',
-	FileAutorename	: 'Nimeta automaatselt ümber',
+	FileOverwrite	: 'Kirjuta \xFCle',
+	FileAutorename	: 'Nimeta automaatselt \xFCmber',
 	ManuallyRename	: 'Manually rename', // MISSING
 
 	// Generic
@@ -149,48 +149,48 @@ CKFinder.lang['et'] =
 	CloseBtn	: 'Sulge',
 
 	// Upload Panel
-	UploadTitle			: 'Uue faili üleslaadimine',
-	UploadSelectLbl		: 'Vali üleslaadimiseks fail',
-	UploadProgressLbl	: '(Üleslaadimine, palun oota...)',
-	UploadBtn			: 'Laadi valitud fail üles',
+	UploadTitle			: 'Uue faili \xFCleslaadimine',
+	UploadSelectLbl		: 'Vali \xFCleslaadimiseks fail',
+	UploadProgressLbl	: '(\xDCleslaadimine, palun oota...)',
+	UploadBtn			: 'Laadi valitud fail \xFCles',
 	UploadBtnCancel		: 'Loobu',
 
 	UploadNoFileMsg		: 'Palun vali fail oma arvutist.',
-	UploadNoFolder		: 'Palun vali enne üleslaadimist kataloog.',
-	UploadNoPerms		: 'Failide üleslaadimine pole lubatud.',
+	UploadNoFolder		: 'Palun vali enne \xFCleslaadimist kataloog.',
+	UploadNoPerms		: 'Failide \xFCleslaadimine pole lubatud.',
 	UploadUnknError		: 'Viga faili saatmisel.',
 	UploadExtIncorrect	: 'Selline faili laiend pole selles kaustas lubatud.',
 
 	// Flash Uploads
-	UploadLabel			: 'Üleslaaditavad failid',
+	UploadLabel			: '\xDCleslaaditavad failid',
 	UploadTotalFiles	: 'Faile kokku:',
 	UploadTotalSize		: 'Kogusuurus:',
-	UploadSend			: 'Laadi üles',
+	UploadSend			: 'Laadi \xFCles',
 	UploadAddFiles		: 'Lisa faile',
 	UploadClearFiles	: 'Eemalda failid',
-	UploadCancel		: 'Katkesta üleslaadimine',
+	UploadCancel		: 'Katkesta \xFCleslaadimine',
 	UploadRemove		: 'Eemalda',
 	UploadRemoveTip		: 'Eemalda !f',
-	UploadUploaded		: '!n% üles laaditud',
-	UploadProcessing	: 'Töötlemine...',
+	UploadUploaded		: '!n% \xFCles laaditud',
+	UploadProcessing	: 'T\xF6\xF6tlemine...',
 
 	// Settings Panel
-	SetTitle		: 'Sätted',
+	SetTitle		: 'S\xE4tted',
 	SetView			: 'Vaade:',
 	SetViewThumb	: 'Pisipildid',
 	SetViewList		: 'Loend',
 	SetDisplay		: 'Kuva:',
 	SetDisplayName	: 'Faili nimi',
-	SetDisplayDate	: 'Kuupäev',
+	SetDisplayDate	: 'Kuup\xE4ev',
 	SetDisplaySize	: 'Faili suurus',
 	SetSort			: 'Sortimine:',
-	SetSortName		: 'faili nime järgi',
-	SetSortDate		: 'kuupäeva järgi',
-	SetSortSize		: 'suuruse järgi',
-	SetSortExtension		: 'laiendi järgi',
+	SetSortName		: 'faili nime j\xE4rgi',
+	SetSortDate		: 'kuup\xE4eva j\xE4rgi',
+	SetSortSize		: 'suuruse j\xE4rgi',
+	SetSortExtension		: 'laiendi j\xE4rgi',
 
 	// Status Bar
-	FilesCountEmpty : '<tühi kaust>',
+	FilesCountEmpty : '<t\xFChi kaust>',
 	FilesCountOne	: '1 fail',
 	FilesCountMany	: '%1 faili',
 
@@ -201,51 +201,51 @@ CKFinder.lang['et'] =
 	SizePerSecond	: '%1/s',
 
 	// Connector Error Messages.
-	ErrorUnknown	: 'Päringu täitmine ei olnud võimalik. (Viga %1)',
+	ErrorUnknown	: 'P\xE4ringu t\xE4itmine ei olnud v\xF5imalik. (Viga %1)',
 	Errors :
 	{
-	 10 : 'Vigane käsk.',
-	 11 : 'Allika liik ei olnud päringus määratud.',
-	 12 : 'Päritud liik ei ole sobiv.',
-	102 : 'Sobimatu faili või kausta nimi.',
-	103 : 'Piiratud õiguste tõttu ei olnud võimalik päringut lõpetada.',
-	104 : 'Failisüsteemi piiratud õiguste tõttu ei olnud võimalik päringut lõpetada.',
+	 10 : 'Vigane k\xE4sk.',
+	 11 : 'Allika liik ei olnud p\xE4ringus m\xE4\xE4ratud.',
+	 12 : 'P\xE4ritud liik ei ole sobiv.',
+	102 : 'Sobimatu faili v\xF5i kausta nimi.',
+	103 : 'Piiratud \xF5iguste t\xF5ttu ei olnud v\xF5imalik p\xE4ringut l\xF5petada.',
+	104 : 'Failis\xFCsteemi piiratud \xF5iguste t\xF5ttu ei olnud v\xF5imalik p\xE4ringut l\xF5petada.',
 	105 : 'Sobimatu faililaiend.',
-	109 : 'Vigane päring.',
+	109 : 'Vigane p\xE4ring.',
 	110 : 'Tundmatu viga.',
 	111 : 'It was not possible to complete the request due to resulting file size.', // MISSING
-	115 : 'Sellenimeline fail või kaust on juba olemas.',
-	116 : 'Kausta ei leitud. Palun värskenda lehte ja proovi uuesti.',
-	117 : 'Faili ei leitud. Palun värskenda lehte ja proovi uuesti.',
-	118 : 'Lähte- ja sihtasukoht on sama.',
-	201 : 'Samanimeline fail on juba olemas. Üles laaditud faili nimeks pandi "%1".',
+	115 : 'Sellenimeline fail v\xF5i kaust on juba olemas.',
+	116 : 'Kausta ei leitud. Palun v\xE4rskenda lehte ja proovi uuesti.',
+	117 : 'Faili ei leitud. Palun v\xE4rskenda lehte ja proovi uuesti.',
+	118 : 'L\xE4hte- ja sihtasukoht on sama.',
+	201 : 'Samanimeline fail on juba olemas. \xDCles laaditud faili nimeks pandi "%1".',
 	202 : 'Vigane fail.',
 	203 : 'Vigane fail. Fail on liiga suur.',
-	204 : 'Üleslaaditud fail on rikutud.',
-	205 : 'Serverisse üleslaadimiseks pole ühtegi ajutiste failide kataloogi.',
-	206 : 'Üleslaadimine katkestati turvakaalutlustel. Fail sisaldab HTMLi sarnaseid andmeid.',
-	207 : 'Üleslaaditud faili nimeks pandi "%1".',
+	204 : '\xDCleslaaditud fail on rikutud.',
+	205 : 'Serverisse \xFCleslaadimiseks pole \xFChtegi ajutiste failide kataloogi.',
+	206 : '\xDCleslaadimine katkestati turvakaalutlustel. Fail sisaldab HTMLi sarnaseid andmeid.',
+	207 : '\xDCleslaaditud faili nimeks pandi "%1".',
 	300 : 'Faili(de) liigutamine nurjus.',
 	301 : 'Faili(de) kopeerimine nurjus.',
-	500 : 'Failide sirvija on turvakaalutlustel keelatud. Palun võta ühendust oma süsteemi administraatoriga ja kontrolli CKFinderi seadistusfaili.',
+	500 : 'Failide sirvija on turvakaalutlustel keelatud. Palun v\xF5ta \xFChendust oma s\xFCsteemi administraatoriga ja kontrolli CKFinderi seadistusfaili.',
 	501 : 'Pisipiltide tugi on keelatud.'
 	},
 
 	// Other Error Messages.
 	ErrorMsg :
 	{
-		FileEmpty		: 'Faili nimi ei tohi olla tühi.',
+		FileEmpty		: 'Faili nimi ei tohi olla t\xFChi.',
 		FileExists		: 'Fail nimega %s on juba olemas.',
-		FolderEmpty		: 'Kausta nimi ei tohi olla tühi.',
+		FolderEmpty		: 'Kausta nimi ei tohi olla t\xFChi.',
 		FolderExists	: 'Folder %s already exists.', // MISSING
 		FolderNameExists	: 'Folder already exists.', // MISSING
 
-		FileInvChar		: 'Faili nimi ei tohi sisaldada ühtegi järgnevatest märkidest: \n\\ / : * ? " < > |',
-		FolderInvChar	: 'Faili nimi ei tohi sisaldada ühtegi järgnevatest märkidest: \n\\ / : * ? " < > |',
+		FileInvChar		: 'Faili nimi ei tohi sisaldada \xFChtegi j\xE4rgnevatest m\xE4rkidest: \n\\ / : * ? " < > |',
+		FolderInvChar	: 'Faili nimi ei tohi sisaldada \xFChtegi j\xE4rgnevatest m\xE4rkidest: \n\\ / : * ? " < > |',
 
-		PopupBlockView	: 'Faili avamine uues aknas polnud võimalik. Palun seadista oma brauserit ning keela kõik hüpikakende blokeerijad selle saidi jaoks.',
-		XmlError		: 'XML vastust veebiserverist polnud võimalik korrektselt laadida.',
-		XmlEmpty		: 'XML vastust veebiserverist polnud võimalik korrektselt laadida. Serveri vastus oli tühi.',
+		PopupBlockView	: 'Faili avamine uues aknas polnud v\xF5imalik. Palun seadista oma brauserit ning keela k\xF5ik h\xFCpikakende blokeerijad selle saidi jaoks.',
+		XmlError		: 'XML vastust veebiserverist polnud v\xF5imalik korrektselt laadida.',
+		XmlEmpty		: 'XML vastust veebiserverist polnud v\xF5imalik korrektselt laadida. Serveri vastus oli t\xFChi.',
 		XmlRawResponse	: 'Serveri vastus toorkujul: %s'
 	},
 
@@ -253,32 +253,32 @@ CKFinder.lang['et'] =
 	Imageresize :
 	{
 		dialogTitle		: '%s suuruse muutmine',
-		sizeTooBig		: 'Pildi kõrgust ega laiust ei saa määrata suuremaks pildi esialgsest vastavast mõõtmest (%size).',
-		resizeSuccess	: 'Pildi suuruse muutmine õnnestus.',
+		sizeTooBig		: 'Pildi k\xF5rgust ega laiust ei saa m\xE4\xE4rata suuremaks pildi esialgsest vastavast m\xF5\xF5tmest (%size).',
+		resizeSuccess	: 'Pildi suuruse muutmine \xF5nnestus.',
 		thumbnailNew	: 'Tee uus pisipilt',
-		thumbnailSmall	: 'Väike (%s)',
+		thumbnailSmall	: 'V\xE4ike (%s)',
 		thumbnailMedium	: 'Keskmine (%s)',
 		thumbnailLarge	: 'Suur (%s)',
-		newSize			: 'Määra uus suurus',
+		newSize			: 'M\xE4\xE4ra uus suurus',
 		width			: 'Laius',
-		height			: 'Kõrgus',
-		invalidHeight	: 'Sobimatu kõrgus.',
+		height			: 'K\xF5rgus',
+		invalidHeight	: 'Sobimatu k\xF5rgus.',
 		invalidWidth	: 'Sobimatu laius.',
 		invalidName		: 'Sobimatu faili nimi.',
 		newImage		: 'Loo uus pilt',
-		noExtensionChange : 'Faili laiendit pole võimalik muuta.',
-		imageSmall		: 'Lähtepilt on liiga väike.',
+		noExtensionChange : 'Faili laiendit pole v\xF5imalik muuta.',
+		imageSmall		: 'L\xE4htepilt on liiga v\xE4ike.',
 		contextMenuName	: 'Muuda suurust',
-		lockRatio		: 'Lukusta külgede suhe',
-		resetSize		: 'Lähtesta suurus'
+		lockRatio		: 'Lukusta k\xFClgede suhe',
+		resetSize		: 'L\xE4htesta suurus'
 	},
 
 	// Fileeditor plugin
 	Fileeditor :
 	{
 		save			: 'Salvesta',
-		fileOpenError	: 'Faili avamine pole võimalik.',
-		fileSaveSuccess	: 'Faili salvestamine õnnestus.',
+		fileOpenError	: 'Faili avamine pole v\xF5imalik.',
+		fileSaveSuccess	: 'Faili salvestamine \xF5nnestus.',
 		contextMenuName	: 'Muuda',
 		loadingFile		: 'Faili laadimine, palun oota...'
 	},

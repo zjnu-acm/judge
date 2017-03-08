@@ -67,9 +67,9 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
       stream.eatWhile(isOperatorChar);
       return "operator";
     }
-    stream.eatWhile(/[\w\$_\xa1-\uffff]/);
+    stream.eatWhile(/[\w\$_\xA1-\uFFFF]/);
     if (namespaceSeparator) while (stream.match(namespaceSeparator))
-      stream.eatWhile(/[\w\$_\xa1-\uffff]/);
+      stream.eatWhile(/[\w\$_\xA1-\uFFFF]/);
 
     var cur = stream.current();
     if (contains(keywords, cur)) {
@@ -528,7 +528,7 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
         return state.tokenize(stream, state);
       },
       "'": function(stream) {
-        stream.eatWhile(/[\w\$_\xa1-\uffff]/);
+        stream.eatWhile(/[\w\$_\xA1-\uFFFF]/);
         return "atom";
       }
     },
@@ -756,7 +756,7 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
           return state.tokenize(stream, state);
         },
       "'": function(stream) {
-        stream.eatWhile(/[\w\$_\xa1-\uffff]/);
+        stream.eatWhile(/[\w\$_\xA1-\uFFFF]/);
         return "atom";
       },
       token: function(_stream, state, style) {

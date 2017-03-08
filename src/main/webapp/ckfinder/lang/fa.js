@@ -28,19 +28,19 @@ CKFinder.lang['fa'] =
 	common :
 	{
 		// Put the voice-only part of the label in the span.
-		unavailable		: '%1<span class="cke_accessibility">, عدم دسترسی</span>',
-		confirmCancel	: 'برخی از گزینه ها تغییر کرده است، آیا مایل به بستن این پنجره هستید؟',
-		ok				: 'تائید',
-		cancel			: 'لغو',
-		confirmationTitle	: 'تاییدیه',
-		messageTitle	: 'اطلاعات',
-		inputTitle		: 'سوال',
-		undo			: 'حالت قبلی',
-		redo			: 'حالت بعدی',
-		skip			: 'نادیده گرفتن',
-		skipAll			: 'نادیده گرفتن همه',
-		makeDecision	: 'چه عملی انجام شود؟',
-		rememberDecision: 'انتخاب من را بیاد داشته باش'
+		unavailable		: '%1<span class="cke_accessibility">, \u0639\u062F\u0645 \u062F\u0633\u062A\u0631\u0633\u06CC</span>',
+		confirmCancel	: '\u0628\u0631\u062E\u06CC \u0627\u0632 \u06AF\u0632\u06CC\u0646\u0647 \u0647\u0627 \u062A\u063A\u06CC\u06CC\u0631 \u06A9\u0631\u062F\u0647 \u0627\u0633\u062A\u060C \u0622\u06CC\u0627 \u0645\u0627\u06CC\u0644 \u0628\u0647 \u0628\u0633\u062A\u0646 \u0627\u06CC\u0646 \u067E\u0646\u062C\u0631\u0647 \u0647\u0633\u062A\u06CC\u062F\u061F',
+		ok				: '\u062A\u0627\u0626\u06CC\u062F',
+		cancel			: '\u0644\u063A\u0648',
+		confirmationTitle	: '\u062A\u0627\u06CC\u06CC\u062F\u06CC\u0647',
+		messageTitle	: '\u0627\u0637\u0644\u0627\u0639\u0627\u062A',
+		inputTitle		: '\u0633\u0648\u0627\u0644',
+		undo			: '\u062D\u0627\u0644\u062A \u0642\u0628\u0644\u06CC',
+		redo			: '\u062D\u0627\u0644\u062A \u0628\u0639\u062F\u06CC',
+		skip			: '\u0646\u0627\u062F\u06CC\u062F\u0647 \u06AF\u0631\u0641\u062A\u0646',
+		skipAll			: '\u0646\u0627\u062F\u06CC\u062F\u0647 \u06AF\u0631\u0641\u062A\u0646 \u0647\u0645\u0647',
+		makeDecision	: '\u0686\u0647 \u0639\u0645\u0644\u06CC \u0627\u0646\u062C\u0627\u0645 \u0634\u0648\u062F\u061F',
+		rememberDecision: '\u0627\u0646\u062A\u062E\u0627\u0628 \u0645\u0646 \u0631\u0627 \u0628\u06CC\u0627\u062F \u062F\u0627\u0634\u062A\u0647 \u0628\u0627\u0634'
 	},
 
 
@@ -65,40 +65,40 @@ CKFinder.lang['fa'] =
 	//		a    : Firt char of AM/PM
 	//		aa   : AM/PM
 	DateTime : 'yyyy/mm/dd h:MM aa',
-	DateAmPm : ['ق.ظ', 'ب.ظ'],
+	DateAmPm : ['\u0642.\u0638', '\u0628.\u0638'],
 
 	// Folders
-	FoldersTitle	: 'پوشه ها',
-	FolderLoading	: 'بارگذاری...',
-	FolderNew		: 'لطفا نام پوشه جدید را وارد کنید: ',
-	FolderRename	: 'لطفا نام پوشه جدید را وارد کنید: ',
-	FolderDelete	: 'آیا اطمینان دارید که قصد حذف کردن پوشه "%1" را دارید؟',
-	FolderRenaming	: ' (در حال تغییر نام...)',
-	FolderDeleting	: ' (در حال حذف...)',
+	FoldersTitle	: '\u067E\u0648\u0634\u0647 \u0647\u0627',
+	FolderLoading	: '\u0628\u0627\u0631\u06AF\u0630\u0627\u0631\u06CC...',
+	FolderNew		: '\u0644\u0637\u0641\u0627 \u0646\u0627\u0645 \u067E\u0648\u0634\u0647 \u062C\u062F\u06CC\u062F \u0631\u0627 \u0648\u0627\u0631\u062F \u06A9\u0646\u06CC\u062F: ',
+	FolderRename	: '\u0644\u0637\u0641\u0627 \u0646\u0627\u0645 \u067E\u0648\u0634\u0647 \u062C\u062F\u06CC\u062F \u0631\u0627 \u0648\u0627\u0631\u062F \u06A9\u0646\u06CC\u062F: ',
+	FolderDelete	: '\u0622\u06CC\u0627 \u0627\u0637\u0645\u06CC\u0646\u0627\u0646 \u062F\u0627\u0631\u06CC\u062F \u06A9\u0647 \u0642\u0635\u062F \u062D\u0630\u0641 \u06A9\u0631\u062F\u0646 \u067E\u0648\u0634\u0647 "%1" \u0631\u0627 \u062F\u0627\u0631\u06CC\u062F\u061F',
+	FolderRenaming	: ' (\u062F\u0631 \u062D\u0627\u0644 \u062A\u063A\u06CC\u06CC\u0631 \u0646\u0627\u0645...)',
+	FolderDeleting	: ' (\u062F\u0631 \u062D\u0627\u0644 \u062D\u0630\u0641...)',
 	DestinationFolder	: 'Destination Folder', // MISSING
 
 	// Files
-	FileRename		: 'لطفا نام جدید فایل را درج کنید: ',
-	FileRenameExt	: 'آیا اطمینان دارید که قصد تغییر نام پسوند این فایل را دارید؟ ممکن است فایل غیر قابل استفاده شود',
-	FileRenaming	: 'در حال تغییر نام...',
-	FileDelete		: 'آیا اطمینان دارید که قصد حذف نمودن فایل "%1" را دارید؟',
+	FileRename		: '\u0644\u0637\u0641\u0627 \u0646\u0627\u0645 \u062C\u062F\u06CC\u062F \u0641\u0627\u06CC\u0644 \u0631\u0627 \u062F\u0631\u062C \u06A9\u0646\u06CC\u062F: ',
+	FileRenameExt	: '\u0622\u06CC\u0627 \u0627\u0637\u0645\u06CC\u0646\u0627\u0646 \u062F\u0627\u0631\u06CC\u062F \u06A9\u0647 \u0642\u0635\u062F \u062A\u063A\u06CC\u06CC\u0631 \u0646\u0627\u0645 \u067E\u0633\u0648\u0646\u062F \u0627\u06CC\u0646 \u0641\u0627\u06CC\u0644 \u0631\u0627 \u062F\u0627\u0631\u06CC\u062F\u061F \u0645\u0645\u06A9\u0646 \u0627\u0633\u062A \u0641\u0627\u06CC\u0644 \u063A\u06CC\u0631 \u0642\u0627\u0628\u0644 \u0627\u0633\u062A\u0641\u0627\u062F\u0647 \u0634\u0648\u062F',
+	FileRenaming	: '\u062F\u0631 \u062D\u0627\u0644 \u062A\u063A\u06CC\u06CC\u0631 \u0646\u0627\u0645...',
+	FileDelete		: '\u0622\u06CC\u0627 \u0627\u0637\u0645\u06CC\u0646\u0627\u0646 \u062F\u0627\u0631\u06CC\u062F \u06A9\u0647 \u0642\u0635\u062F \u062D\u0630\u0641 \u0646\u0645\u0648\u062F\u0646 \u0641\u0627\u06CC\u0644 "%1" \u0631\u0627 \u062F\u0627\u0631\u06CC\u062F\u061F',
 	FilesDelete	: 'Are you sure you want to delete %1 files?', // MISSING
-	FilesLoading	: 'بارگذاری...',
-	FilesEmpty		: 'این پوشه خالی است',
+	FilesLoading	: '\u0628\u0627\u0631\u06AF\u0630\u0627\u0631\u06CC...',
+	FilesEmpty		: '\u0627\u06CC\u0646 \u067E\u0648\u0634\u0647 \u062E\u0627\u0644\u06CC \u0627\u0633\u062A',
 	DestinationFile	: 'Destination File', // MISSING
 	SkippedFiles	: 'List of skipped files:', // MISSING
 
 	// Basket
-	BasketFolder		: 'سبد',
-	BasketClear			: 'پاک کردن سبد',
-	BasketRemove		: 'حذف از سبد',
-	BasketOpenFolder	: 'باز نمودن پوشه والد',
-	BasketTruncateConfirm : 'تمام فایل های موجود در سبد حذف شود؟',
-	BasketRemoveConfirm	: 'فایل "%1" از سبد حذف شود؟',
+	BasketFolder		: '\u0633\u0628\u062F',
+	BasketClear			: '\u067E\u0627\u06A9 \u06A9\u0631\u062F\u0646 \u0633\u0628\u062F',
+	BasketRemove		: '\u062D\u0630\u0641 \u0627\u0632 \u0633\u0628\u062F',
+	BasketOpenFolder	: '\u0628\u0627\u0632 \u0646\u0645\u0648\u062F\u0646 \u067E\u0648\u0634\u0647 \u0648\u0627\u0644\u062F',
+	BasketTruncateConfirm : '\u062A\u0645\u0627\u0645 \u0641\u0627\u06CC\u0644 \u0647\u0627\u06CC \u0645\u0648\u062C\u0648\u062F \u062F\u0631 \u0633\u0628\u062F \u062D\u0630\u0641 \u0634\u0648\u062F\u061F',
+	BasketRemoveConfirm	: '\u0641\u0627\u06CC\u0644 "%1" \u0627\u0632 \u0633\u0628\u062F \u062D\u0630\u0641 \u0634\u0648\u062F\u061F',
 	BasketRemoveConfirmMultiple	: 'Do you really want to remove %1 files from the basket?', // MISSING
-	BasketEmpty			: 'هیچ فایلی در سبد نیست, برای افزودن فایل را به اینجا بکشید و رها کنید',
-	BasketCopyFilesHere	: 'کپی فایلها از سبد',
-	BasketMoveFilesHere	: 'انتقال فایلها از سبد',
+	BasketEmpty			: '\u0647\u06CC\u0686 \u0641\u0627\u06CC\u0644\u06CC \u062F\u0631 \u0633\u0628\u062F \u0646\u06CC\u0633\u062A, \u0628\u0631\u0627\u06CC \u0627\u0641\u0632\u0648\u062F\u0646 \u0641\u0627\u06CC\u0644 \u0631\u0627 \u0628\u0647 \u0627\u06CC\u0646\u062C\u0627 \u0628\u06A9\u0634\u06CC\u062F \u0648 \u0631\u0647\u0627 \u06A9\u0646\u06CC\u062F',
+	BasketCopyFilesHere	: '\u06A9\u067E\u06CC \u0641\u0627\u06CC\u0644\u0647\u0627 \u0627\u0632 \u0633\u0628\u062F',
+	BasketMoveFilesHere	: '\u0627\u0646\u062A\u0642\u0627\u0644 \u0641\u0627\u06CC\u0644\u0647\u0627 \u0627\u0632 \u0633\u0628\u062F',
 
 	// Global messages
 	OperationCompletedSuccess	: 'Operation completed successfully.', // MISSING
@@ -112,87 +112,87 @@ CKFinder.lang['fa'] =
 	CopyFailedList		: 'The following files could not be copied:<br />%s', // MISSING
 
 	// Toolbar Buttons (some used elsewhere)
-	Upload		: 'آپلود',
-	UploadTip	: 'آپلود فایل جدید',
-	Refresh		: 'بروزرسانی',
-	Settings	: 'تنظیمات',
-	Help		: 'راهنما',
-	HelpTip		: 'راهنما',
+	Upload		: '\u0622\u067E\u0644\u0648\u062F',
+	UploadTip	: '\u0622\u067E\u0644\u0648\u062F \u0641\u0627\u06CC\u0644 \u062C\u062F\u06CC\u062F',
+	Refresh		: '\u0628\u0631\u0648\u0632\u0631\u0633\u0627\u0646\u06CC',
+	Settings	: '\u062A\u0646\u0638\u06CC\u0645\u0627\u062A',
+	Help		: '\u0631\u0627\u0647\u0646\u0645\u0627',
+	HelpTip		: '\u0631\u0627\u0647\u0646\u0645\u0627',
 
 	// Context Menus
-	Select			: 'انتخاب',
-	SelectThumbnail : 'انتخاب تصویر کوچک',
-	View			: 'نمایش',
-	Download		: 'دانلود',
+	Select			: '\u0627\u0646\u062A\u062E\u0627\u0628',
+	SelectThumbnail : '\u0627\u0646\u062A\u062E\u0627\u0628 \u062A\u0635\u0648\u06CC\u0631 \u06A9\u0648\u0686\u06A9',
+	View			: '\u0646\u0645\u0627\u06CC\u0634',
+	Download		: '\u062F\u0627\u0646\u0644\u0648\u062F',
 
-	NewSubFolder	: 'زیرپوشه جدید',
-	Rename			: 'تغییر نام',
-	Delete			: 'حذف',
+	NewSubFolder	: '\u0632\u06CC\u0631\u067E\u0648\u0634\u0647 \u062C\u062F\u06CC\u062F',
+	Rename			: '\u062A\u063A\u06CC\u06CC\u0631 \u0646\u0627\u0645',
+	Delete			: '\u062D\u0630\u0641',
 	DeleteFiles		: 'Delete Files', // MISSING
 
-	CopyDragDrop	: 'کپی فایل به اینجا',
-	MoveDragDrop	: 'انتقال فایل به اینجا',
+	CopyDragDrop	: '\u06A9\u067E\u06CC \u0641\u0627\u06CC\u0644 \u0628\u0647 \u0627\u06CC\u0646\u062C\u0627',
+	MoveDragDrop	: '\u0627\u0646\u062A\u0642\u0627\u0644 \u0641\u0627\u06CC\u0644 \u0628\u0647 \u0627\u06CC\u0646\u062C\u0627',
 
 	// Dialogs
-	RenameDlgTitle		: 'تغییر نام',
-	NewNameDlgTitle		: 'نام جدید',
-	FileExistsDlgTitle	: 'فایلی با این نام وجود دارد',
-	SysErrorDlgTitle : 'خطای سیستم',
+	RenameDlgTitle		: '\u062A\u063A\u06CC\u06CC\u0631 \u0646\u0627\u0645',
+	NewNameDlgTitle		: '\u0646\u0627\u0645 \u062C\u062F\u06CC\u062F',
+	FileExistsDlgTitle	: '\u0641\u0627\u06CC\u0644\u06CC \u0628\u0627 \u0627\u06CC\u0646 \u0646\u0627\u0645 \u0648\u062C\u0648\u062F \u062F\u0627\u0631\u062F',
+	SysErrorDlgTitle : '\u062E\u0637\u0627\u06CC \u0633\u06CC\u0633\u062A\u0645',
 
-	FileOverwrite	: 'رونویسی',
-	FileAutorename	: 'تغییر نام خودکار',
+	FileOverwrite	: '\u0631\u0648\u0646\u0648\u06CC\u0633\u06CC',
+	FileAutorename	: '\u062A\u063A\u06CC\u06CC\u0631 \u0646\u0627\u0645 \u062E\u0648\u062F\u06A9\u0627\u0631',
 	ManuallyRename	: 'Manually rename', // MISSING
 
 	// Generic
-	OkBtn		: 'تایید',
-	CancelBtn	: 'لغو',
-	CloseBtn	: 'بستن',
+	OkBtn		: '\u062A\u0627\u06CC\u06CC\u062F',
+	CancelBtn	: '\u0644\u063A\u0648',
+	CloseBtn	: '\u0628\u0633\u062A\u0646',
 
 	// Upload Panel
-	UploadTitle			: 'آپلود فایل جدید',
-	UploadSelectLbl		: 'انتخاب فابل برای آپلود',
-	UploadProgressLbl	: '(درحال ارسال، لطفا صبر کنید...)',
-	UploadBtn			: 'آپلود فایل',
-	UploadBtnCancel		: 'لغو',
+	UploadTitle			: '\u0622\u067E\u0644\u0648\u062F \u0641\u0627\u06CC\u0644 \u062C\u062F\u06CC\u062F',
+	UploadSelectLbl		: '\u0627\u0646\u062A\u062E\u0627\u0628 \u0641\u0627\u0628\u0644 \u0628\u0631\u0627\u06CC \u0622\u067E\u0644\u0648\u062F',
+	UploadProgressLbl	: '(\u062F\u0631\u062D\u0627\u0644 \u0627\u0631\u0633\u0627\u0644\u060C \u0644\u0637\u0641\u0627 \u0635\u0628\u0631 \u06A9\u0646\u06CC\u062F...)',
+	UploadBtn			: '\u0622\u067E\u0644\u0648\u062F \u0641\u0627\u06CC\u0644',
+	UploadBtnCancel		: '\u0644\u063A\u0648',
 
-	UploadNoFileMsg		: 'لطفا یک فایل جهت ارسال انتخاب کنید',
-	UploadNoFolder		: 'لطفا پیش از آپلود، یک پوشه انتخاب کنید.',
-	UploadNoPerms		: 'اجازه ارسال فایل نداده شنده است',
-	UploadUnknError		: 'خطا در ارسال',
-	UploadExtIncorrect	: 'پسوند فایل برای این پوشه مجاز نیست.',
+	UploadNoFileMsg		: '\u0644\u0637\u0641\u0627 \u06CC\u06A9 \u0641\u0627\u06CC\u0644 \u062C\u0647\u062A \u0627\u0631\u0633\u0627\u0644 \u0627\u0646\u062A\u062E\u0627\u0628 \u06A9\u0646\u06CC\u062F',
+	UploadNoFolder		: '\u0644\u0637\u0641\u0627 \u067E\u06CC\u0634 \u0627\u0632 \u0622\u067E\u0644\u0648\u062F\u060C \u06CC\u06A9 \u067E\u0648\u0634\u0647 \u0627\u0646\u062A\u062E\u0627\u0628 \u06A9\u0646\u06CC\u062F.',
+	UploadNoPerms		: '\u0627\u062C\u0627\u0632\u0647 \u0627\u0631\u0633\u0627\u0644 \u0641\u0627\u06CC\u0644 \u0646\u062F\u0627\u062F\u0647 \u0634\u0646\u062F\u0647 \u0627\u0633\u062A',
+	UploadUnknError		: '\u062E\u0637\u0627 \u062F\u0631 \u0627\u0631\u0633\u0627\u0644',
+	UploadExtIncorrect	: '\u067E\u0633\u0648\u0646\u062F \u0641\u0627\u06CC\u0644 \u0628\u0631\u0627\u06CC \u0627\u06CC\u0646 \u067E\u0648\u0634\u0647 \u0645\u062C\u0627\u0632 \u0646\u06CC\u0633\u062A.',
 
 	// Flash Uploads
-	UploadLabel			: 'آپلود فایل',
-	UploadTotalFiles	: 'مجموع فایلها:',
-	UploadTotalSize		: 'مجموع حجم:',
-	UploadSend			: 'آپلود فایل',
-	UploadAddFiles		: 'افزودن فایلها',
-	UploadClearFiles	: 'پاک کردن فایلها',
-	UploadCancel		: 'لغو آپلود',
-	UploadRemove		: 'حذف',
-	UploadRemoveTip		: '!f حذف فایل',
-	UploadUploaded		: '!n% آپلود شد',
-	UploadProcessing	: 'در حال پردازش...',
+	UploadLabel			: '\u0622\u067E\u0644\u0648\u062F \u0641\u0627\u06CC\u0644',
+	UploadTotalFiles	: '\u0645\u062C\u0645\u0648\u0639 \u0641\u0627\u06CC\u0644\u0647\u0627:',
+	UploadTotalSize		: '\u0645\u062C\u0645\u0648\u0639 \u062D\u062C\u0645:',
+	UploadSend			: '\u0622\u067E\u0644\u0648\u062F \u0641\u0627\u06CC\u0644',
+	UploadAddFiles		: '\u0627\u0641\u0632\u0648\u062F\u0646 \u0641\u0627\u06CC\u0644\u0647\u0627',
+	UploadClearFiles	: '\u067E\u0627\u06A9 \u06A9\u0631\u062F\u0646 \u0641\u0627\u06CC\u0644\u0647\u0627',
+	UploadCancel		: '\u0644\u063A\u0648 \u0622\u067E\u0644\u0648\u062F',
+	UploadRemove		: '\u062D\u0630\u0641',
+	UploadRemoveTip		: '!f \u062D\u0630\u0641 \u0641\u0627\u06CC\u0644',
+	UploadUploaded		: '!n% \u0622\u067E\u0644\u0648\u062F \u0634\u062F',
+	UploadProcessing	: '\u062F\u0631 \u062D\u0627\u0644 \u067E\u0631\u062F\u0627\u0632\u0634...',
 
 	// Settings Panel
-	SetTitle		: 'تنظیمات',
-	SetView			: 'نمایش:',
-	SetViewThumb	: 'تصویر کوچک',
-	SetViewList		: 'فهرست',
-	SetDisplay		: 'نمایش:',
-	SetDisplayName	: 'نام فایل',
-	SetDisplayDate	: 'تاریخ',
-	SetDisplaySize	: 'اندازه فایل',
-	SetSort			: 'مرتبسازی:',
-	SetSortName		: 'با نام فایل',
-	SetSortDate		: 'با تاریخ',
-	SetSortSize		: 'با اندازه',
-	SetSortExtension		: 'با پسوند',
+	SetTitle		: '\u062A\u0646\u0638\u06CC\u0645\u0627\u062A',
+	SetView			: '\u0646\u0645\u0627\u06CC\u0634:',
+	SetViewThumb	: '\u062A\u0635\u0648\u06CC\u0631 \u06A9\u0648\u0686\u06A9',
+	SetViewList		: '\u0641\u0647\u0631\u0633\u062A',
+	SetDisplay		: '\u0646\u0645\u0627\u06CC\u0634:',
+	SetDisplayName	: '\u0646\u0627\u0645 \u0641\u0627\u06CC\u0644',
+	SetDisplayDate	: '\u062A\u0627\u0631\u06CC\u062E',
+	SetDisplaySize	: '\u0627\u0646\u062F\u0627\u0632\u0647 \u0641\u0627\u06CC\u0644',
+	SetSort			: '\u0645\u0631\u062A\u0628\u0633\u0627\u0632\u06CC:',
+	SetSortName		: '\u0628\u0627 \u0646\u0627\u0645 \u0641\u0627\u06CC\u0644',
+	SetSortDate		: '\u0628\u0627 \u062A\u0627\u0631\u06CC\u062E',
+	SetSortSize		: '\u0628\u0627 \u0627\u0646\u062F\u0627\u0632\u0647',
+	SetSortExtension		: '\u0628\u0627 \u067E\u0633\u0648\u0646\u062F',
 
 	// Status Bar
-	FilesCountEmpty : '<پوشه خالی>',
-	FilesCountOne	: 'یک فایل',
-	FilesCountMany	: '%1 فایل',
+	FilesCountEmpty : '<\u067E\u0648\u0634\u0647 \u062E\u0627\u0644\u06CC>',
+	FilesCountOne	: '\u06CC\u06A9 \u0641\u0627\u06CC\u0644',
+	FilesCountMany	: '%1 \u0641\u0627\u06CC\u0644',
 
 	// Size and Speed
 	Kb				: '%1KB',
@@ -201,92 +201,92 @@ CKFinder.lang['fa'] =
 	SizePerSecond	: '%1/s',
 
 	// Connector Error Messages.
-	ErrorUnknown	: 'امکان تکمیل درخواست فوق وجود ندارد (خطا: %1)',
+	ErrorUnknown	: '\u0627\u0645\u06A9\u0627\u0646 \u062A\u06A9\u0645\u06CC\u0644 \u062F\u0631\u062E\u0648\u0627\u0633\u062A \u0641\u0648\u0642 \u0648\u062C\u0648\u062F \u0646\u062F\u0627\u0631\u062F (\u062E\u0637\u0627: %1)',
 	Errors :
 	{
-	 10 : 'دستور نامعتبر.',
-	 11 : 'نوع منبع در درخواست تعریف نشده است.',
-	 12 : 'نوع منبع درخواست شده معتبر نیست.',
-	102 : 'نام فایل یا پوشه نامعتبر است.',
-	103 : 'امکان کامل کردن این درخواست بخاطر محدودیت اختیارات وجود ندارد.',
-	104 : 'امکان کامل کردن این درخواست بخاطر محدودیت دسترسی وجود ندارد.',
-	105 : 'پسوند فایل نامعتبر  است.',
-	109 : 'درخواست نامعتبر است.',
-	110 : 'خطای ناشناخته.',
+	 10 : '\u062F\u0633\u062A\u0648\u0631 \u0646\u0627\u0645\u0639\u062A\u0628\u0631.',
+	 11 : '\u0646\u0648\u0639 \u0645\u0646\u0628\u0639 \u062F\u0631 \u062F\u0631\u062E\u0648\u0627\u0633\u062A \u062A\u0639\u0631\u06CC\u0641 \u0646\u0634\u062F\u0647 \u0627\u0633\u062A.',
+	 12 : '\u0646\u0648\u0639 \u0645\u0646\u0628\u0639 \u062F\u0631\u062E\u0648\u0627\u0633\u062A \u0634\u062F\u0647 \u0645\u0639\u062A\u0628\u0631 \u0646\u06CC\u0633\u062A.',
+	102 : '\u0646\u0627\u0645 \u0641\u0627\u06CC\u0644 \u06CC\u0627 \u067E\u0648\u0634\u0647 \u0646\u0627\u0645\u0639\u062A\u0628\u0631 \u0627\u0633\u062A.',
+	103 : '\u0627\u0645\u06A9\u0627\u0646 \u06A9\u0627\u0645\u0644 \u06A9\u0631\u062F\u0646 \u0627\u06CC\u0646 \u062F\u0631\u062E\u0648\u0627\u0633\u062A \u0628\u062E\u0627\u0637\u0631 \u0645\u062D\u062F\u0648\u062F\u06CC\u062A \u0627\u062E\u062A\u06CC\u0627\u0631\u0627\u062A \u0648\u062C\u0648\u062F \u0646\u062F\u0627\u0631\u062F.',
+	104 : '\u0627\u0645\u06A9\u0627\u0646 \u06A9\u0627\u0645\u0644 \u06A9\u0631\u062F\u0646 \u0627\u06CC\u0646 \u062F\u0631\u062E\u0648\u0627\u0633\u062A \u0628\u062E\u0627\u0637\u0631 \u0645\u062D\u062F\u0648\u062F\u06CC\u062A \u062F\u0633\u062A\u0631\u0633\u06CC \u0648\u062C\u0648\u062F \u0646\u062F\u0627\u0631\u062F.',
+	105 : '\u067E\u0633\u0648\u0646\u062F \u0641\u0627\u06CC\u0644 \u0646\u0627\u0645\u0639\u062A\u0628\u0631  \u0627\u0633\u062A.',
+	109 : '\u062F\u0631\u062E\u0648\u0627\u0633\u062A \u0646\u0627\u0645\u0639\u062A\u0628\u0631 \u0627\u0633\u062A.',
+	110 : '\u062E\u0637\u0627\u06CC \u0646\u0627\u0634\u0646\u0627\u062E\u062A\u0647.',
 	111 : 'It was not possible to complete the request due to resulting file size.', // MISSING
-	115 : 'فایل یا پوشه ای با این نام وجود دارد',
-	116 : 'پوشه یافت نشد. لطفا بروزرسانی کرده و مجددا تلاش کنید.',
-	117 : 'فایل یافت نشد. لطفا فهرست فایلها را بروزرسانی کرده و مجددا تلاش کنید.',
-	118 : 'منبع و مقصد مسیر یکی است.',
-	201 : 'یک فایل با همان نام از قبل موجود است. فایل آپلود شده به "%1" تغییر نام یافت.',
-	202 : 'فایل نامعتبر',
-	203 : 'فایل نامعتبر. اندازه فایل بیش از حد بزرگ است.',
-	204 : 'فایل آپلود شده خراب است.',
-	205 : 'هیچ پوشه موقتی برای آپلود فایل در سرور موجود نیست.',
-	206 : 'آپلود به دلایل امنیتی متوقف شد. فایل محتوی اطلاعات HTML است.',
-	207 : 'فایل آپلود شده به "%1" تغییر نام یافت.',
-	300 : 'انتقال فایل (ها) شکست خورد.',
-	301 : 'کپی فایل (ها) شکست خورد.',
-	500 : 'مرورگر فایل به دلایل امنیتی غیر فعال است. لطفا با مدیر سامانه تماس بگیرید تا تنظیمات این بخش را بررسی نماید.',
-	501 : 'پشتیبانی از تصاویر کوچک غیرفعال شده است'
+	115 : '\u0641\u0627\u06CC\u0644 \u06CC\u0627 \u067E\u0648\u0634\u0647 \u0627\u06CC \u0628\u0627 \u0627\u06CC\u0646 \u0646\u0627\u0645 \u0648\u062C\u0648\u062F \u062F\u0627\u0631\u062F',
+	116 : '\u067E\u0648\u0634\u0647 \u06CC\u0627\u0641\u062A \u0646\u0634\u062F. \u0644\u0637\u0641\u0627 \u0628\u0631\u0648\u0632\u0631\u0633\u0627\u0646\u06CC \u06A9\u0631\u062F\u0647 \u0648 \u0645\u062C\u062F\u062F\u0627 \u062A\u0644\u0627\u0634 \u06A9\u0646\u06CC\u062F.',
+	117 : '\u0641\u0627\u06CC\u0644 \u06CC\u0627\u0641\u062A \u0646\u0634\u062F. \u0644\u0637\u0641\u0627 \u0641\u0647\u0631\u0633\u062A \u0641\u0627\u06CC\u0644\u0647\u0627 \u0631\u0627 \u0628\u0631\u0648\u0632\u0631\u0633\u0627\u0646\u06CC \u06A9\u0631\u062F\u0647 \u0648 \u0645\u062C\u062F\u062F\u0627 \u062A\u0644\u0627\u0634 \u06A9\u0646\u06CC\u062F.',
+	118 : '\u0645\u0646\u0628\u0639 \u0648 \u0645\u0642\u0635\u062F \u0645\u0633\u06CC\u0631 \u06CC\u06A9\u06CC \u0627\u0633\u062A.',
+	201 : '\u06CC\u06A9 \u0641\u0627\u06CC\u0644 \u0628\u0627 \u0647\u0645\u0627\u0646 \u0646\u0627\u0645 \u0627\u0632 \u0642\u0628\u0644 \u0645\u0648\u062C\u0648\u062F \u0627\u0633\u062A. \u0641\u0627\u06CC\u0644 \u0622\u067E\u0644\u0648\u062F \u0634\u062F\u0647 \u0628\u0647 "%1" \u062A\u063A\u06CC\u06CC\u0631 \u0646\u0627\u0645 \u06CC\u0627\u0641\u062A.',
+	202 : '\u0641\u0627\u06CC\u0644 \u0646\u0627\u0645\u0639\u062A\u0628\u0631',
+	203 : '\u0641\u0627\u06CC\u0644 \u0646\u0627\u0645\u0639\u062A\u0628\u0631. \u0627\u0646\u062F\u0627\u0632\u0647 \u0641\u0627\u06CC\u0644 \u0628\u06CC\u0634 \u0627\u0632 \u062D\u062F \u0628\u0632\u0631\u06AF \u0627\u0633\u062A.',
+	204 : '\u0641\u0627\u06CC\u0644 \u0622\u067E\u0644\u0648\u062F \u0634\u062F\u0647 \u062E\u0631\u0627\u0628 \u0627\u0633\u062A.',
+	205 : '\u0647\u06CC\u0686 \u067E\u0648\u0634\u0647 \u0645\u0648\u0642\u062A\u06CC \u0628\u0631\u0627\u06CC \u0622\u067E\u0644\u0648\u062F \u0641\u0627\u06CC\u0644 \u062F\u0631 \u0633\u0631\u0648\u0631 \u0645\u0648\u062C\u0648\u062F \u0646\u06CC\u0633\u062A.',
+	206 : '\u0622\u067E\u0644\u0648\u062F \u0628\u0647 \u062F\u0644\u0627\u06CC\u0644 \u0627\u0645\u0646\u06CC\u062A\u06CC \u0645\u062A\u0648\u0642\u0641 \u0634\u062F. \u0641\u0627\u06CC\u0644 \u0645\u062D\u062A\u0648\u06CC \u0627\u0637\u0644\u0627\u0639\u0627\u062A HTML \u0627\u0633\u062A.',
+	207 : '\u0641\u0627\u06CC\u0644 \u0622\u067E\u0644\u0648\u062F \u0634\u062F\u0647 \u0628\u0647 "%1" \u062A\u063A\u06CC\u06CC\u0631 \u0646\u0627\u0645 \u06CC\u0627\u0641\u062A.',
+	300 : '\u0627\u0646\u062A\u0642\u0627\u0644 \u0641\u0627\u06CC\u0644 (\u0647\u0627) \u0634\u06A9\u0633\u062A \u062E\u0648\u0631\u062F.',
+	301 : '\u06A9\u067E\u06CC \u0641\u0627\u06CC\u0644 (\u0647\u0627) \u0634\u06A9\u0633\u062A \u062E\u0648\u0631\u062F.',
+	500 : '\u0645\u0631\u0648\u0631\u06AF\u0631 \u0641\u0627\u06CC\u0644 \u0628\u0647 \u062F\u0644\u0627\u06CC\u0644 \u0627\u0645\u0646\u06CC\u062A\u06CC \u063A\u06CC\u0631 \u0641\u0639\u0627\u0644 \u0627\u0633\u062A. \u0644\u0637\u0641\u0627 \u0628\u0627 \u0645\u062F\u06CC\u0631 \u0633\u0627\u0645\u0627\u0646\u0647 \u062A\u0645\u0627\u0633 \u0628\u06AF\u06CC\u0631\u06CC\u062F \u062A\u0627 \u062A\u0646\u0638\u06CC\u0645\u0627\u062A \u0627\u06CC\u0646 \u0628\u062E\u0634 \u0631\u0627 \u0628\u0631\u0631\u0633\u06CC \u0646\u0645\u0627\u06CC\u062F.',
+	501 : '\u067E\u0634\u062A\u06CC\u0628\u0627\u0646\u06CC \u0627\u0632 \u062A\u0635\u0627\u0648\u06CC\u0631 \u06A9\u0648\u0686\u06A9 \u063A\u06CC\u0631\u0641\u0639\u0627\u0644 \u0634\u062F\u0647 \u0627\u0633\u062A'
 	},
 
 	// Other Error Messages.
 	ErrorMsg :
 	{
-		FileEmpty		: 'نام فایل نمیتواند خالی باشد',
-		FileExists		: 'فایل %s از قبل وجود دارد',
-		FolderEmpty		: 'نام پوشه نمیتواند خالی باشد',
+		FileEmpty		: '\u0646\u0627\u0645 \u0641\u0627\u06CC\u0644 \u0646\u0645\u06CC\u062A\u0648\u0627\u0646\u062F \u062E\u0627\u0644\u06CC \u0628\u0627\u0634\u062F',
+		FileExists		: '\u0641\u0627\u06CC\u0644 %s \u0627\u0632 \u0642\u0628\u0644 \u0648\u062C\u0648\u062F \u062F\u0627\u0631\u062F',
+		FolderEmpty		: '\u0646\u0627\u0645 \u067E\u0648\u0634\u0647 \u0646\u0645\u06CC\u062A\u0648\u0627\u0646\u062F \u062E\u0627\u0644\u06CC \u0628\u0627\u0634\u062F',
 		FolderExists	: 'Folder %s already exists.', // MISSING
 		FolderNameExists	: 'Folder already exists.', // MISSING
 
-		FileInvChar		: 'نام فایل نباید شامل این کاراکترها باشد: \n\\ / : * ? " < > |',
-		FolderInvChar	: 'نام پوشه نباید شامل این کاراکترها باشد: \n\\ / : * ? " < > |',
+		FileInvChar		: '\u0646\u0627\u0645 \u0641\u0627\u06CC\u0644 \u0646\u0628\u0627\u06CC\u062F \u0634\u0627\u0645\u0644 \u0627\u06CC\u0646 \u06A9\u0627\u0631\u0627\u06A9\u062A\u0631\u0647\u0627 \u0628\u0627\u0634\u062F: \n\\ / : * ? " < > |',
+		FolderInvChar	: '\u0646\u0627\u0645 \u067E\u0648\u0634\u0647 \u0646\u0628\u0627\u06CC\u062F \u0634\u0627\u0645\u0644 \u0627\u06CC\u0646 \u06A9\u0627\u0631\u0627\u06A9\u062A\u0631\u0647\u0627 \u0628\u0627\u0634\u062F: \n\\ / : * ? " < > |',
 
-		PopupBlockView	: 'امکان بازگشایی فایل در پنجره جدید نیست. لطفا به بخش تنظیمات مرورگر خود مراجعه کنید و امکان بازگشایی پنجرههای بازشور را برای این سایت فعال کنید.',
-		XmlError		: 'امکان بارگیری صحیح پاسخ XML از سرور مقدور نیست.',
-		XmlEmpty		: 'امکان بارگیری صحیح پاسخ XML از سرور مقدور نیست. سرور پاسخ خالی بر میگرداند.',
-		XmlRawResponse	: 'پاسخ اولیه از سرور: %s'
+		PopupBlockView	: '\u0627\u0645\u06A9\u0627\u0646 \u0628\u0627\u0632\u06AF\u0634\u0627\u06CC\u06CC \u0641\u0627\u06CC\u0644 \u062F\u0631 \u067E\u0646\u062C\u0631\u0647 \u062C\u062F\u06CC\u062F \u0646\u06CC\u0633\u062A. \u0644\u0637\u0641\u0627 \u0628\u0647 \u0628\u062E\u0634 \u062A\u0646\u0638\u06CC\u0645\u0627\u062A \u0645\u0631\u0648\u0631\u06AF\u0631 \u062E\u0648\u062F \u0645\u0631\u0627\u062C\u0639\u0647 \u06A9\u0646\u06CC\u062F \u0648 \u0627\u0645\u06A9\u0627\u0646 \u0628\u0627\u0632\u06AF\u0634\u0627\u06CC\u06CC \u067E\u0646\u062C\u0631\u0647\u0647\u0627\u06CC \u0628\u0627\u0632\u0634\u0648\u0631 \u0631\u0627 \u0628\u0631\u0627\u06CC \u0627\u06CC\u0646 \u0633\u0627\u06CC\u062A \u0641\u0639\u0627\u0644 \u06A9\u0646\u06CC\u062F.',
+		XmlError		: '\u0627\u0645\u06A9\u0627\u0646 \u0628\u0627\u0631\u06AF\u06CC\u0631\u06CC \u0635\u062D\u06CC\u062D \u067E\u0627\u0633\u062E XML \u0627\u0632 \u0633\u0631\u0648\u0631 \u0645\u0642\u062F\u0648\u0631 \u0646\u06CC\u0633\u062A.',
+		XmlEmpty		: '\u0627\u0645\u06A9\u0627\u0646 \u0628\u0627\u0631\u06AF\u06CC\u0631\u06CC \u0635\u062D\u06CC\u062D \u067E\u0627\u0633\u062E XML \u0627\u0632 \u0633\u0631\u0648\u0631 \u0645\u0642\u062F\u0648\u0631 \u0646\u06CC\u0633\u062A. \u0633\u0631\u0648\u0631 \u067E\u0627\u0633\u062E \u062E\u0627\u0644\u06CC \u0628\u0631 \u0645\u06CC\u06AF\u0631\u062F\u0627\u0646\u062F.',
+		XmlRawResponse	: '\u067E\u0627\u0633\u062E \u0627\u0648\u0644\u06CC\u0647 \u0627\u0632 \u0633\u0631\u0648\u0631: %s'
 	},
 
 	// Imageresize plugin
 	Imageresize :
 	{
-		dialogTitle		: 'تغییر اندازه %s',
-		sizeTooBig		: 'امکان تغییر مقادیر ابعاد طول و عرض تصویر به مقداری بیش از ابعاد اصلی ممکن نیست (%size).',
-		resizeSuccess	: 'تصویر با موفقیت تغییر اندازه یافت.',
-		thumbnailNew	: 'ایجاد انگشتی جدید',
-		thumbnailSmall	: 'کوچک (%s)',
-		thumbnailMedium	: 'متوسط (%s)',
-		thumbnailLarge	: 'بزرگ (%s)',
-		newSize			: 'اندازه جدید',
-		width			: 'پهنا',
-		height			: 'ارتفاع',
-		invalidHeight	: 'ارتفاع نامعتبر.',
-		invalidWidth	: 'پهنا نامعتبر.',
-		invalidName		: 'نام فایل نامعتبر.',
-		newImage		: 'ایجاد تصویر جدید',
-		noExtensionChange : 'تغییر پسوند فایل امکان پذیر نیست.',
-		imageSmall		: 'تصویر اصلی خیلی کوچک است',
-		contextMenuName	: 'تغییر اندازه',
-		lockRatio		: 'قفل کردن تناسب.',
-		resetSize		: 'بازنشانی اندازه.'
+		dialogTitle		: '\u062A\u063A\u06CC\u06CC\u0631 \u0627\u0646\u062F\u0627\u0632\u0647 %s',
+		sizeTooBig		: '\u0627\u0645\u06A9\u0627\u0646 \u062A\u063A\u06CC\u06CC\u0631 \u0645\u0642\u0627\u062F\u06CC\u0631 \u0627\u0628\u0639\u0627\u062F \u0637\u0648\u0644 \u0648 \u0639\u0631\u0636 \u062A\u0635\u0648\u06CC\u0631 \u0628\u0647 \u0645\u0642\u062F\u0627\u0631\u06CC \u0628\u06CC\u0634 \u0627\u0632 \u0627\u0628\u0639\u0627\u062F \u0627\u0635\u0644\u06CC \u0645\u0645\u06A9\u0646 \u0646\u06CC\u0633\u062A (%size).',
+		resizeSuccess	: '\u062A\u0635\u0648\u06CC\u0631 \u0628\u0627 \u0645\u0648\u0641\u0642\u06CC\u062A \u062A\u063A\u06CC\u06CC\u0631 \u0627\u0646\u062F\u0627\u0632\u0647 \u06CC\u0627\u0641\u062A.',
+		thumbnailNew	: '\u0627\u06CC\u062C\u0627\u062F \u0627\u0646\u06AF\u0634\u062A\u06CC \u062C\u062F\u06CC\u062F',
+		thumbnailSmall	: '\u06A9\u0648\u0686\u06A9 (%s)',
+		thumbnailMedium	: '\u0645\u062A\u0648\u0633\u0637 (%s)',
+		thumbnailLarge	: '\u0628\u0632\u0631\u06AF (%s)',
+		newSize			: '\u0627\u0646\u062F\u0627\u0632\u0647 \u062C\u062F\u06CC\u062F',
+		width			: '\u067E\u0647\u0646\u0627',
+		height			: '\u0627\u0631\u062A\u0641\u0627\u0639',
+		invalidHeight	: '\u0627\u0631\u062A\u0641\u0627\u0639 \u0646\u0627\u0645\u0639\u062A\u0628\u0631.',
+		invalidWidth	: '\u067E\u0647\u0646\u0627 \u0646\u0627\u0645\u0639\u062A\u0628\u0631.',
+		invalidName		: '\u0646\u0627\u0645 \u0641\u0627\u06CC\u0644 \u0646\u0627\u0645\u0639\u062A\u0628\u0631.',
+		newImage		: '\u0627\u06CC\u062C\u0627\u062F \u062A\u0635\u0648\u06CC\u0631 \u062C\u062F\u06CC\u062F',
+		noExtensionChange : '\u062A\u063A\u06CC\u06CC\u0631 \u067E\u0633\u0648\u0646\u062F \u0641\u0627\u06CC\u0644 \u0627\u0645\u06A9\u0627\u0646 \u067E\u0630\u06CC\u0631 \u0646\u06CC\u0633\u062A.',
+		imageSmall		: '\u062A\u0635\u0648\u06CC\u0631 \u0627\u0635\u0644\u06CC \u062E\u06CC\u0644\u06CC \u06A9\u0648\u0686\u06A9 \u0627\u0633\u062A',
+		contextMenuName	: '\u062A\u063A\u06CC\u06CC\u0631 \u0627\u0646\u062F\u0627\u0632\u0647',
+		lockRatio		: '\u0642\u0641\u0644 \u06A9\u0631\u062F\u0646 \u062A\u0646\u0627\u0633\u0628.',
+		resetSize		: '\u0628\u0627\u0632\u0646\u0634\u0627\u0646\u06CC \u0627\u0646\u062F\u0627\u0632\u0647.'
 	},
 
 	// Fileeditor plugin
 	Fileeditor :
 	{
-		save			: 'ذخیره',
-		fileOpenError	: 'امکان باز کردن فایل نیست',
-		fileSaveSuccess	: 'فایل با موفقیت ذخیره شد.',
-		contextMenuName	: 'ویرایش',
-		loadingFile		: 'بارگذاری فایل، منتظر باشید...'
+		save			: '\u0630\u062E\u06CC\u0631\u0647',
+		fileOpenError	: '\u0627\u0645\u06A9\u0627\u0646 \u0628\u0627\u0632 \u06A9\u0631\u062F\u0646 \u0641\u0627\u06CC\u0644 \u0646\u06CC\u0633\u062A',
+		fileSaveSuccess	: '\u0641\u0627\u06CC\u0644 \u0628\u0627 \u0645\u0648\u0641\u0642\u06CC\u062A \u0630\u062E\u06CC\u0631\u0647 \u0634\u062F.',
+		contextMenuName	: '\u0648\u06CC\u0631\u0627\u06CC\u0634',
+		loadingFile		: '\u0628\u0627\u0631\u06AF\u0630\u0627\u0631\u06CC \u0641\u0627\u06CC\u0644\u060C \u0645\u0646\u062A\u0638\u0631 \u0628\u0627\u0634\u06CC\u062F...'
 	},
 
 	Maximize :
 	{
-		maximize : 'بیشینه',
-		minimize : 'کمینه'
+		maximize : '\u0628\u06CC\u0634\u06CC\u0646\u0647',
+		minimize : '\u06A9\u0645\u06CC\u0646\u0647'
 	},
 
 	Gallery :
@@ -307,6 +307,6 @@ CKFinder.lang['fa'] =
 
 	Search :
 	{
-		searchPlaceholder : 'جستجو'
+		searchPlaceholder : '\u062C\u0633\u062A\u062C\u0648'
 	}
 };

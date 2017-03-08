@@ -28,19 +28,19 @@ CKFinder.lang['hi'] =
 	common :
 	{
 		// Put the voice-only part of the label in the span.
-		unavailable		: '%1<span class="cke_accessibility">, नही है</span>',
-		confirmCancel	: 'काफी विकल्प बदले हुवे है. क्या आपको दाएलोग विंडो बंद करना है?',
-		ok				: 'ओके',
-		cancel			: 'खारिज',
-		confirmationTitle	: 'क्नफ्र्म्रेसं',
-		messageTitle	: 'माहिती',
-		inputTitle		: 'प्रश्न',
-		undo			: 'उन्डू',
-		redo			: 'रीडू',
-		skip			: 'स्किप',
-		skipAll			: 'स्किप ओल',
-		makeDecision	: 'क्या करना चाहिये?',
-		rememberDecision: 'मेरा विकल्प याद रखो'
+		unavailable		: '%1<span class="cke_accessibility">, \u0928\u0939\u0940 \u0939\u0948</span>',
+		confirmCancel	: '\u0915\u093E\u092B\u0940 \u0935\u093F\u0915\u0932\u094D\u092A \u092C\u0926\u0932\u0947 \u0939\u0941\u0935\u0947 \u0939\u0948. \u0915\u094D\u092F\u093E \u0906\u092A\u0915\u094B \u0926\u093E\u090F\u0932\u094B\u0917 \u0935\u093F\u0902\u0921\u094B \u092C\u0902\u0926 \u0915\u0930\u0928\u093E \u0939\u0948?',
+		ok				: '\u0913\u0915\u0947',
+		cancel			: '\u0916\u093E\u0930\u093F\u091C',
+		confirmationTitle	: '\u0915\u094D\u0928\u092B\u094D\u0930\u094D\u092E\u094D\u0930\u0947\u0938\u0902',
+		messageTitle	: '\u092E\u093E\u0939\u093F\u0924\u0940',
+		inputTitle		: '\u092A\u094D\u0930\u0936\u094D\u0928',
+		undo			: '\u0909\u0928\u094D\u0921\u0942',
+		redo			: '\u0930\u0940\u0921\u0942',
+		skip			: '\u0938\u094D\u0915\u093F\u092A',
+		skipAll			: '\u0938\u094D\u0915\u093F\u092A \u0913\u0932',
+		makeDecision	: '\u0915\u094D\u092F\u093E \u0915\u0930\u0928\u093E \u091A\u093E\u0939\u093F\u092F\u0947?',
+		rememberDecision: '\u092E\u0947\u0930\u093E \u0935\u093F\u0915\u0932\u094D\u092A \u092F\u093E\u0926 \u0930\u0916\u094B'
 	},
 
 
@@ -68,37 +68,37 @@ CKFinder.lang['hi'] =
 	DateAmPm : ['AM', 'PM'],
 
 	// Folders
-	FoldersTitle	: 'फ़ोल्डर्स',
-	FolderLoading	: 'लोडिग...',
-	FolderNew		: 'फोल्डरका नया नाम टाईप करो: ',
-	FolderRename	: 'फोल्डरका नया नाम टाईप करो: ',
-	FolderDelete	: 'क्या आपको "%1" फोल्डर डीलिट करना है?',
-	FolderRenaming	: ' (नया नाम...)',
-	FolderDeleting	: ' (डिलिट...)',
+	FoldersTitle	: '\u095E\u094B\u0932\u094D\u0921\u0930\u094D\u0938',
+	FolderLoading	: '\u0932\u094B\u0921\u093F\u0917...',
+	FolderNew		: '\u092B\u094B\u0932\u094D\u0921\u0930\u0915\u093E \u0928\u092F\u093E \u0928\u093E\u092E \u091F\u093E\u0908\u092A \u0915\u0930\u094B: ',
+	FolderRename	: '\u092B\u094B\u0932\u094D\u0921\u0930\u0915\u093E \u0928\u092F\u093E \u0928\u093E\u092E \u091F\u093E\u0908\u092A \u0915\u0930\u094B: ',
+	FolderDelete	: '\u0915\u094D\u092F\u093E \u0906\u092A\u0915\u094B "%1" \u092B\u094B\u0932\u094D\u0921\u0930 \u0921\u0940\u0932\u093F\u091F \u0915\u0930\u0928\u093E \u0939\u0948?',
+	FolderRenaming	: ' (\u0928\u092F\u093E \u0928\u093E\u092E...)',
+	FolderDeleting	: ' (\u0921\u093F\u0932\u093F\u091F...)',
 	DestinationFolder	: 'Destination Folder', // MISSING
 
 	// Files
-	FileRename		: 'फाएलका नया नाम टाईप करो: ',
-	FileRenameExt	: 'क्या आपको फाएल एक्सटेंसन बदलना है? फाएल का उपयोग नही कर सकोगे.',
-	FileRenaming	: 'नया नाम...',
-	FileDelete		: 'क्या आपको फाएल डिलिट करना है "%1"?',
+	FileRename		: '\u092B\u093E\u090F\u0932\u0915\u093E \u0928\u092F\u093E \u0928\u093E\u092E \u091F\u093E\u0908\u092A \u0915\u0930\u094B: ',
+	FileRenameExt	: '\u0915\u094D\u092F\u093E \u0906\u092A\u0915\u094B \u092B\u093E\u090F\u0932 \u090F\u0915\u094D\u0938\u091F\u0947\u0902\u0938\u0928 \u092C\u0926\u0932\u0928\u093E \u0939\u0948? \u092B\u093E\u090F\u0932 \u0915\u093E \u0909\u092A\u092F\u094B\u0917 \u0928\u0939\u0940 \u0915\u0930 \u0938\u0915\u094B\u0917\u0947.',
+	FileRenaming	: '\u0928\u092F\u093E \u0928\u093E\u092E...',
+	FileDelete		: '\u0915\u094D\u092F\u093E \u0906\u092A\u0915\u094B \u092B\u093E\u090F\u0932 \u0921\u093F\u0932\u093F\u091F \u0915\u0930\u0928\u093E \u0939\u0948 "%1"?',
 	FilesDelete	: 'Are you sure you want to delete %1 files?', // MISSING
-	FilesLoading	: 'लोडिग...',
-	FilesEmpty		: 'ये फोल्डर खाली है.',
+	FilesLoading	: '\u0932\u094B\u0921\u093F\u0917...',
+	FilesEmpty		: '\u092F\u0947 \u092B\u094B\u0932\u094D\u0921\u0930 \u0916\u093E\u0932\u0940 \u0939\u0948.',
 	DestinationFile	: 'Destination File', // MISSING
 	SkippedFiles	: 'List of skipped files:', // MISSING
 
 	// Basket
-	BasketFolder		: 'बास्केट',
-	BasketClear			: 'बास्केट खाली करो',
-	BasketRemove		: 'बास्केटमें से रीमूव करो',
-	BasketOpenFolder	: 'पेरंट फोल्डर को खोलो',
-	BasketTruncateConfirm : 'क्या आपको बास्केट में से सब फाएल खाली करना हे?',
-	BasketRemoveConfirm	: 'क्या आपको फाएल "%1" बास्केट में से डिलिट करना है?',
+	BasketFolder		: '\u092C\u093E\u0938\u094D\u0915\u0947\u091F',
+	BasketClear			: '\u092C\u093E\u0938\u094D\u0915\u0947\u091F \u0916\u093E\u0932\u0940 \u0915\u0930\u094B',
+	BasketRemove		: '\u092C\u093E\u0938\u094D\u0915\u0947\u091F\u092E\u0947\u0902 \u0938\u0947 \u0930\u0940\u092E\u0942\u0935 \u0915\u0930\u094B',
+	BasketOpenFolder	: '\u092A\u0947\u0930\u0902\u091F \u092B\u094B\u0932\u094D\u0921\u0930 \u0915\u094B \u0916\u094B\u0932\u094B',
+	BasketTruncateConfirm : '\u0915\u094D\u092F\u093E \u0906\u092A\u0915\u094B \u092C\u093E\u0938\u094D\u0915\u0947\u091F \u092E\u0947\u0902 \u0938\u0947 \u0938\u092C \u092B\u093E\u090F\u0932 \u0916\u093E\u0932\u0940 \u0915\u0930\u0928\u093E \u0939\u0947?',
+	BasketRemoveConfirm	: '\u0915\u094D\u092F\u093E \u0906\u092A\u0915\u094B \u092B\u093E\u090F\u0932 "%1" \u092C\u093E\u0938\u094D\u0915\u0947\u091F \u092E\u0947\u0902 \u0938\u0947 \u0921\u093F\u0932\u093F\u091F \u0915\u0930\u0928\u093E \u0939\u0948?',
 	BasketRemoveConfirmMultiple	: 'Do you really want to remove %1 files from the basket?', // MISSING
-	BasketEmpty			: 'बास्केट में कोइ फाएल नहीं है, नई ड्रेग और ड्रॉप करो.',
-	BasketCopyFilesHere	: 'बास्केट में से फाएल कोपी करो',
-	BasketMoveFilesHere	: 'बास्केट में से फाएल मूव करो',
+	BasketEmpty			: '\u092C\u093E\u0938\u094D\u0915\u0947\u091F \u092E\u0947\u0902 \u0915\u094B\u0907 \u092B\u093E\u090F\u0932 \u0928\u0939\u0940\u0902 \u0939\u0948, \u0928\u0908 \u0921\u094D\u0930\u0947\u0917 \u0914\u0930 \u0921\u094D\u0930\u0949\u092A \u0915\u0930\u094B.',
+	BasketCopyFilesHere	: '\u092C\u093E\u0938\u094D\u0915\u0947\u091F \u092E\u0947\u0902 \u0938\u0947 \u092B\u093E\u090F\u0932 \u0915\u094B\u092A\u0940 \u0915\u0930\u094B',
+	BasketMoveFilesHere	: '\u092C\u093E\u0938\u094D\u0915\u0947\u091F \u092E\u0947\u0902 \u0938\u0947 \u092B\u093E\u090F\u0932 \u092E\u0942\u0935 \u0915\u0930\u094B',
 
 	// Global messages
 	OperationCompletedSuccess	: 'Operation completed successfully.', // MISSING
@@ -112,87 +112,87 @@ CKFinder.lang['hi'] =
 	CopyFailedList		: 'The following files could not be copied:<br />%s', // MISSING
 
 	// Toolbar Buttons (some used elsewhere)
-	Upload		: 'अपलोड',
-	UploadTip	: 'अपलोड नई फाएल',
-	Refresh		: 'रिफ्रेश',
-	Settings	: 'सेटिंग्स',
-	Help		: 'मदद',
-	HelpTip		: 'मदद',
+	Upload		: '\u0905\u092A\u0932\u094B\u0921',
+	UploadTip	: '\u0905\u092A\u0932\u094B\u0921 \u0928\u0908 \u092B\u093E\u090F\u0932',
+	Refresh		: '\u0930\u093F\u092B\u094D\u0930\u0947\u0936',
+	Settings	: '\u0938\u0947\u091F\u093F\u0902\u0917\u094D\u0938',
+	Help		: '\u092E\u0926\u0926',
+	HelpTip		: '\u092E\u0926\u0926',
 
 	// Context Menus
-	Select			: 'सिलेक्ट',
-	SelectThumbnail : 'सिलेक्ट थम्बनेल',
-	View			: 'व्यू',
-	Download		: 'डाउनलोड',
+	Select			: '\u0938\u093F\u0932\u0947\u0915\u094D\u091F',
+	SelectThumbnail : '\u0938\u093F\u0932\u0947\u0915\u094D\u091F \u0925\u092E\u094D\u092C\u0928\u0947\u0932',
+	View			: '\u0935\u094D\u092F\u0942',
+	Download		: '\u0921\u093E\u0909\u0928\u0932\u094B\u0921',
 
-	NewSubFolder	: 'नया सबफोल्डर',
-	Rename			: 'रिनेम',
-	Delete			: 'डिलिट',
+	NewSubFolder	: '\u0928\u092F\u093E \u0938\u092C\u092B\u094B\u0932\u094D\u0921\u0930',
+	Rename			: '\u0930\u093F\u0928\u0947\u092E',
+	Delete			: '\u0921\u093F\u0932\u093F\u091F',
 	DeleteFiles		: 'Delete Files', // MISSING
 
-	CopyDragDrop	: 'यहाँ कोपी करें',
-	MoveDragDrop	: 'यंहा मूव करें',
+	CopyDragDrop	: '\u092F\u0939\u093E\u0901 \u0915\u094B\u092A\u0940 \u0915\u0930\u0947\u0902',
+	MoveDragDrop	: '\u092F\u0902\u0939\u093E \u092E\u0942\u0935 \u0915\u0930\u0947\u0902',
 
 	// Dialogs
-	RenameDlgTitle		: 'रीनेम',
-	NewNameDlgTitle		: 'नया नाम',
-	FileExistsDlgTitle	: 'फाएल मौजूद हैं',
-	SysErrorDlgTitle : 'सिस्टम एरर',
+	RenameDlgTitle		: '\u0930\u0940\u0928\u0947\u092E',
+	NewNameDlgTitle		: '\u0928\u092F\u093E \u0928\u093E\u092E',
+	FileExistsDlgTitle	: '\u092B\u093E\u090F\u0932 \u092E\u094C\u091C\u0942\u0926 \u0939\u0948\u0902',
+	SysErrorDlgTitle : '\u0938\u093F\u0938\u094D\u091F\u092E \u090F\u0930\u0930',
 
-	FileOverwrite	: 'ओवरराईट',
-	FileAutorename	: 'ऑटो-रीनेम',
+	FileOverwrite	: '\u0913\u0935\u0930\u0930\u093E\u0908\u091F',
+	FileAutorename	: '\u0911\u091F\u094B-\u0930\u0940\u0928\u0947\u092E',
 	ManuallyRename	: 'Manually rename', // MISSING
 
 	// Generic
-	OkBtn		: 'ओके',
-	CancelBtn	: 'केंसल',
-	CloseBtn	: 'क्लोस',
+	OkBtn		: '\u0913\u0915\u0947',
+	CancelBtn	: '\u0915\u0947\u0902\u0938\u0932',
+	CloseBtn	: '\u0915\u094D\u0932\u094B\u0938',
 
 	// Upload Panel
-	UploadTitle			: 'नया फाएल उपलोड करो',
-	UploadSelectLbl		: 'उपलोड करने के लिये फाएल चुनो',
-	UploadProgressLbl	: '(उपलोड जारी है, राह देखिय...)',
-	UploadBtn			: 'उपलोडके लिये फाएल चुनो',
-	UploadBtnCancel		: 'केन्सल',
+	UploadTitle			: '\u0928\u092F\u093E \u092B\u093E\u090F\u0932 \u0909\u092A\u0932\u094B\u0921 \u0915\u0930\u094B',
+	UploadSelectLbl		: '\u0909\u092A\u0932\u094B\u0921 \u0915\u0930\u0928\u0947 \u0915\u0947 \u0932\u093F\u092F\u0947 \u092B\u093E\u090F\u0932 \u091A\u0941\u0928\u094B',
+	UploadProgressLbl	: '(\u0909\u092A\u0932\u094B\u0921 \u091C\u093E\u0930\u0940 \u0939\u0948, \u0930\u093E\u0939 \u0926\u0947\u0916\u093F\u092F...)',
+	UploadBtn			: '\u0909\u092A\u0932\u094B\u0921\u0915\u0947 \u0932\u093F\u092F\u0947 \u092B\u093E\u090F\u0932 \u091A\u0941\u0928\u094B',
+	UploadBtnCancel		: '\u0915\u0947\u0928\u094D\u0938\u0932',
 
-	UploadNoFileMsg		: 'आपके कोम्पुटर से फाएल चुनो.',
-	UploadNoFolder		: 'फोल्डर चुनके अपलोडिग करिये.',
-	UploadNoPerms		: 'फाएल उपलोड नही कर सकते.',
-	UploadUnknError		: 'फाएल भेजने में मुश्केली हो रही है.',
-	UploadExtIncorrect	: 'ये फोल्डरमें ये फाइल एक्सटेंसन अलाव नही है.',
+	UploadNoFileMsg		: '\u0906\u092A\u0915\u0947 \u0915\u094B\u092E\u094D\u092A\u0941\u091F\u0930 \u0938\u0947 \u092B\u093E\u090F\u0932 \u091A\u0941\u0928\u094B.',
+	UploadNoFolder		: '\u092B\u094B\u0932\u094D\u0921\u0930 \u091A\u0941\u0928\u0915\u0947 \u0905\u092A\u0932\u094B\u0921\u093F\u0917 \u0915\u0930\u093F\u092F\u0947.',
+	UploadNoPerms		: '\u092B\u093E\u090F\u0932 \u0909\u092A\u0932\u094B\u0921 \u0928\u0939\u0940 \u0915\u0930 \u0938\u0915\u0924\u0947.',
+	UploadUnknError		: '\u092B\u093E\u090F\u0932 \u092D\u0947\u091C\u0928\u0947 \u092E\u0947\u0902 \u092E\u0941\u0936\u094D\u0915\u0947\u0932\u0940 \u0939\u094B \u0930\u0939\u0940 \u0939\u0948.',
+	UploadExtIncorrect	: '\u092F\u0947 \u092B\u094B\u0932\u094D\u0921\u0930\u092E\u0947\u0902 \u092F\u0947 \u092B\u093E\u0907\u0932 \u090F\u0915\u094D\u0938\u091F\u0947\u0902\u0938\u0928 \u0905\u0932\u093E\u0935 \u0928\u0939\u0940 \u0939\u0948.',
 
 	// Flash Uploads
-	UploadLabel			: 'अपलोड के लिये फाएल्स',
-	UploadTotalFiles	: 'कुल फाएल्स:',
-	UploadTotalSize		: 'कुल साएज:',
-	UploadSend			: 'अपलोड',
-	UploadAddFiles		: 'फाएल एड करें',
-	UploadClearFiles	: 'फाइल क्लेयर करें',
-	UploadCancel		: 'अपलोड केन्सल करें',
-	UploadRemove		: 'रीमूव',
-	UploadRemoveTip		: 'रीमुव !f',
-	UploadUploaded		: 'अपलोड हो गई !n%',
-	UploadProcessing	: 'अपलोड जारी हैं...',
+	UploadLabel			: '\u0905\u092A\u0932\u094B\u0921 \u0915\u0947 \u0932\u093F\u092F\u0947 \u092B\u093E\u090F\u0932\u094D\u0938',
+	UploadTotalFiles	: '\u0915\u0941\u0932 \u092B\u093E\u090F\u0932\u094D\u0938:',
+	UploadTotalSize		: '\u0915\u0941\u0932 \u0938\u093E\u090F\u091C:',
+	UploadSend			: '\u0905\u092A\u0932\u094B\u0921',
+	UploadAddFiles		: '\u092B\u093E\u090F\u0932 \u090F\u0921 \u0915\u0930\u0947\u0902',
+	UploadClearFiles	: '\u092B\u093E\u0907\u0932 \u0915\u094D\u0932\u0947\u092F\u0930 \u0915\u0930\u0947\u0902',
+	UploadCancel		: '\u0905\u092A\u0932\u094B\u0921 \u0915\u0947\u0928\u094D\u0938\u0932 \u0915\u0930\u0947\u0902',
+	UploadRemove		: '\u0930\u0940\u092E\u0942\u0935',
+	UploadRemoveTip		: '\u0930\u0940\u092E\u0941\u0935 !f',
+	UploadUploaded		: '\u0905\u092A\u0932\u094B\u0921 \u0939\u094B \u0917\u0908 !n%',
+	UploadProcessing	: '\u0905\u092A\u0932\u094B\u0921 \u091C\u093E\u0930\u0940 \u0939\u0948\u0902...',
 
 	// Settings Panel
-	SetTitle		: 'सेटिंग्स',
-	SetView			: 'व्यू:',
-	SetViewThumb	: 'थुम्बनेल्स',
-	SetViewList		: 'लिस्ट',
-	SetDisplay		: 'डिस्प्ले:',
-	SetDisplayName	: 'फाएलका नाम',
-	SetDisplayDate	: 'तारीख',
-	SetDisplaySize	: 'फाएल साईज',
-	SetSort			: 'सोर्टिंग:',
-	SetSortName		: 'फाएलनाम से',
-	SetSortDate		: 'तारिख से',
-	SetSortSize		: 'साईज से',
-	SetSortExtension		: 'एक्सटेंसन से',
+	SetTitle		: '\u0938\u0947\u091F\u093F\u0902\u0917\u094D\u0938',
+	SetView			: '\u0935\u094D\u092F\u0942:',
+	SetViewThumb	: '\u0925\u0941\u092E\u094D\u092C\u0928\u0947\u0932\u094D\u0938',
+	SetViewList		: '\u0932\u093F\u0938\u094D\u091F',
+	SetDisplay		: '\u0921\u093F\u0938\u094D\u092A\u094D\u0932\u0947:',
+	SetDisplayName	: '\u092B\u093E\u090F\u0932\u0915\u093E \u0928\u093E\u092E',
+	SetDisplayDate	: '\u0924\u093E\u0930\u0940\u0916',
+	SetDisplaySize	: '\u092B\u093E\u090F\u0932 \u0938\u093E\u0908\u091C',
+	SetSort			: '\u0938\u094B\u0930\u094D\u091F\u093F\u0902\u0917:',
+	SetSortName		: '\u092B\u093E\u090F\u0932\u0928\u093E\u092E \u0938\u0947',
+	SetSortDate		: '\u0924\u093E\u0930\u093F\u0916 \u0938\u0947',
+	SetSortSize		: '\u0938\u093E\u0908\u091C \u0938\u0947',
+	SetSortExtension		: '\u090F\u0915\u094D\u0938\u091F\u0947\u0902\u0938\u0928 \u0938\u0947',
 
 	// Status Bar
-	FilesCountEmpty : '<फोल्डर खाली>',
-	FilesCountOne	: '1 फाएल',
-	FilesCountMany	: '%1 फाएल',
+	FilesCountEmpty : '<\u092B\u094B\u0932\u094D\u0921\u0930 \u0916\u093E\u0932\u0940>',
+	FilesCountOne	: '1 \u092B\u093E\u090F\u0932',
+	FilesCountMany	: '%1 \u092B\u093E\u090F\u0932',
 
 	// Size and Speed
 	Kb				: '%1 KB',
@@ -201,97 +201,97 @@ CKFinder.lang['hi'] =
 	SizePerSecond	: '%1/s',
 
 	// Connector Error Messages.
-	ErrorUnknown	: 'आपकी रिक्वेस्ट क्मप्लित नही कर सकते. (एरर %1)',
+	ErrorUnknown	: '\u0906\u092A\u0915\u0940 \u0930\u093F\u0915\u094D\u0935\u0947\u0938\u094D\u091F \u0915\u094D\u092E\u092A\u094D\u0932\u093F\u0924 \u0928\u0939\u0940 \u0915\u0930 \u0938\u0915\u0924\u0947. (\u090F\u0930\u0930 %1)',
 	Errors :
 	{
-	 10 : 'इन्वेलीड कमांड.',
-	 11 : 'यह रिसोर्स टाईप उपलब्ध नहीं है.',
-	 12 : 'यह रिसोर्स टाईप वेलिड नही हैं.',
-	102 : 'फाएल या फोल्डर का नाम वेलिड नहीं है.',
-	103 : 'ओथोरिसेसंन रिस्त्रिक्सं की वजह से, आपकी रिक्वेस्ट पूरी नही कर सकते.',
-	104 : 'सिस्टम परमिशन रिस्त्रिक्सं की वजह से, आपकी रिक्वेस्ट पूरी नही कर सकते..',
-	105 : 'फाएल एक्स्त्न्सं गलत है.',
-	109 : 'इन्वेलीड रिक्वेस्ट.',
-	110 : 'अननोन एरर.',
+	 10 : '\u0907\u0928\u094D\u0935\u0947\u0932\u0940\u0921 \u0915\u092E\u093E\u0902\u0921.',
+	 11 : '\u092F\u0939 \u0930\u093F\u0938\u094B\u0930\u094D\u0938 \u091F\u093E\u0908\u092A \u0909\u092A\u0932\u092C\u094D\u0927 \u0928\u0939\u0940\u0902 \u0939\u0948.',
+	 12 : '\u092F\u0939 \u0930\u093F\u0938\u094B\u0930\u094D\u0938 \u091F\u093E\u0908\u092A \u0935\u0947\u0932\u093F\u0921 \u0928\u0939\u0940 \u0939\u0948\u0902.',
+	102 : '\u092B\u093E\u090F\u0932 \u092F\u093E \u092B\u094B\u0932\u094D\u0921\u0930 \u0915\u093E \u0928\u093E\u092E \u0935\u0947\u0932\u093F\u0921 \u0928\u0939\u0940\u0902 \u0939\u0948.',
+	103 : '\u0913\u0925\u094B\u0930\u093F\u0938\u0947\u0938\u0902\u0928 \u0930\u093F\u0938\u094D\u0924\u094D\u0930\u093F\u0915\u094D\u0938\u0902 \u0915\u0940 \u0935\u091C\u0939 \u0938\u0947, \u0906\u092A\u0915\u0940 \u0930\u093F\u0915\u094D\u0935\u0947\u0938\u094D\u091F \u092A\u0942\u0930\u0940 \u0928\u0939\u0940 \u0915\u0930 \u0938\u0915\u0924\u0947.',
+	104 : '\u0938\u093F\u0938\u094D\u091F\u092E \u092A\u0930\u092E\u093F\u0936\u0928 \u0930\u093F\u0938\u094D\u0924\u094D\u0930\u093F\u0915\u094D\u0938\u0902 \u0915\u0940 \u0935\u091C\u0939 \u0938\u0947, \u0906\u092A\u0915\u0940 \u0930\u093F\u0915\u094D\u0935\u0947\u0938\u094D\u091F \u092A\u0942\u0930\u0940 \u0928\u0939\u0940 \u0915\u0930 \u0938\u0915\u0924\u0947..',
+	105 : '\u092B\u093E\u090F\u0932 \u090F\u0915\u094D\u0938\u094D\u0924\u094D\u0928\u094D\u0938\u0902 \u0917\u0932\u0924 \u0939\u0948.',
+	109 : '\u0907\u0928\u094D\u0935\u0947\u0932\u0940\u0921 \u0930\u093F\u0915\u094D\u0935\u0947\u0938\u094D\u091F.',
+	110 : '\u0905\u0928\u0928\u094B\u0928 \u090F\u0930\u0930.',
 	111 : 'It was not possible to complete the request due to resulting file size.', // MISSING
-	115 : 'सेम नाम का फाएल या फोल्डर मोजूद है.',
-	116 : 'फोल्डर नही मिला. रिफ्रेस करके वापिस प्रयत्न करे.',
-	117 : 'फाएल नही मिला. फाएल लिस्टको रिफ्रेस करके वापिस प्रयत्न करे.',
-	118 : 'सोर्स और टारगेट के पाथ एक जैसे है.',
-	201 : 'वहि नाम की फाएल मोजोद है. अपलोड फाएल का नया नाम "%1".',
-	202 : 'इन्वेलीड फाएल.',
-	203 : 'इन्वेलीड फाएल. फाएल बहुत बड़ी है.',
-	204 : 'अपलोडकी गयी फाएल करप्ट हो गयी है.',
-	205 : 'फाएल अपलोड करनेके लिये, सर्वरपे टेम्पररी फोल्डर उपलब्थ नही है..',
-	206 : 'सिक्योरिटी कारण वष, फाएल अपलोड केन्सल किया है. फाएलमें HTML-जैसे डेटा है.',
-	207 : 'अपलोडेड फाएल का नया नाम "%1".',
-	300 : 'फाएल मूव नहीं कर सके.',
-	301 : 'फाएल कोपी नहीं कर सके.',
-	500 : 'सिक्योरिटी कारण वष, फाएल ब्राउजर डिसेबल किया गया है. आपके सिस्टम एडमिनिस्ट्रेटर का सम्पर्क करे और CKFinder कोंफिग्युरेसन फाएल तपासे.',
-	501 : 'थम्बनेल सपोर्ट डिसेबल किया है.'
+	115 : '\u0938\u0947\u092E \u0928\u093E\u092E \u0915\u093E \u092B\u093E\u090F\u0932 \u092F\u093E \u092B\u094B\u0932\u094D\u0921\u0930 \u092E\u094B\u091C\u0942\u0926 \u0939\u0948.',
+	116 : '\u092B\u094B\u0932\u094D\u0921\u0930 \u0928\u0939\u0940 \u092E\u093F\u0932\u093E. \u0930\u093F\u092B\u094D\u0930\u0947\u0938 \u0915\u0930\u0915\u0947 \u0935\u093E\u092A\u093F\u0938 \u092A\u094D\u0930\u092F\u0924\u094D\u0928 \u0915\u0930\u0947.',
+	117 : '\u092B\u093E\u090F\u0932 \u0928\u0939\u0940 \u092E\u093F\u0932\u093E. \u092B\u093E\u090F\u0932 \u0932\u093F\u0938\u094D\u091F\u0915\u094B \u0930\u093F\u092B\u094D\u0930\u0947\u0938 \u0915\u0930\u0915\u0947 \u0935\u093E\u092A\u093F\u0938 \u092A\u094D\u0930\u092F\u0924\u094D\u0928 \u0915\u0930\u0947.',
+	118 : '\u0938\u094B\u0930\u094D\u0938 \u0914\u0930 \u091F\u093E\u0930\u0917\u0947\u091F \u0915\u0947 \u092A\u093E\u0925 \u090F\u0915 \u091C\u0948\u0938\u0947 \u0939\u0948.',
+	201 : '\u0935\u0939\u093F \u0928\u093E\u092E \u0915\u0940 \u092B\u093E\u090F\u0932 \u092E\u094B\u091C\u094B\u0926 \u0939\u0948. \u0905\u092A\u0932\u094B\u0921 \u092B\u093E\u090F\u0932 \u0915\u093E \u0928\u092F\u093E \u0928\u093E\u092E "%1".',
+	202 : '\u0907\u0928\u094D\u0935\u0947\u0932\u0940\u0921 \u092B\u093E\u090F\u0932.',
+	203 : '\u0907\u0928\u094D\u0935\u0947\u0932\u0940\u0921 \u092B\u093E\u090F\u0932. \u092B\u093E\u090F\u0932 \u092C\u0939\u0941\u0924 \u092C\u095C\u0940 \u0939\u0948.',
+	204 : '\u0905\u092A\u0932\u094B\u0921\u0915\u0940 \u0917\u092F\u0940 \u092B\u093E\u090F\u0932 \u0915\u0930\u092A\u094D\u091F \u0939\u094B \u0917\u092F\u0940 \u0939\u0948.',
+	205 : '\u092B\u093E\u090F\u0932 \u0905\u092A\u0932\u094B\u0921 \u0915\u0930\u0928\u0947\u0915\u0947 \u0932\u093F\u092F\u0947, \u0938\u0930\u094D\u0935\u0930\u092A\u0947 \u091F\u0947\u092E\u094D\u092A\u0930\u0930\u0940 \u092B\u094B\u0932\u094D\u0921\u0930 \u0909\u092A\u0932\u092C\u094D\u0925 \u0928\u0939\u0940 \u0939\u0948..',
+	206 : '\u0938\u093F\u0915\u094D\u092F\u094B\u0930\u093F\u091F\u0940 \u0915\u093E\u0930\u0923 \u0935\u0937, \u092B\u093E\u090F\u0932 \u0905\u092A\u0932\u094B\u0921 \u0915\u0947\u0928\u094D\u0938\u0932 \u0915\u093F\u092F\u093E \u0939\u0948. \u092B\u093E\u090F\u0932\u092E\u0947\u0902 HTML-\u091C\u0948\u0938\u0947 \u0921\u0947\u091F\u093E \u0939\u0948.',
+	207 : '\u0905\u092A\u0932\u094B\u0921\u0947\u0921 \u092B\u093E\u090F\u0932 \u0915\u093E \u0928\u092F\u093E \u0928\u093E\u092E "%1".',
+	300 : '\u092B\u093E\u090F\u0932 \u092E\u0942\u0935 \u0928\u0939\u0940\u0902 \u0915\u0930 \u0938\u0915\u0947.',
+	301 : '\u092B\u093E\u090F\u0932 \u0915\u094B\u092A\u0940 \u0928\u0939\u0940\u0902 \u0915\u0930 \u0938\u0915\u0947.',
+	500 : '\u0938\u093F\u0915\u094D\u092F\u094B\u0930\u093F\u091F\u0940 \u0915\u093E\u0930\u0923 \u0935\u0937, \u092B\u093E\u090F\u0932 \u092C\u094D\u0930\u093E\u0909\u091C\u0930 \u0921\u093F\u0938\u0947\u092C\u0932 \u0915\u093F\u092F\u093E \u0917\u092F\u093E \u0939\u0948. \u0906\u092A\u0915\u0947 \u0938\u093F\u0938\u094D\u091F\u092E \u090F\u0921\u092E\u093F\u0928\u093F\u0938\u094D\u091F\u094D\u0930\u0947\u091F\u0930 \u0915\u093E \u0938\u092E\u094D\u092A\u0930\u094D\u0915 \u0915\u0930\u0947 \u0914\u0930 CKFinder \u0915\u094B\u0902\u092B\u093F\u0917\u094D\u092F\u0941\u0930\u0947\u0938\u0928 \u092B\u093E\u090F\u0932 \u0924\u092A\u093E\u0938\u0947.',
+	501 : '\u0925\u092E\u094D\u092C\u0928\u0947\u0932 \u0938\u092A\u094B\u0930\u094D\u091F \u0921\u093F\u0938\u0947\u092C\u0932 \u0915\u093F\u092F\u093E \u0939\u0948.'
 	},
 
 	// Other Error Messages.
 	ErrorMsg :
 	{
-		FileEmpty		: 'फाएलका नाम खाली नही हो सकता.',
-		FileExists		: 'फाएल %s मोजूद है.',
-		FolderEmpty		: 'फोल्डरका नाम खाली नही हो सकता.',
+		FileEmpty		: '\u092B\u093E\u090F\u0932\u0915\u093E \u0928\u093E\u092E \u0916\u093E\u0932\u0940 \u0928\u0939\u0940 \u0939\u094B \u0938\u0915\u0924\u093E.',
+		FileExists		: '\u092B\u093E\u090F\u0932 %s \u092E\u094B\u091C\u0942\u0926 \u0939\u0948.',
+		FolderEmpty		: '\u092B\u094B\u0932\u094D\u0921\u0930\u0915\u093E \u0928\u093E\u092E \u0916\u093E\u0932\u0940 \u0928\u0939\u0940 \u0939\u094B \u0938\u0915\u0924\u093E.',
 		FolderExists	: 'Folder %s already exists.', // MISSING
 		FolderNameExists	: 'Folder already exists.', // MISSING
 
-		FileInvChar		: 'फाएलके नाममें यह केरेक्टर नही हो सकते: \n\\ / : * ? " < > |',
-		FolderInvChar	: 'फोल्डरके नाममें यह केरेक्टर नही हो सकते: \n\\ / : * ? " < > |',
+		FileInvChar		: '\u092B\u093E\u090F\u0932\u0915\u0947 \u0928\u093E\u092E\u092E\u0947\u0902 \u092F\u0939 \u0915\u0947\u0930\u0947\u0915\u094D\u091F\u0930 \u0928\u0939\u0940 \u0939\u094B \u0938\u0915\u0924\u0947: \n\\ / : * ? " < > |',
+		FolderInvChar	: '\u092B\u094B\u0932\u094D\u0921\u0930\u0915\u0947 \u0928\u093E\u092E\u092E\u0947\u0902 \u092F\u0939 \u0915\u0947\u0930\u0947\u0915\u094D\u091F\u0930 \u0928\u0939\u0940 \u0939\u094B \u0938\u0915\u0924\u0947: \n\\ / : * ? " < > |',
 
-		PopupBlockView	: 'यह फाएलको नई विंडोमें नही खोल सकते. आपके ब्राउसरको कोफिग करके सब पोप-अप ब्लोक्र्रको बंध करे.',
-		XmlError		: 'वेब सर्वरसे XML रिस्पोंस नही लोड कर सके.',
-		XmlEmpty		: 'वेब सर्वरसे XML रिस्पोंस नही लोड कर सके. सर्वरने खाली रिस्पोंस भेजा.',
-		XmlRawResponse	: 'सर्वरका रो रिस्पोंस: %s'
+		PopupBlockView	: '\u092F\u0939 \u092B\u093E\u090F\u0932\u0915\u094B \u0928\u0908 \u0935\u093F\u0902\u0921\u094B\u092E\u0947\u0902 \u0928\u0939\u0940 \u0916\u094B\u0932 \u0938\u0915\u0924\u0947. \u0906\u092A\u0915\u0947 \u092C\u094D\u0930\u093E\u0909\u0938\u0930\u0915\u094B \u0915\u094B\u092B\u093F\u0917 \u0915\u0930\u0915\u0947 \u0938\u092C \u092A\u094B\u092A-\u0905\u092A \u092C\u094D\u0932\u094B\u0915\u094D\u0930\u094D\u0930\u0915\u094B \u092C\u0902\u0927 \u0915\u0930\u0947.',
+		XmlError		: '\u0935\u0947\u092C \u0938\u0930\u094D\u0935\u0930\u0938\u0947 XML \u0930\u093F\u0938\u094D\u092A\u094B\u0902\u0938 \u0928\u0939\u0940 \u0932\u094B\u0921 \u0915\u0930 \u0938\u0915\u0947.',
+		XmlEmpty		: '\u0935\u0947\u092C \u0938\u0930\u094D\u0935\u0930\u0938\u0947 XML \u0930\u093F\u0938\u094D\u092A\u094B\u0902\u0938 \u0928\u0939\u0940 \u0932\u094B\u0921 \u0915\u0930 \u0938\u0915\u0947. \u0938\u0930\u094D\u0935\u0930\u0928\u0947 \u0916\u093E\u0932\u0940 \u0930\u093F\u0938\u094D\u092A\u094B\u0902\u0938 \u092D\u0947\u091C\u093E.',
+		XmlRawResponse	: '\u0938\u0930\u094D\u0935\u0930\u0915\u093E \u0930\u094B \u0930\u093F\u0938\u094D\u092A\u094B\u0902\u0938: %s'
 	},
 
 	// Imageresize plugin
 	Imageresize :
 	{
-		dialogTitle		: 'रिसाइज़ %s',
-		sizeTooBig		: 'इमेजकी ओरिजिनल साएजसे बड़ा या छोटा नही कर सके (%size).',
-		resizeSuccess	: 'इमेजको रीसाईज की गई है.',
-		thumbnailNew	: 'नया थम्बनेल बनाये',
-		thumbnailSmall	: 'छोटा (%s)',
-		thumbnailMedium	: 'मध्यम (%s)',
-		thumbnailLarge	: 'बड़ा (%s)',
-		newSize			: 'नई साईज पसंद करे',
-		width			: 'चोदाई',
-		height			: 'ऊंचाई',
-		invalidHeight	: 'इन्वेलीड ऊँचाई.',
-		invalidWidth	: 'इन्वेलीड चोड़ाई.',
-		invalidName		: 'इन्वेलीड फाएलका नाम.',
-		newImage		: 'नई इमेज बनाये',
-		noExtensionChange : 'फाएल एकस्टेनसन नही बदल सकते.',
-		imageSmall		: 'सोर्स इमेज बहुत छोटा है.',
-		contextMenuName	: 'रीसाईज',
-		lockRatio		: 'लोक रेटिओ',
-		resetSize		: 'रीसेट साईज'
+		dialogTitle		: '\u0930\u093F\u0938\u093E\u0907\u095B %s',
+		sizeTooBig		: '\u0907\u092E\u0947\u091C\u0915\u0940 \u0913\u0930\u093F\u091C\u093F\u0928\u0932 \u0938\u093E\u090F\u091C\u0938\u0947 \u092C\u095C\u093E \u092F\u093E \u091B\u094B\u091F\u093E \u0928\u0939\u0940 \u0915\u0930 \u0938\u0915\u0947 (%size).',
+		resizeSuccess	: '\u0907\u092E\u0947\u091C\u0915\u094B \u0930\u0940\u0938\u093E\u0908\u091C \u0915\u0940 \u0917\u0908 \u0939\u0948.',
+		thumbnailNew	: '\u0928\u092F\u093E \u0925\u092E\u094D\u092C\u0928\u0947\u0932 \u092C\u0928\u093E\u092F\u0947',
+		thumbnailSmall	: '\u091B\u094B\u091F\u093E (%s)',
+		thumbnailMedium	: '\u092E\u0927\u094D\u092F\u092E (%s)',
+		thumbnailLarge	: '\u092C\u095C\u093E (%s)',
+		newSize			: '\u0928\u0908 \u0938\u093E\u0908\u091C \u092A\u0938\u0902\u0926 \u0915\u0930\u0947',
+		width			: '\u091A\u094B\u0926\u093E\u0908',
+		height			: '\u090A\u0902\u091A\u093E\u0908',
+		invalidHeight	: '\u0907\u0928\u094D\u0935\u0947\u0932\u0940\u0921 \u090A\u0901\u091A\u093E\u0908.',
+		invalidWidth	: '\u0907\u0928\u094D\u0935\u0947\u0932\u0940\u0921 \u091A\u094B\u095C\u093E\u0908.',
+		invalidName		: '\u0907\u0928\u094D\u0935\u0947\u0932\u0940\u0921 \u092B\u093E\u090F\u0932\u0915\u093E \u0928\u093E\u092E.',
+		newImage		: '\u0928\u0908 \u0907\u092E\u0947\u091C \u092C\u0928\u093E\u092F\u0947',
+		noExtensionChange : '\u092B\u093E\u090F\u0932 \u090F\u0915\u0938\u094D\u091F\u0947\u0928\u0938\u0928 \u0928\u0939\u0940 \u092C\u0926\u0932 \u0938\u0915\u0924\u0947.',
+		imageSmall		: '\u0938\u094B\u0930\u094D\u0938 \u0907\u092E\u0947\u091C \u092C\u0939\u0941\u0924 \u091B\u094B\u091F\u093E \u0939\u0948.',
+		contextMenuName	: '\u0930\u0940\u0938\u093E\u0908\u091C',
+		lockRatio		: '\u0932\u094B\u0915 \u0930\u0947\u091F\u093F\u0913',
+		resetSize		: '\u0930\u0940\u0938\u0947\u091F \u0938\u093E\u0908\u091C'
 	},
 
 	// Fileeditor plugin
 	Fileeditor :
 	{
-		save			: 'सेव',
-		fileOpenError	: 'फाएल नहीं खोल सके.',
-		fileSaveSuccess	: 'फाएल सेव हो गई है.',
-		contextMenuName	: 'एडिट',
-		loadingFile		: 'लोडिग फाएल, राह देखे...'
+		save			: '\u0938\u0947\u0935',
+		fileOpenError	: '\u092B\u093E\u090F\u0932 \u0928\u0939\u0940\u0902 \u0916\u094B\u0932 \u0938\u0915\u0947.',
+		fileSaveSuccess	: '\u092B\u093E\u090F\u0932 \u0938\u0947\u0935 \u0939\u094B \u0917\u0908 \u0939\u0948.',
+		contextMenuName	: '\u090F\u0921\u093F\u091F',
+		loadingFile		: '\u0932\u094B\u0921\u093F\u0917 \u092B\u093E\u090F\u0932, \u0930\u093E\u0939 \u0926\u0947\u0916\u0947...'
 	},
 
 	Maximize :
 	{
-		maximize : 'मैक्सीमईज',
-		minimize : 'मिनीमाईज'
+		maximize : '\u092E\u0948\u0915\u094D\u0938\u0940\u092E\u0908\u091C',
+		minimize : '\u092E\u093F\u0928\u0940\u092E\u093E\u0908\u091C'
 	},
 
 	Gallery :
 	{
-		current : 'इमेज {current} कुल्मिलाके {total}'
+		current : '\u0907\u092E\u0947\u091C {current} \u0915\u0941\u0932\u094D\u092E\u093F\u0932\u093E\u0915\u0947 {total}'
 	},
 
 	Zip :
@@ -307,6 +307,6 @@ CKFinder.lang['hi'] =
 
 	Search :
 	{
-		searchPlaceholder : 'खोज'
+		searchPlaceholder : '\u0916\u094B\u091C'
 	}
 };

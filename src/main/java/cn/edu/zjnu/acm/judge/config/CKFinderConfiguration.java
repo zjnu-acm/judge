@@ -18,12 +18,10 @@ package cn.edu.zjnu.acm.judge.config;
 import cn.edu.zjnu.acm.judge.support.ckfinder.ConfigurationPathBuilder;
 import com.github.zhanhb.ckfinder.connector.configuration.IBasePathBuilder;
 import com.github.zhanhb.ckfinder.connector.configuration.IConfiguration;
-import com.github.zhanhb.ckfinder.connector.configuration.XmlConfigurationParser;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -37,11 +35,6 @@ public class CKFinderConfiguration {
     @Bean
     public IBasePathBuilder pathBuilder(JudgeConfiguration judgeConfiguration, ServletContext servletContext) {
         return new ConfigurationPathBuilder(judgeConfiguration, servletContext);
-    }
-
-    @Bean
-    public IConfiguration configuration(ApplicationContext applicationContext, IBasePathBuilder basePathBuilder) throws Exception {
-        return XmlConfigurationParser.INSTANCE.parse(applicationContext, basePathBuilder, "/WEB-INF/config.xml");
     }
 
     @Bean

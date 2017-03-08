@@ -97,7 +97,7 @@ CKFinder.lang['nl'] =
 	BasketRemoveConfirm	: 'Weet je zeker dat je het bestand "%1" uit het mandje wilt verwijderen?',
 	BasketRemoveConfirmMultiple	: 'Do you really want to remove %1 files from the basket?', // MISSING
 	BasketEmpty			: 'Geen bestanden in het mandje, sleep bestanden hierheen.',
-	BasketCopyFilesHere	: 'Bestanden kopiëren uit het mandje',
+	BasketCopyFilesHere	: 'Bestanden kopi\xEBren uit het mandje',
 	BasketMoveFilesHere	: 'Bestanden verplaatsen uit het mandje',
 
 	// Global messages
@@ -130,7 +130,7 @@ CKFinder.lang['nl'] =
 	Delete			: 'Verwijderen',
 	DeleteFiles		: 'Delete Files', // MISSING
 
-	CopyDragDrop	: 'Hierheen kopiëren',
+	CopyDragDrop	: 'Hierheen kopi\xEBren',
 	MoveDragDrop	: 'Hierheen verplaatsen',
 
 	// Dialogs
@@ -171,7 +171,7 @@ CKFinder.lang['nl'] =
 	UploadCancel		: 'Upload annuleren',
 	UploadRemove		: 'Verwijderen',
 	UploadRemoveTip		: 'Verwijder !f',
-	UploadUploaded		: '!n% geüpload',
+	UploadUploaded		: '!n% ge\xFCpload',
 	UploadProcessing	: 'Verwerken...',
 
 	// Settings Panel
@@ -218,15 +218,15 @@ CKFinder.lang['nl'] =
 	116 : 'Map niet gevonden, vernieuw de mappenlijst of kies een andere map.',
 	117 : 'Bestand niet gevonden, vernieuw de mappenlijst of kies een andere map.',
 	118 : 'Bron- en doelmap zijn gelijk.',
-	201 : 'Er bestaat al een bestand met dezelfde naam. Het geüploade bestand is hernoemd naar: "%1".',
+	201 : 'Er bestaat al een bestand met dezelfde naam. Het ge\xFCploade bestand is hernoemd naar: "%1".',
 	202 : 'Ongeldige bestand.',
 	203 : 'Ongeldige bestand. Het bestand is te groot.',
-	204 : 'De geüploade file is kapot.',
+	204 : 'De ge\xFCploade file is kapot.',
 	205 : 'Er is geen hoofdmap gevonden.',
 	206 : 'Het uploaden van het bestand is om veiligheidsredenen afgebroken. Er is HTML code in het bestand aangetroffen.',
-	207 : 'Het geüploade bestand is hernoemd naar: "%1".',
+	207 : 'Het ge\xFCploade bestand is hernoemd naar: "%1".',
 	300 : 'Bestand(en) verplaatsen is mislukt.',
-	301 : 'Bestand(en) kopiëren is mislukt.',
+	301 : 'Bestand(en) kopi\xEBren is mislukt.',
 	500 : 'Het uploaden van een bestand is momenteel niet mogelijk. Contacteer de beheerder en controleer het CKFinder configuratiebestand.',
 	501 : 'De ondersteuning voor miniatuurafbeeldingen is uitgeschakeld.'
 	},

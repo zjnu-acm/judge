@@ -106,16 +106,16 @@ CodeMirror.defineMode("ruby", function(config) {
       }
 
       // Symbols can't start by a digit
-      if (stream.eat(/[a-zA-Z$@_\xa1-\uffff]/)) {
-        stream.eatWhile(/[\w$\xa1-\uffff]/);
+      if (stream.eat(/[a-zA-Z$@_\xA1-\uFFFF]/)) {
+        stream.eatWhile(/[\w$\xA1-\uFFFF]/);
         // Only one ? ! = is allowed and only as the last character
         stream.eat(/[\?\!\=]/);
         return "atom";
       }
       return "operator";
-    } else if (ch == "@" && stream.match(/^@?[a-zA-Z_\xa1-\uffff]/)) {
+    } else if (ch == "@" && stream.match(/^@?[a-zA-Z_\xA1-\uFFFF]/)) {
       stream.eat("@");
-      stream.eatWhile(/[\w\xa1-\uffff]/);
+      stream.eatWhile(/[\w\xA1-\uFFFF]/);
       return "variable-2";
     } else if (ch == "$") {
       if (stream.eat(/[a-zA-Z_]/)) {
@@ -126,8 +126,8 @@ CodeMirror.defineMode("ruby", function(config) {
         stream.next(); // Must be a special global like $: or $!
       }
       return "variable-3";
-    } else if (/[a-zA-Z_\xa1-\uffff]/.test(ch)) {
-      stream.eatWhile(/[\w\xa1-\uffff]/);
+    } else if (/[a-zA-Z_\xA1-\uFFFF]/.test(ch)) {
+      stream.eatWhile(/[\w\xA1-\uFFFF]/);
       stream.eat(/[\?\!]/);
       if (stream.eat(":")) return "atom";
       return "ident";

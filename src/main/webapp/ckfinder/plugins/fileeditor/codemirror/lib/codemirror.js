@@ -1433,14 +1433,14 @@
       // inexplicable appearance of private area unicode characters on
       // some key combos in Mac (#2689).
       if (ie && ie_version >= 9 && this.hasSelection === text ||
-          mac && /[\uf700-\uf7ff]/.test(text)) {
+          mac && /[\uF700-\uF7FF]/.test(text)) {
         cm.display.input.reset();
         return false;
       }
 
       if (cm.doc.sel == cm.display.selForContextMenu) {
         var first = text.charCodeAt(0);
-        if (first == 0x200b && !prevInput) prevInput = "\u200b";
+        if (first == 0x200b && !prevInput) prevInput = "\u200B";
         if (first == 0x21da) { this.reset(); return this.cm.execCommand("undo"); }
       }
       // Find the part of the input that is actually new
@@ -1507,10 +1507,10 @@
       function prepareSelectAllHack() {
         if (te.selectionStart != null) {
           var selected = cm.somethingSelected();
-          var extval = "\u200b" + (selected ? te.value : "");
-          te.value = "\u21da"; // Used to catch context-menu undo
+          var extval = "\u200B" + (selected ? te.value : "");
+          te.value = "\u21DA"; // Used to catch context-menu undo
           te.value = extval;
-          input.prevInput = selected ? "" : "\u200b";
+          input.prevInput = selected ? "" : "\u200B";
           te.selectionStart = 1; te.selectionEnd = extval.length;
           // Re-set this, in case some other handler touched the
           // selection in the meantime.
@@ -1528,7 +1528,7 @@
           if (!ie || (ie && ie_version < 9)) prepareSelectAllHack();
           var i = 0, poll = function() {
             if (display.selForContextMenu == cm.doc.sel && te.selectionStart == 0 &&
-                te.selectionEnd > 0 && input.prevInput == "\u200b")
+                te.selectionEnd > 0 && input.prevInput == "\u200B")
               operation(cm, commands.selectAll)(cm);
             else if (i++ < 10) display.detectingSelectAll = setTimeout(poll, 500);
             else display.input.reset();
@@ -1593,7 +1593,7 @@
       on(div, "compositionend", function(e) {
         var ours = input.composing;
         if (!ours) return;
-        if (e.data != ours.startData && !/\u200b/.test(e.data))
+        if (e.data != ours.startData && !/\u200B/.test(e.data))
           ours.data = e.data;
         // Need a small delay to prevent other code (input event,
         // selection polling) from doing damage when fired right after
@@ -1962,7 +1962,7 @@
       if (node.nodeType == 1) {
         var cmText = node.getAttribute("cm-text");
         if (cmText != null) {
-          if (cmText == "") cmText = node.textContent.replace(/\u200b/g, "");
+          if (cmText == "") cmText = node.textContent.replace(/\u200B/g, "");
           text += cmText;
           return;
         }
@@ -2310,14 +2310,14 @@
   function drawSelectionCursor(cm, head, output) {
     var pos = cursorCoords(cm, head, "div", null, null, !cm.options.singleCursorHeightPerLine);
 
-    var cursor = output.appendChild(elt("div", "\u00a0", "CodeMirror-cursor"));
+    var cursor = output.appendChild(elt("div", "\xA0", "CodeMirror-cursor"));
     cursor.style.left = pos.left + "px";
     cursor.style.top = pos.top + "px";
     cursor.style.height = Math.max(0, pos.bottom - pos.top) * cm.options.cursorHeight + "px";
 
     if (pos.other) {
       // Secondary cursor, shown when on a 'jump' in bi-directional text
-      var otherCursor = output.appendChild(elt("div", "\u00a0", "CodeMirror-cursor CodeMirror-secondarycursor"));
+      var otherCursor = output.appendChild(elt("div", "\xA0", "CodeMirror-cursor CodeMirror-secondarycursor"));
       otherCursor.style.display = "";
       otherCursor.style.left = pos.other.left + "px";
       otherCursor.style.top = pos.other.top + "px";
@@ -3845,7 +3845,7 @@
         var reader = new FileReader;
         reader.onload = operation(cm, function() {
           var content = reader.result;
-          if (/[\x00-\x08\x0e-\x1f]{2}/.test(content)) content = "";
+          if (/[\0-\b\x0E-\x1F]{2}/.test(content)) content = "";
           text[i] = content;
           if (++read == n) {
             pos = clipPos(cm.doc, pos);
@@ -4575,7 +4575,7 @@
     if (coords.top + box.top < 0) doScroll = true;
     else if (coords.bottom + box.top > (window.innerHeight || document.documentElement.clientHeight)) doScroll = false;
     if (doScroll != null && !phantom) {
-      var scrollNode = elt("div", "\u200b", null, "position: absolute; top: " +
+      var scrollNode = elt("div", "\u200B", null, "position: absolute; top: " +
                            (coords.top - display.viewOffset - paddingTop(cm.display)) + "px; height: " +
                            (coords.bottom - coords.top + scrollGap(cm) + display.barHeight) + "px; left: " +
                            coords.left + "px; width: 2px;");
@@ -5371,7 +5371,7 @@
     for (var i = newBreaks.length - 1; i >= 0; i--)
       replaceRange(cm.doc, val, newBreaks[i], Pos(newBreaks[i].line, newBreaks[i].ch + val.length))
   });
-  option("specialChars", /[\t\u0000-\u0019\u00ad\u200b-\u200f\u2028\u2029\ufeff]/g, function(cm, val, old) {
+  option("specialChars", /[\t\0-\x19\xAD\u200B-\u200F\u2028\u2029\uFEFF]/g, function(cm, val, old) {
     cm.state.specialChars = new RegExp(val.source + (val.test("\t") ? "" : "|\t"), "g");
     if (old != CodeMirror.Init) cm.refresh();
   });
@@ -5974,7 +5974,7 @@
     },
     eatSpace: function() {
       var start = this.pos;
-      while (/[\s\u00a0]/.test(this.string.charAt(this.pos))) ++this.pos;
+      while (/[\s\xA0]/.test(this.string.charAt(this.pos))) ++this.pos;
       return this.pos > start;
     },
     skipToEnd: function() {this.pos = this.string.length;},
@@ -6994,7 +6994,7 @@
           txt.setAttribute("cm-text", "\t");
           builder.col += tabWidth;
         } else if (m[0] == "\r" || m[0] == "\n") {
-          var txt = content.appendChild(elt("span", m[0] == "\r" ? "\u240d" : "\u2424", "cm-invalidchar"));
+          var txt = content.appendChild(elt("span", m[0] == "\r" ? "\u240D" : "\u2424", "cm-invalidchar"));
           txt.setAttribute("cm-text", m[0]);
           builder.col += 1;
         } else {
@@ -7021,7 +7021,7 @@
 
   function splitSpaces(old) {
     var out = " ";
-    for (var i = 0; i < old.length - 2; ++i) out += i % 2 ? " " : "\u00a0";
+    for (var i = 0; i < old.length - 2; ++i) out += i % 2 ? " " : "\xA0";
     out += " ";
     return out;
   }
@@ -8244,7 +8244,7 @@
   // Used mostly to find indentation.
   var countColumn = CodeMirror.countColumn = function(string, end, tabSize, startIndex, startValue) {
     if (end == null) {
-      end = string.search(/[^\s\u00a0]/);
+      end = string.search(/[^\s\xA0]/);
       if (end == -1) end = string.length;
     }
     for (var i = startIndex || 0, n = startValue || 0;;) {
@@ -8326,7 +8326,7 @@
     return function(){return f.apply(null, args);};
   }
 
-  var nonASCIISingleCaseWordChar = /[\u00df\u0587\u0590-\u05f4\u0600-\u06ff\u3040-\u309f\u30a0-\u30ff\u3400-\u4db5\u4e00-\u9fcc\uac00-\ud7af]/;
+  var nonASCIISingleCaseWordChar = /[\xDF\u0587\u0590-\u05F4\u0600-\u06FF\u3040-\u309F\u30A0-\u30FF\u3400-\u4DB5\u4E00-\u9FCC\uAC00-\uD7AF]/;
   var isWordCharBasic = CodeMirror.isWordChar = function(ch) {
     return /\w/.test(ch) || ch > "\x80" &&
       (ch.toUpperCase() != ch.toLowerCase() || nonASCIISingleCaseWordChar.test(ch));
@@ -8347,7 +8347,7 @@
   // as editing and measuring is concerned. This is not fully correct,
   // since some scripts/fonts/browsers also treat other configurations
   // of code points as a group.
-  var extendingChars = /[\u0300-\u036f\u0483-\u0489\u0591-\u05bd\u05bf\u05c1\u05c2\u05c4\u05c5\u05c7\u0610-\u061a\u064b-\u065e\u0670\u06d6-\u06dc\u06de-\u06e4\u06e7\u06e8\u06ea-\u06ed\u0711\u0730-\u074a\u07a6-\u07b0\u07eb-\u07f3\u0816-\u0819\u081b-\u0823\u0825-\u0827\u0829-\u082d\u0900-\u0902\u093c\u0941-\u0948\u094d\u0951-\u0955\u0962\u0963\u0981\u09bc\u09be\u09c1-\u09c4\u09cd\u09d7\u09e2\u09e3\u0a01\u0a02\u0a3c\u0a41\u0a42\u0a47\u0a48\u0a4b-\u0a4d\u0a51\u0a70\u0a71\u0a75\u0a81\u0a82\u0abc\u0ac1-\u0ac5\u0ac7\u0ac8\u0acd\u0ae2\u0ae3\u0b01\u0b3c\u0b3e\u0b3f\u0b41-\u0b44\u0b4d\u0b56\u0b57\u0b62\u0b63\u0b82\u0bbe\u0bc0\u0bcd\u0bd7\u0c3e-\u0c40\u0c46-\u0c48\u0c4a-\u0c4d\u0c55\u0c56\u0c62\u0c63\u0cbc\u0cbf\u0cc2\u0cc6\u0ccc\u0ccd\u0cd5\u0cd6\u0ce2\u0ce3\u0d3e\u0d41-\u0d44\u0d4d\u0d57\u0d62\u0d63\u0dca\u0dcf\u0dd2-\u0dd4\u0dd6\u0ddf\u0e31\u0e34-\u0e3a\u0e47-\u0e4e\u0eb1\u0eb4-\u0eb9\u0ebb\u0ebc\u0ec8-\u0ecd\u0f18\u0f19\u0f35\u0f37\u0f39\u0f71-\u0f7e\u0f80-\u0f84\u0f86\u0f87\u0f90-\u0f97\u0f99-\u0fbc\u0fc6\u102d-\u1030\u1032-\u1037\u1039\u103a\u103d\u103e\u1058\u1059\u105e-\u1060\u1071-\u1074\u1082\u1085\u1086\u108d\u109d\u135f\u1712-\u1714\u1732-\u1734\u1752\u1753\u1772\u1773\u17b7-\u17bd\u17c6\u17c9-\u17d3\u17dd\u180b-\u180d\u18a9\u1920-\u1922\u1927\u1928\u1932\u1939-\u193b\u1a17\u1a18\u1a56\u1a58-\u1a5e\u1a60\u1a62\u1a65-\u1a6c\u1a73-\u1a7c\u1a7f\u1b00-\u1b03\u1b34\u1b36-\u1b3a\u1b3c\u1b42\u1b6b-\u1b73\u1b80\u1b81\u1ba2-\u1ba5\u1ba8\u1ba9\u1c2c-\u1c33\u1c36\u1c37\u1cd0-\u1cd2\u1cd4-\u1ce0\u1ce2-\u1ce8\u1ced\u1dc0-\u1de6\u1dfd-\u1dff\u200c\u200d\u20d0-\u20f0\u2cef-\u2cf1\u2de0-\u2dff\u302a-\u302f\u3099\u309a\ua66f-\ua672\ua67c\ua67d\ua6f0\ua6f1\ua802\ua806\ua80b\ua825\ua826\ua8c4\ua8e0-\ua8f1\ua926-\ua92d\ua947-\ua951\ua980-\ua982\ua9b3\ua9b6-\ua9b9\ua9bc\uaa29-\uaa2e\uaa31\uaa32\uaa35\uaa36\uaa43\uaa4c\uaab0\uaab2-\uaab4\uaab7\uaab8\uaabe\uaabf\uaac1\uabe5\uabe8\uabed\udc00-\udfff\ufb1e\ufe00-\ufe0f\ufe20-\ufe26\uff9e\uff9f]/;
+  var extendingChars = /[\u0300-\u036F\u0483-\u0489\u0591-\u05BD\u05BF\u05C1\u05C2\u05C4\u05C5\u05C7\u0610-\u061A\u064B-\u065E\u0670\u06D6-\u06DC\u06DE-\u06E4\u06E7\u06E8\u06EA-\u06ED\u0711\u0730-\u074A\u07A6-\u07B0\u07EB-\u07F3\u0816-\u0819\u081B-\u0823\u0825-\u0827\u0829-\u082D\u0900-\u0902\u093C\u0941-\u0948\u094D\u0951-\u0955\u0962\u0963\u0981\u09BC\u09BE\u09C1-\u09C4\u09CD\u09D7\u09E2\u09E3\u0A01\u0A02\u0A3C\u0A41\u0A42\u0A47\u0A48\u0A4B-\u0A4D\u0A51\u0A70\u0A71\u0A75\u0A81\u0A82\u0ABC\u0AC1-\u0AC5\u0AC7\u0AC8\u0ACD\u0AE2\u0AE3\u0B01\u0B3C\u0B3E\u0B3F\u0B41-\u0B44\u0B4D\u0B56\u0B57\u0B62\u0B63\u0B82\u0BBE\u0BC0\u0BCD\u0BD7\u0C3E-\u0C40\u0C46-\u0C48\u0C4A-\u0C4D\u0C55\u0C56\u0C62\u0C63\u0CBC\u0CBF\u0CC2\u0CC6\u0CCC\u0CCD\u0CD5\u0CD6\u0CE2\u0CE3\u0D3E\u0D41-\u0D44\u0D4D\u0D57\u0D62\u0D63\u0DCA\u0DCF\u0DD2-\u0DD4\u0DD6\u0DDF\u0E31\u0E34-\u0E3A\u0E47-\u0E4E\u0EB1\u0EB4-\u0EB9\u0EBB\u0EBC\u0EC8-\u0ECD\u0F18\u0F19\u0F35\u0F37\u0F39\u0F71-\u0F7E\u0F80-\u0F84\u0F86\u0F87\u0F90-\u0F97\u0F99-\u0FBC\u0FC6\u102D-\u1030\u1032-\u1037\u1039\u103A\u103D\u103E\u1058\u1059\u105E-\u1060\u1071-\u1074\u1082\u1085\u1086\u108D\u109D\u135F\u1712-\u1714\u1732-\u1734\u1752\u1753\u1772\u1773\u17B7-\u17BD\u17C6\u17C9-\u17D3\u17DD\u180B-\u180D\u18A9\u1920-\u1922\u1927\u1928\u1932\u1939-\u193B\u1A17\u1A18\u1A56\u1A58-\u1A5E\u1A60\u1A62\u1A65-\u1A6C\u1A73-\u1A7C\u1A7F\u1B00-\u1B03\u1B34\u1B36-\u1B3A\u1B3C\u1B42\u1B6B-\u1B73\u1B80\u1B81\u1BA2-\u1BA5\u1BA8\u1BA9\u1C2C-\u1C33\u1C36\u1C37\u1CD0-\u1CD2\u1CD4-\u1CE0\u1CE2-\u1CE8\u1CED\u1DC0-\u1DE6\u1DFD-\u1DFF\u200C\u200D\u20D0-\u20F0\u2CEF-\u2CF1\u2DE0-\u2DFF\u302A-\u302F\u3099\u309A\uA66F-\uA672\uA67C\uA67D\uA6F0\uA6F1\uA802\uA806\uA80B\uA825\uA826\uA8C4\uA8E0-\uA8F1\uA926-\uA92D\uA947-\uA951\uA980-\uA982\uA9B3\uA9B6-\uA9B9\uA9BC\uAA29-\uAA2E\uAA31\uAA32\uAA35\uAA36\uAA43\uAA4C\uAAB0\uAAB2-\uAAB4\uAAB7\uAAB8\uAABE\uAABF\uAAC1\uABE5\uABE8\uABED\uDC00-\uDFFF\uFB1E\uFE00-\uFE0F\uFE20-\uFE26\uFF9E\uFF9F]/;
   function isExtendingChar(ch) { return ch.charCodeAt(0) >= 768 && extendingChars.test(ch); }
 
   // DOM UTILITIES
@@ -8482,13 +8482,13 @@
   var zwspSupported;
   function zeroWidthElement(measure) {
     if (zwspSupported == null) {
-      var test = elt("span", "\u200b");
+      var test = elt("span", "\u200B");
       removeChildrenAndAdd(measure, elt("span", [test, document.createTextNode("x")]));
       if (measure.firstChild.offsetHeight != 0)
         zwspSupported = test.offsetWidth <= 1 && test.offsetHeight > 2 && !(ie && ie_version < 8);
     }
-    var node = zwspSupported ? elt("span", "\u200b") :
-      elt("span", "\u00a0", null, "display: inline-block; width: 1px; margin-right: -1px");
+    var node = zwspSupported ? elt("span", "\u200B") :
+      elt("span", "\xA0", null, "display: inline-block; width: 1px; margin-right: -1px");
     node.setAttribute("cm-text", "");
     return node;
   }
@@ -8497,7 +8497,7 @@
   var badBidiRects;
   function hasBadBidiRects(measure) {
     if (badBidiRects != null) return badBidiRects;
-    var txt = removeChildrenAndAdd(measure, document.createTextNode("A\u062eA"));
+    var txt = removeChildrenAndAdd(measure, document.createTextNode("A\u062EA"));
     var r0 = range(txt, 0, 1).getBoundingClientRect();
     if (!r0 || r0.left == r0.right) return false; // Safari returns null in some cases (#2780)
     var r1 = range(txt, 1, 2).getBoundingClientRect();
@@ -8732,7 +8732,7 @@
       else return "L";
     }
 
-    var bidiRE = /[\u0590-\u05f4\u0600-\u06ff\u0700-\u08ac]/;
+    var bidiRE = /[\u0590-\u05F4\u0600-\u06FF\u0700-\u08AC]/;
     var isNeutral = /[stwN]/, isStrong = /[LRr]/, countsAsLeft = /[Lb1n]/, countsAsNum = /[1n]/;
     // Browsers seem to always treat the boundaries of block elements as being L.
     var outerType = "L";

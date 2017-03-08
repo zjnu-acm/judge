@@ -28,19 +28,19 @@ CKFinder.lang['ja'] =
 	common :
 	{
 		// Put the voice-only part of the label in the span.
-		unavailable		: '%1<span class="cke_accessibility">, は利用できません。</span>',
-		confirmCancel	: '変更された項目があります。ウィンドウを閉じてもいいですか？',
+		unavailable		: '%1<span class="cke_accessibility">, \u306F\u5229\u7528\u3067\u304D\u307E\u305B\u3093\u3002</span>',
+		confirmCancel	: '\u5909\u66F4\u3055\u308C\u305F\u9805\u76EE\u304C\u3042\u308A\u307E\u3059\u3002\u30A6\u30A3\u30F3\u30C9\u30A6\u3092\u9589\u3058\u3066\u3082\u3044\u3044\u3067\u3059\u304B\uFF1F',
 		ok				: 'OK',
-		cancel			: 'キャンセル',
-		confirmationTitle	: '確認',
-		messageTitle	: 'インフォメーション',
-		inputTitle		: '質問',
-		undo			: '元に戻す',
-		redo			: 'やり直す',
-		skip			: 'スキップ',
-		skipAll			: 'すべてスキップ',
-		makeDecision	: 'どうしますか？',
-		rememberDecision: '全てに適用する'
+		cancel			: '\u30AD\u30E3\u30F3\u30BB\u30EB',
+		confirmationTitle	: '\u78BA\u8A8D',
+		messageTitle	: '\u30A4\u30F3\u30D5\u30A9\u30E1\u30FC\u30B7\u30E7\u30F3',
+		inputTitle		: '\u8CEA\u554F',
+		undo			: '\u5143\u306B\u623B\u3059',
+		redo			: '\u3084\u308A\u76F4\u3059',
+		skip			: '\u30B9\u30AD\u30C3\u30D7',
+		skipAll			: '\u3059\u3079\u3066\u30B9\u30AD\u30C3\u30D7',
+		makeDecision	: '\u3069\u3046\u3057\u307E\u3059\u304B\uFF1F',
+		rememberDecision: '\u5168\u3066\u306B\u9069\u7528\u3059\u308B'
 	},
 
 
@@ -68,37 +68,37 @@ CKFinder.lang['ja'] =
 	DateAmPm : ['AM', 'PM'],
 
 	// Folders
-	FoldersTitle	: 'フォルダ',
-	FolderLoading	: '読み込み中...',
-	FolderNew		: '新しいフォルダ名を入力してください: ',
-	FolderRename	: '新しいフォルダ名を入力してください: ',
-	FolderDelete	: '本当にフォルダ「"%1"」を削除してもよろしいですか？',
-	FolderRenaming	: ' (リネーム中...)',
-	FolderDeleting	: ' (削除中...)',
-	DestinationFolder	: '適用するフォルダ',
+	FoldersTitle	: '\u30D5\u30A9\u30EB\u30C0',
+	FolderLoading	: '\u8AAD\u307F\u8FBC\u307F\u4E2D...',
+	FolderNew		: '\u65B0\u3057\u3044\u30D5\u30A9\u30EB\u30C0\u540D\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044: ',
+	FolderRename	: '\u65B0\u3057\u3044\u30D5\u30A9\u30EB\u30C0\u540D\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044: ',
+	FolderDelete	: '\u672C\u5F53\u306B\u30D5\u30A9\u30EB\u30C0\u300C"%1"\u300D\u3092\u524A\u9664\u3057\u3066\u3082\u3088\u308D\u3057\u3044\u3067\u3059\u304B\uFF1F',
+	FolderRenaming	: ' (\u30EA\u30CD\u30FC\u30E0\u4E2D...)',
+	FolderDeleting	: ' (\u524A\u9664\u4E2D...)',
+	DestinationFolder	: '\u9069\u7528\u3059\u308B\u30D5\u30A9\u30EB\u30C0',
 
 	// Files
-	FileRename		: '新しいファイル名を入力してください: ',
-	FileRenameExt	: 'ファイルが使えなくなる可能性がありますが、本当に拡張子を変更してもよろしいですか？',
-	FileRenaming	: 'リネーム中...',
-	FileDelete		: '本当に「"%1"」を削除してもよろしいですか？',
-	FilesDelete	: 'これらの %1 つのファイルを削除してもよろしいですか？ ',
-	FilesLoading	: '読み込み中...',
-	FilesEmpty		: 'ファイルがありません',
-	DestinationFile	: '適用するファイル',
-	SkippedFiles	: 'スキップしたファイルのリスト:',
+	FileRename		: '\u65B0\u3057\u3044\u30D5\u30A1\u30A4\u30EB\u540D\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044: ',
+	FileRenameExt	: '\u30D5\u30A1\u30A4\u30EB\u304C\u4F7F\u3048\u306A\u304F\u306A\u308B\u53EF\u80FD\u6027\u304C\u3042\u308A\u307E\u3059\u304C\u3001\u672C\u5F53\u306B\u62E1\u5F35\u5B50\u3092\u5909\u66F4\u3057\u3066\u3082\u3088\u308D\u3057\u3044\u3067\u3059\u304B\uFF1F',
+	FileRenaming	: '\u30EA\u30CD\u30FC\u30E0\u4E2D...',
+	FileDelete		: '\u672C\u5F53\u306B\u300C"%1"\u300D\u3092\u524A\u9664\u3057\u3066\u3082\u3088\u308D\u3057\u3044\u3067\u3059\u304B\uFF1F',
+	FilesDelete	: '\u3053\u308C\u3089\u306E %1 \u3064\u306E\u30D5\u30A1\u30A4\u30EB\u3092\u524A\u9664\u3057\u3066\u3082\u3088\u308D\u3057\u3044\u3067\u3059\u304B\uFF1F ',
+	FilesLoading	: '\u8AAD\u307F\u8FBC\u307F\u4E2D...',
+	FilesEmpty		: '\u30D5\u30A1\u30A4\u30EB\u304C\u3042\u308A\u307E\u305B\u3093',
+	DestinationFile	: '\u9069\u7528\u3059\u308B\u30D5\u30A1\u30A4\u30EB',
+	SkippedFiles	: '\u30B9\u30AD\u30C3\u30D7\u3057\u305F\u30D5\u30A1\u30A4\u30EB\u306E\u30EA\u30B9\u30C8:',
 
 	// Basket
 	BasketFolder		: 'Basket',
-	BasketClear			: 'バスケットを空にする',
-	BasketRemove		: 'バスケットから削除',
-	BasketOpenFolder	: '親フォルダを開く',
-	BasketTruncateConfirm : '本当にバスケットの中身を空にしますか？',
-	BasketRemoveConfirm	: '本当に「"%1"」をバスケットから削除しますか？',
+	BasketClear			: '\u30D0\u30B9\u30B1\u30C3\u30C8\u3092\u7A7A\u306B\u3059\u308B',
+	BasketRemove		: '\u30D0\u30B9\u30B1\u30C3\u30C8\u304B\u3089\u524A\u9664',
+	BasketOpenFolder	: '\u89AA\u30D5\u30A9\u30EB\u30C0\u3092\u958B\u304F',
+	BasketTruncateConfirm : '\u672C\u5F53\u306B\u30D0\u30B9\u30B1\u30C3\u30C8\u306E\u4E2D\u8EAB\u3092\u7A7A\u306B\u3057\u307E\u3059\u304B\uFF1F',
+	BasketRemoveConfirm	: '\u672C\u5F53\u306B\u300C"%1"\u300D\u3092\u30D0\u30B9\u30B1\u30C3\u30C8\u304B\u3089\u524A\u9664\u3057\u307E\u3059\u304B\uFF1F',
 	BasketRemoveConfirmMultiple	: 'Do you really want to remove %1 files from the basket?', // MISSING
-	BasketEmpty			: 'バスケットの中にファイルがありません。このエリアにドラッグ＆ドロップして追加することができます。',
-	BasketCopyFilesHere	: 'バスケットからファイルをコピー',
-	BasketMoveFilesHere	: 'バスケットからファイルを移動',
+	BasketEmpty			: '\u30D0\u30B9\u30B1\u30C3\u30C8\u306E\u4E2D\u306B\u30D5\u30A1\u30A4\u30EB\u304C\u3042\u308A\u307E\u305B\u3093\u3002\u3053\u306E\u30A8\u30EA\u30A2\u306B\u30C9\u30E9\u30C3\u30B0\uFF06\u30C9\u30ED\u30C3\u30D7\u3057\u3066\u8FFD\u52A0\u3059\u308B\u3053\u3068\u304C\u3067\u304D\u307E\u3059\u3002',
+	BasketCopyFilesHere	: '\u30D0\u30B9\u30B1\u30C3\u30C8\u304B\u3089\u30D5\u30A1\u30A4\u30EB\u3092\u30B3\u30D4\u30FC',
+	BasketMoveFilesHere	: '\u30D0\u30B9\u30B1\u30C3\u30C8\u304B\u3089\u30D5\u30A1\u30A4\u30EB\u3092\u79FB\u52D5',
 
 	// Global messages
 	OperationCompletedSuccess	: 'Operation completed successfully.', // MISSING
@@ -112,87 +112,87 @@ CKFinder.lang['ja'] =
 	CopyFailedList		: 'The following files could not be copied:<br />%s', // MISSING
 
 	// Toolbar Buttons (some used elsewhere)
-	Upload		: 'アップロード',
-	UploadTip	: '新しいファイルのアップロード',
-	Refresh		: '表示の更新',
-	Settings	: 'カスタマイズ',
-	Help		: 'ヘルプ',
-	HelpTip		: 'ヘルプ',
+	Upload		: '\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9',
+	UploadTip	: '\u65B0\u3057\u3044\u30D5\u30A1\u30A4\u30EB\u306E\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9',
+	Refresh		: '\u8868\u793A\u306E\u66F4\u65B0',
+	Settings	: '\u30AB\u30B9\u30BF\u30DE\u30A4\u30BA',
+	Help		: '\u30D8\u30EB\u30D7',
+	HelpTip		: '\u30D8\u30EB\u30D7',
 
 	// Context Menus
-	Select			: 'この画像を選択',
-	SelectThumbnail : 'この画像のサムネイルを選択',
-	View			: '画像だけを表示',
-	Download		: 'ダウンロード',
+	Select			: '\u3053\u306E\u753B\u50CF\u3092\u9078\u629E',
+	SelectThumbnail : '\u3053\u306E\u753B\u50CF\u306E\u30B5\u30E0\u30CD\u30A4\u30EB\u3092\u9078\u629E',
+	View			: '\u753B\u50CF\u3060\u3051\u3092\u8868\u793A',
+	Download		: '\u30C0\u30A6\u30F3\u30ED\u30FC\u30C9',
 
-	NewSubFolder	: '新しいフォルダに入れる',
-	Rename			: 'ファイル名の変更',
-	Delete			: '削除',
-	DeleteFiles		: 'ファイルを削除する',
+	NewSubFolder	: '\u65B0\u3057\u3044\u30D5\u30A9\u30EB\u30C0\u306B\u5165\u308C\u308B',
+	Rename			: '\u30D5\u30A1\u30A4\u30EB\u540D\u306E\u5909\u66F4',
+	Delete			: '\u524A\u9664',
+	DeleteFiles		: '\u30D5\u30A1\u30A4\u30EB\u3092\u524A\u9664\u3059\u308B',
 
-	CopyDragDrop	: 'コピーするファイルをここにドロップしてください',
-	MoveDragDrop	: '移動するファイルをここにドロップしてください',
+	CopyDragDrop	: '\u30B3\u30D4\u30FC\u3059\u308B\u30D5\u30A1\u30A4\u30EB\u3092\u3053\u3053\u306B\u30C9\u30ED\u30C3\u30D7\u3057\u3066\u304F\u3060\u3055\u3044',
+	MoveDragDrop	: '\u79FB\u52D5\u3059\u308B\u30D5\u30A1\u30A4\u30EB\u3092\u3053\u3053\u306B\u30C9\u30ED\u30C3\u30D7\u3057\u3066\u304F\u3060\u3055\u3044',
 
 	// Dialogs
-	RenameDlgTitle		: 'リネーム',
-	NewNameDlgTitle		: '新しい名前',
-	FileExistsDlgTitle	: 'ファイルはすでに存在します。',
-	SysErrorDlgTitle : 'システムエラー',
+	RenameDlgTitle		: '\u30EA\u30CD\u30FC\u30E0',
+	NewNameDlgTitle		: '\u65B0\u3057\u3044\u540D\u524D',
+	FileExistsDlgTitle	: '\u30D5\u30A1\u30A4\u30EB\u306F\u3059\u3067\u306B\u5B58\u5728\u3057\u307E\u3059\u3002',
+	SysErrorDlgTitle : '\u30B7\u30B9\u30C6\u30E0\u30A8\u30E9\u30FC',
 
-	FileOverwrite	: '上書き',
-	FileAutorename	: '自動でリネーム',
-	ManuallyRename	: '手動でリネーム',
+	FileOverwrite	: '\u4E0A\u66F8\u304D',
+	FileAutorename	: '\u81EA\u52D5\u3067\u30EA\u30CD\u30FC\u30E0',
+	ManuallyRename	: '\u624B\u52D5\u3067\u30EA\u30CD\u30FC\u30E0',
 
 	// Generic
 	OkBtn		: 'OK',
-	CancelBtn	: 'キャンセル',
-	CloseBtn	: '閉じる',
+	CancelBtn	: '\u30AD\u30E3\u30F3\u30BB\u30EB',
+	CloseBtn	: '\u9589\u3058\u308B',
 
 	// Upload Panel
-	UploadTitle			: 'ファイルのアップロード',
-	UploadSelectLbl		: 'アップロードするファイルを選択してください',
-	UploadProgressLbl	: '(ファイルのアップロード中...)',
-	UploadBtn			: 'アップロード',
-	UploadBtnCancel		: 'キャンセル',
+	UploadTitle			: '\u30D5\u30A1\u30A4\u30EB\u306E\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9',
+	UploadSelectLbl		: '\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9\u3059\u308B\u30D5\u30A1\u30A4\u30EB\u3092\u9078\u629E\u3057\u3066\u304F\u3060\u3055\u3044',
+	UploadProgressLbl	: '(\u30D5\u30A1\u30A4\u30EB\u306E\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9\u4E2D...)',
+	UploadBtn			: '\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9',
+	UploadBtnCancel		: '\u30AD\u30E3\u30F3\u30BB\u30EB',
 
-	UploadNoFileMsg		: 'ファイルを選んでください。',
-	UploadNoFolder		: 'アップロードの前にフォルダを選択してください。',
-	UploadNoPerms		: 'ファイルのアップロード権限がありません。',
-	UploadUnknError		: 'ファイルの送信に失敗しました。',
-	UploadExtIncorrect	: '選択されたファイルの拡張子は許可されていません。',
+	UploadNoFileMsg		: '\u30D5\u30A1\u30A4\u30EB\u3092\u9078\u3093\u3067\u304F\u3060\u3055\u3044\u3002',
+	UploadNoFolder		: '\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9\u306E\u524D\u306B\u30D5\u30A9\u30EB\u30C0\u3092\u9078\u629E\u3057\u3066\u304F\u3060\u3055\u3044\u3002',
+	UploadNoPerms		: '\u30D5\u30A1\u30A4\u30EB\u306E\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9\u6A29\u9650\u304C\u3042\u308A\u307E\u305B\u3093\u3002',
+	UploadUnknError		: '\u30D5\u30A1\u30A4\u30EB\u306E\u9001\u4FE1\u306B\u5931\u6557\u3057\u307E\u3057\u305F\u3002',
+	UploadExtIncorrect	: '\u9078\u629E\u3055\u308C\u305F\u30D5\u30A1\u30A4\u30EB\u306E\u62E1\u5F35\u5B50\u306F\u8A31\u53EF\u3055\u308C\u3066\u3044\u307E\u305B\u3093\u3002',
 
 	// Flash Uploads
-	UploadLabel			: 'アップロード',
-	UploadTotalFiles	: 'アップロードしたファイル数:',
-	UploadTotalSize		: 'ファイルサイズ:',
-	UploadSend			: 'アップロード',
-	UploadAddFiles		: 'ファイルを追加',
-	UploadClearFiles	: 'クリア',
-	UploadCancel		: 'キャンセル',
-	UploadRemove		: '削除',
-	UploadRemoveTip		: '!fを削除しました',
-	UploadUploaded		: '!n%をアップロードしました',
-	UploadProcessing	: 'アップロード中...',
+	UploadLabel			: '\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9',
+	UploadTotalFiles	: '\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9\u3057\u305F\u30D5\u30A1\u30A4\u30EB\u6570:',
+	UploadTotalSize		: '\u30D5\u30A1\u30A4\u30EB\u30B5\u30A4\u30BA:',
+	UploadSend			: '\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9',
+	UploadAddFiles		: '\u30D5\u30A1\u30A4\u30EB\u3092\u8FFD\u52A0',
+	UploadClearFiles	: '\u30AF\u30EA\u30A2',
+	UploadCancel		: '\u30AD\u30E3\u30F3\u30BB\u30EB',
+	UploadRemove		: '\u524A\u9664',
+	UploadRemoveTip		: '!f\u3092\u524A\u9664\u3057\u307E\u3057\u305F',
+	UploadUploaded		: '!n%\u3092\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9\u3057\u307E\u3057\u305F',
+	UploadProcessing	: '\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9\u4E2D...',
 
 	// Settings Panel
-	SetTitle		: '表示のカスタマイズ',
-	SetView			: '表示方法:',
-	SetViewThumb	: 'サムネイル',
-	SetViewList		: '表示形式',
-	SetDisplay		: '表示する項目:',
-	SetDisplayName	: 'ファイル名',
-	SetDisplayDate	: '日時',
-	SetDisplaySize	: 'ファイルサイズ',
-	SetSort			: '表示の順番:',
-	SetSortName		: 'ファイル名',
-	SetSortDate		: '日付',
-	SetSortSize		: 'サイズ',
-	SetSortExtension		: '拡張子',
+	SetTitle		: '\u8868\u793A\u306E\u30AB\u30B9\u30BF\u30DE\u30A4\u30BA',
+	SetView			: '\u8868\u793A\u65B9\u6CD5:',
+	SetViewThumb	: '\u30B5\u30E0\u30CD\u30A4\u30EB',
+	SetViewList		: '\u8868\u793A\u5F62\u5F0F',
+	SetDisplay		: '\u8868\u793A\u3059\u308B\u9805\u76EE:',
+	SetDisplayName	: '\u30D5\u30A1\u30A4\u30EB\u540D',
+	SetDisplayDate	: '\u65E5\u6642',
+	SetDisplaySize	: '\u30D5\u30A1\u30A4\u30EB\u30B5\u30A4\u30BA',
+	SetSort			: '\u8868\u793A\u306E\u9806\u756A:',
+	SetSortName		: '\u30D5\u30A1\u30A4\u30EB\u540D',
+	SetSortDate		: '\u65E5\u4ED8',
+	SetSortSize		: '\u30B5\u30A4\u30BA',
+	SetSortExtension		: '\u62E1\u5F35\u5B50',
 
 	// Status Bar
-	FilesCountEmpty : '<フォルダ内にファイルがありません>',
-	FilesCountOne	: '１つのファイル',
-	FilesCountMany	: '%1個のファイル',
+	FilesCountEmpty : '<\u30D5\u30A9\u30EB\u30C0\u5185\u306B\u30D5\u30A1\u30A4\u30EB\u304C\u3042\u308A\u307E\u305B\u3093>',
+	FilesCountOne	: '\uFF11\u3064\u306E\u30D5\u30A1\u30A4\u30EB',
+	FilesCountMany	: '%1\u500B\u306E\u30D5\u30A1\u30A4\u30EB',
 
 	// Size and Speed
 	Kb				: '%1 KB',
@@ -201,49 +201,49 @@ CKFinder.lang['ja'] =
 	SizePerSecond	: '%1/s', // MISSING
 
 	// Connector Error Messages.
-	ErrorUnknown	: 'リクエストの処理に失敗しました。 (Error %1)',
+	ErrorUnknown	: '\u30EA\u30AF\u30A8\u30B9\u30C8\u306E\u51E6\u7406\u306B\u5931\u6557\u3057\u307E\u3057\u305F\u3002 (Error %1)',
 	Errors :
 	{
-	 10 : '不正なコマンドです。',
-	 11 : 'リソースタイプが特定できませんでした。',
-	 12 : '要求されたリソースのタイプが正しくありません。',
-	102 : 'ファイル名/フォルダ名が正しくありません。',
-	103 : 'リクエストを完了できませんでした。認証エラーです。',
-	104 : 'リクエストを完了できませんでした。ファイルのパーミッションが許可されていません。',
-	105 : '拡張子が正しくありません。',
-	109 : '不正なリクエストです。',
-	110 : '不明なエラーが発生しました。',
+	 10 : '\u4E0D\u6B63\u306A\u30B3\u30DE\u30F3\u30C9\u3067\u3059\u3002',
+	 11 : '\u30EA\u30BD\u30FC\u30B9\u30BF\u30A4\u30D7\u304C\u7279\u5B9A\u3067\u304D\u307E\u305B\u3093\u3067\u3057\u305F\u3002',
+	 12 : '\u8981\u6C42\u3055\u308C\u305F\u30EA\u30BD\u30FC\u30B9\u306E\u30BF\u30A4\u30D7\u304C\u6B63\u3057\u304F\u3042\u308A\u307E\u305B\u3093\u3002',
+	102 : '\u30D5\u30A1\u30A4\u30EB\u540D/\u30D5\u30A9\u30EB\u30C0\u540D\u304C\u6B63\u3057\u304F\u3042\u308A\u307E\u305B\u3093\u3002',
+	103 : '\u30EA\u30AF\u30A8\u30B9\u30C8\u3092\u5B8C\u4E86\u3067\u304D\u307E\u305B\u3093\u3067\u3057\u305F\u3002\u8A8D\u8A3C\u30A8\u30E9\u30FC\u3067\u3059\u3002',
+	104 : '\u30EA\u30AF\u30A8\u30B9\u30C8\u3092\u5B8C\u4E86\u3067\u304D\u307E\u305B\u3093\u3067\u3057\u305F\u3002\u30D5\u30A1\u30A4\u30EB\u306E\u30D1\u30FC\u30DF\u30C3\u30B7\u30E7\u30F3\u304C\u8A31\u53EF\u3055\u308C\u3066\u3044\u307E\u305B\u3093\u3002',
+	105 : '\u62E1\u5F35\u5B50\u304C\u6B63\u3057\u304F\u3042\u308A\u307E\u305B\u3093\u3002',
+	109 : '\u4E0D\u6B63\u306A\u30EA\u30AF\u30A8\u30B9\u30C8\u3067\u3059\u3002',
+	110 : '\u4E0D\u660E\u306A\u30A8\u30E9\u30FC\u304C\u767A\u751F\u3057\u307E\u3057\u305F\u3002',
 	111 : 'It was not possible to complete the request due to resulting file size.', // MISSING
-	115 : '同じ名前のファイル/フォルダがすでに存在しています。',
-	116 : 'フォルダが見つかりませんでした。ページを更新して再度お試し下さい。',
-	117 : 'ファイルが見つかりませんでした。ページを更新して再度お試し下さい。',
-	118 : '対象が移動元と同じ場所を指定されています。',
-	201 : '同じ名前のファイルがすでに存在しています。"%1" にリネームして保存されました。',
-	202 : '不正なファイルです。',
-	203 : 'ファイルのサイズが大きすぎます。',
-	204 : 'アップロードされたファイルは壊れています。',
-	205 : 'サーバ内の一時作業フォルダが利用できません。',
-	206 : 'セキュリティ上の理由からアップロードが取り消されました。このファイルにはHTMLに似たデータが含まれています。',
-	207 : 'ファイルは "%1" にリネームして保存されました。',
-	300 : 'ファイルの移動に失敗しました。',
-	301 : 'ファイルのコピーに失敗しました。',
-	500 : 'ファイルブラウザはセキュリティ上の制限から無効になっています。システム担当者に連絡をして、CKFinderの設定をご確認下さい。',
-	501 : 'サムネイル機能は無効になっています。'
+	115 : '\u540C\u3058\u540D\u524D\u306E\u30D5\u30A1\u30A4\u30EB/\u30D5\u30A9\u30EB\u30C0\u304C\u3059\u3067\u306B\u5B58\u5728\u3057\u3066\u3044\u307E\u3059\u3002',
+	116 : '\u30D5\u30A9\u30EB\u30C0\u304C\u898B\u3064\u304B\u308A\u307E\u305B\u3093\u3067\u3057\u305F\u3002\u30DA\u30FC\u30B8\u3092\u66F4\u65B0\u3057\u3066\u518D\u5EA6\u304A\u8A66\u3057\u4E0B\u3055\u3044\u3002',
+	117 : '\u30D5\u30A1\u30A4\u30EB\u304C\u898B\u3064\u304B\u308A\u307E\u305B\u3093\u3067\u3057\u305F\u3002\u30DA\u30FC\u30B8\u3092\u66F4\u65B0\u3057\u3066\u518D\u5EA6\u304A\u8A66\u3057\u4E0B\u3055\u3044\u3002',
+	118 : '\u5BFE\u8C61\u304C\u79FB\u52D5\u5143\u3068\u540C\u3058\u5834\u6240\u3092\u6307\u5B9A\u3055\u308C\u3066\u3044\u307E\u3059\u3002',
+	201 : '\u540C\u3058\u540D\u524D\u306E\u30D5\u30A1\u30A4\u30EB\u304C\u3059\u3067\u306B\u5B58\u5728\u3057\u3066\u3044\u307E\u3059\u3002"%1" \u306B\u30EA\u30CD\u30FC\u30E0\u3057\u3066\u4FDD\u5B58\u3055\u308C\u307E\u3057\u305F\u3002',
+	202 : '\u4E0D\u6B63\u306A\u30D5\u30A1\u30A4\u30EB\u3067\u3059\u3002',
+	203 : '\u30D5\u30A1\u30A4\u30EB\u306E\u30B5\u30A4\u30BA\u304C\u5927\u304D\u3059\u304E\u307E\u3059\u3002',
+	204 : '\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9\u3055\u308C\u305F\u30D5\u30A1\u30A4\u30EB\u306F\u58CA\u308C\u3066\u3044\u307E\u3059\u3002',
+	205 : '\u30B5\u30FC\u30D0\u5185\u306E\u4E00\u6642\u4F5C\u696D\u30D5\u30A9\u30EB\u30C0\u304C\u5229\u7528\u3067\u304D\u307E\u305B\u3093\u3002',
+	206 : '\u30BB\u30AD\u30E5\u30EA\u30C6\u30A3\u4E0A\u306E\u7406\u7531\u304B\u3089\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9\u304C\u53D6\u308A\u6D88\u3055\u308C\u307E\u3057\u305F\u3002\u3053\u306E\u30D5\u30A1\u30A4\u30EB\u306B\u306FHTML\u306B\u4F3C\u305F\u30C7\u30FC\u30BF\u304C\u542B\u307E\u308C\u3066\u3044\u307E\u3059\u3002',
+	207 : '\u30D5\u30A1\u30A4\u30EB\u306F "%1" \u306B\u30EA\u30CD\u30FC\u30E0\u3057\u3066\u4FDD\u5B58\u3055\u308C\u307E\u3057\u305F\u3002',
+	300 : '\u30D5\u30A1\u30A4\u30EB\u306E\u79FB\u52D5\u306B\u5931\u6557\u3057\u307E\u3057\u305F\u3002',
+	301 : '\u30D5\u30A1\u30A4\u30EB\u306E\u30B3\u30D4\u30FC\u306B\u5931\u6557\u3057\u307E\u3057\u305F\u3002',
+	500 : '\u30D5\u30A1\u30A4\u30EB\u30D6\u30E9\u30A6\u30B6\u306F\u30BB\u30AD\u30E5\u30EA\u30C6\u30A3\u4E0A\u306E\u5236\u9650\u304B\u3089\u7121\u52B9\u306B\u306A\u3063\u3066\u3044\u307E\u3059\u3002\u30B7\u30B9\u30C6\u30E0\u62C5\u5F53\u8005\u306B\u9023\u7D61\u3092\u3057\u3066\u3001CKFinder\u306E\u8A2D\u5B9A\u3092\u3054\u78BA\u8A8D\u4E0B\u3055\u3044\u3002',
+	501 : '\u30B5\u30E0\u30CD\u30A4\u30EB\u6A5F\u80FD\u306F\u7121\u52B9\u306B\u306A\u3063\u3066\u3044\u307E\u3059\u3002'
 	},
 
 	// Other Error Messages.
 	ErrorMsg :
 	{
-		FileEmpty		: 'ファイル名を入力してください',
-		FileExists		: ' %s はすでに存在しています。別の名前を入力してください。',
-		FolderEmpty		: 'フォルダ名を入力してください。',
-		FolderExists	: 'フォルダ %s は既に存在しています。',
-		FolderNameExists	: 'フォルダは既に存在しています。',
+		FileEmpty		: '\u30D5\u30A1\u30A4\u30EB\u540D\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044',
+		FileExists		: ' %s \u306F\u3059\u3067\u306B\u5B58\u5728\u3057\u3066\u3044\u307E\u3059\u3002\u5225\u306E\u540D\u524D\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044\u3002',
+		FolderEmpty		: '\u30D5\u30A9\u30EB\u30C0\u540D\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044\u3002',
+		FolderExists	: '\u30D5\u30A9\u30EB\u30C0 %s \u306F\u65E2\u306B\u5B58\u5728\u3057\u3066\u3044\u307E\u3059\u3002',
+		FolderNameExists	: '\u30D5\u30A9\u30EB\u30C0\u306F\u65E2\u306B\u5B58\u5728\u3057\u3066\u3044\u307E\u3059\u3002',
 
-		FileInvChar		: 'ファイルに以下の文字は使えません: \n\\ / : * ? " < > |',
-		FolderInvChar	: 'フォルダに以下の文字は使えません: \n\\ / : * ? " < > |',
+		FileInvChar		: '\u30D5\u30A1\u30A4\u30EB\u306B\u4EE5\u4E0B\u306E\u6587\u5B57\u306F\u4F7F\u3048\u307E\u305B\u3093: \n\\ / : * ? " < > |',
+		FolderInvChar	: '\u30D5\u30A9\u30EB\u30C0\u306B\u4EE5\u4E0B\u306E\u6587\u5B57\u306F\u4F7F\u3048\u307E\u305B\u3093: \n\\ / : * ? " < > |',
 
-		PopupBlockView	: 'ファイルを新しいウィンドウで開くことに失敗しました。 お使いのブラウザの設定でポップアップをブロックする設定を解除してください。',
+		PopupBlockView	: '\u30D5\u30A1\u30A4\u30EB\u3092\u65B0\u3057\u3044\u30A6\u30A3\u30F3\u30C9\u30A6\u3067\u958B\u304F\u3053\u3068\u306B\u5931\u6557\u3057\u307E\u3057\u305F\u3002 \u304A\u4F7F\u3044\u306E\u30D6\u30E9\u30A6\u30B6\u306E\u8A2D\u5B9A\u3067\u30DD\u30C3\u30D7\u30A2\u30C3\u30D7\u3092\u30D6\u30ED\u30C3\u30AF\u3059\u308B\u8A2D\u5B9A\u3092\u89E3\u9664\u3057\u3066\u304F\u3060\u3055\u3044\u3002',
 		XmlError		: 'It was not possible to properly load the XML response from the web server.', // MISSING
 		XmlEmpty		: 'It was not possible to load the XML response from the web server. The server returned an empty response.', // MISSING
 		XmlRawResponse	: 'Raw response from the server: %s' // MISSING
@@ -252,41 +252,41 @@ CKFinder.lang['ja'] =
 	// Imageresize plugin
 	Imageresize :
 	{
-		dialogTitle		: 'リサイズ： %s',
-		sizeTooBig		: 'オリジナルの画像よりも大きいサイズは指定できません。 (%size).',
-		resizeSuccess	: '画像のリサイズに成功しました',
-		thumbnailNew	: 'サムネイルをつくる',
-		thumbnailSmall	: '小 (%s)',
-		thumbnailMedium	: '中 (%s)',
-		thumbnailLarge	: '大 (%s)',
+		dialogTitle		: '\u30EA\u30B5\u30A4\u30BA\uFF1A %s',
+		sizeTooBig		: '\u30AA\u30EA\u30B8\u30CA\u30EB\u306E\u753B\u50CF\u3088\u308A\u3082\u5927\u304D\u3044\u30B5\u30A4\u30BA\u306F\u6307\u5B9A\u3067\u304D\u307E\u305B\u3093\u3002 (%size).',
+		resizeSuccess	: '\u753B\u50CF\u306E\u30EA\u30B5\u30A4\u30BA\u306B\u6210\u529F\u3057\u307E\u3057\u305F',
+		thumbnailNew	: '\u30B5\u30E0\u30CD\u30A4\u30EB\u3092\u3064\u304F\u308B',
+		thumbnailSmall	: '\u5C0F (%s)',
+		thumbnailMedium	: '\u4E2D (%s)',
+		thumbnailLarge	: '\u5927 (%s)',
 		newSize			: 'Set new size',
-		width			: '幅',
-		height			: '高さ',
-		invalidHeight	: '高さの値が不正です。',
-		invalidWidth	: '幅の値が不正です。',
-		invalidName		: 'ファイル名が不正です。',
-		newImage		: '新しい画像を作成',
-		noExtensionChange : '拡張子は変更できません。',
-		imageSmall		: '元画像が小さすぎます。',
-		contextMenuName	: 'リサイズ',
-		lockRatio		: 'ロック比率',
-		resetSize		: 'サイズリセット'
+		width			: '\u5E45',
+		height			: '\u9AD8\u3055',
+		invalidHeight	: '\u9AD8\u3055\u306E\u5024\u304C\u4E0D\u6B63\u3067\u3059\u3002',
+		invalidWidth	: '\u5E45\u306E\u5024\u304C\u4E0D\u6B63\u3067\u3059\u3002',
+		invalidName		: '\u30D5\u30A1\u30A4\u30EB\u540D\u304C\u4E0D\u6B63\u3067\u3059\u3002',
+		newImage		: '\u65B0\u3057\u3044\u753B\u50CF\u3092\u4F5C\u6210',
+		noExtensionChange : '\u62E1\u5F35\u5B50\u306F\u5909\u66F4\u3067\u304D\u307E\u305B\u3093\u3002',
+		imageSmall		: '\u5143\u753B\u50CF\u304C\u5C0F\u3055\u3059\u304E\u307E\u3059\u3002',
+		contextMenuName	: '\u30EA\u30B5\u30A4\u30BA',
+		lockRatio		: '\u30ED\u30C3\u30AF\u6BD4\u7387',
+		resetSize		: '\u30B5\u30A4\u30BA\u30EA\u30BB\u30C3\u30C8'
 	},
 
 	// Fileeditor plugin
 	Fileeditor :
 	{
-		save			: '保存',
-		fileOpenError	: 'ファイルを開けませんでした。',
-		fileSaveSuccess	: 'ファイルの保存が完了しました。',
-		contextMenuName	: '編集',
-		loadingFile		: 'ファイルの読み込み中...'
+		save			: '\u4FDD\u5B58',
+		fileOpenError	: '\u30D5\u30A1\u30A4\u30EB\u3092\u958B\u3051\u307E\u305B\u3093\u3067\u3057\u305F\u3002',
+		fileSaveSuccess	: '\u30D5\u30A1\u30A4\u30EB\u306E\u4FDD\u5B58\u304C\u5B8C\u4E86\u3057\u307E\u3057\u305F\u3002',
+		contextMenuName	: '\u7DE8\u96C6',
+		loadingFile		: '\u30D5\u30A1\u30A4\u30EB\u306E\u8AAD\u307F\u8FBC\u307F\u4E2D...'
 	},
 
 	Maximize :
 	{
-		maximize : '最大化',
-		minimize : '最小化'
+		maximize : '\u6700\u5927\u5316',
+		minimize : '\u6700\u5C0F\u5316'
 	},
 
 	Gallery :
@@ -296,17 +296,17 @@ CKFinder.lang['ja'] =
 
 	Zip :
 	{
-		extractHereLabel	: 'ここに解凍する',
-		extractToLabel		: 'フォルダを指定して解凍する',
-		downloadZipLabel	: 'zipファイルでダウンロード',
-		compressZipLabel	: 'zipファイルにする',
-		removeAndExtract	: '既存のファイルを削除して解凍しました。',
-		extractAndOverwrite	: '解凍して既存のファイルに上書きしました。',
-		extractSuccess		: '解凍が完了しました。'
+		extractHereLabel	: '\u3053\u3053\u306B\u89E3\u51CD\u3059\u308B',
+		extractToLabel		: '\u30D5\u30A9\u30EB\u30C0\u3092\u6307\u5B9A\u3057\u3066\u89E3\u51CD\u3059\u308B',
+		downloadZipLabel	: 'zip\u30D5\u30A1\u30A4\u30EB\u3067\u30C0\u30A6\u30F3\u30ED\u30FC\u30C9',
+		compressZipLabel	: 'zip\u30D5\u30A1\u30A4\u30EB\u306B\u3059\u308B',
+		removeAndExtract	: '\u65E2\u5B58\u306E\u30D5\u30A1\u30A4\u30EB\u3092\u524A\u9664\u3057\u3066\u89E3\u51CD\u3057\u307E\u3057\u305F\u3002',
+		extractAndOverwrite	: '\u89E3\u51CD\u3057\u3066\u65E2\u5B58\u306E\u30D5\u30A1\u30A4\u30EB\u306B\u4E0A\u66F8\u304D\u3057\u307E\u3057\u305F\u3002',
+		extractSuccess		: '\u89E3\u51CD\u304C\u5B8C\u4E86\u3057\u307E\u3057\u305F\u3002'
 	},
 
 	Search :
 	{
-		searchPlaceholder : '検索'
+		searchPlaceholder : '\u691C\u7D22'
 	}
 };

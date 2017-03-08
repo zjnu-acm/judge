@@ -8,7 +8,7 @@ CKFinder.setPluginLang( 'dummy', 'pl',
 			dummy :
 			{
 				title : 'Testowe okienko',
-				menuItem : 'Otwórz okienko dummy',
-				typeText : 'Podaj jakiś tekst.'
+				menuItem : 'Otw\xF3rz okienko dummy',
+				typeText : 'Podaj jaki\u015B tekst.'
 			}
 		});

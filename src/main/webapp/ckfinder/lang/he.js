@@ -28,19 +28,19 @@ CKFinder.lang['he'] =
 	common :
 	{
 		// Put the voice-only part of the label in the span.
-		unavailable		: '%1<span class="cke_accessibility">, לא זמין</span>',
-		confirmCancel	: 'חלק מהאפשרויות שונו. האם לסגור את החלון?',
-		ok				: 'אישור',
-		cancel			: 'ביטול',
-		confirmationTitle	: 'אישור',
-		messageTitle	: 'הודעה',
-		inputTitle		: 'שאלה',
-		undo			: 'לבטל',
-		redo			: 'לעשות שוב',
-		skip			: 'דלג',
-		skipAll			: 'דלג הכל',
-		makeDecision	: 'איזו פעולה לבצע?',
-		rememberDecision: 'זכור החלטתי'
+		unavailable		: '%1<span class="cke_accessibility">, \u05DC\u05D0 \u05D6\u05DE\u05D9\u05DF</span>',
+		confirmCancel	: '\u05D7\u05DC\u05E7 \u05DE\u05D4\u05D0\u05E4\u05E9\u05E8\u05D5\u05D9\u05D5\u05EA \u05E9\u05D5\u05E0\u05D5. \u05D4\u05D0\u05DD \u05DC\u05E1\u05D2\u05D5\u05E8 \u05D0\u05EA \u05D4\u05D7\u05DC\u05D5\u05DF?',
+		ok				: '\u05D0\u05D9\u05E9\u05D5\u05E8',
+		cancel			: '\u05D1\u05D9\u05D8\u05D5\u05DC',
+		confirmationTitle	: '\u05D0\u05D9\u05E9\u05D5\u05E8',
+		messageTitle	: '\u05D4\u05D5\u05D3\u05E2\u05D4',
+		inputTitle		: '\u05E9\u05D0\u05DC\u05D4',
+		undo			: '\u05DC\u05D1\u05D8\u05DC',
+		redo			: '\u05DC\u05E2\u05E9\u05D5\u05EA \u05E9\u05D5\u05D1',
+		skip			: '\u05D3\u05DC\u05D2',
+		skipAll			: '\u05D3\u05DC\u05D2 \u05D4\u05DB\u05DC',
+		makeDecision	: '\u05D0\u05D9\u05D6\u05D5 \u05E4\u05E2\u05D5\u05DC\u05D4 \u05DC\u05D1\u05E6\u05E2?',
+		rememberDecision: '\u05D6\u05DB\u05D5\u05E8 \u05D4\u05D7\u05DC\u05D8\u05EA\u05D9'
 	},
 
 
@@ -68,131 +68,131 @@ CKFinder.lang['he'] =
 	DateAmPm : ['AM', 'PM'],
 
 	// Folders
-	FoldersTitle	: 'תיקיות',
-	FolderLoading	: 'טוען...',
-	FolderNew		: 'יש להקליד שם חדש לתיקיה: ',
-	FolderRename	: 'יש להקליד שם חדש לתיקיה: ',
-	FolderDelete	: 'האם למחוק את התיקיה "%1" ?',
-	FolderRenaming	: ' (משנה שם...)',
-	FolderDeleting	: ' (מוחק...)',
-	DestinationFolder	: 'תיקיית יעד',
+	FoldersTitle	: '\u05EA\u05D9\u05E7\u05D9\u05D5\u05EA',
+	FolderLoading	: '\u05D8\u05D5\u05E2\u05DF...',
+	FolderNew		: '\u05D9\u05E9 \u05DC\u05D4\u05E7\u05DC\u05D9\u05D3 \u05E9\u05DD \u05D7\u05D3\u05E9 \u05DC\u05EA\u05D9\u05E7\u05D9\u05D4: ',
+	FolderRename	: '\u05D9\u05E9 \u05DC\u05D4\u05E7\u05DC\u05D9\u05D3 \u05E9\u05DD \u05D7\u05D3\u05E9 \u05DC\u05EA\u05D9\u05E7\u05D9\u05D4: ',
+	FolderDelete	: '\u05D4\u05D0\u05DD \u05DC\u05DE\u05D7\u05D5\u05E7 \u05D0\u05EA \u05D4\u05EA\u05D9\u05E7\u05D9\u05D4 "%1" ?',
+	FolderRenaming	: ' (\u05DE\u05E9\u05E0\u05D4 \u05E9\u05DD...)',
+	FolderDeleting	: ' (\u05DE\u05D5\u05D7\u05E7...)',
+	DestinationFolder	: '\u05EA\u05D9\u05E7\u05D9\u05D9\u05EA \u05D9\u05E2\u05D3',
 
 	// Files
-	FileRename		: 'יש להקליד שם חדש לקובץ: ',
-	FileRenameExt	: 'האם לשנות את הסיומת של הקובץ?',
-	FileRenaming	: 'משנה שם...',
-	FileDelete		: 'האם למחוק את הקובץ "%1"?',
-	FilesDelete	: 'האם למחוק %1 קבצים?',
-	FilesLoading	: 'טוען...',
-	FilesEmpty		: 'תיקיה ריקה',
-	DestinationFile	: 'קובץ יעד',
-	SkippedFiles	: 'רשימת קבצים שדולגו:',
+	FileRename		: '\u05D9\u05E9 \u05DC\u05D4\u05E7\u05DC\u05D9\u05D3 \u05E9\u05DD \u05D7\u05D3\u05E9 \u05DC\u05E7\u05D5\u05D1\u05E5: ',
+	FileRenameExt	: '\u05D4\u05D0\u05DD \u05DC\u05E9\u05E0\u05D5\u05EA \u05D0\u05EA \u05D4\u05E1\u05D9\u05D5\u05DE\u05EA \u05E9\u05DC \u05D4\u05E7\u05D5\u05D1\u05E5?',
+	FileRenaming	: '\u05DE\u05E9\u05E0\u05D4 \u05E9\u05DD...',
+	FileDelete		: '\u05D4\u05D0\u05DD \u05DC\u05DE\u05D7\u05D5\u05E7 \u05D0\u05EA \u05D4\u05E7\u05D5\u05D1\u05E5 "%1"?',
+	FilesDelete	: '\u05D4\u05D0\u05DD \u05DC\u05DE\u05D7\u05D5\u05E7 %1 \u05E7\u05D1\u05E6\u05D9\u05DD?',
+	FilesLoading	: '\u05D8\u05D5\u05E2\u05DF...',
+	FilesEmpty		: '\u05EA\u05D9\u05E7\u05D9\u05D4 \u05E8\u05D9\u05E7\u05D4',
+	DestinationFile	: '\u05E7\u05D5\u05D1\u05E5 \u05D9\u05E2\u05D3',
+	SkippedFiles	: '\u05E8\u05E9\u05D9\u05DE\u05EA \u05E7\u05D1\u05E6\u05D9\u05DD \u05E9\u05D3\u05D5\u05DC\u05D2\u05D5:',
 
 	// Basket
-	BasketFolder		: 'סל קבצים',
-	BasketClear			: 'ניקוי סל הקבצים',
-	BasketRemove		: 'מחיקה מסל הקבצים',
-	BasketOpenFolder	: 'פתיחת תיקיית אב',
-	BasketTruncateConfirm : 'האם למחוק את כל הקבצים מסל הקבצים?',
-	BasketRemoveConfirm	: 'האם למחוק את הקובץ "%1" מסל הקבצים?',
-	BasketRemoveConfirmMultiple	: 'האם למחוק %1 קבצים מסל הקבצים?',
-	BasketEmpty			: 'אין קבצים בסל הקבצים, יש לגרור לכאן קובץ.',
-	BasketCopyFilesHere	: 'העתקת קבצים מסל הקבצים',
-	BasketMoveFilesHere	: 'הזזת קבצים מסל הקבצים',
+	BasketFolder		: '\u05E1\u05DC \u05E7\u05D1\u05E6\u05D9\u05DD',
+	BasketClear			: '\u05E0\u05D9\u05E7\u05D5\u05D9 \u05E1\u05DC \u05D4\u05E7\u05D1\u05E6\u05D9\u05DD',
+	BasketRemove		: '\u05DE\u05D7\u05D9\u05E7\u05D4 \u05DE\u05E1\u05DC \u05D4\u05E7\u05D1\u05E6\u05D9\u05DD',
+	BasketOpenFolder	: '\u05E4\u05EA\u05D9\u05D7\u05EA \u05EA\u05D9\u05E7\u05D9\u05D9\u05EA \u05D0\u05D1',
+	BasketTruncateConfirm : '\u05D4\u05D0\u05DD \u05DC\u05DE\u05D7\u05D5\u05E7 \u05D0\u05EA \u05DB\u05DC \u05D4\u05E7\u05D1\u05E6\u05D9\u05DD \u05DE\u05E1\u05DC \u05D4\u05E7\u05D1\u05E6\u05D9\u05DD?',
+	BasketRemoveConfirm	: '\u05D4\u05D0\u05DD \u05DC\u05DE\u05D7\u05D5\u05E7 \u05D0\u05EA \u05D4\u05E7\u05D5\u05D1\u05E5 "%1" \u05DE\u05E1\u05DC \u05D4\u05E7\u05D1\u05E6\u05D9\u05DD?',
+	BasketRemoveConfirmMultiple	: '\u05D4\u05D0\u05DD \u05DC\u05DE\u05D7\u05D5\u05E7 %1 \u05E7\u05D1\u05E6\u05D9\u05DD \u05DE\u05E1\u05DC \u05D4\u05E7\u05D1\u05E6\u05D9\u05DD?',
+	BasketEmpty			: '\u05D0\u05D9\u05DF \u05E7\u05D1\u05E6\u05D9\u05DD \u05D1\u05E1\u05DC \u05D4\u05E7\u05D1\u05E6\u05D9\u05DD, \u05D9\u05E9 \u05DC\u05D2\u05E8\u05D5\u05E8 \u05DC\u05DB\u05D0\u05DF \u05E7\u05D5\u05D1\u05E5.',
+	BasketCopyFilesHere	: '\u05D4\u05E2\u05EA\u05E7\u05EA \u05E7\u05D1\u05E6\u05D9\u05DD \u05DE\u05E1\u05DC \u05D4\u05E7\u05D1\u05E6\u05D9\u05DD',
+	BasketMoveFilesHere	: '\u05D4\u05D6\u05D6\u05EA \u05E7\u05D1\u05E6\u05D9\u05DD \u05DE\u05E1\u05DC \u05D4\u05E7\u05D1\u05E6\u05D9\u05DD',
 
 	// Global messages
-	OperationCompletedSuccess	: 'הפעולה הושלמה בהצלחה.',
-	OperationCompletedErrors		: 'הפעולה הושלמה עם שגיאות.',
+	OperationCompletedSuccess	: '\u05D4\u05E4\u05E2\u05D5\u05DC\u05D4 \u05D4\u05D5\u05E9\u05DC\u05DE\u05D4 \u05D1\u05D4\u05E6\u05DC\u05D7\u05D4.',
+	OperationCompletedErrors		: '\u05D4\u05E4\u05E2\u05D5\u05DC\u05D4 \u05D4\u05D5\u05E9\u05DC\u05DE\u05D4 \u05E2\u05DD \u05E9\u05D2\u05D9\u05D0\u05D5\u05EA.',
 	FileError				: '%s: %e',
 
 	// Move and Copy files
-	MovedFilesNumber		: 'מספר קבצים שהוזזו: %s.',
-	CopiedFilesNumber	: 'מספר קבצים שהועתקו: %s.',
-	MoveFailedList		: 'המערכת לא הצליחה להזיז את הקבצים הבאים:<br />%s',
-	CopyFailedList		: 'המערכת לא הצליחה להעתיק את הקבצים הבאים:<br />%s',
+	MovedFilesNumber		: '\u05DE\u05E1\u05E4\u05E8 \u05E7\u05D1\u05E6\u05D9\u05DD \u05E9\u05D4\u05D5\u05D6\u05D6\u05D5: %s.',
+	CopiedFilesNumber	: '\u05DE\u05E1\u05E4\u05E8 \u05E7\u05D1\u05E6\u05D9\u05DD \u05E9\u05D4\u05D5\u05E2\u05EA\u05E7\u05D5: %s.',
+	MoveFailedList		: '\u05D4\u05DE\u05E2\u05E8\u05DB\u05EA \u05DC\u05D0 \u05D4\u05E6\u05DC\u05D9\u05D7\u05D4 \u05DC\u05D4\u05D6\u05D9\u05D6 \u05D0\u05EA \u05D4\u05E7\u05D1\u05E6\u05D9\u05DD \u05D4\u05D1\u05D0\u05D9\u05DD:<br />%s',
+	CopyFailedList		: '\u05D4\u05DE\u05E2\u05E8\u05DB\u05EA \u05DC\u05D0 \u05D4\u05E6\u05DC\u05D9\u05D7\u05D4 \u05DC\u05D4\u05E2\u05EA\u05D9\u05E7 \u05D0\u05EA \u05D4\u05E7\u05D1\u05E6\u05D9\u05DD \u05D4\u05D1\u05D0\u05D9\u05DD:<br />%s',
 
 	// Toolbar Buttons (some used elsewhere)
-	Upload		: 'העלאה',
-	UploadTip	: 'העלאת קובץ חדש',
-	Refresh		: 'ריענון',
-	Settings	: 'הגדרות',
-	Help		: 'עזרה',
-	HelpTip		: 'עזרה',
+	Upload		: '\u05D4\u05E2\u05DC\u05D0\u05D4',
+	UploadTip	: '\u05D4\u05E2\u05DC\u05D0\u05EA \u05E7\u05D5\u05D1\u05E5 \u05D7\u05D3\u05E9',
+	Refresh		: '\u05E8\u05D9\u05E2\u05E0\u05D5\u05DF',
+	Settings	: '\u05D4\u05D2\u05D3\u05E8\u05D5\u05EA',
+	Help		: '\u05E2\u05D6\u05E8\u05D4',
+	HelpTip		: '\u05E2\u05D6\u05E8\u05D4',
 
 	// Context Menus
-	Select			: 'בחירה',
-	SelectThumbnail : 'בחירת תמונה מוקטנת',
-	View			: 'צפיה',
-	Download		: 'הורדה',
+	Select			: '\u05D1\u05D7\u05D9\u05E8\u05D4',
+	SelectThumbnail : '\u05D1\u05D7\u05D9\u05E8\u05EA \u05EA\u05DE\u05D5\u05E0\u05D4 \u05DE\u05D5\u05E7\u05D8\u05E0\u05EA',
+	View			: '\u05E6\u05E4\u05D9\u05D4',
+	Download		: '\u05D4\u05D5\u05E8\u05D3\u05D4',
 
-	NewSubFolder	: 'תת-תיקיה חדשה',
-	Rename			: 'שינוי שם',
-	Delete			: 'מחיקה',
-	DeleteFiles		: 'מחיקת קבצים',
+	NewSubFolder	: '\u05EA\u05EA-\u05EA\u05D9\u05E7\u05D9\u05D4 \u05D7\u05D3\u05E9\u05D4',
+	Rename			: '\u05E9\u05D9\u05E0\u05D5\u05D9 \u05E9\u05DD',
+	Delete			: '\u05DE\u05D7\u05D9\u05E7\u05D4',
+	DeleteFiles		: '\u05DE\u05D7\u05D9\u05E7\u05EA \u05E7\u05D1\u05E6\u05D9\u05DD',
 
-	CopyDragDrop	: 'העתקת קבצים לכאן',
-	MoveDragDrop	: 'הזזת קבצים לכאן',
+	CopyDragDrop	: '\u05D4\u05E2\u05EA\u05E7\u05EA \u05E7\u05D1\u05E6\u05D9\u05DD \u05DC\u05DB\u05D0\u05DF',
+	MoveDragDrop	: '\u05D4\u05D6\u05D6\u05EA \u05E7\u05D1\u05E6\u05D9\u05DD \u05DC\u05DB\u05D0\u05DF',
 
 	// Dialogs
-	RenameDlgTitle		: 'שינוי שם',
-	NewNameDlgTitle		: 'שם חדש',
-	FileExistsDlgTitle	: 'קובץ זה כבר קיים',
-	SysErrorDlgTitle : 'שגיאת מערכת',
+	RenameDlgTitle		: '\u05E9\u05D9\u05E0\u05D5\u05D9 \u05E9\u05DD',
+	NewNameDlgTitle		: '\u05E9\u05DD \u05D7\u05D3\u05E9',
+	FileExistsDlgTitle	: '\u05E7\u05D5\u05D1\u05E5 \u05D6\u05D4 \u05DB\u05D1\u05E8 \u05E7\u05D9\u05D9\u05DD',
+	SysErrorDlgTitle : '\u05E9\u05D2\u05D9\u05D0\u05EA \u05DE\u05E2\u05E8\u05DB\u05EA',
 
-	FileOverwrite	: 'החלפה',
-	FileAutorename	: 'שינוי שם אוטומטי',
-	ManuallyRename	: 'שינוי שם ידני',
+	FileOverwrite	: '\u05D4\u05D7\u05DC\u05E4\u05D4',
+	FileAutorename	: '\u05E9\u05D9\u05E0\u05D5\u05D9 \u05E9\u05DD \u05D0\u05D5\u05D8\u05D5\u05DE\u05D8\u05D9',
+	ManuallyRename	: '\u05E9\u05D9\u05E0\u05D5\u05D9 \u05E9\u05DD \u05D9\u05D3\u05E0\u05D9',
 
 	// Generic
-	OkBtn		: 'אישור',
-	CancelBtn	: 'ביטול',
-	CloseBtn	: 'סגור',
+	OkBtn		: '\u05D0\u05D9\u05E9\u05D5\u05E8',
+	CancelBtn	: '\u05D1\u05D9\u05D8\u05D5\u05DC',
+	CloseBtn	: '\u05E1\u05D2\u05D5\u05E8',
 
 	// Upload Panel
-	UploadTitle			: 'העלאת קובץ חדש',
-	UploadSelectLbl		: 'בחירת קובץ להעלאה',
-	UploadProgressLbl	: '(העלאה מתבצעת, נא להמתין...)',
-	UploadBtn			: 'העלאת קובץ',
-	UploadBtnCancel		: 'ביטול',
+	UploadTitle			: '\u05D4\u05E2\u05DC\u05D0\u05EA \u05E7\u05D5\u05D1\u05E5 \u05D7\u05D3\u05E9',
+	UploadSelectLbl		: '\u05D1\u05D7\u05D9\u05E8\u05EA \u05E7\u05D5\u05D1\u05E5 \u05DC\u05D4\u05E2\u05DC\u05D0\u05D4',
+	UploadProgressLbl	: '(\u05D4\u05E2\u05DC\u05D0\u05D4 \u05DE\u05EA\u05D1\u05E6\u05E2\u05EA, \u05E0\u05D0 \u05DC\u05D4\u05DE\u05EA\u05D9\u05DF...)',
+	UploadBtn			: '\u05D4\u05E2\u05DC\u05D0\u05EA \u05E7\u05D5\u05D1\u05E5',
+	UploadBtnCancel		: '\u05D1\u05D9\u05D8\u05D5\u05DC',
 
-	UploadNoFileMsg		: 'יש לבחור קובץ מהמחשב',
-	UploadNoFolder		: 'יש לבחור תיקיה לפני ההעלאה.',
-	UploadNoPerms		: 'העלאת קובץ אסורה.',
-	UploadUnknError		: 'שגיאה בשליחת הקובץ.',
-	UploadExtIncorrect	: 'סוג קובץ זה לא מאושר בתיקיה זאת.',
+	UploadNoFileMsg		: '\u05D9\u05E9 \u05DC\u05D1\u05D7\u05D5\u05E8 \u05E7\u05D5\u05D1\u05E5 \u05DE\u05D4\u05DE\u05D7\u05E9\u05D1',
+	UploadNoFolder		: '\u05D9\u05E9 \u05DC\u05D1\u05D7\u05D5\u05E8 \u05EA\u05D9\u05E7\u05D9\u05D4 \u05DC\u05E4\u05E0\u05D9 \u05D4\u05D4\u05E2\u05DC\u05D0\u05D4.',
+	UploadNoPerms		: '\u05D4\u05E2\u05DC\u05D0\u05EA \u05E7\u05D5\u05D1\u05E5 \u05D0\u05E1\u05D5\u05E8\u05D4.',
+	UploadUnknError		: '\u05E9\u05D2\u05D9\u05D0\u05D4 \u05D1\u05E9\u05DC\u05D9\u05D7\u05EA \u05D4\u05E7\u05D5\u05D1\u05E5.',
+	UploadExtIncorrect	: '\u05E1\u05D5\u05D2 \u05E7\u05D5\u05D1\u05E5 \u05D6\u05D4 \u05DC\u05D0 \u05DE\u05D0\u05D5\u05E9\u05E8 \u05D1\u05EA\u05D9\u05E7\u05D9\u05D4 \u05D6\u05D0\u05EA.',
 
 	// Flash Uploads
-	UploadLabel			: 'קבצים להעלאה',
-	UploadTotalFiles	: 'כמות קבצים:',
-	UploadTotalSize		: 'גודל סופי:',
-	UploadSend			: 'התחלת העלאה',
-	UploadAddFiles		: 'הוספת קבצים',
-	UploadClearFiles	: 'ניקוי קבצים',
-	UploadCancel		: 'ביטול העלאה',
-	UploadRemove		: 'מחיקה מהרשימה',
-	UploadRemoveTip		: 'מחיקת הקובץ !f',
-	UploadUploaded		: '!n% הועלו',
-	UploadProcessing	: 'מעבד...',
+	UploadLabel			: '\u05E7\u05D1\u05E6\u05D9\u05DD \u05DC\u05D4\u05E2\u05DC\u05D0\u05D4',
+	UploadTotalFiles	: '\u05DB\u05DE\u05D5\u05EA \u05E7\u05D1\u05E6\u05D9\u05DD:',
+	UploadTotalSize		: '\u05D2\u05D5\u05D3\u05DC \u05E1\u05D5\u05E4\u05D9:',
+	UploadSend			: '\u05D4\u05EA\u05D7\u05DC\u05EA \u05D4\u05E2\u05DC\u05D0\u05D4',
+	UploadAddFiles		: '\u05D4\u05D5\u05E1\u05E4\u05EA \u05E7\u05D1\u05E6\u05D9\u05DD',
+	UploadClearFiles	: '\u05E0\u05D9\u05E7\u05D5\u05D9 \u05E7\u05D1\u05E6\u05D9\u05DD',
+	UploadCancel		: '\u05D1\u05D9\u05D8\u05D5\u05DC \u05D4\u05E2\u05DC\u05D0\u05D4',
+	UploadRemove		: '\u05DE\u05D7\u05D9\u05E7\u05D4 \u05DE\u05D4\u05E8\u05E9\u05D9\u05DE\u05D4',
+	UploadRemoveTip		: '\u05DE\u05D7\u05D9\u05E7\u05EA \u05D4\u05E7\u05D5\u05D1\u05E5 !f',
+	UploadUploaded		: '!n% \u05D4\u05D5\u05E2\u05DC\u05D5',
+	UploadProcessing	: '\u05DE\u05E2\u05D1\u05D3...',
 
 	// Settings Panel
-	SetTitle		: 'הגדרות',
-	SetView			: 'צפיה:',
-	SetViewThumb	: 'תמונות מוקטנות',
-	SetViewList		: 'רשימה',
-	SetDisplay		: 'תצוגה:',
-	SetDisplayName	: 'שם קובץ',
-	SetDisplayDate	: 'תאריך',
-	SetDisplaySize	: 'גודל קובץ',
-	SetSort			: 'מיון:',
-	SetSortName		: 'לפי שם',
-	SetSortDate		: 'לפי תאריך',
-	SetSortSize		: 'לפי גודל',
-	SetSortExtension		: 'לפי סיומת (Extension)',
+	SetTitle		: '\u05D4\u05D2\u05D3\u05E8\u05D5\u05EA',
+	SetView			: '\u05E6\u05E4\u05D9\u05D4:',
+	SetViewThumb	: '\u05EA\u05DE\u05D5\u05E0\u05D5\u05EA \u05DE\u05D5\u05E7\u05D8\u05E0\u05D5\u05EA',
+	SetViewList		: '\u05E8\u05E9\u05D9\u05DE\u05D4',
+	SetDisplay		: '\u05EA\u05E6\u05D5\u05D2\u05D4:',
+	SetDisplayName	: '\u05E9\u05DD \u05E7\u05D5\u05D1\u05E5',
+	SetDisplayDate	: '\u05EA\u05D0\u05E8\u05D9\u05DA',
+	SetDisplaySize	: '\u05D2\u05D5\u05D3\u05DC \u05E7\u05D5\u05D1\u05E5',
+	SetSort			: '\u05DE\u05D9\u05D5\u05DF:',
+	SetSortName		: '\u05DC\u05E4\u05D9 \u05E9\u05DD',
+	SetSortDate		: '\u05DC\u05E4\u05D9 \u05EA\u05D0\u05E8\u05D9\u05DA',
+	SetSortSize		: '\u05DC\u05E4\u05D9 \u05D2\u05D5\u05D3\u05DC',
+	SetSortExtension		: '\u05DC\u05E4\u05D9 \u05E1\u05D9\u05D5\u05DE\u05EA (Extension)',
 
 	// Status Bar
-	FilesCountEmpty : '<תיקיה ריקה>',
-	FilesCountOne	: 'קובץ 1',
-	FilesCountMany	: '%1 קבצים',
+	FilesCountEmpty : '<\u05EA\u05D9\u05E7\u05D9\u05D4 \u05E8\u05D9\u05E7\u05D4>',
+	FilesCountOne	: '\u05E7\u05D5\u05D1\u05E5 1',
+	FilesCountMany	: '%1 \u05E7\u05D1\u05E6\u05D9\u05DD',
 
 	// Size and Speed
 	Kb				: '%1KB',
@@ -201,112 +201,112 @@ CKFinder.lang['he'] =
 	SizePerSecond	: '%1/s',
 
 	// Connector Error Messages.
-	ErrorUnknown	: 'לא היה ניתן להשלים את הבקשה. (שגיאה %1)',
+	ErrorUnknown	: '\u05DC\u05D0 \u05D4\u05D9\u05D4 \u05E0\u05D9\u05EA\u05DF \u05DC\u05D4\u05E9\u05DC\u05D9\u05DD \u05D0\u05EA \u05D4\u05D1\u05E7\u05E9\u05D4. (\u05E9\u05D2\u05D9\u05D0\u05D4 %1)',
 	Errors :
 	{
-	 10 : 'הוראה לא תקינה.',
-	 11 : 'סוג המשאב לא צויין בבקשה לשרת.',
-	 12 : 'סוג המשאב המצויין לא תקין.',
-	102 : 'שם הקובץ או התיקיה לא תקין.',
-	103 : 'לא היה ניתן להשלים את הבקשה בשל הרשאות מוגבלות.',
-	104 : 'לא היה ניתן להשלים את הבקשה בשל הרשאות מערכת קבצים מוגבלות.',
-	105 : 'סיומת הקובץ לא תקינה.',
-	109 : 'בקשה לא תקינה.',
-	110 : 'שגיאה לא ידועה.',
-	111 : 'לא ניתן היה להשלים את הבקשה בשל הגודל החריג של הקובץ הנוצר.',
-	115 : 'כבר קיים/ת קובץ או תיקיה באותו השם.',
-	116 : 'התיקיה לא נמצאה. נא לרענן ולנסות שוב.',
-	117 : 'הקובץ לא נמצא. נא לרענן ולנסות שוב.',
-	118 : 'כתובות המקור והיעד זהות.',
-	201 : 'קובץ עם אותו השם כבר קיים. שם הקובץ שהועלה שונה ל "%1"',
-	202 : 'הקובץ לא תקין.',
-	203 : 'הקובץ לא תקין. גודל הקובץ גדול מדי.',
-	204 : 'הקובץ המועלה לא תקין',
-	205 : 'לא קיימת בשרת תיקיה זמנית להעלאת קבצים.',
-	206 : 'ההעלאה בוטלה מסיבות אבטחה. הקובץ מכיל תוכן שדומה ל-HTML.',
-	207 : 'שם הקובץ שהועלה שונה ל "%1"',
-	300 : 'העברת הקבצים נכשלה.',
-	301 : 'העתקת הקבצים נכשלה.',
-	500 : 'דפדפן הקבצים מנוטרל מסיבות אבטחה. יש לפנות למנהל המערכת ולבדוק את קובץ התצורה של CKFinder.',
-	501 : 'התמיכה בתמונות מוקטנות מבוטלת.'
+	 10 : '\u05D4\u05D5\u05E8\u05D0\u05D4 \u05DC\u05D0 \u05EA\u05E7\u05D9\u05E0\u05D4.',
+	 11 : '\u05E1\u05D5\u05D2 \u05D4\u05DE\u05E9\u05D0\u05D1 \u05DC\u05D0 \u05E6\u05D5\u05D9\u05D9\u05DF \u05D1\u05D1\u05E7\u05E9\u05D4 \u05DC\u05E9\u05E8\u05EA.',
+	 12 : '\u05E1\u05D5\u05D2 \u05D4\u05DE\u05E9\u05D0\u05D1 \u05D4\u05DE\u05E6\u05D5\u05D9\u05D9\u05DF \u05DC\u05D0 \u05EA\u05E7\u05D9\u05DF.',
+	102 : '\u05E9\u05DD \u05D4\u05E7\u05D5\u05D1\u05E5 \u05D0\u05D5 \u05D4\u05EA\u05D9\u05E7\u05D9\u05D4 \u05DC\u05D0 \u05EA\u05E7\u05D9\u05DF.',
+	103 : '\u05DC\u05D0 \u05D4\u05D9\u05D4 \u05E0\u05D9\u05EA\u05DF \u05DC\u05D4\u05E9\u05DC\u05D9\u05DD \u05D0\u05EA \u05D4\u05D1\u05E7\u05E9\u05D4 \u05D1\u05E9\u05DC \u05D4\u05E8\u05E9\u05D0\u05D5\u05EA \u05DE\u05D5\u05D2\u05D1\u05DC\u05D5\u05EA.',
+	104 : '\u05DC\u05D0 \u05D4\u05D9\u05D4 \u05E0\u05D9\u05EA\u05DF \u05DC\u05D4\u05E9\u05DC\u05D9\u05DD \u05D0\u05EA \u05D4\u05D1\u05E7\u05E9\u05D4 \u05D1\u05E9\u05DC \u05D4\u05E8\u05E9\u05D0\u05D5\u05EA \u05DE\u05E2\u05E8\u05DB\u05EA \u05E7\u05D1\u05E6\u05D9\u05DD \u05DE\u05D5\u05D2\u05D1\u05DC\u05D5\u05EA.',
+	105 : '\u05E1\u05D9\u05D5\u05DE\u05EA \u05D4\u05E7\u05D5\u05D1\u05E5 \u05DC\u05D0 \u05EA\u05E7\u05D9\u05E0\u05D4.',
+	109 : '\u05D1\u05E7\u05E9\u05D4 \u05DC\u05D0 \u05EA\u05E7\u05D9\u05E0\u05D4.',
+	110 : '\u05E9\u05D2\u05D9\u05D0\u05D4 \u05DC\u05D0 \u05D9\u05D3\u05D5\u05E2\u05D4.',
+	111 : '\u05DC\u05D0 \u05E0\u05D9\u05EA\u05DF \u05D4\u05D9\u05D4 \u05DC\u05D4\u05E9\u05DC\u05D9\u05DD \u05D0\u05EA \u05D4\u05D1\u05E7\u05E9\u05D4 \u05D1\u05E9\u05DC \u05D4\u05D2\u05D5\u05D3\u05DC \u05D4\u05D7\u05E8\u05D9\u05D2 \u05E9\u05DC \u05D4\u05E7\u05D5\u05D1\u05E5 \u05D4\u05E0\u05D5\u05E6\u05E8.',
+	115 : '\u05DB\u05D1\u05E8 \u05E7\u05D9\u05D9\u05DD/\u05EA \u05E7\u05D5\u05D1\u05E5 \u05D0\u05D5 \u05EA\u05D9\u05E7\u05D9\u05D4 \u05D1\u05D0\u05D5\u05EA\u05D5 \u05D4\u05E9\u05DD.',
+	116 : '\u05D4\u05EA\u05D9\u05E7\u05D9\u05D4 \u05DC\u05D0 \u05E0\u05DE\u05E6\u05D0\u05D4. \u05E0\u05D0 \u05DC\u05E8\u05E2\u05E0\u05DF \u05D5\u05DC\u05E0\u05E1\u05D5\u05EA \u05E9\u05D5\u05D1.',
+	117 : '\u05D4\u05E7\u05D5\u05D1\u05E5 \u05DC\u05D0 \u05E0\u05DE\u05E6\u05D0. \u05E0\u05D0 \u05DC\u05E8\u05E2\u05E0\u05DF \u05D5\u05DC\u05E0\u05E1\u05D5\u05EA \u05E9\u05D5\u05D1.',
+	118 : '\u05DB\u05EA\u05D5\u05D1\u05D5\u05EA \u05D4\u05DE\u05E7\u05D5\u05E8 \u05D5\u05D4\u05D9\u05E2\u05D3 \u05D6\u05D4\u05D5\u05EA.',
+	201 : '\u05E7\u05D5\u05D1\u05E5 \u05E2\u05DD \u05D0\u05D5\u05EA\u05D5 \u05D4\u05E9\u05DD \u05DB\u05D1\u05E8 \u05E7\u05D9\u05D9\u05DD. \u05E9\u05DD \u05D4\u05E7\u05D5\u05D1\u05E5 \u05E9\u05D4\u05D5\u05E2\u05DC\u05D4 \u05E9\u05D5\u05E0\u05D4 \u05DC "%1"',
+	202 : '\u05D4\u05E7\u05D5\u05D1\u05E5 \u05DC\u05D0 \u05EA\u05E7\u05D9\u05DF.',
+	203 : '\u05D4\u05E7\u05D5\u05D1\u05E5 \u05DC\u05D0 \u05EA\u05E7\u05D9\u05DF. \u05D2\u05D5\u05D3\u05DC \u05D4\u05E7\u05D5\u05D1\u05E5 \u05D2\u05D3\u05D5\u05DC \u05DE\u05D3\u05D9.',
+	204 : '\u05D4\u05E7\u05D5\u05D1\u05E5 \u05D4\u05DE\u05D5\u05E2\u05DC\u05D4 \u05DC\u05D0 \u05EA\u05E7\u05D9\u05DF',
+	205 : '\u05DC\u05D0 \u05E7\u05D9\u05D9\u05DE\u05EA \u05D1\u05E9\u05E8\u05EA \u05EA\u05D9\u05E7\u05D9\u05D4 \u05D6\u05DE\u05E0\u05D9\u05EA \u05DC\u05D4\u05E2\u05DC\u05D0\u05EA \u05E7\u05D1\u05E6\u05D9\u05DD.',
+	206 : '\u05D4\u05D4\u05E2\u05DC\u05D0\u05D4 \u05D1\u05D5\u05D8\u05DC\u05D4 \u05DE\u05E1\u05D9\u05D1\u05D5\u05EA \u05D0\u05D1\u05D8\u05D7\u05D4. \u05D4\u05E7\u05D5\u05D1\u05E5 \u05DE\u05DB\u05D9\u05DC \u05EA\u05D5\u05DB\u05DF \u05E9\u05D3\u05D5\u05DE\u05D4 \u05DC-HTML.',
+	207 : '\u05E9\u05DD \u05D4\u05E7\u05D5\u05D1\u05E5 \u05E9\u05D4\u05D5\u05E2\u05DC\u05D4 \u05E9\u05D5\u05E0\u05D4 \u05DC "%1"',
+	300 : '\u05D4\u05E2\u05D1\u05E8\u05EA \u05D4\u05E7\u05D1\u05E6\u05D9\u05DD \u05E0\u05DB\u05E9\u05DC\u05D4.',
+	301 : '\u05D4\u05E2\u05EA\u05E7\u05EA \u05D4\u05E7\u05D1\u05E6\u05D9\u05DD \u05E0\u05DB\u05E9\u05DC\u05D4.',
+	500 : '\u05D3\u05E4\u05D3\u05E4\u05DF \u05D4\u05E7\u05D1\u05E6\u05D9\u05DD \u05DE\u05E0\u05D5\u05D8\u05E8\u05DC \u05DE\u05E1\u05D9\u05D1\u05D5\u05EA \u05D0\u05D1\u05D8\u05D7\u05D4. \u05D9\u05E9 \u05DC\u05E4\u05E0\u05D5\u05EA \u05DC\u05DE\u05E0\u05D4\u05DC \u05D4\u05DE\u05E2\u05E8\u05DB\u05EA \u05D5\u05DC\u05D1\u05D3\u05D5\u05E7 \u05D0\u05EA \u05E7\u05D5\u05D1\u05E5 \u05D4\u05EA\u05E6\u05D5\u05E8\u05D4 \u05E9\u05DC CKFinder.',
+	501 : '\u05D4\u05EA\u05DE\u05D9\u05DB\u05D4 \u05D1\u05EA\u05DE\u05D5\u05E0\u05D5\u05EA \u05DE\u05D5\u05E7\u05D8\u05E0\u05D5\u05EA \u05DE\u05D1\u05D5\u05D8\u05DC\u05EA.'
 	},
 
 	// Other Error Messages.
 	ErrorMsg :
 	{
-		FileEmpty		: 'שם הקובץ לא יכול להיות ריק',
-		FileExists		: 'הקובץ %s כבר קיים',
-		FolderEmpty		: 'שם התיקיה לא יכול להיות ריק',
-		FolderExists	: 'התיקיה %s כבר קיימת.',
-		FolderNameExists	: 'התיקיה כבר קיימת.',
+		FileEmpty		: '\u05E9\u05DD \u05D4\u05E7\u05D5\u05D1\u05E5 \u05DC\u05D0 \u05D9\u05DB\u05D5\u05DC \u05DC\u05D4\u05D9\u05D5\u05EA \u05E8\u05D9\u05E7',
+		FileExists		: '\u05D4\u05E7\u05D5\u05D1\u05E5 %s \u05DB\u05D1\u05E8 \u05E7\u05D9\u05D9\u05DD',
+		FolderEmpty		: '\u05E9\u05DD \u05D4\u05EA\u05D9\u05E7\u05D9\u05D4 \u05DC\u05D0 \u05D9\u05DB\u05D5\u05DC \u05DC\u05D4\u05D9\u05D5\u05EA \u05E8\u05D9\u05E7',
+		FolderExists	: '\u05D4\u05EA\u05D9\u05E7\u05D9\u05D4 %s \u05DB\u05D1\u05E8 \u05E7\u05D9\u05D9\u05DE\u05EA.',
+		FolderNameExists	: '\u05D4\u05EA\u05D9\u05E7\u05D9\u05D4 \u05DB\u05D1\u05E8 \u05E7\u05D9\u05D9\u05DE\u05EA.',
 
-		FileInvChar		: 'שם הקובץ לא יכול לכלול תווים הבאים: \n\\ / : * ? " < > |',
-		FolderInvChar	: 'שם התיקיה לא יכול לכלול תווים הבאים: \n\\ / : * ? " < > |',
+		FileInvChar		: '\u05E9\u05DD \u05D4\u05E7\u05D5\u05D1\u05E5 \u05DC\u05D0 \u05D9\u05DB\u05D5\u05DC \u05DC\u05DB\u05DC\u05D5\u05DC \u05EA\u05D5\u05D5\u05D9\u05DD \u05D4\u05D1\u05D0\u05D9\u05DD: \n\\ / : * ? " < > |',
+		FolderInvChar	: '\u05E9\u05DD \u05D4\u05EA\u05D9\u05E7\u05D9\u05D4 \u05DC\u05D0 \u05D9\u05DB\u05D5\u05DC \u05DC\u05DB\u05DC\u05D5\u05DC \u05EA\u05D5\u05D5\u05D9\u05DD \u05D4\u05D1\u05D0\u05D9\u05DD: \n\\ / : * ? " < > |',
 
-		PopupBlockView	: 'לא היה ניתן לפתוח קובץ בחלון חדש. נא לבדוק את הגדרות הדפדפן ולבטל את חוסמי החלונות הקובצים.',
-		XmlError		: 'לא היה ניתן לטעון מהשרת כהלכה את קובץ ה-XML.',
-		XmlEmpty		: 'לא היה ניתן לטעון מהשרת את קובץ ה-XML. השרת החזיר תגובה ריקה.',
-		XmlRawResponse	: 'תגובה גולמית מהשרת: %s'
+		PopupBlockView	: '\u05DC\u05D0 \u05D4\u05D9\u05D4 \u05E0\u05D9\u05EA\u05DF \u05DC\u05E4\u05EA\u05D5\u05D7 \u05E7\u05D5\u05D1\u05E5 \u05D1\u05D7\u05DC\u05D5\u05DF \u05D7\u05D3\u05E9. \u05E0\u05D0 \u05DC\u05D1\u05D3\u05D5\u05E7 \u05D0\u05EA \u05D4\u05D2\u05D3\u05E8\u05D5\u05EA \u05D4\u05D3\u05E4\u05D3\u05E4\u05DF \u05D5\u05DC\u05D1\u05D8\u05DC \u05D0\u05EA \u05D7\u05D5\u05E1\u05DE\u05D9 \u05D4\u05D7\u05DC\u05D5\u05E0\u05D5\u05EA \u05D4\u05E7\u05D5\u05D1\u05E6\u05D9\u05DD.',
+		XmlError		: '\u05DC\u05D0 \u05D4\u05D9\u05D4 \u05E0\u05D9\u05EA\u05DF \u05DC\u05D8\u05E2\u05D5\u05DF \u05DE\u05D4\u05E9\u05E8\u05EA \u05DB\u05D4\u05DC\u05DB\u05D4 \u05D0\u05EA \u05E7\u05D5\u05D1\u05E5 \u05D4-XML.',
+		XmlEmpty		: '\u05DC\u05D0 \u05D4\u05D9\u05D4 \u05E0\u05D9\u05EA\u05DF \u05DC\u05D8\u05E2\u05D5\u05DF \u05DE\u05D4\u05E9\u05E8\u05EA \u05D0\u05EA \u05E7\u05D5\u05D1\u05E5 \u05D4-XML. \u05D4\u05E9\u05E8\u05EA \u05D4\u05D7\u05D6\u05D9\u05E8 \u05EA\u05D2\u05D5\u05D1\u05D4 \u05E8\u05D9\u05E7\u05D4.',
+		XmlRawResponse	: '\u05EA\u05D2\u05D5\u05D1\u05D4 \u05D2\u05D5\u05DC\u05DE\u05D9\u05EA \u05DE\u05D4\u05E9\u05E8\u05EA: %s'
 	},
 
 	// Imageresize plugin
 	Imageresize :
 	{
-		dialogTitle		: 'שינוי גודל התמונה %s',
-		sizeTooBig		: 'גובה ורוחב התמונה לא יכולים להיות גדולים מהגודל המקורי שלה (%size).',
-		resizeSuccess	: 'גודל התמונה שונה שהצלחה.',
-		thumbnailNew	: 'יצירת תמונה מוקטנת (Thumbnail)',
-		thumbnailSmall	: 'קטנה (%s)',
-		thumbnailMedium	: 'בינונית (%s)',
-		thumbnailLarge	: 'גדולה (%s)',
-		newSize			: 'קביעת גודל חדש',
-		width			: 'רוחב',
-		height			: 'גובה',
-		invalidHeight	: 'גובה לא חוקי.',
-		invalidWidth	: 'רוחב לא חוקי.',
-		invalidName		: 'שם הקובץ לא חוקי.',
-		newImage		: 'יצירת תמונה חדשה',
-		noExtensionChange : 'לא ניתן לשנות את סוג הקובץ.',
-		imageSmall		: 'התמונה המקורית קטנה מדי',
-		contextMenuName	: 'שינוי גודל',
-		lockRatio		: 'נעילת היחס',
-		resetSize		: 'איפוס הגודל'
+		dialogTitle		: '\u05E9\u05D9\u05E0\u05D5\u05D9 \u05D2\u05D5\u05D3\u05DC \u05D4\u05EA\u05DE\u05D5\u05E0\u05D4 %s',
+		sizeTooBig		: '\u05D2\u05D5\u05D1\u05D4 \u05D5\u05E8\u05D5\u05D7\u05D1 \u05D4\u05EA\u05DE\u05D5\u05E0\u05D4 \u05DC\u05D0 \u05D9\u05DB\u05D5\u05DC\u05D9\u05DD \u05DC\u05D4\u05D9\u05D5\u05EA \u05D2\u05D3\u05D5\u05DC\u05D9\u05DD \u05DE\u05D4\u05D2\u05D5\u05D3\u05DC \u05D4\u05DE\u05E7\u05D5\u05E8\u05D9 \u05E9\u05DC\u05D4 (%size).',
+		resizeSuccess	: '\u05D2\u05D5\u05D3\u05DC \u05D4\u05EA\u05DE\u05D5\u05E0\u05D4 \u05E9\u05D5\u05E0\u05D4 \u05E9\u05D4\u05E6\u05DC\u05D7\u05D4.',
+		thumbnailNew	: '\u05D9\u05E6\u05D9\u05E8\u05EA \u05EA\u05DE\u05D5\u05E0\u05D4 \u05DE\u05D5\u05E7\u05D8\u05E0\u05EA (Thumbnail)',
+		thumbnailSmall	: '\u05E7\u05D8\u05E0\u05D4 (%s)',
+		thumbnailMedium	: '\u05D1\u05D9\u05E0\u05D5\u05E0\u05D9\u05EA (%s)',
+		thumbnailLarge	: '\u05D2\u05D3\u05D5\u05DC\u05D4 (%s)',
+		newSize			: '\u05E7\u05D1\u05D9\u05E2\u05EA \u05D2\u05D5\u05D3\u05DC \u05D7\u05D3\u05E9',
+		width			: '\u05E8\u05D5\u05D7\u05D1',
+		height			: '\u05D2\u05D5\u05D1\u05D4',
+		invalidHeight	: '\u05D2\u05D5\u05D1\u05D4 \u05DC\u05D0 \u05D7\u05D5\u05E7\u05D9.',
+		invalidWidth	: '\u05E8\u05D5\u05D7\u05D1 \u05DC\u05D0 \u05D7\u05D5\u05E7\u05D9.',
+		invalidName		: '\u05E9\u05DD \u05D4\u05E7\u05D5\u05D1\u05E5 \u05DC\u05D0 \u05D7\u05D5\u05E7\u05D9.',
+		newImage		: '\u05D9\u05E6\u05D9\u05E8\u05EA \u05EA\u05DE\u05D5\u05E0\u05D4 \u05D7\u05D3\u05E9\u05D4',
+		noExtensionChange : '\u05DC\u05D0 \u05E0\u05D9\u05EA\u05DF \u05DC\u05E9\u05E0\u05D5\u05EA \u05D0\u05EA \u05E1\u05D5\u05D2 \u05D4\u05E7\u05D5\u05D1\u05E5.',
+		imageSmall		: '\u05D4\u05EA\u05DE\u05D5\u05E0\u05D4 \u05D4\u05DE\u05E7\u05D5\u05E8\u05D9\u05EA \u05E7\u05D8\u05E0\u05D4 \u05DE\u05D3\u05D9',
+		contextMenuName	: '\u05E9\u05D9\u05E0\u05D5\u05D9 \u05D2\u05D5\u05D3\u05DC',
+		lockRatio		: '\u05E0\u05E2\u05D9\u05DC\u05EA \u05D4\u05D9\u05D7\u05E1',
+		resetSize		: '\u05D0\u05D9\u05E4\u05D5\u05E1 \u05D4\u05D2\u05D5\u05D3\u05DC'
 	},
 
 	// Fileeditor plugin
 	Fileeditor :
 	{
-		save			: 'שמירה',
-		fileOpenError	: 'לא היה ניתן לפתוח את הקובץ.',
-		fileSaveSuccess	: 'הקובץ נשמר בהצלחה.',
-		contextMenuName	: 'עריכה',
-		loadingFile		: 'טוען קובץ, נא להמתין...'
+		save			: '\u05E9\u05DE\u05D9\u05E8\u05D4',
+		fileOpenError	: '\u05DC\u05D0 \u05D4\u05D9\u05D4 \u05E0\u05D9\u05EA\u05DF \u05DC\u05E4\u05EA\u05D5\u05D7 \u05D0\u05EA \u05D4\u05E7\u05D5\u05D1\u05E5.',
+		fileSaveSuccess	: '\u05D4\u05E7\u05D5\u05D1\u05E5 \u05E0\u05E9\u05DE\u05E8 \u05D1\u05D4\u05E6\u05DC\u05D7\u05D4.',
+		contextMenuName	: '\u05E2\u05E8\u05D9\u05DB\u05D4',
+		loadingFile		: '\u05D8\u05D5\u05E2\u05DF \u05E7\u05D5\u05D1\u05E5, \u05E0\u05D0 \u05DC\u05D4\u05DE\u05EA\u05D9\u05DF...'
 	},
 
 	Maximize :
 	{
-		maximize : 'הגדלה למקסימום',
-		minimize : 'הקטנה למינימום'
+		maximize : '\u05D4\u05D2\u05D3\u05DC\u05D4 \u05DC\u05DE\u05E7\u05E1\u05D9\u05DE\u05D5\u05DD',
+		minimize : '\u05D4\u05E7\u05D8\u05E0\u05D4 \u05DC\u05DE\u05D9\u05E0\u05D9\u05DE\u05D5\u05DD'
 	},
 
 	Gallery :
 	{
-		current : 'תמונה {current} מתוך {total}'
+		current : '\u05EA\u05DE\u05D5\u05E0\u05D4 {current} \u05DE\u05EA\u05D5\u05DA {total}'
 	},
 
 	Zip :
 	{
-		extractHereLabel	: 'חילוץ לפה',
-		extractToLabel		: 'חילוץ ל...',
-		downloadZipLabel	: 'הורדה כקובץ ZIP',
-		compressZipLabel	: 'דחיסה לקובץ ZIP',
-		removeAndExtract	: 'מחיקת הקובץ וחילוצו',
-		extractAndOverwrite	: 'חילוץ והחלפת קבצים קיימים',
-		extractSuccess		: 'הקבצים חולצו בהצלחה.'
+		extractHereLabel	: '\u05D7\u05D9\u05DC\u05D5\u05E5 \u05DC\u05E4\u05D4',
+		extractToLabel		: '\u05D7\u05D9\u05DC\u05D5\u05E5 \u05DC...',
+		downloadZipLabel	: '\u05D4\u05D5\u05E8\u05D3\u05D4 \u05DB\u05E7\u05D5\u05D1\u05E5 ZIP',
+		compressZipLabel	: '\u05D3\u05D7\u05D9\u05E1\u05D4 \u05DC\u05E7\u05D5\u05D1\u05E5 ZIP',
+		removeAndExtract	: '\u05DE\u05D7\u05D9\u05E7\u05EA \u05D4\u05E7\u05D5\u05D1\u05E5 \u05D5\u05D7\u05D9\u05DC\u05D5\u05E6\u05D5',
+		extractAndOverwrite	: '\u05D7\u05D9\u05DC\u05D5\u05E5 \u05D5\u05D4\u05D7\u05DC\u05E4\u05EA \u05E7\u05D1\u05E6\u05D9\u05DD \u05E7\u05D9\u05D9\u05DE\u05D9\u05DD',
+		extractSuccess		: '\u05D4\u05E7\u05D1\u05E6\u05D9\u05DD \u05D7\u05D5\u05DC\u05E6\u05D5 \u05D1\u05D4\u05E6\u05DC\u05D7\u05D4.'
 	},
 
 	Search :
 	{
-		searchPlaceholder : 'חיפוש'
+		searchPlaceholder : '\u05D7\u05D9\u05E4\u05D5\u05E9'
 	}
 };

@@ -29,18 +29,18 @@ CKFinder.lang['ca'] =
 	{
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, no disponible</span>',
-		confirmCancel	: 'Algunes opcions s\'han canviat\r\nEstàs segur de tancar el quadre de diàleg?',
+		confirmCancel	: 'Algunes opcions s\'han canviat\r\nEst\xE0s segur de tancar el quadre de di\xE0leg?',
 		ok				: 'Acceptar',
-		cancel			: 'Cancel·lar',
-		confirmationTitle	: 'Confirmació',
-		messageTitle	: 'Informació',
+		cancel			: 'Cancel\xB7lar',
+		confirmationTitle	: 'Confirmaci\xF3',
+		messageTitle	: 'Informaci\xF3',
 		inputTitle		: 'Pregunta',
 		undo			: 'Desfer',
 		redo			: 'Refer',
 		skip			: 'Ometre',
 		skipAll			: 'Ometre tots',
-		makeDecision	: 'Quina acció s\'ha de realitzar?',
-		rememberDecision: 'Recordar la meva decisió'
+		makeDecision	: 'Quina acci\xF3 s\'ha de realitzar?',
+		rememberDecision: 'Recordar la meva decisi\xF3'
 	},
 
 
@@ -72,20 +72,20 @@ CKFinder.lang['ca'] =
 	FolderLoading	: 'Carregant...',
 	FolderNew		: 'Si us plau, escriu el nom per la nova carpeta: ',
 	FolderRename	: 'Si us plau, escriu el nom per la carpeta: ',
-	FolderDelete	: 'Estàs segur que vols esborrar la carpeta "%1"?',
+	FolderDelete	: 'Est\xE0s segur que vols esborrar la carpeta "%1"?',
 	FolderRenaming	: ' (Canviant el nom...)',
 	FolderDeleting	: ' (Esborrant...)',
-	DestinationFolder	: 'Carpeta de destinació',
+	DestinationFolder	: 'Carpeta de destinaci\xF3',
 
 	// Files
 	FileRename		: 'Si us plau, escriu el nom del fitxer: ',
-	FileRenameExt	: 'Estàs segur de canviar la extensió del fitxer? El fitxer pot quedar inservible.',
+	FileRenameExt	: 'Est\xE0s segur de canviar la extensi\xF3 del fitxer? El fitxer pot quedar inservible.',
 	FileRenaming	: 'Canviant el nom...',
-	FileDelete		: 'Estàs segur d\'esborrar el fitxer "%1"?',
-	FilesDelete	: 'Estàs segur d\'esborrar els %1 fitxers?',
+	FileDelete		: 'Est\xE0s segur d\'esborrar el fitxer "%1"?',
+	FilesDelete	: 'Est\xE0s segur d\'esborrar els %1 fitxers?',
 	FilesLoading	: 'Carregant...',
 	FilesEmpty		: 'Carpeta buida',
-	DestinationFile	: 'Fitxer de destinació',
+	DestinationFile	: 'Fitxer de destinaci\xF3',
 	SkippedFiles	: 'Llista dels fitxers omesos:',
 
 	// Basket
@@ -93,29 +93,29 @@ CKFinder.lang['ca'] =
 	BasketClear			: 'Buidar la cistella',
 	BasketRemove		: 'Treure de la cistella',
 	BasketOpenFolder	: 'Obrir carpeta pare',
-	BasketTruncateConfirm : 'Estàs segur de treure tots els fitxers de la cistella?',
-	BasketRemoveConfirm	: 'Estàs segur de treure el fitxer "%1" de la cistella?',
-	BasketRemoveConfirmMultiple	: 'Estàs segur de treure els %1 fitxers de la cistella?',
+	BasketTruncateConfirm : 'Est\xE0s segur de treure tots els fitxers de la cistella?',
+	BasketRemoveConfirm	: 'Est\xE0s segur de treure el fitxer "%1" de la cistella?',
+	BasketRemoveConfirmMultiple	: 'Est\xE0s segur de treure els %1 fitxers de la cistella?',
 	BasketEmpty			: 'No hi ha fitxers a la cistella, arrossega i deixa anar alguns.',
 	BasketCopyFilesHere	: 'Copiar fitxers de la cistella',
 	BasketMoveFilesHere	: 'Moure fitxers de la cistella',
 
 	// Global messages
-	OperationCompletedSuccess	: 'Operació completada correctament.',
-	OperationCompletedErrors		: 'Operació completada amb errors.',
+	OperationCompletedSuccess	: 'Operaci\xF3 completada correctament.',
+	OperationCompletedErrors		: 'Operaci\xF3 completada amb errors.',
 	FileError				: '%s: %e',
 
 	// Move and Copy files
-	MovedFilesNumber		: 'Número de fitxers moguts: %s.',
-	CopiedFilesNumber	: 'Número de fitxers copiats: %s.',
-	MoveFailedList		: 'Els següents fitxers no s\'han pogut moure:<br />%s',
-	CopyFailedList		: 'Els següents fitxers no s\'han pogut copiar:<br />%s',
+	MovedFilesNumber		: 'N\xFAmero de fitxers moguts: %s.',
+	CopiedFilesNumber	: 'N\xFAmero de fitxers copiats: %s.',
+	MoveFailedList		: 'Els seg\xFCents fitxers no s\'han pogut moure:<br />%s',
+	CopyFailedList		: 'Els seg\xFCents fitxers no s\'han pogut copiar:<br />%s',
 
 	// Toolbar Buttons (some used elsewhere)
 	Upload		: 'Afegir',
 	UploadTip	: 'Afegir nou fitxer',
 	Refresh		: 'Actualitzar',
-	Settings	: 'Configuració',
+	Settings	: 'Configuraci\xF3',
 	Help		: 'Ajuda',
 	HelpTip		: 'Ajuda',
 
@@ -130,8 +130,8 @@ CKFinder.lang['ca'] =
 	Delete			: 'Esborrar',
 	DeleteFiles		: 'Esborrar Fitxers',
 
-	CopyDragDrop	: 'Copiar aquí',
-	MoveDragDrop	: 'Moure aquí',
+	CopyDragDrop	: 'Copiar aqu\xED',
+	MoveDragDrop	: 'Moure aqu\xED',
 
 	// Dialogs
 	RenameDlgTitle		: 'Canviar el nom',
@@ -145,49 +145,49 @@ CKFinder.lang['ca'] =
 
 	// Generic
 	OkBtn		: 'Acceptar',
-	CancelBtn	: 'Cancel·lar',
+	CancelBtn	: 'Cancel\xB7lar',
 	CloseBtn	: 'Tancar',
 
 	// Upload Panel
 	UploadTitle			: 'Afegir nou fitxer',
 	UploadSelectLbl		: 'Triar el fitxer a pujar',
-	UploadProgressLbl	: '(Pujada en progrés, si us plau esperi...)',
+	UploadProgressLbl	: '(Pujada en progr\xE9s, si us plau esperi...)',
 	UploadBtn			: 'Pujar el fitxer escollit',
-	UploadBtnCancel		: 'Cancel·lar',
+	UploadBtnCancel		: 'Cancel\xB7lar',
 
 	UploadNoFileMsg		: 'Si us plau, escull un fitxer del teu ordinador.',
 	UploadNoFolder		: 'Si us plau, escull la carpeta abans d\'iniciar la pujada.',
 	UploadNoPerms		: 'No pot pujar fitxers.',
 	UploadUnknError		: 'Error enviant el fitxer.',
-	UploadExtIncorrect	: 'La extensió del fitxer no està permesa en aquesta carpeta.',
+	UploadExtIncorrect	: 'La extensi\xF3 del fitxer no est\xE0 permesa en aquesta carpeta.',
 
 	// Flash Uploads
 	UploadLabel			: 'Fitxers a pujar',
 	UploadTotalFiles	: 'Total de fitxers:',
-	UploadTotalSize		: 'Grandària total:',
+	UploadTotalSize		: 'Grand\xE0ria total:',
 	UploadSend			: 'Afegir',
 	UploadAddFiles		: 'Afegir fitxers',
 	UploadClearFiles	: 'Esborrar fitxers',
-	UploadCancel		: 'Cancel·lar la pujada',
+	UploadCancel		: 'Cancel\xB7lar la pujada',
 	UploadRemove		: 'Treure',
 	UploadRemoveTip		: 'Treure !f',
 	UploadUploaded		: 'Enviat !n%',
 	UploadProcessing	: 'Processant...',
 
 	// Settings Panel
-	SetTitle		: 'Configuració',
+	SetTitle		: 'Configuraci\xF3',
 	SetView			: 'Vista:',
 	SetViewThumb	: 'Icones',
 	SetViewList		: 'Llista',
 	SetDisplay		: 'Mostrar:',
 	SetDisplayName	: 'Nom del fitxer',
 	SetDisplayDate	: 'Data',
-	SetDisplaySize	: 'Grandària del fitxer',
+	SetDisplaySize	: 'Grand\xE0ria del fitxer',
 	SetSort			: 'Ordenar:',
 	SetSortName		: 'per Nom',
 	SetSortDate		: 'per Data',
-	SetSortSize		: 'per Grandària',
-	SetSortExtension		: 'per Extensió',
+	SetSortSize		: 'per Grand\xE0ria',
+	SetSortExtension		: 'per Extensi\xF3',
 
 	// Status Bar
 	FilesCountEmpty : '<Carpeta buida>',
@@ -206,29 +206,29 @@ CKFinder.lang['ca'] =
 	{
 	 10 : 'Ordre incorrecte.',
 	 11 : 'El tipus de recurs no ha estat especificat a la solicitut.',
-	 12 : 'El tipus de recurs solicitat no és vàlid.',
-	102 : 'Nom de fitxer o carpeta no vàlids.',
-	103 : 'No s\'ha pogut completar la solicitut degut a les restriccions d\'autorització.',
+	 12 : 'El tipus de recurs solicitat no \xE9s v\xE0lid.',
+	102 : 'Nom de fitxer o carpeta no v\xE0lids.',
+	103 : 'No s\'ha pogut completar la solicitut degut a les restriccions d\'autoritzaci\xF3.',
 	104 : 'No s\'ha pogut completar la solicitut degut a les restriccions en el sistema de fitxers.',
-	105 : 'La extensió del fitxer no es vàlida.',
-	109 : 'Petició invàlida.',
+	105 : 'La extensi\xF3 del fitxer no es v\xE0lida.',
+	109 : 'Petici\xF3 inv\xE0lida.',
 	110 : 'Error desconegut.',
-	111 : 'No ha estat possible completar l\'operació a causa de la grandària del fitxer resultant.',
+	111 : 'No ha estat possible completar l\'operaci\xF3 a causa de la grand\xE0ria del fitxer resultant.',
 	115 : 'Ja existeix un fitxer o carpeta amb aquest nom.',
 	116 : 'No s\'ha trobat la carpeta. Si us plau, actualitzi i torni-ho a provar.',
 	117 : 'No s\'ha trobat el fitxer. Si us plau, actualitzi i torni-ho a provar.',
-	118 : 'Les rutes origen i destí són iguals.',
+	118 : 'Les rutes origen i dest\xED s\xF3n iguals.',
 	201 : 'Ja existeix un fitxer amb aquest nom. El fitxer pujat ha estat renombrat com a "%1".',
-	202 : 'Fitxer invàlid.',
-	203 : 'Fitxer invàlid. El pes és massa gran.',
-	204 : 'El fitxer pujat està corrupte.',
-	205 : 'La carpeta temporal no està disponible en el servidor per poder realitzar pujades.',
-	206 : 'La pujada s\'ha cancel·lat per raons de seguretat. El fitxer conté codi HTML.',
+	202 : 'Fitxer inv\xE0lid.',
+	203 : 'Fitxer inv\xE0lid. El pes \xE9s massa gran.',
+	204 : 'El fitxer pujat est\xE0 corrupte.',
+	205 : 'La carpeta temporal no est\xE0 disponible en el servidor per poder realitzar pujades.',
+	206 : 'La pujada s\'ha cancel\xB7lat per raons de seguretat. El fitxer cont\xE9 codi HTML.',
 	207 : 'El fitxer pujat ha estat renombrat com a "%1".',
 	300 : 'Ha fallat el moure el(s) fitxer(s).',
 	301 : 'Ha fallat el copiar el(s) fitxer(s).',
-	500 : 'El navegador de fitxers està deshabilitat per raons de seguretat. Si us plau, contacti amb l\'administrador del sistema i comprovi el fitxer de configuració de CKFinder.',
-	501 : 'El suport per a icones està deshabilitat.'
+	500 : 'El navegador de fitxers est\xE0 deshabilitat per raons de seguretat. Si us plau, contacti amb l\'administrador del sistema i comprovi el fitxer de configuraci\xF3 de CKFinder.',
+	501 : 'El suport per a icones est\xE0 deshabilitat.'
 	},
 
 	// Other Error Messages.
@@ -240,10 +240,10 @@ CKFinder.lang['ca'] =
 		FolderExists	: 'La carpeta %s ja existeix.',
 		FolderNameExists	: 'La carpeta ja existeix.',
 
-		FileInvChar		: 'El nom del fitxer no pot contenir cap dels caràcters següents: \n\\ / : * ? " < > |',
-		FolderInvChar	: 'El nom de la carpeta no pot contenir cap dels caràcters següents: \n\\ / : * ? " < > |',
+		FileInvChar		: 'El nom del fitxer no pot contenir cap dels car\xE0cters seg\xFCents: \n\\ / : * ? " < > |',
+		FolderInvChar	: 'El nom de la carpeta no pot contenir cap dels car\xE0cters seg\xFCents: \n\\ / : * ? " < > |',
 
-		PopupBlockView	: 'No ha estat possible obrir el fitxer en una nova finestra. Si us plau, configuri el seu navegador i desactivi tots els blocadors de finestres per a aquesta pàgina.',
+		PopupBlockView	: 'No ha estat possible obrir el fitxer en una nova finestra. Si us plau, configuri el seu navegador i desactivi tots els blocadors de finestres per a aquesta p\xE0gina.',
 		XmlError		: 'No ha estat possible carregar correctament la resposta XML del servidor.',
 		XmlEmpty		: 'No ha estat possible carregar correctament la resposta XML del servidor. El servidor ha enviat una cadena buida.',
 		XmlRawResponse	: 'Resposta del servidor: %s'
@@ -253,24 +253,24 @@ CKFinder.lang['ca'] =
 	Imageresize :
 	{
 		dialogTitle		: 'Redimensionar %s',
-		sizeTooBig		: 'No es pot posar l\'altura o l\'amplada de la imatge més gran que les dimensions originals (%size).',
+		sizeTooBig		: 'No es pot posar l\'altura o l\'amplada de la imatge m\xE9s gran que les dimensions originals (%size).',
 		resizeSuccess	: 'Imatge redimensionada correctament.',
 		thumbnailNew	: 'Crear nova miniatura',
 		thumbnailSmall	: 'Petita (%s)',
 		thumbnailMedium	: 'Mitjana (%s)',
 		thumbnailLarge	: 'Gran (%s)',
-		newSize			: 'Establir nova grandària',
+		newSize			: 'Establir nova grand\xE0ria',
 		width			: 'Amplada',
 		height			: 'Altura',
-		invalidHeight	: 'Altura invàlida.',
-		invalidWidth	: 'Amplada invàlida.',
-		invalidName		: 'Nom no vàlid.',
+		invalidHeight	: 'Altura inv\xE0lida.',
+		invalidWidth	: 'Amplada inv\xE0lida.',
+		invalidName		: 'Nom no v\xE0lid.',
 		newImage		: 'Crear nova imatge',
-		noExtensionChange : 'L\'extensió no es pot canviar.',
-		imageSmall		: 'La imatge original és massa petita.',
+		noExtensionChange : 'L\'extensi\xF3 no es pot canviar.',
+		imageSmall		: 'La imatge original \xE9s massa petita.',
 		contextMenuName	: 'Redimensionar',
 		lockRatio		: 'Proporcional',
-		resetSize		: 'Grandària Original'
+		resetSize		: 'Grand\xE0ria Original'
 	},
 
 	// Fileeditor plugin
@@ -296,7 +296,7 @@ CKFinder.lang['ca'] =
 
 	Zip :
 	{
-		extractHereLabel	: 'Extreure aquí',
+		extractHereLabel	: 'Extreure aqu\xED',
 		extractToLabel		: 'Extreure a...',
 		downloadZipLabel	: 'Descarregar en zip',
 		compressZipLabel	: 'Comprimir en zip',

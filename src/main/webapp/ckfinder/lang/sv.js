@@ -28,19 +28,19 @@ CKFinder.lang['sv'] =
 	common :
 	{
 		// Put the voice-only part of the label in the span.
-		unavailable		: '%1<span class="cke_accessibility">, Ej tillgänglig</span>',
-		confirmCancel	: 'Några av alternativen har ändrats. Är du säker på att du vill stänga dialogrutan?',
+		unavailable		: '%1<span class="cke_accessibility">, Ej tillg\xE4nglig</span>',
+		confirmCancel	: 'N\xE5gra av alternativen har \xE4ndrats. \xC4r du s\xE4ker p\xE5 att du vill st\xE4nga dialogrutan?',
 		ok				: 'OK',
 		cancel			: 'Avbryt',
-		confirmationTitle	: 'Bekräftelse',
+		confirmationTitle	: 'Bekr\xE4ftelse',
 		messageTitle	: 'Information',
-		inputTitle		: 'Fråga',
-		undo			: 'Ångra',
-		redo			: 'Gör om',
-		skip			: 'Hoppa över',
-		skipAll			: 'Hoppa över alla',
-		makeDecision	: 'Vilken åtgärd ska utföras?',
-		rememberDecision: 'Kom ihåg mitt val'
+		inputTitle		: 'Fr\xE5ga',
+		undo			: '\xC5ngra',
+		redo			: 'G\xF6r om',
+		skip			: 'Hoppa \xF6ver',
+		skipAll			: 'Hoppa \xF6ver alla',
+		makeDecision	: 'Vilken \xE5tg\xE4rd ska utf\xF6ras?',
+		rememberDecision: 'Kom ih\xE5g mitt val'
 	},
 
 
@@ -70,35 +70,35 @@ CKFinder.lang['sv'] =
 	// Folders
 	FoldersTitle	: 'Mappar',
 	FolderLoading	: 'Laddar...',
-	FolderNew		: 'Skriv namnet på den nya mappen: ',
-	FolderRename	: 'Skriv det nya namnet på mappen: ',
-	FolderDelete	: 'Är du säker på att du vill radera mappen "%1"?',
+	FolderNew		: 'Skriv namnet p\xE5 den nya mappen: ',
+	FolderRename	: 'Skriv det nya namnet p\xE5 mappen: ',
+	FolderDelete	: '\xC4r du s\xE4ker p\xE5 att du vill radera mappen "%1"?',
 	FolderRenaming	: ' (Byter mappens namn...)',
 	FolderDeleting	: ' (Raderar...)',
 	DestinationFolder	: 'Destination Folder', // MISSING
 
 	// Files
 	FileRename		: 'Skriv det nya filnamnet: ',
-	FileRenameExt	: 'Är du säker på att du vill ändra filändelsen? Filen kan bli oanvändbar.',
+	FileRenameExt	: '\xC4r du s\xE4ker p\xE5 att du vill \xE4ndra fil\xE4ndelsen? Filen kan bli oanv\xE4ndbar.',
 	FileRenaming	: 'Byter filnamn...',
-	FileDelete		: 'Är du säker på att du vill radera filen "%1"?',
+	FileDelete		: '\xC4r du s\xE4ker p\xE5 att du vill radera filen "%1"?',
 	FilesDelete	: 'Are you sure you want to delete %1 files?', // MISSING
 	FilesLoading	: 'Laddar...',
-	FilesEmpty		: 'Mappen är tom.',
+	FilesEmpty		: 'Mappen \xE4r tom.',
 	DestinationFile	: 'Destination File', // MISSING
 	SkippedFiles	: 'List of skipped files:', // MISSING
 
 	// Basket
 	BasketFolder		: 'Filkorg',
 	BasketClear			: 'Rensa filkorgen',
-	BasketRemove		: 'Ta bort från korgen',
-	BasketOpenFolder	: 'Öppna överliggande mapp',
-	BasketTruncateConfirm : 'Vill du verkligen ta bort alla filer från korgen?',
-	BasketRemoveConfirm	: 'Vill du verkligen ta bort filen "%1" från korgen?',
+	BasketRemove		: 'Ta bort fr\xE5n korgen',
+	BasketOpenFolder	: '\xD6ppna \xF6verliggande mapp',
+	BasketTruncateConfirm : 'Vill du verkligen ta bort alla filer fr\xE5n korgen?',
+	BasketRemoveConfirm	: 'Vill du verkligen ta bort filen "%1" fr\xE5n korgen?',
 	BasketRemoveConfirmMultiple	: 'Do you really want to remove %1 files from the basket?', // MISSING
-	BasketEmpty			: 'Inga filer i korgen, dra och släpp några.',
-	BasketCopyFilesHere	: 'Kopiera filer från korgen',
-	BasketMoveFilesHere	: 'Flytta filer från korgen',
+	BasketEmpty			: 'Inga filer i korgen, dra och sl\xE4pp n\xE5gra.',
+	BasketCopyFilesHere	: 'Kopiera filer fr\xE5n korgen',
+	BasketMoveFilesHere	: 'Flytta filer fr\xE5n korgen',
 
 	// Global messages
 	OperationCompletedSuccess	: 'Operation completed successfully.', // MISSING
@@ -115,9 +115,9 @@ CKFinder.lang['sv'] =
 	Upload		: 'Ladda upp',
 	UploadTip	: 'Ladda upp en ny fil',
 	Refresh		: 'Uppdatera',
-	Settings	: 'Inställningar',
-	Help		: 'Hjälp',
-	HelpTip		: 'Hjälp',
+	Settings	: 'Inst\xE4llningar',
+	Help		: 'Hj\xE4lp',
+	HelpTip		: 'Hj\xE4lp',
 
 	// Context Menus
 	Select			: 'Infoga bild',
@@ -139,34 +139,34 @@ CKFinder.lang['sv'] =
 	FileExistsDlgTitle	: 'Filen finns redan',
 	SysErrorDlgTitle : 'Systemfel',
 
-	FileOverwrite	: 'Skriv över',
-	FileAutorename	: 'Auto-namnändring',
+	FileOverwrite	: 'Skriv \xF6ver',
+	FileAutorename	: 'Auto-namn\xE4ndring',
 	ManuallyRename	: 'Manually rename', // MISSING
 
 	// Generic
 	OkBtn		: 'OK',
 	CancelBtn	: 'Avbryt',
-	CloseBtn	: 'Stäng',
+	CloseBtn	: 'St\xE4ng',
 
 	// Upload Panel
 	UploadTitle			: 'Ladda upp en ny fil',
-	UploadSelectLbl		: 'Välj fil att ladda upp',
-	UploadProgressLbl	: '(Laddar upp filen, var god vänta...)',
+	UploadSelectLbl		: 'V\xE4lj fil att ladda upp',
+	UploadProgressLbl	: '(Laddar upp filen, var god v\xE4nta...)',
 	UploadBtn			: 'Ladda upp den valda filen',
 	UploadBtnCancel		: 'Avbryt',
 
-	UploadNoFileMsg		: 'Välj en fil från din dator.',
-	UploadNoFolder		: 'Välj en mapp före uppladdning.',
-	UploadNoPerms		: 'Filuppladdning ej tillåten.',
+	UploadNoFileMsg		: 'V\xE4lj en fil fr\xE5n din dator.',
+	UploadNoFolder		: 'V\xE4lj en mapp f\xF6re uppladdning.',
+	UploadNoPerms		: 'Filuppladdning ej till\xE5ten.',
 	UploadUnknError		: 'Fel vid filuppladdning.',
-	UploadExtIncorrect	: 'Filändelsen är inte tillåten i denna mapp.',
+	UploadExtIncorrect	: 'Fil\xE4ndelsen \xE4r inte till\xE5ten i denna mapp.',
 
 	// Flash Uploads
 	UploadLabel			: 'Filer att ladda upp',
 	UploadTotalFiles	: 'Totalt antal filer:',
 	UploadTotalSize		: 'Total storlek:',
 	UploadSend			: 'Ladda upp',
-	UploadAddFiles		: 'Lägg till filer',
+	UploadAddFiles		: 'L\xE4gg till filer',
 	UploadClearFiles	: 'Rensa filer',
 	UploadCancel		: 'Avbryt uppladdning',
 	UploadRemove		: 'Ta bort',
@@ -175,7 +175,7 @@ CKFinder.lang['sv'] =
 	UploadProcessing	: 'Bearbetar...',
 
 	// Settings Panel
-	SetTitle		: 'Inställningar',
+	SetTitle		: 'Inst\xE4llningar',
 	SetView			: 'Visa:',
 	SetViewThumb	: 'Tumnaglar',
 	SetViewList		: 'Lista',
@@ -187,7 +187,7 @@ CKFinder.lang['sv'] =
 	SetSortName		: 'Filnamn',
 	SetSortDate		: 'Datum',
 	SetSortSize		: 'Storlek',
-	SetSortExtension		: 'Filändelse',
+	SetSortExtension		: 'Fil\xE4ndelse',
 
 	// Status Bar
 	FilesCountEmpty : '<Tom Mapp>',
@@ -201,86 +201,86 @@ CKFinder.lang['sv'] =
 	SizePerSecond	: '%1/s',
 
 	// Connector Error Messages.
-	ErrorUnknown	: 'Begäran kunde inte utföras eftersom ett fel uppstod. (Fel %1)',
+	ErrorUnknown	: 'Beg\xE4ran kunde inte utf\xF6ras eftersom ett fel uppstod. (Fel %1)',
 	Errors :
 	{
-	 10 : 'Ogiltig begäran.',
-	 11 : 'Resursens typ var inte specificerad i förfrågan.',
-	 12 : 'Den efterfrågade resurstypen är inte giltig.',
+	 10 : 'Ogiltig beg\xE4ran.',
+	 11 : 'Resursens typ var inte specificerad i f\xF6rfr\xE5gan.',
+	 12 : 'Den efterfr\xE5gade resurstypen \xE4r inte giltig.',
 	102 : 'Ogiltigt fil- eller mappnamn.',
-	103 : 'Begäran kunde inte utföras p.g.a. restriktioner av rättigheterna.',
-	104 : 'Begäran kunde inte utföras p.g.a. restriktioner av rättigheter i filsystemet.',
-	105 : 'Ogiltig filändelse.',
-	109 : 'Ogiltig begäran.',
-	110 : 'Okänt fel.',
+	103 : 'Beg\xE4ran kunde inte utf\xF6ras p.g.a. restriktioner av r\xE4ttigheterna.',
+	104 : 'Beg\xE4ran kunde inte utf\xF6ras p.g.a. restriktioner av r\xE4ttigheter i filsystemet.',
+	105 : 'Ogiltig fil\xE4ndelse.',
+	109 : 'Ogiltig beg\xE4ran.',
+	110 : 'Ok\xE4nt fel.',
 	111 : 'It was not possible to complete the request due to resulting file size.', // MISSING
 	115 : 'En fil eller mapp med aktuellt namn finns redan.',
-	116 : 'Mappen kunde inte hittas. Var god uppdatera sidan och försök igen.',
-	117 : 'Filen kunde inte hittas. Var god uppdatera sidan och försök igen.',
-	118 : 'Sökväg till källa och mål är identisk.',
-	201 : 'En fil med aktuellt namn fanns redan. Den uppladdade filen har döpts om till "%1".',
+	116 : 'Mappen kunde inte hittas. Var god uppdatera sidan och f\xF6rs\xF6k igen.',
+	117 : 'Filen kunde inte hittas. Var god uppdatera sidan och f\xF6rs\xF6k igen.',
+	118 : 'S\xF6kv\xE4g till k\xE4lla och m\xE5l \xE4r identisk.',
+	201 : 'En fil med aktuellt namn fanns redan. Den uppladdade filen har d\xF6pts om till "%1".',
 	202 : 'Ogiltig fil.',
-	203 : 'Ogiltig fil. Filen var för stor.',
+	203 : 'Ogiltig fil. Filen var f\xF6r stor.',
 	204 : 'Den uppladdade filen var korrupt.',
-	205 : 'En tillfällig mapp för uppladdning är inte tillgänglig på servern.',
-	206 : 'Uppladdningen stoppades av säkerhetsskäl. Filen innehåller HTML-liknande data.',
-	207 : 'Den uppladdade filen har döpts om till "%1".',
+	205 : 'En tillf\xE4llig mapp f\xF6r uppladdning \xE4r inte tillg\xE4nglig p\xE5 servern.',
+	206 : 'Uppladdningen stoppades av s\xE4kerhetssk\xE4l. Filen inneh\xE5ller HTML-liknande data.',
+	207 : 'Den uppladdade filen har d\xF6pts om till "%1".',
 	300 : 'Flytt av fil(er) misslyckades.',
 	301 : 'Kopiering av fil(er) misslyckades.',
-	500 : 'Filhanteraren har stoppats av säkerhetsskäl. Var god kontakta administratören för att kontrollera konfigurationsfilen för CKFinder.',
-	501 : 'Stöd för tumnaglar har stängts av.'
+	500 : 'Filhanteraren har stoppats av s\xE4kerhetssk\xE4l. Var god kontakta administrat\xF6ren f\xF6r att kontrollera konfigurationsfilen f\xF6r CKFinder.',
+	501 : 'St\xF6d f\xF6r tumnaglar har st\xE4ngts av.'
 	},
 
 	// Other Error Messages.
 	ErrorMsg :
 	{
-		FileEmpty		: 'Filnamnet får inte vara tomt.',
+		FileEmpty		: 'Filnamnet f\xE5r inte vara tomt.',
 		FileExists		: 'Filen %s finns redan.',
-		FolderEmpty		: 'Mappens namn får inte vara tomt.',
+		FolderEmpty		: 'Mappens namn f\xE5r inte vara tomt.',
 		FolderExists	: 'Folder %s already exists.', // MISSING
 		FolderNameExists	: 'Folder already exists.', // MISSING
 
-		FileInvChar		: 'Filnamnet får inte innehålla något av följande tecken: \n\\ / : * ? " < > |',
-		FolderInvChar	: 'Mappens namn får inte innehålla något av följande tecken: \n\\ / : * ? " < > |',
+		FileInvChar		: 'Filnamnet f\xE5r inte inneh\xE5lla n\xE5got av f\xF6ljande tecken: \n\\ / : * ? " < > |',
+		FolderInvChar	: 'Mappens namn f\xE5r inte inneh\xE5lla n\xE5got av f\xF6ljande tecken: \n\\ / : * ? " < > |',
 
-		PopupBlockView	: 'Det gick inte att öppna filen i ett nytt fönster. Ändra inställningarna i din webbläsare så att den tillåter popup-fönster på den här webbplatsen.',
-		XmlError		: 'Det gick inte att ladda XML-svaret från webbservern ordentligt.',
-		XmlEmpty		: 'Det gick inte att ladda XML-svaret från webbservern. Servern returnerade ett tomt svar.',
-		XmlRawResponse	: 'Svar från servern: %s'
+		PopupBlockView	: 'Det gick inte att \xF6ppna filen i ett nytt f\xF6nster. \xC4ndra inst\xE4llningarna i din webbl\xE4sare s\xE5 att den till\xE5ter popup-f\xF6nster p\xE5 den h\xE4r webbplatsen.',
+		XmlError		: 'Det gick inte att ladda XML-svaret fr\xE5n webbservern ordentligt.',
+		XmlEmpty		: 'Det gick inte att ladda XML-svaret fr\xE5n webbservern. Servern returnerade ett tomt svar.',
+		XmlRawResponse	: 'Svar fr\xE5n servern: %s'
 	},
 
 	// Imageresize plugin
 	Imageresize :
 	{
-		dialogTitle		: 'Storleksändra %s',
-		sizeTooBig		: 'Bildens höjd eller bredd kan inte vara större än originalfilens storlek (%size).',
-		resizeSuccess	: 'Storleksändring lyckades.',
+		dialogTitle		: 'Storleks\xE4ndra %s',
+		sizeTooBig		: 'Bildens h\xF6jd eller bredd kan inte vara st\xF6rre \xE4n originalfilens storlek (%size).',
+		resizeSuccess	: 'Storleks\xE4ndring lyckades.',
 		thumbnailNew	: 'Skapa en ny tumnagel',
 		thumbnailSmall	: 'Liten (%s)',
 		thumbnailMedium	: 'Mellan (%s)',
 		thumbnailLarge	: 'Stor (%s)',
-		newSize			: 'Välj en ny storlek',
+		newSize			: 'V\xE4lj en ny storlek',
 		width			: 'Bredd',
-		height			: 'Höjd',
-		invalidHeight	: 'Ogiltig höjd.',
+		height			: 'H\xF6jd',
+		invalidHeight	: 'Ogiltig h\xF6jd.',
 		invalidWidth	: 'Ogiltig bredd.',
 		invalidName		: 'Ogiltigt filnamn.',
 		newImage		: 'Skapa en ny bild',
-		noExtensionChange : 'Filändelsen kan inte ändras.',
-		imageSmall		: 'Originalbilden är för liten.',
-		contextMenuName	: 'Ändra storlek',
-		lockRatio		: 'Lås höjd/bredd förhållanden',
-		resetSize		: 'Återställ storlek'
+		noExtensionChange : 'Fil\xE4ndelsen kan inte \xE4ndras.',
+		imageSmall		: 'Originalbilden \xE4r f\xF6r liten.',
+		contextMenuName	: '\xC4ndra storlek',
+		lockRatio		: 'L\xE5s h\xF6jd/bredd f\xF6rh\xE5llanden',
+		resetSize		: '\xC5terst\xE4ll storlek'
 	},
 
 	// Fileeditor plugin
 	Fileeditor :
 	{
 		save			: 'Spara',
-		fileOpenError	: 'Kan inte öppna filen.',
+		fileOpenError	: 'Kan inte \xF6ppna filen.',
 		fileSaveSuccess	: 'Filen sparades.',
 		contextMenuName	: 'Redigera',
-		loadingFile		: 'Laddar fil, var god vänta...'
+		loadingFile		: 'Laddar fil, var god v\xE4nta...'
 	},
 
 	Maximize :
@@ -307,6 +307,6 @@ CKFinder.lang['sv'] =
 
 	Search :
 	{
-		searchPlaceholder : 'Sök'
+		searchPlaceholder : 'S\xF6k'
 	}
 };

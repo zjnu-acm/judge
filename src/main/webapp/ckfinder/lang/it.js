@@ -79,7 +79,7 @@ CKFinder.lang['it'] =
 
 	// Files
 	FileRename		: 'Nuovo nome del file: ',
-	FileRenameExt	: 'Sei sicure di voler cambiare l\'estensione del file? Il file può risultare inutilizzabile.',
+	FileRenameExt	: 'Sei sicure di voler cambiare l\'estensione del file? Il file pu\xF2 risultare inutilizzabile.',
 	FileRenaming	: 'Rinominando...',
 	FileDelete		: 'Sei sicuro di voler eliminare il file "%1"?',
 	FilesDelete	: 'Sei sicuro di voler eliminare %1 file?',
@@ -136,7 +136,7 @@ CKFinder.lang['it'] =
 	// Dialogs
 	RenameDlgTitle		: 'Rinomina',
 	NewNameDlgTitle		: 'Nuovo nome',
-	FileExistsDlgTitle	: 'File già esistente',
+	FileExistsDlgTitle	: 'File gi\xE0 esistente',
 	SysErrorDlgTitle : 'Errore di Sistema',
 
 	FileOverwrite	: 'Sovrascrivi',
@@ -157,7 +157,7 @@ CKFinder.lang['it'] =
 
 	UploadNoFileMsg		: 'Seleziona il file da caricare',
 	UploadNoFolder		: 'Seleziona la cartella prima di caricare.',
-	UploadNoPerms		: 'Non è permesso il caricamento di file.',
+	UploadNoPerms		: 'Non \xE8 permesso il caricamento di file.',
 	UploadUnknError		: 'Errore nel caricamento del file.',
 	UploadExtIncorrect	: 'In questa cartella non sono permessi file con questa estensione.',
 
@@ -205,47 +205,47 @@ CKFinder.lang['it'] =
 	Errors :
 	{
 	 10 : 'Comando non valido.',
-	 11 : 'Il tipo di risorsa non è stato specificato nella richiesta.',
-	 12 : 'Il tipo di risorsa richiesto non è valido.',
+	 11 : 'Il tipo di risorsa non \xE8 stato specificato nella richiesta.',
+	 12 : 'Il tipo di risorsa richiesto non \xE8 valido.',
 	102 : 'Nome di file o cartella non valido.',
-	103 : 'Non è stato possibile completare la richiesta a causa di restrizioni di autorizzazione.',
-	104 : 'Non è stato possibile completare la richiesta a causa di restrizioni nei permessi del file system.',
-	105 : 'L\'estensione del file non è valida.',
+	103 : 'Non \xE8 stato possibile completare la richiesta a causa di restrizioni di autorizzazione.',
+	104 : 'Non \xE8 stato possibile completare la richiesta a causa di restrizioni nei permessi del file system.',
+	105 : 'L\'estensione del file non \xE8 valida.',
 	109 : 'Richiesta non valida.',
 	110 : 'Errore sconosciuto.',
-	111 : 'È stato impossibile completare la richiesta a causa della dimensione finale del file.',
-	115 : 'Un file o cartella con lo stesso nome è già esistente.',
+	111 : '\xC8 stato impossibile completare la richiesta a causa della dimensione finale del file.',
+	115 : 'Un file o cartella con lo stesso nome \xE8 gi\xE0 esistente.',
 	116 : 'Cartella non trovata. Aggiornare e riprovare.',
 	117 : 'File non trovato. Aggiornare la lista dei file e riprovare.',
 	118 : 'I percorsi di origine e di destinazione sono uguali.',
-	201 : 'Un file con lo stesso nome è già presente. Il file caricato è stato rinominato in "%1".',
+	201 : 'Un file con lo stesso nome \xE8 gi\xE0 presente. Il file caricato \xE8 stato rinominato in "%1".',
 	202 : 'File invalido.',
 	203 : 'File invalido. La dimensione del file eccede i limiti del sistema.',
-	204 : 'Il file caricato è corrotto.',
+	204 : 'Il file caricato \xE8 corrotto.',
 	205 : 'Directory temporanea non disponibile sul server.',
 	206 : 'Caricamento annullato per motivi di sicurezza. Il file contiene dati in formato HTML.',
-	207 : 'Il file caricato è stato rinominato in "%1".',
-	300 : 'Non è stato possibile muovere i file.',
-	301 : 'Non è stato possibile copiare i file.',
-	500 : 'Questo programma è disabilitato per motivi di sicurezza. Contattare l\'amministratore del sistema e verificare le configurazioni di CKFinder.',
-	501 : 'Il supporto alle anteprime non è attivo.'
+	207 : 'Il file caricato \xE8 stato rinominato in "%1".',
+	300 : 'Non \xE8 stato possibile muovere i file.',
+	301 : 'Non \xE8 stato possibile copiare i file.',
+	500 : 'Questo programma \xE8 disabilitato per motivi di sicurezza. Contattare l\'amministratore del sistema e verificare le configurazioni di CKFinder.',
+	501 : 'Il supporto alle anteprime non \xE8 attivo.'
 	},
 
 	// Other Error Messages.
 	ErrorMsg :
 	{
-		FileEmpty		: 'Il nome del file non può essere vuoto.',
-		FileExists		: 'File %s già esistente.',
-		FolderEmpty		: 'Il nome della cartella non può essere vuoto.',
-		FolderExists	: 'Cartella %s già esistente.',
-		FolderNameExists	: 'Cartella già esistente.',
+		FileEmpty		: 'Il nome del file non pu\xF2 essere vuoto.',
+		FileExists		: 'File %s gi\xE0 esistente.',
+		FolderEmpty		: 'Il nome della cartella non pu\xF2 essere vuoto.',
+		FolderExists	: 'Cartella %s gi\xE0 esistente.',
+		FolderNameExists	: 'Cartella gi\xE0 esistente.',
 
 		FileInvChar		: 'I seguenti caratteri non possono essere usati per comporre il nome del file: \n\\ / : * ? " < > |',
 		FolderInvChar	: 'I seguenti caratteri non possono essere usati per comporre il nome della cartella: \n\\ / : * ? " < > |',
 
-		PopupBlockView	: 'Non è stato possile aprire il file in una nuova finestra. Configurare il browser e disabilitare il blocco delle popup.',
-		XmlError		: 'Non è stato possibile caricare la risposta XML dal server.',
-		XmlEmpty		: 'Non è stato possibile caricare la risposta XML dal server. La risposta è vuota.',
+		PopupBlockView	: 'Non \xE8 stato possile aprire il file in una nuova finestra. Configurare il browser e disabilitare il blocco delle popup.',
+		XmlError		: 'Non \xE8 stato possibile caricare la risposta XML dal server.',
+		XmlEmpty		: 'Non \xE8 stato possibile caricare la risposta XML dal server. La risposta \xE8 vuota.',
 		XmlRawResponse	: 'Risposta originale inviata dal server: %s'
 	},
 
@@ -253,7 +253,7 @@ CKFinder.lang['it'] =
 	Imageresize :
 	{
 		dialogTitle		: 'Ridimensiona %s',
-		sizeTooBig		: 'Non è possibile usare valori di altezza e larghezza maggiori delle dimensioni originali (%size).',
+		sizeTooBig		: 'Non \xE8 possibile usare valori di altezza e larghezza maggiori delle dimensioni originali (%size).',
 		resizeSuccess	: 'Immagine ridimensionata.',
 		thumbnailNew	: 'Crea una nuova thumbnail',
 		thumbnailSmall	: 'Piccolo (%s)',
@@ -266,8 +266,8 @@ CKFinder.lang['it'] =
 		invalidWidth	: 'Larghezza non valida.',
 		invalidName		: 'Nome del file non valido.',
 		newImage		: 'Crea nuova immagine',
-		noExtensionChange : 'L\'estensione del file non può essere cambiata.',
-		imageSmall		: 'L\'immagine originale è molto piccola.',
+		noExtensionChange : 'L\'estensione del file non pu\xF2 essere cambiata.',
+		imageSmall		: 'L\'immagine originale \xE8 molto piccola.',
 		contextMenuName	: 'Ridimensiona',
 		lockRatio		: 'Blocca rapporto',
 		resetSize		: 'Reimposta dimensione'
@@ -277,7 +277,7 @@ CKFinder.lang['it'] =
 	Fileeditor :
 	{
 		save			: 'Salva',
-		fileOpenError	: 'Non è stato possibile aprire il file.',
+		fileOpenError	: 'Non \xE8 stato possibile aprire il file.',
 		fileSaveSuccess	: 'File salvato.',
 		contextMenuName	: 'Modifica',
 		loadingFile		: 'Attendere prego. Caricamento del file in corso...'

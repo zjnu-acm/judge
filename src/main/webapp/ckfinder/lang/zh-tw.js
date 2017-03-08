@@ -65,25 +65,25 @@ CKFinder.lang['zh-tw'] =
 	//		a    : Firt char of AM/PM
 	//		aa   : AM/PM
 	DateTime : 'mm/dd/yyyy HH:MM',
-	DateAmPm : ['上午', '下午'],
+	DateAmPm : ['\u4E0A\u5348', '\u4E0B\u5348'],
 
 	// Folders
-	FoldersTitle	: '目錄',
-	FolderLoading	: '載入中...',
-	FolderNew		: '請輸入新目錄名稱: ',
-	FolderRename	: '請輸入新目錄名稱: ',
-	FolderDelete	: '確定刪除 "%1" 這個目錄嗎?',
-	FolderRenaming	: ' (修改目錄...)',
-	FolderDeleting	: ' (刪除目錄...)',
+	FoldersTitle	: '\u76EE\u9304',
+	FolderLoading	: '\u8F09\u5165\u4E2D...',
+	FolderNew		: '\u8ACB\u8F38\u5165\u65B0\u76EE\u9304\u540D\u7A31: ',
+	FolderRename	: '\u8ACB\u8F38\u5165\u65B0\u76EE\u9304\u540D\u7A31: ',
+	FolderDelete	: '\u78BA\u5B9A\u522A\u9664 "%1" \u9019\u500B\u76EE\u9304\u55CE?',
+	FolderRenaming	: ' (\u4FEE\u6539\u76EE\u9304...)',
+	FolderDeleting	: ' (\u522A\u9664\u76EE\u9304...)',
 	DestinationFolder	: 'Destination Folder', // MISSING
 
 	// Files
-	FileRename		: '請輸入新檔案名稱: ',
-	FileRenameExt	: '確定變更這個檔案的副檔名嗎? 變更後 , 此檔案可能會無法使用 !',
-	FileRenaming	: '修改檔案名稱...',
-	FileDelete		: '確定要刪除這個檔案 "%1"?',
+	FileRename		: '\u8ACB\u8F38\u5165\u65B0\u6A94\u6848\u540D\u7A31: ',
+	FileRenameExt	: '\u78BA\u5B9A\u8B8A\u66F4\u9019\u500B\u6A94\u6848\u7684\u526F\u6A94\u540D\u55CE? \u8B8A\u66F4\u5F8C , \u6B64\u6A94\u6848\u53EF\u80FD\u6703\u7121\u6CD5\u4F7F\u7528 !',
+	FileRenaming	: '\u4FEE\u6539\u6A94\u6848\u540D\u7A31...',
+	FileDelete		: '\u78BA\u5B9A\u8981\u522A\u9664\u9019\u500B\u6A94\u6848 "%1"?',
 	FilesDelete	: 'Are you sure you want to delete %1 files?', // MISSING
-	FilesLoading	: '載入中...',
+	FilesLoading	: '\u8F09\u5165\u4E2D...',
 	FilesEmpty		: 'The folder is empty.', // MISSING
 	DestinationFile	: 'Destination File', // MISSING
 	SkippedFiles	: 'List of skipped files:', // MISSING
@@ -112,22 +112,22 @@ CKFinder.lang['zh-tw'] =
 	CopyFailedList		: 'The following files could not be copied:<br />%s', // MISSING
 
 	// Toolbar Buttons (some used elsewhere)
-	Upload		: '上傳檔案',
-	UploadTip	: '上傳一個新檔案',
-	Refresh		: '重新整理',
-	Settings	: '偏好設定',
-	Help		: '說明',
-	HelpTip		: '說明',
+	Upload		: '\u4E0A\u50B3\u6A94\u6848',
+	UploadTip	: '\u4E0A\u50B3\u4E00\u500B\u65B0\u6A94\u6848',
+	Refresh		: '\u91CD\u65B0\u6574\u7406',
+	Settings	: '\u504F\u597D\u8A2D\u5B9A',
+	Help		: '\u8AAA\u660E',
+	HelpTip		: '\u8AAA\u660E',
 
 	// Context Menus
-	Select			: '選擇',
+	Select			: '\u9078\u64C7',
 	SelectThumbnail : 'Select Thumbnail', // MISSING
-	View			: '瀏覽',
-	Download		: '下載',
+	View			: '\u700F\u89BD',
+	Download		: '\u4E0B\u8F09',
 
-	NewSubFolder	: '建立新子目錄',
-	Rename			: '重新命名',
-	Delete			: '刪除',
+	NewSubFolder	: '\u5EFA\u7ACB\u65B0\u5B50\u76EE\u9304',
+	Rename			: '\u91CD\u65B0\u547D\u540D',
+	Delete			: '\u522A\u9664',
 	DeleteFiles		: 'Delete Files', // MISSING
 
 	CopyDragDrop	: 'Copy Here', // MISSING
@@ -144,18 +144,18 @@ CKFinder.lang['zh-tw'] =
 	ManuallyRename	: 'Manually rename', // MISSING
 
 	// Generic
-	OkBtn		: '確定',
-	CancelBtn	: '取消',
-	CloseBtn	: '關閉',
+	OkBtn		: '\u78BA\u5B9A',
+	CancelBtn	: '\u53D6\u6D88',
+	CloseBtn	: '\u95DC\u9589',
 
 	// Upload Panel
-	UploadTitle			: '上傳新檔案',
-	UploadSelectLbl		: '請選擇要上傳的檔案',
-	UploadProgressLbl	: '(檔案上傳中 , 請稍候...)',
-	UploadBtn			: '將檔案上傳到伺服器',
-	UploadBtnCancel		: '取消',
+	UploadTitle			: '\u4E0A\u50B3\u65B0\u6A94\u6848',
+	UploadSelectLbl		: '\u8ACB\u9078\u64C7\u8981\u4E0A\u50B3\u7684\u6A94\u6848',
+	UploadProgressLbl	: '(\u6A94\u6848\u4E0A\u50B3\u4E2D , \u8ACB\u7A0D\u5019...)',
+	UploadBtn			: '\u5C07\u6A94\u6848\u4E0A\u50B3\u5230\u4F3A\u670D\u5668',
+	UploadBtnCancel		: '\u53D6\u6D88',
 
-	UploadNoFileMsg		: '請從你的電腦選擇一個檔案.',
+	UploadNoFileMsg		: '\u8ACB\u5F9E\u4F60\u7684\u96FB\u8166\u9078\u64C7\u4E00\u500B\u6A94\u6848.',
 	UploadNoFolder		: 'Please select a folder before uploading.', // MISSING
 	UploadNoPerms		: 'File upload not allowed.', // MISSING
 	UploadUnknError		: 'Error sending the file.', // MISSING
@@ -165,7 +165,7 @@ CKFinder.lang['zh-tw'] =
 	UploadLabel			: 'Files to Upload', // MISSING
 	UploadTotalFiles	: 'Total Files:', // MISSING
 	UploadTotalSize		: 'Total Size:', // MISSING
-	UploadSend			: '上傳檔案',
+	UploadSend			: '\u4E0A\u50B3\u6A94\u6848',
 	UploadAddFiles		: 'Add Files', // MISSING
 	UploadClearFiles	: 'Clear Files', // MISSING
 	UploadCancel		: 'Cancel Upload', // MISSING
@@ -175,24 +175,24 @@ CKFinder.lang['zh-tw'] =
 	UploadProcessing	: 'Processing...', // MISSING
 
 	// Settings Panel
-	SetTitle		: '設定',
-	SetView			: '瀏覽方式:',
-	SetViewThumb	: '縮圖預覽',
-	SetViewList		: '清單列表',
-	SetDisplay		: '顯示欄位:',
-	SetDisplayName	: '檔案名稱',
-	SetDisplayDate	: '檔案日期',
-	SetDisplaySize	: '檔案大小',
-	SetSort			: '排序方式:',
-	SetSortName		: '依 檔案名稱',
-	SetSortDate		: '依 檔案日期',
-	SetSortSize		: '依 檔案大小',
+	SetTitle		: '\u8A2D\u5B9A',
+	SetView			: '\u700F\u89BD\u65B9\u5F0F:',
+	SetViewThumb	: '\u7E2E\u5716\u9810\u89BD',
+	SetViewList		: '\u6E05\u55AE\u5217\u8868',
+	SetDisplay		: '\u986F\u793A\u6B04\u4F4D:',
+	SetDisplayName	: '\u6A94\u6848\u540D\u7A31',
+	SetDisplayDate	: '\u6A94\u6848\u65E5\u671F',
+	SetDisplaySize	: '\u6A94\u6848\u5927\u5C0F',
+	SetSort			: '\u6392\u5E8F\u65B9\u5F0F:',
+	SetSortName		: '\u4F9D \u6A94\u6848\u540D\u7A31',
+	SetSortDate		: '\u4F9D \u6A94\u6848\u65E5\u671F',
+	SetSortSize		: '\u4F9D \u6A94\u6848\u5927\u5C0F',
 	SetSortExtension		: 'by Extension', // MISSING
 
 	// Status Bar
-	FilesCountEmpty : '<此目錄沒有任何檔案>',
-	FilesCountOne	: '1 個檔案',
-	FilesCountMany	: '%1 個檔案',
+	FilesCountEmpty : '<\u6B64\u76EE\u9304\u6C92\u6709\u4EFB\u4F55\u6A94\u6848>',
+	FilesCountOne	: '1 \u500B\u6A94\u6848',
+	FilesCountMany	: '%1 \u500B\u6A94\u6848',
 
 	// Size and Speed
 	Kb				: '%1 KB',
@@ -201,49 +201,49 @@ CKFinder.lang['zh-tw'] =
 	SizePerSecond	: '%1/s', // MISSING
 
 	// Connector Error Messages.
-	ErrorUnknown	: '無法連接到伺服器 ! (錯誤代碼 %1)',
+	ErrorUnknown	: '\u7121\u6CD5\u9023\u63A5\u5230\u4F3A\u670D\u5668 ! (\u932F\u8AA4\u4EE3\u78BC %1)',
 	Errors :
 	{
-	 10 : '不合法的指令.',
-	 11 : '連接過程中 , 未指定資源形態 !',
-	 12 : '連接過程中出現不合法的資源形態 !',
-	102 : '不合法的檔案或目錄名稱 !',
-	103 : '無法連接：可能是使用者權限設定錯誤 !',
-	104 : '無法連接：可能是伺服器檔案權限設定錯誤 !',
-	105 : '無法上傳：不合法的副檔名 !',
-	109 : '不合法的請求 !',
-	110 : '不明錯誤 !',
+	 10 : '\u4E0D\u5408\u6CD5\u7684\u6307\u4EE4.',
+	 11 : '\u9023\u63A5\u904E\u7A0B\u4E2D , \u672A\u6307\u5B9A\u8CC7\u6E90\u5F62\u614B !',
+	 12 : '\u9023\u63A5\u904E\u7A0B\u4E2D\u51FA\u73FE\u4E0D\u5408\u6CD5\u7684\u8CC7\u6E90\u5F62\u614B !',
+	102 : '\u4E0D\u5408\u6CD5\u7684\u6A94\u6848\u6216\u76EE\u9304\u540D\u7A31 !',
+	103 : '\u7121\u6CD5\u9023\u63A5\uFF1A\u53EF\u80FD\u662F\u4F7F\u7528\u8005\u6B0A\u9650\u8A2D\u5B9A\u932F\u8AA4 !',
+	104 : '\u7121\u6CD5\u9023\u63A5\uFF1A\u53EF\u80FD\u662F\u4F3A\u670D\u5668\u6A94\u6848\u6B0A\u9650\u8A2D\u5B9A\u932F\u8AA4 !',
+	105 : '\u7121\u6CD5\u4E0A\u50B3\uFF1A\u4E0D\u5408\u6CD5\u7684\u526F\u6A94\u540D !',
+	109 : '\u4E0D\u5408\u6CD5\u7684\u8ACB\u6C42 !',
+	110 : '\u4E0D\u660E\u932F\u8AA4 !',
 	111 : 'It was not possible to complete the request due to resulting file size.', // MISSING
-	115 : '檔案或目錄名稱重複 !',
-	116 : '找不到目錄 ! 請先重新整理 , 然後再試一次 !',
-	117 : '找不到檔案 ! 請先重新整理 , 然後再試一次 !',
+	115 : '\u6A94\u6848\u6216\u76EE\u9304\u540D\u7A31\u91CD\u8907 !',
+	116 : '\u627E\u4E0D\u5230\u76EE\u9304 ! \u8ACB\u5148\u91CD\u65B0\u6574\u7406 , \u7136\u5F8C\u518D\u8A66\u4E00\u6B21 !',
+	117 : '\u627E\u4E0D\u5230\u6A94\u6848 ! \u8ACB\u5148\u91CD\u65B0\u6574\u7406 , \u7136\u5F8C\u518D\u8A66\u4E00\u6B21 !',
 	118 : 'Source and target paths are equal.', // MISSING
-	201 : '伺服器上已有相同的檔案名稱 ! 您上傳的檔案名稱將會自動更改為 "%1".',
-	202 : '不合法的檔案 !',
-	203 : '不合法的檔案 ! 檔案大小超過預設值 !',
-	204 : '您上傳的檔案已經損毀 !',
-	205 : '伺服器上沒有預設的暫存目錄 !',
-	206 : '檔案上傳程序因為安全因素已被系統自動取消 ! 可能是上傳的檔案內容包含 HTML 碼 !',
-	207 : '您上傳的檔案名稱將會自動更改為 "%1".',
+	201 : '\u4F3A\u670D\u5668\u4E0A\u5DF2\u6709\u76F8\u540C\u7684\u6A94\u6848\u540D\u7A31 ! \u60A8\u4E0A\u50B3\u7684\u6A94\u6848\u540D\u7A31\u5C07\u6703\u81EA\u52D5\u66F4\u6539\u70BA "%1".',
+	202 : '\u4E0D\u5408\u6CD5\u7684\u6A94\u6848 !',
+	203 : '\u4E0D\u5408\u6CD5\u7684\u6A94\u6848 ! \u6A94\u6848\u5927\u5C0F\u8D85\u904E\u9810\u8A2D\u503C !',
+	204 : '\u60A8\u4E0A\u50B3\u7684\u6A94\u6848\u5DF2\u7D93\u640D\u6BC0 !',
+	205 : '\u4F3A\u670D\u5668\u4E0A\u6C92\u6709\u9810\u8A2D\u7684\u66AB\u5B58\u76EE\u9304 !',
+	206 : '\u6A94\u6848\u4E0A\u50B3\u7A0B\u5E8F\u56E0\u70BA\u5B89\u5168\u56E0\u7D20\u5DF2\u88AB\u7CFB\u7D71\u81EA\u52D5\u53D6\u6D88 ! \u53EF\u80FD\u662F\u4E0A\u50B3\u7684\u6A94\u6848\u5167\u5BB9\u5305\u542B HTML \u78BC !',
+	207 : '\u60A8\u4E0A\u50B3\u7684\u6A94\u6848\u540D\u7A31\u5C07\u6703\u81EA\u52D5\u66F4\u6539\u70BA "%1".',
 	300 : 'Moving file(s) failed.', // MISSING
 	301 : 'Copying file(s) failed.', // MISSING
-	500 : '因為安全因素 , 檔案瀏覽器已被停用 ! 請聯絡您的系統管理者並檢查 CKFinder 的設定檔 config.php !',
-	501 : '縮圖預覽功能已被停用 !'
+	500 : '\u56E0\u70BA\u5B89\u5168\u56E0\u7D20 , \u6A94\u6848\u700F\u89BD\u5668\u5DF2\u88AB\u505C\u7528 ! \u8ACB\u806F\u7D61\u60A8\u7684\u7CFB\u7D71\u7BA1\u7406\u8005\u4E26\u6AA2\u67E5 CKFinder \u7684\u8A2D\u5B9A\u6A94 config.php !',
+	501 : '\u7E2E\u5716\u9810\u89BD\u529F\u80FD\u5DF2\u88AB\u505C\u7528 !'
 	},
 
 	// Other Error Messages.
 	ErrorMsg :
 	{
-		FileEmpty		: '檔案名稱不能空白 !',
+		FileEmpty		: '\u6A94\u6848\u540D\u7A31\u4E0D\u80FD\u7A7A\u767D !',
 		FileExists		: 'File %s already exists.', // MISSING
-		FolderEmpty		: '目錄名稱不能空白 !',
+		FolderEmpty		: '\u76EE\u9304\u540D\u7A31\u4E0D\u80FD\u7A7A\u767D !',
 		FolderExists	: 'Folder %s already exists.', // MISSING
 		FolderNameExists	: 'Folder already exists.', // MISSING
 
-		FileInvChar		: '檔案名稱不能包含以下字元： \n\\ / : * ? " < > |',
-		FolderInvChar	: '目錄名稱不能包含以下字元： \n\\ / : * ? " < > |',
+		FileInvChar		: '\u6A94\u6848\u540D\u7A31\u4E0D\u80FD\u5305\u542B\u4EE5\u4E0B\u5B57\u5143\uFF1A \n\\ / : * ? " < > |',
+		FolderInvChar	: '\u76EE\u9304\u540D\u7A31\u4E0D\u80FD\u5305\u542B\u4EE5\u4E0B\u5B57\u5143\uFF1A \n\\ / : * ? " < > |',
 
-		PopupBlockView	: '無法在新視窗開啟檔案 ! 請檢查瀏覽器的設定並且針對這個網站 關閉 <封鎖彈跳視窗> 這個功能 !',
+		PopupBlockView	: '\u7121\u6CD5\u5728\u65B0\u8996\u7A97\u958B\u555F\u6A94\u6848 ! \u8ACB\u6AA2\u67E5\u700F\u89BD\u5668\u7684\u8A2D\u5B9A\u4E26\u4E14\u91DD\u5C0D\u9019\u500B\u7DB2\u7AD9 \u95DC\u9589 <\u5C01\u9396\u5F48\u8DF3\u8996\u7A97> \u9019\u500B\u529F\u80FD !',
 		XmlError		: 'It was not possible to properly load the XML response from the web server.', // MISSING
 		XmlEmpty		: 'It was not possible to load the XML response from the web server. The server returned an empty response.', // MISSING
 		XmlRawResponse	: 'Raw response from the server: %s' // MISSING
@@ -307,6 +307,6 @@ CKFinder.lang['zh-tw'] =
 
 	Search :
 	{
-		searchPlaceholder : '搜尋'
+		searchPlaceholder : '\u641C\u5C0B'
 	}
 };

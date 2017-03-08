@@ -29,18 +29,18 @@ CKFinder.lang['fr'] =
 	{
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, Inaccessible</span>',
-		confirmCancel	: 'Certaines options ont été modifiées. Êtes-vous sûr de vouloir fermer cette fenêtre ?',
+		confirmCancel	: 'Certaines options ont \xE9t\xE9 modifi\xE9es. \xCAtes-vous s\xFBr de vouloir fermer cette fen\xEAtre ?',
 		ok				: 'OK',
 		cancel			: 'Annuler',
 		confirmationTitle	: 'Confirmation',
 		messageTitle	: 'Information',
 		inputTitle		: 'Question',
 		undo			: 'Annuler',
-		redo			: 'Rétablir',
+		redo			: 'R\xE9tablir',
 		skip			: 'Passer',
 		skipAll			: 'Passer tout',
 		makeDecision	: 'Quelle action choisir ?',
-		rememberDecision: 'Se rappeler de la décision'
+		rememberDecision: 'Se rappeler de la d\xE9cision'
 	},
 
 
@@ -72,49 +72,49 @@ CKFinder.lang['fr'] =
 	FolderLoading	: 'Chargement...',
 	FolderNew		: 'Entrez le nouveau nom du dossier: ',
 	FolderRename	: 'Entrez le nouveau nom du dossier: ',
-	FolderDelete	: 'Êtes-vous sûr de vouloir effacer le dossier "%1"?',
+	FolderDelete	: '\xCAtes-vous s\xFBr de vouloir effacer le dossier "%1"?',
 	FolderRenaming	: ' (Renommage en cours...)',
 	FolderDeleting	: ' (Suppression en cours...)',
 	DestinationFolder	: 'Dossier de destination',
 
 	// Files
 	FileRename		: 'Entrez le nouveau nom du fichier: ',
-	FileRenameExt	: 'Êtes-vous sûr de vouloir changer l\'extension de ce fichier? Le fichier pourrait devenir inutilisable.',
+	FileRenameExt	: '\xCAtes-vous s\xFBr de vouloir changer l\'extension de ce fichier? Le fichier pourrait devenir inutilisable.',
 	FileRenaming	: 'Renommage en cours...',
-	FileDelete		: 'Êtes-vous sûr de vouloir effacer le fichier "%1"?',
-	FilesDelete	: 'Êtes-vous sûr de vouloir supprimer %1 fichiers ?',
+	FileDelete		: '\xCAtes-vous s\xFBr de vouloir effacer le fichier "%1"?',
+	FilesDelete	: '\xCAtes-vous s\xFBr de vouloir supprimer %1 fichiers ?',
 	FilesLoading	: 'Chargement...',
-	FilesEmpty		: 'Répertoire vide',
+	FilesEmpty		: 'R\xE9pertoire vide',
 	DestinationFile	: 'Fichier de destination',
-	SkippedFiles	: 'Liste des fichiers ignorés : ',
+	SkippedFiles	: 'Liste des fichiers ignor\xE9s : ',
 
 	// Basket
 	BasketFolder		: 'Corbeille',
 	BasketClear			: 'Vider la corbeille',
 	BasketRemove		: 'Retirer de la corbeille',
-	BasketOpenFolder	: 'Ouvrir le répertiore parent',
-	BasketTruncateConfirm : 'Êtes-vous sûr de vouloir supprimer tous les fichiers de la corbeille ?',
-	BasketRemoveConfirm	: 'Êtes-vous sûr de vouloir supprimer le fichier "%1" de la corbeille ?',
-	BasketRemoveConfirmMultiple	: 'Êtes-vous sûr de vouloir supprimer %1 fichiers de la corbeille ?',
-	BasketEmpty			: 'Aucun fichier dans la corbeille, déposez en queques uns.',
+	BasketOpenFolder	: 'Ouvrir le r\xE9pertiore parent',
+	BasketTruncateConfirm : '\xCAtes-vous s\xFBr de vouloir supprimer tous les fichiers de la corbeille ?',
+	BasketRemoveConfirm	: '\xCAtes-vous s\xFBr de vouloir supprimer le fichier "%1" de la corbeille ?',
+	BasketRemoveConfirmMultiple	: '\xCAtes-vous s\xFBr de vouloir supprimer %1 fichiers de la corbeille ?',
+	BasketEmpty			: 'Aucun fichier dans la corbeille, d\xE9posez en queques uns.',
 	BasketCopyFilesHere	: 'Copier des fichiers depuis la corbeille',
-	BasketMoveFilesHere	: 'Déplacer des fichiers depuis la corbeille',
+	BasketMoveFilesHere	: 'D\xE9placer des fichiers depuis la corbeille',
 
 	// Global messages
-	OperationCompletedSuccess	: 'Operation terminée avec succès.',
-	OperationCompletedErrors		: 'Operation terminée avec des erreurs.',
+	OperationCompletedSuccess	: 'Operation termin\xE9e avec succ\xE8s.',
+	OperationCompletedErrors		: 'Operation termin\xE9e avec des erreurs.',
 	FileError				: '%s: %e',
 
 	// Move and Copy files
-	MovedFilesNumber		: 'Nombre de fichiers déplacés : %s.',
-	CopiedFilesNumber	: 'Nombre de fichiers copiés : %s.',
-	MoveFailedList		: 'Les fichiers suivants ne peuvent être déplacés :<br />%s',
-	CopyFailedList		: 'Les fichiers suivants ne peuvent être copiés :<br />%s',
+	MovedFilesNumber		: 'Nombre de fichiers d\xE9plac\xE9s : %s.',
+	CopiedFilesNumber	: 'Nombre de fichiers copi\xE9s : %s.',
+	MoveFailedList		: 'Les fichiers suivants ne peuvent \xEAtre d\xE9plac\xE9s :<br />%s',
+	CopyFailedList		: 'Les fichiers suivants ne peuvent \xEAtre copi\xE9s :<br />%s',
 
 	// Toolbar Buttons (some used elsewhere)
 	Upload		: 'Envoyer',
 	UploadTip	: 'Envoyer un nouveau fichier',
-	Refresh		: 'Rafraîchir',
+	Refresh		: 'Rafra\xEEchir',
 	Settings	: 'Configuration',
 	Help		: 'Aide',
 	HelpTip		: 'Aide',
@@ -123,7 +123,7 @@ CKFinder.lang['fr'] =
 	Select			: 'Choisir',
 	SelectThumbnail : 'Choisir une miniature',
 	View			: 'Voir',
-	Download		: 'Télécharger',
+	Download		: 'T\xE9l\xE9charger',
 
 	NewSubFolder	: 'Nouveau sous-dossier',
 	Rename			: 'Renommer',
@@ -131,15 +131,15 @@ CKFinder.lang['fr'] =
 	DeleteFiles		: 'Supprimer les fichiers',
 
 	CopyDragDrop	: 'Copier ici',
-	MoveDragDrop	: 'Déplacer ici',
+	MoveDragDrop	: 'D\xE9placer ici',
 
 	// Dialogs
 	RenameDlgTitle		: 'Renommer',
 	NewNameDlgTitle		: 'Nouveau fichier',
-	FileExistsDlgTitle	: 'Fichier déjà existant',
-	SysErrorDlgTitle : 'Erreur système',
+	FileExistsDlgTitle	: 'Fichier d\xE9j\xE0 existant',
+	SysErrorDlgTitle : 'Erreur syst\xE8me',
 
-	FileOverwrite	: 'Ré-écrire',
+	FileOverwrite	: 'R\xE9-\xE9crire',
 	FileAutorename	: 'Re-nommage automatique',
 	ManuallyRename	: 'Renommage manuel',
 
@@ -150,19 +150,19 @@ CKFinder.lang['fr'] =
 
 	// Upload Panel
 	UploadTitle			: 'Envoyer un nouveau fichier',
-	UploadSelectLbl		: 'Sélectionner le fichier à télécharger',
+	UploadSelectLbl		: 'S\xE9lectionner le fichier \xE0 t\xE9l\xE9charger',
 	UploadProgressLbl	: '(Envoi en cours, veuillez patienter...)',
-	UploadBtn			: 'Envoyer le fichier sélectionné',
+	UploadBtn			: 'Envoyer le fichier s\xE9lectionn\xE9',
 	UploadBtnCancel		: 'Annuler',
 
-	UploadNoFileMsg		: 'Sélectionner un fichier sur votre ordinateur.',
-	UploadNoFolder		: 'Merci de sélectionner un répertoire avant l\'envoi.',
-	UploadNoPerms		: 'L\'envoi de fichier n\'est pas autorisé.',
+	UploadNoFileMsg		: 'S\xE9lectionner un fichier sur votre ordinateur.',
+	UploadNoFolder		: 'Merci de s\xE9lectionner un r\xE9pertoire avant l\'envoi.',
+	UploadNoPerms		: 'L\'envoi de fichier n\'est pas autoris\xE9.',
 	UploadUnknError		: 'Erreur pendant l\'envoi du fichier.',
-	UploadExtIncorrect	: 'L\'extension du fichier n\'est pas autorisée dans ce dossier.',
+	UploadExtIncorrect	: 'L\'extension du fichier n\'est pas autoris\xE9e dans ce dossier.',
 
 	// Flash Uploads
-	UploadLabel			: 'Fichier à envoyer',
+	UploadLabel			: 'Fichier \xE0 envoyer',
 	UploadTotalFiles	: 'Nombre de fichiers :',
 	UploadTotalSize		: 'Poids total :',
 	UploadSend			: 'Envoyer',
@@ -171,7 +171,7 @@ CKFinder.lang['fr'] =
 	UploadCancel		: 'Annuler l\'envoi',
 	UploadRemove		: 'Retirer',
 	UploadRemoveTip		: 'Retirer !f',
-	UploadUploaded		: 'Téléchargement !n%',
+	UploadUploaded		: 'T\xE9l\xE9chargement !n%',
 	UploadProcessing	: 'Progression...',
 
 	// Settings Panel
@@ -205,48 +205,48 @@ CKFinder.lang['fr'] =
 	Errors :
 	{
 	 10 : 'Commande invalide.',
-	 11 : 'Le type de ressource n\'a pas été spécifié dans la commande.',
+	 11 : 'Le type de ressource n\'a pas \xE9t\xE9 sp\xE9cifi\xE9 dans la commande.',
 	 12 : 'Le type de ressource n\'est pas valide.',
 	102 : 'Nom de fichier ou de dossier invalide.',
-	103 : 'La demande n\'a pas abouti : problème d\'autorisations.',
-	104 : 'La demande n\'a pas abouti : problème de restrictions de permissions.',
+	103 : 'La demande n\'a pas abouti : probl\xE8me d\'autorisations.',
+	104 : 'La demande n\'a pas abouti : probl\xE8me de restrictions de permissions.',
 	105 : 'Extension de fichier invalide.',
 	109 : 'Demande invalide.',
 	110 : 'Erreur inconnue.',
 	111 : 'It was not possible to complete the request due to resulting file size.', // MISSING
-	115 : 'Un fichier ou un dossier avec ce nom existe déjà.',
-	116 : 'Ce dossier n\'existe pas. Veuillez rafraîchir la page et réessayer.',
-	117 : 'Ce fichier n\'existe pas. Veuillez rafraîchir la page et réessayer.',
-	118 : 'Les chemins vers la source et la cible sont les mêmes.',
-	201 : 'Un fichier avec ce nom existe déjà. Le fichier téléversé a été renommé en "%1".',
+	115 : 'Un fichier ou un dossier avec ce nom existe d\xE9j\xE0.',
+	116 : 'Ce dossier n\'existe pas. Veuillez rafra\xEEchir la page et r\xE9essayer.',
+	117 : 'Ce fichier n\'existe pas. Veuillez rafra\xEEchir la page et r\xE9essayer.',
+	118 : 'Les chemins vers la source et la cible sont les m\xEAmes.',
+	201 : 'Un fichier avec ce nom existe d\xE9j\xE0. Le fichier t\xE9l\xE9vers\xE9 a \xE9t\xE9 renomm\xE9 en "%1".',
 	202 : 'Fichier invalide.',
 	203 : 'Fichier invalide. La taille est trop grande.',
-	204 : 'Le fichier téléversé est corrompu.',
+	204 : 'Le fichier t\xE9l\xE9vers\xE9 est corrompu.',
 	205 : 'Aucun dossier temporaire n\'est disponible sur le serveur.',
-	206 : 'Envoi interrompu pour raisons de sécurité. Le fichier contient des données de type HTML.',
-	207 : 'Le fichier téléchargé a été renommé "%1".',
-	300 : 'Le déplacement des fichiers a échoué.',
-	301 : 'La copie des fichiers a échoué.',
-	500 : 'L\'interface de gestion des fichiers est désactivé. Contactez votre administrateur et vérifier le fichier de configuration de CKFinder.',
-	501 : 'La fonction "miniatures" est désactivée.'
+	206 : 'Envoi interrompu pour raisons de s\xE9curit\xE9. Le fichier contient des donn\xE9es de type HTML.',
+	207 : 'Le fichier t\xE9l\xE9charg\xE9 a \xE9t\xE9 renomm\xE9 "%1".',
+	300 : 'Le d\xE9placement des fichiers a \xE9chou\xE9.',
+	301 : 'La copie des fichiers a \xE9chou\xE9.',
+	500 : 'L\'interface de gestion des fichiers est d\xE9sactiv\xE9. Contactez votre administrateur et v\xE9rifier le fichier de configuration de CKFinder.',
+	501 : 'La fonction "miniatures" est d\xE9sactiv\xE9e.'
 	},
 
 	// Other Error Messages.
 	ErrorMsg :
 	{
-		FileEmpty		: 'Le nom du fichier ne peut être vide.',
-		FileExists		: 'Le fichier %s existes déjà.',
-		FolderEmpty		: 'Le nom du dossier ne peut être vide.',
-		FolderExists	: 'Le dossier %s existe déjà.',
-		FolderNameExists	: 'Le dossier existe déjà.',
+		FileEmpty		: 'Le nom du fichier ne peut \xEAtre vide.',
+		FileExists		: 'Le fichier %s existes d\xE9j\xE0.',
+		FolderEmpty		: 'Le nom du dossier ne peut \xEAtre vide.',
+		FolderExists	: 'Le dossier %s existe d\xE9j\xE0.',
+		FolderNameExists	: 'Le dossier existe d\xE9j\xE0.',
 
-		FileInvChar		: 'Le nom du fichier ne peut pas contenir les charactères suivants : \n\\ / : * ? " < > |',
-		FolderInvChar	: 'Le nom du dossier ne peut pas contenir les charactères suivants : \n\\ / : * ? " < > |',
+		FileInvChar		: 'Le nom du fichier ne peut pas contenir les charact\xE8res suivants : \n\\ / : * ? " < > |',
+		FolderInvChar	: 'Le nom du dossier ne peut pas contenir les charact\xE8res suivants : \n\\ / : * ? " < > |',
 
-		PopupBlockView	: 'Il n\'a pas été possible d\'ouvrir la nouvelle fenêtre. Désactiver votre bloqueur de fenêtres pour ce site.',
-		XmlError		: 'Impossible de charger correctement la réponse XML du serveur web.',
-		XmlEmpty		: 'Impossible de charger la réponse XML du serveur web. Le serveur a renvoyé une réponse vide.',
-		XmlRawResponse	: 'Réponse du serveur : %s'
+		PopupBlockView	: 'Il n\'a pas \xE9t\xE9 possible d\'ouvrir la nouvelle fen\xEAtre. D\xE9sactiver votre bloqueur de fen\xEAtres pour ce site.',
+		XmlError		: 'Impossible de charger correctement la r\xE9ponse XML du serveur web.',
+		XmlEmpty		: 'Impossible de charger la r\xE9ponse XML du serveur web. Le serveur a renvoy\xE9 une r\xE9ponse vide.',
+		XmlRawResponse	: 'R\xE9ponse du serveur : %s'
 	},
 
 	// Imageresize plugin
@@ -254,19 +254,19 @@ CKFinder.lang['fr'] =
 	{
 		dialogTitle		: 'Redimensionner %s',
 		sizeTooBig		: 'Impossible de modifier la hauteur ou la largeur de cette image pour une valeur plus grande que l\'original (%size).',
-		resizeSuccess	: 'L\'image a été redimensionnée avec succès.',
-		thumbnailNew	: 'Créer une nouvelle vignette',
+		resizeSuccess	: 'L\'image a \xE9t\xE9 redimensionn\xE9e avec succ\xE8s.',
+		thumbnailNew	: 'Cr\xE9er une nouvelle vignette',
 		thumbnailSmall	: 'Petit (%s)',
 		thumbnailMedium	: 'Moyen (%s)',
 		thumbnailLarge	: 'Gros (%s)',
-		newSize			: 'Déterminer les nouvelles dimensions',
+		newSize			: 'D\xE9terminer les nouvelles dimensions',
 		width			: 'Largeur',
 		height			: 'Hauteur',
 		invalidHeight	: 'Hauteur invalide.',
 		invalidWidth	: 'Largeur invalide.',
 		invalidName		: 'Nom de fichier incorrect.',
-		newImage		: 'Créer une nouvelle image',
-		noExtensionChange : 'L\'extension du fichier ne peut pas être changé.',
+		newImage		: 'Cr\xE9er une nouvelle image',
+		noExtensionChange : 'L\'extension du fichier ne peut pas \xEAtre chang\xE9.',
 		imageSmall		: 'L\'image est trop petit',
 		contextMenuName	: 'Redimensionner',
 		lockRatio		: 'Conserver les proportions',
@@ -278,7 +278,7 @@ CKFinder.lang['fr'] =
 	{
 		save			: 'Sauvegarder',
 		fileOpenError	: 'Impossible d\'ouvrir le fichier',
-		fileSaveSuccess	: 'Fichier sauvegardé avec succès.',
+		fileSaveSuccess	: 'Fichier sauvegard\xE9 avec succ\xE8s.',
 		contextMenuName	: 'Edition',
 		loadingFile		: 'Chargement du fichier, veuillez patientez...'
 	},
@@ -296,13 +296,13 @@ CKFinder.lang['fr'] =
 
 	Zip :
 	{
-		extractHereLabel	: 'Décompresser ici',
-		extractToLabel		: 'Décompresser vers...',
-		downloadZipLabel	: 'Zipper et télécharger',
+		extractHereLabel	: 'D\xE9compresser ici',
+		extractToLabel		: 'D\xE9compresser vers...',
+		downloadZipLabel	: 'Zipper et t\xE9l\xE9charger',
 		compressZipLabel	: 'Zipper',
-		removeAndExtract	: 'Supprimer les fichiers existants et décompresser',
-		extractAndOverwrite	: 'Décompresser et remplacer les fichier existants',
-		extractSuccess		: 'Les fichiers ont été décompressés avec succès.'
+		removeAndExtract	: 'Supprimer les fichiers existants et d\xE9compresser',
+		extractAndOverwrite	: 'D\xE9compresser et remplacer les fichier existants',
+		extractSuccess		: 'Les fichiers ont \xE9t\xE9 d\xE9compress\xE9s avec succ\xE8s.'
 	},
 
 	Search :

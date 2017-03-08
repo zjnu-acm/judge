@@ -28,19 +28,19 @@ CKFinder.lang['zh-cn'] =
 	common :
 	{
 		// Put the voice-only part of the label in the span.
-		unavailable		: '%1<span class="cke_accessibility">, 不可用</span>',
-		confirmCancel	: '部分内容尚未保存，确定关闭对话框么?',
-		ok				: '确定',
-		cancel			: '取消',
-		confirmationTitle	: '确认',
-		messageTitle	: '提示',
-		inputTitle		: '询问',
-		undo			: '撤销',
-		redo			: '重做',
-		skip			: '跳过',
-		skipAll			: '全部跳过',
-		makeDecision	: '应采取何样措施?',
-		rememberDecision: '下次不再询问'
+		unavailable		: '%1<span class="cke_accessibility">, \u4E0D\u53EF\u7528</span>',
+		confirmCancel	: '\u90E8\u5206\u5185\u5BB9\u5C1A\u672A\u4FDD\u5B58\uFF0C\u786E\u5B9A\u5173\u95ED\u5BF9\u8BDD\u6846\u4E48?',
+		ok				: '\u786E\u5B9A',
+		cancel			: '\u53D6\u6D88',
+		confirmationTitle	: '\u786E\u8BA4',
+		messageTitle	: '\u63D0\u793A',
+		inputTitle		: '\u8BE2\u95EE',
+		undo			: '\u64A4\u9500',
+		redo			: '\u91CD\u505A',
+		skip			: '\u8DF3\u8FC7',
+		skipAll			: '\u5168\u90E8\u8DF3\u8FC7',
+		makeDecision	: '\u5E94\u91C7\u53D6\u4F55\u6837\u63AA\u65BD?',
+		rememberDecision: '\u4E0B\u6B21\u4E0D\u518D\u8BE2\u95EE'
 	},
 
 
@@ -64,41 +64,41 @@ CKFinder.lang['zh-cn'] =
 	//		MM   : Minute (padding zero)
 	//		a    : Firt char of AM/PM
 	//		aa   : AM/PM
-	DateTime : 'yyyy年m月d日 h:MM aa',
+	DateTime : 'yyyy\u5E74m\u6708d\u65E5 h:MM aa',
 	DateAmPm : ['AM', 'PM'],
 
 	// Folders
-	FoldersTitle	: '文件夹',
-	FolderLoading	: '正在加载文件夹...',
-	FolderNew		: '请输入新文件夹名称: ',
-	FolderRename	: '请输入新文件夹名称: ',
-	FolderDelete	: '您确定要删除文件夹 "%1" 吗?',
-	FolderRenaming	: ' (正在重命名...)',
-	FolderDeleting	: ' (正在删除...)',
+	FoldersTitle	: '\u6587\u4EF6\u5939',
+	FolderLoading	: '\u6B63\u5728\u52A0\u8F7D\u6587\u4EF6\u5939...',
+	FolderNew		: '\u8BF7\u8F93\u5165\u65B0\u6587\u4EF6\u5939\u540D\u79F0: ',
+	FolderRename	: '\u8BF7\u8F93\u5165\u65B0\u6587\u4EF6\u5939\u540D\u79F0: ',
+	FolderDelete	: '\u60A8\u786E\u5B9A\u8981\u5220\u9664\u6587\u4EF6\u5939 "%1" \u5417?',
+	FolderRenaming	: ' (\u6B63\u5728\u91CD\u547D\u540D...)',
+	FolderDeleting	: ' (\u6B63\u5728\u5220\u9664...)',
 	DestinationFolder	: 'Destination Folder', // MISSING
 
 	// Files
-	FileRename		: '请输入新文件名: ',
-	FileRenameExt	: '如果改变文件扩展名，可能会导致文件不可用。\r\n确定要更改吗？',
-	FileRenaming	: '正在重命名...',
-	FileDelete		: '您确定要删除文件 "%1" 吗?',
+	FileRename		: '\u8BF7\u8F93\u5165\u65B0\u6587\u4EF6\u540D: ',
+	FileRenameExt	: '\u5982\u679C\u6539\u53D8\u6587\u4EF6\u6269\u5C55\u540D\uFF0C\u53EF\u80FD\u4F1A\u5BFC\u81F4\u6587\u4EF6\u4E0D\u53EF\u7528\u3002\r\n\u786E\u5B9A\u8981\u66F4\u6539\u5417\uFF1F',
+	FileRenaming	: '\u6B63\u5728\u91CD\u547D\u540D...',
+	FileDelete		: '\u60A8\u786E\u5B9A\u8981\u5220\u9664\u6587\u4EF6 "%1" \u5417?',
 	FilesDelete	: 'Are you sure you want to delete %1 files?', // MISSING
-	FilesLoading	: '加载中...',
-	FilesEmpty		: '空文件夹',
+	FilesLoading	: '\u52A0\u8F7D\u4E2D...',
+	FilesEmpty		: '\u7A7A\u6587\u4EF6\u5939',
 	DestinationFile	: 'Destination File', // MISSING
 	SkippedFiles	: 'List of skipped files:', // MISSING
 
 	// Basket
-	BasketFolder		: '临时文件夹',
-	BasketClear			: '清空临时文件夹',
-	BasketRemove		: '从临时文件夹移除',
-	BasketOpenFolder	: '打开临时文件夹',
-	BasketTruncateConfirm : '确认清空临时文件夹?',
-	BasketRemoveConfirm	: '确认从临时文件夹中移除文件 "%1"？',
+	BasketFolder		: '\u4E34\u65F6\u6587\u4EF6\u5939',
+	BasketClear			: '\u6E05\u7A7A\u4E34\u65F6\u6587\u4EF6\u5939',
+	BasketRemove		: '\u4ECE\u4E34\u65F6\u6587\u4EF6\u5939\u79FB\u9664',
+	BasketOpenFolder	: '\u6253\u5F00\u4E34\u65F6\u6587\u4EF6\u5939',
+	BasketTruncateConfirm : '\u786E\u8BA4\u6E05\u7A7A\u4E34\u65F6\u6587\u4EF6\u5939?',
+	BasketRemoveConfirm	: '\u786E\u8BA4\u4ECE\u4E34\u65F6\u6587\u4EF6\u5939\u4E2D\u79FB\u9664\u6587\u4EF6 "%1"\uFF1F',
 	BasketRemoveConfirmMultiple	: 'Do you really want to remove %1 files from the basket?', // MISSING
-	BasketEmpty			: '临时文件夹为空, 可拖放文件至其中。',
-	BasketCopyFilesHere	: '从临时文件夹复制至此',
-	BasketMoveFilesHere	: '从临时文件夹移动至此',
+	BasketEmpty			: '\u4E34\u65F6\u6587\u4EF6\u5939\u4E3A\u7A7A, \u53EF\u62D6\u653E\u6587\u4EF6\u81F3\u5176\u4E2D\u3002',
+	BasketCopyFilesHere	: '\u4ECE\u4E34\u65F6\u6587\u4EF6\u5939\u590D\u5236\u81F3\u6B64',
+	BasketMoveFilesHere	: '\u4ECE\u4E34\u65F6\u6587\u4EF6\u5939\u79FB\u52A8\u81F3\u6B64',
 
 	// Global messages
 	OperationCompletedSuccess	: 'Operation completed successfully.', // MISSING
@@ -112,87 +112,87 @@ CKFinder.lang['zh-cn'] =
 	CopyFailedList		: 'The following files could not be copied:<br />%s', // MISSING
 
 	// Toolbar Buttons (some used elsewhere)
-	Upload		: '上传',
-	UploadTip	: '上传文件',
-	Refresh		: '刷新',
-	Settings	: '设置',
-	Help		: '帮助',
-	HelpTip		: '查看在线帮助',
+	Upload		: '\u4E0A\u4F20',
+	UploadTip	: '\u4E0A\u4F20\u6587\u4EF6',
+	Refresh		: '\u5237\u65B0',
+	Settings	: '\u8BBE\u7F6E',
+	Help		: '\u5E2E\u52A9',
+	HelpTip		: '\u67E5\u770B\u5728\u7EBF\u5E2E\u52A9',
 
 	// Context Menus
-	Select			: '选择',
-	SelectThumbnail : '选中缩略图',
-	View			: '查看',
-	Download		: '下载',
+	Select			: '\u9009\u62E9',
+	SelectThumbnail : '\u9009\u4E2D\u7F29\u7565\u56FE',
+	View			: '\u67E5\u770B',
+	Download		: '\u4E0B\u8F7D',
 
-	NewSubFolder	: '创建子文件夹',
-	Rename			: '重命名',
-	Delete			: '删除',
+	NewSubFolder	: '\u521B\u5EFA\u5B50\u6587\u4EF6\u5939',
+	Rename			: '\u91CD\u547D\u540D',
+	Delete			: '\u5220\u9664',
 	DeleteFiles		: 'Delete Files', // MISSING
 
-	CopyDragDrop	: '将文件复制至此',
-	MoveDragDrop	: '将文件移动至此',
+	CopyDragDrop	: '\u5C06\u6587\u4EF6\u590D\u5236\u81F3\u6B64',
+	MoveDragDrop	: '\u5C06\u6587\u4EF6\u79FB\u52A8\u81F3\u6B64',
 
 	// Dialogs
-	RenameDlgTitle		: '重命名',
-	NewNameDlgTitle		: '文件名',
-	FileExistsDlgTitle	: '文件已存在',
-	SysErrorDlgTitle : '系统错误',
+	RenameDlgTitle		: '\u91CD\u547D\u540D',
+	NewNameDlgTitle		: '\u6587\u4EF6\u540D',
+	FileExistsDlgTitle	: '\u6587\u4EF6\u5DF2\u5B58\u5728',
+	SysErrorDlgTitle : '\u7CFB\u7EDF\u9519\u8BEF',
 
-	FileOverwrite	: '自动覆盖重名文件',
-	FileAutorename	: '给重名文件自动命名',
+	FileOverwrite	: '\u81EA\u52A8\u8986\u76D6\u91CD\u540D\u6587\u4EF6',
+	FileAutorename	: '\u7ED9\u91CD\u540D\u6587\u4EF6\u81EA\u52A8\u547D\u540D',
 	ManuallyRename	: 'Manually rename', // MISSING
 
 	// Generic
-	OkBtn		: '确定',
-	CancelBtn	: '取消',
-	CloseBtn	: '关闭',
+	OkBtn		: '\u786E\u5B9A',
+	CancelBtn	: '\u53D6\u6D88',
+	CloseBtn	: '\u5173\u95ED',
 
 	// Upload Panel
-	UploadTitle			: '上传文件',
-	UploadSelectLbl		: '选定要上传的文件',
-	UploadProgressLbl	: '(正在上传文件，请稍候...)',
-	UploadBtn			: '上传选定的文件',
-	UploadBtnCancel		: '取消',
+	UploadTitle			: '\u4E0A\u4F20\u6587\u4EF6',
+	UploadSelectLbl		: '\u9009\u5B9A\u8981\u4E0A\u4F20\u7684\u6587\u4EF6',
+	UploadProgressLbl	: '(\u6B63\u5728\u4E0A\u4F20\u6587\u4EF6\uFF0C\u8BF7\u7A0D\u5019...)',
+	UploadBtn			: '\u4E0A\u4F20\u9009\u5B9A\u7684\u6587\u4EF6',
+	UploadBtnCancel		: '\u53D6\u6D88',
 
-	UploadNoFileMsg		: '请选择一个要上传的文件',
-	UploadNoFolder		: '需先选择一个文件。',
-	UploadNoPerms		: '无文件上传权限。',
-	UploadUnknError		: '上传文件出错。',
-	UploadExtIncorrect	: '此文件后缀在当前文件夹中不可用。',
+	UploadNoFileMsg		: '\u8BF7\u9009\u62E9\u4E00\u4E2A\u8981\u4E0A\u4F20\u7684\u6587\u4EF6',
+	UploadNoFolder		: '\u9700\u5148\u9009\u62E9\u4E00\u4E2A\u6587\u4EF6\u3002',
+	UploadNoPerms		: '\u65E0\u6587\u4EF6\u4E0A\u4F20\u6743\u9650\u3002',
+	UploadUnknError		: '\u4E0A\u4F20\u6587\u4EF6\u51FA\u9519\u3002',
+	UploadExtIncorrect	: '\u6B64\u6587\u4EF6\u540E\u7F00\u5728\u5F53\u524D\u6587\u4EF6\u5939\u4E2D\u4E0D\u53EF\u7528\u3002',
 
 	// Flash Uploads
-	UploadLabel			: '上传文件',
-	UploadTotalFiles	: '上传总计:',
-	UploadTotalSize		: '上传总大小:',
-	UploadSend			: '上传',
-	UploadAddFiles		: '添加文件',
-	UploadClearFiles	: '清空文件',
-	UploadCancel		: '取消上传',
-	UploadRemove		: '删除',
-	UploadRemoveTip		: '已删除!f',
-	UploadUploaded		: '已上传!n%',
-	UploadProcessing	: '上传中...',
+	UploadLabel			: '\u4E0A\u4F20\u6587\u4EF6',
+	UploadTotalFiles	: '\u4E0A\u4F20\u603B\u8BA1:',
+	UploadTotalSize		: '\u4E0A\u4F20\u603B\u5927\u5C0F:',
+	UploadSend			: '\u4E0A\u4F20',
+	UploadAddFiles		: '\u6DFB\u52A0\u6587\u4EF6',
+	UploadClearFiles	: '\u6E05\u7A7A\u6587\u4EF6',
+	UploadCancel		: '\u53D6\u6D88\u4E0A\u4F20',
+	UploadRemove		: '\u5220\u9664',
+	UploadRemoveTip		: '\u5DF2\u5220\u9664!f',
+	UploadUploaded		: '\u5DF2\u4E0A\u4F20!n%',
+	UploadProcessing	: '\u4E0A\u4F20\u4E2D...',
 
 	// Settings Panel
-	SetTitle		: '设置',
-	SetView			: '查看:',
-	SetViewThumb	: '缩略图',
-	SetViewList		: '列表',
-	SetDisplay		: '显示:',
-	SetDisplayName	: '文件名',
-	SetDisplayDate	: '日期',
-	SetDisplaySize	: '大小',
-	SetSort			: '排列顺序:',
-	SetSortName		: '按文件名',
-	SetSortDate		: '按日期',
-	SetSortSize		: '按大小',
-	SetSortExtension		: '按扩展名',
+	SetTitle		: '\u8BBE\u7F6E',
+	SetView			: '\u67E5\u770B:',
+	SetViewThumb	: '\u7F29\u7565\u56FE',
+	SetViewList		: '\u5217\u8868',
+	SetDisplay		: '\u663E\u793A:',
+	SetDisplayName	: '\u6587\u4EF6\u540D',
+	SetDisplayDate	: '\u65E5\u671F',
+	SetDisplaySize	: '\u5927\u5C0F',
+	SetSort			: '\u6392\u5217\u987A\u5E8F:',
+	SetSortName		: '\u6309\u6587\u4EF6\u540D',
+	SetSortDate		: '\u6309\u65E5\u671F',
+	SetSortSize		: '\u6309\u5927\u5C0F',
+	SetSortExtension		: '\u6309\u6269\u5C55\u540D',
 
 	// Status Bar
-	FilesCountEmpty : '<空文件夹>',
-	FilesCountOne	: '1 个文件',
-	FilesCountMany	: '%1 个文件',
+	FilesCountEmpty : '<\u7A7A\u6587\u4EF6\u5939>',
+	FilesCountOne	: '1 \u4E2A\u6587\u4EF6',
+	FilesCountMany	: '%1 \u4E2A\u6587\u4EF6',
 
 	// Size and Speed
 	Kb				: '%1 KB',
@@ -201,97 +201,97 @@ CKFinder.lang['zh-cn'] =
 	SizePerSecond	: '%1/s',
 
 	// Connector Error Messages.
-	ErrorUnknown	: '请求的操作未能完成. (错误 %1)',
+	ErrorUnknown	: '\u8BF7\u6C42\u7684\u64CD\u4F5C\u672A\u80FD\u5B8C\u6210. (\u9519\u8BEF %1)',
 	Errors :
 	{
-	 10 : '无效的指令。',
-	 11 : '文件类型不在许可范围之内。',
-	 12 : '文件类型无效。',
-	102 : '无效的文件名或文件夹名称。',
-	103 : '由于作者限制，该请求不能完成。',
-	104 : '由于文件系统的限制，该请求不能完成。',
-	105 : '无效的扩展名。',
-	109 : '无效请求。',
-	110 : '未知错误。',
+	 10 : '\u65E0\u6548\u7684\u6307\u4EE4\u3002',
+	 11 : '\u6587\u4EF6\u7C7B\u578B\u4E0D\u5728\u8BB8\u53EF\u8303\u56F4\u4E4B\u5185\u3002',
+	 12 : '\u6587\u4EF6\u7C7B\u578B\u65E0\u6548\u3002',
+	102 : '\u65E0\u6548\u7684\u6587\u4EF6\u540D\u6216\u6587\u4EF6\u5939\u540D\u79F0\u3002',
+	103 : '\u7531\u4E8E\u4F5C\u8005\u9650\u5236\uFF0C\u8BE5\u8BF7\u6C42\u4E0D\u80FD\u5B8C\u6210\u3002',
+	104 : '\u7531\u4E8E\u6587\u4EF6\u7CFB\u7EDF\u7684\u9650\u5236\uFF0C\u8BE5\u8BF7\u6C42\u4E0D\u80FD\u5B8C\u6210\u3002',
+	105 : '\u65E0\u6548\u7684\u6269\u5C55\u540D\u3002',
+	109 : '\u65E0\u6548\u8BF7\u6C42\u3002',
+	110 : '\u672A\u77E5\u9519\u8BEF\u3002',
 	111 : 'It was not possible to complete the request due to resulting file size.', // MISSING
-	115 : '存在重名的文件或文件夹。',
-	116 : '文件夹不存在. 请刷新后再试。',
-	117 : '文件不存在. 请刷新列表后再试。',
-	118 : '目标位置与当前位置相同。',
-	201 : '文件与现有的重名. 新上传的文件改名为 "%1"。',
-	202 : '无效的文件。',
-	203 : '无效的文件. 文件尺寸太大。',
-	204 : '上传文件已损失。',
-	205 : '服务器中的上传临时文件夹无效。',
-	206 : '因为安全原因，上传中断. 上传文件包含不能 HTML 类型数据。',
-	207 : '新上传的文件改名为 "%1"。',
-	300 : '移动文件失败。',
-	301 : '复制文件失败。',
-	500 : '因为安全原因，文件不可浏览. 请联系系统管理员并检查CKFinder配置文件。',
-	501 : '不支持缩略图方式。'
+	115 : '\u5B58\u5728\u91CD\u540D\u7684\u6587\u4EF6\u6216\u6587\u4EF6\u5939\u3002',
+	116 : '\u6587\u4EF6\u5939\u4E0D\u5B58\u5728. \u8BF7\u5237\u65B0\u540E\u518D\u8BD5\u3002',
+	117 : '\u6587\u4EF6\u4E0D\u5B58\u5728. \u8BF7\u5237\u65B0\u5217\u8868\u540E\u518D\u8BD5\u3002',
+	118 : '\u76EE\u6807\u4F4D\u7F6E\u4E0E\u5F53\u524D\u4F4D\u7F6E\u76F8\u540C\u3002',
+	201 : '\u6587\u4EF6\u4E0E\u73B0\u6709\u7684\u91CD\u540D. \u65B0\u4E0A\u4F20\u7684\u6587\u4EF6\u6539\u540D\u4E3A "%1"\u3002',
+	202 : '\u65E0\u6548\u7684\u6587\u4EF6\u3002',
+	203 : '\u65E0\u6548\u7684\u6587\u4EF6. \u6587\u4EF6\u5C3A\u5BF8\u592A\u5927\u3002',
+	204 : '\u4E0A\u4F20\u6587\u4EF6\u5DF2\u635F\u5931\u3002',
+	205 : '\u670D\u52A1\u5668\u4E2D\u7684\u4E0A\u4F20\u4E34\u65F6\u6587\u4EF6\u5939\u65E0\u6548\u3002',
+	206 : '\u56E0\u4E3A\u5B89\u5168\u539F\u56E0\uFF0C\u4E0A\u4F20\u4E2D\u65AD. \u4E0A\u4F20\u6587\u4EF6\u5305\u542B\u4E0D\u80FD HTML \u7C7B\u578B\u6570\u636E\u3002',
+	207 : '\u65B0\u4E0A\u4F20\u7684\u6587\u4EF6\u6539\u540D\u4E3A "%1"\u3002',
+	300 : '\u79FB\u52A8\u6587\u4EF6\u5931\u8D25\u3002',
+	301 : '\u590D\u5236\u6587\u4EF6\u5931\u8D25\u3002',
+	500 : '\u56E0\u4E3A\u5B89\u5168\u539F\u56E0\uFF0C\u6587\u4EF6\u4E0D\u53EF\u6D4F\u89C8. \u8BF7\u8054\u7CFB\u7CFB\u7EDF\u7BA1\u7406\u5458\u5E76\u68C0\u67E5CKFinder\u914D\u7F6E\u6587\u4EF6\u3002',
+	501 : '\u4E0D\u652F\u6301\u7F29\u7565\u56FE\u65B9\u5F0F\u3002'
 	},
 
 	// Other Error Messages.
 	ErrorMsg :
 	{
-		FileEmpty		: '文件名不能为空。',
-		FileExists		: '文件 %s 已存在。',
-		FolderEmpty		: '文件夹名称不能为空。',
+		FileEmpty		: '\u6587\u4EF6\u540D\u4E0D\u80FD\u4E3A\u7A7A\u3002',
+		FileExists		: '\u6587\u4EF6 %s \u5DF2\u5B58\u5728\u3002',
+		FolderEmpty		: '\u6587\u4EF6\u5939\u540D\u79F0\u4E0D\u80FD\u4E3A\u7A7A\u3002',
 		FolderExists	: 'Folder %s already exists.', // MISSING
 		FolderNameExists	: 'Folder already exists.', // MISSING
 
-		FileInvChar		: '文件名不能包含以下字符: \n\\ / : * ? " < > |',
-		FolderInvChar	: '文件夹名称不能包含以下字符: \n\\ / : * ? " < > |',
+		FileInvChar		: '\u6587\u4EF6\u540D\u4E0D\u80FD\u5305\u542B\u4EE5\u4E0B\u5B57\u7B26: \n\\ / : * ? " < > |',
+		FolderInvChar	: '\u6587\u4EF6\u5939\u540D\u79F0\u4E0D\u80FD\u5305\u542B\u4EE5\u4E0B\u5B57\u7B26: \n\\ / : * ? " < > |',
 
-		PopupBlockView	: '未能在新窗口中打开文件. 请修改浏览器配置解除对本站点的锁定。',
-		XmlError		: '从服务器读取XML数据出错',
-		XmlEmpty		: '无法从服务器读取数据，因XML响应返回结果为空',
-		XmlRawResponse	: '服务器返回原始结果: %s'
+		PopupBlockView	: '\u672A\u80FD\u5728\u65B0\u7A97\u53E3\u4E2D\u6253\u5F00\u6587\u4EF6. \u8BF7\u4FEE\u6539\u6D4F\u89C8\u5668\u914D\u7F6E\u89E3\u9664\u5BF9\u672C\u7AD9\u70B9\u7684\u9501\u5B9A\u3002',
+		XmlError		: '\u4ECE\u670D\u52A1\u5668\u8BFB\u53D6XML\u6570\u636E\u51FA\u9519',
+		XmlEmpty		: '\u65E0\u6CD5\u4ECE\u670D\u52A1\u5668\u8BFB\u53D6\u6570\u636E\uFF0C\u56E0XML\u54CD\u5E94\u8FD4\u56DE\u7ED3\u679C\u4E3A\u7A7A',
+		XmlRawResponse	: '\u670D\u52A1\u5668\u8FD4\u56DE\u539F\u59CB\u7ED3\u679C: %s'
 	},
 
 	// Imageresize plugin
 	Imageresize :
 	{
-		dialogTitle		: '改变尺寸 %s',
-		sizeTooBig		: '无法大于原图尺寸 (%size)。',
-		resizeSuccess	: '图像尺寸已修改。',
-		thumbnailNew	: '创建缩略图',
-		thumbnailSmall	: '小 (%s)',
-		thumbnailMedium	: '中 (%s)',
-		thumbnailLarge	: '大 (%s)',
-		newSize			: '设置新尺寸',
-		width			: '宽度',
-		height			: '高度',
-		invalidHeight	: '无效高度。',
-		invalidWidth	: '无效宽度。',
-		invalidName		: '文件名无效。',
-		newImage		: '创建图像',
-		noExtensionChange : '无法改变文件后缀。',
-		imageSmall		: '原文件尺寸过小',
-		contextMenuName	: '改变尺寸',
-		lockRatio		: '锁定比例',
-		resetSize		: '原始尺寸'
+		dialogTitle		: '\u6539\u53D8\u5C3A\u5BF8 %s',
+		sizeTooBig		: '\u65E0\u6CD5\u5927\u4E8E\u539F\u56FE\u5C3A\u5BF8 (%size)\u3002',
+		resizeSuccess	: '\u56FE\u50CF\u5C3A\u5BF8\u5DF2\u4FEE\u6539\u3002',
+		thumbnailNew	: '\u521B\u5EFA\u7F29\u7565\u56FE',
+		thumbnailSmall	: '\u5C0F (%s)',
+		thumbnailMedium	: '\u4E2D (%s)',
+		thumbnailLarge	: '\u5927 (%s)',
+		newSize			: '\u8BBE\u7F6E\u65B0\u5C3A\u5BF8',
+		width			: '\u5BBD\u5EA6',
+		height			: '\u9AD8\u5EA6',
+		invalidHeight	: '\u65E0\u6548\u9AD8\u5EA6\u3002',
+		invalidWidth	: '\u65E0\u6548\u5BBD\u5EA6\u3002',
+		invalidName		: '\u6587\u4EF6\u540D\u65E0\u6548\u3002',
+		newImage		: '\u521B\u5EFA\u56FE\u50CF',
+		noExtensionChange : '\u65E0\u6CD5\u6539\u53D8\u6587\u4EF6\u540E\u7F00\u3002',
+		imageSmall		: '\u539F\u6587\u4EF6\u5C3A\u5BF8\u8FC7\u5C0F',
+		contextMenuName	: '\u6539\u53D8\u5C3A\u5BF8',
+		lockRatio		: '\u9501\u5B9A\u6BD4\u4F8B',
+		resetSize		: '\u539F\u59CB\u5C3A\u5BF8'
 	},
 
 	// Fileeditor plugin
 	Fileeditor :
 	{
-		save			: '保存',
-		fileOpenError	: '无法打开文件。',
-		fileSaveSuccess	: '成功保存文件。',
-		contextMenuName	: '编辑',
-		loadingFile		: '加载文件中...'
+		save			: '\u4FDD\u5B58',
+		fileOpenError	: '\u65E0\u6CD5\u6253\u5F00\u6587\u4EF6\u3002',
+		fileSaveSuccess	: '\u6210\u529F\u4FDD\u5B58\u6587\u4EF6\u3002',
+		contextMenuName	: '\u7F16\u8F91',
+		loadingFile		: '\u52A0\u8F7D\u6587\u4EF6\u4E2D...'
 	},
 
 	Maximize :
 	{
-		maximize : '全屏',
-		minimize : '最小化'
+		maximize : '\u5168\u5C4F',
+		minimize : '\u6700\u5C0F\u5316'
 	},
 
 	Gallery :
 	{
-		current : '第 {current} 个图像，共 {total} 个'
+		current : '\u7B2C {current} \u4E2A\u56FE\u50CF\uFF0C\u5171 {total} \u4E2A'
 	},
 
 	Zip :
@@ -307,6 +307,6 @@ CKFinder.lang['zh-cn'] =
 
 	Search :
 	{
-		searchPlaceholder : '搜索'
+		searchPlaceholder : '\u641C\u7D22'
 	}
 };

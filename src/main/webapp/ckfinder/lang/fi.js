@@ -29,7 +29,7 @@ CKFinder.lang['fi'] =
 	common :
 	{
 		// Put the voice-only part of the label in the span.
-		unavailable		: '%1<span class="cke_accessibility">, ei käytettävissä</span>',
+		unavailable		: '%1<span class="cke_accessibility">, ei k\xE4ytett\xE4viss\xE4</span>',
 		confirmCancel	: 'Valintoja on muutettu. Suljetaanko ikkuna kuitenkin?',
 		ok				: 'OK',
 		cancel			: 'Peru',
@@ -40,7 +40,7 @@ CKFinder.lang['fi'] =
 		redo			: 'Tee uudelleen',
 		skip			: 'Ohita',
 		skipAll			: 'Ohita kaikki',
-		makeDecision	: 'Mikä toiminto suoritetaan?',
+		makeDecision	: 'Mik\xE4 toiminto suoritetaan?',
 		rememberDecision: 'Muista valintani'
 	},
 
@@ -74,32 +74,32 @@ CKFinder.lang['fi'] =
 	FolderNew		: 'Kirjoita uuden kansion nimi: ',
 	FolderRename	: 'Kirjoita uusi nimi kansiolle ',
 	FolderDelete	: 'Haluatko varmasti poistaa kansion "%1"?',
-	FolderRenaming	: ' (Uudelleennimeää...)',
+	FolderRenaming	: ' (Uudelleennime\xE4\xE4...)',
 	FolderDeleting	: ' (Poistaa...)',
 	DestinationFolder	: 'Destination Folder', // MISSING
 
 	// Files
 	FileRename		: 'Kirjoita uusi tiedostonimi: ',
-	FileRenameExt	: 'Haluatko varmasti muuttaa tiedostotarkennetta? Tiedosto voi muuttua käyttökelvottomaksi.',
-	FileRenaming	: 'Uudelleennimeää...',
+	FileRenameExt	: 'Haluatko varmasti muuttaa tiedostotarkennetta? Tiedosto voi muuttua k\xE4ytt\xF6kelvottomaksi.',
+	FileRenaming	: 'Uudelleennime\xE4\xE4...',
 	FileDelete		: 'Haluatko varmasti poistaa tiedoston "%1"?',
 	FilesDelete	: 'Are you sure you want to delete %1 files?', // MISSING
 	FilesLoading	: 'Lataa...',
-	FilesEmpty		: 'Tyhjä kansio.',
+	FilesEmpty		: 'Tyhj\xE4 kansio.',
 	DestinationFile	: 'Destination File', // MISSING
 	SkippedFiles	: 'List of skipped files:', // MISSING
 
 	// Basket
 	BasketFolder		: 'Kori',
-	BasketClear			: 'Tyhjennä kori',
+	BasketClear			: 'Tyhjenn\xE4 kori',
 	BasketRemove		: 'Poista korista',
-	BasketOpenFolder	: 'Avaa ylemmän tason kansio',
+	BasketOpenFolder	: 'Avaa ylemm\xE4n tason kansio',
 	BasketTruncateConfirm : 'Haluatko todella poistaa kaikki tiedostot korista?',
 	BasketRemoveConfirm	: 'Haluatko todella poistaa tiedoston "%1" korista?',
 	BasketRemoveConfirmMultiple	: 'Do you really want to remove %1 files from the basket?', // MISSING
-	BasketEmpty			: 'Korissa ei ole tiedostoja. Lisää raahaamalla.',
+	BasketEmpty			: 'Korissa ei ole tiedostoja. Lis\xE4\xE4 raahaamalla.',
 	BasketCopyFilesHere	: 'Kopioi tiedostot korista.',
-	BasketMoveFilesHere	: 'Siirrä tiedostot korista.',
+	BasketMoveFilesHere	: 'Siirr\xE4 tiedostot korista.',
 
 	// Global messages
 	OperationCompletedSuccess	: 'Operation completed successfully.', // MISSING
@@ -115,7 +115,7 @@ CKFinder.lang['fi'] =
 	// Toolbar Buttons (some used elsewhere)
 	Upload		: 'Lataa palvelimelle',
 	UploadTip	: 'Lataa uusi tiedosto palvelimelle',
-	Refresh		: 'Päivitä',
+	Refresh		: 'P\xE4ivit\xE4',
 	Settings	: 'Asetukset',
 	Help		: 'Apua',
 	HelpTip		: 'Apua',
@@ -123,25 +123,25 @@ CKFinder.lang['fi'] =
 	// Context Menus
 	Select			: 'Valitse',
 	SelectThumbnail : 'Valitse esikatselukuva',
-	View			: 'Näytä',
+	View			: 'N\xE4yt\xE4',
 	Download		: 'Lataa palvelimelta',
 
 	NewSubFolder	: 'Uusi alikansio',
-	Rename			: 'Uudelleennimeä ',
+	Rename			: 'Uudelleennime\xE4 ',
 	Delete			: 'Poista',
 	DeleteFiles		: 'Delete Files', // MISSING
 
-	CopyDragDrop	: 'Kopioi tähän',
-	MoveDragDrop	: 'Siirrä tähän',
+	CopyDragDrop	: 'Kopioi t\xE4h\xE4n',
+	MoveDragDrop	: 'Siirr\xE4 t\xE4h\xE4n',
 
 	// Dialogs
-	RenameDlgTitle		: 'Nimeä uudelleen',
+	RenameDlgTitle		: 'Nime\xE4 uudelleen',
 	NewNameDlgTitle		: 'Uusi nimi',
 	FileExistsDlgTitle	: 'Tiedostonimi on jo olemassa!',
-	SysErrorDlgTitle : 'Järjestelmävirhe',
+	SysErrorDlgTitle : 'J\xE4rjestelm\xE4virhe',
 
 	FileOverwrite	: 'Ylikirjoita',
-	FileAutorename	: 'Nimeä uudelleen automaattisesti',
+	FileAutorename	: 'Nime\xE4 uudelleen automaattisesti',
 	ManuallyRename	: 'Manually rename', // MISSING
 
 	// Generic
@@ -152,46 +152,46 @@ CKFinder.lang['fi'] =
 	// Upload Panel
 	UploadTitle			: 'Lataa uusi tiedosto palvelimelle',
 	UploadSelectLbl		: 'Valitse ladattava tiedosto',
-	UploadProgressLbl	: '(Lataaminen palvelimelle käynnissä...)',
+	UploadProgressLbl	: '(Lataaminen palvelimelle k\xE4ynniss\xE4...)',
 	UploadBtn			: 'Lataa valittu tiedosto palvelimelle',
 	UploadBtnCancel		: 'Peru',
 
 	UploadNoFileMsg		: 'Valitse tiedosto tietokoneeltasi.',
 	UploadNoFolder		: 'Valitse kansio ennen palvelimelle lataamista.',
-	UploadNoPerms		: 'Tiedoston lataaminen palvelimelle evätty.',
+	UploadNoPerms		: 'Tiedoston lataaminen palvelimelle ev\xE4tty.',
 	UploadUnknError		: 'Tiedoston siirrossa tapahtui virhe.',
 	UploadExtIncorrect	: 'Tiedostotarkenne ei ole sallittu valitussa kansiossa.',
 
 	// Flash Uploads
 	UploadLabel			: 'Ladattavat tiedostot',
-	UploadTotalFiles	: 'Tiedostoja yhteensä:',
+	UploadTotalFiles	: 'Tiedostoja yhteens\xE4:',
 	UploadTotalSize		: 'Yhteenlaskettu tiedostokoko:',
 	UploadSend			: 'Lataa palvelimelle',
-	UploadAddFiles		: 'Lisää tiedostoja',
+	UploadAddFiles		: 'Lis\xE4\xE4 tiedostoja',
 	UploadClearFiles	: 'Poista tiedostot',
 	UploadCancel		: 'Peru lataus',
 	UploadRemove		: 'Poista',
 	UploadRemoveTip		: 'Poista !f',
 	UploadUploaded		: 'Ladattu !n%',
-	UploadProcessing	: 'Käsittelee...',
+	UploadProcessing	: 'K\xE4sittelee...',
 
 	// Settings Panel
 	SetTitle		: 'Asetukset',
-	SetView			: 'Näkymä:',
+	SetView			: 'N\xE4kym\xE4:',
 	SetViewThumb	: 'Esikatselukuvat',
 	SetViewList		: 'Luettelo',
-	SetDisplay		: 'Näytä:',
+	SetDisplay		: 'N\xE4yt\xE4:',
 	SetDisplayName	: 'Tiedostonimi',
-	SetDisplayDate	: 'Päivämäärä',
+	SetDisplayDate	: 'P\xE4iv\xE4m\xE4\xE4r\xE4',
 	SetDisplaySize	: 'Tiedostokoko',
 	SetSort			: 'Lajittele:',
-	SetSortName		: 'aakkosjärjestykseen',
-	SetSortDate		: 'päivämäärän mukaan',
+	SetSortName		: 'aakkosj\xE4rjestykseen',
+	SetSortDate		: 'p\xE4iv\xE4m\xE4\xE4r\xE4n mukaan',
 	SetSortSize		: 'tiedostokoon mukaan',
-	SetSortExtension		: 'tiedostopäätteen mukaan',
+	SetSortExtension		: 'tiedostop\xE4\xE4tteen mukaan',
 
 	// Status Bar
-	FilesCountEmpty : '<Tyhjä kansio>',
+	FilesCountEmpty : '<Tyhj\xE4 kansio>',
 	FilesCountOne	: '1 tiedosto',
 	FilesCountMany	: '%1 tiedostoa',
 
@@ -202,59 +202,59 @@ CKFinder.lang['fi'] =
 	SizePerSecond	: '%1/s',
 
 	// Connector Error Messages.
-	ErrorUnknown	: 'Pyyntöä ei voitu suorittaa. (Virhe %1)',
+	ErrorUnknown	: 'Pyynt\xF6\xE4 ei voitu suorittaa. (Virhe %1)',
 	Errors :
 	{
 	 10 : 'Virheellinen komento.',
-	 11 : 'Pyynnön resurssityyppi on määrittelemättä.',
-	 12 : 'Pyynnön resurssityyppi on virheellinen.',
+	 11 : 'Pyynn\xF6n resurssityyppi on m\xE4\xE4rittelem\xE4tt\xE4.',
+	 12 : 'Pyynn\xF6n resurssityyppi on virheellinen.',
 	102 : 'Virheellinen tiedosto- tai kansionimi.',
-	103 : 'Oikeutesi eivät riitä pyynnön suorittamiseen.',
-	104 : 'Tiedosto-oikeudet eivät riitä pyynnön suorittamiseen.',
+	103 : 'Oikeutesi eiv\xE4t riit\xE4 pyynn\xF6n suorittamiseen.',
+	104 : 'Tiedosto-oikeudet eiv\xE4t riit\xE4 pyynn\xF6n suorittamiseen.',
 	105 : 'Virheellinen tiedostotarkenne.',
-	109 : 'Virheellinen pyyntö.',
+	109 : 'Virheellinen pyynt\xF6.',
 	110 : 'Tuntematon virhe.',
 	111 : 'It was not possible to complete the request due to resulting file size.', // MISSING
 	115 : 'Samanniminen tiedosto tai kansio on jo olemassa.',
-	116 : 'Kansiota ei löydy. Yritä uudelleen kansiopäivityksen jälkeen.',
-	117 : 'Tiedostoa ei löydy. Yritä uudelleen kansiopäivityksen jälkeen.',
-	118 : 'Lähde- ja kohdekansio on sama!',
+	116 : 'Kansiota ei l\xF6ydy. Yrit\xE4 uudelleen kansiop\xE4ivityksen j\xE4lkeen.',
+	117 : 'Tiedostoa ei l\xF6ydy. Yrit\xE4 uudelleen kansiop\xE4ivityksen j\xE4lkeen.',
+	118 : 'L\xE4hde- ja kohdekansio on sama!',
 	201 : 'Samanniminen tiedosto on jo olemassa. Palvelimelle ladattu tiedosto on nimetty: "%1".',
 	202 : 'Virheellinen tiedosto.',
 	203 : 'Virheellinen tiedosto. Tiedostokoko on liian suuri.',
 	204 : 'Palvelimelle ladattu tiedosto on vioittunut.',
-	205 : 'Väliaikaishakemistoa ei ole määritetty palvelimelle lataamista varten.',
-	206 : 'Palvelimelle lataaminen on peruttu turvallisuussyistä. Tiedosto sisältää HTML-tyylistä dataa.',
+	205 : 'V\xE4liaikaishakemistoa ei ole m\xE4\xE4ritetty palvelimelle lataamista varten.',
+	206 : 'Palvelimelle lataaminen on peruttu turvallisuussyist\xE4. Tiedosto sis\xE4lt\xE4\xE4 HTML-tyylist\xE4 dataa.',
 	207 : 'Palvelimelle ladattu tiedosto on  nimetty: "%1".',
-	300 : 'Tiedostosiirto epäonnistui.',
-	301 : 'Tiedostokopiointi epäonnistui.',
-	500 : 'Tiedostoselain on kytketty käytöstä turvallisuussyistä. Pyydä pääkäyttäjää tarkastamaan CKFinderin asetustiedosto.',
+	300 : 'Tiedostosiirto ep\xE4onnistui.',
+	301 : 'Tiedostokopiointi ep\xE4onnistui.',
+	500 : 'Tiedostoselain on kytketty k\xE4yt\xF6st\xE4 turvallisuussyist\xE4. Pyyd\xE4 p\xE4\xE4k\xE4ytt\xE4j\xE4\xE4 tarkastamaan CKFinderin asetustiedosto.',
 	501 : 'Esikatselukuvien tuki on kytketty toiminnasta.'
 	},
 
 	// Other Error Messages.
 	ErrorMsg :
 	{
-		FileEmpty		: 'Tiedosto on nimettävä!',
+		FileEmpty		: 'Tiedosto on nimett\xE4v\xE4!',
 		FileExists		: 'Tiedosto %s on jo olemassa.',
-		FolderEmpty		: 'Kansio on nimettävä!',
+		FolderEmpty		: 'Kansio on nimett\xE4v\xE4!',
 		FolderExists	: 'Folder %s already exists.', // MISSING
 		FolderNameExists	: 'Folder already exists.', // MISSING
 
-		FileInvChar		: 'Tiedostonimi ei voi sisältää seuraavia merkkejä: \n\\ / : * ? " < > |',
-		FolderInvChar	: 'Kansionimi ei voi sisältää seuraavia merkkejä: \n\\ / : * ? " < > |',
+		FileInvChar		: 'Tiedostonimi ei voi sis\xE4lt\xE4\xE4 seuraavia merkkej\xE4: \n\\ / : * ? " < > |',
+		FolderInvChar	: 'Kansionimi ei voi sis\xE4lt\xE4\xE4 seuraavia merkkej\xE4: \n\\ / : * ? " < > |',
 
-		PopupBlockView	: 'Tiedostoa ei voitu avata uuteen ikkunaan. Salli selaimesi asetuksissa ponnahdusikkunat tälle sivulle.',
+		PopupBlockView	: 'Tiedostoa ei voitu avata uuteen ikkunaan. Salli selaimesi asetuksissa ponnahdusikkunat t\xE4lle sivulle.',
 		XmlError		: 'Web-palvelimen XML-vastausta ei pystytty kunnolla lataamaan.',
-		XmlEmpty		: 'Web-palvelimen XML vastausta ei pystytty lataamaan. Palvelin palautti tyhjän vastauksen.',
-		XmlRawResponse	: 'Palvelimen käsittelemätön vastaus: %s'
+		XmlEmpty		: 'Web-palvelimen XML vastausta ei pystytty lataamaan. Palvelin palautti tyhj\xE4n vastauksen.',
+		XmlRawResponse	: 'Palvelimen k\xE4sittelem\xE4t\xF6n vastaus: %s'
 	},
 
 	// Imageresize plugin
 	Imageresize :
 	{
 		dialogTitle		: 'Muuta kokoa %s',
-		sizeTooBig		: 'Kuvan mittoja ei voi asettaa alkuperäistä suuremmiksi(%size).',
+		sizeTooBig		: 'Kuvan mittoja ei voi asettaa alkuper\xE4ist\xE4 suuremmiksi(%size).',
 		resizeSuccess	: 'Kuvan koon muuttaminen onnistui.',
 		thumbnailNew	: 'Luo uusi esikatselukuva.',
 		thumbnailSmall	: 'Pieni (%s)',
@@ -267,11 +267,11 @@ CKFinder.lang['fi'] =
 		invalidWidth	: 'Viallinen leveys.',
 		invalidName		: 'Viallinen tiedostonimi.',
 		newImage		: 'Luo uusi kuva',
-		noExtensionChange : 'Tiedostomäärettä ei voi vaihtaa.',
-		imageSmall		: 'Lähdekuva on liian pieni.',
+		noExtensionChange : 'Tiedostom\xE4\xE4rett\xE4 ei voi vaihtaa.',
+		imageSmall		: 'L\xE4hdekuva on liian pieni.',
 		contextMenuName	: 'Muuta kokoa',
 		lockRatio		: 'Lukitse suhteet',
-		resetSize		: 'Alkuperäinen koko'
+		resetSize		: 'Alkuper\xE4inen koko'
 	},
 
 	// Fileeditor plugin
@@ -287,7 +287,7 @@ CKFinder.lang['fi'] =
 	Maximize :
 	{
 		maximize : 'Suurenna',
-		minimize : 'Pienennä'
+		minimize : 'Pienenn\xE4'
 	},
 
 	Gallery :

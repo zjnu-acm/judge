@@ -56,7 +56,7 @@
     if (parserConf.version && parseInt(parserConf.version, 10) == 3){
         // since http://legacy.python.org/dev/peps/pep-0465/ @ is also an operator
         var singleOperators = parserConf.singleOperators || /^[\+\-\*\/%&|\^~<>!@]/;
-        var identifiers = parserConf.identifiers|| /^[_A-Za-z\u00A1-\uFFFF][_A-Za-z0-9\u00A1-\uFFFF]*/;
+        var identifiers = parserConf.identifiers|| /^[_A-Za-z\xA1-\uFFFF][_A-Za-z0-9\xA1-\uFFFF]*/;
     } else {
         var singleOperators = parserConf.singleOperators || /^[\+\-\*\/%&|\^~<>!]/;
         var identifiers = parserConf.identifiers|| /^[_A-Za-z][_A-Za-z0-9]*/;

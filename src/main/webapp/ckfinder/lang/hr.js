@@ -29,17 +29,17 @@ CKFinder.lang['hr'] =
 	{
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, nedostupno</span>',
-		confirmCancel	: 'Neke od opcija su promjenjene. Sigurno želite zatvoriti prozor??',
+		confirmCancel	: 'Neke od opcija su promjenjene. Sigurno \u017Eelite zatvoriti prozor??',
 		ok				: 'U redu',
-		cancel			: 'Poništi',
+		cancel			: 'Poni\u0161ti',
 		confirmationTitle	: 'Potvrda',
 		messageTitle	: 'Informacija',
 		inputTitle		: 'Pitanje',
-		undo			: 'Poništi',
+		undo			: 'Poni\u0161ti',
 		redo			: 'Preuredi',
-		skip			: 'Preskoči',
-		skipAll			: 'Preskoči sve',
-		makeDecision	: 'Što bi trebali napraviti?',
+		skip			: 'Presko\u010Di',
+		skipAll			: 'Presko\u010Di sve',
+		makeDecision	: '\u0160to bi trebali napraviti?',
 		rememberDecision: 'Zapamti moj izbor'
 	},
 
@@ -69,36 +69,36 @@ CKFinder.lang['hr'] =
 
 	// Folders
 	FoldersTitle	: 'Direktoriji',
-	FolderLoading	: 'Učitavam...',
+	FolderLoading	: 'U\u010Ditavam...',
 	FolderNew		: 'Unesite novo ime direktorija: ',
 	FolderRename	: 'Unesite novo ime direktorija: ',
-	FolderDelete	: 'Sigurno želite obrisati direktorij "%1"?',
+	FolderDelete	: 'Sigurno \u017Eelite obrisati direktorij "%1"?',
 	FolderRenaming	: ' (Mijenjam ime...)',
-	FolderDeleting	: ' (Brišem...)',
+	FolderDeleting	: ' (Bri\u0161em...)',
 	DestinationFolder	: 'Destination Folder', // MISSING
 
 	// Files
 	FileRename		: 'Unesite novo ime datoteke: ',
-	FileRenameExt	: 'Sigurno želite promijeniti vrstu datoteke? Datoteka može postati neiskoristiva.',
+	FileRenameExt	: 'Sigurno \u017Eelite promijeniti vrstu datoteke? Datoteka mo\u017Ee postati neiskoristiva.',
 	FileRenaming	: 'Mijenjam ime...',
-	FileDelete		: 'Sigurno želite obrisati datoteku "%1"?',
+	FileDelete		: 'Sigurno \u017Eelite obrisati datoteku "%1"?',
 	FilesDelete	: 'Are you sure you want to delete %1 files?', // MISSING
-	FilesLoading	: 'Učitavam...',
+	FilesLoading	: 'U\u010Ditavam...',
 	FilesEmpty		: 'Direktorij je prazan.',
 	DestinationFile	: 'Destination File', // MISSING
 	SkippedFiles	: 'List of skipped files:', // MISSING
 
 	// Basket
-	BasketFolder		: 'Košara',
-	BasketClear			: 'Isprazni košaru',
-	BasketRemove		: 'Ukloni iz košare',
-	BasketOpenFolder	: 'Otvori nadređeni direktorij',
-	BasketTruncateConfirm : 'Sigurno želite obrisati sve datoteke iz košare?',
-	BasketRemoveConfirm	: 'Sigurno želite obrisati datoteku "%1" iz košare?',
+	BasketFolder		: 'Ko\u0161ara',
+	BasketClear			: 'Isprazni ko\u0161aru',
+	BasketRemove		: 'Ukloni iz ko\u0161are',
+	BasketOpenFolder	: 'Otvori nadre\u0111eni direktorij',
+	BasketTruncateConfirm : 'Sigurno \u017Eelite obrisati sve datoteke iz ko\u0161are?',
+	BasketRemoveConfirm	: 'Sigurno \u017Eelite obrisati datoteku "%1" iz ko\u0161are?',
 	BasketRemoveConfirmMultiple	: 'Do you really want to remove %1 files from the basket?', // MISSING
 	BasketEmpty			: 'Nema niti jedne datoteke, ubacite koju.',
-	BasketCopyFilesHere	: 'Kopiraj datoteke iz košare',
-	BasketMoveFilesHere	: 'Premjesti datoteke iz košare',
+	BasketCopyFilesHere	: 'Kopiraj datoteke iz ko\u0161are',
+	BasketMoveFilesHere	: 'Premjesti datoteke iz ko\u0161are',
 
 	// Global messages
 	OperationCompletedSuccess	: 'Operation completed successfully.', // MISSING
@@ -112,12 +112,12 @@ CKFinder.lang['hr'] =
 	CopyFailedList		: 'The following files could not be copied:<br />%s', // MISSING
 
 	// Toolbar Buttons (some used elsewhere)
-	Upload		: 'Pošalji',
-	UploadTip	: 'Pošalji nove datoteke na server',
-	Refresh		: 'Osvježi',
+	Upload		: 'Po\u0161alji',
+	UploadTip	: 'Po\u0161alji nove datoteke na server',
+	Refresh		: 'Osvje\u017Ei',
 	Settings	: 'Postavke',
-	Help		: 'Pomoć',
-	HelpTip		: 'Pomoć',
+	Help		: 'Pomo\u0107',
+	HelpTip		: 'Pomo\u0107',
 
 	// Context Menus
 	Select			: 'Odaberi',
@@ -127,7 +127,7 @@ CKFinder.lang['hr'] =
 
 	NewSubFolder	: 'Novi poddirektorij',
 	Rename			: 'Promijeni naziv',
-	Delete			: 'Obriši',
+	Delete			: 'Obri\u0161i',
 	DeleteFiles		: 'Delete Files', // MISSING
 
 	CopyDragDrop	: 'Kopiraj ovdje',
@@ -136,43 +136,43 @@ CKFinder.lang['hr'] =
 	// Dialogs
 	RenameDlgTitle		: 'Promijeni naziv',
 	NewNameDlgTitle		: 'Novi naziv',
-	FileExistsDlgTitle	: 'Datoteka već postoji',
-	SysErrorDlgTitle : 'Greška sustava',
+	FileExistsDlgTitle	: 'Datoteka ve\u0107 postoji',
+	SysErrorDlgTitle : 'Gre\u0161ka sustava',
 
-	FileOverwrite	: 'Prepiši',
+	FileOverwrite	: 'Prepi\u0161i',
 	FileAutorename	: 'Automatska promjena naziva',
 	ManuallyRename	: 'Manually rename', // MISSING
 
 	// Generic
 	OkBtn		: 'U redu',
-	CancelBtn	: 'Poništi',
+	CancelBtn	: 'Poni\u0161ti',
 	CloseBtn	: 'Zatvori',
 
 	// Upload Panel
-	UploadTitle			: 'Pošalji novu datoteku',
+	UploadTitle			: 'Po\u0161alji novu datoteku',
 	UploadSelectLbl		: 'Odaberi datoteku za slanje',
-	UploadProgressLbl	: '(Slanje u tijeku, molimo pričekajte...)',
-	UploadBtn			: 'Pošalji odabranu datoteku',
-	UploadBtnCancel		: 'Poništi',
+	UploadProgressLbl	: '(Slanje u tijeku, molimo pri\u010Dekajte...)',
+	UploadBtn			: 'Po\u0161alji odabranu datoteku',
+	UploadBtnCancel		: 'Poni\u0161ti',
 
-	UploadNoFileMsg		: 'Odaberite datoteku na Vašem računalu.',
+	UploadNoFileMsg		: 'Odaberite datoteku na Va\u0161em ra\u010Dunalu.',
 	UploadNoFolder		: 'Odaberite direktorije prije slanja.',
 	UploadNoPerms		: 'Slanje datoteka nije dozvoljeno.',
-	UploadUnknError		: 'Greška kod slanja datoteke.',
+	UploadUnknError		: 'Gre\u0161ka kod slanja datoteke.',
 	UploadExtIncorrect	: 'Vrsta datoteka nije dozvoljena.',
 
 	// Flash Uploads
 	UploadLabel			: 'Datoteka za slanje:',
 	UploadTotalFiles	: 'Ukupno datoteka:',
-	UploadTotalSize		: 'Ukupna veličina:',
-	UploadSend			: 'Pošalji',
+	UploadTotalSize		: 'Ukupna veli\u010Dina:',
+	UploadSend			: 'Po\u0161alji',
 	UploadAddFiles		: 'Dodaj datoteke',
 	UploadClearFiles	: 'Izbaci datoteke',
-	UploadCancel		: 'Poništi slanje',
+	UploadCancel		: 'Poni\u0161ti slanje',
 	UploadRemove		: 'Ukloni',
 	UploadRemoveTip		: 'Ukloni !f',
 	UploadUploaded		: 'Poslano !n%',
-	UploadProcessing	: 'Obrađujem...',
+	UploadProcessing	: 'Obra\u0111ujem...',
 
 	// Settings Panel
 	SetTitle		: 'Postavke',
@@ -182,11 +182,11 @@ CKFinder.lang['hr'] =
 	SetDisplay		: 'Prikaz:',
 	SetDisplayName	: 'Naziv datoteke',
 	SetDisplayDate	: 'Datum',
-	SetDisplaySize	: 'Veličina datoteke',
+	SetDisplaySize	: 'Veli\u010Dina datoteke',
 	SetSort			: 'Sortiranje:',
 	SetSortName		: 'po nazivu',
 	SetSortDate		: 'po datumu',
-	SetSortSize		: 'po veličini',
+	SetSortSize		: 'po veli\u010Dini',
 	SetSortExtension		: 'po vrsti datoteke',
 
 	// Status Bar
@@ -201,91 +201,91 @@ CKFinder.lang['hr'] =
 	SizePerSecond	: '%1/s',
 
 	// Connector Error Messages.
-	ErrorUnknown	: 'Nije moguće završiti zahtjev. (Greška %1)',
+	ErrorUnknown	: 'Nije mogu\u0107e zavr\u0161iti zahtjev. (Gre\u0161ka %1)',
 	Errors :
 	{
 	 10 : 'Nepoznata naredba.',
 	 11 : 'Nije navedena vrsta u zahtjevu.',
-	 12 : 'Zatražena vrsta nije važeća.',
+	 12 : 'Zatra\u017Eena vrsta nije va\u017Ee\u0107a.',
 	102 : 'Neispravno naziv datoteke ili direktoija.',
-	103 : 'Nije moguće izvršiti zahtjev zbog ograničenja pristupa.',
-	104 : 'Nije moguće izvršiti zahtjev zbog ograničenja postavka sustava.',
+	103 : 'Nije mogu\u0107e izvr\u0161iti zahtjev zbog ograni\u010Denja pristupa.',
+	104 : 'Nije mogu\u0107e izvr\u0161iti zahtjev zbog ograni\u010Denja postavka sustava.',
 	105 : 'Nedozvoljena vrsta datoteke.',
 	109 : 'Nedozvoljen zahtjev.',
-	110 : 'Nepoznata greška.',
+	110 : 'Nepoznata gre\u0161ka.',
 	111 : 'It was not possible to complete the request due to resulting file size.', // MISSING
-	115 : 'Datoteka ili direktorij s istim nazivom već postoji.',
-	116 : 'Direktorij nije pronađen. Osvježite stranicu i pokušajte ponovo.',
-	117 : 'Datoteka nije pronađena. Osvježite listu datoteka i pokušajte ponovo.',
-	118 : 'Putanje izvora i odredišta su jednake.',
-	201 : 'Datoteka s istim nazivom već postoji. Poslana datoteka je promjenjena u "%1".',
+	115 : 'Datoteka ili direktorij s istim nazivom ve\u0107 postoji.',
+	116 : 'Direktorij nije prona\u0111en. Osvje\u017Eite stranicu i poku\u0161ajte ponovo.',
+	117 : 'Datoteka nije prona\u0111ena. Osvje\u017Eite listu datoteka i poku\u0161ajte ponovo.',
+	118 : 'Putanje izvora i odredi\u0161ta su jednake.',
+	201 : 'Datoteka s istim nazivom ve\u0107 postoji. Poslana datoteka je promjenjena u "%1".',
 	202 : 'Neispravna datoteka.',
-	203 : 'Neispravna datoteka. Veličina datoteke je prevelika.',
+	203 : 'Neispravna datoteka. Veli\u010Dina datoteke je prevelika.',
 	204 : 'Poslana datoteka je neispravna.',
 	205 : 'Ne postoji privremeni direktorij za slanje na server.',
-	206 : 'Slanje je poništeno zbog sigurnosnih postavki. Naziv datoteke sadrži HTML podatke.',
+	206 : 'Slanje je poni\u0161teno zbog sigurnosnih postavki. Naziv datoteke sadr\u017Ei HTML podatke.',
 	207 : 'Poslana datoteka je promjenjena u "%1".',
-	300 : 'Premještanje datoteke(a) nije uspjelo.',
+	300 : 'Premje\u0161tanje datoteke(a) nije uspjelo.',
 	301 : 'Kopiranje datoteke(a) nije uspjelo.',
-	500 : 'Pretraživanje datoteka nije dozvoljeno iz sigurnosnih razloga. Molimo kontaktirajte administratora sustava kako bi provjerili postavke CKFinder konfiguracijske datoteke.',
+	500 : 'Pretra\u017Eivanje datoteka nije dozvoljeno iz sigurnosnih razloga. Molimo kontaktirajte administratora sustava kako bi provjerili postavke CKFinder konfiguracijske datoteke.',
 	501 : 'The thumbnails support is disabled.'
 	},
 
 	// Other Error Messages.
 	ErrorMsg :
 	{
-		FileEmpty		: 'Naziv datoteke ne može biti prazan.',
-		FileExists		: 'Datoteka %s već postoji.',
-		FolderEmpty		: 'Naziv direktorija ne može biti prazan.',
+		FileEmpty		: 'Naziv datoteke ne mo\u017Ee biti prazan.',
+		FileExists		: 'Datoteka %s ve\u0107 postoji.',
+		FolderEmpty		: 'Naziv direktorija ne mo\u017Ee biti prazan.',
 		FolderExists	: 'Folder %s already exists.', // MISSING
 		FolderNameExists	: 'Folder already exists.', // MISSING
 
-		FileInvChar		: 'Naziv datoteke ne smije sadržavati niti jedan od sljedećih znakova: \n\\ / : * ? " < > |',
-		FolderInvChar	: 'Naziv direktorija ne smije sadržavati niti jedan od sljedećih znakova: \n\\ / : * ? " < > |',
+		FileInvChar		: 'Naziv datoteke ne smije sadr\u017Eavati niti jedan od sljede\u0107ih znakova: \n\\ / : * ? " < > |',
+		FolderInvChar	: 'Naziv direktorija ne smije sadr\u017Eavati niti jedan od sljede\u0107ih znakova: \n\\ / : * ? " < > |',
 
-		PopupBlockView	: 'Nije moguće otvoriti datoteku u novom prozoru. Promijenite postavke svog Internet preglednika i isključite sve popup blokere za ove web stranice.',
-		XmlError		: 'Nije moguće učitati XML odgovor od web servera.',
-		XmlEmpty		: 'Nije moguće učitati XML odgovor od web servera. Server je vratio prazan odgovor.',
+		PopupBlockView	: 'Nije mogu\u0107e otvoriti datoteku u novom prozoru. Promijenite postavke svog Internet preglednika i isklju\u010Dite sve popup blokere za ove web stranice.',
+		XmlError		: 'Nije mogu\u0107e u\u010Ditati XML odgovor od web servera.',
+		XmlEmpty		: 'Nije mogu\u0107e u\u010Ditati XML odgovor od web servera. Server je vratio prazan odgovor.',
 		XmlRawResponse	: 'Odgovor servera: %s'
 	},
 
 	// Imageresize plugin
 	Imageresize :
 	{
-		dialogTitle		: 'Promijeni veličinu %s',
-		sizeTooBig		: 'Nije moguće postaviti veličinu veću od originala (%size).',
-		resizeSuccess	: 'Slika je uspješno promijenjena.',
+		dialogTitle		: 'Promijeni veli\u010Dinu %s',
+		sizeTooBig		: 'Nije mogu\u0107e postaviti veli\u010Dinu ve\u0107u od originala (%size).',
+		resizeSuccess	: 'Slika je uspje\u0161no promijenjena.',
 		thumbnailNew	: 'Napravi malu sliku',
 		thumbnailSmall	: 'Mala (%s)',
 		thumbnailMedium	: 'Srednja (%s)',
 		thumbnailLarge	: 'Velika (%s)',
-		newSize			: 'Postavi novu veličinu',
-		width			: 'Širina',
+		newSize			: 'Postavi novu veli\u010Dinu',
+		width			: '\u0160irina',
 		height			: 'Visina',
 		invalidHeight	: 'Neispravna visina.',
-		invalidWidth	: 'Neispravna širina.',
+		invalidWidth	: 'Neispravna \u0161irina.',
 		invalidName		: 'Neispravan naziv datoteke.',
 		newImage		: 'Napravi novu sliku',
 		noExtensionChange : 'Vrsta datoteke se ne smije mijenjati.',
 		imageSmall		: 'Izvorna slika je premala.',
-		contextMenuName	: 'Promijeni veličinu',
-		lockRatio		: 'Zaključaj odnose',
-		resetSize		: 'Vrati veličinu'
+		contextMenuName	: 'Promijeni veli\u010Dinu',
+		lockRatio		: 'Zaklju\u010Daj odnose',
+		resetSize		: 'Vrati veli\u010Dinu'
 	},
 
 	// Fileeditor plugin
 	Fileeditor :
 	{
 		save			: 'Snimi',
-		fileOpenError	: 'Nije moguće otvoriti datoteku.',
-		fileSaveSuccess	: 'Datoteka je uspješno snimljena.',
+		fileOpenError	: 'Nije mogu\u0107e otvoriti datoteku.',
+		fileSaveSuccess	: 'Datoteka je uspje\u0161no snimljena.',
 		contextMenuName	: 'Promjeni',
-		loadingFile		: 'Učitavam, molimo pričekajte...'
+		loadingFile		: 'U\u010Ditavam, molimo pri\u010Dekajte...'
 	},
 
 	Maximize :
 	{
-		maximize : 'Povećaj',
+		maximize : 'Pove\u0107aj',
 		minimize : 'Smanji'
 	},
 
@@ -307,6 +307,6 @@ CKFinder.lang['hr'] =
 
 	Search :
 	{
-		searchPlaceholder : 'Traži'
+		searchPlaceholder : 'Tra\u017Ei'
 	}
 };

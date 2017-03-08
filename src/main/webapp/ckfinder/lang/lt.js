@@ -28,19 +28,19 @@ CKFinder.lang['lt'] =
 	common :
 	{
 		// Put the voice-only part of the label in the span.
-		unavailable		: '%1<span class="cke_accessibility">, nėra</span>',
-		confirmCancel	: 'Kai kurie nustatymai buvo pakeisti. Ar tikrai norite uždaryti šį langą?',
+		unavailable		: '%1<span class="cke_accessibility">, n\u0117ra</span>',
+		confirmCancel	: 'Kai kurie nustatymai buvo pakeisti. Ar tikrai norite u\u017Edaryti \u0161\u012F lang\u0105?',
 		ok				: 'Gerai',
-		cancel			: 'Atšaukti',
+		cancel			: 'At\u0161aukti',
 		confirmationTitle	: 'Patvirtinimas',
 		messageTitle	: 'Informacija',
 		inputTitle		: 'Klausimas',
 		undo			: 'Veiksmas atgal',
 		redo			: 'Veiksmas pirmyn',
 		skip			: 'Praleisti',
-		skipAll			: 'Praleisti viską',
-		makeDecision	: 'Ką pasirinksite?',
-		rememberDecision: 'Atsiminti mano pasirinkimą'
+		skipAll			: 'Praleisti visk\u0105',
+		makeDecision	: 'K\u0105 pasirinksite?',
+		rememberDecision: 'Atsiminti mano pasirinkim\u0105'
 	},
 
 
@@ -69,36 +69,36 @@ CKFinder.lang['lt'] =
 
 	// Folders
 	FoldersTitle	: 'Segtuvai',
-	FolderLoading	: 'Prašau palaukite...',
-	FolderNew		: 'Prašau įrašykite naujo segtuvo pavadinimą: ',
-	FolderRename	: 'Prašau įrašykite naujo segtuvo pavadinimą: ',
-	FolderDelete	: 'Ar tikrai norite ištrinti "%1" segtuvą?',
+	FolderLoading	: 'Pra\u0161au palaukite...',
+	FolderNew		: 'Pra\u0161au \u012Fra\u0161ykite naujo segtuvo pavadinim\u0105: ',
+	FolderRename	: 'Pra\u0161au \u012Fra\u0161ykite naujo segtuvo pavadinim\u0105: ',
+	FolderDelete	: 'Ar tikrai norite i\u0161trinti "%1" segtuv\u0105?',
 	FolderRenaming	: ' (Pervadinama...)',
 	FolderDeleting	: ' (Trinama...)',
 	DestinationFolder	: 'Destination Folder', // MISSING
 
 	// Files
-	FileRename		: 'Prašau įrašykite naujo failo pavadinimą: ',
-	FileRenameExt	: 'Ar tikrai norite pakeisti šio failo plėtinį? Failas gali būti nebepanaudojamas',
+	FileRename		: 'Pra\u0161au \u012Fra\u0161ykite naujo failo pavadinim\u0105: ',
+	FileRenameExt	: 'Ar tikrai norite pakeisti \u0161io failo pl\u0117tin\u012F? Failas gali b\u016Bti nebepanaudojamas',
 	FileRenaming	: 'Pervadinama...',
-	FileDelete		: 'Ar tikrai norite ištrinti failą "%1"?',
+	FileDelete		: 'Ar tikrai norite i\u0161trinti fail\u0105 "%1"?',
 	FilesDelete	: 'Are you sure you want to delete %1 files?', // MISSING
-	FilesLoading	: 'Prašau palaukite...',
-	FilesEmpty		: 'Tuščias segtuvas',
+	FilesLoading	: 'Pra\u0161au palaukite...',
+	FilesEmpty		: 'Tu\u0161\u010Dias segtuvas',
 	DestinationFile	: 'Destination File', // MISSING
 	SkippedFiles	: 'List of skipped files:', // MISSING
 
 	// Basket
-	BasketFolder		: 'Krepšelis',
-	BasketClear			: 'Ištuštinti krepšelį',
-	BasketRemove		: 'Ištrinti krepšelį',
-	BasketOpenFolder	: 'Atidaryti failo segtuvą',
-	BasketTruncateConfirm : 'Ar tikrai norite ištrinti visus failus iš krepšelio?',
-	BasketRemoveConfirm	: 'Ar tikrai norite ištrinti failą "%1" iš krepšelio?',
+	BasketFolder		: 'Krep\u0161elis',
+	BasketClear			: 'I\u0161tu\u0161tinti krep\u0161el\u012F',
+	BasketRemove		: 'I\u0161trinti krep\u0161el\u012F',
+	BasketOpenFolder	: 'Atidaryti failo segtuv\u0105',
+	BasketTruncateConfirm : 'Ar tikrai norite i\u0161trinti visus failus i\u0161 krep\u0161elio?',
+	BasketRemoveConfirm	: 'Ar tikrai norite i\u0161trinti fail\u0105 "%1" i\u0161 krep\u0161elio?',
 	BasketRemoveConfirmMultiple	: 'Do you really want to remove %1 files from the basket?', // MISSING
-	BasketEmpty			: 'Krepšelyje failų nėra, nuvilkite ir įmeskite juos į krepšelį.',
-	BasketCopyFilesHere	: 'Kopijuoti failus iš krepšelio',
-	BasketMoveFilesHere	: 'Perkelti failus iš krepšelio',
+	BasketEmpty			: 'Krep\u0161elyje fail\u0173 n\u0117ra, nuvilkite ir \u012Fmeskite juos \u012F krep\u0161el\u012F.',
+	BasketCopyFilesHere	: 'Kopijuoti failus i\u0161 krep\u0161elio',
+	BasketMoveFilesHere	: 'Perkelti failus i\u0161 krep\u0161elio',
 
 	// Global messages
 	OperationCompletedSuccess	: 'Operation completed successfully.', // MISSING
@@ -112,8 +112,8 @@ CKFinder.lang['lt'] =
 	CopyFailedList		: 'The following files could not be copied:<br />%s', // MISSING
 
 	// Toolbar Buttons (some used elsewhere)
-	Upload		: 'Įkelti',
-	UploadTip	: 'Įkelti naują failą',
+	Upload		: '\u012Ekelti',
+	UploadTip	: '\u012Ekelti nauj\u0105 fail\u0105',
 	Refresh		: 'Atnaujinti',
 	Settings	: 'Nustatymai',
 	Help		: 'Pagalba',
@@ -121,17 +121,17 @@ CKFinder.lang['lt'] =
 
 	// Context Menus
 	Select			: 'Pasirinkti',
-	SelectThumbnail : 'Pasirinkti miniatiūrą',
-	View			: 'Peržiūrėti',
-	Download		: 'Atsisiųsti',
+	SelectThumbnail : 'Pasirinkti miniati\u016Br\u0105',
+	View			: 'Per\u017Ei\u016Br\u0117ti',
+	Download		: 'Atsisi\u0173sti',
 
 	NewSubFolder	: 'Naujas segtuvas',
 	Rename			: 'Pervadinti',
-	Delete			: 'Ištrinti',
+	Delete			: 'I\u0161trinti',
 	DeleteFiles		: 'Delete Files', // MISSING
 
-	CopyDragDrop	: 'Nukopijuoti čia',
-	MoveDragDrop	: 'Perkelti čia',
+	CopyDragDrop	: 'Nukopijuoti \u010Dia',
+	MoveDragDrop	: 'Perkelti \u010Dia',
 
 	// Dialogs
 	RenameDlgTitle		: 'Pervadinti',
@@ -139,58 +139,58 @@ CKFinder.lang['lt'] =
 	FileExistsDlgTitle	: 'Toks failas jau egzistuoja',
 	SysErrorDlgTitle : 'Sistemos klaida',
 
-	FileOverwrite	: 'Užrašyti ant viršaus',
-	FileAutorename	: 'Automatiškai pervadinti',
+	FileOverwrite	: 'U\u017Era\u0161yti ant vir\u0161aus',
+	FileAutorename	: 'Automati\u0161kai pervadinti',
 	ManuallyRename	: 'Manually rename', // MISSING
 
 	// Generic
 	OkBtn		: 'Gerai',
-	CancelBtn	: 'Atšaukti',
-	CloseBtn	: 'Uždaryti',
+	CancelBtn	: 'At\u0161aukti',
+	CloseBtn	: 'U\u017Edaryti',
 
 	// Upload Panel
-	UploadTitle			: 'Įkelti naują failą',
-	UploadSelectLbl		: 'Pasirinkite failą įkėlimui',
-	UploadProgressLbl	: '(Vykdomas įkėlimas, prašau palaukite...)',
-	UploadBtn			: 'Įkelti pasirinktą failą',
-	UploadBtnCancel		: 'Atšaukti',
+	UploadTitle			: '\u012Ekelti nauj\u0105 fail\u0105',
+	UploadSelectLbl		: 'Pasirinkite fail\u0105 \u012Fk\u0117limui',
+	UploadProgressLbl	: '(Vykdomas \u012Fk\u0117limas, pra\u0161au palaukite...)',
+	UploadBtn			: '\u012Ekelti pasirinkt\u0105 fail\u0105',
+	UploadBtnCancel		: 'At\u0161aukti',
 
-	UploadNoFileMsg		: 'Pasirinkite failą iš savo kompiuterio',
-	UploadNoFolder		: 'Pasirinkite segtuvą prieš įkeliant.',
-	UploadNoPerms		: 'Failų įkėlimas uždraustas.',
-	UploadUnknError		: 'Įvyko klaida siunčiant failą.',
-	UploadExtIncorrect	: 'Šiame segtuve toks failų plėtinys yra uždraustas.',
+	UploadNoFileMsg		: 'Pasirinkite fail\u0105 i\u0161 savo kompiuterio',
+	UploadNoFolder		: 'Pasirinkite segtuv\u0105 prie\u0161 \u012Fkeliant.',
+	UploadNoPerms		: 'Fail\u0173 \u012Fk\u0117limas u\u017Edraustas.',
+	UploadUnknError		: '\u012Evyko klaida siun\u010Diant fail\u0105.',
+	UploadExtIncorrect	: '\u0160iame segtuve toks fail\u0173 pl\u0117tinys yra u\u017Edraustas.',
 
 	// Flash Uploads
-	UploadLabel			: 'Įkeliami failai',
-	UploadTotalFiles	: 'Iš viso failų:',
+	UploadLabel			: '\u012Ekeliami failai',
+	UploadTotalFiles	: 'I\u0161 viso fail\u0173:',
 	UploadTotalSize		: 'Visa apimtis:',
-	UploadSend			: 'Įkelti',
-	UploadAddFiles		: 'Pridėti failus',
-	UploadClearFiles	: 'Išvalyti failus',
-	UploadCancel		: 'Atšaukti nusiuntimą',
-	UploadRemove		: 'Pašalinti',
-	UploadRemoveTip		: 'Pašalinti !f',
-	UploadUploaded		: 'Įkeltas !n%',
+	UploadSend			: '\u012Ekelti',
+	UploadAddFiles		: 'Prid\u0117ti failus',
+	UploadClearFiles	: 'I\u0161valyti failus',
+	UploadCancel		: 'At\u0161aukti nusiuntim\u0105',
+	UploadRemove		: 'Pa\u0161alinti',
+	UploadRemoveTip		: 'Pa\u0161alinti !f',
+	UploadUploaded		: '\u012Ekeltas !n%',
 	UploadProcessing	: 'Apdorojama...',
 
 	// Settings Panel
 	SetTitle		: 'Nustatymai',
-	SetView			: 'Peržiūrėti:',
-	SetViewThumb	: 'Miniatiūros',
-	SetViewList		: 'Sąrašas',
+	SetView			: 'Per\u017Ei\u016Br\u0117ti:',
+	SetViewThumb	: 'Miniati\u016Bros',
+	SetViewList		: 'S\u0105ra\u0161as',
 	SetDisplay		: 'Rodymas:',
 	SetDisplayName	: 'Failo pavadinimas',
 	SetDisplayDate	: 'Data',
 	SetDisplaySize	: 'Failo dydis',
-	SetSort			: 'Rūšiavimas:',
-	SetSortName		: 'pagal failo pavadinimą',
-	SetSortDate		: 'pagal datą',
-	SetSortSize		: 'pagal apimtį',
-	SetSortExtension		: 'pagal plėtinį',
+	SetSort			: 'R\u016B\u0161iavimas:',
+	SetSortName		: 'pagal failo pavadinim\u0105',
+	SetSortDate		: 'pagal dat\u0105',
+	SetSortSize		: 'pagal apimt\u012F',
+	SetSortExtension		: 'pagal pl\u0117tin\u012F',
 
 	// Status Bar
-	FilesCountEmpty : '<Tuščias segtuvas>',
+	FilesCountEmpty : '<Tu\u0161\u010Dias segtuvas>',
 	FilesCountOne	: '1 failas',
 	FilesCountMany	: '%1 failai',
 
@@ -201,97 +201,97 @@ CKFinder.lang['lt'] =
 	SizePerSecond	: '%1/s',
 
 	// Connector Error Messages.
-	ErrorUnknown	: 'Užklausos įvykdyti nepavyko. (Klaida %1)',
+	ErrorUnknown	: 'U\u017Eklausos \u012Fvykdyti nepavyko. (Klaida %1)',
 	Errors :
 	{
 	 10 : 'Neteisinga komanda.',
-	 11 : 'Resurso rūšis nenurodyta užklausoje.',
-	 12 : 'Neteisinga resurso rūšis.',
+	 11 : 'Resurso r\u016B\u0161is nenurodyta u\u017Eklausoje.',
+	 12 : 'Neteisinga resurso r\u016B\u0161is.',
 	102 : 'Netinkamas failas arba segtuvo pavadinimas.',
-	103 : 'Nepavyko įvykdyti užklausos dėl autorizavimo apribojimų.',
-	104 : 'Nepavyko įvykdyti užklausos dėl failų sistemos leidimų apribojimų.',
-	105 : 'Netinkamas failo plėtinys.',
-	109 : 'Netinkama užklausa.',
-	110 : 'Nežinoma klaida.',
+	103 : 'Nepavyko \u012Fvykdyti u\u017Eklausos d\u0117l autorizavimo apribojim\u0173.',
+	104 : 'Nepavyko \u012Fvykdyti u\u017Eklausos d\u0117l fail\u0173 sistemos leidim\u0173 apribojim\u0173.',
+	105 : 'Netinkamas failo pl\u0117tinys.',
+	109 : 'Netinkama u\u017Eklausa.',
+	110 : 'Ne\u017Einoma klaida.',
 	111 : 'It was not possible to complete the request due to resulting file size.', // MISSING
-	115 : 'Failas arba segtuvas su tuo pačiu pavadinimu jau yra.',
+	115 : 'Failas arba segtuvas su tuo pa\u010Diu pavadinimu jau yra.',
 	116 : 'Segtuvas nerastas. Pabandykite atnaujinti.',
-	117 : 'Failas nerastas. Pabandykite atnaujinti failų sąrašą.',
-	118 : 'Šaltinio ir nurodomos vietos nuorodos yra vienodos.',
-	201 : 'Failas su tuo pačiu pavadinimu jau tra. Įkeltas failas buvo pervadintas į "%1"',
+	117 : 'Failas nerastas. Pabandykite atnaujinti fail\u0173 s\u0105ra\u0161\u0105.',
+	118 : '\u0160altinio ir nurodomos vietos nuorodos yra vienodos.',
+	201 : 'Failas su tuo pa\u010Diu pavadinimu jau tra. \u012Ekeltas failas buvo pervadintas \u012F "%1"',
 	202 : 'Netinkamas failas',
-	203 : 'Netinkamas failas. Failo apimtis yra per didelė.',
-	204 : 'Įkeltas failas yra pažeistas.',
-	205 : 'Nėra laikinojo segtuvo skirto failams įkelti.',
-	206 : 'Įkėlimas bus nutrauktas dėl saugumo sumetimų. Šiame faile yra HTML duomenys.',
-	207 : 'Įkeltas failas buvo pervadintas į "%1"',
-	300 : 'Failų perkėlimas nepavyko.',
-	301 : 'Failų kopijavimas nepavyko.',
-	500 : 'Failų naršyklė yra išjungta dėl saugumo nustaymų. Prašau susisiekti su sistemų administratoriumi ir patikrinkite CKFinder konfigūracinį failą.',
-	501 : 'Miniatiūrų palaikymas išjungtas.'
+	203 : 'Netinkamas failas. Failo apimtis yra per didel\u0117.',
+	204 : '\u012Ekeltas failas yra pa\u017Eeistas.',
+	205 : 'N\u0117ra laikinojo segtuvo skirto failams \u012Fkelti.',
+	206 : '\u012Ek\u0117limas bus nutrauktas d\u0117l saugumo sumetim\u0173. \u0160iame faile yra HTML duomenys.',
+	207 : '\u012Ekeltas failas buvo pervadintas \u012F "%1"',
+	300 : 'Fail\u0173 perk\u0117limas nepavyko.',
+	301 : 'Fail\u0173 kopijavimas nepavyko.',
+	500 : 'Fail\u0173 nar\u0161ykl\u0117 yra i\u0161jungta d\u0117l saugumo nustaym\u0173. Pra\u0161au susisiekti su sistem\u0173 administratoriumi ir patikrinkite CKFinder konfig\u016Bracin\u012F fail\u0105.',
+	501 : 'Miniati\u016Br\u0173 palaikymas i\u0161jungtas.'
 	},
 
 	// Other Error Messages.
 	ErrorMsg :
 	{
-		FileEmpty		: 'Failo pavadinimas negali būti tuščias',
+		FileEmpty		: 'Failo pavadinimas negali b\u016Bti tu\u0161\u010Dias',
 		FileExists		: 'Failas %s jau egzistuoja',
-		FolderEmpty		: 'Segtuvo pavadinimas negali būti tuščias',
+		FolderEmpty		: 'Segtuvo pavadinimas negali b\u016Bti tu\u0161\u010Dias',
 		FolderExists	: 'Folder %s already exists.', // MISSING
 		FolderNameExists	: 'Folder already exists.', // MISSING
 
-		FileInvChar		: 'Failo pavadinimas negali turėti bent vieno iš šių simbolių: \n\\ / : * ? " < > |',
-		FolderInvChar	: 'Segtuvo pavadinimas negali turėti bent vieno iš šių simbolių: \n\\ / : * ? " < > |',
+		FileInvChar		: 'Failo pavadinimas negali tur\u0117ti bent vieno i\u0161 \u0161i\u0173 simboli\u0173: \n\\ / : * ? " < > |',
+		FolderInvChar	: 'Segtuvo pavadinimas negali tur\u0117ti bent vieno i\u0161 \u0161i\u0173 simboli\u0173: \n\\ / : * ? " < > |',
 
-		PopupBlockView	: 'Nepavyko atidaryti failo naujame lange. Prašau pakeiskite savo naršyklės nustatymus, kad būtų leidžiami iškylantys langai šiame tinklapyje.',
-		XmlError		: 'Nepavyko įkrauti XML atsako iš web serverio.',
-		XmlEmpty		: 'Nepavyko įkrauti XML atsako iš web serverio. Serveris gražino tuščią užklausą.',
-		XmlRawResponse	: 'Vientisas atsakas iš serverio: %s'
+		PopupBlockView	: 'Nepavyko atidaryti failo naujame lange. Pra\u0161au pakeiskite savo nar\u0161ykl\u0117s nustatymus, kad b\u016Bt\u0173 leid\u017Eiami i\u0161kylantys langai \u0161iame tinklapyje.',
+		XmlError		: 'Nepavyko \u012Fkrauti XML atsako i\u0161 web serverio.',
+		XmlEmpty		: 'Nepavyko \u012Fkrauti XML atsako i\u0161 web serverio. Serveris gra\u017Eino tu\u0161\u010Di\u0105 u\u017Eklaus\u0105.',
+		XmlRawResponse	: 'Vientisas atsakas i\u0161 serverio: %s'
 	},
 
 	// Imageresize plugin
 	Imageresize :
 	{
 		dialogTitle		: 'Keisti matmenis %s',
-		sizeTooBig		: 'Negalima nustatyti aukščio ir pločio į didesnius nei originalaus paveiksliuko (%size).',
+		sizeTooBig		: 'Negalima nustatyti auk\u0161\u010Dio ir plo\u010Dio \u012F didesnius nei originalaus paveiksliuko (%size).',
 		resizeSuccess	: 'Paveiksliuko matmenys pakeisti.',
-		thumbnailNew	: 'Sukurti naują miniatiūrą',
-		thumbnailSmall	: 'Mažas (%s)',
+		thumbnailNew	: 'Sukurti nauj\u0105 miniati\u016Br\u0105',
+		thumbnailSmall	: 'Ma\u017Eas (%s)',
 		thumbnailMedium	: 'Vidutinis (%s)',
 		thumbnailLarge	: 'Didelis (%s)',
 		newSize			: 'Nustatyti naujus matmenis',
 		width			: 'Plotis',
-		height			: 'Aukštis',
-		invalidHeight	: 'Neteisingas aukštis.',
+		height			: 'Auk\u0161tis',
+		invalidHeight	: 'Neteisingas auk\u0161tis.',
 		invalidWidth	: 'Neteisingas plotis.',
 		invalidName		: 'Neteisingas pavadinimas.',
-		newImage		: 'Sukurti naują paveiksliuką',
-		noExtensionChange : 'Failo plėtinys negali būti pakeistas.',
-		imageSmall		: 'Šaltinio paveiksliukas yra per mažas',
+		newImage		: 'Sukurti nauj\u0105 paveiksliuk\u0105',
+		noExtensionChange : 'Failo pl\u0117tinys negali b\u016Bti pakeistas.',
+		imageSmall		: '\u0160altinio paveiksliukas yra per ma\u017Eas',
 		contextMenuName	: 'Pakeisti matmenis',
-		lockRatio		: 'Išlaikyti matmenų santykį',
-		resetSize		: 'Nustatyti dydį iš naujo'
+		lockRatio		: 'I\u0161laikyti matmen\u0173 santyk\u012F',
+		resetSize		: 'Nustatyti dyd\u012F i\u0161 naujo'
 	},
 
 	// Fileeditor plugin
 	Fileeditor :
 	{
-		save			: 'Išsaugoti',
+		save			: 'I\u0161saugoti',
 		fileOpenError	: 'Nepavyko atidaryti failo.',
-		fileSaveSuccess	: 'Failas sėkmingai išsaugotas.',
+		fileSaveSuccess	: 'Failas s\u0117kmingai i\u0161saugotas.',
 		contextMenuName	: 'Redaguoti',
-		loadingFile		: 'Įkraunamas failas, prašau palaukite...'
+		loadingFile		: '\u012Ekraunamas failas, pra\u0161au palaukite...'
 	},
 
 	Maximize :
 	{
 		maximize : 'Padidinti',
-		minimize : 'Sumažinti'
+		minimize : 'Suma\u017Einti'
 	},
 
 	Gallery :
 	{
-		current : 'Nuotrauka {current} iš {total}'
+		current : 'Nuotrauka {current} i\u0161 {total}'
 	},
 
 	Zip :
@@ -307,6 +307,6 @@ CKFinder.lang['lt'] =
 
 	Search :
 	{
-		searchPlaceholder : 'Paieška'
+		searchPlaceholder : 'Paie\u0161ka'
 	}
 };

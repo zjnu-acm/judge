@@ -97,7 +97,7 @@ CKFinder.lang['cy'] =
 	BasketRemoveConfirm	: 'Ydych chi wir am dynnu\'r ffeil "%1" o\'r fasged?',
 	BasketRemoveConfirmMultiple	: 'Do you really want to remove %1 files from the basket?', // MISSING
 	BasketEmpty			: 'Dim ffeiliau yn y fasged, llusgwch a\'m gollwng.',
-	BasketCopyFilesHere	: 'Copïo Ffeiliau o\'r Fasged',
+	BasketCopyFilesHere	: 'Cop\xEFo Ffeiliau o\'r Fasged',
 	BasketMoveFilesHere	: 'Symud Ffeiliau o\'r Fasged',
 
 	// Global messages
@@ -130,7 +130,7 @@ CKFinder.lang['cy'] =
 	Delete			: 'Dileu',
 	DeleteFiles		: 'Delete Files', // MISSING
 
-	CopyDragDrop	: 'Copïo Yma',
+	CopyDragDrop	: 'Cop\xEFo Yma',
 	MoveDragDrop	: 'Symud Yma',
 
 	// Dialogs
@@ -159,7 +159,7 @@ CKFinder.lang['cy'] =
 	UploadNoFolder		: 'Dewiswch ffolder cyn lanlwytho.',
 	UploadNoPerms		: 'Does dim hawl lanlwytho ffeiliau.',
 	UploadUnknError		: 'Gwall wrth anfon y ffeil.',
-	UploadExtIncorrect	: 'Does dim hawl cadw\'r ffeiliau â\'r estyniad hwn yn y ffolder hwn.',
+	UploadExtIncorrect	: 'Does dim hawl cadw\'r ffeiliau \xE2\'r estyniad hwn yn y ffolder hwn.',
 
 	// Flash Uploads
 	UploadLabel			: 'Ffeiliau i\'w Lanlwytho',
@@ -215,10 +215,10 @@ CKFinder.lang['cy'] =
 	110 : 'Gwall anhysbys.',
 	111 : 'It was not possible to complete the request due to resulting file size.', // MISSING
 	115 : 'Mae ffeil neu ffolder gyda\'r un enw yn bodoli yn barod.',
-	116 : 'Methu â darganfod y ffolder. Adfywiwch a cheisio eto.',
-	117 : 'Methu â darganfod y ffeil. Adfywiwch y rhestr ffeiliau a cheisio eto.',
+	116 : 'Methu \xE2 darganfod y ffolder. Adfywiwch a cheisio eto.',
+	117 : 'Methu \xE2 darganfod y ffeil. Adfywiwch y rhestr ffeiliau a cheisio eto.',
 	118 : 'Mae\'r llwybrau gwreiddiol a tharged yn unfath.',
-	201 : 'Mae ffeil â\'r enw hwnnw yn bodoli yn barod. Cafodd y ffeil a lanlwythwyd ei hailenwi i "%1".',
+	201 : 'Mae ffeil \xE2\'r enw hwnnw yn bodoli yn barod. Cafodd y ffeil a lanlwythwyd ei hailenwi i "%1".',
 	202 : 'Ffeil annilys.',
 	203 : 'Ffeil annilys. Mae maint y ffeil yn rhy fawr.',
 	204 : 'Mae\'r ffeil a lanwythwyd wedi chwalu.',
@@ -226,8 +226,8 @@ CKFinder.lang['cy'] =
 	206 : 'Cafodd y lanlwythiad ei ddiddymu oherwydd rhesymau diogelwch. Mae\'r ffeil yn cynnwys data yn debyg i HTML.',
 	207 : 'Cafodd y ffeil a lanlwythwyd ei hailenwi i "%1".',
 	300 : 'Methodd symud y ffeil(iau).',
-	301 : 'Methodd copïo\'r ffeil(iau).',
-	500 : 'Cafodd y porwr ffeiliau ei anallogi oherwydd rhesymau diogelwch. Cysylltwch â\'ch gweinyddwr system a gwirio\'ch ffeil ffurfwedd CKFinder.',
+	301 : 'Methodd cop\xEFo\'r ffeil(iau).',
+	500 : 'Cafodd y porwr ffeiliau ei anallogi oherwydd rhesymau diogelwch. Cysylltwch \xE2\'ch gweinyddwr system a gwirio\'ch ffeil ffurfwedd CKFinder.',
 	501 : 'Mae cynhaliaeth bawdluniau wedi\'i hanalluogi.'
 	},
 
@@ -253,7 +253,7 @@ CKFinder.lang['cy'] =
 	Imageresize :
 	{
 		dialogTitle		: 'Ailmeintio %s',
-		sizeTooBig		: 'Methu â gosod lled neu uchder y ddelwedd i werth yn uwch na\'r maint gwreiddiol (%size).',
+		sizeTooBig		: 'Methu \xE2 gosod lled neu uchder y ddelwedd i werth yn uwch na\'r maint gwreiddiol (%size).',
 		resizeSuccess	: 'Delwedd wedi\'i hailmeintio.',
 		thumbnailNew	: 'Creu bawdlun newydd',
 		thumbnailSmall	: 'Bach (%s)',
@@ -266,7 +266,7 @@ CKFinder.lang['cy'] =
 		invalidWidth	: 'Lled annilys.',
 		invalidName		: 'Enw ffeil annilys.',
 		newImage		: 'Creu delwedd newydd',
-		noExtensionChange : 'Methu â newid estyniad y ffeil.',
+		noExtensionChange : 'Methu \xE2 newid estyniad y ffeil.',
 		imageSmall		: 'Mae\'r ddelwedd wreiddiol yn rhy fach.',
 		contextMenuName	: 'Ailmeintio',
 		lockRatio		: 'Cloi\'r cymhareb',

@@ -13,7 +13,7 @@
 
 /**
  * @fileOverview Defines the {@link CKFinder.lang} object for the Norwegian
- *		Bokmål language.
+ *		Bokm\xE5l language.
  */
 
 /**
@@ -29,17 +29,17 @@ CKFinder.lang['no'] =
 	{
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, utilgjenglig</span>',
-		confirmCancel	: 'Noen av valgene har blitt endret. Er du sikker på at du vil lukke dialogen?',
+		confirmCancel	: 'Noen av valgene har blitt endret. Er du sikker p\xE5 at du vil lukke dialogen?',
 		ok				: 'OK',
 		cancel			: 'Avbryt',
 		confirmationTitle	: 'Bekreftelse',
 		messageTitle	: 'Informasjon',
-		inputTitle		: 'Spørsmål',
+		inputTitle		: 'Sp\xF8rsm\xE5l',
 		undo			: 'Angre',
-		redo			: 'Gjør om',
+		redo			: 'Gj\xF8r om',
 		skip			: 'Hopp over',
 		skipAll			: 'Hopp over alle',
-		makeDecision	: 'Hvilken handling skal utføres?',
+		makeDecision	: 'Hvilken handling skal utf\xF8res?',
 		rememberDecision: 'Husk mitt valg'
 	},
 
@@ -72,16 +72,16 @@ CKFinder.lang['no'] =
 	FolderLoading	: 'Laster...',
 	FolderNew		: 'Skriv inn det nye mappenavnet: ',
 	FolderRename	: 'Skriv inn det nye mappenavnet: ',
-	FolderDelete	: 'Er du sikker på at du vil slette mappen "%1"?',
+	FolderDelete	: 'Er du sikker p\xE5 at du vil slette mappen "%1"?',
 	FolderRenaming	: ' (Endrer mappenavn...)',
 	FolderDeleting	: ' (Sletter...)',
 	DestinationFolder	: 'Destination Folder', // MISSING
 
 	// Files
 	FileRename		: 'Skriv inn det nye filnavnet: ',
-	FileRenameExt	: 'Er du sikker på at du vil endre filtypen? Filen kan bli ubrukelig.',
+	FileRenameExt	: 'Er du sikker p\xE5 at du vil endre filtypen? Filen kan bli ubrukelig.',
 	FileRenaming	: 'Endrer filnavn...',
-	FileDelete		: 'Er du sikker på at du vil slette denne filen "%1"?',
+	FileDelete		: 'Er du sikker p\xE5 at du vil slette denne filen "%1"?',
 	FilesDelete	: 'Are you sure you want to delete %1 files?', // MISSING
 	FilesLoading	: 'Laster...',
 	FilesEmpty		: 'Denne katalogen er tom.',
@@ -90,9 +90,9 @@ CKFinder.lang['no'] =
 
 	// Basket
 	BasketFolder		: 'Kurv',
-	BasketClear			: 'Tøm kurv',
+	BasketClear			: 'T\xF8m kurv',
 	BasketRemove		: 'Fjern fra kurv',
-	BasketOpenFolder	: 'Åpne foreldremappen',
+	BasketOpenFolder	: '\xC5pne foreldremappen',
 	BasketTruncateConfirm : 'Vil du virkelig fjerne alle filer fra kurven?',
 	BasketRemoveConfirm	: 'Vil du virkelig fjerne filen "%1" fra kurven?',
 	BasketRemoveConfirmMultiple	: 'Do you really want to remove %1 files from the basket?', // MISSING
@@ -117,7 +117,7 @@ CKFinder.lang['no'] =
 	Refresh		: 'Oppdater',
 	Settings	: 'Innstillinger',
 	Help		: 'Hjelp',
-	HelpTip		: 'Hjelp finnes kun på engelsk',
+	HelpTip		: 'Hjelp finnes kun p\xE5 engelsk',
 
 	// Context Menus
 	Select			: 'Velg',
@@ -155,8 +155,8 @@ CKFinder.lang['no'] =
 	UploadBtn			: 'Last opp valgt fil',
 	UploadBtnCancel		: 'Avbryt',
 
-	UploadNoFileMsg		: 'Du må velge en fil fra din datamaskin',
-	UploadNoFolder		: 'Vennligst velg en mappe før du laster opp.',
+	UploadNoFileMsg		: 'Du m\xE5 velge en fil fra din datamaskin',
+	UploadNoFolder		: 'Vennligst velg en mappe f\xF8r du laster opp.',
 	UploadNoPerms		: 'Filopplastning er ikke tillatt.',
 	UploadUnknError		: 'Feil ved sending av fil.',
 	UploadExtIncorrect	: 'Filtypen er ikke tillatt i denne mappen.',
@@ -164,10 +164,10 @@ CKFinder.lang['no'] =
 	// Flash Uploads
 	UploadLabel			: 'Filer for opplastning',
 	UploadTotalFiles	: 'Totalt antall filer:',
-	UploadTotalSize		: 'Total størrelse:',
+	UploadTotalSize		: 'Total st\xF8rrelse:',
 	UploadSend			: 'Last opp',
 	UploadAddFiles		: 'Legg til filer',
-	UploadClearFiles	: 'Tøm filer',
+	UploadClearFiles	: 'T\xF8m filer',
 	UploadCancel		: 'Avbryt opplastning',
 	UploadRemove		: 'Fjern',
 	UploadRemoveTip		: 'Fjern !f',
@@ -182,11 +182,11 @@ CKFinder.lang['no'] =
 	SetDisplay		: 'Vis:',
 	SetDisplayName	: 'Filnavn',
 	SetDisplayDate	: 'Dato',
-	SetDisplaySize	: 'Filstørrelse',
+	SetDisplaySize	: 'Filst\xF8rrelse',
 	SetSort			: 'Sorter etter:',
 	SetSortName		: 'Filnavn',
 	SetSortDate		: 'Dato',
-	SetSortSize		: 'Størrelse',
+	SetSortSize		: 'St\xF8rrelse',
 	SetSortExtension		: 'Filetternavn',
 
 	// Status Bar
@@ -201,23 +201,23 @@ CKFinder.lang['no'] =
 	SizePerSecond	: '%1/s',
 
 	// Connector Error Messages.
-	ErrorUnknown	: 'Det var ikke mulig å utføre forespørselen. (Feil %1)',
+	ErrorUnknown	: 'Det var ikke mulig \xE5 utf\xF8re foresp\xF8rselen. (Feil %1)',
 	Errors :
 	{
 	 10 : 'Ugyldig kommando.',
-	 11 : 'Ressurstypen ble ikke spesifisert i forepørselen.',
+	 11 : 'Ressurstypen ble ikke spesifisert i forep\xF8rselen.',
 	 12 : 'Ugyldig ressurstype.',
 	102 : 'Ugyldig fil- eller mappenavn.',
-	103 : 'Kunne ikke utføre forespørselen pga manglende autorisasjon.',
-	104 : 'Kunne ikke utføre forespørselen pga manglende tilgang til filsystemet.',
+	103 : 'Kunne ikke utf\xF8re foresp\xF8rselen pga manglende autorisasjon.',
+	104 : 'Kunne ikke utf\xF8re foresp\xF8rselen pga manglende tilgang til filsystemet.',
 	105 : 'Ugyldig filtype.',
-	109 : 'Ugyldig forespørsel.',
+	109 : 'Ugyldig foresp\xF8rsel.',
 	110 : 'Ukjent feil.',
 	111 : 'It was not possible to complete the request due to resulting file size.', // MISSING
 	115 : 'Det finnes allerede en fil eller mappe med dette navnet.',
-	116 : 'Kunne ikke finne mappen. Oppdater vinduet og prøv igjen.',
-	117 : 'Kunne ikke finne filen. Oppdater vinduet og prøv igjen.',
-	118 : 'Kilde- og mål-bane er like.',
+	116 : 'Kunne ikke finne mappen. Oppdater vinduet og pr\xF8v igjen.',
+	117 : 'Kunne ikke finne filen. Oppdater vinduet og pr\xF8v igjen.',
+	118 : 'Kilde- og m\xE5l-bane er like.',
 	201 : 'Det fantes allerede en fil med dette navnet. Den opplastede filens navn har blitt endret til "%1".',
 	202 : 'Ugyldig fil.',
 	203 : 'Ugyldig fil. Filen er for stor.',
@@ -225,8 +225,8 @@ CKFinder.lang['no'] =
 	205 : 'Det finnes ingen midlertidig mappe for filopplastinger.',
 	206 : 'Opplastingen ble avbrutt av sikkerhetshensyn. Filen inneholder HTML-aktig data.',
 	207 : 'Den opplastede filens navn har blitt endret til "%1".',
-	300 : 'Klarte ikke å flytte fil(er).',
-	301 : 'Klarte ikke å kopiere fil(er).',
+	300 : 'Klarte ikke \xE5 flytte fil(er).',
+	301 : 'Klarte ikke \xE5 kopiere fil(er).',
 	500 : 'Filvelgeren ikke tilgjengelig av sikkerhetshensyn. Kontakt systemansvarlig og be han sjekke CKFinder\'s konfigurasjonsfil.',
 	501 : 'Funksjon for minityrbilder er skrudd av.'
 	},
@@ -234,50 +234,50 @@ CKFinder.lang['no'] =
 	// Other Error Messages.
 	ErrorMsg :
 	{
-		FileEmpty		: 'Filnavnet kan ikke være tomt.',
+		FileEmpty		: 'Filnavnet kan ikke v\xE6re tomt.',
 		FileExists		: 'Filen %s finnes alt.',
-		FolderEmpty		: 'Mappenavnet kan ikke være tomt.',
+		FolderEmpty		: 'Mappenavnet kan ikke v\xE6re tomt.',
 		FolderExists	: 'Folder %s already exists.', // MISSING
 		FolderNameExists	: 'Folder already exists.', // MISSING
 
-		FileInvChar		: 'Filnavnet kan ikke inneholde følgende tegn: \n\\ / : * ? " < > |',
-		FolderInvChar	: 'Mappenavnet kan ikke inneholde følgende tegn: \n\\ / : * ? " < > |',
+		FileInvChar		: 'Filnavnet kan ikke inneholde f\xF8lgende tegn: \n\\ / : * ? " < > |',
+		FolderInvChar	: 'Mappenavnet kan ikke inneholde f\xF8lgende tegn: \n\\ / : * ? " < > |',
 
-		PopupBlockView	: 'Du må skru av popup-blockeren for å se bildet i nytt vindu.',
-		XmlError		: 'Det var ikke mulig å laste XML-dataene i svaret fra serveren.',
-		XmlEmpty		: 'Det var ikke mulig å laste XML-dataene fra serverne, svaret var tomt.',
-		XmlRawResponse	: 'Rått datasvar fra serveren: %s'
+		PopupBlockView	: 'Du m\xE5 skru av popup-blockeren for \xE5 se bildet i nytt vindu.',
+		XmlError		: 'Det var ikke mulig \xE5 laste XML-dataene i svaret fra serveren.',
+		XmlEmpty		: 'Det var ikke mulig \xE5 laste XML-dataene fra serverne, svaret var tomt.',
+		XmlRawResponse	: 'R\xE5tt datasvar fra serveren: %s'
 	},
 
 	// Imageresize plugin
 	Imageresize :
 	{
-		dialogTitle		: 'Endre størrelse %s',
-		sizeTooBig		: 'Kan ikke sette høyde og bredde til større enn orginalstørrelse (%size).',
-		resizeSuccess	: 'Endring av bildestørrelse var vellykket.',
+		dialogTitle		: 'Endre st\xF8rrelse %s',
+		sizeTooBig		: 'Kan ikke sette h\xF8yde og bredde til st\xF8rre enn orginalst\xF8rrelse (%size).',
+		resizeSuccess	: 'Endring av bildest\xF8rrelse var vellykket.',
 		thumbnailNew	: 'Lag ett nytt miniatyrbilde',
 		thumbnailSmall	: 'Liten (%s)',
 		thumbnailMedium	: 'Medium (%s)',
 		thumbnailLarge	: 'Stor (%s)',
-		newSize			: 'Sett en ny størrelse',
+		newSize			: 'Sett en ny st\xF8rrelse',
 		width			: 'Bredde',
-		height			: 'Høyde',
-		invalidHeight	: 'Ugyldig høyde.',
+		height			: 'H\xF8yde',
+		invalidHeight	: 'Ugyldig h\xF8yde.',
 		invalidWidth	: 'Ugyldig bredde.',
 		invalidName		: 'Ugyldig filnavn.',
 		newImage		: 'Lag ett nytt bilde',
 		noExtensionChange : 'Filendelsen kan ikke endres.',
 		imageSmall		: 'Kildebildet er for lite.',
-		contextMenuName	: 'Endre størrelse',
-		lockRatio		: 'Lås forhold',
-		resetSize		: 'Tilbakestill størrelse'
+		contextMenuName	: 'Endre st\xF8rrelse',
+		lockRatio		: 'L\xE5s forhold',
+		resetSize		: 'Tilbakestill st\xF8rrelse'
 	},
 
 	// Fileeditor plugin
 	Fileeditor :
 	{
 		save			: 'Lagre',
-		fileOpenError	: 'Klarte ikke å åpne filen.',
+		fileOpenError	: 'Klarte ikke \xE5 \xE5pne filen.',
 		fileSaveSuccess	: 'Fillagring var vellykket.',
 		contextMenuName	: 'Rediger',
 		loadingFile		: 'Laster fil, vennligst vent...'
@@ -307,6 +307,6 @@ CKFinder.lang['no'] =
 
 	Search :
 	{
-		searchPlaceholder : 'Søk'
+		searchPlaceholder : 'S\xF8k'
 	}
 };

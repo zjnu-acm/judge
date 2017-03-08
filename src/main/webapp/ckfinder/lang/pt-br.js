@@ -28,19 +28,19 @@ CKFinder.lang['pt-br'] =
 	common :
 	{
 		// Put the voice-only part of the label in the span.
-		unavailable		: '%1<span class="cke_accessibility">, indisponível</span>',
-		confirmCancel	: 'Algumas opções foram modificadas. Deseja fechar a janela realmente?',
+		unavailable		: '%1<span class="cke_accessibility">, indispon\xEDvel</span>',
+		confirmCancel	: 'Algumas op\xE7\xF5es foram modificadas. Deseja fechar a janela realmente?',
 		ok				: 'OK',
 		cancel			: 'Cancelar',
-		confirmationTitle	: 'Confirmação',
-		messageTitle	: 'Informação',
+		confirmationTitle	: 'Confirma\xE7\xE3o',
+		messageTitle	: 'Informa\xE7\xE3o',
 		inputTitle		: 'Pergunta',
 		undo			: 'Desfazer',
 		redo			: 'Refazer',
 		skip			: 'Ignorar',
 		skipAll			: 'Ignorar todos',
-		makeDecision	: 'Que ação deve ser tomada?',
-		rememberDecision: 'Lembra minha decisão'
+		makeDecision	: 'Que a\xE7\xE3o deve ser tomada?',
+		rememberDecision: 'Lembra minha decis\xE3o'
 	},
 
 
@@ -72,16 +72,16 @@ CKFinder.lang['pt-br'] =
 	FolderLoading	: 'Carregando...',
 	FolderNew		: 'Favor informar o nome da nova pasta: ',
 	FolderRename	: 'Favor informar o nome da nova pasta: ',
-	FolderDelete	: 'Você tem certeza que deseja apagar a pasta "%1"?',
+	FolderDelete	: 'Voc\xEA tem certeza que deseja apagar a pasta "%1"?',
 	FolderRenaming	: ' (Renomeando...)',
 	FolderDeleting	: ' (Apagando...)',
 	DestinationFolder	: 'Destination Folder', // MISSING
 
 	// Files
 	FileRename		: 'Favor informar o nome do novo arquivo: ',
-	FileRenameExt	: 'Você tem certeza que deseja alterar a extensão do arquivo? O arquivo pode ser danificado.',
+	FileRenameExt	: 'Voc\xEA tem certeza que deseja alterar a extens\xE3o do arquivo? O arquivo pode ser danificado.',
 	FileRenaming	: 'Renomeando...',
-	FileDelete		: 'Você tem certeza que deseja apagar o arquivo "%1"?',
+	FileDelete		: 'Voc\xEA tem certeza que deseja apagar o arquivo "%1"?',
 	FilesDelete	: 'Are you sure you want to delete %1 files?', // MISSING
 	FilesLoading	: 'Carregando...',
 	FilesEmpty		: 'Pasta vazia',
@@ -115,7 +115,7 @@ CKFinder.lang['pt-br'] =
 	Upload		: 'Enviar arquivo',
 	UploadTip	: 'Enviar novo arquivo',
 	Refresh		: 'Atualizar',
-	Settings	: 'Configurações',
+	Settings	: 'Configura\xE7\xF5es',
 	Help		: 'Ajuda',
 	HelpTip		: 'Ajuda',
 
@@ -136,7 +136,7 @@ CKFinder.lang['pt-br'] =
 	// Dialogs
 	RenameDlgTitle		: 'Renomeia',
 	NewNameDlgTitle		: 'Novo nome',
-	FileExistsDlgTitle	: 'O arquivo já existe',
+	FileExistsDlgTitle	: 'O arquivo j\xE1 existe',
 	SysErrorDlgTitle : 'Erro de Sistema',
 
 	FileOverwrite	: 'Sobrescrever',
@@ -157,9 +157,9 @@ CKFinder.lang['pt-br'] =
 
 	UploadNoFileMsg		: 'Favor selecionar o arquivo no seu computador.',
 	UploadNoFolder		: 'Favor selecionar a pasta antes the enviar o arquivo.',
-	UploadNoPerms		: 'Não é permitido o envio de arquivos.',
+	UploadNoPerms		: 'N\xE3o \xE9 permitido o envio de arquivos.',
 	UploadUnknError		: 'Erro no envio do arquivo.',
-	UploadExtIncorrect	: 'A extensão deste arquivo não é permitida nesat pasta.',
+	UploadExtIncorrect	: 'A extens\xE3o deste arquivo n\xE3o \xE9 permitida nesat pasta.',
 
 	// Flash Uploads
 	UploadLabel			: 'Arquivos para Enviar',
@@ -175,7 +175,7 @@ CKFinder.lang['pt-br'] =
 	UploadProcessing	: 'Processando...',
 
 	// Settings Panel
-	SetTitle		: 'Configurações',
+	SetTitle		: 'Configura\xE7\xF5es',
 	SetView			: 'Visualizar:',
 	SetViewThumb	: 'Miniaturas',
 	SetViewList		: 'Lista',
@@ -187,7 +187,7 @@ CKFinder.lang['pt-br'] =
 	SetSortName		: 'por Nome do arquivo',
 	SetSortDate		: 'por Data',
 	SetSortSize		: 'por Tamanho',
-	SetSortExtension		: 'por Extensão',
+	SetSortExtension		: 'por Extens\xE3o',
 
 	// Status Bar
 	FilesCountEmpty : '<Pasta vazia>',
@@ -201,51 +201,51 @@ CKFinder.lang['pt-br'] =
 	SizePerSecond	: '%1/s',
 
 	// Connector Error Messages.
-	ErrorUnknown	: 'Não foi possível completer o seu pedido. (Erro %1)',
+	ErrorUnknown	: 'N\xE3o foi poss\xEDvel completer o seu pedido. (Erro %1)',
 	Errors :
 	{
-	 10 : 'Comando inválido.',
-	 11 : 'O tipo de recurso não foi especificado na solicitação.',
-	 12 : 'O recurso solicitado não é válido.',
-	102 : 'Nome do arquivo ou pasta inválido.',
-	103 : 'Não foi possível completar a solicitação por restrições de acesso.',
-	104 : 'Não foi possível completar a solicitação por restrições de acesso do sistema de arquivos.',
-	105 : 'Extensão de arquivo inválida.',
-	109 : 'Solicitação inválida.',
+	 10 : 'Comando inv\xE1lido.',
+	 11 : 'O tipo de recurso n\xE3o foi especificado na solicita\xE7\xE3o.',
+	 12 : 'O recurso solicitado n\xE3o \xE9 v\xE1lido.',
+	102 : 'Nome do arquivo ou pasta inv\xE1lido.',
+	103 : 'N\xE3o foi poss\xEDvel completar a solicita\xE7\xE3o por restri\xE7\xF5es de acesso.',
+	104 : 'N\xE3o foi poss\xEDvel completar a solicita\xE7\xE3o por restri\xE7\xF5es de acesso do sistema de arquivos.',
+	105 : 'Extens\xE3o de arquivo inv\xE1lida.',
+	109 : 'Solicita\xE7\xE3o inv\xE1lida.',
 	110 : 'Erro desconhecido.',
 	111 : 'It was not possible to complete the request due to resulting file size.', // MISSING
-	115 : 'Uma arquivo ou pasta já existe com esse nome.',
-	116 : 'Pasta não encontrada. Atualize e tente novamente.',
-	117 : 'Arquivo não encontrado. Atualize a lista de arquivos e tente novamente.',
-	118 : 'Origem e destino são iguais.',
-	201 : 'Um arquivo com o mesmo nome já está disponível. O arquivo enviado foi renomeado para "%1".',
-	202 : 'Arquivo inválido.',
-	203 : 'Arquivo inválido. O tamanho é muito grande.',
-	204 : 'O arquivo enviado está corrompido.',
-	205 : 'Nenhuma pasta temporária para envio está disponível no servidor.',
-	206 : 'Transmissão cancelada por razões de segurança. O arquivo contem dados HTML.',
+	115 : 'Uma arquivo ou pasta j\xE1 existe com esse nome.',
+	116 : 'Pasta n\xE3o encontrada. Atualize e tente novamente.',
+	117 : 'Arquivo n\xE3o encontrado. Atualize a lista de arquivos e tente novamente.',
+	118 : 'Origem e destino s\xE3o iguais.',
+	201 : 'Um arquivo com o mesmo nome j\xE1 est\xE1 dispon\xEDvel. O arquivo enviado foi renomeado para "%1".',
+	202 : 'Arquivo inv\xE1lido.',
+	203 : 'Arquivo inv\xE1lido. O tamanho \xE9 muito grande.',
+	204 : 'O arquivo enviado est\xE1 corrompido.',
+	205 : 'Nenhuma pasta tempor\xE1ria para envio est\xE1 dispon\xEDvel no servidor.',
+	206 : 'Transmiss\xE3o cancelada por raz\xF5es de seguran\xE7a. O arquivo contem dados HTML.',
 	207 : 'O arquivo enviado foi renomeado para "%1".',
-	300 : 'Não foi possível mover o(s) arquivo(s).',
-	301 : 'Não foi possível copiar o(s) arquivos(s).',
-	500 : 'A navegação de arquivos está desativada por razões de segurança. Contacte o administrador do sistema.',
-	501 : 'O suporte a miniaturas está desabilitado.'
+	300 : 'N\xE3o foi poss\xEDvel mover o(s) arquivo(s).',
+	301 : 'N\xE3o foi poss\xEDvel copiar o(s) arquivos(s).',
+	500 : 'A navega\xE7\xE3o de arquivos est\xE1 desativada por raz\xF5es de seguran\xE7a. Contacte o administrador do sistema.',
+	501 : 'O suporte a miniaturas est\xE1 desabilitado.'
 	},
 
 	// Other Error Messages.
 	ErrorMsg :
 	{
-		FileEmpty		: 'O nome do arquivo não pode ser vazio.',
-		FileExists		: 'O nome %s já é em uso.',
-		FolderEmpty		: 'O nome da pasta não pode ser vazio.',
+		FileEmpty		: 'O nome do arquivo n\xE3o pode ser vazio.',
+		FileExists		: 'O nome %s j\xE1 \xE9 em uso.',
+		FolderEmpty		: 'O nome da pasta n\xE3o pode ser vazio.',
 		FolderExists	: 'Folder %s already exists.', // MISSING
 		FolderNameExists	: 'Folder already exists.', // MISSING
 
-		FileInvChar		: 'O nome do arquivo não pode conter nenhum desses caracteres: \n\\ / : * ? " < > |',
-		FolderInvChar	: 'O nome da pasta não pode conter nenhum desses caracteres: \n\\ / : * ? " < > |',
+		FileInvChar		: 'O nome do arquivo n\xE3o pode conter nenhum desses caracteres: \n\\ / : * ? " < > |',
+		FolderInvChar	: 'O nome da pasta n\xE3o pode conter nenhum desses caracteres: \n\\ / : * ? " < > |',
 
-		PopupBlockView	: 'Não foi possível abrir o arquivo em outra janela. Configure seu navegador e desabilite o bloqueio a popups para esse site.',
-		XmlError		: 'Não foi possível carregar a resposta XML enviada pelo servidor.',
-		XmlEmpty		: 'Não foi possível carregar a resposta XML enviada pelo servidor. Resposta vazia..',
+		PopupBlockView	: 'N\xE3o foi poss\xEDvel abrir o arquivo em outra janela. Configure seu navegador e desabilite o bloqueio a popups para esse site.',
+		XmlError		: 'N\xE3o foi poss\xEDvel carregar a resposta XML enviada pelo servidor.',
+		XmlEmpty		: 'N\xE3o foi poss\xEDvel carregar a resposta XML enviada pelo servidor. Resposta vazia..',
 		XmlRawResponse	: 'Resposta original enviada pelo servidor: %s'
 	},
 
@@ -253,23 +253,23 @@ CKFinder.lang['pt-br'] =
 	Imageresize :
 	{
 		dialogTitle		: 'Redimensionar %s',
-		sizeTooBig		: 'Não possível usar dimensões maiores do que as originais (%size).',
+		sizeTooBig		: 'N\xE3o poss\xEDvel usar dimens\xF5es maiores do que as originais (%size).',
 		resizeSuccess	: 'Imagem redimensionada corretamente.',
 		thumbnailNew	: 'Cria nova anteprima',
 		thumbnailSmall	: 'Pequeno (%s)',
-		thumbnailMedium	: 'Médio (%s)',
+		thumbnailMedium	: 'M\xE9dio (%s)',
 		thumbnailLarge	: 'Grande (%s)',
-		newSize			: 'Novas dimensões',
+		newSize			: 'Novas dimens\xF5es',
 		width			: 'Largura',
 		height			: 'Altura',
 		invalidHeight	: 'Altura incorreta.',
 		invalidWidth	: 'Largura incorreta.',
-		invalidName		: 'O nome do arquivo não é válido.',
+		invalidName		: 'O nome do arquivo n\xE3o \xE9 v\xE1lido.',
 		newImage		: 'Cria nova imagem',
-		noExtensionChange : 'A extensão do arquivo não pode ser modificada.',
-		imageSmall		: 'A imagem original é muito pequena.',
+		noExtensionChange : 'A extens\xE3o do arquivo n\xE3o pode ser modificada.',
+		imageSmall		: 'A imagem original \xE9 muito pequena.',
 		contextMenuName	: 'Redimensionar',
-		lockRatio		: 'Travar Proporções',
+		lockRatio		: 'Travar Propor\xE7\xF5es',
 		resetSize		: 'Redefinir para o Tamanho Original'
 	},
 
@@ -277,7 +277,7 @@ CKFinder.lang['pt-br'] =
 	Fileeditor :
 	{
 		save			: 'Salva',
-		fileOpenError	: 'Não é possível abrir o arquivo.',
+		fileOpenError	: 'N\xE3o \xE9 poss\xEDvel abrir o arquivo.',
 		fileSaveSuccess	: 'Arquivo salvado corretamente.',
 		contextMenuName	: 'Modificar',
 		loadingFile		: 'Carregando arquivo. Por favor aguarde...'

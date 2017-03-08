@@ -2,11 +2,12 @@ ckfinder:
   enabled: true
   base-dir:
   base-url:
-  license-key:
-  license-name:
-  img-width: 1600
-  img-height: 1200
-  img-quality: 0.8
+  license:
+    strategy: host
+  image:
+    width: 1600
+    height: 1200
+    quality: 0.8
   default-resource-types:
   types:
     - name: Files
@@ -48,7 +49,6 @@ ckfinder:
   check-size-after-scaling: true
   force-ascii: false
   secure-image-uploads: true
-  enable-csrf-protection: true
   hide-folders: '.*,CVS'
   hide-files: '.*'
   watermark:

@@ -30,13 +30,13 @@ CKFinder.lang['lv'] =
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, unavailable</span>', // MISSING
 		confirmCancel	: 'Some of the options were changed. Are you sure you want to close the dialog window?', // MISSING
-		ok				: 'Darīts!',
+		ok				: 'Dar\u012Bts!',
 		cancel			: 'Atcelt',
 		confirmationTitle	: 'Confirmation', // MISSING
 		messageTitle	: 'Information', // MISSING
 		inputTitle		: 'Question', // MISSING
 		undo			: 'Atcelt',
-		redo			: 'Atkārtot',
+		redo			: 'Atk\u0101rtot',
 		skip			: 'Skip', // MISSING
 		skipAll			: 'Skip all', // MISSING
 		makeDecision	: 'What action should be taken?', // MISSING
@@ -69,21 +69,21 @@ CKFinder.lang['lv'] =
 
 	// Folders
 	FoldersTitle	: 'Mapes',
-	FolderLoading	: 'Ielādē...',
-	FolderNew		: 'Lūdzu ierakstiet mapes nosaukumu: ',
-	FolderRename	: 'Lūdzu ierakstiet jauno mapes nosaukumu: ',
-	FolderDelete	: 'Vai tiešām vēlaties neatgriezeniski dzēst mapi "%1"?',
-	FolderRenaming	: ' (Pārsauc...)',
-	FolderDeleting	: ' (Dzēš...)',
+	FolderLoading	: 'Iel\u0101d\u0113...',
+	FolderNew		: 'L\u016Bdzu ierakstiet mapes nosaukumu: ',
+	FolderRename	: 'L\u016Bdzu ierakstiet jauno mapes nosaukumu: ',
+	FolderDelete	: 'Vai tie\u0161\u0101m v\u0113laties neatgriezeniski dz\u0113st mapi "%1"?',
+	FolderRenaming	: ' (P\u0101rsauc...)',
+	FolderDeleting	: ' (Dz\u0113\u0161...)',
 	DestinationFolder	: 'Destination Folder', // MISSING
 
 	// Files
-	FileRename		: 'Lūdzu ierakstiet jauno faila nosaukumu: ',
-	FileRenameExt	: 'Vai tiešām vēlaties mainīt faila paplašinājumu? Fails var palikt nelietojams.',
-	FileRenaming	: 'Pārsauc...',
-	FileDelete		: 'Vai tiešām vēlaties neatgriezeniski dzēst failu "%1"?',
+	FileRename		: 'L\u016Bdzu ierakstiet jauno faila nosaukumu: ',
+	FileRenameExt	: 'Vai tie\u0161\u0101m v\u0113laties main\u012Bt faila papla\u0161in\u0101jumu? Fails var palikt nelietojams.',
+	FileRenaming	: 'P\u0101rsauc...',
+	FileDelete		: 'Vai tie\u0161\u0101m v\u0113laties neatgriezeniski dz\u0113st failu "%1"?',
 	FilesDelete	: 'Are you sure you want to delete %1 files?', // MISSING
-	FilesLoading	: 'Ielādē...',
+	FilesLoading	: 'Iel\u0101d\u0113...',
 	FilesEmpty		: 'The folder is empty.', // MISSING
 	DestinationFile	: 'Destination File', // MISSING
 	SkippedFiles	: 'List of skipped files:', // MISSING
@@ -112,22 +112,22 @@ CKFinder.lang['lv'] =
 	CopyFailedList		: 'The following files could not be copied:<br />%s', // MISSING
 
 	// Toolbar Buttons (some used elsewhere)
-	Upload		: 'Augšupielādēt',
-	UploadTip	: 'Augšupielādēt jaunu failu',
-	Refresh		: 'Pārlādēt',
-	Settings	: 'Uzstādījumi',
-	Help		: 'Palīdzība',
-	HelpTip		: 'Palīdzība',
+	Upload		: 'Aug\u0161upiel\u0101d\u0113t',
+	UploadTip	: 'Aug\u0161upiel\u0101d\u0113t jaunu failu',
+	Refresh		: 'P\u0101rl\u0101d\u0113t',
+	Settings	: 'Uzst\u0101d\u012Bjumi',
+	Help		: 'Pal\u012Bdz\u012Bba',
+	HelpTip		: 'Pal\u012Bdz\u012Bba',
 
 	// Context Menus
-	Select			: 'Izvēlēties',
-	SelectThumbnail : 'Izvēlēties sīkbildi',
-	View			: 'Skatīt',
-	Download		: 'Lejupielādēt',
+	Select			: 'Izv\u0113l\u0113ties',
+	SelectThumbnail : 'Izv\u0113l\u0113ties s\u012Bkbildi',
+	View			: 'Skat\u012Bt',
+	Download		: 'Lejupiel\u0101d\u0113t',
 
-	NewSubFolder	: 'Jauna apakšmape',
-	Rename			: 'Pārsaukt',
-	Delete			: 'Dzēst',
+	NewSubFolder	: 'Jauna apak\u0161mape',
+	Rename			: 'P\u0101rsaukt',
+	Delete			: 'Dz\u0113st',
 	DeleteFiles		: 'Delete Files', // MISSING
 
 	CopyDragDrop	: 'Copy Here', // MISSING
@@ -146,16 +146,16 @@ CKFinder.lang['lv'] =
 	// Generic
 	OkBtn		: 'Labi',
 	CancelBtn	: 'Atcelt',
-	CloseBtn	: 'Aizvērt',
+	CloseBtn	: 'Aizv\u0113rt',
 
 	// Upload Panel
-	UploadTitle			: 'Jauna faila augšupielādēšana',
-	UploadSelectLbl		: 'Izvēlaties failu, ko augšupielādēt',
-	UploadProgressLbl	: '(Augšupielādē, lūdzu uzgaidiet...)',
-	UploadBtn			: 'Augšupielādēt izvēlēto failu',
+	UploadTitle			: 'Jauna faila aug\u0161upiel\u0101d\u0113\u0161ana',
+	UploadSelectLbl		: 'Izv\u0113laties failu, ko aug\u0161upiel\u0101d\u0113t',
+	UploadProgressLbl	: '(Aug\u0161upiel\u0101d\u0113, l\u016Bdzu uzgaidiet...)',
+	UploadBtn			: 'Aug\u0161upiel\u0101d\u0113t izv\u0113l\u0113to failu',
 	UploadBtnCancel		: 'Atcelt',
 
-	UploadNoFileMsg		: 'Lūdzu izvēlaties failu no sava datora.',
+	UploadNoFileMsg		: 'L\u016Bdzu izv\u0113laties failu no sava datora.',
 	UploadNoFolder		: 'Please select a folder before uploading.', // MISSING
 	UploadNoPerms		: 'File upload not allowed.', // MISSING
 	UploadUnknError		: 'Error sending the file.', // MISSING
@@ -165,7 +165,7 @@ CKFinder.lang['lv'] =
 	UploadLabel			: 'Files to Upload', // MISSING
 	UploadTotalFiles	: 'Total Files:', // MISSING
 	UploadTotalSize		: 'Total Size:', // MISSING
-	UploadSend			: 'Augšupielādēt',
+	UploadSend			: 'Aug\u0161upiel\u0101d\u0113t',
 	UploadAddFiles		: 'Add Files', // MISSING
 	UploadClearFiles	: 'Clear Files', // MISSING
 	UploadCancel		: 'Cancel Upload', // MISSING
@@ -175,22 +175,22 @@ CKFinder.lang['lv'] =
 	UploadProcessing	: 'Processing...', // MISSING
 
 	// Settings Panel
-	SetTitle		: 'Uzstādījumi',
-	SetView			: 'Attēlot:',
-	SetViewThumb	: 'Sīkbildes',
+	SetTitle		: 'Uzst\u0101d\u012Bjumi',
+	SetView			: 'Att\u0113lot:',
+	SetViewThumb	: 'S\u012Bkbildes',
 	SetViewList		: 'Failu Sarakstu',
-	SetDisplay		: 'Rādīt:',
+	SetDisplay		: 'R\u0101d\u012Bt:',
 	SetDisplayName	: 'Faila Nosaukumu',
 	SetDisplayDate	: 'Datumu',
-	SetDisplaySize	: 'Faila Izmēru',
-	SetSort			: 'Kārtot:',
-	SetSortName		: 'pēc Faila Nosaukuma',
-	SetSortDate		: 'pēc Datuma',
-	SetSortSize		: 'pēc Izmēra',
+	SetDisplaySize	: 'Faila Izm\u0113ru',
+	SetSort			: 'K\u0101rtot:',
+	SetSortName		: 'p\u0113c Faila Nosaukuma',
+	SetSortDate		: 'p\u0113c Datuma',
+	SetSortSize		: 'p\u0113c Izm\u0113ra',
 	SetSortExtension		: 'by Extension', // MISSING
 
 	// Status Bar
-	FilesCountEmpty : '<Tukša mape>',
+	FilesCountEmpty : '<Tuk\u0161a mape>',
 	FilesCountOne	: '1 fails',
 	FilesCountMany	: '%1 faili',
 
@@ -201,49 +201,49 @@ CKFinder.lang['lv'] =
 	SizePerSecond	: '%1/s',
 
 	// Connector Error Messages.
-	ErrorUnknown	: 'Nebija iespējams pabeigt pieprasījumu. (Kļūda %1)',
+	ErrorUnknown	: 'Nebija iesp\u0113jams pabeigt piepras\u012Bjumu. (K\u013C\u016Bda %1)',
 	Errors :
 	{
-	 10 : 'Nederīga komanda.',
-	 11 : 'Resursa veids netika norādīts pieprasījumā.',
-	 12 : 'Pieprasītais resursa veids nav derīgs.',
-	102 : 'Nederīgs faila vai mapes nosaukums.',
-	103 : 'Nav iespējams pabeigt pieprasījumu, autorizācijas aizliegumu dēļ.',
-	104 : 'Nav iespējams pabeigt pieprasījumu, failu sistēmas atļauju ierobežojumu dēļ.',
-	105 : 'Neatļauts faila paplašinājums.',
-	109 : 'Nederīgs pieprasījums.',
-	110 : 'Nezināma kļūda.',
+	 10 : 'Neder\u012Bga komanda.',
+	 11 : 'Resursa veids netika nor\u0101d\u012Bts piepras\u012Bjum\u0101.',
+	 12 : 'Piepras\u012Btais resursa veids nav der\u012Bgs.',
+	102 : 'Neder\u012Bgs faila vai mapes nosaukums.',
+	103 : 'Nav iesp\u0113jams pabeigt piepras\u012Bjumu, autoriz\u0101cijas aizliegumu d\u0113\u013C.',
+	104 : 'Nav iesp\u0113jams pabeigt piepras\u012Bjumu, failu sist\u0113mas at\u013Cauju ierobe\u017Eojumu d\u0113\u013C.',
+	105 : 'Neat\u013Cauts faila papla\u0161in\u0101jums.',
+	109 : 'Neder\u012Bgs piepras\u012Bjums.',
+	110 : 'Nezin\u0101ma k\u013C\u016Bda.',
 	111 : 'It was not possible to complete the request due to resulting file size.', // MISSING
-	115 : 'Fails vai mape ar šādu nosaukumu jau pastāv.',
-	116 : 'Mape nav atrasta. Lūdzu pārlādējiet šo logu un mēģiniet vēlreiz.',
-	117 : 'Fails nav atrasts. Lūdzu pārlādējiet failu sarakstu un mēģiniet vēlreiz.',
+	115 : 'Fails vai mape ar \u0161\u0101du nosaukumu jau past\u0101v.',
+	116 : 'Mape nav atrasta. L\u016Bdzu p\u0101rl\u0101d\u0113jiet \u0161o logu un m\u0113\u0123iniet v\u0113lreiz.',
+	117 : 'Fails nav atrasts. L\u016Bdzu p\u0101rl\u0101d\u0113jiet failu sarakstu un m\u0113\u0123iniet v\u0113lreiz.',
 	118 : 'Source and target paths are equal.', // MISSING
-	201 : 'Fails ar šādu nosaukumu jau eksistē. Augšupielādētais fails tika pārsaukts par "%1".',
-	202 : 'Nederīgs fails.',
-	203 : 'Nederīgs fails. Faila izmērs pārsniedz pieļaujamo.',
-	204 : 'Augšupielādētais fails ir bojāts.',
-	205 : 'Neviena pagaidu mape nav pieejama priekš augšupielādēšanas uz servera.',
-	206 : 'Augšupielāde atcelta drošības apsvērumu dēļ. Fails satur HTML veida datus.',
-	207 : 'Augšupielādētais fails tika pārsaukts par "%1".',
+	201 : 'Fails ar \u0161\u0101du nosaukumu jau eksist\u0113. Aug\u0161upiel\u0101d\u0113tais fails tika p\u0101rsaukts par "%1".',
+	202 : 'Neder\u012Bgs fails.',
+	203 : 'Neder\u012Bgs fails. Faila izm\u0113rs p\u0101rsniedz pie\u013Caujamo.',
+	204 : 'Aug\u0161upiel\u0101d\u0113tais fails ir boj\u0101ts.',
+	205 : 'Neviena pagaidu mape nav pieejama priek\u0161 aug\u0161upiel\u0101d\u0113\u0161anas uz servera.',
+	206 : 'Aug\u0161upiel\u0101de atcelta dro\u0161\u012Bbas apsv\u0113rumu d\u0113\u013C. Fails satur HTML veida datus.',
+	207 : 'Aug\u0161upiel\u0101d\u0113tais fails tika p\u0101rsaukts par "%1".',
 	300 : 'Moving file(s) failed.', // MISSING
 	301 : 'Copying file(s) failed.', // MISSING
-	500 : 'Failu pārlūks ir atslēgts drošības apsvērumu dēļ. Lūdzu sazinieties ar šīs sistēmas tehnisko administratoru vai pārbaudiet CKFinder konfigurācijas failu.',
-	501 : 'Sīkbilžu atbalsts ir atslēgts.'
+	500 : 'Failu p\u0101rl\u016Bks ir atsl\u0113gts dro\u0161\u012Bbas apsv\u0113rumu d\u0113\u013C. L\u016Bdzu sazinieties ar \u0161\u012Bs sist\u0113mas tehnisko administratoru vai p\u0101rbaudiet CKFinder konfigur\u0101cijas failu.',
+	501 : 'S\u012Bkbil\u017Eu atbalsts ir atsl\u0113gts.'
 	},
 
 	// Other Error Messages.
 	ErrorMsg :
 	{
-		FileEmpty		: 'Faila nosaukumā nevar būt tukšums.',
+		FileEmpty		: 'Faila nosaukum\u0101 nevar b\u016Bt tuk\u0161ums.',
 		FileExists		: 'File %s already exists.', // MISSING
-		FolderEmpty		: 'Mapes nosaukumā nevar būt tukšums.',
+		FolderEmpty		: 'Mapes nosaukum\u0101 nevar b\u016Bt tuk\u0161ums.',
 		FolderExists	: 'Folder %s already exists.', // MISSING
 		FolderNameExists	: 'Folder already exists.', // MISSING
 
-		FileInvChar		: 'Faila nosaukums nedrīkst saturēt nevienu no sekojošajām zīmēm: \n\\ / : * ? " < > |',
-		FolderInvChar	: 'Mapes nosaukums nedrīkst saturēt nevienu no sekojošajām zīmēm: \n\\ / : * ? " < > |',
+		FileInvChar		: 'Faila nosaukums nedr\u012Bkst satur\u0113t nevienu no sekojo\u0161aj\u0101m z\u012Bm\u0113m: \n\\ / : * ? " < > |',
+		FolderInvChar	: 'Mapes nosaukums nedr\u012Bkst satur\u0113t nevienu no sekojo\u0161aj\u0101m z\u012Bm\u0113m: \n\\ / : * ? " < > |',
 
-		PopupBlockView	: 'Nav iespējams failu atvērt jaunā logā. Lūdzu veiciet izmaiņas uzstādījumos savai interneta pārlūkprogrammai un izslēdziet visus uznirstošo logu bloķētājus šai adresei.',
+		PopupBlockView	: 'Nav iesp\u0113jams failu atv\u0113rt jaun\u0101 log\u0101. L\u016Bdzu veiciet izmai\u0146as uzst\u0101d\u012Bjumos savai interneta p\u0101rl\u016Bkprogrammai un izsl\u0113dziet visus uznirsto\u0161o logu blo\u0137\u0113t\u0101jus \u0161ai adresei.',
 		XmlError		: 'It was not possible to properly load the XML response from the web server.', // MISSING
 		XmlEmpty		: 'It was not possible to load the XML response from the web server. The server returned an empty response.', // MISSING
 		XmlRawResponse	: 'Raw response from the server: %s' // MISSING
@@ -269,14 +269,14 @@ CKFinder.lang['lv'] =
 		noExtensionChange : 'File extension cannot be changed.', // MISSING
 		imageSmall		: 'Source image is too small.', // MISSING
 		contextMenuName	: 'Resize', // MISSING
-		lockRatio		: 'Nemainīga Augstuma/Platuma attiecība',
-		resetSize		: 'Atjaunot sākotnējo izmēru'
+		lockRatio		: 'Nemain\u012Bga Augstuma/Platuma attiec\u012Bba',
+		resetSize		: 'Atjaunot s\u0101kotn\u0113jo izm\u0113ru'
 	},
 
 	// Fileeditor plugin
 	Fileeditor :
 	{
-		save			: 'Saglabāt',
+		save			: 'Saglab\u0101t',
 		fileOpenError	: 'Unable to open file.', // MISSING
 		fileSaveSuccess	: 'File saved successfully.', // MISSING
 		contextMenuName	: 'Edit', // MISSING
@@ -307,6 +307,6 @@ CKFinder.lang['lv'] =
 
 	Search :
 	{
-		searchPlaceholder : 'Meklēt'
+		searchPlaceholder : 'Mekl\u0113t'
 	}
 };

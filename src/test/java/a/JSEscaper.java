@@ -18,6 +18,7 @@ package a;
 import cn.edu.zjnu.acm.judge.util.MatcherWrapper;
 import cn.edu.zjnu.acm.judge.util.Strings;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -36,17 +37,30 @@ import org.thymeleaf.util.StringUtils;
 public class JSEscaper {
 
     public static void main(String[] args) throws IOException {
-        Path path = Paths.get("C:\\Users\\Administrator\\Desktop", "新建文本文档 - 副本.js");
-        Charset charset = StandardCharsets.ISO_8859_1;
+        Path parent = Paths.get("src/main/webapp/ckfinder");
+        Files.walk(parent).filter(Files::isRegularFile).filter(f -> f.getFileName().toString().endsWith(".js")).forEach(path -> {
+            try {
+                resolve(path);
+            } catch (IOException ex) {
+                throw new UncheckedIOException(ex);
+            }
+        });
+    }
+
+    private static void resolve(Path path) throws IOException {
+        Charset charset = StandardCharsets.UTF_8;
         String str = charset.newDecoder().decode(ByteBuffer.wrap(Files.readAllBytes(path))).toString();
         String old = str;
+        if (str.startsWith("\ufeff")) {
+            str = str.substring(1);
+        }
         str = MatcherWrapper.matcher("\\\\[xX][0-9A-Fa-f]{2}", str).replaceAll(esc(2, 16));
         str = MatcherWrapper.matcher("\\\\u[0-9A-Fa-f]{4}", str).replaceAll(esc(2, 16));
         str = MatcherWrapper.matcher("(?-i)\\\\[0-7]{3}", str).replaceAll(esc(1, 8));
         str = MatcherWrapper.matcher("[\u007F-\uffff]", str).replaceAll(matcher -> {
             char ch = matcher.group().charAt(0);
-            return ch < 256 ? "\\x" + Integer.toString(ch, 16)
-                    : "\\u" + Strings.slice("0000" + Integer.toString(ch, 16), -4);
+            return ch < 256 ? "\\x" + Integer.toString(ch, 16).toUpperCase()
+                    : "\\u" + Strings.slice("0000" + Integer.toString(ch, 16).toUpperCase(), -4);
         });
         if (!str.equals(old)) {
             Files.write(path, str.getBytes(charset));
@@ -56,7 +70,6 @@ public class JSEscaper {
     private static Function<MatcherWrapper, String> esc(int index, int radix) {
         return m -> StringUtils.escapeJavaScript(
                 String.valueOf((char) Integer.parseInt(m.group().substring(index), radix)));
-
     }
 
 }
