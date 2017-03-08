@@ -3,6 +3,15 @@ CKFinder Changelog
 http://cksource.com/ckfinder
 Copyright (C) 2007-2015, CKSource - Frederico Knabben. All rights reserved.
 
+### Version 2.6.2.1
+- Fixed issues with remembering last used folder and user settings not being saved.
+
+### Version 2.6.2
+- Fixed issues with HTML5 upload in popup mode on IE.
+
+### Version 2.6.1
+- Fixed minor self-XSS vulnerability.
+
 ### Version 2.6
 Security release:
 - Fixed DOM XSS and reflected XSS vulnerabilities.
@@ -15,7 +24,7 @@ Security release:
 
 ### Version 2.5.1
 - Fixed: CKFinder shows a blank window when opened in a popup on Safari 8+.
-[Java] - Security release, updating is highly recommended. Authenticated users could manipulate files located in folders configured as “hidden”, on web servers hosted on Windows platforms.
+[Java] - Security release, updating is highly recommended. Authenticated users could manipulate files located in folders configured as "hidden", on web servers hosted on Windows platforms.
 [Java] - Init command now returns resourceTypes added dynamically in prepareConfigurationForRequest method.
 [Java] - Added the possiblity to dynamically change ACL settings in prepareConfigurationForRequest method.
 [Java] - It is now possible to specify userfiles folder outside document root.
@@ -23,6 +32,8 @@ Security release:
 [Java] - Fixed: CKFinder will now automatically reload config.xml after adding any changes to it.
 - Removed obsolete integration samples for FCKeditor and CKEditor 3.x.
 - Reworked CKEditor 4.x integration sample - added an example on how to support drag&drop file uploads and pasting images from clipboard.
+
+### Version 2.5.0.1
 
 ### Version 2.5
 - Fixed: Opening settings panel after opening/closing flashupload panel caused exception being thrown.

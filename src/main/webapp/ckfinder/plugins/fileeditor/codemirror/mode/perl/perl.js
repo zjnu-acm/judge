@@ -1,4 +1,4 @@
-﻿// CodeMirror, copyright (c) by Marijn Haverbeke and others
+// CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
 // CodeMirror2 mode/perl/perl.js (text/x-perl) beta 0.10 (2011-11-08)
