@@ -2,8 +2,8 @@
          xmlns="http://mojo.codehaus.org/versions-maven-plugin/rule/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://mojo.codehaus.org/versions-maven-plugin/rule/2.0.0 http://www.mojohaus.org/versions-maven-plugin/xsd/rule-2.0.0.xsd">
     <ignoreVersions>
-        <ignoreVersion type="regex">(?i).*[-\.](?:alpha|beta|cr|ea|edr|pre|rc)-?(?:\d*(?:\.\d+)*)?</ignoreVersion>
-        <ignoreVersion type="regex">.*[\d\.-](?:b|M)\d*</ignoreVersion>
+        <ignoreVersion type="regex">(?i).*[-\.](?:alpha|beta|cr|ea|edr|pre?|rc)(?:-?\d*(?:\.\d+)*)?(?:-\d)?</ignoreVersion>
+        <ignoreVersion type="regex">.*[\d\.-](?:b|M)0?\d*</ignoreVersion>
     </ignoreVersions>
 
     <rules>
