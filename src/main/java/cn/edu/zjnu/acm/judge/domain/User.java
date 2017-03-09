@@ -3,7 +3,6 @@ package cn.edu.zjnu.acm.judge.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.time.Instant;
-import javax.xml.bind.annotation.XmlTransient;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +25,6 @@ public class User implements Serializable {
     private String email;
     private String vcode;
     @JsonIgnore
-    @XmlTransient
     private String password;
     private String nick;
     private String school;
@@ -37,7 +35,6 @@ public class User implements Serializable {
     private Instant expireTime;
 
     @JsonIgnore
-    @XmlTransient
     public int getRatio() {
         return submit == 0 ? 0 : (int) Math.round(solved * 100.0 / submit);
     }

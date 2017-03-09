@@ -10,14 +10,14 @@ ckfinder:
     quality: 0.8
   default-resource-types:
   types:
-    - name: Files
-      url: '%BASE_URL%files/'
+    Files:
+      url: '%BASE_URL%files'
       directory: '%BASE_DIR%/files'
       max-size: 0
       allowed-extensions: 7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip
       denied-extensions: exe,jsp,jspx,asp,aspx
-    - name: Images
-      url: '%BASE_URL%images/'
+    Images:
+      url: '%BASE_URL%images'
       directory: '%BASE_DIR%/images'
       max-size: 0
       allowed-extensions: bmp,gif,jpeg,jpg,png
@@ -37,7 +37,7 @@ ckfinder:
     file-delete: true
   thumbs:
     enabled: true
-    url: '%BASE_URL%_thumbs/'
+    url: '%BASE_URL%_thumbs'
     directory: '%BASE_DIR%/_thumbs'
     direct-access: false
     max-height: 100
@@ -59,3 +59,7 @@ ckfinder:
     transparency: 0.1
   image-resize:
     enabled: true
+    params:
+      smallThumb: 90x90
+      mediumThumb: 120x120
+      largeThumb: 180x180

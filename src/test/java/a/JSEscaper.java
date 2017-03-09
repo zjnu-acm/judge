@@ -54,7 +54,7 @@ public class JSEscaper {
         if (str.startsWith("\ufeff")) {
             str = str.substring(1);
         }
-        str = MatcherWrapper.matcher("\\\\[xX][0-9A-Fa-f]{2}", str).replaceAll(esc(2, 16));
+        str = MatcherWrapper.matcher("\\\\x[0-9A-Fa-f]{2}", str).replaceAll(esc(2, 16));
         str = MatcherWrapper.matcher("\\\\u[0-9A-Fa-f]{4}", str).replaceAll(esc(2, 16));
         str = MatcherWrapper.matcher("(?-i)\\\\[0-7]{3}", str).replaceAll(esc(1, 8));
         str = MatcherWrapper.matcher("[\u007F-\uffff]", str).replaceAll(matcher -> {
