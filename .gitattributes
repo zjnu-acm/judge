@@ -23,6 +23,7 @@
 *.woff2 binary
 *.ico binary
 
+*.sh    text    diff=shell
 *.java  text    diff=java
 *.html  text    diff=html
 *.xml   text    diff=xml
@@ -49,3 +50,4 @@
 *.png binary diff=image
 *.cmd text eol=crlf
 *.bat text eol=crlf
+*.jar binary

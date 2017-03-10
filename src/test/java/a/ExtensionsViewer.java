@@ -20,8 +20,8 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Objects;
-import java.util.Set;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -37,20 +37,25 @@ public class ExtensionsViewer {
     @SuppressWarnings("UseOfSystemOutOrSystemErr")
     public static void main(String[] args) throws IOException {
         Path path = Paths.get(".");
-        Set<String> set = Files.list(path).filter(Files::isDirectory).filter(p
-                -> !p.getFileName().toString().matches("target|\\.(?:git|idea|svn)")).flatMap(p -> {
+        Map<String, List<Path>> map = Files.list(path).filter(Files::isDirectory).filter(p
+                -> !p.getFileName().toString().matches("target|\\.(?:git|idea|svn|settings)")).flatMap(p -> {
             try {
-                return Files.walk(p)
-                        .map(Path::getFileName)
-                        .map(Object::toString)
-                        .map(str -> str.contains(".") ? str.substring(str.lastIndexOf('.') + 1) : "")
-                        .filter(Objects::nonNull)
-                        .filter(string -> !string.isEmpty());
+                return Files.walk(p).filter(Files::isRegularFile).filter(pp -> !getExtension(pp).isEmpty());
             } catch (IOException ex) {
                 throw new UncheckedIOException(ex);
             }
-        }).collect(Collectors.toSet());
-        System.out.println(set);
+        }).collect(Collectors.groupingBy(ExtensionsViewer::getExtension));
+        map.keySet().removeIf(Files.lines(path.resolve(".gitattributes"))
+                .map(str -> str.trim())
+                .filter(str -> str.startsWith("*."))
+                .map(str -> str.replaceAll("\\*\\.|\\s.+", ""))
+                .collect(Collectors.toSet())::contains);
+        System.out.println(map);
+    }
+
+    private static String getExtension(Path path) {
+        String name = path.getFileName().toString();
+        return name.lastIndexOf('.') > 0 ? name.substring(name.lastIndexOf('.') + 1) : "";
     }
 
 }
