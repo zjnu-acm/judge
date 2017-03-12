@@ -44,7 +44,7 @@ ckfinder:
     max-width: 100
     quality: 0.8
   disallow-unsafe-characters: false
-  check-double-extension: true
+  check-double-extension: false
   html-extensions: html,htm,xml,js
   check-size-after-scaling: true
   force-ascii: false
