@@ -1,7 +1,4 @@
 ckfinder:
-  enabled: true
-  base-dir:
-  base-url:
   license:
     strategy: host
   image:
@@ -22,7 +19,6 @@ ckfinder:
       max-size: 0
       allowed-extensions: bmp,gif,jpeg,jpg,png
       denied-extensions:
-  user-role-session-var: CKFinder_UserRole
   access-controls:
   - role: '*'
     resource-type: '*'
@@ -35,31 +31,9 @@ ckfinder:
     file-upload: true
     file-rename: true
     file-delete: true
-  thumbs:
-    enabled: true
-    url: '%BASE_URL%_thumbs'
-    directory: '%BASE_DIR%/_thumbs'
-    direct-access: false
-    max-height: 100
-    max-width: 100
-    quality: 0.8
-  disallow-unsafe-characters: false
   check-double-extension: false
-  html-extensions: html,htm,xml,js
   check-size-after-scaling: true
-  force-ascii: false
+  force-ascii: true
   secure-image-uploads: true
-  hide-folders: '.*,CVS'
-  hide-files: '.*'
-  watermark:
+  servlet:
     enabled: false
-    source: classpath:/com/github/zhanhb/ckfinder/connector/logo.gif
-    margin-bottom: 0
-    quality: 0.1
-    transparency: 0.1
-  image-resize:
-    enabled: true
-    params:
-      smallThumb: 90x90
-      mediumThumb: 120x120
-      largeThumb: 180x180

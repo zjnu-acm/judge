@@ -16,12 +16,14 @@
 package cn.edu.zjnu.acm.judge.config;
 
 import cn.edu.zjnu.acm.judge.support.ckfinder.ConfigurationPathBuilder;
+import com.github.zhanhb.ckfinder.connector.autoconfigure.CKFinderProperties;
 import com.github.zhanhb.ckfinder.connector.configuration.IBasePathBuilder;
 import com.github.zhanhb.ckfinder.connector.configuration.IConfiguration;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -33,15 +35,17 @@ import org.springframework.context.annotation.Configuration;
 public class CKFinderConfiguration {
 
     @Bean
-    public IBasePathBuilder pathBuilder(JudgeConfiguration judgeConfiguration, ServletContext servletContext) {
-        return new ConfigurationPathBuilder(judgeConfiguration, servletContext);
+    public IBasePathBuilder pathBuilder(JudgeConfiguration judgeConfiguration, ApplicationContext context) {
+        return new ConfigurationPathBuilder(judgeConfiguration, context.getBean(ServletContext.class));
     }
 
     @Bean
-    public ServletRegistrationBean connectorServlet(MultipartConfigElement multipartConfigElement,
+    public ServletRegistrationBean connectorServlet(
+            CKFinderProperties cKFinderProperties,
+            MultipartConfigElement multipartConfigElement,
             IConfiguration configuration) {
         Servlet servlet = new ConnectorServlet(configuration);
-        ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(servlet, "/ckfinder/core/connector/java/connector.java");
+        ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(servlet, cKFinderProperties.getServlet().getPath());
         servletRegistrationBean.setMultipartConfig(multipartConfigElement);
         return servletRegistrationBean;
     }

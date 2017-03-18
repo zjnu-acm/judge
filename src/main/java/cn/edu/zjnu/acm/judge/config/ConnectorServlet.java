@@ -30,8 +30,8 @@ public class ConnectorServlet extends com.github.zhanhb.ckfinder.connector.Conne
 
     private static final long serialVersionUID = 1L;
 
-    ConnectorServlet(IConfiguration iConfiguration) {
-        super(iConfiguration);
+    ConnectorServlet(IConfiguration configuration) {
+        super(configuration);
     }
 
     @Override

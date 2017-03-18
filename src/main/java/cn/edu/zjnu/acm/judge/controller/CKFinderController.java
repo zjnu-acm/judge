@@ -40,8 +40,9 @@ public class CKFinderController {
     @GetMapping("/support/ckfinder")
     public Resource ckfinder(@RequestParam("path") String path) throws IOException {
         try {
+            int indexOf = path.indexOf('?');
             Path parent = judgeConfiguration.getUploadDirectory();
-            Path imagePath = parent.resolve(path).normalize();
+            Path imagePath = parent.resolve(indexOf > 0 ? path.substring(0, indexOf) : path).normalize();
             if (!imagePath.startsWith(parent)) {
                 log.debug("absolute path parent='{}' path='{}'", parent, imagePath);
                 return null;
