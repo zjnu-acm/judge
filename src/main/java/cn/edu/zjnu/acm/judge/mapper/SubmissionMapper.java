@@ -17,6 +17,7 @@ package cn.edu.zjnu.acm.judge.mapper;
 
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.domain.SubmissionCriteria;
+import cn.edu.zjnu.acm.judge.util.ResultType;
 import java.util.List;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -92,8 +93,10 @@ public interface SubmissionMapper {
     })
     List<Submission> findAllByCriteria(SubmissionCriteria submissionCriteria);
 
-    @Select("select solution_id from solution s where problem_id=#{problemId} order by solution_id desc")
-    List<Long> findAllByProblemId(@Param("problemId") long problemId);
+    @Select("select solution_id from solution s where problem_id=#{problemId} and score<> "
+            + ResultType.SCORE_ACCEPT
+            + " order by solution_id desc")
+    List<Long> findAllByProblemIdAndREsultNotAccept(@Param("problemId") long problemId);
 
     @SelectProvider(type = BestSubmissionsBuilder.class, method = "bestSubmissions")
     List<Submission> bestSubmission(@Param("problemId") long problemId, @Param("pageable") Pageable pageable);

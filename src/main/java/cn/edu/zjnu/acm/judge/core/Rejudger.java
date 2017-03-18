@@ -28,7 +28,7 @@ public class Rejudger {
     }
 
     private void rejudgeProblem(long problemId) throws InterruptedException, ExecutionException {
-        List<Long> submissions = submissionMapper.findAllByProblemId(problemId);
+        List<Long> submissions = submissionMapper.findAllByProblemIdAndREsultNotAccept(problemId);
         for (long submission : submissions) {
             judger.reJudge(submission);
         }
