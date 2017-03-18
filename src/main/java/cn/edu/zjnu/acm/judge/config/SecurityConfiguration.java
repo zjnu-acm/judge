@@ -147,6 +147,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .headers()
                 .cacheControl().disable()
                 .httpStrictTransportSecurity().disable()
+                .frameOptions().sameOrigin()
                 .and()
             .logout()
                 .logoutUrl("/logout")
