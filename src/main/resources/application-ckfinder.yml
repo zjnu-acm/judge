@@ -1,24 +1,15 @@
 ckfinder:
-  license:
-    strategy: host
+  license.strategy: host
   image:
     width: 1600
     height: 1200
     quality: 0.8
-  default-resource-types:
   types:
     Files:
-      url: '%BASE_URL%files'
-      directory: '%BASE_DIR%/files'
-      max-size: 0
       allowed-extensions: 7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip
       denied-extensions: exe,jsp,jspx,asp,aspx
     Images:
-      url: '%BASE_URL%images'
-      directory: '%BASE_DIR%/images'
-      max-size: 0
       allowed-extensions: bmp,gif,jpeg,jpg,png
-      denied-extensions:
   access-controls:
   - role: '*'
     resource-type: '*'
@@ -35,5 +26,4 @@ ckfinder:
   check-size-after-scaling: true
   force-ascii: true
   secure-image-uploads: true
-  servlet:
-    enabled: false
+  servlet.enabled: false

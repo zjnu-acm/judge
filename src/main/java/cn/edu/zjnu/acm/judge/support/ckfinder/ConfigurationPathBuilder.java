@@ -18,7 +18,7 @@ public class ConfigurationPathBuilder implements IBasePathBuilder {
     }
 
     @Override
-    public String getBaseDir() {
+    public String getBasePath() {
         Path resource = judgeConfiguration.getUploadDirectory();
         return resource.toString();
     }
