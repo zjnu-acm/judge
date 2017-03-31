@@ -62,7 +62,7 @@
                 }).on("click", ":button.delete", function () {
                     var contestId = $(this).closest("[data-contest-id]").data("contestId");
                     var problemId = $(this).closest("[data-id]").data("id");
-                    $("<form method='POST' />").attr("action", /*[+[[@{/admin/contests/{contestId}/problems/{problemId}}]]+]*//*[-*/"../admin/contests/{contestId}/problems/{problemId}"/*-]*/.replace("{contestId}", contestId).replace("{problemId}", problemId)).append($("<input type='hidden' name='_method' value='DELETE' />")).submit();
+                    $("<form method='POST' />").attr("action", /*[+[[@{/admin/contests/{contestId}/problems/{problemId}}]]+]*//*[-*/"../admin/contests/{contestId}/problems/{problemId}"/*-]*/.replace("{contestId}", contestId).replace("{problemId}", problemId)).append($("<input type='hidden' name='_method' value='DELETE' />")).appendTo("body").submit();
                 }).on("click", ":button.add", function () {
 //var contestId = $(this).closest("[data-contest-id]").data("contestId");
 //var problemId = $(this).closest(".item").find(":input[name='problemId']").val();
