@@ -18,8 +18,11 @@ ckfinder:
     file-upload: true
     file-rename: true
     file-delete: true
+  thumbs.direct-access: true
   check-double-extension: false
   check-size-after-scaling: true
   force-ascii: true
   secure-image-uploads: true
-  servlet.enabled: false
+  servlet:
+    enabled: true
+    path: /webjars/ckfinder/2.6.2.1/core/connector/java/connector.java

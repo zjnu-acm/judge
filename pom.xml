@@ -145,6 +145,12 @@
         </dependency>
         <dependency>
             <groupId>com.github.zhanhb</groupId>
+            <artifactId>ckfinder-webjars</artifactId>
+            <version>0.0.1.BUILD-SNAPSHOT</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.zhanhb</groupId>
             <artifactId>thymeleaf-layout-dialect</artifactId>
             <version>${thymeleaf-layout-dialect.version}</version>
             <scope>runtime</scope>

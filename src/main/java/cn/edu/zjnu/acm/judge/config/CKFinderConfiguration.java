@@ -15,15 +15,10 @@
  */
 package cn.edu.zjnu.acm.judge.config;
 
-import com.github.zhanhb.ckfinder.connector.autoconfigure.CKFinderProperties;
 import com.github.zhanhb.ckfinder.connector.configuration.DefaultPathBuilder;
 import com.github.zhanhb.ckfinder.connector.configuration.IBasePathBuilder;
-import com.github.zhanhb.ckfinder.connector.configuration.IConfiguration;
 import java.nio.file.Path;
-import javax.servlet.MultipartConfigElement;
-import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
-import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,17 +36,6 @@ public class CKFinderConfiguration {
         Path path = judgeConfiguration.getUploadDirectory();
         return DefaultPathBuilder.builder().baseUrl(url)
                 .basePath(path).build();
-    }
-
-    @Bean
-    public ServletRegistrationBean connectorServlet(
-            CKFinderProperties cKFinderProperties,
-            MultipartConfigElement multipartConfigElement,
-            IConfiguration configuration) {
-        Servlet servlet = new ConnectorServlet(configuration);
-        ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(servlet, cKFinderProperties.getServlet().getPath());
-        servletRegistrationBean.setMultipartConfig(multipartConfigElement);
-        return servletRegistrationBean;
     }
 
 }

@@ -20,6 +20,7 @@ import cn.edu.zjnu.acm.judge.mapper.UserMapper;
 import cn.edu.zjnu.acm.judge.service.LoginlogService;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import cn.edu.zjnu.acm.judge.user.PasswordConfuser;
+import com.github.zhanhb.ckfinder.connector.autoconfigure.CKFinderProperties;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.time.Instant;
@@ -34,6 +35,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -51,6 +53,7 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
  * @author zhanhb
  */
 @Configuration
+@EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -66,6 +69,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private PasswordConfuser passwordConfuser;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private CKFinderProperties ckfinder;
 
     private void saveLoginLog(HttpServletRequest request, boolean success) {
         String userId = Optional.ofNullable(request.getParameter("user_id1")).orElse("");
@@ -112,6 +117,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         // @formatter:off
         http
+            .authorizeRequests()
+                .antMatchers(ckfinder.getServlet().getPath()).hasAnyRole("ADMIN")
+                .and()
             .csrf()
                 .disable()
             .exceptionHandling()
@@ -143,6 +151,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     }
 
                 })
+                .permitAll()
                 .and()
             .headers()
                 .cacheControl().disable()
@@ -152,6 +161,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .logout()
                 .logoutUrl("/logout")
                 .logoutSuccessHandler(simpleUrlLogoutSuccessHandler)
+                .permitAll()
                 .and()
             .rememberMe()
                 .rememberMeParameter("rememberMe")

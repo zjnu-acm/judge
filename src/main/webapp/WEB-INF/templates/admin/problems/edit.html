@@ -15,7 +15,7 @@
                 <option value="EN" th:selected="${'en'.equalsIgnoreCase(problemLang)}">English</option>
             </select>
         </form>
-        <input type="hidden" name="ckfinderPath" th:value="@{/ckfinder/}"/>
+        <input type="hidden" name="ckfinderPath" th:value="@{/webjars/ckfinder/2.6.2.1/}"/>
         <h1>[[${hint}]]</h1>
         <p align="center">
             <font size="4" color="#333399">[[${hint2}]]</font>
@@ -79,7 +79,7 @@
             <div align="center"><button type="submit">Submit</button></div>
         </form>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.6.2/ckeditor.js" th:src="@{/webjars/ckeditor/4.6.2/full/ckeditor.js}"></script>
-        <script th:src="@{/ckfinder/ckfinder.js}"></script>
+        <script th:src="@{/webjars/ckfinder/2.6.2.1/ckfinder.js}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.6.2/adapters/jquery.js" th:src="@{/webjars/ckeditor/4.6.2/full/adapters/jquery.js}"></script>
         <script src="../../../../js/ckfinder.js" th:src="@{/js/ckfinder.js(_=${application.startUpDate})}"></script>
         <script>/*<![CDATA[*/jQuery(function ($) {var KEY = "value-original", inputs = $("form[name='problem-edit'] :input");$("select[name='problemLang']").change(function () {var change = false;inputs.each(function () {if ($(this).val() !== $(this).data(KEY)) {change = true;return false;}});if (change && !confirm("你已经修改题目，继续操作将会丢失修改，是否继续？")) {$(this).val($(this).data(KEY));return false;}$(this).closest("form").submit();}).add(inputs).each(function () {$(this).data(KEY, $(this).val());});});/*]]>*/</script>
