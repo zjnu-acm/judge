@@ -15,10 +15,11 @@
  */
 package cn.edu.zjnu.acm.judge.config;
 
-import cn.edu.zjnu.acm.judge.support.ckfinder.ConfigurationPathBuilder;
 import com.github.zhanhb.ckfinder.connector.autoconfigure.CKFinderProperties;
+import com.github.zhanhb.ckfinder.connector.configuration.DefaultPathBuilder;
 import com.github.zhanhb.ckfinder.connector.configuration.IBasePathBuilder;
 import com.github.zhanhb.ckfinder.connector.configuration.IConfiguration;
+import java.nio.file.Path;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
@@ -36,7 +37,10 @@ public class CKFinderConfiguration {
 
     @Bean
     public IBasePathBuilder pathBuilder(JudgeConfiguration judgeConfiguration, ApplicationContext context) {
-        return new ConfigurationPathBuilder(judgeConfiguration, context.getBean(ServletContext.class));
+        String url = context.getBean(ServletContext.class).getContextPath().concat("/support/ckfinder.action?path=");
+        Path path = judgeConfiguration.getUploadDirectory();
+        return DefaultPathBuilder.builder().baseUrl(url)
+                .basePath(path).build();
     }
 
     @Bean
