@@ -74,10 +74,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private void saveLoginLog(HttpServletRequest request, boolean success) {
         String userId = Optional.ofNullable(request.getParameter("user_id1")).orElse("");
-        String passsword = Optional.ofNullable(request.getParameter("password1")).orElse("");
+        String password = Optional.ofNullable(request.getParameter("password1")).orElse("");
         loginlogService.save(LoginLog.builder()
                 .user(userId)
-                .password(passwordConfuser.confuse(passsword))
+                .password(passwordConfuser.confuse(password))
                 .ip(request.getRemoteAddr())
                 .success(success)
                 .build());

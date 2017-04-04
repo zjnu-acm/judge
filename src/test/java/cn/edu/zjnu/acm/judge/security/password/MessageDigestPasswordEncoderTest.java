@@ -34,7 +34,7 @@ public class MessageDigestPasswordEncoderTest {
     public void testEncode() {
         log.info("encode");
         CharSequence password = "123456";
-        MessageDigestPasswordEncoder instance = MessageDigestPasswordEncoder.MD5;
+        MessageDigestPasswordEncoder instance = MessageDigestPasswordEncoder.md5();
         String expResult = "e10adc3949ba59abbe56e057f20f883e";
         String result = instance.encode(password);
         assertEquals(expResult, result);
@@ -48,7 +48,7 @@ public class MessageDigestPasswordEncoderTest {
         log.info("matches");
         CharSequence rawPassword = null;
         String encodedPassword = "Da39a3ee5e6b4b0d3255bfef95601890afd80709";
-        MessageDigestPasswordEncoder instance = MessageDigestPasswordEncoder.SHA1;
+        MessageDigestPasswordEncoder instance = MessageDigestPasswordEncoder.sha1();
         boolean expResult = true;
         boolean result = instance.matches(rawPassword, encodedPassword);
         assertEquals(expResult, result);
@@ -56,8 +56,8 @@ public class MessageDigestPasswordEncoderTest {
 
     @Test
     public void testNull() {
-        String a = MessageDigestPasswordEncoder.MD5.encode(null);
-        String b = MessageDigestPasswordEncoder.MD5.encode("");
+        String a = MessageDigestPasswordEncoder.md5().encode(null);
+        String b = MessageDigestPasswordEncoder.md5().encode("");
         assertEquals(a, b);
     }
 

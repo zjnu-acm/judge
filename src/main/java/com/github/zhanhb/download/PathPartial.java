@@ -16,28 +16,34 @@
  */
 package com.github.zhanhb.download;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.time.Instant;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.StringTokenizer;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.Resource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 
-@Slf4j
-public class Downloader {
+public class PathPartial {
+
+    private static final Logger log = LoggerFactory.getLogger(PathPartial.class);
 
     /**
      * Full range marker.
@@ -48,50 +54,33 @@ public class Downloader {
     /**
      * MIME multipart separation string
      */
-    private static final String MIME_SEPARATION = "DOWNLOADER_MIME_BOUNDARY";
-    private static final ThreadLocal<byte[]> INPUT_BUFFER_POOL = ThreadLocal.withInitial(() -> new byte[8192]);
+    private static final String MIME_SEPARATION = "PATH_PARTIAL_MIME_BOUNDARY";
     private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss zzz")
             .withZone(ZoneId.of("GMT")).withLocale(Locale.US);
 
-    public static Downloader newInstance() {
-        return new Downloader();
+    public static PathPartialBuilder builder() {
+        return new PathPartialBuilder();
     }
 
-    private static String getETag(Resource resource) throws IOException {
-        long contentLength = resource.contentLength();
-        long lastModified = resource.lastModified();
-        return "W/\"" + contentLength + "-" + lastModified + "\"";
-    }
+    private final boolean useAcceptRanges;
+    private final ContentDisposition contentDisposition;
+    private final ETag eTag;
+    private final ContentTypeResolver contentTypeResolver;
+    private final NotFoundHandler notFound;
 
-    // ----------------------------------------------------- Instance Variables
-    /**
-     * Should the Accept-Ranges: bytes header be send with static resources?
-     */
-    private boolean useAcceptRanges = true;
-
-    /**
-     * Should the Content-Disposition: attachment; filename=... header be sent
-     * with static resources?
-     */
-    private ContentDisposition contentDisposition = SimpleContentDisposition.ATTACHMENT;
-
-    private Downloader() {
-    }
-
-    // ------------------------------------------------------ public Methods
-    public Downloader useAcceptRanges(boolean useAcceptRanges) {
+    PathPartial(boolean useAcceptRanges, @Nonnull ContentDisposition contentDisposition,
+            @Nonnull ETag eTag, @Nonnull ContentTypeResolver contentType,
+            @Nonnull NotFoundHandler notFound) {
         this.useAcceptRanges = useAcceptRanges;
-        return this;
-    }
-
-    public Downloader contentDisposition(ContentDisposition contentDisposition) {
-        this.contentDisposition = contentDisposition;
-        return this;
+        this.contentDisposition = Objects.requireNonNull(contentDisposition, "contentDisposition");
+        this.eTag = Objects.requireNonNull(eTag, "eTag");
+        this.contentTypeResolver = Objects.requireNonNull(contentType, "contentType");
+        this.notFound = Objects.requireNonNull(notFound, "notFound");
     }
 
     public void service(HttpServletRequest request, HttpServletResponse response,
-            Resource resource) throws IOException {
-        serveResource(request, response, !"HEAD".equals(request.getMethod()), resource);
+            Path path) throws IOException, ServletException {
+        serveResource(request, response, !"HEAD".equals(request.getMethod()), path);
     }
 
     /**
@@ -99,19 +88,28 @@ public class Downloader {
      *
      * @param request The servlet request we are processing
      * @param response The servlet response we are creating
-     * @param resource
-     *
+     * @param path path of the resource
      * @exception IOException if an input/output error occurs
+     * @throws ServletException if servlet exception occurs
      */
     public void doHead(HttpServletRequest request, HttpServletResponse response,
-            Resource resource) throws IOException {
+            Path path) throws IOException, ServletException {
         // Serve the requested resource, without the data content
-        serveResource(request, response, false, resource);
+        serveResource(request, response, false, path);
     }
 
+    /**
+     * Process a GET request for the specified resource.
+     *
+     * @param request The servlet request we are processing
+     * @param response The servlet response we are creating
+     * @param path path of the resource
+     * @exception IOException if an input/output error occurs
+     * @throws ServletException if servlet exception occurs
+     */
     public void doGet(HttpServletRequest request, HttpServletResponse response,
-            Resource resource) throws IOException {
-        serveResource(request, response, true, resource);
+            Path path) throws IOException, ServletException {
+        serveResource(request, response, true, path);
     }
 
     /**
@@ -120,17 +118,29 @@ public class Downloader {
      *
      * @param request The servlet request we are processing
      * @param response The servlet response we are creating
-     * @param resource The resource information
+     * @param attr The resource information
+     * @param etag ETag of the entity
      * @return boolean true if the resource meets all the specified conditions,
      * and false if any of the conditions is not satisfied, in which case
      * request processing is stopped
      */
     private boolean checkIfHeaders(HttpServletRequest request, HttpServletResponse response,
-            Resource resource) throws IOException {
-        return checkIfMatch(request, response, resource)
-                && checkIfUnmodifiedSince(request, response, resource)
-                && checkIfNoneMatch(request, response, resource)
-                && checkIfModifiedSince(request, response, resource);
+            BasicFileAttributes attr, String etag) throws IOException {
+        try {
+            checkIfMatch(request, etag);
+            checkIfUnmodifiedSince(request, attr);
+            checkIfNoneMatch(request, etag);
+            checkIfModifiedSince(request, attr);
+            return true;
+        } catch (CheckException ex) {
+            if (ex.isError()) {
+                response.sendError(ex.getCode());
+            } else {
+                response.setStatus(ex.getCode());
+                response.setHeader(HttpHeaders.ETAG, etag);
+            }
+            return false;
+        }
     }
 
     /**
@@ -139,74 +149,68 @@ public class Downloader {
      * @param request The servlet request we are processing
      * @param response The servlet response we are creating
      * @param content Should the content be included?
-     * @param resource the resource to serve
+     * @param path the resource to serve
      *
      * @exception IOException if an input/output error occurs
      */
     private void serveResource(HttpServletRequest request, HttpServletResponse response,
-            boolean content, Resource resource) throws IOException {
-        boolean serveContent = content;
-        if (resource == null || !resource.exists()) {
-            // Check if we're included so we can return the appropriate
-            // missing resource name in the error
-            String requestUri = (String) request.getAttribute(RequestDispatcher.INCLUDE_REQUEST_URI);
-            if (requestUri == null) {
-                requestUri = request.getRequestURI();
-            } else {
-                // We're included
-                // SRV.9.3 says we must throw a FNFE
-                throw new FileNotFoundException("The requested resource (" + requestUri + ") is not available");
-            }
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, requestUri);
+            boolean content, Path path) throws IOException, ServletException {
+        ActionContext context = new ActionContext()
+                .put(HttpServletRequest.class, request)
+                .put(HttpServletResponse.class, response)
+                .put(ServletContext.class, request.getServletContext())
+                .put(Path.class, path);
+        if (path == null) {
+            notFound.handle(context);
             return;
         }
+        BasicFileAttributes attr;
+        try {
+            attr = Files.readAttributes(path, BasicFileAttributes.class);
+        } catch (IOException ex) {
+            notFound.handle(context);
+            return;
+        }
+        context.put(BasicFileAttributes.class, attr);
 
         boolean isError = response.getStatus() >= HttpServletResponse.SC_BAD_REQUEST;
         // Check if the conditions specified in the optional If headers are
         // satisfied.
         // Checking If headers
         boolean included = (request.getAttribute(RequestDispatcher.INCLUDE_CONTEXT_PATH) != null);
-        if (!included && !isError && !checkIfHeaders(request, response, resource)) {
+        String etag = this.eTag.getValue(context);
+        if (!included && !isError && !checkIfHeaders(request, response, attr, etag)) {
             return;
         }
         // Find content type.
         // TODO mime type
-        String contentType = null;
-        if (contentType == null) {
-            contentType = request.getServletContext().getMimeType(resource.getFilename());
-        }
+        String contentType = contentTypeResolver.getValue(context);
         Range[] ranges = null;
-        long contentLength;
         if (!isError) {
             if (useAcceptRanges) {
                 // Accept ranges header
                 response.setHeader(HttpHeaders.ACCEPT_RANGES, "bytes");
             }
             // Parse range specifier
-            ranges = parseRange(request, response, resource);
+            ranges = parseRange(request, response, attr, etag);
             // ETag header
-            response.setHeader(HttpHeaders.ETAG, getETag(resource));
+            response.setHeader(HttpHeaders.ETAG, etag);
             // Last-Modified header
-            response.setHeader(HttpHeaders.LAST_MODIFIED, dtf.format(Instant.ofEpochMilli(resource.lastModified())));
+            response.setHeader(HttpHeaders.LAST_MODIFIED, dtf.format(attr.lastModifiedTime().toInstant()));
         }
         // Get content length
-        contentLength = resource.contentLength();
+        long contentLength = attr.size();
         // Special case for zero length files, which would cause a
         // (silent) ISE when setting the output buffer size
-        if (contentLength == 0L) {
-            serveContent = false;
-        }
+        boolean serveContent = content && contentLength != 0;
         ServletOutputStream ostream = null;
         if (serveContent) {
             ostream = response.getOutputStream();
         }
 
-        ContentDisposition cd = this.contentDisposition;
-        if (cd != null) {
-            String disposition = cd.getContentDisposition(resource.getFilename());
-            if (disposition != null) {
-                response.setHeader(HttpHeaders.CONTENT_DISPOSITION, disposition);
-            }
+        String disposition = contentDisposition.getValue(context);
+        if (disposition != null) {
+            response.setHeader(HttpHeaders.CONTENT_DISPOSITION, disposition);
         }
 
         // Check to see if a Filter, Valve of wrapper has written some content.
@@ -223,17 +227,15 @@ public class Downloader {
             }
             // Copy the input stream to our output stream (if requested)
             if (serveContent) {
-                try (InputStream stream = resource.getInputStream()) {
-                    log.trace("Serving bytes");
-                    IOUtils.copyLarge(stream, ostream, INPUT_BUFFER_POOL.get());
-                }
+                log.trace("Serving bytes");
+                Files.copy(path, ostream);
             }
         } else if (ranges != null && ranges.length != 0) {
             // Partial content response.
             response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
             if (ranges.length == 1) {
                 Range range = ranges[0];
-                response.addHeader(HttpHeaders.CONTENT_RANGE, "bytes " + range.start + "-" + range.end + "/" + range.total);
+                response.addHeader(HttpHeaders.CONTENT_RANGE, range.toString());
                 long length = range.end - range.start + 1;
                 response.setContentLengthLong(length);
                 if (contentType != null) {
@@ -241,14 +243,14 @@ public class Downloader {
                     response.setContentType(contentType);
                 }
                 if (serveContent) {
-                    try (InputStream stream = resource.getInputStream()) {
+                    try (InputStream stream = Files.newInputStream(path)) {
                         copyRange(stream, ostream, range.start, range.end);
                     }
                 }
             } else {
                 response.setContentType("multipart/byteranges; boundary=" + MIME_SEPARATION);
                 if (serveContent) {
-                    copy(resource, ostream, ranges, contentType);
+                    copy(path, ostream, ranges, contentType);
                 }
             }
         }
@@ -259,13 +261,13 @@ public class Downloader {
      *
      * @param request The servlet request we are processing
      * @param response The servlet response we are creating
-     * @param resource
+     * @param attr
      * @return Vector of ranges
      */
     @Nullable
     @SuppressWarnings("ReturnOfCollectionOrArrayField")
     private Range[] parseRange(HttpServletRequest request, HttpServletResponse response,
-            Resource resource) throws IOException {
+            BasicFileAttributes attr, String etag) throws IOException {
         // Checking If-Range
         String headerValue = request.getHeader(HttpHeaders.IF_RANGE);
         if (headerValue != null) {
@@ -275,22 +277,17 @@ public class Downloader {
             } catch (IllegalArgumentException e) {
                 // Ignore
             }
-            String eTag = getETag(resource);
-            long lastModified = resource.lastModified();
-            if (headerValueTime == -1) {
-                // If the ETag the client gave does not match the entity
-                // etag, then the entire entity is returned.
-                if (!headerValue.trim().equals(eTag)) {
-                    return FULL;
-                }
-            } else if (lastModified > headerValueTime + 1000) {
+            // If the ETag the client gave does not match the entity
+            // eTag, then the entire entity is returned.
+            if (headerValueTime == -1 && !headerValue.trim().equals(etag)
+                    || attr.lastModifiedTime().toMillis() > headerValueTime + 1000) {
                 // If the timestamp of the entity the client got is older than
                 // the last modification date of the entity, the entire entity
                 // is returned.
                 return FULL;
             }
         }
-        long fileLength = resource.contentLength();
+        long fileLength = attr.size();
         if (fileLength == 0) {
             return FULL;
         }
@@ -304,23 +301,24 @@ public class Downloader {
         if (!rangeHeader.startsWith("bytes=")) {
             return FULL;
         }
-        // Vector which will contain all the ranges which are successfully
+        // List which will contain all the ranges which are successfully
         // parsed.
         List<Range> result = new ArrayList<>(4);
         // Parsing the range list
         // "bytes=".length() = 6
         for (int index, last = 6;; last = index + 1) {
             index = rangeHeader.indexOf(',', last);
-            final String rangeDefinition = (index != -1 ? rangeHeader.substring(last, index) : rangeHeader.substring(last)).trim();
-            final Range currentRange = new Range(fileLength);
+            boolean isLast = index == -1;
+            final String rangeDefinition = (isLast ? rangeHeader.substring(last) : rangeHeader.substring(last, index)).trim();
             final int dashPos = rangeDefinition.indexOf('-');
             if (dashPos == -1) {
                 break;
             }
+            final Range currentRange = new Range(fileLength);
             try {
                 if (dashPos == 0) {
                     final long offset = Long.parseLong(rangeDefinition);
-                    if (offset == 0) { // -0
+                    if (offset == 0) { // -0, --0
                         break;
                     }
                     currentRange.start = Math.max(fileLength + offset, 0);
@@ -333,12 +331,13 @@ public class Downloader {
             } catch (NumberFormatException e) {
                 break;
             }
-            if (currentRange.validate()) {
-                result.add(currentRange);
+            if (!currentRange.validate()) {
+                break;
             }
-            if (index == -1) {
+            result.add(currentRange);
+            if (isLast) {
                 int size = result.size();
-                if (size == 0 || size > 1 && resource.isOpen()) {
+                if (size == 0) {
                     break;
                 }
                 return result.toArray(new Range[size]);
@@ -353,116 +352,83 @@ public class Downloader {
      * Check if the if-match condition is satisfied.
      *
      * @param request The servlet request we are processing
-     * @param response The servlet response we are creating
-     * @param resource File object
-     * @return boolean true if the resource meets the specified condition, and
-     * false if the condition is not satisfied, in which case request processing
-     * is stopped
+     * @param etag ETag of the entity
      */
-    private boolean checkIfMatch(HttpServletRequest request, HttpServletResponse response,
-            Resource resource) throws IOException {
-        String eTag = getETag(resource);
+    private void checkIfMatch(HttpServletRequest request, String etag) {
         String headerValue = request.getHeader(HttpHeaders.IF_MATCH);
         if (headerValue != null && headerValue.indexOf('*') == -1
-                && !anyMatches(headerValue, eTag)) {
+                && !anyMatches(headerValue, etag)) {
             // If none of the given ETags match, 412 Precodition failed is
             // sent back
-            response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED);
-            return false;
+            throw new CheckException(HttpServletResponse.SC_PRECONDITION_FAILED);
         }
-        return true;
     }
 
     /**
      * Check if the if-modified-since condition is satisfied.
      *
      * @param request The servlet request we are processing
-     * @param response The servlet response we are creating
-     * @param resource File object
-     * @return boolean true if the resource meets the specified condition, and
-     * false if the condition is not satisfied, in which case request processing
-     * is stopped
+     * @param attr File attributes
      */
     @SuppressWarnings("NestedAssignment")
-    private boolean checkIfModifiedSince(HttpServletRequest request, HttpServletResponse response,
-            Resource resource) throws IOException {
+    private void checkIfModifiedSince(HttpServletRequest request, BasicFileAttributes attr) {
         try {
             long headerValue;
             // If an If-None-Match header has been specified, if modified since
             // is ignored.
             if (request.getHeader(HttpHeaders.IF_NONE_MATCH) == null
                     && (headerValue = request.getDateHeader(HttpHeaders.IF_MODIFIED_SINCE)) != -1
-                    && resource.lastModified() < headerValue + 1000) {
+                    && attr.lastModifiedTime().toMillis() < headerValue + 1000) {
                 // The entity has not been modified since the date
                 // specified by the client. This is not an error case.
-                response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-                response.setHeader(HttpHeaders.ETAG, getETag(resource));
-                return false;
+                throw new CheckException(HttpServletResponse.SC_NOT_MODIFIED);
             }
         } catch (IllegalArgumentException ex) {
         }
-        return true;
     }
 
     /**
      * Check if the if-none-match condition is satisfied.
      *
      * @param request The servlet request we are processing
-     * @param response The servlet response we are creating
-     * @param resource File object
-     * @return boolean true if the resource meets the specified condition, and
-     * false if the condition is not satisfied, in which case request processing
-     * is stopped
+     * @param etag ETag of the entity
      */
-    private boolean checkIfNoneMatch(HttpServletRequest request, HttpServletResponse response,
-            Resource resource) throws IOException {
-        String eTag = getETag(resource);
+    private void checkIfNoneMatch(HttpServletRequest request, String etag) {
         String headerValue = request.getHeader(HttpHeaders.IF_NONE_MATCH);
-        if (headerValue != null && (headerValue.equals("*") || anyMatches(headerValue, eTag))) {
+        if (headerValue != null && (headerValue.equals("*") || anyMatches(headerValue, etag))) {
             // For GET and HEAD, we should respond with
             // 304 Not Modified.
             // For every other method, 412 Precondition Failed is sent
             // back.
             String method = request.getMethod();
             if ("GET".equals(method) || "HEAD".equals(method)) {
-                response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-                response.setHeader(HttpHeaders.ETAG, eTag);
+                throw new CheckException(HttpServletResponse.SC_NOT_MODIFIED);
             } else {
-                response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED);
+                throw new CheckException(HttpServletResponse.SC_PRECONDITION_FAILED);
             }
-            return false;
         }
-        return true;
     }
 
     /**
      * Check if the if-unmodified-since condition is satisfied.
      *
      * @param request The servlet request we are processing
-     * @param response The servlet response we are creating
-     * @param resource File object
-     * @return boolean true if the resource meets the specified condition, and
-     * false if the condition is not satisfied, in which case request processing
-     * is stopped
+     * @param attr File attributes
      */
-    private boolean checkIfUnmodifiedSince(HttpServletRequest request, HttpServletResponse response,
-            Resource resource) throws IOException {
+    private void checkIfUnmodifiedSince(HttpServletRequest request, BasicFileAttributes attr) {
         if (request.getHeader(HttpHeaders.IF_MATCH) == null) {
             try {
-                long lastModified = resource.lastModified();
+                long lastModified = attr.lastModifiedTime().toMillis();
                 long headerValue = request.getDateHeader(HttpHeaders.IF_UNMODIFIED_SINCE);
                 if (headerValue != -1 && lastModified >= headerValue + 1000) {
                     // The entity has not been modified since the date
                     // specified by the client. This is not an error case.
-                    response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED);
-                    return false;
+                    throw new CheckException(HttpServletResponse.SC_PRECONDITION_FAILED);
                 }
             } catch (IllegalArgumentException ex) {
-                response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED);
-                return false;
+                throw new CheckException(HttpServletResponse.SC_PRECONDITION_FAILED);
             }
         }
-        return true;
     }
 
     /**
@@ -470,24 +436,24 @@ public class Downloader {
      * stream, and ensure that both streams are closed before returning (even in
      * the face of an exception).
      *
-     * @param resource The cache entry for the source resource
+     * @param path The cache entry for the source resource
      * @param ostream The output stream to write to
      * @param ranges Enumeration of the ranges the client wanted to retrieve
      * @param contentType Content type of the resource
      * @exception IOException if an input/output error occurs
      */
-    private void copy(Resource resource, ServletOutputStream ostream, Range[] ranges, String contentType)
+    private void copy(Path path, ServletOutputStream ostream, Range[] ranges, String contentType)
             throws IOException {
         IOException exception = null;
         for (Range currentRange : ranges) {
-            try (InputStream stream = resource.getInputStream()) {
+            try (InputStream stream = Files.newInputStream(path)) {
                 // Writing MIME header.
                 ostream.println();
                 ostream.println("--" + MIME_SEPARATION);
                 if (contentType != null) {
                     ostream.println(HttpHeaders.CONTENT_TYPE + ": " + contentType);
                 }
-                ostream.println(HttpHeaders.CONTENT_RANGE + ": bytes " + currentRange.start + "-" + currentRange.end + "/" + currentRange.total);
+                ostream.println(HttpHeaders.CONTENT_RANGE + ": " + currentRange);
                 ostream.println();
                 // Printing content
                 copyRange(stream, ostream, currentRange.start, currentRange.end);
@@ -511,18 +477,17 @@ public class Downloader {
      * @param ostream The output stream to write to
      * @param start Start of the range which will be copied
      * @param end End of the range which will be copied
-     * @return Exception which occurred during processing
      */
     private void copyRange(InputStream istream, OutputStream ostream, long start, long end)
             throws IOException {
         log.trace("Serving bytes: {}-{}", start, end);
-        IOUtils.copyLarge(istream, ostream, start, end + 1 - start, INPUT_BUFFER_POOL.get());
+        IOUtils.copy(istream, ostream, start, end + 1 - start, new byte[8192]);
     }
 
-    private boolean anyMatches(String headerValue, String eTag) {
+    private boolean anyMatches(String headerValue, String etag) {
         StringTokenizer tokenizer = new StringTokenizer(headerValue, ",");
         while (tokenizer.hasMoreTokens()) {
-            if (tokenizer.nextToken().trim().equals(eTag)) {
+            if (tokenizer.nextToken().trim().equals(etag)) {
                 return true;
             }
         }
@@ -546,6 +511,36 @@ public class Downloader {
         public boolean validate() {
             end = Math.min(end, total - 1);
             return start <= end;
+        }
+
+        @Override
+        public String toString() {
+            return "bytes " + start + "-" + end + "/" + total;
+        }
+
+    }
+
+    private static class CheckException extends RuntimeException {
+
+        private static final long serialVersionUID = 1L;
+
+        private final int code;
+
+        CheckException(int code) {
+            this.code = code;
+        }
+
+        public int getCode() {
+            return code;
+        }
+
+        public boolean isError() {
+            return code >= HttpServletResponse.SC_BAD_REQUEST;
+        }
+
+        @Override
+        public Throwable fillInStackTrace() {
+            return this;
         }
 
     }

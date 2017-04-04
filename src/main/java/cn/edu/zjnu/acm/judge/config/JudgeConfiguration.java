@@ -84,7 +84,7 @@ public class JudgeConfiguration {
                 : contextPath.replace("/", "");
     }
 
-    @SpecialCall
+    @SpecialCall("notice.html")
     public String getSystemInfo() {
         return systemInfo;
     }

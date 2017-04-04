@@ -17,7 +17,7 @@ public class ExecuteResult {
     private String message;
 
     public boolean isSuccess() {
-        return haltCode == null || haltCode == Status.accepted;
+        return haltCode == null || haltCode == Status.ACCEPTED;
     }
 
 }

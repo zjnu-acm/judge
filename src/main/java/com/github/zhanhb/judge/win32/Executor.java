@@ -173,17 +173,17 @@ public enum Executor {
                 while (true) {
                     long memory = judgeProcess.getPeakMemory();
                     if (memory > memoryLimit) {
-                        judgeProcess.terminate(Status.memoryLimitExceed);
+                        judgeProcess.terminate(Status.MEMORY_LIMIT_EXCEED);
                         break;
                     }
                     long time = judgeProcess.getActiveTime() - 1000; // extra 1000 millis
                     if (time > timeLimit) {
-                        judgeProcess.terminate(Status.timeLimitExceed);
+                        judgeProcess.terminate(Status.TIME_LIMIT_EXCEED);
                         judgeProcess.join(TERMINATE_TIMEOUT);
                         break;
                     }
                     if (judgeProcess.getTime() > timeLimit) {
-                        judgeProcess.terminate(Status.timeLimitExceed);
+                        judgeProcess.terminate(Status.TIME_LIMIT_EXCEED);
                         judgeProcess.join(TERMINATE_TIMEOUT);
                     }
                     long dwWaitTime = timeLimit - time;
@@ -195,12 +195,12 @@ public enum Executor {
                     }
                     // TODO maybe we should not check the output limit for current process may wait for the file to be finish
                     if (checkOle(outputPath, errorPath, redirectErrorStream, outputLimit)) {
-                        judgeProcess.terminate(Status.outputLimitExceed);
+                        judgeProcess.terminate(Status.OUTPUT_LIMIT_EXCEED);
                         break;
                     }
                 }
                 if (checkOle(outputPath, errorPath, redirectErrorStream, outputLimit)) {
-                    judgeProcess.terminate(Status.outputLimitExceed);
+                    judgeProcess.terminate(Status.OUTPUT_LIMIT_EXCEED);
                 }
             } finally {
                 judgeProcess.terminate(null);
@@ -208,12 +208,12 @@ public enum Executor {
             judgeProcess.join(Long.MAX_VALUE);
             Status status = judgeProcess.getStatus();
             int exitCode = judgeProcess.getExitCode();
-            if ((status == null || status == Status.accepted) && exitCode != 0) {
-                status = Status.runtimeError;
+            if ((status == null || status == Status.ACCEPTED) && exitCode != 0) {
+                status = Status.RUNTIME_ERROR;
             }
             long time = judgeProcess.getTime();
             return ExecuteResult.builder()
-                    .time(status == Status.timeLimitExceed ? ((time - timeLimit - 1) % 200 + 200) % 200 + 1 + timeLimit : time)
+                    .time(status == Status.TIME_LIMIT_EXCEED ? ((time - timeLimit - 1) % 200 + 200) % 200 + 1 + timeLimit : time)
                     .memory(judgeProcess.getPeakMemory())
                     .haltCode(status)
                     .exitCode(exitCode)

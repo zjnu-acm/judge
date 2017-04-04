@@ -18,6 +18,7 @@ package cn.edu.zjnu.acm.judge.util;
 import com.github.zhanhb.download.URLEncoder;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -48,7 +49,7 @@ public class URLBuilder {
         if (values == null || values.length == 0) {
             query.remove(name);
         } else {
-            query.put(name, values.clone());
+            query.put(name, checkNotNull(values.clone()));
         }
         return this;
     }
@@ -73,6 +74,13 @@ public class URLBuilder {
             }
         }
         return sb.toString();
+    }
+
+    private String[] checkNotNull(String[] arr) {
+        for (String string : arr) {
+            Objects.requireNonNull(string);
+        }
+        return arr;
     }
 
 }

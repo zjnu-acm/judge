@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 ZJNU ACM.
+ * Copyright 2017 zhanhb.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,17 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.util;
+package com.github.zhanhb.download;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
- * Indicate this method is call in another place, can't remove or refactor
- * safely.
- *
  * @author zhanhb
  */
-public @interface SpecialCall {
+public class ActionContext {
 
-    String[] value() default {};
+    private final Map<Class<?>, Object> map = new HashMap<>(8);
+
+    // package private
+    ActionContext() {
+    }
+
+    public <T> T get(Class<T> clazz) {
+        Object result = map.get(clazz);
+        return clazz.cast(result);
+    }
+
+    // package private
+    <T> ActionContext put(Class<T> clazz, T object) {
+        map.put(clazz, object);
+        return this;
+    }
 
 }

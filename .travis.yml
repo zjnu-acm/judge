@@ -10,3 +10,5 @@ sudo: required
 install: sudo -s source .travis/install-mariadb.sh
 before_script: mysql -uroot < .travis/create-db.sql
 script: chmod +x mvnw && ./mvnw -Dspring.datasource.password= verify
+after_success:
+- bash <(curl -s https://codecov.io/bash)

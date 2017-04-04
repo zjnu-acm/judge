@@ -17,13 +17,10 @@ package cn.edu.zjnu.acm.judge.controller;
 
 import cn.edu.zjnu.acm.judge.config.JudgeConfiguration;
 import com.github.zhanhb.download.spring.ToDownload;
-import java.io.IOException;
 import java.nio.file.Path;
 import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.PathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,16 +35,17 @@ public class CKFinderController {
     @Nullable
     @ToDownload
     @GetMapping("/support/ckfinder")
-    public Resource ckfinder(@RequestParam("path") String path) throws IOException {
+    public Path ckfinder(@RequestParam("path") String path) {
+        log.info(path);
         try {
             int indexOf = path.indexOf('?');
             Path parent = judgeConfiguration.getUploadDirectory();
-            Path imagePath = parent.resolve(indexOf > 0 ? path.substring(0, indexOf) : path).normalize();
+            Path imagePath = parent.getFileSystem().getPath(parent.toString(), indexOf > 0 ? path.substring(0, indexOf) : path).normalize();
             if (!imagePath.startsWith(parent)) {
                 log.debug("absolute path parent='{}' path='{}'", parent, imagePath);
                 return null;
             }
-            return new PathResource(imagePath);
+            return imagePath;
         } catch (IllegalArgumentException ex) {
             return null;
         }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 ZJNU ACM.
+ * Copyright 2017 zhanhb.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,17 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.util;
+package com.github.zhanhb.download;
+
+import java.nio.file.Path;
+import javax.servlet.ServletContext;
 
 /**
  *
- * Indicate this method is call in another place, can't remove or refactor
- * safely.
- *
  * @author zhanhb
  */
-public @interface SpecialCall {
+public interface ContentTypeResolver {
 
-    String[] value() default {};
+    public static ContentTypeResolver getDefault() {
+        return context -> context.get(ServletContext.class).getMimeType(context.get(Path.class).getFileName().toString());
+    }
+
+    String getValue(ActionContext context);
 
 }

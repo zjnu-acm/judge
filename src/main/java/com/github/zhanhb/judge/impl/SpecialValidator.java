@@ -60,11 +60,11 @@ public class SpecialValidator implements Validator {
             int specialExitValue = specialJudge.waitFor();
             log.debug("specialExitValue = {}", specialExitValue);
             if (specialExitValue == 0) {
-                return Status.accepted;
+                return Status.ACCEPTED;
             } else if (specialExitValue < 0) {
-                return Status.presentationError;
+                return Status.PRESENTATION_ERROR;
             } else {
-                return Status.wrongAnswer;
+                return Status.WRONG_ANSWER;
             }
         } catch (InterruptedException ex) {
             throw new InterruptedIOException();

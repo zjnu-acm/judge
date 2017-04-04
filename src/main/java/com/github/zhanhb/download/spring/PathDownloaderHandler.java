@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 ZJNU ACM.
+ * Copyright 2016 zhanhb.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,12 +15,12 @@
  */
 package com.github.zhanhb.download.spring;
 
-import com.github.zhanhb.download.Downloader;
-import com.github.zhanhb.download.SimpleContentDisposition;
+import com.github.zhanhb.download.ContentDisposition;
+import com.github.zhanhb.download.PathPartial;
+import java.nio.file.Path;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.core.MethodParameter;
-import org.springframework.core.io.Resource;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.method.support.ModelAndViewContainer;
@@ -29,17 +29,19 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  *
  * @author zhanhb
  */
-public class DownloadHandler implements HandlerMethodReturnValueHandler {
+public class PathDownloaderHandler implements HandlerMethodReturnValueHandler {
 
-    private final Downloader viewer = Downloader.newInstance()
-            .contentDisposition(SimpleContentDisposition.INLINE);
-    private final Downloader downloader = Downloader.newInstance()
-            .contentDisposition(SimpleContentDisposition.ATTACHMENT);
+    private final PathPartial viewer = PathPartial.builder()
+            .contentDisposition(ContentDisposition.inline())
+            .build();
+    private final PathPartial downloader = PathPartial.builder()
+            .contentDisposition(ContentDisposition.attachment())
+            .build();
 
     @Override
     public boolean supportsReturnType(MethodParameter returnType) {
         return returnType.getMethodAnnotation(ToDownload.class) != null
-                && Resource.class.isAssignableFrom(
+                && Path.class.isAssignableFrom(
                         returnType.getMethod().getReturnType());
     }
 
@@ -52,8 +54,8 @@ public class DownloadHandler implements HandlerMethodReturnValueHandler {
         HttpServletResponse response = webRequest.getNativeResponse(HttpServletResponse.class);
         ToDownload toDownload = returnType.getMethodAnnotation(ToDownload.class);
 
-        Downloader d = toDownload.attachment() ? downloader : viewer;
-        d.service(request, response, Resource.class.cast(returnValue));
+        PathPartial d = toDownload.attachment() ? downloader : viewer;
+        d.service(request, response, Path.class.cast(returnValue));
         mavContainer.setRequestHandled(true);
     }
 

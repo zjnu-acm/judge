@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 zhanhb.
+ * Copyright 2017 zhanhb.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,43 +15,38 @@
  */
 package com.github.zhanhb.download;
 
+import java.nio.file.Path;
+import java.util.Objects;
+import java.util.function.Function;
+
 /**
  *
  * @author zhanhb
  * @see
  * <a href="https://tools.ietf.org/html/rfc6266#section-4.1">RFC6266#section-4.1</a>
  */
-public enum SimpleContentDisposition implements ContentDisposition {
+enum ContentDispositionEncoder {
 
-    ATTACHMENT("attachment"),
-    INLINE("inline"),
-    NONE(null) {
-
-        @Override
-        public String getContentDisposition(String filename) {
-            return null;
-        }
-
-    };
+    INSTANCE;
 
     // https://tools.ietf.org/html/rfc5987#section-3.2.1
     // we will encoding + for some browser will decode + to a space
-    static final URLEncoder CONTENT_DISPOSITION = new URLEncoder("!#$&-.^_`|~");
-    private final String type;
+    private final URLEncoder CONTENT_DISPOSITION = new URLEncoder("!#$&-.^_`|~");
 
-    SimpleContentDisposition(String type) {
-        this.type = type;
+    static ContentDisposition wrapper(String type, Function<Path, String> nameMapper) {
+        Objects.requireNonNull(nameMapper, "nameMapper");
+        return context -> type + INSTANCE
+                .encode(nameMapper.apply(context.get(Path.class)));
     }
 
-    @Override
-    public String getContentDisposition(String filename) {
+    public String encode(String filename) {
         if (filename == null || filename.length() == 0) {
-            return type;
+            return "";
         } else if (isToken(filename)) { // already a token
-            return type + "; filename=" + filename;
+            return "; filename=" + filename;
         } else {
             String encoded = CONTENT_DISPOSITION.encode(filename);
-            return type + "; filename=\"" + encoded + "\"; filename*=utf-8''" + encoded;
+            return "; filename=\"" + encoded + "\"; filename*=utf-8''" + encoded;
         }
     }
 

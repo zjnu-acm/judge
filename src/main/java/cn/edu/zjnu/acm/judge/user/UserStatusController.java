@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.thymeleaf.util.StringUtils;
 
 @Slf4j
 @Controller
@@ -28,9 +27,6 @@ public class UserStatusController {
     public String userstatus(Model model,
             @RequestParam(value = "size", defaultValue = "3") int display,
             @RequestParam(value = "user_id", required = false) String userId) {
-        if (StringUtils.isEmptyOrWhitespace(userId)) {
-            throw new MessageException("Error -- no user found", HttpStatus.BAD_REQUEST);
-        }
         User user = userMapper.findOne(userId);
         if (user == null) {
             throw new MessageException("Sorry, '" + userId + "' doesn't exist", HttpStatus.NOT_FOUND);
@@ -50,4 +46,5 @@ public class UserStatusController {
         log.debug("rankFirst = {}", rankFirst);
         return "users/status";
     }
+
 }

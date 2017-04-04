@@ -19,10 +19,12 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.ThreadLocalRandom;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 /**
  *
@@ -33,18 +35,31 @@ public class IOUtilsTest {
 
     /**
      * Test of copyLarge method, of class IOUtils.
+     *
      * @throws java.lang.Exception
      */
     @Test
-    public void testCopyLarge_5args() throws Exception {
+    @SuppressWarnings("NestedAssignment")
+    public void testCopyLarge() throws Exception {
         log.info("copyLarge");
-        InputStream input = new ByteArrayInputStream("abcdefgh".getBytes(StandardCharsets.UTF_8));
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-        long inputOffset = 3;
-        long length = 2;
-        byte[] buffer = new byte[4096];
-        IOUtils.copyLarge(input, output, inputOffset, length, buffer);
-        assertArrayEquals("de".getBytes(StandardCharsets.UTF_8), output.toByteArray());
+        String str = "abcdefghijklmnopq";
+        byte[] bytes = str.getBytes(StandardCharsets.UTF_8);
+        for (int i = 1; i <= 4; ++i) {
+            for (int j = 0; j < 40; ++j) {
+                int inputOffset = ThreadLocalRandom.current().nextInt(str.length());
+                int length = ThreadLocalRandom.current().nextInt(str.length());
+                if (inputOffset > length) {
+                    inputOffset ^= length ^= inputOffset ^= length;
+                }
+                length -= inputOffset;
+                InputStream input = new ByteArrayInputStream(bytes);
+                ByteArrayOutputStream output = new ByteArrayOutputStream();
+                long copied = IOUtils.copy(input, output, inputOffset, length, new byte[i]);
+                String expResult = str.substring(inputOffset, inputOffset + length);
+                assertArrayEquals(String.valueOf(i), expResult.getBytes(StandardCharsets.UTF_8), output.toByteArray());
+                assertEquals(length, copied);
+            }
+        }
     }
 
 }

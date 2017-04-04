@@ -456,7 +456,6 @@
                     <excludes>
                         <exclude>cn/edu/zjnu/acm/judge/Application.class</exclude>
                         <exclude>cn/edu/zjnu/acm/judge/domain/*.class</exclude>
-                        <exclude>com/github/zhanhb/download/**/*.class</exclude>
                     </excludes>
                     <propertyName>argLine</propertyName>
                 </configuration>

@@ -24,51 +24,51 @@ import java.io.OutputStream;
 @SuppressWarnings("UtilityClassWithoutPrivateConstructor")
 class IOUtils {
 
-    public static long copyLarge(InputStream input, OutputStream output, byte[] buffer)
-            throws IOException {
-        for (long count = 0;;) {
-            int n = input.read(buffer);
-            if (n == -1) {
-                return count;
-            }
-            output.write(buffer, 0, n);
-            count += n;
-        }
-    }
-
-    public static long copyLarge(InputStream input, OutputStream output,
+    public static long copy(InputStream input, OutputStream output,
             final long inputOffset, final long length,
             final byte[] buffer) throws IOException {
         if (inputOffset > 0) {
-            for (long remain = inputOffset, skipped; remain > 0; remain -= skipped) {
-                skipped = input.skip(remain);
-                if (skipped <= 0) {
+            for (long remain = inputOffset, n; remain > 0; remain -= n) {
+                n = input.skip(remain);
+                if (n <= 0) {
                     throw new EOFException("Bytes to skip: " + inputOffset + " actual: " + (inputOffset - remain));
                 }
             }
         }
         if (length <= 0) {
-            if (length < 0) {
-                return copyLarge(input, output, buffer);
+            if (length != 0) {
+                for (long count = 0;;) {
+                    int n = input.read(buffer);
+                    if (n == -1) {
+                        return count == 0 ? -1 : count;
+                    }
+                    output.write(buffer, 0, n);
+                    count += n;
+                }
             }
             return 0;
         }
         int bytesToRead = buffer.length;
-        long remain = length;
-        for (int read;;
-                output.write(buffer, 0, read), remain -= read) {
-            if (bytesToRead > remain) {
-                bytesToRead = (int) remain;
+        long count = 0;
+        for (long d = length / bytesToRead; d > 0; d--) {
+            int n = input.read(buffer);
+            if (n == -1) {
+                return count == 0 ? -1 : count;
             }
-            if (bytesToRead <= 0) {
-                break;
-            }
-            read = input.read(buffer, 0, bytesToRead);
-            if (read == -1) {
-                break;
-            }
+            output.write(buffer, 0, n);
+            count += n;
         }
-        return length - remain;
+        long rem = length - count;
+        while (rem > 0) {
+            int n = input.read(buffer, 0, (int) Math.min(rem, bytesToRead));
+            if (n == -1) {
+                break;
+            }
+            output.write(buffer, 0, n);
+            count += n;
+            rem -= n;
+        }
+        return count == 0 ? -1 : count;
     }
 
 }

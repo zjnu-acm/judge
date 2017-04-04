@@ -34,11 +34,11 @@ public class SimpleValidator implements Validator {
             throws IOException, JudgeException {
         try {
             if (isPresentationError(outputFile, answerFile)) {
-                return Status.accepted;
+                return Status.ACCEPTED;
             }
         } catch (OutOfMemoryError ignored) {
         }
-        return Status.wrongAnswer;
+        return Status.WRONG_ANSWER;
     }
 
 }

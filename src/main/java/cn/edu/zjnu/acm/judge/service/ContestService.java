@@ -28,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author zhanhb
  */
 @Service
+@SpecialCall("contests/problems.html")
 public class ContestService {
 
     @Autowired
@@ -35,7 +36,7 @@ public class ContestService {
     @Autowired
     private ProblemMapper problemMapper;
 
-    @SpecialCall
+    @SpecialCall("contests/problems.html")
     public String getStatus(Contest contest) {
         if (contest.isDisabled()) {
             return "Disabled";

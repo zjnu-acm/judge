@@ -25,12 +25,32 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  *
  * @author zhanhb
  */
-public enum MessageDigestPasswordEncoder implements PasswordEncoder {
+@SuppressWarnings("UtilityClassWithoutPrivateConstructor")
+public class MessageDigestPasswordEncoder implements PasswordEncoder {
 
-    MD5("MD5"),
-    SHA1("SHA1"),
-    SHA256("SHA-256"),
-    SHA512("SHA-512");
+    public static MessageDigestPasswordEncoder md5() {
+        return MD5Holder.INSTANCE;
+    }
+
+    public static MessageDigestPasswordEncoder sha1() {
+        return SHAHolder.INSTANCE;
+    }
+
+    public static MessageDigestPasswordEncoder sha256() {
+        return SHA256Holder.INSTANCE;
+    }
+
+    public static MessageDigestPasswordEncoder sha512() {
+        return SHA512Holder.INSTANCE;
+    }
+
+    private static MessageDigest getMessageDigest(String algorithmName) {
+        try {
+            return MessageDigest.getInstance(algorithmName);
+        } catch (NoSuchAlgorithmException e) {
+            throw new AssertionError(e);
+        }
+    }
 
     private final String algorithm;
     private final int bytes;
@@ -53,12 +73,28 @@ public enum MessageDigestPasswordEncoder implements PasswordEncoder {
                 && encode(rawPassword).equalsIgnoreCase(encodedPassword);
     }
 
-    private static MessageDigest getMessageDigest(String algorithmName) {
-        try {
-            return MessageDigest.getInstance(algorithmName);
-        } catch (NoSuchAlgorithmException e) {
-            throw new AssertionError(e);
-        }
+    private static class MD5Holder {
+
+        private static MessageDigestPasswordEncoder INSTANCE = new MessageDigestPasswordEncoder("MD5");
+
+    }
+
+    private static class SHAHolder {
+
+        private static MessageDigestPasswordEncoder INSTANCE = new MessageDigestPasswordEncoder("SHA1");
+
+    }
+
+    private static class SHA256Holder {
+
+        private static MessageDigestPasswordEncoder INSTANCE = new MessageDigestPasswordEncoder("SHA-256");
+
+    }
+
+    private static class SHA512Holder {
+
+        private static MessageDigestPasswordEncoder INSTANCE = new MessageDigestPasswordEncoder("SHA-512");
+
     }
 
 }

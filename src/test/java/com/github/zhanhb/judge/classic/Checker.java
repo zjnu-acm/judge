@@ -26,12 +26,12 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 enum Checker {
-    ac(Status.accepted),
-    wa(Status.wrongAnswer),
-    tle(Status.timeLimitExceed),
-    mle(Status.memoryLimitExceed),
-    ole(Status.outputLimitExceed),
-    re(Status.runtimeError);
+    ac(Status.ACCEPTED),
+    wa(Status.WRONG_ANSWER),
+    tle(Status.TIME_LIMIT_EXCEED),
+    mle(Status.MEMORY_LIMIT_EXCEED),
+    ole(Status.OUTPUT_LIMIT_EXCEED),
+    re(Status.RUNTIME_ERROR);
 
     private final Status status;
 

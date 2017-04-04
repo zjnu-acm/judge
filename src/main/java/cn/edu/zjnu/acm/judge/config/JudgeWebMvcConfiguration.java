@@ -15,7 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.config;
 
-import com.github.zhanhb.download.spring.DownloadHandler;
+import com.github.zhanhb.download.spring.PathDownloaderHandler;
 import java.util.List;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -32,7 +32,7 @@ public class JudgeWebMvcConfiguration extends WebMvcConfigurerAdapter {
 
     @Override
     public void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> returnValueHandlers) {
-        returnValueHandlers.add(new DownloadHandler());
+        returnValueHandlers.add(new PathDownloaderHandler());
     }
 
     @Override

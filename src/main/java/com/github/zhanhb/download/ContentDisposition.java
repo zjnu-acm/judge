@@ -15,7 +15,11 @@
  */
 package com.github.zhanhb.download;
 
+import java.nio.file.Path;
+import java.util.function.Function;
 import javax.annotation.Nullable;
+
+import static com.github.zhanhb.download.ContentDispositionEncoder.wrapper;
 
 /**
  *
@@ -23,8 +27,30 @@ import javax.annotation.Nullable;
  */
 public interface ContentDisposition {
 
+    public static final Function<Path, String> DEFAULT_NAME_MAPPER = path -> path.getFileName().toString();
+
+    public static ContentDisposition attachment() {
+        return attachment(DEFAULT_NAME_MAPPER);
+    }
+
+    public static ContentDisposition inline() {
+        return inline(DEFAULT_NAME_MAPPER);
+    }
+
+    public static ContentDisposition attachment(Function<Path, String> nameMapper) {
+        return wrapper("attachment", nameMapper);
+    }
+
+    public static ContentDisposition inline(Function<Path, String> nameMapper) {
+        return wrapper("inline", nameMapper);
+    }
+
+    public static ContentDisposition none() {
+        return __ -> null;
+    }
+
     // https://tools.ietf.org/html/rfc6266
     @Nullable
-    String getContentDisposition(String filename);
+    String getValue(ActionContext context);
 
 }

@@ -93,7 +93,7 @@ public class ProblemStatusController {
             urls.add("status?problem_id=" + id + "&score=" + score);
         }
         List<Submission> bestSubmissions = submissionMapper.bestSubmission(id, pageable);
-        int total = pageable.getOffset() + bestSubmissions.size() + (pageable.getPageSize() == bestSubmissions.size() ? 1 : 0);
+        long total = pageable.getOffset() + bestSubmissions.size() + (pageable.getPageSize() == bestSubmissions.size() ? 1 : 0);
         PageImpl<Submission> page = new PageImpl<>(bestSubmissions, pageable, total);
         boolean isAdmin = UserDetailService.isAdminLoginned(request);
         boolean isSourceBrowser = UserDetailService.isSourceBrowser(request);

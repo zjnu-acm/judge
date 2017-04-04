@@ -79,14 +79,11 @@ public class StatusController {
                 }
             }
         }
-        if (size > 500) {
-            size = 500;
-        }
         SubmissionCriteria criteria = SubmissionCriteria.builder()
                 .problem(problemId == 0 ? null : problemId)
                 .contest(contestId)
                 .score(sc)
-                .size(size)
+                .size(Math.max(Math.min(size, 500), 0))
                 .top(top)
                 .bottom(bottom)
                 .user(!StringUtils.isEmptyOrWhitespace(userId) ? userId : null)

@@ -40,6 +40,7 @@ public class SubmissionCriteria implements Serializable {
     private Long problem;
     private Long contest;
     private Integer language;
+    @lombok.Builder.Default
     private int size = 20;
     private Long top;
     private Long bottom;

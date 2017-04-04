@@ -40,8 +40,8 @@ public class PasswordConfiguration {
                         new MultiPasswordSupport(
                                 new CombinePasswordEncoder(
                                         new BCryptPasswordEncoder(6),
-                                        MessageDigestPasswordEncoder.SHA1,
-                                        MessageDigestPasswordEncoder.MD5
+                                        MessageDigestPasswordEncoder.sha1(),
+                                        MessageDigestPasswordEncoder.md5()
                                 )
                         )
                 ), 30);
