@@ -15,8 +15,8 @@
  */
 package com.github.zhanhb.download.spring;
 
-import com.github.zhanhb.download.ContentDisposition;
-import com.github.zhanhb.download.PathPartial;
+import com.github.zhanhb.ckfinder.download.ContentDisposition;
+import com.github.zhanhb.ckfinder.download.PathPartial;
 import java.nio.file.Path;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

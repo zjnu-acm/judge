@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.zhanhb.download;
+package cn.edu.zjnu.acm.judge.util;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -25,13 +25,13 @@ import javax.annotation.Nonnull;
  *
  * @author zhanhb
  */
-public class URLEncoder {
+class URLEncoder {
 
     private static final char[] HEX_CHARS = "0123456789ABCDEF".toCharArray();
 
     private final BitSet dontNeedEncoding;
 
-    public URLEncoder() {
+    URLEncoder() {
         BitSet bs = new BitSet(128);
         bs.set('a', 'z' + 1);
         bs.set('A', 'Z' + 1);
@@ -39,7 +39,7 @@ public class URLEncoder {
         dontNeedEncoding = bs;
     }
 
-    public URLEncoder(@Nonnull String dontNeedEncoding) {
+    URLEncoder(@Nonnull String dontNeedEncoding) {
         this();
         for (int i = 0, len = dontNeedEncoding.length(); i < len; ++i) {
             this.dontNeedEncoding.set(dontNeedEncoding.charAt(i));
