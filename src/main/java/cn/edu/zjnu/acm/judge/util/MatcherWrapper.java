@@ -6,6 +6,8 @@ import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static java.util.regex.Matcher.quoteReplacement;
+
 @SuppressWarnings("FinalClass")
 public final class MatcherWrapper implements MatchResult {
 
@@ -13,16 +15,9 @@ public final class MatcherWrapper implements MatchResult {
         return new MatcherWrapper(Pattern.compile(pattern), input);
     }
 
-    public static String quoteReplacement(String s) {
-        return Matcher.quoteReplacement(s);
-    }
-
     private final Matcher matcher;
     private final CharSequence text;
     private boolean locked;
-    private int end;
-    private int start;
-    private int last;
 
     public MatcherWrapper(Pattern pattern, CharSequence input) {
         this.matcher = pattern.matcher(input);
@@ -44,8 +39,8 @@ public final class MatcherWrapper implements MatchResult {
             StringBuffer sb = new StringBuffer();
             do {
                 String replacement;
+                lock();
                 try {
-                    lock();
                     replacement = Objects.requireNonNull(replaceFunction.apply(this));
                 } finally {
                     unlock();
@@ -65,8 +60,8 @@ public final class MatcherWrapper implements MatchResult {
             return text.toString();
         }
         String replacement;
+        lock();
         try {
-            lock();
             replacement = Objects.requireNonNull(replaceFunction.apply(this));
         } finally {
             unlock();
@@ -133,10 +128,6 @@ public final class MatcherWrapper implements MatchResult {
         return matcher.group(name);
     }
 
-    public String intervening() {
-        return this.text.subSequence(this.last, this.start).toString();
-    }
-
     @Override
     public int groupCount() {
         return matcher.groupCount();
@@ -149,34 +140,12 @@ public final class MatcherWrapper implements MatchResult {
 
     public boolean find() {
         checkLocked();
-        this.last = this.end;
-        Matcher m = this.matcher;
-        if (m.find()) {
-            this.start = m.start();
-            this.end = m.end();
-            return true;
-        } else {
-            int length = text.length();
-            this.start = length;
-            this.end = length;
-            return false;
-        }
+        return matcher.find();
     }
 
     public boolean find(int start) {
         checkLocked();
-        this.last = start;
-        Matcher m = this.matcher;
-        if (m.find(start)) {
-            this.start = m.start();
-            this.end = m.end();
-            return true;
-        } else {
-            int length = text.length();
-            this.start = length;
-            this.end = length;
-            return false;
-        }
+        return matcher.find(start);
     }
 
     public MatcherWrapper appendReplacement(StringBuffer sb, String replacement) {

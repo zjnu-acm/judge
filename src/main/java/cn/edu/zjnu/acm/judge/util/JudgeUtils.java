@@ -7,6 +7,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.stream.Collectors;
 import org.thymeleaf.util.StringUtils;
 
+@SpecialCall("WEB-INF/templates/fragment/standing.html")
 public class JudgeUtils {
 
     private static final char[] digits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
@@ -18,6 +19,7 @@ public class JudgeUtils {
      * @return A string represents the specified seconds
      */
     @SuppressWarnings({"ValueOfIncrementOrDecrementUsed", "AssignmentToMethodParameter"})
+    @SpecialCall("WEB-INF/templates/fragment/standing.html")
     public static String formatTime(long seconds) {
         boolean neg = false;
         if (seconds < 0) {

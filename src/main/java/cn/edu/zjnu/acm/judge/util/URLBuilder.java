@@ -15,6 +15,8 @@
  */
 package cn.edu.zjnu.acm.judge.util;
 
+import com.github.zhanhb.ckfinder.download.URLEncoder;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
