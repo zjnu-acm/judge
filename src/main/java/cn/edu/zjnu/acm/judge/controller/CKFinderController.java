@@ -16,11 +16,16 @@
 package cn.edu.zjnu.acm.judge.controller;
 
 import cn.edu.zjnu.acm.judge.config.JudgeConfiguration;
+import com.github.zhanhb.ckfinder.connector.api.BasePathBuilder;
+import com.github.zhanhb.ckfinder.connector.support.DefaultPathBuilder;
 import com.github.zhanhb.download.spring.ToDownload;
 import java.nio.file.Path;
 import javax.annotation.Nullable;
+import javax.servlet.ServletContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,6 +36,16 @@ public class CKFinderController {
 
     @Autowired
     private JudgeConfiguration judgeConfiguration;
+    @Autowired
+    private ApplicationContext context;
+
+    @Bean
+    public BasePathBuilder pathBuilder() {
+        String url = context.getBean(ServletContext.class).getContextPath().concat("/support/ckfinder.action?path=");
+        Path path = judgeConfiguration.getUploadDirectory();
+        return DefaultPathBuilder.builder().baseUrl(url)
+                .basePath(path).build();
+    }
 
     @Nullable
     @ToDownload
