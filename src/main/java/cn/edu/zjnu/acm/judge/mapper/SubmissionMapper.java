@@ -38,7 +38,7 @@ public interface SubmissionMapper {
     String COLUMNS = " s.solution_id id,s.problem_id problem,s.user_id user,s.contest_id contest,s.time,s.memory,s.score,s.language,s.ip,s.code_length sourceLength,s.in_date inDate,s.num ";
     String LIST_COLUMNS = " s.solution_id id,s.problem_id problem,s.user_id user,s.contest_id contest,s.time,s.memory,s.score,s.language,s.code_length sourceLength,s.in_date inDate,s.num ";
 
-    @Select("select uncompress(source) source from source_code where solution_id=#{id}")
+    @Select("select source from submission_source where solution_id=#{id}")
     String findSourceById(@Param("id") long id);
 
     @Select("SELECT error FROM compileinfo WHERE solution_id=#{id}")
@@ -53,7 +53,7 @@ public interface SubmissionMapper {
     @Select("SELECT" + COLUMNS + "FROM solution s WHERE solution_id=#{id}")
     Submission findOne(@Param("id") long id);
 
-    @Insert("insert into source_code (solution_id,source) values(#{id},compress(#{source}))")
+    @Insert("insert into submission_source(solution_id,source) values(#{id},#{source})")
     long saveSource(@Param("id") long id, @Param("source") String source);
 
     @Update("update solution set score=#{score},time=#{time},memory=#{memory} where solution_id=#{id}")
