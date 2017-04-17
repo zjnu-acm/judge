@@ -45,7 +45,7 @@ public class MessageMapperTest {
     /**
      * Test of nextId method, of class MessageMapper.
      */
-	@Test
+    @Test
     public void testNextId() {
         log.info("nextId");
         instance.nextId();
@@ -64,8 +64,8 @@ public class MessageMapperTest {
     }
 
     /**
-     * Test of findAllByThreadIdAndOrderNumGreaterThanOrderByOrderNum method, of class
-     * MessageMapper.
+     * Test of findAllByThreadIdAndOrderNumGreaterThanOrderByOrderNum method, of
+     * class MessageMapper.
      */
     @Test
     public void testFindAllByThreadIdAndOrderNumGreaterThanOrderByOrderNum() {
@@ -76,7 +76,8 @@ public class MessageMapperTest {
     }
 
     /**
-     * Test of updateOrderNumByThreadIdAndOrderNumGreaterThan method, of class MessageMapper.
+     * Test of updateOrderNumByThreadIdAndOrderNumGreaterThan method, of class
+     * MessageMapper.
      */
     @Test
     public void testUpdateOrderNumByThreadIdAndOrderNumGreaterThan() {

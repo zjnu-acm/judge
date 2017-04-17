@@ -85,9 +85,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             Optional.ofNullable(userMapper.findOne(userId)).ifPresent(user -> {
                 userMapper.update(
                         user.toBuilder()
-                        .accesstime(Instant.now())
-                        .ip(request.getRemoteAddr())
-                        .build());
+                                .accesstime(Instant.now())
+                                .ip(request.getRemoteAddr())
+                                .build());
             });
         }
     }

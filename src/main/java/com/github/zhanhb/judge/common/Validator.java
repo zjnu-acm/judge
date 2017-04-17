@@ -14,9 +14,9 @@ public interface Validator {
      * @return
      * @throws java.io.IOException
      * @throws com.github.zhanhb.judge.common.JudgeException
-     * @see Status#accepted
-     * @see Status#presentationError
-     * @see Status#wrongAnswer
+     * @see Status#ACCEPTED
+     * @see Status#PRESENTATION_ERROR
+     * @see Status#WRONG_ANSWER
      */
     Status validate(Path inputFile, Path standardOutput, Path outputFile)
             throws IOException, JudgeException;

@@ -107,7 +107,8 @@ public class UserProblemMapperTest {
     }
 
     /**
-     * Test of findAllByUserIdAndAcceptedNot0 method, of class UserProblemMapper.
+     * Test of findAllByUserIdAndAcceptedNot0 method, of class
+     * UserProblemMapper.
      */
     @Test
     public void testFindAllByUserIdAndAcceptedNot0() {

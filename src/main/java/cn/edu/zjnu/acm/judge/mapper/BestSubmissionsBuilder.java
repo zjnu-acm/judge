@@ -36,8 +36,8 @@ public class BestSubmissionsBuilder {
 
     private static final Set<String> ALLOW_COLUMNS
             = Arrays.asList("memory", "time", "code_length", "in_date", "solution_id")
-            .stream().collect(Collectors
-                    .toCollection(() -> new TreeSet<>(String.CASE_INSENSITIVE_ORDER)));
+                    .stream().collect(Collectors
+                            .toCollection(() -> new TreeSet<>(String.CASE_INSENSITIVE_ORDER)));
     private static final Sort DEFAULT_SORT = new Sort(Sort.Direction.DESC, "in_date");
 
     public static String bestSubmissions(@Param("problemId") long problemId, @Param("pageable") Pageable pageable) {

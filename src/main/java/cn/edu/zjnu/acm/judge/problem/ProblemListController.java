@@ -77,13 +77,13 @@ public class ProblemListController {
         List<Problem> problems = problemMapper.findAllByDisabledFalse(currentUserId, start, end, locale.getLanguage());
         problems = problems.stream()
                 .filter(problem -> Optional.ofNullable(problem.getContest())
-                        .map(contestMapper::findOne)
-                        .map(contest -> {
-                            if (contest.isEnded()) {
-                                problemMapper.setContest(problem.getId(), null);
-                            }
-                            return contest.isStarted();
-                        }).orElse(true))
+                .map(contestMapper::findOne)
+                .map(contest -> {
+                    if (contest.isEnded()) {
+                        problemMapper.setContest(problem.getId(), null);
+                    }
+                    return contest.isStarted();
+                }).orElse(true))
                 .sorted(comparator)
                 .collect(Collectors.toList());
 

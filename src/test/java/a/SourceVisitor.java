@@ -43,7 +43,7 @@ public class SourceVisitor {
         Files.walk(Paths.get("src/main"))
                 .filter(path -> !path.getParent().toString().contains("ckfinder"))
                 .filter(path -> path.getFileName().toString().endsWith(".html")
-                        || path.getFileName().toString().endsWith(".jsp"))
+                || path.getFileName().toString().endsWith(".jsp"))
                 .forEach(path -> {
                     try {
                         String string = new String(Files.readAllBytes(path), StandardCharsets.ISO_8859_1);

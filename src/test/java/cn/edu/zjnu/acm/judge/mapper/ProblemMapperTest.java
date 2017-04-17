@@ -103,7 +103,7 @@ public class ProblemMapperTest {
 
     /**
      * Test of findAllBySearchTitleOrSourceAndDisabledFalse method, of class
- ProblemMapper.
+     * ProblemMapper.
      */
     @Test
     public void testFindAllBySearchTitleOrSourceAndDisabledFalse() {

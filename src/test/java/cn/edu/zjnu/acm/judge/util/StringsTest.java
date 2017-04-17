@@ -15,7 +15,6 @@
  */
 package cn.edu.zjnu.acm.judge.util;
 
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -33,16 +32,11 @@ import static org.junit.Assert.assertNull;
 @Slf4j
 public class StringsTest {
 
-    private final Random random = ThreadLocalRandom.current();
     // use null class loader, ensure access of system script engine manager.
     // usually our classloader will extends system class loader.
     // but surefire won't do like this when not forking
     // the enigine manager can be found though system class loader.
     private final ScriptEngine javascript = new ScriptEngineManager(null).getEngineByName("javascript");
-
-    private StringBuilder merge(StringBuilder a, StringBuilder b) {
-        throw new IllegalStateException();
-    }
 
     @Test
     public void testConstructor() throws Throwable {
@@ -58,12 +52,13 @@ public class StringsTest {
     public void testSlice_String_int() throws ScriptException {
         log.info("slice");
 
+        ThreadLocalRandom random = ThreadLocalRandom.current();
         int length = random.nextInt(5) + 20;
         for (int i = 0; i < 30; ++i) {
             String randomString = random.ints(length, 'a', 'z' + 1)
                     .collect(StringBuilder::new,
                             (sb, x) -> sb.append((char) x),
-                            this::merge).toString();
+                            StringBuilder::append).toString();
             assertEquals(length, randomString.length());
 
             for (int j = 0; j < 30; ++j) {
@@ -85,12 +80,13 @@ public class StringsTest {
     public void testSlice_3args() throws ScriptException {
         log.info("slice");
 
+        ThreadLocalRandom random = ThreadLocalRandom.current();
         for (int i = 0; i < 30; ++i) {
             int length = random.nextInt(5) + 20;
             String randomString = random.ints(length, 'a', 'z' + 1)
                     .collect(StringBuilder::new,
                             (sb, x) -> sb.append((char) x),
-                            this::merge).toString();
+                            StringBuilder::append).toString();
             assertEquals(length, randomString.length());
 
             for (int j = 0; j < 30; ++j) {
