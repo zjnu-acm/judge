@@ -17,6 +17,7 @@ package cn.edu.zjnu.acm.judge.mapper;
 
 import cn.edu.zjnu.acm.judge.Application;
 import cn.edu.zjnu.acm.judge.domain.Message;
+import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -108,7 +109,9 @@ public class MessageMapperTest {
             for (Long max : arr) {
                 for (Long problemId : arr) {
                     for (Integer limit : array) {
-                        instance.findAllByThreadIdBetween(min, max, problemId, limit);
+                        if (!Objects.equals(limit, -1)) {
+                            instance.findAllByThreadIdBetween(min, max, problemId, limit);
+                        }
                     }
                 }
             }
