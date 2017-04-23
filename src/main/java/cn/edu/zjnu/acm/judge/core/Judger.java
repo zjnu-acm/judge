@@ -104,7 +104,7 @@ public class Judger {
         final ThreadGroup group = new ThreadGroup("judge group");
         final AtomicInteger countet = new AtomicInteger();
         final ThreadFactory threadFactory = runnable -> new Thread(group, runnable, "judge thread " + countet.incrementAndGet());
-        executorService = Executors.newSingleThreadExecutor(threadFactory);
+        executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors(), threadFactory);
     }
 
     @PreDestroy
