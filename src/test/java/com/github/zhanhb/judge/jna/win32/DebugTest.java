@@ -269,7 +269,7 @@ public class DebugTest {
                 FILETIME tmp = new FILETIME();
                 Kernel32.INSTANCE.WaitForSingleObject(pi.hProcess, 100000);
                 Kernel32.INSTANCE.GetProcessTimes(pi.hProcess, a, b, tmp, tmp);
-                log.info("{}", b.toLong() - a.toLong());
+                log.info("{}", b.toTime() - a.toTime());
             } else {
                 Kernel32Util.assertTrue(false);
             }

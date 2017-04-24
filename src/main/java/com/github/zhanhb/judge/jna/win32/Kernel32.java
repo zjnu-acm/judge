@@ -15,7 +15,7 @@ import javax.annotation.Nullable;
 public interface Kernel32 extends com.sun.jna.platform.win32.Kernel32 {
 
     @SuppressWarnings("FieldNameHidesFieldInSuperclass")
-    Kernel32 INSTANCE = (Kernel32) Native.loadLibrary("kernel32", Kernel32.class, W32APIOptions.UNICODE_OPTIONS);
+    Kernel32 INSTANCE = Native.loadLibrary("kernel32", Kernel32.class, W32APIOptions.UNICODE_OPTIONS);
 
     boolean AssignProcessToJobObject(HANDLE hJob, HANDLE hProcess);
 

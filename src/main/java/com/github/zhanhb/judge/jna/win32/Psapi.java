@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface Psapi extends StdCallLibrary {
 
-    Psapi INSTANCE = (Psapi) Native.loadLibrary("psapi", Psapi.class, W32APIOptions.DEFAULT_OPTIONS);
+    Psapi INSTANCE = Native.loadLibrary("psapi", Psapi.class, W32APIOptions.DEFAULT_OPTIONS);
 
     /**
      * Memory statistics for a process.

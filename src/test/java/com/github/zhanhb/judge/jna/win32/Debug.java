@@ -32,7 +32,7 @@ import java.util.List;
 public interface Debug extends com.sun.jna.platform.win32.Kernel32 {
 
     @SuppressWarnings("FieldNameHidesFieldInSuperclass")
-    Debug INSTANCE = (Debug) Native.loadLibrary("kernel32", Debug.class, W32APIOptions.UNICODE_OPTIONS);
+    Debug INSTANCE = Native.loadLibrary("kernel32", Debug.class, W32APIOptions.UNICODE_OPTIONS);
 
     int DBG_CONTINUE = 0x10002;
     int DBG_TERMINATE_THREAD = 0x40010003;

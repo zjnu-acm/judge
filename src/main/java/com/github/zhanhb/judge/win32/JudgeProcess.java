@@ -58,7 +58,7 @@ public class JudgeProcess {
         WinBase.FILETIME ftCreateTime = new WinBase.FILETIME();
         WinBase.FILETIME temp = new WinBase.FILETIME();
         Kernel32Util.assertTrue(Kernel32.INSTANCE.GetProcessTimes(hProcess, ftCreateTime, temp, temp, temp));
-        return ftCreateTime.toLong();
+        return ftCreateTime.toTime();
     }
 
     private long getLong(WinBase.FILETIME ft) {
