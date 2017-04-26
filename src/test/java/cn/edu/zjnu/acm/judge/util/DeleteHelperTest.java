@@ -41,6 +41,7 @@ public class DeleteHelperTest {
         log.info("delete");
         Path path = Paths.get("target/test1.txt");
         Files.createFile(path);
+        assertTrue(!Files.notExists(path));
         DeleteHelper.delete(path);
         assertTrue(!Files.exists(path));
     }

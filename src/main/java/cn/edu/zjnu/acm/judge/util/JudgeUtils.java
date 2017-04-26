@@ -4,17 +4,15 @@ import java.io.BufferedReader;
 import java.io.StringReader;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 import org.thymeleaf.util.StringUtils;
 
-@SpecialCall("WEB-INF/templates/fragment/standing.html")
+@SpecialCall({
+    "WEB-INF/templates/fragment/standing.html",
+    "WEB-INF/templates/users/list.html"
+})
 public class JudgeUtils {
-
-    private static final char[] digits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
     /**
      * required in WEB-INF/templates/fragment/standing.html
@@ -22,7 +20,7 @@ public class JudgeUtils {
      * @param seconds the time, in seconds
      * @return A string represents the specified seconds
      */
-    @SuppressWarnings({"ValueOfIncrementOrDecrementUsed", "AssignmentToMethodParameter"})
+    @SuppressWarnings("AssignmentToMethodParameter")
     @SpecialCall("WEB-INF/templates/fragment/standing.html")
     public static String formatTime(long seconds) {
         boolean neg = false;
@@ -31,34 +29,26 @@ public class JudgeUtils {
             seconds = -seconds;
         }
         long h = (seconds >>> 4) / 225;      // h = seconds/3600, unsigned
-        long h1 = h / 10;
-        int h2 = (int) (h - h1 * 10);
         int ms = (int) (seconds - h * 3600);
         int m = ms / 60;
-        int m1 = m / 10;
-        int m2 = m - m1 * 10;
         int s = ms - m * 60;
-        int s1 = s / 10;
-        int s2 = s - s1 * 10;
-        String tmp = Long.toString(h1);
-        int tmpLen = tmp.length();
 
-        int len = 0;
-        char[] buf = new char[neg ? tmpLen + 8 : tmpLen + 7];
+        StringBuilder buf = new StringBuilder(8);
         if (neg) {
-            buf[len++] = '-';
+            buf.append('-');
         }
-        tmp.getChars(0, tmpLen, buf, len);
-        len += tmpLen;
-        char[] ds = digits;
-        buf[len++] = ds[h2];
-        buf[len++] = ':';
-        buf[len++] = ds[m1];
-        buf[len++] = ds[m2];
-        buf[len++] = ':';
-        buf[len++] = ds[s1];
-        buf[len++] = ds[s2];
-        return new String(buf);
+        if (h < 10) {
+            buf.append('0');
+        }
+        buf.append(h).append(':');
+        if (m < 10) {
+            buf.append('0');
+        }
+        buf.append(m).append(':');
+        if (s < 10) {
+            buf.append('0');
+        }
+        return buf.append(s).toString();
     }
 
     public static String escapeCompileInfo(String string) {
@@ -103,10 +93,10 @@ public class JudgeUtils {
     }
 
     @SpecialCall("users/list.html")
-    public static Collection<Number> sequence(long total, long current) {
+    public static long[] sequence(long total, long current) {
         if (total <= 0) {
             if (total == 0) {
-                return Collections.emptyList();
+                return new long[0];
             }
             throw new IllegalArgumentException();
         }
@@ -118,7 +108,7 @@ public class JudgeUtils {
             LongStream b = LongStream.rangeClosed(Math.max(0, current - 9), Math.min(total - 1, current + 9));
             stream = LongStream.concat(a, b);
         }
-        return stream.boxed().collect(Collectors.toCollection(TreeSet::new));
+        return stream.sorted().distinct().toArray();
     }
 
     private JudgeUtils() {

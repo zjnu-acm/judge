@@ -44,7 +44,6 @@ public class ProcessCreationHelper {
     }
 
     public static <E extends Throwable> void execute(ExceptionRunnable<E> supplier) throws E {
-        Objects.requireNonNull(supplier);
         execute(ExceptionCallable.wrapper(supplier));
     }
 

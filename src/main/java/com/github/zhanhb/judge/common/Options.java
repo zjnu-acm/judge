@@ -2,11 +2,9 @@ package com.github.zhanhb.judge.common;
 
 import java.nio.file.Path;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.Value;
 
 @Builder(builderClassName = "Builder")
-@Getter
 @Value
 @SuppressWarnings("FinalClass")
 public class Options {

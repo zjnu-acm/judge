@@ -32,7 +32,8 @@ import org.springframework.web.servlet.LocaleResolver;
 public class GlobalExceptionHandler {
 
     public static String unauthorized(HttpServletRequest request) throws IOException {
-        return "redirect:/login?url=" + URLEncoder.encode((String) request.getAttribute(JudgeHandlerInterceptor.BACK_URL_ATTRIBUTE_NAME), "UTF-8");
+        String url = (String) request.getAttribute(JudgeHandlerInterceptor.BACK_URL_ATTRIBUTE_NAME);
+        return url == null ? "redirect:/login" : "redirect:/login?url=" + URLEncoder.encode(url, "UTF-8");
     }
 
     @Autowired

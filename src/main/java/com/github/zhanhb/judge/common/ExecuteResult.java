@@ -1,11 +1,9 @@
 package com.github.zhanhb.judge.common;
 
 import lombok.Builder;
-import lombok.Getter;
 import lombok.Value;
 
 @Builder(builderClassName = "Builder", toBuilder = true)
-@Getter
 @Value
 @SuppressWarnings("FinalClass")
 public class ExecuteResult {

@@ -53,12 +53,12 @@ public class MessageDigestPasswordEncoder implements PasswordEncoder {
     }
 
     private final String algorithm;
-    private final int bytes;
+    private final int length;
 
     MessageDigestPasswordEncoder(String algorithm) {
         this.algorithm = algorithm;
         MessageDigest prototype = getMessageDigest(algorithm);
-        this.bytes = prototype.getDigestLength();
+        this.length = prototype.getDigestLength() << 1;
     }
 
     @Override
@@ -69,7 +69,7 @@ public class MessageDigestPasswordEncoder implements PasswordEncoder {
 
     @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
-        return bytes << 1 == encodedPassword.length()
+        return length == encodedPassword.length()
                 && encode(rawPassword).equalsIgnoreCase(encodedPassword);
     }
 
