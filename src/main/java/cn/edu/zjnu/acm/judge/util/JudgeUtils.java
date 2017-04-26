@@ -4,7 +4,11 @@ import java.io.BufferedReader;
 import java.io.StringReader;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 import org.thymeleaf.util.StringUtils;
 
 @SpecialCall("WEB-INF/templates/fragment/standing.html")
@@ -96,6 +100,25 @@ public class JudgeUtils {
 
     public static String formatTime(Instant a, Instant b) {
         return formatTime(ChronoUnit.SECONDS.between(a, b));
+    }
+
+    @SpecialCall("users/list.html")
+    public static Collection<Number> sequence(long total, long current) {
+        if (total <= 0) {
+            if (total == 0) {
+                return Collections.emptyList();
+            }
+            throw new IllegalArgumentException();
+        }
+        LongStream stream;
+        if (total < 20) {
+            stream = LongStream.range(0, total);
+        } else {
+            LongStream a = LongStream.of(0, total - 1);
+            LongStream b = LongStream.rangeClosed(Math.max(0, current - 9), Math.min(total - 1, current + 9));
+            stream = LongStream.concat(a, b);
+        }
+        return stream.boxed().collect(Collectors.toCollection(TreeSet::new));
     }
 
     private JudgeUtils() {
