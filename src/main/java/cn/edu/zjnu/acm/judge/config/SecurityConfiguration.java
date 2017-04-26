@@ -38,12 +38,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
@@ -94,21 +93,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        SimpleUrlAuthenticationSuccessHandler simpleUrlAuthenticationSuccessHandler = new SimpleUrlAuthenticationSuccessHandler("/") {
-
-            @Override
-            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
-                    throws IOException, ServletException {
-                saveLoginLog(request, true);
-                super.onAuthenticationSuccess(request, response, authentication);
-            }
-
-        };
+        SimpleUrlAuthenticationSuccessHandler simpleUrlAuthenticationSuccessHandler = new JudgeAuthenticationSuccessHandler("/");
         simpleUrlAuthenticationSuccessHandler.setUseReferer(false);
         simpleUrlAuthenticationSuccessHandler.setTargetUrlParameter("url");
         DefaultRedirectStrategy defaultRedirectStrategy = new DefaultRedirectStrategy();
-
-        defaultRedirectStrategy.setContextRelative(true);
 
         simpleUrlAuthenticationSuccessHandler.setRedirectStrategy(defaultRedirectStrategy);
 
@@ -130,27 +118,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .usernameParameter("user_id1")
                 .passwordParameter("password1")
                 .successHandler(simpleUrlAuthenticationSuccessHandler)
-                .failureHandler(new SimpleUrlAuthenticationFailureHandler("/login?error") {
-                    {
-                        RedirectStrategy redirectStrategy = getRedirectStrategy();
-                        setRedirectStrategy((request, response, url) -> {
-                            String url1 = request.getParameter("url");
-                            if (url1 != null) {
-                                redirectStrategy.sendRedirect(request, response, url + "&url=" + URLEncoder.encode(url1, "UTF-8"));
-                            } else {
-                                redirectStrategy.sendRedirect(request, response, url);
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
-                            throws IOException, ServletException {
-                        saveLoginLog(request, false);
-                        super.onAuthenticationFailure(request, response, exception);
-                    }
-
-                })
+                .failureHandler(failureHandler())
                 .permitAll()
                 .and()
             .headers()
@@ -183,6 +151,44 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             request.setAttribute(PageContext.EXCEPTION, authException);
             request.getRequestDispatcher("/unauthorized").forward(request, response);
         };
+    }
+
+    private AuthenticationFailureHandler failureHandler() {
+        String defaultFailureUrl = "/login?error";
+        RedirectStrategy redirectStrategy = new FailureRedirectStrategy();
+        return (request, response, exception) -> {
+            saveLoginLog(request, false);
+            redirectStrategy.sendRedirect(request, response, defaultFailureUrl);
+        };
+    }
+
+    private static class FailureRedirectStrategy implements RedirectStrategy {
+
+        private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+
+        @Override
+        public void sendRedirect(HttpServletRequest request, HttpServletResponse response, String url) throws IOException {
+            String url1 = request.getParameter("url");
+            if (url1 != null) {
+                redirectStrategy.sendRedirect(request, response, url + (url.contains("?") ? '&' : '?') + "url=" + URLEncoder.encode(url1, "UTF-8"));
+            } else {
+                redirectStrategy.sendRedirect(request, response, url);
+            }
+        }
+    }
+
+    private class JudgeAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+
+        JudgeAuthenticationSuccessHandler(String defaultTargetUrl) {
+            super(defaultTargetUrl);
+        }
+
+        @Override
+        public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
+                throws IOException, ServletException {
+            saveLoginLog(request, true);
+            super.onAuthenticationSuccess(request, response, authentication);
+        }
     }
 
 }

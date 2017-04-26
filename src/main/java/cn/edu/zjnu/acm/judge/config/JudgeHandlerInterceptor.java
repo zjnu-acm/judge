@@ -60,7 +60,7 @@ public class JudgeHandlerInterceptor {
         if (!StringUtils.isEmptyOrWhitespace(url)) {
             request.setAttribute(BACK_URL_ATTRIBUTE_NAME, url);
         } else {
-            String uri = getString(RequestDispatcher.FORWARD_REQUEST_URI, HttpServletRequest::getRequestURI, request);
+            String uri = getString(RequestDispatcher.FORWARD_SERVLET_PATH, HttpServletRequest::getServletPath, request);
             String query = getString(RequestDispatcher.FORWARD_QUERY_STRING, HttpServletRequest::getQueryString, request);
             if (query != null) {
                 uri = uri + '?' + query;
