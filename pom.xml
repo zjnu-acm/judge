@@ -50,7 +50,7 @@
     <properties>
         <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
         <delombok.directory>${project.build.directory}/delombok</delombok.directory>
-        <flyway.version>4.1.2</flyway.version>
+        <flyway.version>4.2.0</flyway.version>
         <guava.version>21.0</guava.version>
         <hibernate-validator.version>5.4.1.Final</hibernate-validator.version>
         <hikaricp.version>2.6.1</hikaricp.version>
