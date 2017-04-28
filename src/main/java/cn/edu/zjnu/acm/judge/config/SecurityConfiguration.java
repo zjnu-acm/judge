@@ -46,6 +46,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.savedrequest.NullRequestCache;
 
 /**
  *
@@ -134,6 +135,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .rememberMe()
                 .rememberMeParameter("rememberMe")
                 .tokenRepository(persistentTokenRepository)
+                .and()
+            .requestCache()
+                .requestCache(new NullRequestCache())
                 .and()
             .servletApi();
         // @formatter:on
