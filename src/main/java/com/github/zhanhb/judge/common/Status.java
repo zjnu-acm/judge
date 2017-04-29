@@ -10,8 +10,10 @@ public enum Status {
     NON_ZERO_EXIT_CODE(8, "Non-zero Exit Code"), FLOATING_POINT_ERROR(9), SEGMENTATION_FAULT(10),
     OUT_OF_CONTEST_TIME(11, "Out of Contest Time"),
     JUDGE_INTERNAL_ERROR(12), RESTRICTED_FUNCTION(13), NO_SUCH_PROBLEM(14),
-    SUBMISSION_LIMIT_EXCEED(15),
-    QUEUING(1000), COMPILING(1001), RUNNING(1002), VALIDATING(1003), JUDGING(1004), PENDING_REJUDGE(1005);
+    SUBMISSION_LIMIT_EXCEED(15), MULTI_ERROR(16), PARTIALLY_CORRECT(17),
+    UNACCEPTED(18),
+    QUEUING(1000), PROCESSING(1001), COMPILING(1002), RUNNING(1003), VALIDATING(1004),
+    JUDGING(1005), PENDING_REJUDGE(1006);
 
     @Getter
     private final boolean finalResult;
@@ -21,7 +23,7 @@ public enum Status {
 
     Status(int result) {
         this.result = result;
-        this.finalResult = ordinal() < 1000;
+        this.finalResult = result < 1000;
         this.toString = MatcherWrapper.matcher("(^|_)(?i)([A-Z]+)", name()).replaceAll(matcher -> {
             String prefix = matcher.group(1);
             String partial = matcher.group(2);
@@ -31,7 +33,7 @@ public enum Status {
 
     Status(int result, String toString) {
         this.result = result;
-        this.finalResult = ordinal() < 1000;
+        this.finalResult = result < 1000;
         this.toString = toString;
     }
 

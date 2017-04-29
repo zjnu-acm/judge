@@ -44,11 +44,13 @@ public class Reflection {
         }
 
         Class<?> getCallerClass(int i) {
-            try {
-                return getClassContext()[i + 1];
-            } catch (ArrayIndexOutOfBoundsException ex) {
-                return null;
+            if (i >= 0) {
+                try {
+                    return getClassContext()[i + 1];
+                } catch (ArrayIndexOutOfBoundsException ex) {
+                }
             }
+            return null;
         }
     }
 }

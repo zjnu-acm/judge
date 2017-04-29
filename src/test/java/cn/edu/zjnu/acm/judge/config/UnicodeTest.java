@@ -16,6 +16,7 @@
 package cn.edu.zjnu.acm.judge.config;
 
 import cn.edu.zjnu.acm.judge.Application;
+import com.google.common.base.Strings;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -48,9 +49,12 @@ public class UnicodeTest {
     @Test
     public void testUnicode() throws SQLException {
         int x = 0x1f602;
-        char[] toChars = Character.toChars(x);
-        String laughCry = new String(toChars);
+        String laughCry = new String(Character.toChars(x));
+        test0(laughCry);
+        test0(Strings.repeat(laughCry, 123));
+    }
 
+    private void test0(String laughCry) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             connection.prepareStatement("CREATE TABLE `test_table1`(`id` INT NOT NULL, `value` LONGTEXT NULL, PRIMARY KEY (`id`) ) COLLATE='utf8mb4_general_ci'").execute();
             try {
