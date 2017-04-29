@@ -3,13 +3,18 @@
          xsi:schemaLocation="http://mojo.codehaus.org/versions-maven-plugin/rule/2.0.0 http://www.mojohaus.org/versions-maven-plugin/xsd/rule-2.0.0.xsd">
     <ignoreVersions>
         <ignoreVersion type="regex">(?i).*[-\.](?:alpha|beta|cr|ea|edr|pre?|rc)(?:-?\d*(?:\.\d+)*)?(?:-\d)?</ignoreVersion>
-        <ignoreVersion type="regex">.*[\d\.-](?:b|M)0?\d*</ignoreVersion>
+        <ignoreVersion type="regex">(?i).*[\d\.-](?:b|M)0?\d*</ignoreVersion>
     </ignoreVersions>
 
     <rules>
         <rule groupId="antlr" artifactId="antlr">
             <ignoreVersions>
                 <ignoreVersion>20030911</ignoreVersion>
+            </ignoreVersions>
+        </rule>
+        <rule groupId="com.microsoft.sqlserver" artifactId="mssql-jdbc">
+            <ignoreVersions>
+                <ignoreVersion type="regex">.+-preview</ignoreVersion>
             </ignoreVersions>
         </rule>
         <rule groupId="commons-collections" artifactId="commons-collections">
@@ -32,7 +37,23 @@
         </rule>
         <rule groupId="javax.enterprise" artifactId="cdi-api">
             <ignoreVersions>
+                <ignoreVersion type="regex">.+Alpha\d[a-z]</ignoreVersion>
                 <ignoreVersion type="regex">.+-[A-Z]{3}(?:\d+(?:\.\d+)*)?</ignoreVersion>
+            </ignoreVersions>
+        </rule>
+        <rule groupId="javax.faces" artifactId="javax.faces-api">
+            <ignoreVersions>
+                <ignoreVersion type="regex">.+-pfd</ignoreVersion>
+            </ignoreVersions>
+        </rule>
+        <rule groupId="javax.xml.bind" artifactId="jaxb-api">
+            <ignoreVersions>
+                <ignoreVersion type="regex">.+-b\d+\.\d+</ignoreVersion>
+            </ignoreVersions>
+        </rule>
+        <rule groupId="org.postgresql" artifactId="postgresql">
+            <ignoreVersions>
+                <ignoreVersion type="regex">.+\.jre[67]</ignoreVersion>
             </ignoreVersions>
         </rule>
         <rule groupId="org.springframework.data" artifactId="spring-data-releasetrain">
