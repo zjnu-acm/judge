@@ -203,12 +203,12 @@ public enum Executor {
                     judgeProcess.terminate(Status.OUTPUT_LIMIT_EXCEED);
                 }
             } finally {
-                judgeProcess.terminate(null);
+                judgeProcess.terminate(Status.ACCEPTED);
             }
             judgeProcess.join(Long.MAX_VALUE);
             Status status = judgeProcess.getStatus();
             int exitCode = judgeProcess.getExitCode();
-            if ((status == null || status == Status.ACCEPTED) && exitCode != 0) {
+            if (status == Status.ACCEPTED && exitCode != 0) {
                 status = Status.RUNTIME_ERROR;
             }
             long time = judgeProcess.getTime();
