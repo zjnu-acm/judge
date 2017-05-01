@@ -9,27 +9,27 @@
         <p align="left" style="font-size: large; color: #339">What can I do:</p>
         <p align="left" style="font-size: large; color: #339">
             <img th:src="@{/images/j0293844.png}" width="25" height="23"/>
-            <a th:href="@{/admin/problems/new}">Add a problem</a>
+            <a th:href="@{/admin/problems/new.html}">Add a problem</a>
         </p>
         <p style="font-size: large; color: #339">
             <img th:src="@{/images/j0293844.png}" width="25" height="23"/>
-            <a th:href="@{/admin/problems}">See the problem list</a>
+            <a th:href="@{/admin/problems.html}">See the problem list</a>
         </p>
         <p style="font-size: large; color: #339">
             <img th:src="@{/images/j0293844.png}" width="25" height="23"/>
-            <a th:href="@{/admin/contests/new}">Add a contest</a>
+            <a th:href="@{/admin/contests/new.html}">Add a contest</a>
         </p>
         <p style="font-size: large; color: #339">
             <img th:src="@{/images/j0293844.png}" width="25" height="23"/>
-            <a th:href="@{/admin/contests}">See the contest list</a>
+            <a th:href="@{/admin/contests.html}">See the contest list</a>
         </p>
         <p style="font-size: large; color: #339">
             <img th:src="@{/images/j0293844.png}" width="25" height="23"/>
-            <a th:href="@{/logout}">Logout</a>
+            <a th:href="@{/logout.html}">Logout</a>
             <br/>
         </p>
         <div class="setsysteminfo" style="color: #339">
-            <form th:action="@{/admin/tools}" method="POST">
+            <form th:action="@{/admin/tools.html}" method="POST">
                 <input type="hidden" name="op" value="setsysteminfo"/>
                 <input type="text" name="sinfo"/>
                 <input th:id="${#ids.seq('pureText')}" type="checkbox" name="pureText" checked="checked" />
@@ -38,7 +38,7 @@
             </form>
         </div>
         <div style="color: #339">
-            <form th:action="@{/admin/tools}" method="POST">
+            <form th:action="@{/admin/tools.html}" method="POST">
                 <input type="hidden" name="op" value="test"/>
                 <button type="submit">修复提交数和Accepted数</button>
             </form>

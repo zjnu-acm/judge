@@ -40,7 +40,7 @@ public class ContestManagerController {
         }
         contestService.addProblem(contestId, problemId);
         redirectAttributes.addAttribute("contestId", contestId);
-        return "redirect:/admin/contests/{contestId}";
+        return "redirect:/admin/contests/{contestId}.html";
     }
 
     @DeleteMapping("/admin/contests/{contestId}/problems/{problemId}")
@@ -57,7 +57,7 @@ public class ContestManagerController {
         }
         contestService.removeProblem(contestId, problemId);
         redirectAttributes.addAttribute("contestId", contestId);
-        return "redirect:/admin/contests/{contestId}";
+        return "redirect:/admin/contests/{contestId}.html";
     }
 
 }

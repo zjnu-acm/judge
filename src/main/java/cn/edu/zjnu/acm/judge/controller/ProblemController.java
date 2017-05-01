@@ -19,6 +19,7 @@ import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,8 +41,9 @@ public class ProblemController {
     private ProblemMapper problemMapper;
 
     @GetMapping(value = "{id}", produces = APPLICATION_JSON_VALUE)
-    public Problem findOne(@PathVariable("id") long id, Locale locale) {
-        return problemMapper.findOne(id, locale.getLanguage());
+    public ResponseEntity<?> findOne(@PathVariable("id") long id, Locale locale) {
+        Problem problem = problemMapper.findOne(id, locale.getLanguage());
+        return problem != null ? ResponseEntity.ok(problem) : ResponseEntity.notFound().build();
     }
 
 }

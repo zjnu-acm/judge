@@ -19,7 +19,7 @@
                 <tr th:each="item:${list}" th:object="${item}">
                     <td width="15%" th:text="*{id}">1068</td>
                     <td>
-                        <a th:href="@{/admin/contests/{contestId}(contestId=*{id})}" th:text="*{title}">title</a>
+                        <a th:href="@{/admin/contests/{contestId}.html(contestId=*{id})}" th:text="*{title}">title</a>
                     </td>
                     <td width="25%">
                         <font th:if="*{error}" color="red">ERROR<br/>start at [[*{#calendars.format(T(java.util.Date).from(startTime),'yyyy-MM-dd HH:mm')}]]<br/>end at [[*{#calendars.format(T(java.util.Date).from(endTime),'yyyy-MM-dd HH:mm')}]]</font>
@@ -30,8 +30,8 @@
                         <!--/*/</th:block>/*/-->
                     </td>
                     <td>
-                        <a th:if="*{disabled}" th:href="@{/contests/{contestId}/enable(contestId=*{id})}">Enable</a>
-                        <a th:unless="*{disabled}" th:href="@{/contests/{contestId}/disable(contestId=*{id})}">Disable</a>
+                        <a th:if="*{disabled}" th:href="@{/contests/{contestId}/enable.html(contestId=*{id})}">Enable</a>
+                        <a th:unless="*{disabled}" th:href="@{/contests/{contestId}/disable.html(contestId=*{id})}">Disable</a>
                     </td>
                 </tr>
             </table>

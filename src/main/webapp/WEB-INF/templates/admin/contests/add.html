@@ -19,8 +19,8 @@
             <li>End time:<font color="#CC9900">[[${#calendars.format(T(java.util.Date).from(endTime),'yyyy-MM-dd HH:mm:ss')}]]</font></li>
         </ul>
         <p>
-            <img src="../../../../images/j0293234.png" th:src="@{/images/j0293234.png}" width="40" height="29"/> <a th:href="@{/admin/contests/new}">Add Another Contest</a>
-            <img src="../../../../images/j0293234.png" th:src="@{/images/j0293234.png}" width="40" height="29"/> <a th:href="@{/admin/contests/{contestId}(contestId=${contestId})}">See This Contest</a>
+            <img src="../../../../images/j0293234.png" th:src="@{/images/j0293234.png}" width="40" height="29"/> <a th:href="@{/admin/contests/new.html}">Add Another Contest</a>
+            <img src="../../../../images/j0293234.png" th:src="@{/images/j0293234.png}" width="40" height="29"/> <a th:href="@{/admin/contests/{contestId}.html(contestId=${contestId})}">See This Contest</a>
         </p>
         <!--/*/</th:block>/*/-->
     </body>

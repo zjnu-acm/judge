@@ -31,7 +31,7 @@ public class ProbManagerPageController {
     public String newProblem(Model model) {
         model.addAttribute("title", "New Problem");
         model.addAttribute("hint", "Add New problem");
-        model.addAttribute("url", "/admin/problems");
+        model.addAttribute("url", "/admin/problems.html");
         model.addAttribute("method", "POST");
         model.addAttribute("hint2", "Add a Problem");
         Problem problem = Problem
@@ -62,7 +62,7 @@ public class ProbManagerPageController {
 
         model.addAttribute("title", "Modify " + problemId);
         model.addAttribute("hint", "Modify problem " + problemId);
-        model.addAttribute("url", "/admin/problems/" + problemId);
+        model.addAttribute("url", "/admin/problems/" + problemId + ".html");
         model.addAttribute("method", "PUT");
         model.addAttribute("hint2", "Modify problem");
         model.addAttribute("problemLang", lang);

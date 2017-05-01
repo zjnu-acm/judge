@@ -33,7 +33,7 @@ public class LegacySupport {
     public String showproblem(@RequestParam("problem_id") long problemId,
             RedirectAttributes redirectAttributes) {
         redirectAttributes.addAttribute("problemId", problemId);
-        return "redirect:/admin/problems/{problemId}";
+        return "redirect:/admin/problems/{problemId}.html";
     }
 
     @GetMapping("/conteststanding")

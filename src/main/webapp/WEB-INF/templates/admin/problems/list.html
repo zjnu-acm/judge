@@ -27,21 +27,21 @@
                     <tr align="center" th:each="problem:${page}" th:object="${problem}">
                         <td th:text="*{id}">problem.id</td>
                         <td align="left">
-                            <a th:href="@{/admin/problems/{problemId}(problemId=*{id})}"
+                            <a th:href="@{/admin/problems/{problemId}.html(problemId=*{id})}"
                                th:text="*{title}">problem.title</a>
                         </td>
                         <td>
                             <a th:if="*{contest}"
-                               th:href="@{/admin/contests/{contestId}(contestId=*{contest})}"
+                               th:href="@{/admin/contests/{contestId}.html(contestId=*{contest})}"
                                th:text="*{contest}">contest.id</a>
                         </td>
                         <td>
-                            <a th:href="@{/admin/problems/{problemId}/edit(problemId=*{id})}">Edit</a>
+                            <a th:href="@{/admin/problems/{problemId}/edit.html(problemId=*{id})}">Edit</a>
                         </td>
                         <td th:text="*{#calendars.format(T(java.util.Date).from(inDate),'yyyy-MM-dd HH:mm:ss')}">2016-03-09 22:28:54</td>
                         <td>
-                            <a th:if="*{disabled}" th:href="@{/admin/problems/{problemId}/enable(problemId=*{id})}">Enable</a>
-                            <a th:unless="*{disabled}" th:href="@{/admin/problems/{problemId}/disable(problemId=*{id})}">Disable</a>
+                            <a th:if="*{disabled}" th:href="@{/admin/problems/{problemId}/enable.html(problemId=*{id})}">Enable</a>
+                            <a th:unless="*{disabled}" th:href="@{/admin/problems/{problemId}/disable.html(problemId=*{id})}">Disable</a>
                         </td>
                     </tr>
                 </tbody>
@@ -50,7 +50,7 @@
         <p align="center" th:if="${page.totalPages&gt;1}">
             <a style="margin: 10px;"
                th:each="it:${#numbers.sequence(0,page.totalPages-1)}"
-               th:href="@{/admin/problems(page=${it},size=${page.size})}"
+               th:href="@{/admin/problems.html(page=${it},size=${page.size})}"
                th:text="${it+1}">1</a>
         </p>
         <!--/*/</th:block>/*/-->

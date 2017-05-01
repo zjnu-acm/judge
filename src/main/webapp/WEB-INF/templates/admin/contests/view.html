@@ -16,7 +16,7 @@
             <font face="Arial">Start time: <font color="#993399" th:text="*{#calendars.format(T(java.util.Date).from(startTime),'yyyy-MM-dd HH:mm:ss')}">2016-03-20 12:00:00</font> End time: <font color="#993399" th:text="*{#calendars.format(T(java.util.Date).from(endTime),'yyyy-MM-dd HH:mm:ss')}">2016-03-20 17:00:00.0</font><br/>Current System Time: <font color="#993399" th:text="${#calendars.format(#execInfo.now,'yyyy-MM-dd HH:mm:ss')}">2016-03-28 16:17:18</font> Contest Status: <font color="red" th:utext="${@contestService.getStatus(contest)}">Ended</font>
             </font>
         </p>
-        <form th:action="@{/admin/contests/{contestId}/problems(contestId=${contest.id})}" method="POST">
+        <form th:action="@{/admin/contests/{contestId}/problems.html(contestId=${contest.id})}" method="POST">
             <div class="table-responsive">
                 <table class="text-center table table-striped table-hover problems" th:data-contest-id="${contest.id}">
                     <thead>
@@ -32,7 +32,7 @@
                                 <b>[[*{orign}]] Problem [[${T(java.lang.Character).toString(65+it.index)}]]</b>
                             </td>
                             <td class="col-sm-5 text-left" style="vertical-align:middle">
-                                <a th:href="@{/admin/problems/{problemId}(problemId=*{orign})}" th:text="*{title}">title</a>
+                                <a th:href="@{/admin/problems/{problemId}.html(problemId=*{orign})}" th:text="*{title}">title</a>
                             </td>
                             <td class="col-sm-3 text-center">
                                 <button type="button" class="btn btn-link edit">Edit</button>
@@ -58,20 +58,20 @@
             jQuery(function ($) {
                 var submit = $(".problems").on("click", ":button.edit", function () {
                     var problemId = $(this).closest(".item").data("id");
-                    window.location.href = /*[+[[@{/admin/problems/{problemId}/edit}]]+]*//*[-*/""/*-]*/.replace("{problemId}", problemId);
+                    window.location.href = /*[+[[@{/admin/problems/{problemId}/edit.html}]]+]*//*[-*/""/*-]*/.replace("{problemId}", problemId);
                 }).on("click", ":button.delete", function () {
                     var contestId = $(this).closest("[data-contest-id]").data("contestId");
                     var problemId = $(this).closest("[data-id]").data("id");
-                    $("<form method='POST' />").attr("action", /*[+[[@{/admin/contests/{contestId}/problems/{problemId}}]]+]*//*[-*/"../admin/contests/{contestId}/problems/{problemId}"/*-]*/.replace("{contestId}", contestId).replace("{problemId}", problemId)).append($("<input type='hidden' name='_method' value='DELETE' />")).appendTo("body").submit();
+                    $("<form method='POST' />").attr("action", /*[+[[@{/admin/contests/{contestId}/problems/{problemId}.html}]]+]*//*[-*/"../admin/contests/{contestId}/problems/{problemId}.html"/*-]*/.replace("{contestId}", contestId).replace("{problemId}", problemId)).append($("<input type='hidden' name='_method' value='DELETE' />")).appendTo("body").submit();
                 }).on("click", ":button.add", function () {
 //var contestId = $(this).closest("[data-contest-id]").data("contestId");
 //var problemId = $(this).closest(".item").find(":input[name='problemId']").val();
-//$("<form method='POST' />").attr("action", /*[+[[@{/admin/contests/{contestId}/problems/}]]+]*//*[-*/"../admin/contests/{contestId}/problems/"/*-]*/.replace("{contestId}", contestId)).append($("<input/>", {name: "problemId", value: problemId, type: "hidden"})).submit();
+//$("<form method='POST' />").attr("action", /*[+[[@{/admin/contests/{contestId}/problems.html}]]+]*//*[-*/"../admin/contests/{contestId}/problems.html"/*-]*/.replace("{contestId}", contestId)).append($("<input/>", {name: "problemId", value: problemId, type: "hidden"})).submit();
                 }).on("input", ":input[name='problemId']", function () {
                     var title = $(this).closest(".item").find(".title");
                     var val = +$(this).val();
                     if (val === val && val !== 0) {
-                        var url = /*[+[[@{/problems/{problemId}}]]+]*//*[-*/"../problems/problemId"/*-]*/;
+                        var url = /*[+[[@{/problems/{problemId}.json}]]+]*//*[-*/"../problems/problemId.json"/*-]*/;
                         $.getJSON(url.replace('{problemId}', val), function (x) {
                             title.text(x && x.title || "Error");
                             submit.removeProp("disabled");
