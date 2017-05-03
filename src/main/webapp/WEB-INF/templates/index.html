@@ -10,7 +10,7 @@
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
         <div class="page-index table-back">
-            <center><h1><font color="blue">欢迎使用在线评测系统</font></h1></center>
+            <center><h1><span style="color: blue">欢迎使用在线评测系统</span></h1></center>
             <p>第一次使用，请阅读<a th:href="@{/faq}">常见问题</a>。然后，选择题目，编程并提交程序。</p>
             <p>若想发布你的题目或建立考试，请<a th:remove="${#strings.isEmpty(application['admin.mail'])?'tag':_}" th:href="|mailto:${application['admin.mail']}|">联系我们</a>。</p>
             <p>下载:&nbsp;C-Free&nbsp;&nbsp;&nbsp;<a href="/download/program/cfree/cfree4_0_std_setup_ch.exe">4.0</a>&nbsp;&nbsp;<a href="/download/program/cfree/cfree5_0_pro_setup_ch.exe">5.0</a>(<a href="/download/program/cfree/cfree5_0_pro_setup_ch.txt">注册码</a>)</p>
@@ -18,7 +18,7 @@
             <p><a href="/download/program/jdk/">JDK</a> 1.8.0_92(<a href="/download/program/jdk/jdk-8u92-windows-i586.exe">32</a>/<a href="/download/program/jdk/jdk-8u92-windows-x64.exe">64</a>)</p>
             <p></p>
             <p><a href="/download/documents/%E9%AB%98%E7%BA%A7%E8%AF%AD%E8%A8%80%E5%9C%A8%E7%BA%BF%E8%AF%84%E6%B5%8B%E7%B3%BB%E7%BB%9F%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.doc">在线评测网站使用说明及要求</a></p>
-            <p><font color="red">如遇题目数据、描述有误等问题，请在<a th:href="@{/bbs}">讨论版</a>反映，我们将及时处理！(有关题目解法等问题将不予回答)</font></p>
+            <p><span style="color: red">如遇题目数据、描述有误等问题，请在<a th:href="@{/bbs}">讨论版</a>反映，我们将及时处理！(有关题目解法等问题将不予回答)</span></p>
         </div>
         <!--/*/</th:block>/*/-->
     </body>

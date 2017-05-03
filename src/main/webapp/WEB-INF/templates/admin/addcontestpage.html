@@ -5,6 +5,8 @@
       layout:decorate="~{layout/admin}">
     <head>
         <title>Add a contest</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/2.4.4/flatpickr.css" th:src="@{/webjars/flatpickr/2.4.4/dist/flatpickr.css}"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/2.4.4/flatpickr.js" th:src="@{/webjars/flatpickr/2.4.4/dist/flatpickr.min.js}"></script>
     </head>
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
@@ -21,40 +23,18 @@
             </p>
             <p class="text-left">
                 <span>Start Time:</span>
-                <br/>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                <span>Year:</span>
-                <input type="text" name="syear" th:value="${#calendars.format(#execInfo.now,'yyyy')}" size="7"/>
-                <span> Month:</span>
-                <input type="text" name="smonth" th:value="${#calendars.format(#execInfo.now,'M')}" size="7"/>
-                <span> Day:</span>
-                <input type="text" name="sday" size="7"/>
-                <span> Hour:</span>
-                <input type="text" name="shour" size="7" onchange="document.getElementsByName('ehour')[0].value = 5 + parseInt(this.value);"/>
-                <span> Minute:</span>
-                <input type="text" name="sminute" value="0" size="7"/>
+                <input th:id="${#ids.seq('start')}" type="text" name="start" required="required" th:value="${#calendars.format(T(java.util.Date).from(#execInfo.now),'yyyy-MM-dd HH:00')}"/>
             </p>
             <p class="text-left">
-                <span>End Time:</span>
-                <br/><span>&nbsp;&nbsp;&nbsp;</span>
-                <span>Year:</span>
-                <input type="text" name="eyear" th:value="${#calendars.format(#execInfo.now,'yyyy')}" size="7"/>
-                <span> Month:</span>
-                <input type="text" name="emonth" th:value="${#calendars.format(#execInfo.now,'M')}" size="7"/>
-                <span> Day:</span>
-                <input type="text" name="eday" size="7"/>
-                <span> Hour:</span>
-                <input type="text" name="ehour" size="7"/>
-                <span> Minute:</span>
-                <input type="text" name="eminute" value="0" size="7"/>
+                <span>Length:</span>
+                <input th:id="${#ids.seq('length')}" type="text" name="length" value="5:00:00" required="required" pattern="\d+:[0-5]?[0-9]:[0-5]?[0-9]"/>
             </p>
-            <div align="center">
-                <p>
-                    <button type="submit">Submit</button>
-                    <button type="reset">Reset</button>
-                </p>
+            <div class="text-center">
+                <button type="submit" class="btn btn-default">Submit</button>
+                <button type="reset" class="btn btn-danger">Reset</button>
             </div>
         </form>
+        <script th:inline="javascript">jQuery(function ($) {$(/*[+[[|#${#ids.prev('start')}|]]+]*//*[-*/"#start"/*-]*/).flatpickr({enableTime:true,minDate:"today"});});</script>
         <!--/*/</th:block>/*/-->
     </body>
 </html>

@@ -12,12 +12,12 @@ public class ExecuteResult {
     private long time;
     private long memory;
     @NonNull
-    private Status haltCode;
+    private Status code;
     private int exitCode;
     private String message;
 
     public boolean isSuccess() {
-        return haltCode == Status.ACCEPTED;
+        return code == Status.ACCEPTED;
     }
 
 }

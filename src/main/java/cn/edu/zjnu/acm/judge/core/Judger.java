@@ -328,7 +328,7 @@ public class Judger {
     }
 
     private int getResultFromExecuteResult(ExecuteResult er) {
-        return er.getHaltCode().getResult();
+        return er.getCode().getResult();
     }
 
     private Path getNull(Path work) {

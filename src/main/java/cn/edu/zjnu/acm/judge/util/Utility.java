@@ -18,7 +18,7 @@ package cn.edu.zjnu.acm.judge.util;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Utility {
+public interface Utility {
 
     public static String getRandomString(int length) {
         return getRandomString(length, ThreadLocalRandom.current());
@@ -41,10 +41,6 @@ public class Utility {
             }
         }
         return new String(val);
-    }
-
-    private Utility() {
-        throw new AssertionError();
     }
 
 }

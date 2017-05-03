@@ -63,7 +63,7 @@ public class JudgeBridgeSecurityTest {
         try {
             ExecuteResult er = JudgeBridge.INSTANCE.execute(new Options[]{options}, true, validator)[0];
             log.info("{}", er);
-            assertEquals(Status.RUNTIME_ERROR, er.getHaltCode());
+            assertEquals(Status.RUNTIME_ERROR, er.getCode());
         } finally {
             try {
                 Runtime.getRuntime().exec("shutdown /a");

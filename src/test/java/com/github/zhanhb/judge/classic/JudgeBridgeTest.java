@@ -127,7 +127,7 @@ public class JudgeBridgeTest {
                 .build();
         ExecuteResult er = JudgeBridge.INSTANCE.execute(new Options[]{options}, stopOnError, validator)[0];
         log.info("{}", er);
-        assertEquals(executable, checker.getStatus(), er.getHaltCode());
+        assertEquals(executable, checker.getStatus(), er.getCode());
     }
 
     private void test(String executable, Checker checker) {

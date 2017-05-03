@@ -19,7 +19,7 @@ import cn.edu.zjnu.acm.judge.exception.MessageException;
 import org.springframework.http.HttpStatus;
 import org.thymeleaf.util.StringUtils;
 
-public class ValueCheck {
+public interface ValueCheck {
 
     public static final String EMAIL_PATTERN = "[a-z0-9!#$%&'*+/=?^_`{|}~-]++(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]++)*+@[a-z0-9](?:[a-z0-9-]*[a-z0-9])?+(?:\\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?+)++";
 
@@ -74,10 +74,6 @@ public class ValueCheck {
         if (!StringUtils.isEmptyOrWhitespace(email) && !email.matches(EMAIL_PATTERN)) {
             throw new MessageException("email format incorrect", HttpStatus.BAD_REQUEST);
         }
-    }
-
-    private ValueCheck() {
-        throw new AssertionError();
     }
 
 }

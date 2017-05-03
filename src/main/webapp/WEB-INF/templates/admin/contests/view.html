@@ -9,11 +9,11 @@
     </head>
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
-        <p align="center">
+        <p class="text-center">
             <b><font size="5" face="Arial">Contest - [[*{title}]]</font></b>
         </p>
-        <p align="center">
-            <font face="Arial">Start time: <font color="#993399" th:text="*{#calendars.format(T(java.util.Date).from(startTime),'yyyy-MM-dd HH:mm:ss')}">2016-03-20 12:00:00</font> End time: <font color="#993399" th:text="*{#calendars.format(T(java.util.Date).from(endTime),'yyyy-MM-dd HH:mm:ss')}">2016-03-20 17:00:00.0</font><br/>Current System Time: <font color="#993399" th:text="${#calendars.format(#execInfo.now,'yyyy-MM-dd HH:mm:ss')}">2016-03-28 16:17:18</font> Contest Status: <font color="red" th:utext="${@contestService.getStatus(contest)}">Ended</font>
+        <p class="text-center">
+            <font face="Arial">Start time: <span style="color: #993399" th:text="*{#calendars.format(T(java.util.Date).from(startTime),'yyyy-MM-dd HH:mm:ss')}">2016-03-20 12:00:00</span> End time: <span style="color: #993399" th:text="*{#calendars.format(T(java.util.Date).from(endTime),'yyyy-MM-dd HH:mm:ss')}">2016-03-20 17:00:00.0</span><br/>Current System Time: <span style="color: #993399" th:text="${#calendars.format(#execInfo.now,'yyyy-MM-dd HH:mm:ss')}">2016-03-28 16:17:18</span> Contest Status: <span style="color: red" th:utext="${@contestService.getStatus(contest)}">Ended</span>
             </font>
         </p>
         <form th:action="@{/admin/contests/{contestId}/problems.html(contestId=${contest.id})}" method="POST">

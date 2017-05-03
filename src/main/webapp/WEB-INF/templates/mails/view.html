@@ -12,12 +12,12 @@
             <tr bgcolor="#c0c0c0">
                 <td>
                     <span>From: </span>
-                    <font color="blue">
+                    <span style="color: blue">
                         <a th:href="@{/userstatus(user_id=*{from})}" th:text="*{from}">userId</a>
-                    </font>
+                    </span>
                     <br/>
                     <span>Title:</span>
-                    <font color="blue" th:text="*{title}">title</font>
+                    <span style="color: blue" th:text="*{title}">title</span>
                     <br/>
                     <span>Send Time: [[*{#calendars.format(T(java.util.Date).from(inDate),'yyyy-MM-dd HH:mm:ss')}]]</span>
                     <br/>
@@ -34,15 +34,15 @@
         <center>
             <span>[</span>
             <a href="@{/mail}">
-                <font color="blue">Return</font>
+                <span style="color: blue">Return</span>
             </a>
             <span>]&nbsp;&nbsp;&nbsp;[</span>
             <a th:href="@{/sendpage(reply=*{id})}">
-                <font color="blue">Reply</font>
+                <span style="color: blue">Reply</span>
             </a>
             <span>]&nbsp;&nbsp;&nbsp;[</span>
             <a th:href="@{/deletemail(mail_id=*{id})}">
-                <font color="blue">Delete</font>
+                <span style="color: blue">Delete</span>
             </a>
             <span>]</span>
         </center>

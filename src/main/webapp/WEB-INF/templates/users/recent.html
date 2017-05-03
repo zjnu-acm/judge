@@ -10,7 +10,7 @@
         <!--/*/<th:block layout:fragment="content">/*/-->
         <div align="center">
             <form th:action="@{/recentrank}" method="get">
-                <font color="blue" size="5">
+                <font style="color: blue" size="5">
                     <label th:for="${#ids.next('count')}">Rank of last </label>
                     <input th:id="${#ids.seq('count')}" type="number" name="count" size="5" th:value="${count}" required="required"/>
                     <label th:for="${#ids.prev('count')}">submits.</label>
@@ -29,7 +29,7 @@
             <tr align="center" th:each="user,it:${recentrank}" th:object="${user}">
                 <td th:text="${it.count}">1</td>
                 <td><a th:href="@{/userstatus(user_id=*{id})}" th:text="*{id}">id</a></td>
-                <td><font color="green" th:text="*{nick}">nick</font></td>
+                <td><span style="color: green" th:text="*{nick}">nick</span></td>
                 <td th:text="*{solved}">97</td>
                 <td th:text="*{submit}">283</td>
             </tr>

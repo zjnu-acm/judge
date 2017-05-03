@@ -1,13 +1,16 @@
 package cn.edu.zjnu.acm.judge.problem;
 
+import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserPreferenceMapper;
 import java.text.Collator;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,9 +78,10 @@ public class ProblemListController {
         long totalVolume = (problemMapper.nextId() - 1001) / 100 + 1;
 
         List<Problem> problems = problemMapper.findAllByDisabledFalse(currentUserId, start, end, locale.getLanguage());
+        Map<Long, Contest> hashMap = new HashMap<>(4);
         problems = problems.stream()
                 .filter(problem -> Optional.ofNullable(problem.getContest())
-                .map(contestMapper::findOne)
+                .map(contestId -> hashMap.computeIfAbsent(contestId, contestMapper::findOne))
                 .map(contest -> {
                     if (contest.isEnded()) {
                         problemMapper.setContest(problem.getId(), null);

@@ -64,10 +64,10 @@
                     <a th:href="@{/logout}" th:text="#{onlinejudge.login.logout}">退出登录</a>
                     <br/>
                     <a th:href="@{/mail}">
-                        <font color="blue">
+                        <span style="color: blue">
                             <span th:text="#{onlinejudge.login.internalmail}">站内邮件:</span>
                             <span>[[${mailInfo.total}]](<b th:text="${mailInfo.newMail}">0</b>)</span>
-                        </font>
+                        </span>
                     </a>
                 </th:block>
             </td>

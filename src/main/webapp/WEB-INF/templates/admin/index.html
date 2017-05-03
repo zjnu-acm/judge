@@ -40,9 +40,10 @@
         <div style="color: #339">
             <form th:action="@{/admin/tools.html}" method="POST">
                 <input type="hidden" name="op" value="test"/>
-                <button type="submit">修复提交数和Accepted数</button>
+                <button th:id="${#ids.seq('submit')}" type="submit" class="btn btn-default">修复提交数和Accepted数</button>
             </form>
         </div>
+        <script th:inline="javascript">jQuery(function($){$(/*[+[[|#${#ids.prev('submit')}|]]+]*//*[-*/'submit'/*-]*/).click(function(){$(this).addClass('disabled').closest("form").submit();return false;});});</script>
         <!--/*/</th:block>/*/-->
     </body>
 </html>

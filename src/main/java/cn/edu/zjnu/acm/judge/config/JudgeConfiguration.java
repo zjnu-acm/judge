@@ -19,7 +19,6 @@ import cn.edu.zjnu.acm.judge.util.SpecialCall;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -101,7 +100,7 @@ public class JudgeConfiguration {
         }
 
         contextPath = fixContextPath(servletContext.getContextPath());
-        dataFilesPath = Paths.get(Objects.requireNonNull(getValue("DataFilesPath"), "Data Files Path not set."));
+        dataFilesPath = Paths.get(getValue("DataFilesPath"));
         workingPath = Paths.get(getValue("WorkingPath"));
         uploadDirectory = Paths.get(getValue("UploadPath"));
         deleteTempFile = Boolean.parseBoolean(getValue("DeleteTempFile"));

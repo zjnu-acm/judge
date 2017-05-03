@@ -15,9 +15,9 @@ import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.OptionalLong;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,14 +92,12 @@ public class StatusController {
         log.debug("{}", criteria);
         List<Submission> submissions = submissionMapper.findAllByCriteria(criteria);
 
-        Long min = submissions.stream()
-                .map(Submission::getId)
-                .min(Comparator.naturalOrder())
-                .orElseGet(() -> top != null ? top : bottom != null ? bottom : null);
-        Long max = submissions.stream()
-                .map(Submission::getId)
-                .max(Comparator.naturalOrder())
-                .orElseGet(() -> bottom != null ? bottom : top != null ? top : null);
+        OptionalLong min = submissions.stream()
+                .mapToLong(Submission::getId)
+                .min();
+        OptionalLong max = submissions.stream()
+                .mapToLong(Submission::getId)
+                .max();
 
         request.setAttribute("contestId", contestId);
 
@@ -196,7 +194,7 @@ public class StatusController {
         query = request.getContextPath() + query;
         sb.append("</table><p align=center>[<a href=\"").append(query).append("\">Top</a>]&nbsp;&nbsp;");
         query += query.contains("?") ? '&' : '?';
-        sb.append("[<a href=\"").append(query).append("bottom=").append(max != null ? max : "").append("\"><font color=blue>Previous Page</font></a>]" + "&nbsp;&nbsp;[<a href=\"").append(query).append("top=").append(min != null ? min : "").append("\"><font color=blue>Next Page</font></a>]&nbsp;&nbsp;</p>"
+        sb.append("[<a href=\"").append(query).append("bottom=").append(max.isPresent() ? max.getAsLong() : "").append("\"><font color=blue>Previous Page</font></a>]" + "&nbsp;&nbsp;[<a href=\"").append(query).append("top=").append(min.isPresent() ? min.getAsLong() : "").append("\"><font color=blue>Next Page</font></a>]&nbsp;&nbsp;</p>"
                 + "<script>!function(w){setTimeout(function(){w.location.reload()},60000)}(this)</script></body></html>");
         return ResponseEntity.ok().contentType(MediaType.valueOf("text/html;charset=UTF-8")).body(sb.toString());
     }

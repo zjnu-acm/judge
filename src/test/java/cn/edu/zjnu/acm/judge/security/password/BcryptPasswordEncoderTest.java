@@ -70,10 +70,8 @@ public class BcryptPasswordEncoderTest {
                     }
                 }
             }
-            if (c % 50 == 0) {
-                log.info("{}", c);
-                conn.commit();
-            }
+            log.info("{}", c);
+            conn.commit();
         }
     }
 

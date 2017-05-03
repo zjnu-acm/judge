@@ -9,7 +9,7 @@
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
         <h2 style="text-align: center">
-            <font color="blue">Mail of [[${userId}]]</font>
+            <span style="color: blue">Mail of [[${userId}]]</span>
         </h2>
         <table align="center" style="border: 0; margin: auto;">
             <tr bgcolor="#78C8FF">
@@ -25,7 +25,7 @@
                 </td>
                 <td>
                     <a th:href="@{/showmail(mail_id=*{id})}" th:style="*{newMail}?'font-weight: bold;'">
-                        <font color="blue" th:text="*{title}">No Topic</font>
+                        <span style="color: blue" th:text="*{title}">No Topic</span>
                     </a>
                 </td>
                 <td th:text="*{#calendars.format(T(java.util.Date).from(inDate),'yyyy-MM-dd H:mm:ss')}">2016-01-04</td>
@@ -34,22 +34,22 @@
         <center>
             <span>[</span>
             <a th:href="@{/mail(size=${size})}">
-                <font color="blue">Top</font>
+                <span style="color: blue">Top</span>
             </a>
             <span>]</span>
             <span>&nbsp;&nbsp;&nbsp;[</span>
             <a th:href="@{/mail(start=${start gt size?start-size:0},size=${size})}">
-                <font color="blue">Previous</font>
+                <span style="color: blue">Previous</span>
             </a>
             <span>]</span>
             <span>&nbsp;&nbsp;&nbsp;[</span>
             <a th:href="@{/mail(start=${start+size},size=${size})}">
-                <font color="blue">Next</font>
+                <span style="color: blue">Next</span>
             </a>
             <span>]</span>
             <span>&nbsp;&nbsp;&nbsp;[</span>
             <a th:href="@{/sendpage}">
-                <font color="blue">Send Mail</font>
+                <span style="color: blue">Send Mail</span>
             </a>
             <span>]</span>
         </center>

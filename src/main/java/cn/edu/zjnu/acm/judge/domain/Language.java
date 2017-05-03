@@ -37,7 +37,6 @@ public class Language implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private int id;
-    private long extMemory;
     @NonNull
     private String name;
     @NonNull
@@ -50,6 +49,7 @@ public class Language implements Serializable {
     private String executableExtension;
     private long timeFactor;
     private long extTime;
+    private long extMemory;
     private String description;
 
 }

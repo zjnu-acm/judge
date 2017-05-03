@@ -25,9 +25,9 @@
                     </td>
                     <td>[[*{#calendars.format(T(java.util.Date).from(startTime),"yyyy-MM-dd HH:mm:ss")}]]</td>
                     <td th:switch="*{(started?1:0)+(ended?1:0)}">
-                        <font th:case="0" color="blue">Pending</font>
-                        <font th:case="1" color="red">Running</font>
-                        <font th:case="2" color="green">Ended</font>
+                        <span th:case="0" style="color: blue">Pending</span>
+                        <span th:case="1" style="color: red">Running</span>
+                        <span th:case="2" style="color: green">Ended</span>
                     </td>
                 </tr>
             </tbody>

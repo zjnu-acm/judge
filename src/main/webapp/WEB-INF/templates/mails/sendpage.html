@@ -8,7 +8,7 @@
     </head>
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
-        <h2 style="text-align: center"><font color="blue">Write mail</font></h2>
+        <h2 style="text-align: center"><span style="color: blue">Write mail</span></h2>
         <form method="post" th:action="@{/send}">
             <label th:for="${#ids.next('username')}">To:</label>
             <span>&nbsp;&nbsp;&nbsp;</span>

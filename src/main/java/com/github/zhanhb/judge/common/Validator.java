@@ -27,7 +27,7 @@ public interface Validator {
         Status validate = validate(options.getInputFile(),
                 options.getStandardOutput(),
                 options.getOutputFile());
-        return executeResult.toBuilder().haltCode(validate).build();
+        return executeResult.toBuilder().code(validate).build();
     }
 
 }

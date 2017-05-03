@@ -12,7 +12,7 @@ import org.thymeleaf.util.StringUtils;
     "WEB-INF/templates/fragment/standing.html",
     "WEB-INF/templates/users/list.html"
 })
-public class JudgeUtils {
+public interface JudgeUtils {
 
     /**
      * required in WEB-INF/templates/fragment/standing.html
@@ -109,10 +109,6 @@ public class JudgeUtils {
             stream = LongStream.concat(a, b);
         }
         return stream.sorted().distinct().toArray();
-    }
-
-    private JudgeUtils() {
-        throw new AssertionError();
     }
 
 }

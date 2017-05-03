@@ -20,7 +20,7 @@ package cn.edu.zjnu.acm.judge.util;
  * @author zhanhb
  */
 @Deprecated
-public class ResultType {
+public interface ResultType {
 
     public static final int ACCEPTED = 0;
     public static final int PRESENTATION_ERROR = 1;
@@ -81,10 +81,6 @@ public class ResultType {
             return "Unaccepted";
         }
         return getCaseScoreDescription(i);
-    }
-
-    private ResultType() {
-        throw new AssertionError();
     }
 
 }

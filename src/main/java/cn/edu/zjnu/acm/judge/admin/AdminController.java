@@ -24,11 +24,14 @@ import cn.edu.zjnu.acm.judge.mapper.UserProblemMapper;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import javax.validation.constraints.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,6 +44,7 @@ import org.thymeleaf.util.StringUtils;
  */
 @Controller
 @Secured("ROLE_ADMIN")
+@Validated
 public class AdminController {
 
     @Autowired
@@ -83,14 +87,17 @@ public class AdminController {
 
     @PostMapping("/admin/contests")
     public String addContest(
-            int syear, int smonth, int sday, int shour, int sminute,
-            int eyear, int emonth, int eday, int ehour, int eminute,
             @RequestParam(value = "title", required = false) String title,
             @RequestParam(value = "description", required = false) String description,
+            @RequestParam(value = "start") @DateTimeFormat(pattern = "yyyy-M-d H:m") LocalDateTime start,
+            @RequestParam("length") @Pattern(regexp = "\\d+:[0-5]?[0-9]:[0-5]?[0-9]") String length,
             Model model) {
-
-        Instant startTime = LocalDateTime.of(syear, smonth, sday, shour, sminute).atZone(ZoneId.systemDefault()).toInstant();
-        Instant endTime = LocalDateTime.of(eyear, emonth, eday, ehour, eminute).atZone(ZoneId.systemDefault()).toInstant();
+        Instant startTime = start.atZone(ZoneId.systemDefault()).toInstant();
+        String[] split = length.split(":", 3);
+        long h = Long.parseLong(split[0]);
+        int m = Integer.parseInt(split[1]);
+        int s = Integer.parseInt(split[2]);
+        Instant endTime = startTime.plusSeconds(h * 3600 + m * 60 + s);
 
         Contest contest = Contest.builder()
                 .title(title)

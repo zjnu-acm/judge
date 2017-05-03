@@ -17,7 +17,7 @@
         </form>
         <input type="hidden" name="ckfinderPath" th:value="@{/webjars/ckfinder/2.6.2.1/}"/>
         <h1>[[${hint}]]</h1>
-        <p align="center">
+        <p class="text-center">
             <font size="4" color="#333399">[[${hint2}]]</font>
         </p>
         <form name="problem-edit" method="POST" th:action="@{${url}}" th:object="${problem}">
@@ -76,7 +76,7 @@
                     <option th:each="contest:${contests}" th:object="${contest}" th:value="*{id}" th:text="*{title}" th:selected="*{id}==${problem.contest}">contest.title</option>
                 </select>
             </p>
-            <div align="center"><button type="submit">Submit</button></div>
+            <div class="text-center"><button type="submit">Submit</button></div>
         </form>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.6.2/ckeditor.js" th:src="@{/webjars/ckeditor/4.6.2/full/ckeditor.js}"></script>
         <script th:src="@{/webjars/ckfinder/2.6.2.1/ckfinder.js}"></script>

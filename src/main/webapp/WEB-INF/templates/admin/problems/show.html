@@ -10,7 +10,7 @@
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
         <h2 class="text-center" th:text="${problem.title}">title</h2>
-        <p align="center">Time Limit:[[${problem.timeLimit}]]MS&nbsp; Memory Limit:[[${problem.memoryLimit}]]K<br/>Total Submit:[[${problem.submit}]] Accepted:[[${problem.accepted}]]</p>
+        <p class="text-center">Time Limit:[[${problem.timeLimit}]]MS&nbsp; Memory Limit:[[${problem.memoryLimit}]]K<br/>Total Submit:[[${problem.submit}]] Accepted:[[${problem.accepted}]]</p>
         <p align="left"><b><font color="#333399" size="5">Description</font></b></p>
         <div class="description" th:utext="${problem.description}">description</div>
         <p align="left"><b><font color="#333399" size="5">Input</font></b></p>
@@ -26,7 +26,7 @@
         <p align="left"><b><font color="#333399" size="5">Source</font></b></p>
         <div class="source" th:utext="${problem.source}">source</div>
         <font color="#333399" size="3">
-            <p align="center">
+            <p class="text-center">
                 <span>[</span>
                 <a th:href="@{/admin/problems/{problemId}/disable.html(problemId=${problem.id})}" th:unless="${problem.disabled}">Disable this problem</a>
                 <a th:href="@{/admin/problems/{problemId}/enable.html(problemId=${problem.id})}" th:if="${problem.disabled}">Enable this problem</a>

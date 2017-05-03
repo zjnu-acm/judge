@@ -23,20 +23,20 @@
                     <td width="10%">
                         <a th:href="@{/userlist}">
                             <b>
-                                <font color="white">Solved Problems</font>
+                                <span style="color: white">Solved Problems</span>
                             </b>
                         </a>
                     </td>
                     <td width="10%">
                         <a th:href="@{/userlist(sort='submit,desc',sort=solved)}">
                             <b>
-                                <font color="white">Submit</font>
+                                <span style="color: white">Submit</span>
                             </b>
                         </a>
                     </td>
                     <td width="10%">
                         <a th:href="@{/userlist(sort='ratio,solved,desc')}">
-                            <b><font color="white">Ratio (AC/submit)</font></b>
+                            <b><span style="color: white">Ratio (AC/submit)</span></b>
                         </a>
                     </td>
                 </tr>
@@ -45,7 +45,7 @@
                 <tr align="center" th:each="user,it:${page}" th:object="${user}">
                     <td align="center" th:text="${page.number*page.size+it.count}">1</td>
                     <td><a th:href="@{/userstatus(user_id=*{id})}" th:text="*{id}">id</a></td>
-                    <td><font color="green" th:text="*{nick}">nick</font></td>
+                    <td><span style="color: green" th:text="*{nick}">nick</span></td>
                     <td><a th:href="@{/status(score=100,user_id=*{id})}" th:text="*{solved}">solved</a></td>
                     <td><a th:href="@{/status(user_id=*{id})}" th:text="*{submit}">submit</a></td>
                     <td th:text="|*{ratio}%|">30%</td>

@@ -11,7 +11,7 @@
     </marquee>
     <th:block th:with="message=${@judgeConfiguration.systemInfo}">
         <marquee scrollamount="3" behavior="ALTERNATE" scrolldelay="150" th:if="${not #strings.isEmpty(message)}">
-            <font color="red" th:utext="${message}"></font>
+            <span style="color: red" th:utext="${message}"></span>
         </marquee>
     </th:block>
 </th:block>

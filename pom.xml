@@ -279,6 +279,12 @@
             <version>9.8.0</version>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>flatpickr</artifactId>
+            <version>2.4.4</version>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
 
     <repositories>

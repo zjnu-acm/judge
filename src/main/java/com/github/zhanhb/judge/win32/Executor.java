@@ -215,7 +215,7 @@ public enum Executor {
             return ExecuteResult.builder()
                     .time(status == Status.TIME_LIMIT_EXCEED ? ((time - timeLimit - 1) % 200 + 200) % 200 + 1 + timeLimit : time)
                     .memory(judgeProcess.getPeakMemory())
-                    .haltCode(status)
+                    .code(status)
                     .exitCode(exitCode)
                     .build();
         }
