@@ -58,7 +58,7 @@ public class AdminController {
 
     @GetMapping("/admin/contests/new")
     public String addcontestpage() {
-        return "admin/contest/addpage";
+        return "admin/contests/addpage";
     }
 
     @GetMapping("/admin")

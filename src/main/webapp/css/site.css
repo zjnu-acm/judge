@@ -151,10 +151,12 @@ tr.top {
     margin: 8px;
 }
 .problem-list .ac .status {
-    background: url(../images/accepted.gif) center no-repeat;
+    background: url('data:image/gif;base64,R0lGODlhFAAUAMQAAAAAAP////wFBfUGBvQMDPUUFNcYGOQgILkbG/ElJdomJuo6Otg7O740NMY9PZ81Nd5aWt9iYqFKSrBVVW84ONxxcclqarZjY6teXtV+foVbW6l8fGxgYP///wAAAAAAACH5BAEAAB0ALAAAAAAUABQAAAVTYCeOZGmeaIau3ZKoLJklhRWTkVBc95jvPRFEhwl2hgKHsVNIsioLyCghOGhYTYFtISBIYsgDQyBocG4KMvkQnAzUD6OBbFg6BgjKcvNd+v+AIyEAOw==') center no-repeat;
+    _background: url(../images/accepted.gif) center no-repeat;
 }
 .problem-list .wa .status {
-    background: url(../images/wrong.gif) center no-repeat;
+    background: url('data:image/gif;base64,R0lGODlhFAAUAJEAAAAAAP////kJCf///yH5BAEAAAMALAAAAAAUABQAAAIpnI+py20CoUOxzmGti4dv+YCNh4lXaU7aWQlnmKqx7L72Qr45O99+UwAAOw==') center no-repeat;
+    _background: url(../images/wrong.gif) center no-repeat;
 }
 .problem-list.notlogined .status {
     display: none;

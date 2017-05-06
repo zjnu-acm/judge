@@ -43,7 +43,7 @@
                 <button th:id="${#ids.seq('submit')}" type="submit" class="btn btn-default">修复提交数和Accepted数</button>
             </form>
         </div>
-        <script th:inline="javascript">jQuery(function($){$(/*[+[[|#${#ids.prev('submit')}|]]+]*//*[-*/'submit'/*-]*/).click(function(){$(this).addClass('disabled').closest("form").submit();return false;});});</script>
+        <script th:inline="javascript">jQuery(function($){$(/*[+[[|#${#ids.prev('submit')}|]]+]*//*[-*/'submit'/*-]*/).click(function(){$(this).prop("disabled",true).closest("form").submit();return false;});});</script>
         <!--/*/</th:block>/*/-->
     </body>
 </html>

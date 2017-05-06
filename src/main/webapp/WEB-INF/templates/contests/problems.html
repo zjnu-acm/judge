@@ -40,7 +40,7 @@
         </div>
         <p align="center">
             <span>[</span>
-            <a th:href="@{/contests/{contestId}/standing(contestId=${contest.id})}">Standings</a>
+            <a th:href="@{/conteststanding?contest_id={contestId}(contestId=${contest.id})}">Standings</a>
             <span>]&nbsp;&nbsp;[</span>
             <a th:href="@{/status(contest_id=${contest.id})}">Status</a>
             <span>]&nbsp;&nbsp;[</span>
