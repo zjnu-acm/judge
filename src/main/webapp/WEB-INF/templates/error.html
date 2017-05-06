@@ -9,10 +9,7 @@
     </head>
     <body>
         <div class="container" layout:fragment="content">
-            <p>
-                <img border="0" th:src="@{/images/j0293240.png}" width="50" height="36"/>
-                <font size="4" th:text="#{onlinejudge.erroroccured}">Error Occurred</font>
-            </p>
+            <h3 class="image1-50-26" th:text="#{onlinejudge.erroroccured}">Error Occurred</h3>
             <div id='created'>[[${timestamp}]]</div>
             <div>There was an unexpected error (type=[[${error}]], status=[[${status}]]).</div>
             <div>[[${message}]]</div>

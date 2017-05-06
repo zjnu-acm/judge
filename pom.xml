@@ -280,6 +280,18 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>html5shiv</artifactId>
+            <version>3.7.3</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>respond</artifactId>
+            <version>1.4.2</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
             <groupId>org.webjars.npm</groupId>
             <artifactId>flatpickr</artifactId>
             <version>2.4.4</version>

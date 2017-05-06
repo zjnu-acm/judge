@@ -5,21 +5,22 @@
       layout:decorate="~{layout/admin}">
     <head>
         <title>Congratulations</title>
+        <!--/*-->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet"/>
+        <link href="../../../css/site.css" rel="stylesheet"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.js"></script>
+        <!--*/-->
     </head>
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
-        <p>
-            <img border="0" th:src="@{/images/j0293240.png}" width="50" height="36"/>
-            <font size="4">Congratulations</font></p>
+        <h3 class="image1-50-26">Congratulations</h3>
         <ul>
-            <li>You have added a problem, the id is <span style="color: #CC9900" th:text="${id}">problem.id</span></li>
-            <li>Data path:<span style="color: #CC9900" th:text="${dir}"></span></li>
+            <li>You have added a problem, the id is <span style="color: #CC9900" th:text="${id}">1000</span></li>
+            <li>Data path: <span style="color: #CC9900" th:text="${dir}">C:\data\1000</span></li>
         </ul>
         <p>
-            <img border="0" th:src="@{/images/j0293234.png}" width="40" height="29"/>
-            <a th:href="@{/admin/problems/new.html}">Add Another Problem</a>
-            <img border="0" th:src="@{/images/j0293234.png}" width="40" height="29"/>
-            <a th:href="@{/admin/problems/{problemId}.html(problemId=${id})}">See This Problem</a>
+            <a class="image2-40-29" href="add.html" th:href="@{/admin/problems/new.html}">Add Another Problem</a>
+            <a class="image2-40-29" href="show.html" th:href="@{/admin/problems/{problemId}.html(problemId=${id})}">See This Problem</a>
         </p>
         <!--/*/</th:block>/*/-->
     </body>

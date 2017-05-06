@@ -14,6 +14,10 @@
         <link href="../../../css/site.css" th:href="@{/css/site.css(_=${application.startUpDate})}" rel="stylesheet"/>
         <link href="../../../sample.png" th:href="@{/sample.png}" rel="shortcut icon"/>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.js" th:src="@{/webjars/jquery/1.12.4/jquery.min.js}"></script>
+        <!--[if lt IE 9]>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" th:src="@{/webjars/html5shiv/3.7.3/html5shiv.min.js}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js" th:src="@{/webjars/respond/1.4.2/dest/respond.min.js}"></script>
+        <![endif]-->
         <script src="../../../js/site.js" th:src="@{/js/site.js(_=${application.startUpDate})}"></script>
     </head>
     <body id="page-home">

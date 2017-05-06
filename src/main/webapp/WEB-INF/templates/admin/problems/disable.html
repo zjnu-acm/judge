@@ -8,16 +8,12 @@
     </head>
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
-        <p>
-            <img border="0" th:src="@{/images/j0293240.png}" width="50" height="36"/>
-            <font size="4">Congratulations</font>
-        </p>
+        <h3 class="image1-50-26">Congratulations</h3>
         <ul>
             <li>You have disable a problem, the id is <span style="color: #CC9900">[[${problemId}]]</span></li>
         </ul>
         <p>
-            <img border="0" th:src="@{/images/j0293234.png}" width="40" height="29"/>
-            <a th:href="@{/admin/problems/{problemId}.html(problemId=${problemId})}">See This Problem</a>
+            <a class="image2-40-29" th:href="@{/admin/problems/{problemId}.html(problemId=${problemId})}">See This Problem</a>
         </p>
         <!--/*/</th:block>/*/-->
     </body>

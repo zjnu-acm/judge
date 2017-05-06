@@ -9,18 +9,15 @@
     </head>
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
-        <p>
-            <img src="../../../../images/j0293240.png" th:src="@{/images/j0293240.png}" width="50" height="36"/>
-            <font size="4">Congratulations</font>
-        </p>
+        <h3 class="image1-50-26">Congratulations</h3>
         <ul>
             <li>You have added a contest, the id is <span style="color: #CC9900">[[${contestId}]]</span></li>
             <li>Start time:<span style="color: #CC9900">[[${#calendars.format(T(java.util.Date).from(startTime),'yyyy-MM-dd HH:mm:ss')}]]</span></li>
             <li>End time:<span style="color: #CC9900">[[${#calendars.format(T(java.util.Date).from(endTime),'yyyy-MM-dd HH:mm:ss')}]]</span></li>
         </ul>
         <p>
-            <img src="../../../../images/j0293234.png" th:src="@{/images/j0293234.png}" width="40" height="29"/> <a th:href="@{/admin/contests/new.html}">Add Another Contest</a>
-            <img src="../../../../images/j0293234.png" th:src="@{/images/j0293234.png}" width="40" height="29"/> <a th:href="@{/admin/contests/{contestId}.html(contestId=${contestId})}">See This Contest</a>
+<a class="image2-40-29" th:href="@{/admin/contests/new.html}">Add Another Contest</a>
+<a class="image2-40-29" th:href="@{/admin/contests/{contestId}.html(contestId=${contestId})}">See This Contest</a>
         </p>
         <!--/*/</th:block>/*/-->
     </body>
