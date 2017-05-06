@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.zhanhb.judge.jna.win32;
+package com.github.zhanhb.judge.win32;
 
-import com.github.zhanhb.judge.jna.win32.Debug.DEBUG_EVENT;
+import com.github.zhanhb.judge.win32.Debug.DEBUG_EVENT;
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.WinBase;
 import com.sun.jna.platform.win32.WinBase.FILETIME;
@@ -25,24 +25,24 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import static com.github.zhanhb.judge.jna.win32.Debug.CREATE_PROCESS_DEBUG_EVENT;
-import static com.github.zhanhb.judge.jna.win32.Debug.CREATE_THREAD_DEBUG_EVENT;
-import static com.github.zhanhb.judge.jna.win32.Debug.DBG_CONTINUE;
-import static com.github.zhanhb.judge.jna.win32.Debug.DBG_CONTROL_C;
-import static com.github.zhanhb.judge.jna.win32.Debug.DBG_EXCEPTION_NOT_HANDLED;
-import static com.github.zhanhb.judge.jna.win32.Debug.EXCEPTION_ACCESS_VIOLATION;
-import static com.github.zhanhb.judge.jna.win32.Debug.EXCEPTION_BREAKPOINT;
-import static com.github.zhanhb.judge.jna.win32.Debug.EXCEPTION_DATATYPE_MISALIGNMENT;
-import static com.github.zhanhb.judge.jna.win32.Debug.EXCEPTION_DEBUG_EVENT;
-import static com.github.zhanhb.judge.jna.win32.Debug.EXCEPTION_SINGLE_STEP;
-import static com.github.zhanhb.judge.jna.win32.Debug.EXIT_PROCESS_DEBUG_EVENT;
-import static com.github.zhanhb.judge.jna.win32.Debug.EXIT_THREAD_DEBUG_EVENT;
-import static com.github.zhanhb.judge.jna.win32.Debug.LOAD_DLL_DEBUG_EVENT;
-import static com.github.zhanhb.judge.jna.win32.Debug.OUTPUT_DEBUG_STRING_EVENT;
-import static com.github.zhanhb.judge.jna.win32.Debug.RIP_EVENT;
-import static com.github.zhanhb.judge.jna.win32.Debug.UNLOAD_DLL_DEBUG_EVENT;
-import static com.github.zhanhb.judge.jna.win32.Kernel32.HIGH_PRIORITY_CLASS;
-import static com.github.zhanhb.judge.jna.win32.Kernel32.SEM_NOGPFAULTERRORBOX;
+import static com.github.zhanhb.judge.win32.Debug.CREATE_PROCESS_DEBUG_EVENT;
+import static com.github.zhanhb.judge.win32.Debug.CREATE_THREAD_DEBUG_EVENT;
+import static com.github.zhanhb.judge.win32.Debug.DBG_CONTINUE;
+import static com.github.zhanhb.judge.win32.Debug.DBG_CONTROL_C;
+import static com.github.zhanhb.judge.win32.Debug.DBG_EXCEPTION_NOT_HANDLED;
+import static com.github.zhanhb.judge.win32.Debug.EXCEPTION_ACCESS_VIOLATION;
+import static com.github.zhanhb.judge.win32.Debug.EXCEPTION_BREAKPOINT;
+import static com.github.zhanhb.judge.win32.Debug.EXCEPTION_DATATYPE_MISALIGNMENT;
+import static com.github.zhanhb.judge.win32.Debug.EXCEPTION_DEBUG_EVENT;
+import static com.github.zhanhb.judge.win32.Debug.EXCEPTION_SINGLE_STEP;
+import static com.github.zhanhb.judge.win32.Debug.EXIT_PROCESS_DEBUG_EVENT;
+import static com.github.zhanhb.judge.win32.Debug.EXIT_THREAD_DEBUG_EVENT;
+import static com.github.zhanhb.judge.win32.Debug.LOAD_DLL_DEBUG_EVENT;
+import static com.github.zhanhb.judge.win32.Debug.OUTPUT_DEBUG_STRING_EVENT;
+import static com.github.zhanhb.judge.win32.Debug.RIP_EVENT;
+import static com.github.zhanhb.judge.win32.Debug.UNLOAD_DLL_DEBUG_EVENT;
+import static com.github.zhanhb.judge.win32.Kernel32.HIGH_PRIORITY_CLASS;
+import static com.github.zhanhb.judge.win32.Kernel32.SEM_NOGPFAULTERRORBOX;
 import static com.sun.jna.platform.win32.WinBase.CREATE_BREAKAWAY_FROM_JOB;
 import static com.sun.jna.platform.win32.WinBase.CREATE_NEW_PROCESS_GROUP;
 import static com.sun.jna.platform.win32.WinBase.CREATE_NO_WINDOW;

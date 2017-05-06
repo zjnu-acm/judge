@@ -1,10 +1,7 @@
 package com.github.zhanhb.judge.win32;
 
 import com.github.zhanhb.judge.common.Status;
-import com.github.zhanhb.judge.jna.win32.Kernel32;
-import com.github.zhanhb.judge.jna.win32.Kernel32Util;
-import com.github.zhanhb.judge.jna.win32.Psapi;
-import com.github.zhanhb.judge.jna.win32.Psapi.PROCESS_MEMORY_COUNTERS;
+import com.github.zhanhb.judge.win32.Psapi.PROCESS_MEMORY_COUNTERS;
 import com.sun.jna.platform.win32.Win32Exception;
 import com.sun.jna.platform.win32.WinBase;
 import com.sun.jna.platform.win32.WinNT;

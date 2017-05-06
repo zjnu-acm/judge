@@ -25,14 +25,14 @@ import cn.edu.zjnu.acm.judge.mapper.UserProblemMapper;
 import cn.edu.zjnu.acm.judge.service.JudgeServerService;
 import cn.edu.zjnu.acm.judge.service.LanguageService;
 import cn.edu.zjnu.acm.judge.util.ResultType;
-import com.github.zhanhb.judge.classic.JudgeBridge;
 import com.github.zhanhb.judge.common.ExecuteResult;
+import com.github.zhanhb.judge.common.JudgeBridge;
 import com.github.zhanhb.judge.common.JudgeException;
 import com.github.zhanhb.judge.common.Options;
+import com.github.zhanhb.judge.common.SimpleValidator;
 import com.github.zhanhb.judge.common.Validator;
-import com.github.zhanhb.judge.impl.SimpleValidator;
-import com.github.zhanhb.judge.impl.SpecialValidator;
 import com.github.zhanhb.judge.win32.ProcessCreationHelper;
+import com.github.zhanhb.judge.win32.SpecialValidator;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -211,7 +211,7 @@ public class Judger {
                 ? new SpecialValidator(specialFile.toString(), work)
                 : new SimpleValidator();
         try {
-            ExecuteResult[] ers = JudgeBridge.INSTANCE.execute(optionses, false, validator);
+            ExecuteResult[] ers = JudgeBridge.INSTANCE.judge(optionses, false, validator);
             for (ExecuteResult er : ers) {
                 long tim1 = er.getTime() - extTime;
                 tim1 = Math.max(0, tim1);

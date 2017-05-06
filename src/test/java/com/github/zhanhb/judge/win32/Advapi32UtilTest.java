@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.zhanhb.judge.jna.win32;
+package com.github.zhanhb.judge.win32;
 
 import com.sun.jna.Platform;
 import com.sun.jna.platform.win32.WinNT;
@@ -22,7 +22,7 @@ import org.junit.AssumptionViolatedException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static com.github.zhanhb.judge.jna.win32.Advapi32.SECURITY_MANDATORY_LOW_RID;
+import static com.github.zhanhb.judge.win32.Advapi32.SECURITY_MANDATORY_LOW_RID;
 import static org.junit.Assert.assertEquals;
 
 /**

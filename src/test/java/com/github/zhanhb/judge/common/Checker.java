@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.zhanhb.judge.classic;
+package com.github.zhanhb.judge.common;
 
-import com.github.zhanhb.judge.common.Status;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

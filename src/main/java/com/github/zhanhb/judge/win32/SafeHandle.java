@@ -1,6 +1,5 @@
 package com.github.zhanhb.judge.win32;
 
-import com.github.zhanhb.judge.jna.win32.Kernel32Util;
 import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.WinBase;
 import com.sun.jna.platform.win32.WinNT.HANDLE;

@@ -1,4 +1,4 @@
-package com.github.zhanhb.judge.jna.win32;
+package com.github.zhanhb.judge.win32;
 
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
@@ -8,8 +8,6 @@ import com.sun.jna.platform.win32.WinNT.HANDLE;
 import com.sun.jna.platform.win32.WinNT.PSID;
 import com.sun.jna.platform.win32.WinNT.PSIDByReference;
 import com.sun.jna.win32.W32APIOptions;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings({"PublicInnerClass", "PublicField"})
@@ -45,6 +43,8 @@ public interface Advapi32 extends com.sun.jna.platform.win32.Advapi32 {
 
     class SID_IDENTIFIER_AUTHORITY extends Structure {
 
+        public static final List<String> FIELDS = createFieldsOrder("Value");
+
         public byte[] Value = new byte[6]; // the length of the value must be 6
 
         public SID_IDENTIFIER_AUTHORITY() {
@@ -58,8 +58,9 @@ public interface Advapi32 extends com.sun.jna.platform.win32.Advapi32 {
         }
 
         @Override
+        @SuppressWarnings("ReturnOfCollectionOrArrayField")
         protected List<String> getFieldOrder() {
-            return Collections.singletonList("Value");
+            return FIELDS;
         }
 
     }
@@ -83,16 +84,21 @@ public interface Advapi32 extends com.sun.jna.platform.win32.Advapi32 {
 
     class TOKEN_MANDATORY_LABEL extends Structure {
 
+        public static final List<String> FIELDS = createFieldsOrder("Label");
+
         public SID_AND_ATTRIBUTES Label;
 
         @Override
+        @SuppressWarnings("ReturnOfCollectionOrArrayField")
         protected List<String> getFieldOrder() {
-            return Collections.singletonList("Label");
+            return FIELDS;
         }
 
     }
 
     class SID_AND_ATTRIBUTES extends Structure {
+
+        public static final List<String> FIELDS = createFieldsOrder("Sid", "Attributes");
 
         /**
          * Pointer to a SID structure.
@@ -114,8 +120,9 @@ public interface Advapi32 extends com.sun.jna.platform.win32.Advapi32 {
         }
 
         @Override
+        @SuppressWarnings("ReturnOfCollectionOrArrayField")
         protected List<String> getFieldOrder() {
-            return Arrays.asList("Sid", "Attributes");
+            return FIELDS;
         }
 
     }

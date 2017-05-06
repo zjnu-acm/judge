@@ -13,14 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.zhanhb.judge.classic;
+package com.github.zhanhb.judge.common;
 
 import cn.edu.zjnu.acm.judge.util.DeleteHelper;
-import com.github.zhanhb.judge.common.ExecuteResult;
-import com.github.zhanhb.judge.common.JudgeException;
-import com.github.zhanhb.judge.common.Options;
-import com.github.zhanhb.judge.common.Validator;
-import com.github.zhanhb.judge.impl.SimpleValidator;
 import com.sun.jna.Platform;
 import java.io.File;
 import java.io.IOException;
@@ -125,7 +120,7 @@ public class JudgeBridgeTest {
                 .workDirectory(tmp)
                 .timeLimit(6000)
                 .build();
-        ExecuteResult er = JudgeBridge.INSTANCE.execute(new Options[]{options}, stopOnError, validator)[0];
+        ExecuteResult er = JudgeBridge.INSTANCE.judge(new Options[]{options}, stopOnError, validator)[0];
         log.info("{}", er);
         assertEquals(executable, checker.getStatus(), er.getCode());
     }

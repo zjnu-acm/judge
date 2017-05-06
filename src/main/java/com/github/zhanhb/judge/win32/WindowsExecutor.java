@@ -1,30 +1,44 @@
+/*
+ * Copyright 2017 ZJNU ACM.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.github.zhanhb.judge.win32;
 
 import com.github.zhanhb.judge.common.ExecuteResult;
+import com.github.zhanhb.judge.common.Executor;
 import com.github.zhanhb.judge.common.Options;
 import com.github.zhanhb.judge.common.Status;
-import com.github.zhanhb.judge.jna.win32.Advapi32;
-import com.github.zhanhb.judge.jna.win32.Advapi32.SID_AND_ATTRIBUTES;
-import com.github.zhanhb.judge.jna.win32.Advapi32.SID_IDENTIFIER_AUTHORITY;
-import com.github.zhanhb.judge.jna.win32.Advapi32.TOKEN_MANDATORY_LABEL;
-import com.github.zhanhb.judge.jna.win32.Advapi32Util;
-import com.github.zhanhb.judge.jna.win32.Kernel32;
-import com.github.zhanhb.judge.jna.win32.Kernel32Util;
 import com.sun.jna.platform.win32.WinBase;
-import com.sun.jna.platform.win32.WinBase.PROCESS_INFORMATION;
 import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.platform.win32.WinNT;
-import com.sun.jna.platform.win32.WinNT.HANDLE;
-import com.sun.jna.platform.win32.WinNT.TOKEN_INFORMATION_CLASS;
 import java.nio.file.Path;
 
 import static com.github.zhanhb.judge.common.Constants.TERMINATE_TIMEOUT;
 import static com.github.zhanhb.judge.common.Constants.UPDATE_TIME_THRESHOLD;
-import static com.github.zhanhb.judge.jna.win32.Advapi32.DISABLE_MAX_PRIVILEGE;
-import static com.github.zhanhb.judge.jna.win32.Advapi32.SANDBOX_INERT;
-import static com.github.zhanhb.judge.jna.win32.Advapi32.SECURITY_MANDATORY_LOW_RID;
-import static com.github.zhanhb.judge.jna.win32.Advapi32.SE_GROUP_INTEGRITY;
-import static com.github.zhanhb.judge.jna.win32.Kernel32.HIGH_PRIORITY_CLASS;
+import static com.github.zhanhb.judge.common.Executor.O_CREAT;
+import static com.github.zhanhb.judge.common.Executor.O_DSYNC;
+import static com.github.zhanhb.judge.common.Executor.O_RDONLY;
+import static com.github.zhanhb.judge.common.Executor.O_RDWR;
+import static com.github.zhanhb.judge.common.Executor.O_SYNC;
+import static com.github.zhanhb.judge.common.Executor.O_TEMPORARY;
+import static com.github.zhanhb.judge.common.Executor.O_TRUNC;
+import static com.github.zhanhb.judge.common.Executor.O_WRONLY;
+import static com.github.zhanhb.judge.win32.Advapi32.DISABLE_MAX_PRIVILEGE;
+import static com.github.zhanhb.judge.win32.Advapi32.SANDBOX_INERT;
+import static com.github.zhanhb.judge.win32.Advapi32.SECURITY_MANDATORY_LOW_RID;
+import static com.github.zhanhb.judge.win32.Advapi32.SE_GROUP_INTEGRITY;
+import static com.github.zhanhb.judge.win32.Kernel32.HIGH_PRIORITY_CLASS;
 import static com.sun.jna.platform.win32.WinBase.CREATE_BREAKAWAY_FROM_JOB;
 import static com.sun.jna.platform.win32.WinBase.CREATE_NEW_PROCESS_GROUP;
 import static com.sun.jna.platform.win32.WinBase.CREATE_NO_WINDOW;
@@ -48,65 +62,15 @@ import static com.sun.jna.platform.win32.WinNT.TOKEN_ASSIGN_PRIMARY;
 import static com.sun.jna.platform.win32.WinNT.TOKEN_DUPLICATE;
 import static com.sun.jna.platform.win32.WinNT.TOKEN_QUERY;
 
-public enum Executor {
+/**
+ *
+ * @author zhanhb
+ */
+public enum WindowsExecutor implements Executor {
+
     INSTANCE;
 
-    public static final int _O_RDONLY = 0;
-    public static final int _O_WRONLY = 1;
-    public static final int _O_RDWR = 2;
-
-    /* Mask for access mode bits in the _open flags. */
-    public static final int _O_ACCMODE = _O_WRONLY | _O_RDWR;
-
-    public static final int _O_APPEND = 0x0008;
-    /* Writes will add to the end of the file. */
-
-    public static final int _O_RANDOM = 0x0010;
-    public static final int _O_SEQUENTIAL = 0x0020;
-    public static final int _O_TEMPORARY = 0x0040;
-    /* Make the file dissappear after closing.
-     * WARNING: Even if not created by _open! */
-    public static final int _O_NOINHERIT = 0x0080;
-
-    public static final int _O_CREAT = 0x0100;
-    /* Create the file if it does not exist. */
-    public static final int _O_TRUNC = 0x0200;
-    /* Truncate the file if it does exist. */
-    public static final int _O_EXCL = 0x0400;
-    /* Open only if the file does not exist. */
-
-    public static final int _O_SHORT_LIVED = 0x1000;
-
-    /* NOTE: Text is the default even if the given _O_TEXT bit is not on. */
-    public static final int _O_TEXT = 0x4000;
-    /* CR-LF in file becomes LF in memory. */
-    public static final int _O_BINARY = 0x8000;
-    /* Input and output is not translated. */
-    public static final int _O_RAW = _O_BINARY;
-
-    public static final int _O_WTEXT = 0x10000;
-    public static final int _O_U16TEXT = 0x20000;
-    public static final int _O_U8TEXT = 0x40000;
-
-    /* POSIX/Non-ANSI names for increased portability */
-    public static final int O_RDONLY = _O_RDONLY;
-    public static final int O_WRONLY = _O_WRONLY;
-    public static final int O_RDWR = _O_RDWR;
-    public static final int O_ACCMODE = _O_ACCMODE;
-    public static final int O_APPEND = _O_APPEND;
-    public static final int O_CREAT = _O_CREAT;
-    public static final int O_TRUNC = _O_TRUNC;
-    public static final int O_EXCL = _O_EXCL;
-    public static final int O_TEXT = _O_TEXT;
-    public static final int O_BINARY = _O_BINARY;
-    public static final int O_TEMPORARY = _O_TEMPORARY;
-    public static final int O_NOINHERIT = _O_NOINHERIT;
-    public static final int O_SEQUENTIAL = _O_SEQUENTIAL;
-    public static final int O_RANDOM = _O_RANDOM;
-    public static final int O_SYNC = 0x0800;
-    public static final int O_DSYNC = 0x2000;
-
-    private HANDLE fileOpen(Path path, int flags) {
+    private WinNT.HANDLE fileOpen(Path path, int flags) {
         int access
                 = (flags & O_WRONLY) != 0 ? GENERIC_WRITE
                         : (flags & O_RDWR) != 0 ? (GENERIC_READ | GENERIC_WRITE)
@@ -127,7 +91,7 @@ public enum Executor {
                         : FILE_ATTRIBUTE_NORMAL;
 
         int flagsAndAttributes = maybeWriteThrough | maybeDeleteOnClose;
-        HANDLE h = Kernel32.INSTANCE.CreateFile(
+        WinNT.HANDLE h = Kernel32.INSTANCE.CreateFile(
                 path.toString(), /* Wide char path name */
                 access, /* Read and/or write permission */
                 sharing, /* File sharing flags */
@@ -139,6 +103,7 @@ public enum Executor {
         return h;
     }
 
+    @Override
     public ExecuteResult execute(Options options) {
         Path inputFile = options.getInputFile();
         Path outputPath = options.getOutputFile();
@@ -151,7 +116,7 @@ public enum Executor {
         long memoryLimit = options.getMemoryLimit();
         long outputLimit = options.getOutputLimit();
 
-        PROCESS_INFORMATION pi;
+        WinBase.PROCESS_INFORMATION pi;
 
         try (SafeHandle hIn = new SafeHandle(fileOpen(inputFile, O_RDONLY));
                 SafeHandle hOut = new SafeHandle(fileOpen(outputPath, O_WRONLY | O_CREAT | O_TRUNC));
@@ -221,7 +186,7 @@ public enum Executor {
         }
     }
 
-    private PROCESS_INFORMATION createProcess(String lpCommandLine, HANDLE hIn, HANDLE hOut, HANDLE hErr,
+    private WinBase.PROCESS_INFORMATION createProcess(String lpCommandLine, WinNT.HANDLE hIn, WinNT.HANDLE hOut, WinNT.HANDLE hErr,
             boolean redirectErrorStream, Path lpCurrentDirectory) {
         WinBase.SECURITY_ATTRIBUTES sa = new WinBase.SECURITY_ATTRIBUTES();
         sa.bInheritHandle = true;
@@ -253,20 +218,20 @@ public enum Executor {
         }
 
         try (SafeHandle hToken = new SafeHandle(createRestrictedToken())) {
-            SID_IDENTIFIER_AUTHORITY pIdentifierAuthority = new SID_IDENTIFIER_AUTHORITY(new byte[]{0, 0, 0, 0, 0, 16});
+            Advapi32.SID_IDENTIFIER_AUTHORITY pIdentifierAuthority = new Advapi32.SID_IDENTIFIER_AUTHORITY(new byte[]{0, 0, 0, 0, 0, 16});
 
             WinNT.PSID pSid = Advapi32Util.newPSID(pIdentifierAuthority, SECURITY_MANDATORY_LOW_RID);
 
             try {
-                TOKEN_MANDATORY_LABEL tokenInformation = new TOKEN_MANDATORY_LABEL();
-                SID_AND_ATTRIBUTES sidAndAttributes = new SID_AND_ATTRIBUTES();
+                Advapi32.TOKEN_MANDATORY_LABEL tokenInformation = new Advapi32.TOKEN_MANDATORY_LABEL();
+                Advapi32.SID_AND_ATTRIBUTES sidAndAttributes = new Advapi32.SID_AND_ATTRIBUTES();
                 sidAndAttributes.Attributes = SE_GROUP_INTEGRITY;
                 sidAndAttributes.Sid = pSid.getPointer();
                 tokenInformation.Label = sidAndAttributes;
 
                 Kernel32Util.assertTrue(Advapi32.INSTANCE.SetTokenInformation(
                         hToken.getValue(),
-                        TOKEN_INFORMATION_CLASS.TokenIntegrityLevel,
+                        WinNT.TOKEN_INFORMATION_CLASS.TokenIntegrityLevel,
                         tokenInformation,
                         tokenInformation.size() + Advapi32.INSTANCE.GetLengthSid(pSid)));
 
@@ -290,7 +255,7 @@ public enum Executor {
         return lpProcessInformation;
     }
 
-    private HANDLE createRestrictedToken() {
+    private WinNT.HANDLE createRestrictedToken() {
         try (SafeHandle token = new SafeHandle(
                 Advapi32Util.openProcessToken(Kernel32.INSTANCE.GetCurrentProcess(),
                         TOKEN_DUPLICATE | TOKEN_ASSIGN_PRIMARY | TOKEN_QUERY | TOKEN_ADJUST_DEFAULT))) {

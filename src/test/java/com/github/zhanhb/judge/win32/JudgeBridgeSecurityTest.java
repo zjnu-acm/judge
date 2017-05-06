@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.zhanhb.judge.classic;
+package com.github.zhanhb.judge.win32;
 
 import com.github.zhanhb.judge.common.ExecuteResult;
+import com.github.zhanhb.judge.common.JudgeBridge;
 import com.github.zhanhb.judge.common.JudgeException;
 import com.github.zhanhb.judge.common.Options;
+import com.github.zhanhb.judge.common.SimpleValidator;
 import com.github.zhanhb.judge.common.Status;
 import com.github.zhanhb.judge.common.Validator;
-import com.github.zhanhb.judge.impl.SimpleValidator;
 import com.sun.jna.Platform;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -61,7 +62,7 @@ public class JudgeBridgeSecurityTest {
                 .errFile(nullPath)
                 .build();
         try {
-            ExecuteResult er = JudgeBridge.INSTANCE.execute(new Options[]{options}, true, validator)[0];
+            ExecuteResult er = JudgeBridge.INSTANCE.judge(new Options[]{options}, true, validator)[0];
             log.info("{}", er);
             assertEquals(Status.RUNTIME_ERROR, er.getCode());
         } finally {

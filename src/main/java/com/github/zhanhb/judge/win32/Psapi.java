@@ -1,4 +1,4 @@
-package com.github.zhanhb.judge.jna.win32;
+package com.github.zhanhb.judge.win32;
 
 import com.sun.jna.Native;
 import com.sun.jna.Structure;
@@ -6,7 +6,6 @@ import com.sun.jna.platform.win32.BaseTSD;
 import com.sun.jna.platform.win32.WinNT.HANDLE;
 import com.sun.jna.win32.StdCallLibrary;
 import com.sun.jna.win32.W32APIOptions;
-import java.util.Arrays;
 import java.util.List;
 
 public interface Psapi extends StdCallLibrary {
@@ -21,6 +20,17 @@ public interface Psapi extends StdCallLibrary {
      */
     @SuppressWarnings({"PublicField", "PublicInnerClass"})
     public static class PROCESS_MEMORY_COUNTERS extends Structure {
+
+        public static final List<String> FIELDS = createFieldsOrder("cb",
+                "PageFaultCount",
+                "PeakWorkingSetSize",
+                "WorkingSetSize",
+                "QuotaPeakPagedPoolUsage",
+                "QuotaPagedPoolUsage",
+                "QuotaPeakNonPagedPoolUsage",
+                "QuotaNonPagedPoolUsage",
+                "PagefileUsage",
+                "PeakPagefileUsage");
 
         /**
          * The size of the structure, in bytes.
@@ -67,19 +77,9 @@ public interface Psapi extends StdCallLibrary {
         public BaseTSD.SIZE_T PeakPagefileUsage;
 
         @Override
+        @SuppressWarnings("ReturnOfCollectionOrArrayField")
         protected List<String> getFieldOrder() {
-            return Arrays.asList(
-                    "cb",
-                    "PageFaultCount",
-                    "PeakWorkingSetSize",
-                    "WorkingSetSize",
-                    "QuotaPeakPagedPoolUsage",
-                    "QuotaPagedPoolUsage",
-                    "QuotaPeakNonPagedPoolUsage",
-                    "QuotaNonPagedPoolUsage",
-                    "PagefileUsage",
-                    "PeakPagefileUsage"
-            );
+            return FIELDS;
         }
     }
 

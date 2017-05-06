@@ -1,4 +1,4 @@
-package com.github.zhanhb.judge.jna.win32;
+package com.github.zhanhb.judge.win32;
 
 import com.sun.jna.platform.win32.Win32Exception;
 import com.sun.jna.platform.win32.WinBase;

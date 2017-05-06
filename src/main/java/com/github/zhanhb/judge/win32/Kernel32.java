@@ -1,4 +1,4 @@
-package com.github.zhanhb.judge.jna.win32;
+package com.github.zhanhb.judge.win32;
 
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
@@ -6,8 +6,6 @@ import com.sun.jna.Structure;
 import com.sun.jna.platform.win32.WinBase;
 import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.win32.W32APIOptions;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nullable;
 
@@ -112,6 +110,16 @@ public interface Kernel32 extends com.sun.jna.platform.win32.Kernel32 {
      */
     class JOBOBJECT_BASIC_LIMIT_INFORMATION extends JOBOBJECT_INFORMATION {
 
+        public static final List<String> FIELDS = createFieldsOrder("PerProcessUserTimeLimit",
+                "PerJobUserTimeLimit",
+                "LimitFlags",
+                "MinimumWorkingSetSize",
+                "MaximumWorkingSetSize",
+                "ActiveProcessLimit",
+                "Affinity",
+                "PriorityClass",
+                "SchedulingClass");
+
         public long PerProcessUserTimeLimit;
         public long PerJobUserTimeLimit;
         public int LimitFlags;
@@ -123,18 +131,9 @@ public interface Kernel32 extends com.sun.jna.platform.win32.Kernel32 {
         public int SchedulingClass;
 
         @Override
+        @SuppressWarnings("ReturnOfCollectionOrArrayField")
         protected List<String> getFieldOrder() {
-            return Arrays.asList(
-                    "PerProcessUserTimeLimit",
-                    "PerJobUserTimeLimit",
-                    "LimitFlags",
-                    "MinimumWorkingSetSize",
-                    "MaximumWorkingSetSize",
-                    "ActiveProcessLimit",
-                    "Affinity",
-                    "PriorityClass",
-                    "SchedulingClass"
-            );
+            return FIELDS;
         }
 
     }
@@ -235,11 +234,14 @@ public interface Kernel32 extends com.sun.jna.platform.win32.Kernel32 {
      */
     class JOBOBJECT_BASIC_UI_RESTRICTIONS extends JOBOBJECT_INFORMATION {
 
+        public static final List<String> FIELDS = createFieldsOrder("UIRestrictionsClass");
+
         public int /*DWORD*/ UIRestrictionsClass;
 
         @Override
+        @SuppressWarnings("ReturnOfCollectionOrArrayField")
         protected List<String> getFieldOrder() {
-            return Collections.singletonList("UIRestrictionsClass");
+            return FIELDS;
         }
 
     };

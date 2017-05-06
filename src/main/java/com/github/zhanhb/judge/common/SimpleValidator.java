@@ -1,8 +1,5 @@
-package com.github.zhanhb.judge.impl;
+package com.github.zhanhb.judge.common;
 
-import com.github.zhanhb.judge.common.JudgeException;
-import com.github.zhanhb.judge.common.Status;
-import com.github.zhanhb.judge.common.Validator;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
