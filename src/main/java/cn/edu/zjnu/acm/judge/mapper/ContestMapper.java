@@ -138,7 +138,7 @@ public interface ContestMapper {
             + "where cp.contest_id=#{contest} and cp.num=#{problem}")
     Problem getProblem(
             @Param("contest") long contestId,
-            @Param("problem") long problemOrder);
+            @Param("problem") long problemNum);
 
     @Select("select" + COLUMNS + "from contest where contest_id=#{id} and not disabled")
     Contest findOneByIdAndDisabledFalse(@Param("id") long contestId);

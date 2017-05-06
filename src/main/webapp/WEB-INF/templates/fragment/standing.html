@@ -7,7 +7,9 @@
             <th width="10%">Nick Name</th>
             <th width="5%">Accepts</th>
             <th width="10%">Penalty</th>
-            <th th:each="problem,it : ${problems}" th:object="${problem}"><a th:href="@{/contests/{contestId}/problems/{problemId}(contestId=${id},problemId=*{id})}" th:text="${T(Character).valueOf(65+it.index)}"></a></th>
+            <th th:each="problem,it : ${problems}" th:object="${problem}">
+                <a th:href="@{/contests/{contestId}/problems/{problemId}.html(contestId=${id},problemId=*{id})}" th:text="${T(Character).valueOf(65+it.index)}"></a>
+            </th>
         </tr>
         <tr align="center" th:each="user : ${standing}" th:object="${user}">
             <td th:text="*{index}">1</td>

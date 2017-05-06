@@ -120,9 +120,9 @@ public class ContestController {
 
     @GetMapping("problems/{pid}")
     public String showProblem(@PathVariable("contestId") long contestId,
-            @PathVariable("pid") long problemOrder,
+            @PathVariable("pid") long problemNum,
             RedirectAttributes redirectAttributes) {
-        Problem problem = contestMapper.getProblem(contestId, problemOrder);
+        Problem problem = contestMapper.getProblem(contestId, problemNum);
         if (problem == null) {
             throw new EntityNotFoundException();
         }

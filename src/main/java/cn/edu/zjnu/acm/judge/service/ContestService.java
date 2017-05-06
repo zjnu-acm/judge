@@ -60,14 +60,14 @@ public class ContestService {
     public void addProblem(long contestId, long problemId) {
         problemMapper.setContest(problemId, contestId);
         contestMapper.addProblem(contestId, problemId, null, 9999999);
-        updateContestOrder(contestId, 0);
+        updateContestOrder(contestId, 1000);
     }
 
     @Transactional
     public void removeProblem(long contestId, long problemId) {
         problemMapper.setContest(problemId, null);
         contestMapper.deleteContestProblem(contestId, problemId);
-        updateContestOrder(contestId, 0);
+        updateContestOrder(contestId, 1000);
     }
 
 }

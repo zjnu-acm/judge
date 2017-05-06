@@ -14,7 +14,7 @@
                     <table border="0" width="100%" th:if="${problems!=null}">
                         <tr>
                             <td style="text-align:center" th:each="problem,it:${problems}" th:object="${problem}">
-                                <a th:href="@{/showproblem(problem_id=*{orign})}">
+                                <a th:href="@{/contests/{contestId}/problems/{pid}.html(contestId=${contestId},pid=*{id})}">
                                     <b>[[${T(java.lang.Character).toString(65+it.index)}]]</b>
                                 </a>
                             </td>
