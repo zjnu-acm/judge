@@ -10,10 +10,10 @@
     </head>
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
-        <form method="post" th:action="@{/admin/contests.html}">
+        <form method="POST" th:action="@{/admin/contests.html}">
             <p class="text-center" style="color: #333399;font-size: large;">Add a Contest</p>
             <p class="text-left">
-                <label th:for="${#ids.next('title')}">Title:</label>
+                <label th:for="${#ids.next('title')}">Title: </label>
                 <input th:id="${#ids.seq('title')}" type="text" name="title" size="71"/>
             </p>
             <p class="text-left">
@@ -22,11 +22,11 @@
                 <textarea th:id="${#ids.seq('description')}" rows="8" name="description" cols="76"></textarea>
             </p>
             <p class="text-left">
-                <span>Start Time:</span>
-                <input th:id="${#ids.seq('start')}" type="text" name="start" required="required" th:value="${#calendars.format(T(java.util.Date).from(#execInfo.now),'yyyy-MM-dd HH:00')}"/>
+                <label th:for="${#ids.next('start')}">Start Time: </label>
+                <input th:id="${#ids.seq('start')}" type="text" name="start" required="required" th:value="${#calendars.format(#execInfo.now,'yyyy-MM-dd HH:00')}"/>
             </p>
             <p class="text-left">
-                <span>Length:</span>
+                <label th:for="${#ids.next('length')}">Length: </label>
                 <input th:id="${#ids.seq('length')}" type="text" name="length" value="5:00:00" required="required" pattern="\d+:[0-5]?[0-9]:[0-5]?[0-9]"/>
             </p>
             <div class="text-center">

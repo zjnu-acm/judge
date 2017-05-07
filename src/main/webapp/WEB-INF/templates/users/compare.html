@@ -4,6 +4,7 @@
       layout:decorate="~{layout/main}">
     <head>
         <title>[[${uid1}]] vs [[${uid2}]]</title>
+        <style>.problem-ids .id{float:left;padding:0 2px;}</style>
     </head>
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
@@ -34,8 +35,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <a th:each="p:${a}" th:href="@{/showproblem(problem_id=${p})}" th:text="|${p}|" style="float:left;padding:0 2px">1000</a>
+                    <td class="problem-ids">
+                        <a th:each="p:${a}" th:href="@{/showproblem(problem_id=${p})}" th:text="|${p}|" class="id">1000</a>
                     </td>
                 </tr>
                 <tr bgcolor="#6589D1">
@@ -46,8 +47,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <a th:each="p:${b}" th:href="@{/showproblem(problem_id=${p})}" th:text="|${p}|" style="float:left;padding:0 2px">1000</a>
+                    <td class="problem-ids">
+                        <a th:each="p:${b}" th:href="@{/showproblem(problem_id=${p})}" th:text="|${p}|" class="id">1000</a>
                     </td>
                 </tr>
                 <tr bgcolor="#6589D1">
@@ -60,8 +61,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <a th:each="p:${c}" th:href="@{/showproblem(problem_id=${p})}" th:text="|${p}|" style="float:left;padding:0 2px">1000</a>
+                    <td class="problem-ids">
+                        <a th:each="p:${c}" th:href="@{/showproblem(problem_id=${p})}" th:text="|${p}|" class="id">1000</a>
                     </td>
                 </tr>
                 <tr bgcolor="#6589D1">
@@ -72,8 +73,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <a th:each="p:${d}" th:href="@{/showproblem(problem_id=${p})}" th:text="|${p}|" style="float:left;padding:0 2px">1000</a>
+                    <td class="problem-ids">
+                        <a th:each="p:${d}" th:href="@{/showproblem(problem_id=${p})}" th:text="|${p}|" class="id">1000</a>
                     </td>
                 </tr>
                 <tr bgcolor="#6589D1">
@@ -84,8 +85,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <a th:each="p:${e}" th:href="@{/showproblem(problem_id=${p})}" th:text="|${p}|" style="float:left;padding:0 2px">1000</a>
+                    <td class="problem-ids">
+                        <a th:each="p:${e}" th:href="@{/showproblem(problem_id=${p})}" th:text="|${p}|" class="id">1000</a>
                     </td>
                 </tr>
                 <tr bgcolor="#6589D1">
@@ -98,8 +99,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <a th:each="p:${f}" th:href="@{/showproblem(problem_id=${p})}" th:text="|${p}|" style="float:left;padding:0 2px">1000</a>
+                    <td class="problem-ids">
+                        <a th:each="p:${f}" th:href="@{/showproblem(problem_id=${p})}" th:text="|${p}|" class="id">1000</a>
                     </td>
                 </tr>
             </tbody>

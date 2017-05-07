@@ -10,7 +10,7 @@
         <!--/*/<th:block layout:fragment="content">/*/-->
         <ul><li><font style="color: #333399" size="5">Solution Details</font></li></ul>
         <table align="center" cellspacing="0" cellpadding="0" width="75%" border="1" class="table-back" style="border-collapse: collapse" bordercolor="#FFF">
-            <tbody>
+            <thead>
                 <tr bgcolor="#6589D1">
                     <td align="center" width="25%"><b>Case num</b></td>
                     <td align="center" width="25%"><b>Result</b></td>
@@ -18,6 +18,8 @@
                     <td align="center" width="7%"><b>Time</b></td>
                     <td align="center" width="25%"><b>Memory</b></td>
                 </tr>
+            </thead>
+            <tbody>
                 <tr th:each="detail,it:${details}" align="center" th:object="${detail}">
                     <td th:text="${it.count}">1</td>
                     <td th:text="*{result}">Accepted</td>

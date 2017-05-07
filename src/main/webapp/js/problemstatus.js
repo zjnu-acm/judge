@@ -1,11 +1,12 @@
 var onit = true;
 var num = 0;
+var Stop;
 function moveup(iteam, top, txt, rec) {
-    temp = eval(iteam);
-    tempat = eval(top);
-    temptxt = eval(txt);
-    temprec = eval(rec);
-    at = parseInt(temp.style.top);
+    var temp = eval(iteam);
+    var tempat = eval(top);
+    var temptxt = eval(txt);
+    var temprec = eval(rec);
+    var at = parseInt(temp.style.top);
     temprec.style.display = "";
     if (num > 27) {
         temptxt.style.display = "";
@@ -13,15 +14,17 @@ function moveup(iteam, top, txt, rec) {
     if (at > (tempat - 28) && onit) {
         num++;
         temp.style.top = at - 1;
-        Stop = setTimeout("moveup(temp,tempat,temptxt,temprec)", 10);
+        Stop = setTimeout(function(){
+            moveup(temp,tempat,temptxt,temprec);
+        }, 10);
     } else {
         return;
     }
 }
 function movedown(iteam, top, txt, rec) {
-    temp = eval(iteam);
-    temptxt = eval(txt);
-    temprec = eval(rec);
+    var temp = eval(iteam);
+    var temptxt = eval(txt);
+    var temprec = eval(rec);
     clearTimeout(Stop);
     temp.style.top = top;
     num = 0;
@@ -29,9 +32,9 @@ function movedown(iteam, top, txt, rec) {
     temprec.style.display = "none";
 }
 function ontxt(iteam, top, txt, rec) {
-    temp = eval(iteam);
-    temptxt = eval(txt);
-    temprec = eval(rec);
+    var temp = eval(iteam);
+    var temptxt = eval(txt);
+    var temprec = eval(rec);
     if (onit) {
         temp.style.top = top - 28;
         temptxt.style.display = "";
@@ -45,7 +48,7 @@ function movereset(over) {
         onit = true;
     }
 }
-function table_n_ie(num, tot1, tot2, href01) {
+function table_n_ie(sa, num, tot1, tot2, href01) {
     var i;
     var allvalues = 0;
     for (i = 0; i < num; i++) {
@@ -61,9 +64,10 @@ function table_n_ie(num, tot1, tot2, href01) {
     }
     document.write("</table>");
 }
-function table(num, table_left, table_top, all_width, all_height, table_title, unit, radius, l_width, tot1, tot2, href01) {
+function table(sa, table_left, table_top, all_width, all_height, table_title, unit, radius, l_width, tot1, tot2, href01) {
+    var num = Math.max(sa[0].length, sa[1].length);
     if (!(window.navigator.userAgent.indexOf("MSIE 6.0") >= 1 || window.navigator.userAgent.indexOf("MSIE 7.0") >= 1)) {
-        table_n_ie(num, tot1, tot2, href01);
+        table_n_ie(sa, num, tot1, tot2, href01);
         return;
     }
     var allvalues = 0, i, j;

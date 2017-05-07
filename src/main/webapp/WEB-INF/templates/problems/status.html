@@ -9,84 +9,82 @@
     </head>
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
-        <table>
-            <tbody>
-                <tr>
-                    <td valign="top">
-                        <div style="position:relative; height:650px; width:260px">
-                            <script src="../../../js/problemstatus.js" th:src="@{/js/problemstatus.js(_=${application.startUpDate})}"></script>
-                            <script th:inline="javascript">var sa=/*[+[[${sa}]]+]*//*[-*/null/*-]*/;var len=0;if(sa[0].length>sa[1].length){len=sa[1].length;}else{len=sa[0].length;}table(len,0,0,600,600,'Statistics','',200,250,/*[+[[${problem.submitUser}]]+]*//*[-*/5/*-]*/,/*[+[[${problem.solved}]]+]*//*[-*/4/*-]*/,'status?problem_id='+/*[+[[${problem.id}]]+]*//*[-*/1/*-]*/);</script>
-                        </div>
-                    </td>
-                    <td valign="top">
-                        <p align="center">
-                            <font size="5" color="#333399">
-                                <span>Best solutions of Problem </span>
-                                <a th:href="@{/showproblem(problem_id=${problem.id})}">[[${problem.id}]]</a></font>
-                        </p>
-                        <table cellspacing="0" cellpadding="0" width="700" border="1" class="problem-status table-back" style="border-color: white">
-                            <tbody>
-                                <tr class="inc">
-                                    <th width="5%">Rank</th>
-                                    <th align="center" width="15%">Run ID</th>
-                                    <th width="15%">User</th>
-                                    <th width="10%">
-                                        <a class="sortable"
-                                           th:href="@{/problemstatus(problem_id=${problem.id},sort='memory,time,code_length')}">Memory</a>
-                                    </th>
-                                    <th width="10%">
-                                        <a class="sortable"
-                                           th:href="@{/problemstatus(problem_id=${problem.id},sort='time,memory,code_length')}">Time</a>
-                                    </th>
-                                    <th width="10%">Language</th>
-                                    <th width="10%"><a class="sortable" th:href="@{/problemstatus(problem_id=${problem.id},sort='code_length,time,memory')}">Code Length</a></th>
-                                    <th width="25%">Submit Time</th>
-                                </tr>
-                                <tr align="center" th:each="item,it:${page}" th:object="${item}">
-                                    <td>[[${page.number*page.size+it.count}]]</td>
-                                    <td>[[*{id}]]</td>
-                                    <td>
-                                        <a th:href="@{/userstatus(user_id=*{user})}">[[*{user}]]</a>
-                                    </td>
-                                    <!--/*/<th:block th:if="${canView || contestId==null}">/*/-->
-                                    <td>[[*{memory}]]K</td>
-                                    <td>[[*{time}]]MS</td>
-                                    <!--/*/</th:block>/*/-->
-                                    <!--/*/<th:block th:unless="${canView || contestId==null}">
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    </th:block>/*/-->
-                                    <td>
-                                        <a th:if="${canView||authentication?.name==item.user}" th:href="@{/showsource(solution_id=*{id})}"
-                                           th:text="*{@languageService.getLanguageName(language)}"
-                                           target="_blank">GNU C++</a>
-                                        <th:block th:unless="${canView||authentication?.name==item.user}">[[*{@languageService.getLanguageName(language)}]]</th:block>
-                                    </td>
-                                    <td th:if="${canView || contestId==null}">[[*{new java.text.DecimalFormat("0.00").format(sourceLength/1024.0)}]]K</td>
-                                    <!--/*/<td th:unless="${canView || contestId==null}">&nbsp;</td>/*/-->
-                                    <td>[[*{#calendars.format(T(java.util.Date).from(inDate),'yyyy-MM-dd HH:mm:ss')}]]</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <p align="center">
-                            <span>[</span>
-                            <a th:href="@{${url}}">Top</a>
-                            <span>]</span>
-                            <span th:remove="tag" th:if="${page.hasPrevious()}">
-                                <span>[</span>
-                                <a th:href="@{${url}(page=${page.previousPageable().pageNumber})}">Previous Page</a>
-                                <span>]</span>
-                            </span>
-                            <span th:remove="tag" th:if="${page.hasNext()}">
-                                <span>[</span>
-                                <a th:href="@{${url}(page=${page.nextPageable().pageNumber})}">Next Page</a>
-                                <span>]</span>
-                            </span>
-                        </p>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div style="overflow: auto">
+            <div style="float: left">
+                <div style="position:relative; width:260px">
+                    <script src="../../../js/problemstatus.js" th:src="@{/js/problemstatus.js(_=${application.startUpDate})}"></script>
+                    <script th:inline="javascript">table(/*[+[[${sa}]]+]*//*[-*/null/*-]*/, 0, 0, 600, 600, 'Statistics', '', 200, 250, /*[+[[${problem.submitUser}]]+]*//*[-*/5/*-]*/, /*[+[[${problem.solved}]]+]*//*[-*/4/*-]*/, /*[+[[@{/status(problem_id=${problem.id})}]]+]*//*[-*/'#'/*-]*/);</script>
+                </div>
+            </div>
+            <div style="float: left">
+                <p align="center">
+                    <font size="5" color="#333399">
+                        <span>Best solutions of Problem </span>
+                        <a th:href="@{/showproblem(problem_id=${problem.id})}">[[${problem.id}]]</a></font>
+                </p>
+                <table cellspacing="0" cellpadding="0" width="700" border="1" class="problem-status table-back" style="border-color: white">
+                    <thead>
+                        <tr class="inc">
+                            <th width="5%">Rank</th>
+                            <th align="center" width="15%">Run ID</th>
+                            <th width="15%">User</th>
+                            <th width="10%">
+                                <a class="sortable"
+                                   th:href="@{/problemstatus(problem_id=${problem.id},sort='memory,time,code_length')}">Memory</a>
+                            </th>
+                            <th width="10%">
+                                <a class="sortable"
+                                   th:href="@{/problemstatus(problem_id=${problem.id},sort='time,memory,code_length')}">Time</a>
+                            </th>
+                            <th width="10%">Language</th>
+                            <th width="10%"><a class="sortable" th:href="@{/problemstatus(problem_id=${problem.id},sort='code_length,time,memory')}">Code Length</a></th>
+                            <th width="25%">Submit Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr align="center" th:each="item,it:${page}" th:object="${item}">
+                            <td>[[${page.number*page.size+it.count}]]</td>
+                            <td>[[*{id}]]</td>
+                            <td>
+                                <a th:href="@{/userstatus(user_id=*{user})}">[[*{user}]]</a>
+                            </td>
+                            <!--/*/<th:block th:if="${canView || contestId==null}">/*/-->
+                            <td>[[*{memory}]]K</td>
+                            <td>[[*{time}]]MS</td>
+                            <!--/*/</th:block>/*/-->
+                            <!--/*/<th:block th:unless="${canView || contestId==null}">
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            </th:block>/*/-->
+                            <td>
+                                <a th:if="${canView||authentication?.name==item.user}" th:href="@{/showsource(solution_id=*{id})}"
+                                   th:text="*{@languageService.getLanguageName(language)}"
+                                   target="_blank">GNU C++</a>
+                                <th:block th:unless="${canView||authentication?.name==item.user}">[[*{@languageService.getLanguageName(language)}]]</th:block>
+                            </td>
+                            <td th:if="${canView || contestId==null}">[[*{new java.text.DecimalFormat("0.00").format(sourceLength/1024.0)}]]K</td>
+                            <!--/*/<td th:unless="${canView || contestId==null}">&nbsp;</td>/*/-->
+                            <td>[[*{#calendars.format(T(java.util.Date).from(inDate),'yyyy-MM-dd HH:mm:ss')}]]</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p align="center">
+                    <span>[</span>
+                    <a th:href="@{${url}}">Top</a>
+                    <span>]</span>
+                    <span th:remove="tag" th:if="${page.hasPrevious()}">
+                        <span>[</span>
+                        <a th:href="@{${url}(page=${page.previousPageable().pageNumber})}">Previous Page</a>
+                        <span>]</span>
+                    </span>
+                    <span th:remove="tag" th:if="${page.hasNext()}">
+                        <span>[</span>
+                        <a th:href="@{${url}(page=${page.nextPageable().pageNumber})}">Next Page</a>
+                        <span>]</span>
+                    </span>
+                </p>
+            </div>
+        </div>
         <!--/*/</th:block>/*/-->
     </body>
 </html>

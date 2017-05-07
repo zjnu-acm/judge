@@ -90,7 +90,7 @@ public class ProblemStatusController {
             int score = scoreCount.getScore();
             scores.add(ResultType.getShowsourceString(score));
             counts.add(scoreCount.getCount());
-            urls.add("status?problem_id=" + id + "&score=" + score);
+            urls.add(request.getContextPath() + "/status?problem_id=" + id + "&score=" + score);
         }
         List<Submission> bestSubmissions = submissionMapper.bestSubmission(id, pageable);
         long total = pageable.getOffset() + bestSubmissions.size() + (pageable.getPageSize() == bestSubmissions.size() ? 1 : 0);

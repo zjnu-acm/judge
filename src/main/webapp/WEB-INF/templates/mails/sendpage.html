@@ -9,7 +9,7 @@
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
         <h2 style="text-align: center"><span style="color: blue">Write mail</span></h2>
-        <form method="post" th:action="@{/send}">
+        <form method="POST" th:action="@{/send}">
             <label th:for="${#ids.next('username')}">To:</label>
             <span>&nbsp;&nbsp;&nbsp;</span>
             <input th:id="${#ids.seq('username')}" type="text" name="to" th:value="${to}" size="15"/>(Write Receiver's  User Id here)<br/>
