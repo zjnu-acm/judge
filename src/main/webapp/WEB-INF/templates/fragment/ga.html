@@ -1,5 +1,5 @@
 <th:block
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:th="http://www.thymeleaf.org">
-    <script th:inline="javascript" th:with="userPrincipal=${#request.userPrincipal}">(function(i,s,o,g,r,a,m){i.GoogleAnalyticsObject=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=+new Date;a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create','UA-60789828-1','auto');ga('send','pageview');</script>
+    <script th:inline="javascript" th:with="userPrincipal=${#request.userPrincipal}">(function(i,s,o,g,r,a,m){i.GoogleAnalyticsObject=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=+new Date;a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create','UA-60789828-1','auto',{userId:/*[+[[${userPrincipal!=null?userPrincipal.name:null}]]+]*//*[-*/null/*-]*/});ga('send','pageview');</script>
 </th:block>
