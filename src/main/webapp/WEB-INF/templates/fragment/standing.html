@@ -2,25 +2,29 @@
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:th="http://www.thymeleaf.org">
     <table class="standing table-back">
-        <tr align="center">
-            <th width="5%">Rank</th>
-            <th width="10%">Nick Name</th>
-            <th width="5%">Accepts</th>
-            <th width="10%">Penalty</th>
-            <th th:each="problem,it : ${problems}" th:object="${problem}">
-                <a th:href="@{/contests/{contestId}/problems/{problemId}.html(contestId=${id},problemId=*{id})}" th:text="${T(Character).valueOf(65+it.index)}"></a>
-            </th>
-        </tr>
-        <tr align="center" th:each="user : ${standing}" th:object="${user}">
-            <td th:text="*{index}">1</td>
-            <td><a th:href="@{/userstatus(user_id=*{user})}" th:text="*{nick}">userId</a></td>
-            <td><a th:href="@{/status(user_id=*{user},contest_id=${id})}" th:text="*{solved}">4</a></td>
-            <td th:text="*{T(cn.edu.zjnu.acm.judge.util.JudgeUtils).formatTime(time)}">12:40:59</td>
-            <td th:each="problem : ${problems}" th:object="${problem}" th:with="penalty=${user.getPenalty(problem.id)},time=${user.getTime(problem.id)}">
-                <th:block th:if="${time != null}" th:text="${T(cn.edu.zjnu.acm.judge.util.JudgeUtils).formatTime(time)}"/>
-                <th:block th:if="${time != null and penalty gt 0}" th:utext="'&#13;&#10;'"/>
-                <th:block th:if="${penalty gt 0}">(-[[${penalty}]])</th:block>
-            </td>
-        </tr>
+        <thead>
+            <tr align="center">
+                <th width="5%">Rank</th>
+                <th width="10%">Nick Name</th>
+                <th width="5%">Accepts</th>
+                <th width="10%">Penalty</th>
+                <th th:each="problem,it : ${problems}" th:object="${problem}">
+                    <a th:href="@{/contests/{contestId}/problems/{problemId}.html(contestId=${id},problemId=*{id})}" th:text="${T(Character).valueOf(65+it.index)}"></a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr align="center" th:each="user : ${standing}" th:object="${user}">
+                <td th:text="*{index}">1</td>
+                <td><a th:href="@{/userstatus(user_id=*{user})}" th:text="*{nick}">userId</a></td>
+                <td><a th:href="@{/status(user_id=*{user},contest_id=${id})}" th:text="*{solved}">4</a></td>
+                <td th:text="*{T(cn.edu.zjnu.acm.judge.util.JudgeUtils).formatTime(time)}">12:40:59</td>
+                <td th:each="problem : ${problems}" th:object="${problem}" th:with="penalty=${user.getPenalty(problem.id)},time=${user.getTime(problem.id)}">
+                    <th:block th:if="${time != null}" th:text="${T(cn.edu.zjnu.acm.judge.util.JudgeUtils).formatTime(time)}"/>
+                    <th:block th:if="${time != null and penalty gt 0}" th:utext="'&#13;&#10;'"/>
+                    <th:block th:if="${penalty gt 0}">(-[[${penalty}]])</th:block>
+                </td>
+            </tr>
+        </tbody>
     </table>
 </th:block>

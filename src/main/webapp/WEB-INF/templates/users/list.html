@@ -17,28 +17,28 @@
         <table align="center" cellspacing="0" cellpadding="0" width="980" border="1" class="table-back" style="border-collapse: collapse; border-color: white">
             <thead>
                 <tr align="center" bgcolor="#6589D1">
-                    <td width="5%"><b>No.</b></td>
-                    <td width="10%"><b>User ID</b></td>
-                    <td width="55%"><b>Nick Name</b></td>
-                    <td width="10%">
+                    <th width="5%"><b>No.</b></th>
+                    <th width="10%"><b>User ID</b></th>
+                    <th width="55%"><b>Nick Name</b></th>
+                    <th width="10%">
                         <a th:href="@{/userlist}">
                             <b>
                                 <span style="color: white">Solved Problems</span>
                             </b>
                         </a>
-                    </td>
-                    <td width="10%">
+                    </th>
+                    <th width="10%">
                         <a th:href="@{/userlist(sort='submit,desc',sort=solved)}">
                             <b>
                                 <span style="color: white">Submit</span>
                             </b>
                         </a>
-                    </td>
-                    <td width="10%">
+                    </th>
+                    <th width="10%">
                         <a th:href="@{/userlist(sort='ratio,solved,desc')}">
                             <b><span style="color: white">Ratio (AC/submit)</span></b>
                         </a>
-                    </td>
+                    </th>
                 </tr>
             </thead>
             <tbody>

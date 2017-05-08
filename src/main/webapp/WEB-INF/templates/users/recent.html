@@ -19,20 +19,24 @@
             </form>
         </div>
         <table align="center" cellspacing="0" cellpadding="0" width="600" border="1" class="table-back" style="border-collapse: collapse;border: white">
-            <tr>
-                <th>No.</th>
-                <th>User Id</th>
-                <th>Nick</th>
-                <th>Accepted</th>
-                <th>Submit</th>
-            </tr>
-            <tr align="center" th:each="user,it:${recentrank}" th:object="${user}">
-                <td th:text="${it.count}">1</td>
-                <td><a th:href="@{/userstatus(user_id=*{id})}" th:text="*{id}">id</a></td>
-                <td><span style="color: green" th:text="*{nick}">nick</span></td>
-                <td th:text="*{solved}">97</td>
-                <td th:text="*{submit}">283</td>
-            </tr>
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>User Id</th>
+                    <th>Nick</th>
+                    <th>Accepted</th>
+                    <th>Submit</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr align="center" th:each="user,it:${recentrank}" th:object="${user}">
+                    <td th:text="${it.count}">1</td>
+                    <td><a th:href="@{/userstatus(user_id=*{id})}" th:text="*{id}">id</a></td>
+                    <td><span style="color: green" th:text="*{nick}">nick</span></td>
+                    <td th:text="*{solved}">97</td>
+                    <td th:text="*{submit}">283</td>
+                </tr>
+            </tbody>
         </table>
         <!--/*/</th:block>/*/-->
     </body>

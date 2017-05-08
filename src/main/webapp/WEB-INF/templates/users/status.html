@@ -61,21 +61,25 @@
             </table>
             <font size="5">Neighbours:</font><br/>
             <table width="700" border="1" bordercolorlight="#FFF" bordercolordark="#FFF" style="border-collapse: collapse">
-                <tr bgcolor="#6589D1">
-                    <td width="10%">Rank</td>
-                    <td width="40%">User</td>
-                    <td width="25%">Solved</td>
-                    <td width="25%">Submissions</td>
-                </tr>
-                <tr th:each="neighbour,it:${neighbours}" th:object="${neighbour}"
-                    th:bgcolor="${neighbour.id==user.id?'':it.count%2!=0?'#C0C0C0':'#78C8FF'}">
-                    <td width="10%" th:text="${rankFirst+it.index}">1</td>
-                    <td width="40%">
-                        <a th:href="@{/userstatus(user_id=*{id})}" th:text="*{id}">userId</a>
-                    </td>
-                    <td width="25%" th:text="*{solved}">solved</td>
-                    <td width="25%" th:text="*{submit}">submit</td>
-                </tr>
+                <thead>
+                    <tr bgcolor="#6589D1">
+                        <th width="10%">Rank</th>
+                        <th width="40%">User</th>
+                        <th width="25%">Solved</th>
+                        <th width="25%">Submissions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="neighbour,it:${neighbours}" th:object="${neighbour}"
+                        th:bgcolor="${neighbour.id==user.id?'':it.count%2!=0?'#C0C0C0':'#78C8FF'}">
+                        <td width="10%" th:text="${rankFirst+it.index}">1</td>
+                        <td width="40%">
+                            <a th:href="@{/userstatus(user_id=*{id})}" th:text="*{id}">userId</a>
+                        </td>
+                        <td width="25%" th:text="*{solved}">solved</td>
+                        <td width="25%" th:text="*{submit}">submit</td>
+                    </tr>
+                </tbody>
             </table>
         </center>
         <!--/*/</th:block>/*/-->

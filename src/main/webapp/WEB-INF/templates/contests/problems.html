@@ -26,16 +26,20 @@
         <div align="center" th:if="${contest.started}">
             <span th:text="${contest.description}"></span>
             <table align="center" cellspacing="0" cellpadding="0" width="600" border="1" class="problem-list table-back" th:classappend="${#request.userPrincipal==null?'notlogined':''}">
-                <tr bgcolor="#6589D1">
-                    <td width="5%" class="status"></td>
-                    <td width="15%" align="center"><b>Problem Id</b></td>
-                    <td width="30%" align="center"><b>Title</b></td>
-                </tr>
-                <tr th:each="problem,it:${problems}" th:object="${problem}" th:class="*{status==1?'ac':status==2?'wa':''}">
-                    <td class="status"></td>
-                    <td align="center"><b>[[*{orign}]] Problem [[${T(java.lang.Character).toString(65+it.index)}]]</b></td>
-                    <td align="left"><a th:href="@{/contests/{contestId}/problems/{pid}.html(contestId=${contest.id},pid=*{id})}" th:text="*{title}">title</a></td>
-                </tr>
+                <thead>
+                    <tr bgcolor="#6589D1">
+                        <th width="5%" class="status"></th>
+                        <th width="15%" align="center"><b>Problem Id</b></th>
+                        <th width="30%" align="center"><b>Title</b></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="problem,it:${problems}" th:object="${problem}" th:class="*{status==1?'ac':status==2?'wa':''}">
+                        <td class="status"></td>
+                        <td align="center"><b>[[*{orign}]] Problem [[${T(java.lang.Character).toString(65+it.index)}]]</b></td>
+                        <td align="left"><a th:href="@{/contests/{contestId}/problems/{pid}.html(contestId=${contest.id},pid=*{id})}" th:text="*{title}">title</a></td>
+                    </tr>
+                </tbody>
             </table>
         </div>
         <p align="center">

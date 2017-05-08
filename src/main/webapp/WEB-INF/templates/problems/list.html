@@ -22,41 +22,45 @@
             <button type="submit" th:text="#{onlinejudge.problem.searchproblem.button}">GO</button>
         </form>
         <table cellspacing="0" cellpadding="0" width="100%" border="1" class="table-back problem-list" style="border-collapse: collapse" bordercolor="#FFF" th:classappend="${#request.isUserInRole('USER')}?'':'notlogined'">
-            <tr class="inc">
-                <td class="status" width="5%" align="center"></td>
-                <td class="id" width="10%" align="center">
-                    <a class="sortable" th:href="@{/problemlist(volume=${volume})}">ID</a>
-                </td>
-                <td class="title" width="50%" align="center">
-                    <a class="sortable" th:href="@{/problemlist(orderby=title,volume=${volume})}">Title</a>
-                </td>
-                <td width="15%" align="center">
-                    <b>
-                        <a class="sortable" th:href="@{/problemlist(orderby=ratio,volume=${volume})}">Ratio</a>
-                        <span>(</span>
-                        <a class="sortable" th:href="@{/problemlist(orderby=accepted,volume=${volume})}">AC</a>
-                        <span>/</span>
-                        <a class="sortable" th:href="@{/problemlist(orderby=submit,volume=${volume})}">submit</a>
-                        <span>)</span>
-                    </b>
-                </td>
-                <td width="8%" align="center">
-                    <a th:href="@{/problemlist(orderby=difficulty,volume=${volume})}">
-                        <b><span style="color: white">Difficulty</span></b>
-                    </a>
-                </td>
-                <td width="12%" align="center">
-                    <b>Date</b>
-                </td>
-            </tr>
-            <tr th:each="problem:${problems}" th:object="${problem}" th:class="*{status==1?'ac':status==2?'wa':''}">
-                <td class="status"></td>
-                <td align="center" th:text="*{id}">problem.id</td>
-                <td><a th:href="@{/showproblem(problem_id=*{id})}" th:text="*{title}">title</a></td>
-                <td align="center">[[*{ratio}]]%(<a th:href="@{/problemstatus(problem_id=*{id})}">[[*{accepted}]]</a>/<a th:href="@{/status(problem_id=*{id})}">[[*{submit}]]</a>)</td>
-                <td align="center">[[*{difficulty}]]%</td>
-                <td align="center">[[*{inDate!=null?#calendars.format(T(java.util.Date).from(inDate),'yyyy-M-d'):_}]]</td>
-            </tr>
+            <thead>
+                <tr class="inc">
+                    <td class="status" width="5%" align="center"></td>
+                    <td class="id" width="10%" align="center">
+                        <a class="sortable" th:href="@{/problemlist(volume=${volume})}">ID</a>
+                    </td>
+                    <td class="title" width="50%" align="center">
+                        <a class="sortable" th:href="@{/problemlist(orderby=title,volume=${volume})}">Title</a>
+                    </td>
+                    <td width="15%" align="center">
+                        <b>
+                            <a class="sortable" th:href="@{/problemlist(orderby=ratio,volume=${volume})}">Ratio</a>
+                            <span>(</span>
+                            <a class="sortable" th:href="@{/problemlist(orderby=accepted,volume=${volume})}">AC</a>
+                            <span>/</span>
+                            <a class="sortable" th:href="@{/problemlist(orderby=submit,volume=${volume})}">submit</a>
+                            <span>)</span>
+                        </b>
+                    </td>
+                    <td width="8%" align="center">
+                        <a th:href="@{/problemlist(orderby=difficulty,volume=${volume})}">
+                            <b><span style="color: white">Difficulty</span></b>
+                        </a>
+                    </td>
+                    <td width="12%" align="center">
+                        <b>Date</b>
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="problem:${problems}" th:object="${problem}" th:class="*{status==1?'ac':status==2?'wa':''}">
+                    <td class="status"></td>
+                    <td align="center" th:text="*{id}">problem.id</td>
+                    <td><a th:href="@{/showproblem(problem_id=*{id})}" th:text="*{title}">title</a></td>
+                    <td align="center">[[*{ratio}]]%(<a th:href="@{/problemstatus(problem_id=*{id})}">[[*{accepted}]]</a>/<a th:href="@{/status(problem_id=*{id})}">[[*{submit}]]</a>)</td>
+                    <td align="center">[[*{difficulty}]]%</td>
+                    <td align="center">[[*{inDate!=null?#calendars.format(T(java.util.Date).from(inDate),'yyyy-M-d'):_}]]</td>
+                </tr>
+            </tbody>
         </table>
         <!--/*/</th:block>/*/-->
     </body>

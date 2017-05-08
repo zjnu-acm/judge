@@ -18,18 +18,22 @@
         </form>
         <div>
             <table cellspacing="0" cellpadding="0" width="100%" border="1" class="table-back problem-list problem-search" style="border-collapse: collapse" bordercolor="#FFF">
-                <tr bgcolor="#6589D1">
-                    <td width="5%"></td>
-                    <td width="10%">Problem Id</td>
-                    <td width="25%">Title</td>
-                    <td>Source</td>
-                </tr>
-                <tr th:each="problem:${problems}" th:object="${problem}" th:class="*{status==1?'ac':status==2?'wa':''}">
-                    <td class="status"></td>
-                    <td th:text="*{id}">id</td>
-                    <td><a th:href="@{/showproblem(problem_id=*{id})}" th:text="*{title}">title</a></td>
-                    <td th:utext="*{source}">source</td>
-                </tr>
+                <thead>
+                    <tr bgcolor="#6589D1">
+                        <th width="5%"></th>
+                        <th width="10%">Problem Id</th>
+                        <th width="25%">Title</th>
+                        <th>Source</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="problem:${problems}" th:object="${problem}" th:class="*{status==1?'ac':status==2?'wa':''}">
+                        <td class="status"></td>
+                        <td th:text="*{id}">id</td>
+                        <td><a th:href="@{/showproblem(problem_id=*{id})}" th:text="*{title}">title</a></td>
+                        <td th:utext="*{source}">source</td>
+                    </tr>
+                </tbody>
             </table>
         </div>
         <div class="text-center">

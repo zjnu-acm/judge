@@ -10,7 +10,7 @@
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
         <div class="page-index table-back">
-            <center><h1><span style="color: blue">欢迎使用在线评测系统</span></h1></center>
+            <center><h1><span style="color: blue" th:text="#{onlinejudge.title}">欢迎使用在线评测系统</span></h1></center>
             <p>第一次使用，请阅读<a th:href="@{/faq}">常见问题</a>。然后，选择题目，编程并提交程序。</p>
             <p>若想发布你的题目或建立考试，请<a th:remove="${#strings.isEmpty(application['admin.mail'])?'tag':_}" th:href="|mailto:${application['admin.mail']}|">联系我们</a>。</p>
             <p>下载:&nbsp;C-Free&nbsp;&nbsp;&nbsp;<a href="/download/program/cfree/cfree4_0_std_setup_ch.exe">4.0</a>&nbsp;&nbsp;<a href="/download/program/cfree/cfree5_0_pro_setup_ch.exe">5.0</a>(<a href="/download/program/cfree/cfree5_0_pro_setup_ch.txt">注册码</a>)</p>

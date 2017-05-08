@@ -8,67 +8,63 @@
     </head>
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
-        <table border="0" width="100%" class="table-back">
-            <tr>
-                <td>
-                    <table border="0" width="100%" th:if="${problems!=null}">
-                        <tr>
-                            <td style="text-align:center" th:each="problem,it:${problems}" th:object="${problem}">
-                                <a th:href="@{/contests/{contestId}/problems/{pid}.html(contestId=${contestId},pid=*{id})}">
-                                    <b>[[${T(java.lang.Character).toString(65+it.index)}]]</b>
-                                </a>
-                            </td>
-                        </tr>
-                    </table>
-                    <div class="ptt">[[${title2}]]</div>
-                    <div class="plm">
-                        <table align="center">
-                            <tr>
-                                <td><b>Time Limit:</b> [[${problem.timeLimit}]]MS</td>
-                                <td width="10px"></td>
-                                <td><b>Memory Limit:</b> [[${problem.timeLimit}]]K</td>
-                            </tr>
-                            <tr>
-                                <td><b>Total Submissions:</b> [[${problem.submit}]]</td>
-                                <td width="10px"></td>
-                                <td><b>Accepted:</b> [[${problem.accepted}]]</td>
-                            </tr>
-                            <tr th:if="${isSpecial}">
-                                <td style="font-weight:bold; color:red;" width="10px" colspan="3">Special Judge</td>
-                            </tr>
-                        </table>
-                    </div>
-                    <th:block th:if="${!#strings.isEmpty(problem.description)}">
-                        <p class="pst">Description</p>
-                        <div class="ptx">[(${problem.description})]</div>
-                    </th:block>
-                    <th:block th:if="${!#strings.isEmpty(problem.input)}">
-                        <p class="pst">Input</p>
-                        <div class="ptx">[(${problem.input})]</div>
-                    </th:block>
-                    <th:block th:if="${!#strings.isEmpty(problem.output)}">
-                        <p class="pst">Output</p>
-                        <div class="ptx">[(${problem.output})]</div>
-                    </th:block>
-                    <th:block th:if="${!#strings.isEmpty(problem.sampleInput)}">
-                        <p class="pst">Sample Input</p>
-                        <div class="ptx" style="white-space:pre">[[${problem.sampleInput}]]</div>
-                    </th:block>
-                    <th:block th:if="${!#strings.isEmpty(problem.sampleOutput)}">
-                        <p class="pst">Sample Output</p>
-                        <div class="ptx" style="white-space:pre">[[${problem.sampleOutput}]]</div>
-                    </th:block>
-                    <th:block th:if="${!#strings.isEmpty(problem.hint)}">
-                        <p class="pst">Hint</p>
-                        <div class="ptx">[(${problem.hint})]</div>
-                    </th:block>
-                    <th:block th:if="${!#strings.isEmpty(problem.source)}">
-                        <p class="pst">Source</p>
-                        <div class="ptx">[(${problem.source})]</div>
-                    </th:block>
-                </td>
-            </tr>
-        </table>
+        <div style="width: 100%" class="table-back">
+            <table border="0" width="100%" th:if="${problems!=null}">
+                <tr>
+                    <td style="text-align:center" th:each="problem,it:${problems}" th:object="${problem}">
+                        <a th:href="@{/contests/{contestId}/problems/{pid}.html(contestId=${contestId},pid=*{id})}">
+                            <b>[[${T(java.lang.Character).toString(65+it.index)}]]</b>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+            <div class="ptt">[[${title2}]]</div>
+            <div class="plm">
+                <table align="center">
+                    <tr>
+                        <td><b>Time Limit:</b> [[${problem.timeLimit}]]MS</td>
+                        <td width="10px"></td>
+                        <td><b>Memory Limit:</b> [[${problem.timeLimit}]]K</td>
+                    </tr>
+                    <tr>
+                        <td><b>Total Submissions:</b> [[${problem.submit}]]</td>
+                        <td width="10px"></td>
+                        <td><b>Accepted:</b> [[${problem.accepted}]]</td>
+                    </tr>
+                    <tr th:if="${isSpecial}">
+                        <td style="font-weight:bold; color:red;" width="10px" colspan="3">Special Judge</td>
+                    </tr>
+                </table>
+            </div>
+            <th:block th:if="${!#strings.isEmpty(problem.description)}">
+                <p class="pst">Description</p>
+                <div class="ptx">[(${problem.description})]</div>
+            </th:block>
+            <th:block th:if="${!#strings.isEmpty(problem.input)}">
+                <p class="pst">Input</p>
+                <div class="ptx">[(${problem.input})]</div>
+            </th:block>
+            <th:block th:if="${!#strings.isEmpty(problem.output)}">
+                <p class="pst">Output</p>
+                <div class="ptx">[(${problem.output})]</div>
+            </th:block>
+            <th:block th:if="${!#strings.isEmpty(problem.sampleInput)}">
+                <p class="pst">Sample Input</p>
+                <div class="ptx" style="white-space:pre">[[${problem.sampleInput}]]</div>
+            </th:block>
+            <th:block th:if="${!#strings.isEmpty(problem.sampleOutput)}">
+                <p class="pst">Sample Output</p>
+                <div class="ptx" style="white-space:pre">[[${problem.sampleOutput}]]</div>
+            </th:block>
+            <th:block th:if="${!#strings.isEmpty(problem.hint)}">
+                <p class="pst">Hint</p>
+                <div class="ptx">[(${problem.hint})]</div>
+            </th:block>
+            <th:block th:if="${!#strings.isEmpty(problem.source)}">
+                <p class="pst">Source</p>
+                <div class="ptx">[(${problem.source})]</div>
+            </th:block>
+        </div>
         <p align="center" style="font-size: medium; color: #333399">
             <span>[</span>
             <a th:href="@{/submitpage(problem_id=${problem.id},contest_id=${contestId})}">Submit</a>

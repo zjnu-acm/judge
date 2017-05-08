@@ -12,24 +12,28 @@
             <span style="color: blue">Mail of [[${userId}]]</span>
         </h2>
         <table align="center" style="border: 0; margin: auto;">
-            <tr bgcolor="#78C8FF">
-                <td>No.</td>
-                <td>From</td>
-                <td>Title</td>
-                <td>Date</td>
-            </tr>
-            <tr th:each="mail,it : ${mails}" th:object="${mail}" th:bgcolor="${it.odd}?'#78c8ff':'#c0c0c0'">
-                <td th:text="${it.count}">1</td>
-                <td>
-                    <a th:href="@{/userstatus(user_id=*{from})}" th:text="*{from}">userId</a>
-                </td>
-                <td>
-                    <a th:href="@{/showmail(mail_id=*{id})}" th:style="*{newMail}?'font-weight: bold;'">
-                        <span style="color: blue" th:text="*{title}">No Topic</span>
-                    </a>
-                </td>
-                <td th:text="*{#calendars.format(T(java.util.Date).from(inDate),'yyyy-MM-dd H:mm:ss')}">2016-01-04</td>
-            </tr>
+            <thead>
+                <tr bgcolor="#78C8FF">
+                    <th>No.</th>
+                    <th>From</th>
+                    <th>Title</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="mail,it : ${mails}" th:object="${mail}" th:bgcolor="${it.odd}?'#78c8ff':'#c0c0c0'">
+                    <td th:text="${it.count}">1</td>
+                    <td>
+                        <a th:href="@{/userstatus(user_id=*{from})}" th:text="*{from}">userId</a>
+                    </td>
+                    <td>
+                        <a th:href="@{/showmail(mail_id=*{id})}" th:style="*{newMail}?'font-weight: bold;'">
+                            <span style="color: blue" th:text="*{title}">No Topic</span>
+                        </a>
+                    </td>
+                    <td th:text="*{#calendars.format(T(java.util.Date).from(inDate),'yyyy-MM-dd H:mm:ss')}">2016-01-04</td>
+                </tr>
+            </tbody>
         </table>
         <center>
             <span>[</span>

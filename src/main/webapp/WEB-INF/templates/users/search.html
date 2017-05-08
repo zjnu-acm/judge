@@ -12,20 +12,24 @@
             <font size="5" color="blue" th:text="#{onlinejudge.user.searchresult}">Search Result</font>
             <br/>
             <table border="1" width="80%" style="margin: 0 auto">
-                <tr style="background: #78C8FF">
-                    <td width="10%">No.</td>
-                    <td width="20%">User</td>
-                    <td width="40%">Nick Name</td>
-                    <td width="15%">Solved</td>
-                    <td width="15%">Submissions</td>
-                </tr>
-                <tr th:each="user,it:${users}" th:style="${it.even?'background: #C0C0C0':'background: #78C8FF'}" th:object="${user}">
-                    <td th:text="${it.count}">1</td>
-                    <td><a th:href="@{/userstatus(user_id=*{id})}" th:text="*{id}">userId</a></td>
-                    <td th:text="*{nick}">nick</td>
-                    <td th:text="*{solved}">225</td>
-                    <td th:text="*{submit}">845</td>
-                </tr>
+                <thead>
+                    <tr style="background: #78C8FF">
+                        <th width="10%">No.</th>
+                        <th width="20%">User</th>
+                        <th width="40%">Nick Name</th>
+                        <th width="15%">Solved</th>
+                        <th width="15%">Submissions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="user,it:${users}" th:style="${it.even?'background: #C0C0C0':'background: #78C8FF'}" th:object="${user}">
+                        <td th:text="${it.count}">1</td>
+                        <td><a th:href="@{/userstatus(user_id=*{id})}" th:text="*{id}">userId</a></td>
+                        <td th:text="*{nick}">nick</td>
+                        <td th:text="*{solved}">225</td>
+                        <td th:text="*{submit}">845</td>
+                    </tr>
+                </tbody>
             </table>
         </div>
         <!--/*/</th:block>/*/-->
