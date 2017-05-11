@@ -16,6 +16,7 @@
 package cn.edu.zjnu.acm.judge.domain;
 
 import java.io.Serializable;
+import java.time.Instant;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -51,5 +52,7 @@ public class Language implements Serializable {
     private long extTime;
     private long extMemory;
     private String description;
+    private Instant createdTime;
+    private Instant modifiedTime;
 
 }

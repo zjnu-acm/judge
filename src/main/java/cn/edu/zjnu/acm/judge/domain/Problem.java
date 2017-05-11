@@ -55,6 +55,8 @@ public class Problem implements Serializable {
     private long solved;
     private Instant inDate;
     private boolean disabled;
+    private Instant createdTime;
+    private Instant modifiedTime;
 
     @Deprecated
     private Long contest;

@@ -47,7 +47,8 @@ public interface ProblemMapper {
             + "p.in_date inDate,p.time_limit timeLimit,"
             + "p.memory_limit memoryLimit,"
             + "p.contest_id contest,p.disabled,"
-            + "p.accepted,p.submit,p.solved,p.submit_user submitUser ";
+            + "p.accepted,p.submit,p.solved,p.submit_user submitUser,"
+            + "p.created_time createdTime,p.modified_time modifiedTime ";
 
     String COLUMNS_NO_I18N = " p.problem_id id,"
             + "p.in_date inDate,p.time_limit timeLimit,"
@@ -156,6 +157,7 @@ public interface ProblemMapper {
             + "p.sample_output=#{p.sampleOutput},"
             + "p.time_limit=#{p.timeLimit},"
             + "p.memory_limit=#{p.memoryLimit},"
+            + "p.modified_time=#{p.modifiedTime},"
             + "p.contest_id=#{p.contest} "
             + "WHERE p.problem_id=#{p.id}</script>")
     long update(@Param("p") Problem build, @Param("lang") String lang);

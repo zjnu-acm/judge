@@ -6,6 +6,7 @@ import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.service.ContestService;
+import java.time.Instant;
 import java.util.Locale;
 import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,7 @@ public class ModifyProblemController {
                 .timeLimit(p.getTimeLimit())
                 .memoryLimit(p.getMemoryLimit())
                 .contest(p.getContest())
+                .modifiedTime(Instant.now())
                 .build(), lang);
         if (oldContestId != null && !Objects.equals(oldContestId, contestId)) {
             boolean started = contestMapper.findOneByIdAndDisabledFalse(oldContestId).isStarted();

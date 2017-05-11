@@ -33,6 +33,8 @@ public class User implements Serializable {
     private Instant accesstime;
     private String ip;
     private Instant expireTime;
+    private Instant createdTime;
+    private Instant modifiedTime;
 
     @JsonIgnore
     public int getRatio() {

@@ -4,6 +4,7 @@ import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
 import cn.edu.zjnu.acm.judge.util.ValueCheck;
+import java.time.Instant;
 import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -64,6 +65,7 @@ public class ModifyUserController {
                 .nick(nick)
                 .password(passwordEncoder.encode(newPassword))
                 .school(school)
+                .modifiedTime(Instant.now())
                 .build();
         userMapper.update(user);
         model.addAttribute("user", user);

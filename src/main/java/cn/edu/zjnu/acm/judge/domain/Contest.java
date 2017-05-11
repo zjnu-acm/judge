@@ -45,6 +45,8 @@ public class Contest implements Serializable {
     private Instant startTime;
     private Instant endTime;
     private boolean disabled;
+    private Instant createdTime;
+    private Instant modifiedTime;
 
     @JsonIgnore
     @XmlTransient
