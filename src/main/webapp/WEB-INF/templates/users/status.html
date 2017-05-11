@@ -15,7 +15,7 @@
             <br/>
             <span th:if="${user.accesstime!=null}">Last Loginned Time:[[${#calendars.format(T(java.util.Date).from(user.accesstime),"yyyy-MM-dd HH:mm:ss")}]]</span>
             <span th:if="${#request.isUserInRole('ADMIN')} and ${user.ip!=null}"><br/>Last Loginned IP:[[${user.ip}]]</span>
-            <table align="center" cellspacing="0" cellpadding="0" width="700" border="1" class="table-back" style="border-collapse: collapse" bordercolor="#FFF">
+            <table align="center" width="700" class="table-default table-back">
                 <tr valign="bottom">
                     <td colspan="3">
                         <br/>
@@ -23,7 +23,7 @@
                             <span>Compare </span>
                             <input type="text" size="10" name="uid1" th:value="${user.id}"/>
                             <span> and </span>
-                            <input type="text" size="10" name="uid2" th:value="${#request.userPrincipal!=null?#request.userPrincipal.name:''}"/>
+                            <input type="text" size="10" name="uid2" th:value="${#request.userPrincipal!=null?#request.userPrincipal.name:_}"/>
                             <button type="submit">GO</button>
                         </form>
                     </td>
@@ -60,7 +60,7 @@
                 </tr>
             </table>
             <font size="5">Neighbours:</font><br/>
-            <table width="700" border="1" bordercolorlight="#FFF" bordercolordark="#FFF" style="border-collapse: collapse">
+            <table width="700" class="table-default">
                 <thead>
                     <tr bgcolor="#6589D1">
                         <th width="10%">Rank</th>
@@ -71,7 +71,7 @@
                 </thead>
                 <tbody>
                     <tr th:each="neighbour,it:${neighbours}" th:object="${neighbour}"
-                        th:bgcolor="${neighbour.id==user.id?'':it.count%2!=0?'#C0C0C0':'#78C8FF'}">
+                        th:bgcolor="${neighbour.id==user.id?_:it.count%2!=0?'#C0C0C0':'#78C8FF'}">
                         <td width="10%" th:text="${rankFirst+it.index}">1</td>
                         <td width="40%">
                             <a th:href="@{/userstatus(user_id=*{id})}" th:text="*{id}">userId</a>

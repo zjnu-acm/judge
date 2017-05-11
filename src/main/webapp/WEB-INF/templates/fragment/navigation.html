@@ -1,7 +1,7 @@
 <th:block
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:th="http://www.thymeleaf.org">
-    <table align="center" width="100%" border="1" bordercolor="#FFF" style="border-collapse: collapse">
+    <table align="center" width="100%" class="table-default">
         <tr bgcolor="#6589D1" align="center" valign="top">
             <th class="top" th:text="#{onlinejudge.main}">在线评测</th>
             <th class="top" th:text="#{onlinejudge.problem}">题目</th>
@@ -47,10 +47,10 @@
             <td class="top scbg">
                 <form method="POST" th:action="@{/login}" th:if="${#request.userPrincipal==null}">
                     <label th:for="${#ids.next('username')}" th:text="#{onlinejudge.login.user.label}">学号:&nbsp;</label>
-                    <input th:id="${#ids.seq('username')}" type="text" name="user_id1" size="10" style="font-family:monospace"/>
+                    <input th:id="${#ids.seq('username')}" type="text" name="user_id1" size="10"/>
                     <br/>
                     <label th:for="${#ids.next('password')}" th:text="#{onlinejudge.login.password.label}">密码:&nbsp;</label>
-                    <input th:id="${#ids.seq('password')}" type="password" name="password1" size="10" style="font-family:monospace" autocomplete="off"/>
+                    <input th:id="${#ids.seq('password')}" type="password" name="password1" size="10" autocomplete="off"/>
                     <br/>
                     <input type="checkbox" name="rememberMe" value="true" th:id="${#ids.seq('rememberMe')}" checked="checked"/>
                     <label th:for="${#ids.prev('rememberMe')}" th:text="#{onlinejudge.login.remember.label}">记住登陆</label>
@@ -59,7 +59,7 @@
                     <a th:href="@{/findpassword}" th:text="#{onlinejudge.login.forget}">忘了密码</a> / <a th:href="@{/registerpage}" th:text="#{onlinejudge.user.register}">注册</a>
                 </form>
                 <th:block th:unless="${#request.userPrincipal==null}">
-                    <span th:text="#{onlinejudge.login.welcome}">欢迎</span><br/>
+                    <span th:text="|#{onlinejudge.login.welcome} |">欢迎 </span><br/>
                     <b th:text="${#request.userPrincipal.name}">userId</b>
                     <a th:href="@{/logout}" th:text="#{onlinejudge.login.logout}">退出登录</a>
                     <br/>

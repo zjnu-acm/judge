@@ -3,7 +3,7 @@ jQuery(function ($) {
         event.keyCode === 13 && button.click();
     }
     function click() {
-        image.attr("src", src + (src.indexOf("?") < 0 ? "?" : "&") + Math.random());
+        image.attr("src", src + (src.indexOf("?") < 0 ? "?" : "&") + "_=" + +new Date());
         imgv.val("");
         (user.val() ? imgv : user).focus();
     }
@@ -29,7 +29,7 @@ jQuery(function ($) {
         } else {
             try {
                 disable();
-                $.post("resetPassword", {username: uid, verify: vcode}).always(click, enable).fail(function (result) {
+                $.post("resetPassword.js", {username: uid, verify: vcode}).always(click, enable).fail(function (result) {
                     alert(result.responseText || "Error Occur");
                 });
             } catch (e) {

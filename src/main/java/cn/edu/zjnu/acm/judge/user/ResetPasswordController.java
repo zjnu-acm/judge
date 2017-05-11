@@ -44,6 +44,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
+
 @Controller
 @Slf4j
 public class ResetPasswordController {
@@ -60,7 +62,7 @@ public class ResetPasswordController {
     @Autowired
     private JudgeConfiguration judgeConfiguration;
 
-    @GetMapping("/resetPassword")
+    @GetMapping(value = "/resetPassword", produces = TEXT_HTML_VALUE)
     public String doGet(HttpServletRequest request) {
         if (checkVcode(request)) {
             return "resetPassword";
@@ -100,17 +102,13 @@ public class ResetPasswordController {
             return;
         }
         try {
-            String basePath = getBasePath(request);
             String vc = user.getVcode();
             if (vc == null || user.getExpireTime() != null && user.getExpireTime().compareTo(Instant.now()) < 0) {
                 vc = Utility.getRandomString(16);
-                user = user.toBuilder().vcode(vc).expireTime(Instant.now().plus(1, ChronoUnit.HOURS)).build();
-                userMapper.update(user);
-            } else {
-                user = user.toBuilder().expireTime(Instant.now().plus(1, ChronoUnit.HOURS)).build();
-                userMapper.update(user);
             }
-            String url = basePath + request.getServletPath() + "?vc=" + vc + "&u=" + user.getId();
+            user = user.toBuilder().vcode(vc).expireTime(Instant.now().plus(1, ChronoUnit.HOURS)).build();
+            userMapper.update(user);
+            String url = getPath(request, "/resetPassword.html?vc=", vc + "&u=", user.getId());
             HashMap<String, Object> map = new HashMap<>(2);
             map.put("url", url);
             map.put("ojName", judgeConfiguration.getContextPath() + " OJ");
@@ -135,7 +133,7 @@ public class ResetPasswordController {
         out.print("alert('已经将邮件发送到" + user.getEmail() + "，请点击链接重设密码');");
     }
 
-    @PostMapping(value = "/resetPassword", params = "action=changePassword")
+    @PostMapping(value = "/resetPassword", params = "action=changePassword", produces = "text/javascript")
     public void changePassword(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         response.setContentType("text/javascript;charset=UTF-8");
@@ -172,7 +170,7 @@ public class ResetPasswordController {
                 || expire.toEpochMilli() > System.currentTimeMillis());
     }
 
-    private String getBasePath(HttpServletRequest request) {
+    private String getPath(HttpServletRequest request, String... params) {
         int serverPort = request.getServerPort();
         int defaultPort = request.isSecure() ? 443 : 80;
         StringBuilder sb = new StringBuilder(80);
@@ -181,7 +179,11 @@ public class ResetPasswordController {
         if (serverPort != defaultPort) {
             sb.append(":").append(serverPort);
         }
-        return sb.append(request.getContextPath()).toString();
+        sb.append(request.getContextPath());
+        for (String param : params) {
+            sb.append(param);
+        }
+        return sb.toString();
     }
 
 }

@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       th:lang="${#locale}">
-    <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# object: http://ogp.me/ns/object# article: http://ogp.me/ns/article# profile: http://ogp.me/ns/profile#">
+    <head>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
@@ -13,19 +13,13 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.js" th:src="@{/webjars/jquery/1.12.4/jquery.min.js}"></script>
         <!--[if lt IE 9]>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" th:src="@{/webjars/html5shiv/3.7.3/html5shiv.min.js}"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js" th:src="@{/webjars/respond/1.4.2/dest/respond.min.js}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js" th:src="@{/webjars/respond/1.4.2/dest/respond.matchmedia.addListener.min.js}"></script>
         <![endif]-->
         <script th:src="@{/js/site.js(_=${application.startUpDate})}"></script>
     </head>
     <body>
         <div class="container">
-            <div align="center">
-                <table border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse; width:100%; height: 50px">
-                    <tr>
-                        <td><p align="center"><font style="color: #333399" size="4">Welcome To Administrator's Page of Judge Online of ACM ICPC, ZheJiang Normal University</font></p></td>
-                    </tr>
-                </table>
-            </div>
+            <h4 class="text-center" style="color: #339">Welcome To Administrator's Page of Judge Online of ACM ICPC, ZheJiang Normal University</h4>
             <hr/>
         </div>
         <div class="container">
@@ -37,11 +31,11 @@
             </font>
             <br/>
             <hr/>
-            <p align="center">
+            <p class="text-center">
                 <font size="3">All Copyright Reserved 2006-[[${T(java.time.Year).now()}]]<br/>Any problem, Please Contact <a th:remove="${#strings.isEmpty(application['admin.mail'])?'tag':_}" th:href="|mailto:${application.get('admin.mail')}|">Administrator</a>
                 </font>
             </p>
         </div>
-        <span th:title="#{onlinejudge.footer.back_to_top}" class="back-to-top" id="back-to-top"></span>
+        <a th:title="#{onlinejudge.footer.back_to_top}" class="back-to-top" id="back-to-top" href="#top"></a>
     </body>
 </html>

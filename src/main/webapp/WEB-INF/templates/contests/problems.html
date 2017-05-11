@@ -10,22 +10,22 @@
         <!--/*/<th:block layout:fragment="content">/*/-->
         <p align="center">
             <b>
-                <font size="5" face="Arial">Contest - [[${contest.title}]]</font>
+                <font size="5">Contest - [[${contest.title}]]</font>
             </b>
         </p>
-        <p align="center" style="font-family: Arial">
+        <p align="center">
             <span>Start time:&nbsp;&nbsp;</span>
-            <span style="color: #993399" th:text="${#calendars.format(T(java.util.Date).from(contest.startTime),'yyyy-MM-dd HH:mm:ss')}">2016-04-09 12:00:00</span>
+            <span style="color: #939" th:text="${#calendars.format(T(java.util.Date).from(contest.startTime),'yyyy-MM-dd HH:mm:ss')}">2016-04-09 12:00:00</span>
             <span>&nbsp;&nbsp;End time:&nbsp;&nbsp;</span>
-            <span style="color: #993399" th:text="${#calendars.format(T(java.util.Date).from(contest.endTime),'yyyy-MM-dd HH:mm:ss')}">2016-04-09 17:00:00</span><br/>
+            <span style="color: #939" th:text="${#calendars.format(T(java.util.Date).from(contest.endTime),'yyyy-MM-dd HH:mm:ss')}">2016-04-09 17:00:00</span><br/>
             <span>Current System Time:&nbsp;&nbsp;</span>
-            <span style="color: #993399" th:text="${#calendars.format(#execInfo.now,'yyyy-MM-dd HH:mm:ss')}">2016-05-06 17:15:15</span>
+            <span style="color: #939" th:text="${#calendars.format(#execInfo.now,'yyyy-MM-dd HH:mm:ss')}">2016-05-06 17:15:15</span>
             <span>&nbsp;&nbsp;Contest Status:&nbsp;&nbsp;</span>
             <span style="color: red" th:text="${@contestService.getStatus(contest)}">Ended</span>
         </p>
         <div align="center" th:if="${contest.started}">
             <span th:text="${contest.description}"></span>
-            <table align="center" cellspacing="0" cellpadding="0" width="600" border="1" class="problem-list table-back" th:classappend="${#request.userPrincipal==null?'notlogined':''}">
+            <table align="center" width="600" class="table-default problem-list table-back" th:classappend="${#request.userPrincipal==null?'notlogined':''}">
                 <thead>
                     <tr bgcolor="#6589D1">
                         <th width="5%" class="status"></th>

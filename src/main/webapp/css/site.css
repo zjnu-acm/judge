@@ -19,22 +19,21 @@ a.sssss:hover {
 a.sssss0 {
     text-transform: none;
     text-decoration: none;
-    color: #FFFF99;
+    color: #FF9;
     font-weight: bold;
 }
 a.sssss0:hover {
     text-decoration: underline;
-    color: #FFFF99;
+    color: #FF9;
     font-weight: bold;
 }
 /* required problemstatus.js ended*/
 /* class sortable required /problemlist and problemstatus */
 a.sortable {
     text-decoration: none;
-    color: #FFFF66;
+    color: #FF6;
 }
 a.sortable:hover {
-    color: #FFFF66;
     text-decoration: underline;
 }
 div.sd1 {
@@ -170,6 +169,13 @@ tr.top {
 .problem-list.notlogined .title {
     width: 55%;
 }
+table.table-default {
+    border-collapse: collapse;
+}
+table.table-default td, table.table-default th {
+    border: 1px solid white;
+    padding: 0;
+}
 a.self {
     color: red;
 }
@@ -191,11 +197,6 @@ a.self {
 }
 .back-to-top:before {
     background-color: #000;
-    filter: alpha(opacity = 20);
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
-    -moz-opacity: 0.2;
-    -khtml-opacity: 0.2;
-    opacity: 0.2;
     border-radius: 3px;
     width: 40px;
     height: 40px;
@@ -243,4 +244,15 @@ a.self {
     vertical-align: bottom;
     margin-right: 5px;
     zoom: 1;
+}
+.clearfix:before,
+.clearfix:after {
+    display: table;
+    content: " ";
+}
+.clearfix:after {
+
+}
+.clearfix {
+    clear: both;
 }

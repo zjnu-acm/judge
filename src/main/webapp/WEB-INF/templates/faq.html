@@ -30,10 +30,10 @@
             <pre class="sh_pascal">program p1000(Input, Output); var<br/>a, b:Integer;<br/>begin<br/>Readln(a, b);<br/>Writeln(a + b);<br/>end.</pre>
             <p>Here is a sample solution for problem 1000 using JAVA:</p>
             <p>
-                <span style="color:#FF0000;font-size: x-large">Now java compiler is jdk 1.5, next is program for 1000.</span></p>
+                <span style="color: red;font-size: x-large">Now java compiler is jdk 1.5, next is program for 1000.</span></p>
             <pre class="sh_java">import java.util.Scanner;<br/><br/>public class Main {<br/>    public static void main(String args[]) {<br/>        Scanner cin = new Scanner(System.in);<br/>        int a = cin.nextInt(), b = cin.nextInt();<br/>        System.out.println(a + b);<br/>    }<br/>}</pre>
             <p>
-                <span style="color: #FF0000">Old program for jdk 1.4</span></p>
+                <span style="color: red">Old program for jdk 1.4</span></p>
             <pre class="sh_java">import java.io.*;<br/>import java.util.*;<br/><br/>public class Main {<br/>    public static void main(String args[]) throws Exception {<br/>        BufferedReader stdin<br/>                = new BufferedReader(<br/>                        new InputStreamReader(System.in));<br/><br/>        String line = stdin.readLine();<br/>        StringTokenizer st = new StringTokenizer(line);<br/>        int a = Integer.parseInt(st.nextToken());<br/>        int b = Integer.parseInt(st.nextToken());<br/>        System.out.println(a + b);<br/>    }<br/>}</pre>
             <p><span class="q">Q</span>: How to submit java program?</p>
             <p><span class="a">A</span>: The Java programs submitted must be in a single source code (not .class) file. They must read and write the standard input/output, as the other languages. All programs must begin in a static main method in a Main class. However, you can add and instance as many classes as needed.</p>

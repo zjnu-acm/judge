@@ -6,15 +6,14 @@
       layout:decorate="~{layout/admin}">
     <head>
         <title th:text="*{title}">title</title>
+        <script src="../../../../js/jquery.textchange.js" th:src="@{/js/jquery.textchange.js(_=${application.startUpDate})}"></script>
     </head>
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
         <p class="text-center">
-            <b><font size="5" face="Arial">Contest - [[*{title}]]</font></b>
+            <b><font size="5">Contest - [[*{title}]]</font></b>
         </p>
-        <p class="text-center">
-            <font face="Arial">Start time: <span style="color: #993399" th:text="*{#calendars.format(T(java.util.Date).from(startTime),'yyyy-MM-dd HH:mm:ss')}">2016-03-20 12:00:00</span> End time: <span style="color: #993399" th:text="*{#calendars.format(T(java.util.Date).from(endTime),'yyyy-MM-dd HH:mm:ss')}">2016-03-20 17:00:00.0</span><br/>Current System Time: <span style="color: #993399" th:text="${#calendars.format(#execInfo.now,'yyyy-MM-dd HH:mm:ss')}">2016-03-28 16:17:18</span> Contest Status: <span style="color: red" th:utext="${@contestService.getStatus(contest)}">Ended</span>
-            </font>
+        <p class="text-center">Start time: <span style="color: #939" th:text="*{#calendars.format(T(java.util.Date).from(startTime),'yyyy-MM-dd HH:mm:ss')}">2016-03-20 12:00:00</span> End time: <span style="color: #939" th:text="*{#calendars.format(T(java.util.Date).from(endTime),'yyyy-MM-dd HH:mm:ss')}">2016-03-20 17:00:00.0</span><br/>Current System Time: <span style="color: #939" th:text="${#calendars.format(#execInfo.now,'yyyy-MM-dd HH:mm:ss')}">2016-03-28 16:17:18</span> Contest Status: <span style="color: red" th:utext="${@contestService.getStatus(contest)}">Ended</span>
         </p>
         <form th:action="@{/admin/contests/{contestId}/problems.html(contestId=${contest.id})}" method="POST">
             <div class="table-responsive">
@@ -41,7 +40,7 @@
                         </tr>
                         <tr class="row item">
                             <td class="col-sm-4 text-center">
-                                <input name="problemId" type="number" autofocus="autofocus" required="required"/>
+                                <input name="problemId" type="text" autofocus="autofocus" required="required" autocomplete="off"/>
                             </td>
                             <td class="col-sm-5 text-left">
                                 <span class="title"></span>
@@ -62,28 +61,29 @@
                 }).on("click", ":button.delete", function () {
                     var contestId = $(this).closest("[data-contest-id]").data("contestId");
                     var problemId = $(this).closest("[data-id]").data("id");
-                    $("<form method='POST' />").attr("action", /*[+[[@{/admin/contests/{contestId}/problems/{problemId}.html}]]+]*//*[-*/"../admin/contests/{contestId}/problems/{problemId}.html"/*-]*/.replace("{contestId}", contestId).replace("{problemId}", problemId)).append($("<input type='hidden' name='_method' value='DELETE' />")).appendTo("body").submit();
+                    $("<form/>",{method:'POST',"action":/*[+[[@{/admin/contests/{contestId}/problems/{problemId}.html}]]+]*//*[-*/"../admin/contests/{contestId}/problems/{problemId}.html"/*-]*/.replace("{contestId}",contestId).replace("{problemId}",problemId)}).append($("<input type='hidden' name='_method' value='DELETE' />")).appendTo("body").submit();
                 }).on("click", ":button.add", function () {
 //var contestId = $(this).closest("[data-contest-id]").data("contestId");
 //var problemId = $(this).closest(".item").find(":input[name='problemId']").val();
 //$("<form method='POST' />").attr("action", /*[+[[@{/admin/contests/{contestId}/problems.html}]]+]*//*[-*/"../admin/contests/{contestId}/problems.html"/*-]*/.replace("{contestId}", contestId)).append($("<input/>", {name: "problemId", value: problemId, type: "hidden"})).submit();
-                }).on("input", ":input[name='problemId']", function () {
-                    var title = $(this).closest(".item").find(".title");
-                    var val = +$(this).val();
-                    if (val === val && val !== 0) {
+                }).on("textchange", ":input[name='problemId']", function(e, lastVal) {
+                    var title = $(this).closest(".item").find(".title"), val = $(this).val();
+                    if (val === lastVal) return;
+                    if (/^[0-9]+$/.test(val)) {
                         var url = /*[+[[@{/problems/{problemId}.json}]]+]*//*[-*/"../problems/problemId.json"/*-]*/;
-                        $.getJSON(url.replace('{problemId}', val), function (x) {
-                            title.text(x && x.title || "Error");
+                        jqxhr && jqxhr.abort();
+                        jqxhr = $.getJSON(url.replace('{problemId}', val), function (x) {
+                            title.text(x && x.title || "No Title");
                             submit.removeProp("disabled");
-                        }).fail(function () {
-                            title.text("Not found.");
+                        }).fail(function (xhr) {
+                            title.text(code[xhr.status] || "Error");
                             submit.prop("disabled", true);
                         });
                     } else {
                         title.text('');
                         submit.prop("disabled", true);
                     }
-                }).find(":submit");
+                }).find(":submit"), code = {"404":"Not found."}, jqxhr;
             });//]]>
         </script>
         <!--/*/</th:block>/*/-->

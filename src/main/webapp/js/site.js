@@ -22,7 +22,7 @@ jQuery(function ($) {
         element[$(this).scrollTop() > offset ? "fadeIn" : "fadeOut"](duration);
     });
 
-    element.click(function () {
+    element.css('opacity',.2).click(function () {
         $('html, body').animate({scrollTop: 0}, duration);
         return false;
     });

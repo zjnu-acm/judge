@@ -16,12 +16,12 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.js" th:src="@{/webjars/jquery/1.12.4/jquery.min.js}"></script>
         <!--[if lt IE 9]>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" th:src="@{/webjars/html5shiv/3.7.3/html5shiv.min.js}"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js" th:src="@{/webjars/respond/1.4.2/dest/respond.min.js}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js" th:src="@{/webjars/respond/1.4.2/dest/respond.matchmedia.addListener.min.js}"></script>
         <![endif]-->
         <script src="../../../js/site.js" th:src="@{/js/site.js(_=${application.startUpDate})}"></script>
     </head>
     <body id="page-home">
-        <div id="page">
+        <div id="page" style="min-width: 980px">
             <div id="nav">
                 <th:block th:if="${contestId==null}">
                     <div id="outer-header">
@@ -44,9 +44,7 @@
                             <td style="width:16.7%"><a th:href="@{/status(contest_id=${contestId})}">Status</a></td>
 
                             <td th:if="${#request.userPrincipal != null}">
-                                <b th:text="${#request.userPrincipal.name}">
-                                    login.user.name
-                                </b>
+                                <b>[[${#request.userPrincipal.name}]] </b>
                                 <a th:href="@{/logout}">Logout</a>
                             </td>
                             <td th:unless="${#request.userPrincipal != null}">

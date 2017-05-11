@@ -11,9 +11,9 @@
         <!--/*/<th:block layout:fragment="content">/*/-->
         <h3 class="image1-50-26">Congratulations</h3>
         <ul>
-            <li>You have added a contest, the id is <span style="color: #CC9900">[[${contestId}]]</span></li>
-            <li>Start time:<span style="color: #CC9900">[[${#calendars.format(T(java.util.Date).from(startTime),'yyyy-MM-dd HH:mm:ss')}]]</span></li>
-            <li>End time:<span style="color: #CC9900">[[${#calendars.format(T(java.util.Date).from(endTime),'yyyy-MM-dd HH:mm:ss')}]]</span></li>
+            <li>You have added a contest, the id is <span style="color: #C90">[[${contestId}]]</span></li>
+            <li>Start time:<span style="color: #C90">[[${#calendars.format(T(java.util.Date).from(startTime),'yyyy-MM-dd HH:mm:ss')}]]</span></li>
+            <li>End time:<span style="color: #C90">[[${#calendars.format(T(java.util.Date).from(endTime),'yyyy-MM-dd HH:mm:ss')}]]</span></li>
         </ul>
         <p>
 <a class="image2-40-29" th:href="@{/admin/contests/new.html}">Add Another Contest</a>

@@ -102,7 +102,7 @@ public class StatusController {
         request.setAttribute("contestId", contestId);
 
         StringBuilder sb = new StringBuilder("<html><head><title>Problem Status List</title></head><body>"
-                + "<p align=center><font size=4 color=#333399>Problem Status List</font></p>"
+                + "<p align=center><font size=4 color=#339>Problem Status List</font></p>"
                 + "<form method=get action='status'/><label for='pid'>Problem ID:</label><input id='pid' type=text name=problem_id size=8 value=\"")
                 .append(StringUtils.escapeXml(pid)).append("\"/> <label for='uid'>User ID:</label><input id='uid' type=text name=user_id size=15 value=\"")
                 .append(StringUtils.escapeXml(userId)).append("\"/>"

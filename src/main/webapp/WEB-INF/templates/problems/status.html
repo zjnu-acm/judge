@@ -9,7 +9,7 @@
     </head>
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
-        <div style="overflow: auto">
+        <div class="clearfix">
             <div style="float: left">
                 <div style="position:relative; width:260px">
                     <script src="../../../js/problemstatus.js" th:src="@{/js/problemstatus.js(_=${application.startUpDate})}"></script>
@@ -18,11 +18,11 @@
             </div>
             <div style="float: left">
                 <p align="center">
-                    <font size="5" color="#333399">
+                    <font size="5" color="#339">
                         <span>Best solutions of Problem </span>
                         <a th:href="@{/showproblem(problem_id=${problem.id})}">[[${problem.id}]]</a></font>
                 </p>
-                <table cellspacing="0" cellpadding="0" width="700" border="1" class="problem-status table-back" style="border-color: white">
+                <table width="700" class="table-default problem-status table-back">
                     <thead>
                         <tr class="inc">
                             <th width="5%">Rank</th>

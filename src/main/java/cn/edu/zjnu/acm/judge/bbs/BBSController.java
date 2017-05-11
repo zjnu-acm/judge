@@ -34,7 +34,7 @@ public class BBSController {
         long lastThreadId = 0;
 
         StringBuilder sb = new StringBuilder("<html><head><title>Messages</title></head><body>"
-                + "<table border=0 width=100% class=table-back><tr><td><ul>");
+                + "<table width=100% class='table-default table-back'><tr><td><ul>");
         long maxThreadId = messages.stream().mapToLong(Message::getThread).max().orElse(0);
         final long maxt = messageMapper.maxt(maxThreadId, problemId, limit, 999999999999L);
         for (Message message : messages) {

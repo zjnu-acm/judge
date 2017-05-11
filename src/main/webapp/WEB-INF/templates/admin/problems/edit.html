@@ -18,7 +18,7 @@
         <input type="hidden" name="ckfinderPath" th:value="@{/webjars/ckfinder/2.6.2.1/}"/>
         <h1>[[${hint}]]</h1>
         <p class="text-center">
-            <font size="4" color="#333399">[[${hint2}]]</font>
+            <font size="4" color="#339">[[${hint2}]]</font>
         </p>
         <form name="problem-edit" method="POST" th:action="@{${url}}" th:object="${problem}">
             <input type="hidden" name="id" th:value="*{id}"/>
