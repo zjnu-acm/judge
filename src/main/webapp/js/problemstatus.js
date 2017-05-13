@@ -14,8 +14,8 @@ function moveup(iteam, top, txt, rec) {
     if (at > (tempat - 28) && onit) {
         num++;
         temp.style.top = at - 1;
-        Stop = setTimeout(function(){
-            moveup(temp,tempat,temptxt,temprec);
+        Stop = setTimeout(function () {
+            moveup(temp, tempat, temptxt, temprec);
         }, 10);
     } else {
         return;

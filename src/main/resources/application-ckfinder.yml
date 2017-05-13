@@ -4,7 +4,9 @@ ckfinder:
     max-width: 1600
     max-height: 1200
   types:
-    Files.allowed-extensions: 7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip
+    Files:
+      allowed-extensions: 7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip
+      denied-extensions: exe,jsp,jspx,asp,aspx
     Images.allowed-extensions: bmp,gif,jpeg,jpg,png
   access-controls:
   - role: '*'
@@ -23,6 +25,4 @@ ckfinder:
   check-size-after-scaling: true
   force-ascii: true
   secure-image-uploads: true
-  servlet:
-    enabled: true
-    path: /webjars/ckfinder/2.6.2.1/core/connector/java/connector.java
+  servlet.path: /webjars/ckfinder/2.6.2.1/core/connector/java/connector.java

@@ -11,8 +11,8 @@
         <form>
             <select name="problemLang">
                 <option value="">默认语言</option>
-                <option value="ZH" th:selected="${'zh'.equalsIgnoreCase(problemLang)}">中文</option>
-                <option value="EN" th:selected="${'en'.equalsIgnoreCase(problemLang)}">English</option>
+                <option value="zh" th:selected="${'zh'.equalsIgnoreCase(problemLang)}">中文</option>
+                <option value="en" th:selected="${'en'.equalsIgnoreCase(problemLang)}">English</option>
             </select>
         </form>
         <input type="hidden" name="ckfinderPath" th:value="@{/webjars/ckfinder/2.6.2.1/}"/>
