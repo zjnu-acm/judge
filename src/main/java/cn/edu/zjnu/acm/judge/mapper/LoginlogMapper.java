@@ -18,7 +18,7 @@ package cn.edu.zjnu.acm.judge.mapper;
 import cn.edu.zjnu.acm.judge.domain.LoginLog;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.Param;
 
 /**
  *
@@ -27,9 +27,11 @@ import org.apache.ibatis.annotations.SelectKey;
 @Mapper
 public interface LoginlogMapper {
 
-    @Insert("insert into loginlog (id,user_id,password,ip,time,success) values(#{id},#{user},#{password},#{ip},now(),#{success})")
-    @SelectKey(statement = "select COALESCE(max(id)+1,1) maxp from loginlog",
-            keyProperty = "id", before = true, resultType = long.class)
-    long save(LoginLog loginLog);
+    @Insert("<script>insert into loginlog (user_id,password,ip,time,success) values"
+            + "<foreach item='item' index='index' collection='array' separator=','>"
+            + "(#{item.user},#{item.password},#{item.ip},now(),#{item.success})"
+            + "</foreach>"
+            + "</script>")
+    long save(@Param("array") LoginLog... loginLogs);
 
 }

@@ -17,6 +17,12 @@ package cn.edu.zjnu.acm.judge.service;
 
 import cn.edu.zjnu.acm.judge.domain.LoginLog;
 import cn.edu.zjnu.acm.judge.mapper.LoginlogMapper;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,15 +31,63 @@ import org.springframework.transaction.annotation.Transactional;
  * @author zhanhb
  */
 @Service
+@Slf4j
 public class LoginlogService {
 
     @Autowired
     private LoginlogMapper loginlogMapper;
+    private Thread thread;
+    private final ArrayBlockingQueue<LoginLog> queue = new ArrayBlockingQueue<>(4096);
+
+    @PostConstruct
+    public void init() {
+        thread = new Thread(this::savebatch);
+        thread.start();
+    }
+
+    @PreDestroy
+    public void destory() {
+        log.info("interrupt");
+        thread.interrupt();
+    }
 
     @Transactional
-    public synchronized long save(LoginLog loginlog) {
-        loginlogMapper.save(loginlog);
-        return loginlog.getId();
+    public void save(LoginLog loginlog) {
+        queue.add(loginlog);
+    }
+
+    private void savebatch() {
+        List<LoginLog> arrayList = new ArrayList<>(4);
+        while (true) {
+            try {
+                arrayList.add(queue.take());
+            } catch (InterruptedException ex) {
+                if (!queue.isEmpty()) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+                String msg = "finish save log";
+                if (log.isDebugEnabled()) {
+                    log.debug(msg, ex);
+                } else {
+                    log.info(msg);
+                }
+                return;
+            }
+            queue.drainTo(arrayList);
+            LoginLog[] array = arrayList.toArray(new LoginLog[arrayList.size()]);
+            arrayList.clear();
+            try {
+                loginlogMapper.save(array);
+            } catch (RuntimeException ex) {
+                log.error("save login log", ex);
+            }
+        }
+    }
+
+    void await() throws InterruptedException {
+        destory();
+        thread.join();
     }
 
 }
