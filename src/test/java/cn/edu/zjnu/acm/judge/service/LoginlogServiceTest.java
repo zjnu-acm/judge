@@ -54,7 +54,8 @@ public class LoginlogServiceTest {
     public void tearDown() throws InterruptedException {
         executorService.shutdown();
         executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
-        loginlogService.await();
+        loginlogService.destory();
+        loginlogService.getExecutor().awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
     }
 
     /**
@@ -71,7 +72,7 @@ public class LoginlogServiceTest {
     }
 
     private String uuid() {
-        return UUID.randomUUID().toString().toLowerCase();
+        return UUID.randomUUID().toString().replace("-", "").toLowerCase();
     }
 
 }
