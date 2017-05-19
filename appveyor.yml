@@ -1,0 +1,15 @@
+build: off
+services:
+  mysql
+before_test:
+  - '"C:\Program Files\MySQL\MySQL Server 5.7\bin\mysql" -uroot -pPassword12! < .travis\create-db.sql'
+  - 'mkdir C:\judge'
+  - 'subst D: C:\judge'
+test_script:
+  - mvnw -Dspring.datasource.password=Password12! -Djna.nosys=true clean install -B
+cache:
+  - '%USERPROFILE%\.m2'
+after_test:
+  - 'SET PATH=C:\Python34;C:\Python34\Scripts;%PATH%'
+  - pip install codecov
+  - codecov -X gcov -f target/site/jacoco/jacoco.xml
