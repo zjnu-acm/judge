@@ -22,5 +22,7 @@ public class RunRecord implements Serializable {
     private String source;
     private Path dataPath;
     private String userId;
+    @Setter(AccessLevel.PUBLIC)
+    private Path workDirectory;
 
 }

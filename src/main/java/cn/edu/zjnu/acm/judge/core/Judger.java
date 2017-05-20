@@ -139,10 +139,7 @@ public class Judger {
                 .timeLimit(problem.getTimeLimit())
                 .build();
         executorService.submit(() -> {
-            Path workDirectory = judgeConfiguration.getWorkDirectory(submissionId);
-            judgeServerService.delete(workDirectory);
             judgeInternal(runRecord);
-            judgeServerService.delete(workDirectory);
         }).get();
     }
 
@@ -221,8 +218,7 @@ public class Judger {
                 int caseResult = getResultFromExecuteResult(er);
                 time = Math.max(time, tim1);
                 memory = Math.max(memory, mem1);
-                log.debug("message = {}", message);
-                log.debug("Time = {}, Memory = {}", time, memory);
+                log.debug("message = {}, time = {}, memory = {}", message, time, memory);
 
                 details.add(String.valueOf(caseResult));
                 if (caseResult == 0) {
@@ -259,9 +255,7 @@ public class Judger {
         if (StringUtils.isEmptyOrWhitespace(source)) {
             return false;
         }
-        Path previous = judgeConfiguration.getWorkDirectory(runRecord.getSubmissionId() - 1);
-        judgeServerService.delete(previous);
-        Path work = judgeConfiguration.getWorkDirectory(runRecord.getSubmissionId());
+        Path work = runRecord.getWorkDirectory();
         final String main = "Main";
         Files.createDirectories(work);
         Path sourceFile = work.resolve(main + "." + runRecord.getLanguage().getSourceExtension()); //源码码文件
@@ -318,10 +312,13 @@ public class Judger {
     }
 
     private void judgeInternal(RunRecord runRecord) {
+        Path workDirectory = judgeConfiguration.getWorkDirectory(runRecord.getSubmissionId());
+        runRecord.setWorkDirectory(workDirectory);
         try {
             if (compile(runRecord)) {
                 runProcess(runRecord);
             }
+            judgeServerService.delete(workDirectory);
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);
         }
