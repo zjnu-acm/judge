@@ -51,7 +51,9 @@ public class UnicodeTest {
         int x = 0x1f602;
         String laughCry = new String(Character.toChars(x));
         test0(laughCry);
-        test0(Strings.repeat(laughCry, 123));
+        for (int i = 2; i < 123; ++i) {
+            test0(Strings.repeat(laughCry, 123));
+        }
     }
 
     private void test0(String laughCry) throws SQLException {

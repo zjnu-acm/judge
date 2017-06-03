@@ -138,9 +138,7 @@ public class Judger {
                 .memoryLimit(problem.getMemoryLimit())
                 .timeLimit(problem.getTimeLimit())
                 .build();
-        executorService.submit(() -> {
-            judgeInternal(runRecord);
-        }).get();
+        executorService.submit(() -> judgeInternal(runRecord)).get();
     }
 
     private boolean runProcess(RunRecord runRecord) throws IOException {

@@ -43,19 +43,9 @@ public class MainController {
         return "findpassword";
     }
 
-    @GetMapping("/notice")
-    public String notice() {
-        return "fragment/notice";
-    }
-
     @GetMapping({"/registerpage", "/register"})
     public String registerpage() {
         return "registerpage";
-    }
-
-    @GetMapping("/navigation")
-    public String navigation() {
-        return "fragment/navigation";
     }
 
     @GetMapping("/unauthorized")

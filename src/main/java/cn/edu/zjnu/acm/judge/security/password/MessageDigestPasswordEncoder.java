@@ -75,25 +75,25 @@ public class MessageDigestPasswordEncoder implements PasswordEncoder {
 
     private static class MD5Holder {
 
-        private static MessageDigestPasswordEncoder INSTANCE = new MessageDigestPasswordEncoder("MD5");
+        static final MessageDigestPasswordEncoder INSTANCE = new MessageDigestPasswordEncoder("MD5");
 
     }
 
     private static class SHAHolder {
 
-        private static MessageDigestPasswordEncoder INSTANCE = new MessageDigestPasswordEncoder("SHA1");
+        static final MessageDigestPasswordEncoder INSTANCE = new MessageDigestPasswordEncoder("SHA1");
 
     }
 
     private static class SHA256Holder {
 
-        private static MessageDigestPasswordEncoder INSTANCE = new MessageDigestPasswordEncoder("SHA-256");
+        static final MessageDigestPasswordEncoder INSTANCE = new MessageDigestPasswordEncoder("SHA-256");
 
     }
 
     private static class SHA512Holder {
 
-        private static MessageDigestPasswordEncoder INSTANCE = new MessageDigestPasswordEncoder("SHA-512");
+        static final MessageDigestPasswordEncoder INSTANCE = new MessageDigestPasswordEncoder("SHA-512");
 
     }
 

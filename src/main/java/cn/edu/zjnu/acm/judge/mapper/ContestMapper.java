@@ -168,7 +168,7 @@ public interface ContestMapper {
 
     @Deprecated
     @Nullable
-    @Select("select num from contest_problem where contest_id=#{cid} and problem_id=#{pid}")
+    @Select("select num-1000 from contest_problem where contest_id=#{cid} and problem_id=#{pid}")
     Long getProblemIdInContest(@Param("cid") long contestId, @Param("pid") long problemId);
 
     @Select("select" + COLUMNS + "from contest order by contest_id desc")

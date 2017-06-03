@@ -60,6 +60,8 @@ public class LoginlogServiceTest {
 
     /**
      * Test of save method, of class LoginlogService.
+     *
+     * @throws java.lang.InterruptedException
      */
     @Test
     public void testSave() throws InterruptedException {

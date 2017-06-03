@@ -142,14 +142,10 @@ public enum WindowsExecutor implements Executor {
                         break;
                     }
                     long time = judgeProcess.getActiveTime() - 1000; // extra 1000 millis
-                    if (time > timeLimit) {
+                    if (time > timeLimit || judgeProcess.getTime() > timeLimit) {
                         judgeProcess.terminate(Status.TIME_LIMIT_EXCEED);
                         judgeProcess.join(TERMINATE_TIMEOUT);
                         break;
-                    }
-                    if (judgeProcess.getTime() > timeLimit) {
-                        judgeProcess.terminate(Status.TIME_LIMIT_EXCEED);
-                        judgeProcess.join(TERMINATE_TIMEOUT);
                     }
                     long dwWaitTime = timeLimit - time;
                     if (dwWaitTime > UPDATE_TIME_THRESHOLD) {
