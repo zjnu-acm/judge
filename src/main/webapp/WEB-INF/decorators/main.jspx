@@ -34,15 +34,12 @@
         </head>
         <body id="page-home">
             <div id="page">
-                <jsp:include page="/nav.html"/>
-                <!-- end nav -->
+                <jsp:include page="/nav.html"/><!-- end nav -->
                 <div id="content" class="clearfix">
                     <decorator:body/>
-                </div>
-                <!-- end content -->
-                <jsp:include page="/footer.html"/>
-            </div>
-            <!-- end page -->
+                </div><!-- end content -->
+                <jsp:include page="/footer.html"/><!-- end footer -->
+            </div><!-- end page -->
             <jsp:include page="/ga.html"/>
         </body>
     </html>
