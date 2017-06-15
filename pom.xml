@@ -4,7 +4,7 @@
     <parent>
         <artifactId>platform-bom</artifactId>
         <groupId>io.spring.platform</groupId>
-        <version>Brussels-SR2</version>
+        <version>Brussels-SR3</version>
         <relativePath />
     </parent>
     <groupId>cn.edu.zjnu.acm</groupId>
@@ -51,7 +51,6 @@
         <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
         <delombok.directory>${project.build.directory}/delombok</delombok.directory>
         <flyway.version>4.2.0</flyway.version>
-        <groovy.version>2.4.11</groovy.version>
         <gson.version>2.8.1</gson.version>
         <guava.version>21.0</guava.version>
         <hibernate-validator.version>5.4.1.Final</hibernate-validator.version>
@@ -63,7 +62,6 @@
         <maven-enforcer-plugin.version>1.4.1</maven-enforcer-plugin.version>
         <maven-surefire-plugin.version>2.20</maven-surefire-plugin.version>
         <maven-war-plugin.version>3.1.0</maven-war-plugin.version>
-        <mysql.version>5.1.42</mysql.version>
         <snakeyaml.version>1.18</snakeyaml.version>
         <start-class>cn.edu.zjnu.acm.judge.Application</start-class>
         <thymeleaf-extras-data-attribute.version>2.0.1</thymeleaf-extras-data-attribute.version>
@@ -71,7 +69,6 @@
         <thymeleaf-extras-springsecurity4.version>3.0.2.RELEASE</thymeleaf-extras-springsecurity4.version>
         <thymeleaf-layout-dialect.version>2.1.2</thymeleaf-layout-dialect.version>
         <thymeleaf.version>3.0.6.RELEASE</thymeleaf.version>
-        <tomcat.version>8.5.15</tomcat.version>
     </properties>
 
     <dependencyManagement>
