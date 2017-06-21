@@ -74,6 +74,8 @@ import org.thymeleaf.util.StringUtils;
 @Slf4j
 public class Judger {
 
+    private static final File NULL_FILE = Paths.get(com.sun.jna.Platform.isWindows() ? "NUL" : "/dev/null").toFile();
+
     private static String collectLines(Path path) throws IOException {
         Charset charset = Platform.getCharset();
         String compileInfo;
@@ -197,7 +199,7 @@ public class Judger {
                     .inputFile(in)
                     .outputFile(progOutput)
                     .standardOutput(standard)
-                    .errFile(getNull(work))
+                    .errFile(NULL_FILE.toPath())
                     .build();
         }
         String detailMessageStr = null;
@@ -213,20 +215,16 @@ public class Judger {
                 long mem1 = er.getMemory() / 1024 - extraMemory;
                 mem1 = Math.max(0, mem1);
                 String message = er.getMessage();
-                int caseResult = getResultFromExecuteResult(er);
+                boolean success = er.isSuccess();
                 time = Math.max(time, tim1);
                 memory = Math.max(memory, mem1);
                 log.debug("message = {}, time = {}, memory = {}", message, time, memory);
 
-                details.add(String.valueOf(caseResult));
-                if (caseResult == 0) {
-                    details.add(scorePerCase);
-                } else {
-                    details.add("0");
-                }
+                details.add(String.valueOf(er.getCode().getResult()));
+                details.add(success ? scorePerCase : "0");
                 details.add(String.valueOf(tim1));
                 details.add(String.valueOf(mem1));
-                if (caseResult == 0) {
+                if (success) {
                     ++accept;
                 }
             }
@@ -271,9 +269,9 @@ public class Judger {
         Path compileInfo = work.resolve("compileinfo.txt");
         Process process = ProcessCreationHelper.execute(new ProcessBuilder(compileCommand.split("\\s+"))
                 .directory(work.toFile())
+                .redirectInput(ProcessBuilder.Redirect.from(NULL_FILE))
                 .redirectOutput(compileInfo.toFile())
                 .redirectErrorStream(true)::start);
-        process.getInputStream().close();
         try {
             process.waitFor(45, TimeUnit.SECONDS);
         } catch (InterruptedException ex) {
@@ -282,7 +280,7 @@ public class Judger {
         //编译信息导出
         String errorInfo;
         if (process.isAlive()) {
-            process.destroy();
+            process.destroyForcibly();
             try {
                 process.waitFor();
             } catch (InterruptedException ex) {
@@ -320,14 +318,6 @@ public class Judger {
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);
         }
-    }
-
-    private int getResultFromExecuteResult(ExecuteResult er) {
-        return er.getCode().getResult();
-    }
-
-    private Path getNull(Path work) {
-        return File.pathSeparatorChar == ';' ? work.resolve("NUL") : Paths.get("/dev/null");
     }
 
 }
