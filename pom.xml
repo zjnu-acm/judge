@@ -296,7 +296,7 @@
         <dependency>
             <groupId>org.webjars.npm</groupId>
             <artifactId>flatpickr</artifactId>
-            <version>2.6.3</version>
+            <version>3.0.6</version>
             <scope>runtime</scope>
         </dependency>
     </dependencies>
