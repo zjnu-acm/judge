@@ -69,6 +69,7 @@
         <maven-war-plugin.version>3.1.0</maven-war-plugin.version>
         <objenesis.version>2.6</objenesis.version>
         <snakeyaml.version>1.18</snakeyaml.version>
+        <spring-data-releasetrain.version>Ingalls-SR6</spring-data-releasetrain.version>
         <spring.version>4.3.10.RELEASE</spring.version>
         <start-class>cn.edu.zjnu.acm.judge.Application</start-class>
         <thymeleaf-extras-data-attribute.version>2.0.1</thymeleaf-extras-data-attribute.version>
