@@ -74,7 +74,7 @@
         <thymeleaf-extras-java8time.version>3.0.0.RELEASE</thymeleaf-extras-java8time.version>
         <thymeleaf-extras-springsecurity4.version>3.0.2.RELEASE</thymeleaf-extras-springsecurity4.version>
         <thymeleaf-layout-dialect.version>2.1.2</thymeleaf-layout-dialect.version>
-        <thymeleaf.version>3.0.6.RELEASE</thymeleaf.version>
+        <thymeleaf.version>3.0.7.RELEASE</thymeleaf.version>
         <tomcat.version>8.5.16</tomcat.version>
     </properties>
 
