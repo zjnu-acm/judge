@@ -48,6 +48,7 @@
     </scm>
 
     <properties>
+        <angular.version>1.2.32</angular.version>
         <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
         <delombok.directory>${project.build.directory}/delombok</delombok.directory>
         <flyway.version>4.2.0</flyway.version>
@@ -131,6 +132,16 @@
                 <groupId>org.webjars</groupId>
                 <artifactId>jquery</artifactId>
                 <version>1.12.4</version>
+            </dependency>
+            <dependency>
+                <groupId>org.webjars.npm</groupId>
+                <artifactId>angular</artifactId>
+                <version>${angular.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.webjars.npm</groupId>
+                <artifactId>angular-resource</artifactId>
+                <version>${angular.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -296,6 +307,16 @@
             <groupId>org.webjars</groupId>
             <artifactId>respond</artifactId>
             <version>1.4.2</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>angular</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>angular-resource</artifactId>
             <scope>runtime</scope>
         </dependency>
         <dependency>
