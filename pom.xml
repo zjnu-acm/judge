@@ -78,7 +78,7 @@
         <thymeleaf-extras-springsecurity4.version>3.0.2.RELEASE</thymeleaf-extras-springsecurity4.version>
         <thymeleaf-layout-dialect.version>2.1.2</thymeleaf-layout-dialect.version>
         <thymeleaf.version>3.0.7.RELEASE</thymeleaf.version>
-        <tomcat.version>8.5.16</tomcat.version>
+        <tomcat.version>8.5.19</tomcat.version>
     </properties>
 
     <dependencyManagement>
