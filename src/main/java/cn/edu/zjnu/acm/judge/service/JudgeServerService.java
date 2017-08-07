@@ -33,6 +33,7 @@ public class JudgeServerService {
     @Autowired
     private JudgeConfiguration judgeConfiguration;
 
+    @SuppressWarnings("CallToThreadYield")
     public void delete(Path path) {
         if (!judgeConfiguration.isDeleteTempFile()) {
             return;
@@ -41,6 +42,8 @@ public class JudgeServerService {
             DeleteHelper.delete(Objects.requireNonNull(path));
         } catch (IOException ignore) {
             // delete again
+            System.gc();
+            Thread.yield();
             try {
                 DeleteHelper.delete(path);
             } catch (IOException ignore2) {
