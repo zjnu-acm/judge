@@ -2,7 +2,6 @@ build: off
 services:
   mysql
 before_test:
-  - '"C:\Program Files\MySQL\MySQL Server 5.7\bin\mysql" -uroot -pPassword12! < .travis\create-db.sql'
   - 'mkdir C:\judge'
   - 'subst D: C:\judge'
 test_script:

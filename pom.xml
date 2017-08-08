@@ -60,6 +60,7 @@
         <javax-mail.version>1.6.0</javax-mail.version>
         <jna.version>4.4.0</jna.version>
         <logback.version>1.2.3</logback.version>
+        <mariadb.version>2.1.0</mariadb.version>
         <maven-compiler-plugin.version>3.6.1</maven-compiler-plugin.version>
         <maven-enforcer-plugin.version>1.4.1</maven-enforcer-plugin.version>
         <maven-surefire-plugin.version>2.20</maven-surefire-plugin.version>
@@ -186,11 +187,6 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
             <groupId>net.java.dev.jna</groupId>
             <artifactId>jna-platform</artifactId>
             <version>${jna.version}</version>
@@ -214,6 +210,10 @@
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
         </dependency>
         <dependency>
             <groupId>org.mybatis</groupId>
