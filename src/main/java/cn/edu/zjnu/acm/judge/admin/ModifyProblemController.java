@@ -31,7 +31,7 @@ public class ModifyProblemController {
     private ProblemMapper problemMapper;
 
     @PutMapping("/admin/problems/{problemId}")
-    public String modifyproblem(Model model,
+    public String modifyProblem(Model model,
             @PathVariable("problemId") long problemId,
             Locale locale,
             @RequestParam("problemLang") String problemLang,

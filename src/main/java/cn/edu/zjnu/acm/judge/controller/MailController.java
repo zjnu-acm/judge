@@ -107,7 +107,7 @@ public class MailController {
 
     @GetMapping({"/sendpage", "/send"})
     @SuppressWarnings("AssignmentToMethodParameter")
-    public String sendpage(Model model,
+    public String sendPage(Model model,
             @RequestParam(value = "reply", defaultValue = "-1") long reply,
             @RequestParam(value = "to", defaultValue = "") String userId,
             Authentication authentication) {
@@ -138,7 +138,7 @@ public class MailController {
     }
 
     @GetMapping("/showmail")
-    public String showmail(Model model,
+    public String showMail(Model model,
             @RequestParam("mail_id") long mailId,
             Authentication authentication) {
         Mail mail = mailMapper.findOne(mailId);

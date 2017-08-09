@@ -21,7 +21,7 @@ public class SearchProblemController {
     private ProblemMapper problemMapper;
 
     @GetMapping("/searchproblem")
-    public String searchproblem(Model model,
+    public String searchProblem(Model model,
             @RequestParam(value = "sstr", required = false) String query,
             Locale locale,
             Authentication authentication) {

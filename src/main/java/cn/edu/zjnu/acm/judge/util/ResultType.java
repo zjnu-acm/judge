@@ -22,20 +22,20 @@ package cn.edu.zjnu.acm.judge.util;
 @Deprecated
 public interface ResultType {
 
-    public static final int ACCEPTED = 0;
-    public static final int PRESENTATION_ERROR = 1;
-    public static final int TIME_LIMIT_EXCEED = 2;
-    public static final int MEMORY_LIMIT_EXCEED = 3;
-    public static final int WRONG_ANSWER = 4;
-    public static final int RUNTIME_ERROR = 5;
-    public static final int OUTPUT_LIMIT_EXCEED = 6;
-    public static final int COMPILE_ERROR = -7;
-    public static final int SYSTEM_ERROR = -98;
-    public static final int VALIDATE_ERROR = -99;
-    public static final int QUEUING = -10000;
-    public static final int SCORE_ACCEPT = 100;
+    int ACCEPTED = 0;
+    int PRESENTATION_ERROR = 1;
+    int TIME_LIMIT_EXCEED = 2;
+    int MEMORY_LIMIT_EXCEED = 3;
+    int WRONG_ANSWER = 4;
+    int RUNTIME_ERROR = 5;
+    int OUTPUT_LIMIT_EXCEED = 6;
+    int COMPILE_ERROR = -7;
+    int SYSTEM_ERROR = -98;
+    int VALIDATE_ERROR = -99;
+    int QUEUING = -10000;
+    int SCORE_ACCEPT = 100;
 
-    public static String getCaseScoreDescription(int score) {
+    static String getCaseScoreDescription(int score) {
         switch (score) {
             case ACCEPTED:
             case SCORE_ACCEPT:
@@ -64,7 +64,7 @@ public interface ResultType {
         return "Other";
     }
 
-    public static String getShowsourceString(int pampd) {
+    static String getShowsourceString(int pampd) {
         switch (pampd) {
             case QUEUING:
             case COMPILE_ERROR:
@@ -76,7 +76,7 @@ public interface ResultType {
         }
     }
 
-    public static String getResultDescription(int i) {
+    static String getResultDescription(int i) {
         if (0 <= i && i < 100) {
             return "Unaccepted";
         }

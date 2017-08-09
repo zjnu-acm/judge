@@ -27,7 +27,7 @@ public class ShowSubmissionDetailsController {
     private SubmissionService submissionService;
 
     @GetMapping("/showsolutiondetails")
-    public String showsolutiondetails(
+    public String showSolutionDetails(
             HttpServletRequest request,
             @RequestParam("solution_id") long submissionId,
             Authentication authentication) {

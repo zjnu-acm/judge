@@ -22,7 +22,7 @@ public interface JudgeUtils {
      */
     @SuppressWarnings("AssignmentToMethodParameter")
     @SpecialCall("WEB-INF/templates/fragment/standing.html")
-    public static String formatTime(long seconds) {
+    static String formatTime(long seconds) {
         boolean neg = false;
         if (seconds < 0) {
             neg = true;
@@ -51,7 +51,7 @@ public interface JudgeUtils {
         return buf.append(s).toString();
     }
 
-    public static String escapeCompileInfo(String string) {
+    static String escapeCompileInfo(String string) {
         if (StringUtils.isEmptyOrWhitespace(string)) {
             return "";
         }
@@ -59,7 +59,7 @@ public interface JudgeUtils {
                 .replaceAll("\\w:[/\\\\](?:\\w+[/\\\\])+?(?i)(?=Main\\.)(?-i)", "");
     }
 
-    public static String getReplyString(String string) {
+    static String getReplyString(String string) {
         if (StringUtils.isEmptyOrWhitespace(string)) {
             return "";
         }
@@ -68,7 +68,7 @@ public interface JudgeUtils {
                 .collect(Collectors.joining("\n> ", "> ", "\n")));
     }
 
-    public static String getHtmlFormattedString(String str) {
+    static String getHtmlFormattedString(String str) {
         if (StringUtils.isEmptyOrWhitespace(str)) {
             return "";
         }
@@ -88,12 +88,12 @@ public interface JudgeUtils {
                 .replace("<br />", "<br />\n");
     }
 
-    public static String formatTime(Instant a, Instant b) {
+    static String formatTime(Instant a, Instant b) {
         return formatTime(ChronoUnit.SECONDS.between(a, b));
     }
 
     @SpecialCall("users/list.html")
-    public static long[] sequence(long total, long current) {
+    static long[] sequence(long total, long current) {
         if (total <= 0) {
             if (total == 0) {
                 return new long[0];

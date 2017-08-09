@@ -54,7 +54,7 @@ public class LoginlogServiceTest {
     public void tearDown() throws InterruptedException {
         executorService.shutdown();
         executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
-        loginlogService.destory();
+        loginlogService.destroy();
         loginlogService.getExecutor().awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
     }
 

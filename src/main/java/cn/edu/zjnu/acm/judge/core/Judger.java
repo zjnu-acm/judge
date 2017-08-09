@@ -104,8 +104,8 @@ public class Judger {
     @PostConstruct
     public void init() {
         final ThreadGroup group = new ThreadGroup("judge group");
-        final AtomicInteger countet = new AtomicInteger();
-        final ThreadFactory threadFactory = runnable -> new Thread(group, runnable, "judge thread " + countet.incrementAndGet());
+        final AtomicInteger counter = new AtomicInteger();
+        final ThreadFactory threadFactory = runnable -> new Thread(group, runnable, "judge thread " + counter.incrementAndGet());
         executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors(), threadFactory);
     }
 
@@ -147,7 +147,7 @@ public class Judger {
         Path dataPath = runRecord.getDataPath();
         Objects.requireNonNull(dataPath, "dataPath");
         Path specialFile = dataPath.resolve(JudgeConfiguration.VALIDATE_FILE_NAME);
-        boolean isspecial = Files.exists(specialFile);
+        boolean isSpecial = Files.exists(specialFile);
         if (!Files.isDirectory(dataPath)) {
             log.error("{} not exists", runRecord.getDataPath());
             return false;
@@ -167,13 +167,13 @@ public class Judger {
                 files.add(new Path[]{inFile, outFile});//统计输入,输出文件
             }
         }
-        int casenum = files.size();
-        log.debug("casenum = {}", casenum);
-        if (casenum == 0) {
+        int caseNum = files.size();
+        log.debug("caseNum = {}", caseNum);
+        if (caseNum == 0) {
             return false;
         }
         int accept = 0; //最后通过的个数
-        ArrayList<String> details = new ArrayList<>(casenum << 2);
+        ArrayList<String> details = new ArrayList<>(caseNum << 2);
         long time = 0; //时间
         long memory = 0; //内存
         String command = runRecord.getLanguage().getExecuteCommand();
@@ -183,8 +183,8 @@ public class Judger {
         long castTimeLimit = runRecord.getTimeLimit() * runRecord.getLanguage().getTimeFactor() + extTime;
         long extraMemory = runRecord.getLanguage().getExtMemory(); //内存附加
         long caseMemoryLimit = (runRecord.getMemoryLimit() + extraMemory) * 1024;
-        Options[] optionses = new Options[casenum];
-        for (int cas = 0; cas < casenum; cas++) {
+        Options[] optionses = new Options[caseNum];
+        for (int cas = 0; cas < caseNum; cas++) {
             Path[] entry = files.get(cas);
             Path in = entry[0];
             Path standard = entry[1];
@@ -203,8 +203,8 @@ public class Judger {
                     .build();
         }
         String detailMessageStr = null;
-        String scorePerCase = new DecimalFormat("0.#").format(100.0 / casenum);
-        final Validator validator = isspecial
+        String scorePerCase = new DecimalFormat("0.#").format(100.0 / caseNum);
+        final Validator validator = isSpecial
                 ? new SpecialValidator(specialFile.toString(), work)
                 : new SimpleValidator();
         try {
@@ -234,10 +234,10 @@ public class Judger {
             detailMessageStr = ex.getMessage();
         }
         log.debug("{}", details);
-        int score = accept >= 0 ? (int) Math.round(accept * 100.0 / casenum) : accept;
+        int score = accept >= 0 ? (int) Math.round(accept * 100.0 / caseNum) : accept;
         if (score == 0 && accept != 0) {
             ++score;
-        } else if (score == 100 && accept != casenum) {
+        } else if (score == 100 && accept != caseNum) {
             --score;
         }
         submissionMapper.updateResult(runRecord.getSubmissionId(), score, time, memory);
@@ -266,7 +266,7 @@ public class Judger {
         //创建编译进程
         // VC++信息会输出在标准输出
         // G++编译信息输出在标准错误输出
-        Path compileInfo = work.resolve("compileinfo.txt");
+        Path compileInfo = work.resolve("compileInfo.txt");
         Process process = ProcessCreationHelper.execute(new ProcessBuilder(compileCommand.split("\\s+"))
                 .directory(work.toFile())
                 .redirectInput(ProcessBuilder.Redirect.from(NULL_FILE))

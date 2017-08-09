@@ -48,12 +48,12 @@ public class LoginlogService {
     @PostConstruct
     public void init() {
         executorService = Executors.newSingleThreadExecutor();
-        executorService.submit(this::savebatch);
+        executorService.submit(this::saveBatch);
         executorService.shutdown();
     }
 
     @PreDestroy
-    public void destory() {
+    public void destroy() {
         executorService.shutdownNow();
     }
 
@@ -69,7 +69,7 @@ public class LoginlogService {
         }
     }
 
-    private void savebatch() {
+    private void saveBatch() {
         while (true) {
             LoginLog[] array;
             try {

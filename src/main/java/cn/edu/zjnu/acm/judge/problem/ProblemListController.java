@@ -31,7 +31,7 @@ public class ProblemListController {
     private ProblemMapper problemMapper;
 
     @GetMapping({"/problemlist", "/problems"})
-    public String problemlist(Model model,
+    public String problemList(Model model,
             @RequestParam(value = "orderby", defaultValue = "") final String orderby,
             @RequestParam(value = "volume", required = false) Long volumeOptional,
             Locale locale,

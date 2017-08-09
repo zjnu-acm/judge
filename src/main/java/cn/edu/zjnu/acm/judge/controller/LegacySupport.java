@@ -30,7 +30,7 @@ public class LegacySupport {
 
     @Secured("ROLE_ADMIN")
     @GetMapping("/admin.showproblem")
-    public String showproblem(@RequestParam("problem_id") long problemId,
+    public String showProblem(@RequestParam("problem_id") long problemId,
             RedirectAttributes redirectAttributes) {
         redirectAttributes.addAttribute("problemId", problemId);
         return "redirect:/admin/problems/{problemId}.html";

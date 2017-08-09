@@ -34,7 +34,7 @@ public class ShowMessageController {
 
     @Secured("ROLE_USER")
     @GetMapping(value = "/showmessage", produces = TEXT_HTML_VALUE)
-    public ResponseEntity<String> showmessage(
+    public ResponseEntity<String> showMessage(
             @RequestParam("message_id") long messageId) {
         Message message = messageMapper.findOne(messageId);
         if (message == null) {

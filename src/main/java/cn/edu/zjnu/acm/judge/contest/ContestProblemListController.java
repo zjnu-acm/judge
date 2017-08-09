@@ -23,7 +23,7 @@ public class ContestProblemListController {
     private ContestMapper contestMapper;
 
     @GetMapping(value = "/showcontest", produces = TEXT_HTML_VALUE)
-    public String showcontest(Model model, @RequestParam("contest_id") long contestId,
+    public String showContest(Model model, @RequestParam("contest_id") long contestId,
             Locale locale, Authentication authentication) {
         Contest contest = contestMapper.findOneByIdAndDisabledFalse(contestId);
         if (contest == null) {

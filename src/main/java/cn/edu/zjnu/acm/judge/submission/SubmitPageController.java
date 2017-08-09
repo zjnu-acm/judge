@@ -20,7 +20,7 @@ public class SubmitPageController {
 
     @Secured("ROLE_USER")
     @GetMapping({"/submitpage", "/submit"})
-    public String submitpage(Model model,
+    public String submitPage(Model model,
             @RequestParam(value = "problem_id", required = false) Long problemId,
             @RequestParam(value = "contest_id", required = false) Long contestId,
             Authentication authentication) {

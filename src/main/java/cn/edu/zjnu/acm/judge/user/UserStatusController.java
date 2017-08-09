@@ -24,7 +24,7 @@ public class UserStatusController {
 
     @GetMapping("/userstatus")
     @SuppressWarnings("AssignmentToMethodParameter")
-    public String userstatus(Model model,
+    public String userStatus(Model model,
             @RequestParam(value = "size", defaultValue = "3") int display,
             @RequestParam(value = "user_id", required = false) String userId) {
         User user = userMapper.findOne(userId);

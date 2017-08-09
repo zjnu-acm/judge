@@ -21,7 +21,7 @@ public class AdminProblemListController {
     private ProblemMapper problemMapper;
 
     @GetMapping("/admin/problems")
-    public String problemlist(Model model, @PageableDefault(100) Pageable pageable, Locale locale) {
+    public String problemList(Model model, @PageableDefault(100) Pageable pageable, Locale locale) {
 
         long total = problemMapper.count();
         Page<Problem> page = new PageImpl<>(problemMapper.findAll(pageable, locale.getLanguage()), pageable, total);

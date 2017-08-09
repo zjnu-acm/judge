@@ -39,12 +39,12 @@ public class MainController {
     }
 
     @GetMapping("/findpassword")
-    public String findpassword() {
+    public String findPassword() {
         return "findpassword";
     }
 
     @GetMapping({"/registerpage", "/register"})
-    public String registerpage() {
+    public String registerPage() {
         return "registerpage";
     }
 

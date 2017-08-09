@@ -38,7 +38,7 @@ public class ContestStatisticsController {
     private LanguageService languageService;
 
     @GetMapping(value = "/conteststatistics", produces = TEXT_HTML_VALUE)
-    public ResponseEntity<String> conteststatistics(Model model,
+    public ResponseEntity<String> contestStatistics(Model model,
             @RequestParam("contest_id") long contestId) throws SQLException {
         Instant now = Instant.now();
         Contest contest = contestMapper.findOneByIdAndDisabledFalse(contestId);

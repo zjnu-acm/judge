@@ -20,11 +20,11 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public interface Utility {
 
-    public static String getRandomString(int length) {
+    static String getRandomString(int length) {
         return getRandomString(length, ThreadLocalRandom.current());
     }
 
-    public static String getRandomString(int length, Random random) {
+    static String getRandomString(int length, Random random) {
         char[] val = new char[length];
         for (int i = 0; i < length; ++i) {
             int x = random.nextInt(62);

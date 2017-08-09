@@ -21,9 +21,9 @@ import org.thymeleaf.util.StringUtils;
 
 public interface ValueCheck {
 
-    public static final String EMAIL_PATTERN = "[a-z0-9!#$%&'*+/=?^_`{|}~-]++(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]++)*+@[a-z0-9](?:[a-z0-9-]*[a-z0-9])?+(?:\\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?+)++";
+    String EMAIL_PATTERN = "[a-z0-9!#$%&'*+/=?^_`{|}~-]++(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]++)*+@[a-z0-9](?:[a-z0-9-]*[a-z0-9])?+(?:\\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?+)++";
 
-    public static void checkUserId(String userId) {
+    static void checkUserId(String userId) {
         if (StringUtils.isEmpty(userId)) {
             throw new MessageException("User ID can not be NULL", HttpStatus.BAD_REQUEST);
         }
@@ -38,7 +38,7 @@ public interface ValueCheck {
         }
     }
 
-    public static void checkPassword(String password) {
+    static void checkPassword(String password) {
         if (StringUtils.isEmpty(password)) {
             throw new MessageException("Password can not be NULL", HttpStatus.BAD_REQUEST);
         }
@@ -61,7 +61,7 @@ public interface ValueCheck {
         }
     }
 
-    public static void checkNick(String nick) {
+    static void checkNick(String nick) {
         if (StringUtils.isEmpty(nick)) {
             throw new MessageException("nick can not be NULL", HttpStatus.BAD_REQUEST);
         }
@@ -70,7 +70,7 @@ public interface ValueCheck {
         }
     }
 
-    public static void checkEmail(String email) {
+    static void checkEmail(String email) {
         if (!StringUtils.isEmptyOrWhitespace(email) && !email.matches(EMAIL_PATTERN)) {
             throw new MessageException("email format incorrect", HttpStatus.BAD_REQUEST);
         }

@@ -17,7 +17,7 @@ public class ShowCompileInfoController {
     private SubmissionMapper submissionMapper;
 
     @GetMapping("/showcompileinfo")
-    public String showcompileinfo(@RequestParam("solution_id") long submissionId, Model model) {
+    public String showCompileInfo(@RequestParam("solution_id") long submissionId, Model model) {
         String compileInfo = submissionMapper.findCompileInfoById(submissionId);
 
         if (compileInfo == null) {

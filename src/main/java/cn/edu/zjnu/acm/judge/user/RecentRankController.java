@@ -17,12 +17,12 @@ public class RecentRankController {
 
     @GetMapping("/recentrank")
     @SuppressWarnings("AssignmentToMethodParameter")
-    public String recentrank(Model model,
+    public String recentRank(Model model,
             @RequestParam(value = "count", defaultValue = "10000") int count) {
         count = Math.max(0, Math.min(10000, count));
-        List<User> recentrank = userMapper.recentrank(count);
+        List<User> recentRank = userMapper.recentrank(count);
         model.addAttribute("count", count);
-        model.addAttribute("recentrank", recentrank);
+        model.addAttribute("recentrank", recentRank);
         return "users/recent";
     }
 

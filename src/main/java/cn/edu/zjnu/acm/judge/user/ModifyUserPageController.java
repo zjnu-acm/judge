@@ -19,7 +19,7 @@ public class ModifyUserPageController {
 
     @Secured("ROLE_USER")
     @GetMapping("/modifyuserpage")
-    public String modifyuserpage(Model model,
+    public String modifyUserPage(Model model,
             Authentication authentication) {
         String userId = authentication != null ? authentication.getName() : null;
         User user = userMapper.findOne(userId);

@@ -48,7 +48,7 @@ public class UserListController {
 
     @GetMapping({"/userlist", "/users"})
     @SuppressWarnings("AssignmentToMethodParameter")
-    public String userlist(HttpServletRequest request, @PageableDefault(50) Pageable pageable) {
+    public String userList(HttpServletRequest request, @PageableDefault(50) Pageable pageable) {
         Sort sort = pageable.getSort();
         int pageSize = Math.min(pageable.getPageSize(), 500);
 

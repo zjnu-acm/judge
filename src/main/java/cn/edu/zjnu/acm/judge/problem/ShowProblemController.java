@@ -57,7 +57,7 @@ public class ShowProblemController {
     }
 
     @GetMapping(value = "/showproblem", produces = TEXT_HTML_VALUE)
-    public String showproblem(Model model,
+    public String showProblem(Model model,
             @RequestParam("problem_id") long problemId,
             Locale locale) {
         Problem problem = getProblem(problemId, locale);
