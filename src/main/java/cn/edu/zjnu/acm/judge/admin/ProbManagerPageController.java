@@ -63,7 +63,7 @@ public class ProbManagerPageController {
         model.addAttribute("title", "Modify " + problemId);
         model.addAttribute("hint", "Modify problem " + problemId);
         model.addAttribute("url", "/admin/problems/" + problemId + ".html");
-        model.addAttribute("method", "PUT");
+        model.addAttribute("method", "POST");
         model.addAttribute("hint2", "Modify problem");
         model.addAttribute("problemLang", lang);
         return finalBlock(problem, model);
