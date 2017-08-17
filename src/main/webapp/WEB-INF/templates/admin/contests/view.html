@@ -70,7 +70,7 @@
                     var title = $(this).closest(".item").find(".title"), val = $(this).val();
                     if (val === lastVal) return;
                     if (/^[0-9]+$/.test(val)) {
-                        var url = /*[+[[@{/problems/{problemId}.json}]]+]*//*[-*/"../problems/problemId.json"/*-]*/;
+                        var url = /*[+[[@{/api/problems/{problemId}.json}]]+]*//*[-*/"../api/problems/problemId.json"/*-]*/;
                         jqxhr && jqxhr.abort();
                         jqxhr = $.getJSON(url.replace('{problemId}', val), function (x) {
                             title.text(x && x.title || "No Title");
