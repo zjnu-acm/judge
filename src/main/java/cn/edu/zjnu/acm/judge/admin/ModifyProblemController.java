@@ -34,7 +34,7 @@ public class ModifyProblemController {
     public String modifyProblem(Model model,
             @PathVariable("problemId") long problemId,
             Locale locale,
-            @RequestParam("problemLang") String problemLang,
+            @RequestParam(value = "problemLang", required = false, defaultValue = "") String problemLang,
             Problem p) {
 
         String lang = StringUtils.isEmpty(problemLang) ? null : problemLang;
