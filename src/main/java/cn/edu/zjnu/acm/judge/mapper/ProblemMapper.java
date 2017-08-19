@@ -102,7 +102,29 @@ public interface ProblemMapper {
     @Select("select" + COLUMNS + FROM + " where problem_id=#{id} AND not disabled")
     Problem findOneByIdAndDisabledFalse(@Param("id") long pid, @Param("lang") String lang);
 
-    @Select("SELECT" + LIST_COLUMNS + FROM + " order by problem_id limit #{pageable.offset},#{pageable.pageSize}")
+    @Select("<script>"
+            + "SELECT" + LIST_COLUMNS + FROM
+            + " order by "
+            + "<if test='pageable.sort!=null'>"
+            + "<foreach item='item' index='index' collection='pageable.sort'"
+            + "      separator=',' close=','>"
+            + "        <choose>"
+            + "    <when test='\"inDate\".equalsIgnoreCase(item.property)'>p.in_date</when>"
+            + "    <when test='\"date\".equalsIgnoreCase(item.property)'>p.in_date</when>"
+            + "    <when test='\"title\".equalsIgnoreCase(item.property)'>p.title</when>"
+            + "    <when test='\"id\".equalsIgnoreCase(item.property)'>p.problem_id</when>"
+            + "    <when test='\"timeLimit\".equalsIgnoreCase(item.property)'>p.time_limit</when>"
+            + "    <when test='\"memoryLimit\".equalsIgnoreCase(item.property)'>p.memory_limit</when>"
+            + "    <when test='\"defunct\".equalsIgnoreCase(item.property)'>p.disabled</when>"
+            + "    <when test='\"disabled\".equalsIgnoreCase(item.property)'>p.disabled</when>"
+            + "    <when test='\"contest\".equalsIgnoreCase(item.property)'>p.contest_id</when>"
+            + "    <when test='\"contest_id\".equalsIgnoreCase(item.property)'>p.contest_id</when>"
+            + "    <otherwise>p.problem_id</otherwise>"
+            + "  </choose>"
+            + "<if test='item.descending'> DESC</if>"
+            + "  </foreach>"
+            + "</if> problem_id limit #{pageable.offset},#{pageable.pageSize}"
+            + "</script>")
     List<Problem> findAll(@Param("pageable") Pageable pageable, @Param("lang") String lang);
 
     // TODO not used
