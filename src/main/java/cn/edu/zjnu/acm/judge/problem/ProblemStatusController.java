@@ -57,13 +57,15 @@ public class ProblemStatusController {
     @GetMapping("/gotoproblem")
     public String gotoProblem(@RequestParam(value = "pid", required = false) String pid,
             RedirectAttributes redirectAttributes) {
+        long problemId;
         try {
-            redirectAttributes.addAttribute("problem_id", Long.parseLong(pid));
-            return "redirect:/showproblem";
+            problemId = Long.parseLong(pid);
         } catch (NumberFormatException ex) {
             redirectAttributes.addAttribute("sstr", pid);
             return "redirect:/searchproblem";
         }
+        redirectAttributes.addAttribute("problem_id", problemId);
+        return "redirect:/showproblem";
     }
 
     @GetMapping("/problemstatus")

@@ -11,8 +11,7 @@
         var ckfinderpath = $("[name='ckfinderPath']").val();
         $("textarea.editable").on("focus", function () {
             editor && destroyCKEditor(editor);
-            editor = undefined;
-            var me = $(this).ckeditor({
+            editor = $(this).ckeditor({
                 toolbar: [
                     ["Source"],
                     ["TextColor", "-", "Bold", "Italic", "Underline", "-", "Subscript", "Superscript", "RemoveFormat"],
@@ -24,9 +23,9 @@
                     ["Font", "FontSize", "Maximize"]
                 ]
             }, function () {
-                (editor = me).ckeditorGet().focus();
+                editor.ckeditorGet().focus();
             });
-            ckfinder(me, me.data("ckfinder") || ckfinderpath);
+            ckfinder(editor, editor.data("ckfinder") || ckfinderpath);
         });
     });
 })(this);

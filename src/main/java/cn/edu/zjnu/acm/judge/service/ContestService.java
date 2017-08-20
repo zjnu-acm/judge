@@ -36,7 +36,7 @@ public class ContestService {
     @Autowired
     private ProblemMapper problemMapper;
 
-    @SpecialCall("contests/problems.html")
+    @SpecialCall({"contests/problems.html", "admin/contests/view.html"})
     public String getStatus(Contest contest) {
         if (contest.isDisabled()) {
             return "Disabled";

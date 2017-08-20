@@ -69,7 +69,7 @@ public class ContestControllerTest {
     @Test
     public void testMock() throws Exception {
         MockMvc mvc = webAppContextSetup(context).build();
-        mvc.perform(get("/contests/1058/standing"))
+        mvc.perform(get("/contests/{id}/standing", 1058))
                 .andExpect(status().isOk());
     }
 

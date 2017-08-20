@@ -95,7 +95,7 @@ public class LoginlogService {
         }
     }
 
-    ExecutorService getExecutor()  {
+    ExecutorService getExecutor() {
         return executorService;
     }
 

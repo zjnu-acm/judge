@@ -25,6 +25,11 @@
                 <ignoreVersion>20040616</ignoreVersion>
             </ignoreVersions>
         </rule>
+        <rule groupId="com.google.guava" artifactId="guava">
+            <ignoreVersions>
+                <ignoreVersion type="regex">.+-android</ignoreVersion>
+            </ignoreVersions>
+        </rule>
         <rule groupId="dom4j" artifactId="dom4j">
             <ignoreVersions>
                 <ignoreVersion>20040902.021138</ignoreVersion>
