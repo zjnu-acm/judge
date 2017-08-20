@@ -16,7 +16,7 @@
 package cn.edu.zjnu.acm.judge.exception;
 
 import cn.edu.zjnu.acm.judge.config.JudgeHandlerInterceptor;
-import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,9 +33,13 @@ import org.springframework.web.servlet.LocaleResolver;
 @Order(0)
 public class GlobalExceptionHandler {
 
-    public static String unauthorized(HttpServletRequest request) throws IOException {
+    public static String unauthorized(HttpServletRequest request) {
         String url = (String) request.getAttribute(JudgeHandlerInterceptor.BACK_URL_ATTRIBUTE_NAME);
-        return url == null ? "redirect:/login" : "redirect:/login?url=" + URLEncoder.encode(url, "UTF-8");
+        try {
+            return url == null ? "redirect:/login" : "redirect:/login?url=" + URLEncoder.encode(url, "UTF-8");
+        } catch (UnsupportedEncodingException ex) {
+            throw new AssertionError(ex);
+        }
     }
 
     @Autowired
@@ -59,7 +63,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ForbiddenException.class)
-    public String forbiddenExceptionHandler(HttpServletRequest request) throws IOException {
+    public String forbiddenExceptionHandler(HttpServletRequest request) {
         return unauthorized(request);
     }
 

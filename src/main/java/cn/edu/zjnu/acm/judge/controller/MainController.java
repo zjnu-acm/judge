@@ -16,7 +16,6 @@
 package cn.edu.zjnu.acm.judge.controller;
 
 import cn.edu.zjnu.acm.judge.exception.GlobalExceptionHandler;
-import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,7 +48,7 @@ public class MainController {
     }
 
     @GetMapping("/unauthorized")
-    public String unauthorized(HttpServletRequest request) throws IOException {
+    public String unauthorized(HttpServletRequest request) {
         return GlobalExceptionHandler.unauthorized(request);
     }
 
