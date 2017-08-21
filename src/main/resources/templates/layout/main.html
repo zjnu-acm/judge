@@ -11,14 +11,14 @@
         <title>Welcome to JudgeOnline</title>
         <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css" th:href="@{/webjars/bootstrap/3.3.7/dist/css/bootstrap.min.css}" rel="stylesheet"/>-->
 
-        <link href="../../../css/site.css" th:href="@{/css/site.css(_=${application.startUpDate})}" rel="stylesheet"/>
-        <link href="../../../sample.png" th:href="@{/sample.png}" rel="shortcut icon"/>
+        <link href="../../static/css/site.css" th:href="@{/css/site.css(_=${application.startUpDate})}" rel="stylesheet"/>
+        <link href="../../static/sample.png" th:href="@{/sample.png}" rel="shortcut icon"/>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.js" th:src="@{/webjars/jquery/1.12.4/jquery.min.js}"></script>
         <!--[if lt IE 9]>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" th:src="@{/webjars/html5shiv/3.7.3/html5shiv.min.js}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js" th:src="@{/webjars/respond/1.4.2/dest/respond.matchmedia.addListener.min.js}"></script>
         <![endif]-->
-        <script src="../../../js/site.js" th:src="@{/js/site.js(_=${application.startUpDate})}"></script>
+        <script src="../../static/js/site.js" th:src="@{/js/site.js(_=${application.startUpDate})}"></script>
     </head>
     <body id="page-home">
         <div id="page" style="min-width: 980px">
@@ -27,7 +27,7 @@
                     <div id="outer-header">
                         <div id="branding" align="center">
                             <a href="../index.html" th:href="@{/}">
-                                <img id="logo" border="0" src="../../../images/CLanguagelogo.jpg" th:src="@{|/images${#request.contextPath}logo.jpg|}" width="100%" height="100"/></a>
+                                <img id="logo" border="0" src="../../static/images/CLanguagelogo.jpg" th:src="@{|/images${#request.contextPath}logo.jpg|}" width="100%" height="100"/></a>
                         </div>
                         <!-- end branding -->
                     </div>
@@ -62,14 +62,14 @@
             <!-- end content -->
             <div id="footer" class="clearfix">
                 <p>
-                    <img alt="home" height="29" src="../../../images/home.jpg" th:src="@{/images/home.jpg}" width="40" border="0"/>
+                    <img alt="home" height="29" src="../../static/images/home.jpg" th:src="@{/images/home.jpg}" width="40" border="0"/>
                     <font size="3">
                         <a href="../index.html" th:href="@{/}" th:text="#{onlinejudge.homepage}">Home Page</a>
                     </font>
-                    <img alt="goback" height="29" src="../../../images/goback.jpg" th:src="@{/images/goback.jpg}" width="40" border="0" style="margin-left: 40px;"/>
+                    <img alt="goback" height="29" src="../../static/images/goback.jpg" th:src="@{/images/goback.jpg}" width="40" border="0" style="margin-left: 40px;"/>
                     <font size="3">
                         <a href="javascript:history.go(-1)" th:text="#{onlinejudge.goback}">Go Back</a>
-                        <img alt="top" height="29" width="40" border="0" src="../../../images/top.jpg" th:src="@{/images/top.jpg}" style="margin-left: 40px;"/>
+                        <img alt="top" height="29" width="40" border="0" src="../../static/images/top.jpg" th:src="@{/images/top.jpg}" style="margin-left: 40px;"/>
                         <a href="#top" th:text="#{onlinejudge.totop}">To top</a>
                     </font>
                 </p>
