@@ -17,7 +17,7 @@ package cn.edu.zjnu.acm.judge.rest;
 
 import cn.edu.zjnu.acm.judge.Application;
 import cn.edu.zjnu.acm.judge.domain.Problem;
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,7 +51,7 @@ public class ProblemControllerTest {
     @Autowired
     private WebApplicationContext context;
     @Autowired
-    private Gson gson;
+    private ObjectMapper mapper;
     private MockMvc mvc;
 
     @Before
@@ -78,7 +78,7 @@ public class ProblemControllerTest {
         mvc.perform(post("/api/problems")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(gson.toJson(problem))
+                .content(mapper.writeValueAsBytes(problem))
         )
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful());

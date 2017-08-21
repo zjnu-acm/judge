@@ -19,8 +19,6 @@ import cn.edu.zjnu.acm.judge.config.JudgeConfiguration;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.service.ContestService;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -59,11 +57,9 @@ public class ProblemController {
     private ContestService contestService;
     @Autowired
     private JudgeConfiguration judgeConfiguration;
-    @Autowired
-    private Gson gson;
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public String save(@RequestBody Problem problem) {
+    public Problem save(@RequestBody Problem problem) {
         problemMapper.save(problem);
         long id = problem.getId();
         Path problemDir = judgeConfiguration.getDataDirectory(id);
@@ -75,9 +71,7 @@ public class ProblemController {
             Files.createDirectories(problemDir);
         } catch (IOException ex) {
         }
-        JsonObject json = gson.toJsonTree(problem).getAsJsonObject();
-        json.addProperty("dir", problemDir.toString());
-        return json.toString();
+        return problem;
     }
 
     @DeleteMapping("{id}")
