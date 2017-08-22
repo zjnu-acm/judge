@@ -26,12 +26,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="row item" th:each="p,it:${problems}" th:object="${p}" th:data-id="*{orign}">
+                        <tr class="row item" th:each="p,it:${problems}" th:object="${p}" th:data-id="*{origin}">
                             <td class="col-sm-4 text-center" style="vertical-align:middle">
-                                <b>[[*{orign}]] Problem [[${T(java.lang.Character).toString(65+it.index)}]]</b>
+                                <b>[[*{origin}]] Problem [[${T(java.lang.Character).toString(65+it.index)}]]</b>
                             </td>
                             <td class="col-sm-5 text-left" style="vertical-align:middle">
-                                <a th:href="@{/admin/problems/{problemId}.html(problemId=*{orign})}" th:text="*{title}">title</a>
+                                <a th:href="@{/admin/problems/{problemId}.html(problemId=*{origin})}" th:text="*{title}">title</a>
                             </td>
                             <td class="col-sm-3 text-center">
                                 <button type="button" class="btn btn-link edit">Edit</button>

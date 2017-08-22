@@ -126,7 +126,7 @@ public class ContestController {
         if (problem == null) {
             throw new EntityNotFoundException();
         }
-        redirectAttributes.addAttribute("problem_id", problem.getOrign());
+        redirectAttributes.addAttribute("problem_id", problem.getOrigin());
         return "redirect:/showproblem";
     }
 

@@ -40,10 +40,10 @@ public class LengthLimitedPasswordEncoder extends PasswordEncoderWrapper {
         return super.matches(limit(rawPassword), encodedPassword);
     }
 
-    private CharSequence limit(CharSequence orignPassword) {
-        return orignPassword == null || orignPassword.length() <= length
-                ? orignPassword
-                : orignPassword.subSequence(0, length);
+    private CharSequence limit(CharSequence originPassword) {
+        return originPassword == null || originPassword.length() <= length
+                ? originPassword
+                : originPassword.subSequence(0, length);
     }
 
 }

@@ -60,7 +60,7 @@ public class Problem implements Serializable {
 
     @Deprecated
     private Long contest;
-    private Long orign;
+    private Long origin;
 
     // 0 not submitted, 1 accepted, 2 wrong answer
     private int status;

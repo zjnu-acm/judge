@@ -45,7 +45,7 @@ public interface ContestMapper {
     long save(Contest contest);
 
     @Select("<script>select"
-            + " cp.problem_id orign," // TODO remove if Problem.orign
+            + " cp.problem_id origin," // TODO remove if Problem.origin
             + " cp.num id,"
             + " COALESCE(nullif(cp.title,''),nullif(pi.title,''),p.title) title"
             + "<if test='userId!=null'>,temp.status</if>"
@@ -132,7 +132,7 @@ public interface ContestMapper {
 
     // TODO not necessary support for i18n,
     // for return value only the id is used
-    @Select("select cp.num id,if(cp.title is null or trim(cp.title)='',p.title,cp.title) title,p.problem_id orign "
+    @Select("select cp.num id,if(cp.title is null or trim(cp.title)='',p.title,cp.title) title,p.problem_id origin "
             + "from contest_problem cp "
             + "join problem p on cp.problem_id=p.problem_id "
             + "where cp.contest_id=#{contest} and cp.num=#{problem}")
