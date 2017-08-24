@@ -45,9 +45,12 @@
 *.tld text diff=xml
 *.in  text
 *.out text
+*.md text
+*.MD text
 *.gif binary diff=image
 *.jpg binary diff=image
 *.png binary diff=image
 *.cmd text eol=crlf
 *.bat text eol=crlf
 *.jar binary
+*.zip binary

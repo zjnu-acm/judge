@@ -16,7 +16,6 @@
 package a;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -37,14 +36,11 @@ public class ExtensionsViewer {
     @SuppressWarnings("UseOfSystemOutOrSystemErr")
     public static void main(String[] args) throws IOException {
         Path path = Paths.get(".");
-        Map<String, List<Path>> map = Files.list(path).filter(Files::isDirectory).filter(p
-                -> !p.getFileName().toString().matches("target|\\.(?:git|idea|svn|settings)")).flatMap(p -> {
-            try {
-                return Files.walk(p).filter(Files::isRegularFile).filter(pp -> !getExtension(pp).isEmpty());
-            } catch (IOException ex) {
-                throw new UncheckedIOException(ex);
-            }
-        }).collect(Collectors.groupingBy(ExtensionsViewer::getExtension));
+        Map<String, List<Path>> map = Files.walk(path).filter(p -> p.getNameCount() == 1 || !p.getName(1).toString()
+                .matches("target|\\.(?:git|idea|svn|settings)"))
+                .filter(Files::isRegularFile)
+                .filter(pp -> !getExtension(pp).isEmpty())
+                .collect(Collectors.groupingBy(ExtensionsViewer::getExtension));
         map.keySet().removeIf(Files.lines(path.resolve(".gitattributes"))
                 .map(str -> str.trim())
                 .filter(str -> str.startsWith("*."))
