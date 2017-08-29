@@ -128,7 +128,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .frameOptions().sameOrigin()
                 .and()
             .logout()
-                .logoutUrl("/logout")
+                .logoutUrl("/logout.html")
                 .logoutSuccessHandler(simpleUrlLogoutSuccessHandler)
                 .permitAll()
                 .and()

@@ -47,6 +47,7 @@ public class LocaleConfiguration extends WebMvcConfigurerAdapter {
         localeResolver.setCookieName("locale");
         localeResolver.setCookieMaxAge(15 * 24 * 60 * 60);
         localeResolver.setCookiePath(getCookiePath(container));
+        localeResolver.setLanguageTagCompliant(true);
         return new FilterLocaleResolver(localeResolver, Locale.SIMPLIFIED_CHINESE, locale -> localeFactory.getAllLanguages().contains(locale.getLanguage()));
     }
 
