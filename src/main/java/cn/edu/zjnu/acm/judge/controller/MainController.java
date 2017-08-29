@@ -19,6 +19,11 @@ import cn.edu.zjnu.acm.judge.exception.GlobalExceptionHandler;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import static org.springframework.http.MediaType.ALL_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 
 /**
  *
@@ -47,9 +52,15 @@ public class MainController {
         return "registerpage";
     }
 
-    @GetMapping("/unauthorized")
-    public String unauthorized(HttpServletRequest request) {
+    @GetMapping(value = "/unauthorized", produces = {TEXT_HTML_VALUE, ALL_VALUE})
+    public String unauthorizedHtml(HttpServletRequest request) {
         return GlobalExceptionHandler.unauthorized(request);
+    }
+
+    @GetMapping(value = "/unauthorized", produces = APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String unauthorized() {
+        return "{}";
     }
 
 }

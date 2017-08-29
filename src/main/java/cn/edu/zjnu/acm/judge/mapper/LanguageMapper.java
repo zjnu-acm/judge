@@ -21,6 +21,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 
@@ -51,6 +52,10 @@ public interface LanguageMapper {
             + "</script>")
     long delete(Language language);
 
+    @CacheEvict(value = "languages", allEntries = true)
+    @Delete("update language set disabled=1 where id=#{param1}")
+    long deleteById(long id);
+
     @Cacheable("languages")
     @Select("select id id,name name,source_extension sourceExtension,compile_command compileCommand,execute_command executeCommand,executable_extension executableExtension,time_factor timeFactor,ext_memory extMemory,description description from language where not disabled")
     List<Language> findAll();
@@ -58,5 +63,21 @@ public interface LanguageMapper {
     @Cacheable("languages")
     @Select("select id id,name name,source_extension sourceExtension,compile_command compileCommand,execute_command executeCommand,executable_extension executableExtension,time_factor timeFactor,ext_memory extMemory,description description from language where id=#{param1}")
     Language findOne(long id);
+
+    @CacheEvict(value = "languages", allEntries = true)
+    @Update("<script>update language "
+            + "<set>"
+            + "<if test='param2.id!=null'>id=#{param2.id},</if>"
+            + "<if test='param2.name!=null'>name=#{param2.name},</if>"
+            + "<if test='param2.sourceExtension!=null'>source_extension=#{param2.sourceExtension},</if>"
+            + "<if test='param2.compileCommand!=null'>compile_command=#{param2.compileCommand},</if>"
+            + "<if test='param2.executeCommand!=null'>execute_command=#{param2.executeCommand},</if>"
+            + "<if test='param2.executableExtension!=null'>executable_extension=#{param2.executableExtension},</if>"
+            + "<if test='param2.timeFactor!=null'>time_factor=#{param2.timeFactor},</if>"
+            + "<if test='param2.extMemory!=null'>ext_memory=#{param2.extMemory},</if>"
+            + "<if test='param2.description!=null'>description=#{param2.description}</if>"
+            + "</set> where id=#{param1}"
+            + "</script>")
+    long update(long id, Language language);
 
 }

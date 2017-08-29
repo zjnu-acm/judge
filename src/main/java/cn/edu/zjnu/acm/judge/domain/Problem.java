@@ -15,7 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.domain;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.time.Instant;
 import lombok.AccessLevel;
@@ -32,7 +32,6 @@ import lombok.NoArgsConstructor;
 @Builder(builderClassName = "Builder", toBuilder = true)
 @Data
 @NoArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Problem implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -65,10 +64,12 @@ public class Problem implements Serializable {
     // 0 not submitted, 1 accepted, 2 wrong answer
     private int status;
 
+    @JsonIgnore
     public int getRatio() {
         return submit == 0 ? 0 : (int) Math.round(accepted * 100.0 / submit);
     }
 
+    @JsonIgnore
     public int getDifficulty() {
         return submit == 0 ? 0 : (int) Math.round((submit - accepted) * 100.0 / submit);
     }

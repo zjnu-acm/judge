@@ -20,6 +20,7 @@ import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.exception.EntityNotFoundException;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
+import cn.edu.zjnu.acm.judge.service.LocaleService;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -45,12 +46,14 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 /**
  * @author zhanhb
  */
-@Controller
+@Controller("contest")
 @RequestMapping("/contests/{contestId}")
 public class ContestController {
 
     @Autowired
     private ContestMapper contestMapper;
+    @Autowired
+    private LocaleService localeService;
 
     @SuppressWarnings("ValueOfIncrementOrDecrementUsed")
     private <T> void setIndexes(T[] standings, Comparator<T> c, ObjIntConsumer<T> consumer) {
@@ -98,7 +101,7 @@ public class ContestController {
             throw new MessageException("Contest not started yet", HttpStatus.OK);
         }
         // TODO user is empty
-        List<Problem> problems = contestMapper.getProblems(id, null, locale.getLanguage());
+        List<Problem> problems = contestMapper.getProblems(id, null, localeService.resolve(locale));
         model.addAttribute("id", id);
         model.addAttribute("problems", problems);
         model.addAttribute("standing", standing(id));
@@ -109,7 +112,7 @@ public class ContestController {
     //@GetMapping(value = "problems", produces = APPLICATION_JSON_VALUE)
     public List<Problem> problems(@PathVariable("contestId") long contest, Locale locale) {
         // TODO user is empty
-        return contestMapper.getProblems(contest, null, locale.getLanguage());
+        return contestMapper.getProblems(contest, null, localeService.resolve(locale));
     }
 
     @GetMapping("")

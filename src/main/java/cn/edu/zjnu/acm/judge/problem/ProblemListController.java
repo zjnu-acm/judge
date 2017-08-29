@@ -5,6 +5,7 @@ import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserPreferenceMapper;
+import cn.edu.zjnu.acm.judge.service.LocaleService;
 import java.text.Collator;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -29,6 +30,8 @@ public class ProblemListController {
     private UserPreferenceMapper userPerferenceMapper;
     @Autowired
     private ProblemMapper problemMapper;
+    @Autowired
+    private LocaleService localeService;
 
     @GetMapping({"/problemlist", "/problems"})
     public String problemList(Model model,
@@ -77,7 +80,7 @@ public class ProblemListController {
         long end = 999 + volume * 100;
         long totalVolume = (problemMapper.nextId() - 1001) / 100 + 1;
 
-        List<Problem> problems = problemMapper.findAllByDisabledFalse(currentUserId, start, end, locale.getLanguage());
+        List<Problem> problems = problemMapper.findAllByDisabledFalse(currentUserId, start, end, localeService.resolve(locale));
         Map<Long, Contest> hashMap = new HashMap<>(4);
         problems = problems.stream()
                 .filter(problem -> Optional.ofNullable(problem.getContest())

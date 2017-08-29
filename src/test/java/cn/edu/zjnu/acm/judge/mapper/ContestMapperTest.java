@@ -20,6 +20,7 @@ import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.domain.Standing;
 import cn.edu.zjnu.acm.judge.domain.User;
+import cn.edu.zjnu.acm.judge.service.LocaleService;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -45,7 +46,9 @@ public class ContestMapperTest {
 
     @Autowired
     private ContestMapper instance;
-    private Locale locale = Locale.SIMPLIFIED_CHINESE;
+    @Autowired
+    private LocaleService localeService;
+    private final Locale locale = Locale.SIMPLIFIED_CHINESE;
 
     /**
      * Test of standing method, of class ContestMapper.
@@ -66,7 +69,7 @@ public class ContestMapperTest {
         log.info("getProblems");
         long contestId = 0L;
         List<Problem> expResult = Arrays.asList();
-        List<Problem> result = instance.getProblems(contestId, null, locale.getLanguage());
+        List<Problem> result = instance.getProblems(contestId, null, localeService.resolve(locale));
         assertEquals(expResult, result);
     }
 
@@ -91,7 +94,7 @@ public class ContestMapperTest {
         long contestId = 0L;
         String userId = "'";
         List<Problem> expResult = Arrays.asList();
-        List<Problem> result = instance.getProblems(contestId, userId, locale.getLanguage());
+        List<Problem> result = instance.getProblems(contestId, userId, localeService.resolve(locale));
         assertEquals(expResult, result);
     }
 

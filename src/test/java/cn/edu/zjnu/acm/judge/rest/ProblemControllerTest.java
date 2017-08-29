@@ -77,7 +77,7 @@ public class ProblemControllerTest {
                 .build();
         mvc.perform(post("/api/problems")
                 .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsBytes(problem))
         )
                 .andDo(print())
@@ -92,7 +92,7 @@ public class ProblemControllerTest {
     public void testDelete() throws Exception {
         log.info("delete");
         long id = 0L;
-        mvc.perform(delete("/api/problems/{id}", id))
+        mvc.perform(delete("/api/problems/{id}", id).accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNoContent());
     }
@@ -105,7 +105,7 @@ public class ProblemControllerTest {
     public void testResume() throws Exception {
         log.info("resume");
         long id = 0L;
-        mvc.perform(post("/api/problems/{id}/resume", id))
+        mvc.perform(post("/api/problems/{id}/resume", id).accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNoContent());
     }

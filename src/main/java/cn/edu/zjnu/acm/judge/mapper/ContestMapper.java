@@ -171,6 +171,7 @@ public interface ContestMapper {
     @Select("select num-1000 from contest_problem where contest_id=#{cid} and problem_id=#{pid}")
     Long getProblemIdInContest(@Param("cid") long contestId, @Param("pid") long problemId);
 
+    @Deprecated
     @Select("select" + COLUMNS + "from contest order by contest_id desc")
     List<Contest> findAll();
 
@@ -191,5 +192,30 @@ public interface ContestMapper {
 
     @Update("update contest_problem set title=null where problem_id=#{problem} and contest_id=#{contest}")
     long updateProblemTitle(@Param("contest") long contestId, @Param("problem") long problemId);
+
+    @Select("<script>select" + COLUMNS + "from contest"
+            + "<where>"
+            + "<choose>"
+            + "<when test='mask==0'>1=0</when>" // none
+            + "<when test='mask==1'>now()&lt;start_time and start_time&lt;end_time</when>" // pending
+            + "<when test='mask==2'>start_time&lt;=now() and now()&lt;end_time</when>" // runnging
+            + "<when test='mask==3'>now()&lt;end_time and start_time&lt;end_time</when>" // pending,runnging
+            + "<when test='mask==4'>start_time&lt;end_time and end_time&lt;=now()</when>" // ended
+            + "<when test='mask==5'>(now()&lt;start_time or end_time&lt;=now()) and start_time&lt;end_time</when>" // pending,ended
+            + "<when test='mask==6'>start_time&lt;now() and start_time&lt;end_time</when>" // runnging,ended
+            + "<when test='mask==7'>start_time&lt;end_time</when>" // pending,runnging,ended
+            + "<when test='mask==8'>start_time&gt;=end_time</when>" // error
+            + "<when test='mask==9'>(now()&lt;start_time or start_time&gt;=end_time)</when>" // pending,error
+            + "<when test='mask==10'>(start_time&lt;=now() and now()&lt;end_time or start_time&gt;=end_time)</when>" // runnging,error
+            + "<when test='mask==11'>(now()&lt;end_time or start_time&gt;=end_time)</when>" // pending,runnging,error
+            + "<when test='mask==12'>(start_time&gt;=end_time or end_time&lt;=now())</when>" // ended,error
+            + "<when test='mask==13'>(now()&lt;start_time or end_time&lt;=now() or start_time&gt;=end_time)</when>" // pending,ended,error
+            + "<when test='mask==14'>(start_time&lt;now() or start_time&gt;=end_time)</when>" // runnging,ended,error
+            + "<when test='mask==15'>1=1</when>" // pending,runnging,ended,error
+            + "</choose>"
+            + "<if test='!includeDisabled'> and not disabled</if>"
+            + "</where>"
+            + " order by contest_id desc</script>")
+    List<Contest> findAllByQuery(@Param("includeDisabled") boolean includeDisabled, @Param("mask") int mask);
 
 }

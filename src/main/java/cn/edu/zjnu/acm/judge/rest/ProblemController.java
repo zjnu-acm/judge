@@ -16,29 +16,40 @@
 package cn.edu.zjnu.acm.judge.rest;
 
 import cn.edu.zjnu.acm.judge.config.JudgeConfiguration;
+import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.domain.Problem;
+import cn.edu.zjnu.acm.judge.exception.BusinessCode;
+import cn.edu.zjnu.acm.judge.exception.BusinessException;
+import cn.edu.zjnu.acm.judge.exception.MessageException;
+import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.service.ContestService;
+import cn.edu.zjnu.acm.judge.service.ProblemService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Instant;
 import java.util.Locale;
+import java.util.Objects;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.thymeleaf.util.StringUtils;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -46,19 +57,26 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  *
  * @author zhanhb
  */
+@RequestMapping(value = "/api/problems", produces = APPLICATION_JSON_VALUE)
 @RestController
-@RequestMapping("/api/problems")
 @Secured("ROLE_ADMIN")
+@Slf4j
 public class ProblemController {
 
     @Autowired
     private ProblemMapper problemMapper;
     @Autowired
+    private ProblemService problemService;
+    @Autowired
     private ContestService contestService;
     @Autowired
     private JudgeConfiguration judgeConfiguration;
+    @Autowired
+    private ObjectMapper objectMapper;
+    @Autowired
+    private ContestMapper contestMapper;
 
-    @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @PostMapping
     public Problem save(@RequestBody Problem problem) {
         problemMapper.save(problem);
         long id = problem.getId();
@@ -86,16 +104,79 @@ public class ProblemController {
         problemMapper.setDisabled(id, false);
     }
 
-    @GetMapping(value = "{id}", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> findOne(@PathVariable("id") long id, Locale locale) {
-        Problem problem = problemMapper.findOne(id, locale.getLanguage());
-        return problem != null ? ResponseEntity.ok(problem) : ResponseEntity.notFound().build();
+    @GetMapping("{id}/dataDir")
+    public String dataDir(@PathVariable("id") long id) throws IOException {
+        return objectMapper.writeValueAsString(judgeConfiguration.getDataDirectory(id).toString());
+    }
+
+    @GetMapping("{id}")
+    public Problem findOne(@PathVariable("id") long id,
+            @RequestParam(value = "locale", required = false) String lang) {
+        Problem problem = problemMapper.findOne(id, convert(lang));
+        if (problem == null) {
+            throw new BusinessException(BusinessCode.NOT_FOUND);
+        }
+        return problem;
     }
 
     @GetMapping
-    public Page<?> list(@PageableDefault(100) Pageable pageable, Locale locale) {
-        long total = problemMapper.count();
-        return new PageImpl<>(problemMapper.findAll(pageable, locale.getLanguage()), pageable, total);
+    public Page<Problem> list(@PageableDefault(100) Pageable pageable, Locale locale) {
+        log.info("pageable: {}", pageable);
+        return problemService.findAll(pageable, locale);
+    }
+
+    @PutMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void update(@PathVariable("id") long problemId, @RequestBody Problem p,
+            @RequestParam(value = "locale", required = false) String lang) {
+        Problem problem = problemMapper.findOne(problemId, lang);
+        if (problem == null) {
+            throw new MessageException("no such problem " + problemId, HttpStatus.NOT_FOUND);
+        }
+        Long oldContestId = problem.getContest();
+        Long contestId = p.getContest();
+        String computedLang = convert(lang);
+
+        if (!StringUtils.isEmpty(computedLang)) {
+            problemMapper.touchI18n(problemId, computedLang);
+        }
+        problemMapper.update(problem.toBuilder()
+                .title(p.getTitle())
+                .description(p.getDescription())
+                .input(p.getInput())
+                .output(p.getOutput())
+                .sampleInput(p.getSampleInput())
+                .sampleOutput(p.getSampleOutput())
+                .hint(p.getHint())
+                .source(p.getSource())
+                .timeLimit(p.getTimeLimit())
+                .memoryLimit(p.getMemoryLimit())
+                .contest(p.getContest())
+                .modifiedTime(Instant.now())
+                .build(), computedLang);
+        if (oldContestId != null && !Objects.equals(oldContestId, contestId)) {
+            boolean started = contestMapper.findOneByIdAndDisabledFalse(oldContestId).isStarted();
+            if (!started) {
+                contestService.removeProblem(oldContestId, problemId);
+            }
+        }
+        if (contestId != null) {
+            contestMapper.updateProblemTitle(contestId, problemId);
+            if (!Objects.equals(oldContestId, contestId)) {
+                Contest newContest = contestMapper.findOneByIdAndDisabledFalse(contestId);
+                if (newContest == null) {
+                    throw new BusinessException(BusinessCode.NO_SUCH_CONTEST);
+                }
+                boolean started = newContest.isStarted();
+                if (!started) {
+                    contestService.addProblem(contestId, problemId);
+                }
+            }
+        }
+    }
+
+    private String convert(String lang) {
+        return "default".equalsIgnoreCase(lang) || "und".equalsIgnoreCase(lang) ? "" : lang;
     }
 
 }

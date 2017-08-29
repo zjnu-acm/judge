@@ -3,6 +3,7 @@ package cn.edu.zjnu.acm.judge.problem;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
+import cn.edu.zjnu.acm.judge.service.LocaleService;
 import java.util.List;
 import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ public class SearchProblemController {
 
     @Autowired
     private ProblemMapper problemMapper;
+    @Autowired
+    private LocaleService localeService;
 
     @GetMapping("/searchproblem")
     public String searchProblem(Model model,
@@ -29,7 +32,7 @@ public class SearchProblemController {
             throw new MessageException("Please input the keyword to the problem.", HttpStatus.BAD_REQUEST);
         }
         String userId = authentication != null ? authentication.getName() : null;
-        List<Problem> problems = problemMapper.findAllBySearchTitleOrSourceAndDisabledFalse(query, userId, locale.getLanguage());
+        List<Problem> problems = problemMapper.findAllBySearchTitleOrSourceAndDisabledFalse(query, userId, localeService.resolve(locale));
 
         model.addAttribute("query", query);
         model.addAttribute("problems", problems);

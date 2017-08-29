@@ -21,6 +21,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.filter.ShallowEtagHeaderFilter;
 
 /**
  *
@@ -41,6 +42,15 @@ public class RegistrationBeanConfiguration {
     public FilterRegistrationBean sitemesh() {
         Filter filter = new com.opensymphony.sitemesh.webapp.SiteMeshFilter();
         return new FilterRegistrationBean(filter);
+    }
+
+    @Bean
+    public FilterRegistrationBean shallowEtagHeaderFilter() {
+        ShallowEtagHeaderFilter filter = new ShallowEtagHeaderFilter();
+        filter.setWriteWeakETag(true);
+        FilterRegistrationBean bean = new FilterRegistrationBean(filter);
+        bean.addUrlPatterns("/api/*", "/admin/*");
+        return bean;
     }
 
 }

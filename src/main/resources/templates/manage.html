@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      ng-app="adminApp"
+      th:lang="#{lang}">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <title>在线评测系统管理后台</title>
+        <base href="./" th:href="@{/admin/}"/>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css" th:href="@{/webjars/bootstrap/3.3.7/dist/css/bootstrap.min.css}" rel="stylesheet"/>
+        <link href="../static/css/site.css" th:href="@{/css/site.css(_=${T(org.springframework.web.context.support.WebApplicationContextUtils).getRequiredWebApplicationContext(#servletContext).startupDate})}" rel="stylesheet"/>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.9.0/loading-bar.css" th:href="@{/webjars/angular-loading-bar/0.9.0/build/loading-bar.min.css}" rel="stylesheet"/>
+        <!--[if lt IE 9]>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" th:src="@{/webjars/html5shiv/3.7.3/html5shiv.min.js}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js" th:src="@{/webjars/respond/1.4.2/dest/respond.matchmedia.addListener.min.js}"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="container">
+            <h4 class="text-center" style="color: #339">Welcome To Administrator's Page of Judge Online of ACM ICPC, ZheJiang Normal University</h4>
+            <hr/>
+        </div>
+        <div class="container" ui-view>
+            <div class="text-center">加载中...</div>
+        </div><!-- /#content -->
+        <div class="container">
+            <font size="3">
+                <a ui-sref="index" ui-sref-opts="{reload: true}">回到主页</a>
+            </font>
+            <br/>
+            <hr/>
+            <p class="text-center">
+                <font size="3">All Copyright Reserved 2006-[[${T(java.time.Year).now()}]]<br/>Any problem, Please Contact <a th:remove="${#strings.isEmpty(application['admin.mail'])?'tag':_}" th:href="|mailto:${application.get('admin.mail')}|">Administrator</a>
+                </font>
+            </p>
+        </div>
+        <a th:title="#{onlinejudge.footer.back_to_top}" class="back-to-top" id="back-to-top" href="#top"></a>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.js" th:src="@{/webjars/jquery/1.12.4/jquery.min.js}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.32/angular.js" th:src="@{/webjars/angular/1.2.32/angular.min.js}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.9.0/loading-bar.js" th:src="@{/webjars/angular-loading-bar/0.9.0/build/loading-bar.min.js}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.32/angular-resource.js" th:src="@{/webjars/angular-resource/1.2.32/angular-resource.min.js}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.32/angular-sanitize.js" th:src="@{/webjars/angular-sanitize/1.2.32/angular-sanitize.min.js}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.1/ui-bootstrap.js" th:src="@{/webjars/angular-ui-bootstrap/0.12.1/ui-bootstrap.min.js}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.1/ui-bootstrap-tpls.js" th:src="@{/webjars/angular-ui-bootstrap/0.12.1/ui-bootstrap-tpls.min.js}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.js" th:src="@{/webjars/angular-ui-router/0.2.18/release/angular-ui-router.min.js}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.23.0/polyfill.js" th:src="@{/webjars/babel-polyfill/6.23.0/dist/polyfill.js}"></script>
+        <script src="https://rawgit.com/eight04/custom-input/v0.2.1/dist/custom-input.js" th:src="@{/webjars/custom-input/0.2.1/dist/custom-input.js}"></script>
+        <script src="https://rawgit.com/eight04/angular-datetime/v5.1.3/dist/datetime.js" th:src="@{/webjars/angular-datetime-input/5.1.3/dist/datetime.js}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.7.2/ckeditor.js" th:src="@{/webjars/ckeditor/4.7.2/full/ckeditor.js}"></script>
+        <script th:src="@{/webjars/ckfinder/2.6.2.1/ckfinder.js}"></script>
+        <script src="../static/js/ng-ckeditor.js" th:src="@{/js/ng-ckeditor.js(_=${T(org.springframework.web.context.support.WebApplicationContextUtils).getRequiredWebApplicationContext(#servletContext).startupDate})}"></script>
+        <script src="../static/js/admin.js" th:src="@{/js/admin.js(_=${T(org.springframework.web.context.support.WebApplicationContextUtils).getRequiredWebApplicationContext(#servletContext).startupDate})}"></script>
+
+        <!--/*/<script type="text/ng-template" id="index.html">/*/-->
+        <p align="left" style="font-size: large; color: #339">What can I do:</p>
+        <p align="left" style="font-size: large; color: #339">
+            <a class="image3-25-23" ui-sref="problem-add" ui-sref-opts="{reload: true}">Add a problem</a>
+        </p>
+        <p style="font-size: large; color: #339">
+            <a class="image3-25-23" ui-sref="problem-list" ui-sref-opts="{reload: true}">See the problem list</a>
+        </p>
+        <p style="font-size: large; color: #339">
+            <a class="image3-25-23" ui-sref="contest-add" ui-sref-opts="{reload: true}">Add a contest</a>
+        </p>
+        <p style="font-size: large; color: #339">
+            <a class="image3-25-23" ui-sref="contest-list" ui-sref-opts="{reload: true}">See the contest list</a>
+        </p>
+        <p style="font-size: large; color: #339">
+            <a class="image3-25-23" ng-href="{{path.base}}logout.html">Logout</a>
+            <br/>
+        </p>
+        <div class="setsysteminfo" style="color: #339">
+            <form ng-submit="setSystemInfo()" role="form">
+                <input type="text" ng-model="form.info"/>
+                <input th:id="${#ids.seq('pureText')}" type="checkbox" name="pureText" ng-model="form.pureText" />
+                <label th:for="${#ids.prev('pureText')}">纯文本</label>
+                <button type="submit">set</button>
+            </form>
+        </div>
+        <div style="color: #339">
+            <form ng-submit="fix()" role="form">
+                <button th:id="${#ids.seq('submit')}" type="submit" class="btn btn-default" ng-disabled="fix.disabled">修复提交数和Accepted数</button>
+            </form>
+        </div>
+        <!--/*/</script>/*/-->
+
+        <!--/*/<script type="text/ng-template" id="contest-edit.html">/*/-->
+        <form ng-submit="save()" class="form-horizontal" role="form" name="contestEditForm">
+            <h4 class="text-center">{{form.id ? '编辑比赛' + form.id : '添加比赛'}}</h4>
+            <div class="form-group">
+                <label th:for="${#ids.next('title')}" class="col-sm-2 control-label">标题：</label>
+                <div class="col-sm-9">
+                    <input th:id="${#ids.seq('title')}" class="form-control" type="text" name="title" ng-model="form.title" required/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label th:for="${#ids.next('description')}" class="col-sm-2 control-label">描述：</label>
+                <div class="col-sm-9">
+                    <input th:id="${#ids.seq('description')}" class="form-control" name="description" ng-model="form.description" required />
+                </div>
+            </div>
+            <div class="form-group">
+                <label th:for="${#ids.next('start')}" class="col-sm-2 control-label">开始时间：</label>
+                <div class="col-sm-9">
+                    <input th:id="${#ids.seq('start')}" type="text" datetime="yyyy-MM-dd HH:mm:ss" placeholder="yyyy-MM-dd HH:mm:ss" class="form-control" ng-model="form.start" min="{{form.min.toUTCString()}}" required />
+                </div>
+            </div>
+            <div class="form-group">
+                <label th:for="${#ids.next('length')}" class="col-sm-2 control-label">比赛长度：</label>
+                <div class="col-sm-9">
+                    <input th:id="${#ids.seq('length')}" type="text" name="length" placeholder="d H:mm:ss" value="5:00:00" class="form-control" required pattern="(\d+\s+)?\d+:[0-5]?[0-9]:[0-5]?[0-9]" ng-model="form.length"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">结束时间：</label>
+                <div class="col-sm-9">
+                    <input readonly ng-value="form.end|date:'yyyy-MM-dd HH:mm:ss'" class="form-control"/>
+                </div>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-default" ng-disabled="contestEditForm.$invalid">Submit</button>
+                <button type="button" class="btn btn-danger" ng-click="reset()">Reset</button>
+            </div>
+        </form>
+        <!--/*/</script>/*/-->
+
+        <!--/*/<script type="text/ng-template" id="problem-edit.html">/*/-->
+        <select ng-show="locales.length >= 1" ng-change="change()" ng-model="locale" class="ng-hide">
+            <option value="und">默认语言</option>
+            <option ng-repeat="item in locales" value="{{item.id}}" ng-selected="locale === item.id">{{item.name}}</option>
+        </select>
+        <h1>{{editor.hint}}</h1>
+        <p class="text-center">
+            <font size="4" color="#339">{{editor.hint2}}</font>
+        </p>
+        <form name="problemEditForm" role="form" ng-submit="save()">
+            <p align="left">Problem Id:&nbsp;&nbsp;{{problem.id|| 'New Problem'}}</p>
+            <p align="left">
+                <label th:for="${#ids.next('title')}">Title:</label>
+                <input th:id="${#ids.seq('title')}" name="title" rows="1" style="width: 100%" ng-model="problem.title" required="required"/>
+            </p>
+            <p align="left">
+                <label th:for="${#ids.next('timeLimit')}">Time Limit:</label>
+                <input th:id="${#ids.seq('timeLimit')}" type="number" name="timeLimit" size="20" ng-model="problem.timeLimit" required="required"/>MS</p>
+            <p align="left">
+                <label th:for="${#ids.next('memoryLimit')}">Memory Limit:</label>
+                <input th:id="${#ids.seq('memoryLimit')}" type="number" name="memoryLimit" size="20" ng-model="problem.memoryLimit" required="required"/>KByte</p>
+            <p align="left">
+                <label th:for="${#ids.next('description')}">Description:</label>
+                <br/>
+                <textarea th:id="${#ids.seq('description')}" class="editable" th:ckfinder="@{/webjars/ckfinder/2.6.2.1/}" rows="13" name="description"  style="width: 100%;" ng-model="problem.description"></textarea>
+            </p>
+            <p align="left">
+                <label th:for="${#ids.next('input')}">Input:</label>
+                <br/>
+                <textarea th:id="${#ids.seq('input')}" class="editable" th:ckfinder="@{/webjars/ckfinder/2.6.2.1/}" rows="13" name="input" style="width: 100%;" ng-model="problem.input"></textarea></p>
+            <p align="left">
+                <label th:for="${#ids.next('output')}">Output:</label>
+                <br/>
+                <textarea th:id="${#ids.seq('output')}" class="editable" th:ckfinder="@{/webjars/ckfinder/2.6.2.1/}" rows="13" name="output"  style="width: 100%;" ng-model="problem.output"></textarea>
+            </p>
+            <p align="left">
+                <label th:for="${#ids.next('sampleInput')}">Sample Input:</label>
+                <br/>
+                <textarea th:id="${#ids.seq('sampleInput')}" rows="13" name="sampleInput"  style="width: 100%;" ng-model="problem.sampleInput"></textarea>
+            </p>
+            <p align="left">
+                <label th:for="${#ids.next('sampleOutput')}">Sample Output:</label>
+                <br/>
+                <textarea th:id="${#ids.seq('sampleOutput')}" rows="13" name="sampleOutput" style="width: 100%;" ng-model="problem.sampleOutput"></textarea>
+            </p>
+            <p align="left">
+                <label th:for="${#ids.next('hint')}">Hint:</label>
+                <br/>
+                <textarea th:id="${#ids.seq('hint')}" class="editable" th:ckfinder="@{/webjars/ckfinder/2.6.2.1/}" rows="13" name="hint"  style="width: 100%;" ng-model="problem.hint"></textarea>
+            </p>
+            <p align="left">
+                <label th:for="${#ids.next('source')}">Source:</label>
+                <br/>
+                <textarea th:id="${#ids.seq('source')}" class="editable" th:ckfinder="@{/webjars/ckfinder/2.6.2.1/}" name="source" rows="1" style="width: 80%" ng-model="problem.source"></textarea>
+            </p>
+            <!--/* TODO contest field in problem */-->
+            <p align="left">
+                <label th:for="${#ids.next('contest')}">contest:</label>
+                <select th:id="${#ids.seq('contest')}" name="contest" ng-model="problem.contest">
+                    <option value="">no contest</option>
+                    <option ng-repeat="contest in contests" ng-value="contest.id" ng-selected="contest.id === problem.contest">{{contest.title}}</option>
+                </select>
+            </p>
+            <div class="text-center"><button type="submit">Submit</button></div>
+        </form>
+        <!--/*/</script>/*/-->
+
+        <!--/*/<script type="text/ng-template" id="problem-list.html">/*/-->
+        <p class="text-center">
+            <font size="4" color="#339">Problem List</font>
+        </p>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-bordered">
+                <thead>
+                    <tr class="text-center">
+                        <th width="10%" style="cursor: pointer" ng-click="push('id')">编号</th>
+                        <th width="25%" style="cursor: pointer" ng-click="push('title')">标题</th>
+                        <th width="10%" style="cursor: pointer" ng-click="push('contest')">比赛</th>
+                        <th width="8%">编辑</th>
+                        <th width="20%" style="cursor: pointer" ng-click="push('inDate')">最后提交</th>
+                        <th width="8%" style="cursor: pointer" ng-click="push('defunct')">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="text-center" ng-repeat="p in page.content">
+                        <td>{{p.id}}</td>
+                        <td align="left">
+                            <a ui-sref="problem-view-current({id:p.id})" ui-sref-opts="{reload: true}">{{p.title||'无标题'}}</a>
+                        </td>
+                        <td>
+                            <a ng-show="!!p.contest"
+                               ui-sref="contest-view({id:p.contest})" ui-sref-opts="{reload: true}">{{p.contest}}</a>
+                        </td>
+                        <td>
+                            <a ui-sref="problem-edit-current({id:p.id})" ui-sref-opts="{reload: true}">编辑</a>
+                        </td>
+                        <td>{{p.inDate * 1000|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                        <td>
+                            <a ng-show="p.disabled" href="" ng-click="enable(p)">点击还原</a>
+                            <a ng-hide="p.disabled" href="" ng-click="disable(p)">点击隐藏</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="clearfix">
+            <pagination total-items="page.totalElements" ng-model="currentPage" max-size="10" items-per-page="page.size" ng-change="pageChanged()" boundary-links="true" direction-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+        </div>
+        <!--/*/</script>/*/-->
+
+        <!--/*/<script type="text/ng-template" id="problem-view.html">/*/-->
+        <h2 class="text-center">{{problem.title}}</h2>
+        <p class="text-center">Time Limit:{{problem.timeLimit}}MS&nbsp; Memory Limit:{{problem.memoryLimit}}K<br/>Total Submit:{{problem.submit}} Accepted:{{problem.accepted}}</p>
+        <p align="left"><b><font color="#339" size="5">Description</font></b></p>
+        <div class="description" ng-bind-html="problem.description"></div>
+        <p align="left"><b><font color="#339" size="5">Input</font></b></p>
+        <div class="input" ng-bind-html="problem.input">input</div>
+        <p align="left"><b><font color="#339" size="5">Output</font></b></p>
+        <div class="output" ng-bind-html="problem.output">output</div>
+        <p align="left"><b><font color="#339" size="5">Sample Input</font></b></p>
+        <pre class="sampleInput">{{problem.sampleInput}}</pre>
+        <p align="left"><b><font color="#339" size="5">Sample Output</font></b></p>
+        <pre class="sampleOutput">{{problem.sampleOutput}}</pre>
+        <p align="left"><b><font color="#339" size="5">Hint</font></b></p>
+        <div class="hint" ng-bind-html="problem.hint">hint</div>
+        <p align="left"><b><font color="#339" size="5">Source</font></b></p>
+        <div class="source" ng-bind-html="problem.source">source</div>
+        <font color="#339" size="3">
+            <p class="text-center">
+                <span>[</span>
+                <a ng-hide="problem.disabled" href="" ng-click="disable(problem)">隐藏</a>
+                <a ng-show="problem.disabled" href="" ng-click="resume(problem)">还原</a>
+                <span>]&nbsp;&nbsp;</span>
+                <span>[</span>
+                <a ui-sref="problem-edit-locale({id:problem.id,locale:locale})" ui-sref-opts="{reload: true}">编辑</a>
+                <span>]</span>
+            </p>
+        </font>
+        <!--/*/</script>/*/-->
+
+        <!--/*/<script type="text/ng-template" id="contest-list.html">/*/-->
+        <div class="text-right">
+            <input th:id="${#ids.seq('checkbox')}" type="checkbox" ng-model="query.include.PENDING" ng-change="load()"/>
+            <label th:for="${#ids.prev('checkbox')}">Pending</label>
+            <input th:id="${#ids.seq('checkbox')}" type="checkbox" ng-model="query.include.RUNNING" ng-change="load()"/>
+            <label th:for="${#ids.prev('checkbox')}">Running</label>
+            <input th:id="${#ids.seq('checkbox')}" type="checkbox" ng-model="query.include.ENDED" ng-change="load()"/>
+            <label th:for="${#ids.prev('checkbox')}">Ended</label>
+            <input th:id="${#ids.seq('checkbox')}" type="checkbox" ng-model="query.include.ERROR" ng-change="load()"/>
+            <label th:for="${#ids.prev('checkbox')}">Error</label>
+            <input th:id="${#ids.seq('checkbox')}" type="checkbox" ng-model="query.includeDisabled" ng-change="load()"/>
+            <label th:for="${#ids.prev('checkbox')}">显示已隐藏的比赛</label>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>标题</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in list">
+                        <td width="15%">{{item.id}}</td>
+                        <td>
+                            <a ui-sref="contest-view({id:item.id})" ui-sref-opts="{reload: true}">{{item.title}}</a>
+                        </td>
+                        <td width="25%">
+                            <span ng-show="contestStatus(item) === 'ERROR'" style="color: red">ERROR<br/>start at {{item.startTime * 1000|date:'yyyy-MM-dd HH:mm'}}<br/>end at {{item.endTime * 1000|date:'yyyy-MM-dd HH:mm'}}</span>
+                            <span ng-hide="contestStatus(item) === 'ERROR'" ng-style="statusColor(item)">{{contestStatus(item)}}</span>
+                        </td>
+                        <td>
+                            <a ng-show="item.disabled" href="" ng-click="enable(item)">显示</a>
+                            <a ng-hide="item.disabled" href="" ng-click="disable(item)">隐藏</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!--/*/</script>/*/-->
+
+        <!--/*/<script type="text/ng-template" id="contest-view.html">/*/-->
+        <p class="text-center">
+            <b><font size="5">Contest - {{contest.title}}</font></b>
+        </p>
+        <p class="text-center">Start time: <span style="color: #939">{{contest.startTime * 1000|date:'yyyy-MM-dd HH:mm:ss'}}</span> End time: <span style="color: #939">{{contest.endTime * 1000|date:'yyyy-MM-dd HH:mm:ss'}}</span><br/>Current System Time: <span style="color: #939" current-time="yyyy-MM-dd HH:mm:ss" interval="1000">2016-03-28 16:17:18</span> Contest Status: <span style="color: red">{{contest ? contestStatus(contest) : ''}}</span>
+        </p>
+        <div class="table-responsive">
+            <form role="form" ng-submit="add()">
+                <table class="text-center table table-striped table-hover problems">
+                    <thead>
+                        <tr class="row">
+                            <th class="col-sm-4 text-center">编号</th>
+                            <th class="col-sm-5 text-left">标题</th>
+                            <th class="col-sm-3 text-center">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="row item" ng-repeat="p in problems">
+                            <td class="col-sm-4 text-center" style="vertical-align:middle">
+                                <b>{{p.origin}} Problem {{fromCharCode(65 + $index)}}</b>
+                            </td>
+                            <td class="col-sm-5 text-left" style="vertical-align:middle">
+                                <a ui-sref="problem-view-current({id:p.origin})" ui-sref-opts="{reload: true}">{{p.title}}</a>
+                            </td>
+                            <td class="col-sm-3 text-center">
+                                <a class="btn btn-link edit" ui-sref="problem-edit-current({id:p.origin})" ui-sref-opts="{reload: true}">Edit</a>
+                                <button type="button" class="btn btn-default delete" ng-click="remove(p.origin)">DELETE</button>
+                            </td>
+                        </tr>
+                        <tr class="row item">
+                            <td class="col-sm-4 text-center">
+                                <input name="problemId" type="number" autofocus="autofocus" required="required" autocomplete="off" ng-model="newProblem.id" ng-change="change()" pattern="[1-9][0-9]+" request-focus/>
+                            </td>
+                            <td class="col-sm-5 text-left">
+                                <span class="title">{{newProblem.title}}</span>
+                            </td>
+                            <td class="col-sm-3 text-center">
+                                <button type="submit" class="btn btn-default add" ng-disabled="disabled">ADD</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+        <!--/*/</script>/*/-->
+    </body>
+</html>

@@ -34,7 +34,7 @@ import lombok.Setter;
 @Builder(builderClassName = "Builder")
 @Data
 @NoArgsConstructor
-@Setter(AccessLevel.PRIVATE)
+@Setter
 public class Contest implements Serializable {
 
     private static final long serialVersionUID = 1L;

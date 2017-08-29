@@ -15,6 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.config;
 
+import cn.edu.zjnu.acm.judge.data.form.SystemInfoForm;
 import cn.edu.zjnu.acm.judge.util.SpecialCall;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -40,7 +41,7 @@ public class JudgeConfiguration {
     private Path uploadDirectory;
 
     private Path dataFilesPath;
-    private volatile String systemInfo;
+    private volatile SystemInfoForm systemInfo;
     private String contextPath;
     private Path workingPath;
     private boolean deleteTempFile;
@@ -84,12 +85,12 @@ public class JudgeConfiguration {
     }
 
     @SpecialCall("notice.html")
-    public String getSystemInfo() {
+    public SystemInfoForm getSystemInfo() {
         return systemInfo;
     }
 
-    public void setSystemInfo(String aSystemInfo) {
-        systemInfo = aSystemInfo;
+    public void setSystemInfo(SystemInfoForm systemInfoForm) {
+        systemInfo = systemInfoForm;
     }
 
     @PostConstruct

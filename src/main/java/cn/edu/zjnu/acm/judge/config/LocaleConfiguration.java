@@ -15,7 +15,6 @@
  */
 package cn.edu.zjnu.acm.judge.config;
 
-import java.util.Locale;
 import javax.servlet.ServletContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,18 +36,19 @@ public class LocaleConfiguration extends WebMvcConfigurerAdapter {
         LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
         localeChangeInterceptor.setParamName("lang");
         localeChangeInterceptor.setIgnoreInvalidLocale(true);
+        localeChangeInterceptor.setLanguageTagCompliant(true);
         registry.addInterceptor(localeChangeInterceptor);
     }
 
     /* Store preferred language configuration in a cookie */
     @Bean(name = "localeResolver")
-    public LocaleResolver localeResolver(ServletContext container, LocaleFactory localeFactory) {
+    public LocaleResolver localeResolver(ServletContext container) {
         CookieLocaleResolver localeResolver = new CookieLocaleResolver();
         localeResolver.setCookieName("locale");
         localeResolver.setCookieMaxAge(15 * 24 * 60 * 60);
         localeResolver.setCookiePath(getCookiePath(container));
         localeResolver.setLanguageTagCompliant(true);
-        return new FilterLocaleResolver(localeResolver, Locale.SIMPLIFIED_CHINESE, locale -> localeFactory.getAllLanguages().contains(locale.getLanguage()));
+        return localeResolver;
     }
 
     private String getCookiePath(ServletContext container) {

@@ -87,8 +87,8 @@ public interface ProblemMapper {
 
     @Insert("INSERT INTO problem (problem_id,title,description,input,output,sample_input,sample_output,"
             + "hint,source,in_date,time_limit,memory_limit,contest_id) values ("
-            + "#{id},#{title},#{description},#{input},#{output},#{sampleInput},#{sampleOutput},"
-            + "#{hint},#{source},now(),#{timeLimit},#{memoryLimit},#{contest})")
+            + "#{id},COALESCE(#{title},''),COALESCE(#{description},''),COALESCE(#{input},''),COALESCE(#{output},''),COALESCE(#{sampleInput},''),COALESCE(#{sampleOutput},''),"
+            + "COALESCE(#{hint},''),COALESCE(#{source},''),now(),#{timeLimit},#{memoryLimit},#{contest})")
     @SelectKey(statement = "select COALESCE(max(problem_id)+1,1000) maxp from problem",
             before = true, keyProperty = "id", resultType = long.class)
     long save(Problem problem);
@@ -159,12 +159,12 @@ public interface ProblemMapper {
             + "</if>"
             + "SET "
             + "<if test='lang==null or lang==&quot;&quot;'>"
-            + "p.title=#{p.title},"
-            + "p.description=#{p.description},"
-            + "p.input=#{p.input},"
-            + "p.output=#{p.output},"
-            + "p.hint=#{p.hint},"
-            + "p.source=#{p.source},"
+            + "p.title=COALESCE(#{p.title},''),"
+            + "p.description=COALESCE(#{p.description},''),"
+            + "p.input=COALESCE(#{p.input},''),"
+            + "p.output=COALESCE(#{p.output},''),"
+            + "p.hint=COALESCE(#{p.hint},''),"
+            + "p.source=COALESCE(#{p.source},''),"
             + "</if>"
             + "<if test='lang!=null and lang!=&quot;&quot;'>"
             + "pi.title=nullif(nullif(#{p.title},''),p.title),"
@@ -174,10 +174,10 @@ public interface ProblemMapper {
             + "pi.hint=nullif(nullif(#{p.hint},''),p.hint),"
             + "pi.source=nullif(nullif(#{p.source},''),p.source),"
             + "</if>"
-            + "p.sample_input=#{p.sampleInput},"
-            + "p.sample_output=#{p.sampleOutput},"
-            + "p.time_limit=#{p.timeLimit},"
-            + "p.memory_limit=#{p.memoryLimit},"
+            + "p.sample_input=COALESCE(#{p.sampleInput},''),"
+            + "p.sample_output=COALESCE(#{p.sampleOutput},''),"
+            + "p.time_limit=COALESCE(#{p.timeLimit},0),"
+            + "p.memory_limit=COALESCE(#{p.memoryLimit},0),"
             + "p.modified_time=#{p.modifiedTime},"
             + "p.contest_id=#{p.contest} "
             + "WHERE p.problem_id=#{p.id}</script>")

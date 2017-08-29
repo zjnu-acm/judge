@@ -21,7 +21,7 @@ public interface JudgeUtils {
      * @return A string represents the specified seconds
      */
     @SuppressWarnings("AssignmentToMethodParameter")
-    @SpecialCall("WEB-INF/templates/fragment/standing.html")
+    @SpecialCall("fragment/standing.html")
     static String formatTime(long seconds) {
         boolean neg = false;
         if (seconds < 0) {
