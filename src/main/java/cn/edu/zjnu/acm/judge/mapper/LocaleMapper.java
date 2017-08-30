@@ -13,34 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.domain;
+package cn.edu.zjnu.acm.judge.mapper;
 
-import java.io.Serializable;
-import java.time.Instant;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import cn.edu.zjnu.acm.judge.domain.DomainLocale;
+import java.util.List;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 /**
  *
  * @author zhanhb
  */
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder(builderClassName = "Builder")
-@Data
-@NoArgsConstructor
-@Setter
-public class DomainLocale implements Serializable {
+@Mapper
+public interface LocaleMapper {
 
-    private static final long serialVersionUID = 1L;
+    @Select("select id,name from locale where not disabled")
+    List<DomainLocale> findAll();
 
-    private String id;
-    private String name;
-    private Boolean disabled;
-    private Instant createTime;
-    private Instant modifiedTime;
+    @Insert("insert into locale(id,name,created_time,modified_time)values(#{id},#{name},now(),now())")
+    int save(DomainLocale locale);
 
 }

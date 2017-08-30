@@ -16,13 +16,18 @@
 package cn.edu.zjnu.acm.judge.service;
 
 import cn.edu.zjnu.acm.judge.domain.DomainLocale;
+import cn.edu.zjnu.acm.judge.mapper.LocaleMapper;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -32,11 +37,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class LocaleService {
 
-    private final List<String> allLanguages;
+    private static final Comparator<Locale> DEFAULT_LOCALE_COMPARATOR = Comparator.comparing(Locale::toLanguageTag);
+    private static final Comparator<DomainLocale> DEFAULT_DOMAIN_LOCALE_COMPARATOR = Comparator.comparing(DomainLocale::getName);
 
-    public LocaleService() {
-        this.allLanguages = Arrays.asList("zh", "en");
-    }
+    @Autowired
+    private LocaleMapper localeMapper;
 
     public String resolve(Locale locale) {
         return toSupported(locale).toLanguageTag();
@@ -44,7 +49,7 @@ public class LocaleService {
 
     public Locale toSupported(Locale locale) {
         List<Locale> candidateLocales = ControlHolder.CONTROL.getCandidateLocales("", locale);
-        Set<String> collect = allLanguages.stream()
+        Set<String> collect = findAll().stream().map(DomainLocale::getName)
                 .collect(Collectors.toCollection(() -> new TreeSet<>(String.CASE_INSENSITIVE_ORDER)));
         for (Locale candidateLocale : candidateLocales) {
             if (collect.contains(candidateLocale.toLanguageTag())) {
@@ -56,7 +61,7 @@ public class LocaleService {
 
     public DomainLocale toDomainLocale(Locale locale, Locale inLocale) {
         String displayName = locale.getDisplayName(inLocale);
-        return DomainLocale.builder().id(locale).name(displayName).build();
+        return DomainLocale.builder().id(locale.toLanguageTag()).name(displayName).build();
     }
 
     public DomainLocale toDomainLocale(String localeName) {
@@ -64,8 +69,21 @@ public class LocaleService {
         return toDomainLocale(locale, locale);
     }
 
+    @Cacheable("locales")
     public List<DomainLocale> findAll() {
-        return allLanguages.stream().map(Locale::forLanguageTag).map(locale -> toDomainLocale(locale, locale)).collect(Collectors.toList());
+        return localeMapper.findAll();
+    }
+
+    public List<DomainLocale> support(boolean all) {
+        Locale[] locales = Locale.getAvailableLocales();
+        Stream<Locale> stream = Arrays.stream(locales);
+        if (!all) {
+            stream = stream.map(locale -> Locale.forLanguageTag(locale.getLanguage()));
+        }
+        return stream
+                .sorted(DEFAULT_LOCALE_COMPARATOR).distinct()
+                .map(locale -> toDomainLocale(locale, locale))
+                .sorted(DEFAULT_DOMAIN_LOCALE_COMPARATOR).distinct().collect(Collectors.toList());
     }
 
     @SuppressWarnings("UtilityClassWithoutPrivateConstructor")

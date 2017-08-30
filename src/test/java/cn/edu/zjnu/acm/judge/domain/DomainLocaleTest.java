@@ -27,7 +27,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  *
@@ -44,16 +44,15 @@ public class DomainLocaleTest {
 
     @Test
     public void testToJson() throws IOException {
-        for (Locale locale : new Locale[]{
+        for (Locale expect : new Locale[]{
             new Locale("zh", "TW", "Hant"),
             Locale.US,
             Locale.ENGLISH,
             Locale.ROOT,
             null
         }) {
-            DomainLocale expect = DomainLocale.builder().id(locale).name("test").build();
             String str = objectMapper.writeValueAsString(expect);
-            DomainLocale result = objectMapper.readValue(str, DomainLocale.class);
+            Locale result = objectMapper.readValue(str, Locale.class);
             log.info("str={}, expect={}, result={}", str, expect, result);
             assertEquals(expect, result);
         }

@@ -24,6 +24,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -53,6 +54,15 @@ public class LocaleController {
     @GetMapping
     public List<DomainLocale> findAll() {
         return localeService.findAll();
+    }
+
+    @GetMapping(params = "all")
+    public List<DomainLocale> supported(@RequestParam("all") String all) {
+        return localeService.support(isTrue(all));
+    }
+
+    private boolean isTrue(String all) {
+        return all != null && (all.isEmpty() || all.equals("1") || all.equalsIgnoreCase("true"));
     }
 
 }
