@@ -2,9 +2,6 @@
 
 <decorators defaultdir="/WEB-INF/decorators">
     <decorator name="main" page="main.jspx">
-        <pattern>/bbs</pattern>
-        <pattern>/conteststatistics</pattern>
-        <pattern>/showmessage</pattern>
-        <pattern>/status</pattern>
+        <pattern>/*</pattern>
     </decorator>
 </decorators>

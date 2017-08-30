@@ -39,9 +39,12 @@ public class RegistrationBeanConfiguration {
     }
 
     @Bean
+    @Deprecated
     public FilterRegistrationBean sitemesh() {
         Filter filter = new com.opensymphony.sitemesh.webapp.SiteMeshFilter();
-        return new FilterRegistrationBean(filter);
+        FilterRegistrationBean bean = new FilterRegistrationBean(filter);
+        bean.addUrlPatterns("/bbs", "/conteststatistics", "/showmessage", "/status"); // don't pass to sitemesh as possible
+        return bean;
     }
 
     @Bean

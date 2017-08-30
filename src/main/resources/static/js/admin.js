@@ -27,7 +27,7 @@
     app.directive('currentTime', function ($http, $filter) {
         var timeDiff = 0;
         $http.get(path.api + 'system/time.json').then(function (resp) {
-            timeDiff = resp.data * 1000 - new Date();
+            timeDiff = new Date() - resp.data * 1000;
         });
         return {
             restrict: 'A',
@@ -37,7 +37,7 @@
             },
             link: function (scope, element) {
                 function apply() {
-                    var date = +new Date() + timeDiff;
+                    var date = new Date() - timeDiff;
                     element[isInput ? 'val' : 'text']($filter('date')(date, format));
                 }
                 var isInput = element.is(':input'), format = scope.format;
