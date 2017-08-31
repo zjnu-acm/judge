@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.domain;
+package cn.edu.zjnu.acm.judge.data.dto;
 
 import java.io.Serializable;
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -25,12 +26,15 @@ import lombok.Setter;
  * @author zhanhb
  */
 @Data
+@NoArgsConstructor
 @Setter(AccessLevel.PRIVATE)
-public class MailInfo implements Serializable {
+public class Standing implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private long total;
-    private long newMail;
+    private String user;
+    private long problem;
+    private Long time;
+    private long penalty;
 
 }

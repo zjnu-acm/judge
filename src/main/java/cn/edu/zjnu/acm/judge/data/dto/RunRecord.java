@@ -1,5 +1,6 @@
-package cn.edu.zjnu.acm.judge.domain;
+package cn.edu.zjnu.acm.judge.data.dto;
 
+import cn.edu.zjnu.acm.judge.domain.Language;
 import java.io.Serializable;
 import java.nio.file.Path;
 import lombok.AccessLevel;

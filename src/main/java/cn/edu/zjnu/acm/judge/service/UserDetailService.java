@@ -15,8 +15,8 @@
  */
 package cn.edu.zjnu.acm.judge.service;
 
+import cn.edu.zjnu.acm.judge.data.dto.UserModel;
 import cn.edu.zjnu.acm.judge.domain.User;
-import cn.edu.zjnu.acm.judge.domain.UserModel;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserRoleMapper;
 import java.security.Principal;

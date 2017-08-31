@@ -15,9 +15,9 @@
  */
 package cn.edu.zjnu.acm.judge.mapper;
 
+import cn.edu.zjnu.acm.judge.data.dto.Standing;
 import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.domain.Problem;
-import cn.edu.zjnu.acm.judge.domain.Standing;
 import cn.edu.zjnu.acm.judge.domain.User;
 import java.util.List;
 import javax.annotation.Nullable;

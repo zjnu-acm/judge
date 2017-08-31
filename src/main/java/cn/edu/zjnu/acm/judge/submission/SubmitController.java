@@ -2,12 +2,12 @@ package cn.edu.zjnu.acm.judge.submission;
 
 import cn.edu.zjnu.acm.judge.config.JudgeConfiguration;
 import cn.edu.zjnu.acm.judge.core.Judger;
+import cn.edu.zjnu.acm.judge.data.dto.RunRecord;
+import cn.edu.zjnu.acm.judge.data.dto.UserModel;
 import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.domain.Language;
 import cn.edu.zjnu.acm.judge.domain.Problem;
-import cn.edu.zjnu.acm.judge.domain.RunRecord;
 import cn.edu.zjnu.acm.judge.domain.Submission;
-import cn.edu.zjnu.acm.judge.domain.UserModel;
 import cn.edu.zjnu.acm.judge.exception.ForbiddenException;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;

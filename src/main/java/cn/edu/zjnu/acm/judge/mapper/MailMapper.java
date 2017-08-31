@@ -15,8 +15,8 @@
  */
 package cn.edu.zjnu.acm.judge.mapper;
 
+import cn.edu.zjnu.acm.judge.data.dto.MailInfo;
 import cn.edu.zjnu.acm.judge.domain.Mail;
-import cn.edu.zjnu.acm.judge.domain.MailInfo;
 import java.util.List;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;

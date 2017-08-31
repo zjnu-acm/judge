@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.domain;
+package cn.edu.zjnu.acm.judge.data.dto;
 
+import cn.edu.zjnu.acm.judge.domain.User;
 import java.util.Collection;
 import lombok.Getter;
 import lombok.Setter;

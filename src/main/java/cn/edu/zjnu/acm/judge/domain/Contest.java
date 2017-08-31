@@ -18,7 +18,6 @@ package cn.edu.zjnu.acm.judge.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.time.Instant;
-import javax.xml.bind.annotation.XmlTransient;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -49,19 +48,16 @@ public class Contest implements Serializable {
     private Instant modifiedTime;
 
     @JsonIgnore
-    @XmlTransient
     public boolean isStarted() {
         return startTime == null || startTime.isBefore(Instant.now());
     }
 
     @JsonIgnore
-    @XmlTransient
     public boolean isEnded() {
         return endTime != null && endTime.isBefore(Instant.now());
     }
 
     @JsonIgnore
-    @XmlTransient
     public boolean isError() {
         return startTime != null && endTime != null && startTime.isAfter(endTime);
     }

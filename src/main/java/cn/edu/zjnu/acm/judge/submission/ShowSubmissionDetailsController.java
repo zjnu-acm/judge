@@ -1,8 +1,8 @@
 package cn.edu.zjnu.acm.judge.submission;
 
+import cn.edu.zjnu.acm.judge.data.dto.SubmissionDetail;
 import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.domain.Submission;
-import cn.edu.zjnu.acm.judge.domain.SubmissionDetail;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
