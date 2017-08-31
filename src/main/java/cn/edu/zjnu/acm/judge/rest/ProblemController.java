@@ -15,23 +15,11 @@
  */
 package cn.edu.zjnu.acm.judge.rest;
 
-import cn.edu.zjnu.acm.judge.config.JudgeConfiguration;
-import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.domain.Problem;
-import cn.edu.zjnu.acm.judge.exception.BusinessCode;
-import cn.edu.zjnu.acm.judge.exception.BusinessException;
-import cn.edu.zjnu.acm.judge.exception.MessageException;
-import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
-import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
-import cn.edu.zjnu.acm.judge.service.ContestService;
 import cn.edu.zjnu.acm.judge.service.ProblemService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.time.Instant;
 import java.util.Locale;
-import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -49,7 +37,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.thymeleaf.util.StringUtils;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -64,59 +51,36 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class ProblemController {
 
     @Autowired
-    private ProblemMapper problemMapper;
-    @Autowired
     private ProblemService problemService;
     @Autowired
-    private ContestService contestService;
-    @Autowired
-    private JudgeConfiguration judgeConfiguration;
-    @Autowired
     private ObjectMapper objectMapper;
-    @Autowired
-    private ContestMapper contestMapper;
 
     @PostMapping
     public Problem save(@RequestBody Problem problem) {
-        problemMapper.save(problem);
-        long id = problem.getId();
-        Path problemDir = judgeConfiguration.getDataDirectory(id);
-        Long contest = problem.getContest();
-        if (contest != null) {
-            contestService.addProblem(contest, id);
-        }
-        try {
-            Files.createDirectories(problemDir);
-        } catch (IOException ex) {
-        }
-        return problem;
+        return problemService.save(problem);
     }
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("id") long id) {
-        problemMapper.setDisabled(id, true);
+        problemService.setDisabled(id, true);
     }
 
     @PostMapping("{id}/resume")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void resume(@PathVariable("id") long id) {
-        problemMapper.setDisabled(id, false);
+        problemService.setDisabled(id, false);
     }
 
     @GetMapping("{id}/dataDir")
     public String dataDir(@PathVariable("id") long id) throws IOException {
-        return objectMapper.writeValueAsString(judgeConfiguration.getDataDirectory(id).toString());
+        return objectMapper.writeValueAsString(problemService.getDataDirectory(id).toString());
     }
 
     @GetMapping("{id}")
     public Problem findOne(@PathVariable("id") long id,
             @RequestParam(value = "locale", required = false) String lang) {
-        Problem problem = problemMapper.findOne(id, convert(lang));
-        if (problem == null) {
-            throw new BusinessException(BusinessCode.NOT_FOUND);
-        }
-        return problem;
+        return problemService.findOne(id, lang);
     }
 
     @GetMapping
@@ -129,33 +93,7 @@ public class ProblemController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@PathVariable("id") long problemId, @RequestBody Problem p,
             @RequestParam(value = "locale", required = false) String lang) {
-        Problem problem = problemMapper.findOne(problemId, lang);
-        if (problem == null) {
-            throw new MessageException("no such problem " + problemId, HttpStatus.NOT_FOUND);
-        }
-        String computedLang = convert(lang);
-
-        if (!StringUtils.isEmpty(computedLang)) {
-            problemMapper.touchI18n(problemId, computedLang);
-        }
-        problemMapper.update(problem.toBuilder()
-                .title(p.getTitle())
-                .description(p.getDescription())
-                .input(p.getInput())
-                .output(p.getOutput())
-                .sampleInput(p.getSampleInput())
-                .sampleOutput(p.getSampleOutput())
-                .hint(p.getHint())
-                .source(p.getSource())
-                .timeLimit(p.getTimeLimit())
-                .memoryLimit(p.getMemoryLimit())
-                .contest(p.getContest())
-                .modifiedTime(Instant.now())
-                .build(), computedLang);
-    }
-
-    private String convert(String lang) {
-        return "default".equalsIgnoreCase(lang) || "und".equalsIgnoreCase(lang) ? "" : lang;
+        problemService.update(problemId, p, lang);
     }
 
 }

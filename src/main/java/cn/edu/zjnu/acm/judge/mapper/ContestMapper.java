@@ -171,10 +171,6 @@ public interface ContestMapper {
     @Select("select num-1000 from contest_problem where contest_id=#{cid} and problem_id=#{pid}")
     Long getProblemIdInContest(@Param("cid") long contestId, @Param("pid") long problemId);
 
-    @Deprecated
-    @Select("select" + COLUMNS + "from contest order by contest_id desc")
-    List<Contest> findAll();
-
     @Select("select" + COLUMNS + "from contest where now()<start_time and start_time<end_time and not disabled order by contest_id")
     List<Contest> pending();
 
@@ -186,9 +182,6 @@ public interface ContestMapper {
 
     @Select("select" + COLUMNS + "from contest where start_time<end_time and not disabled order by contest_id desc")
     List<Contest> contests();
-
-    @Select("select" + COLUMNS + "from contest where start_time<end_time and not disabled and end_time>now() order by contest_id desc")
-    List<Contest> runningAndScheduling();
 
     @Update("update contest_problem set title=null where problem_id=#{problem} and contest_id=#{contest}")
     long updateProblemTitle(@Param("contest") long contestId, @Param("problem") long problemId);

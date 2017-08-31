@@ -15,8 +15,8 @@
  */
 package cn.edu.zjnu.acm.judge.problem;
 
+import cn.edu.zjnu.acm.judge.data.dto.ScoreCount;
 import cn.edu.zjnu.acm.judge.domain.Problem;
-import cn.edu.zjnu.acm.judge.domain.ScoreCount;
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;

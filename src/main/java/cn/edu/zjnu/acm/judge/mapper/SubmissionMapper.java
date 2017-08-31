@@ -91,7 +91,7 @@ public interface SubmissionMapper {
         "<if test='bottom!=null'>) tmp order by id desc</if>",
         "</script>"
     })
-    List<Submission> findAllByCriteria(SubmissionQueryForm submissionCriteria);
+    List<Submission> findAllByCriteria(SubmissionQueryForm submissionQueryForm);
 
     @Select("select solution_id from solution s where problem_id=#{problemId} and score<> "
             + ResultType.SCORE_ACCEPT

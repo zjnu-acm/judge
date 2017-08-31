@@ -310,11 +310,17 @@
         <!--/*/</script>/*/-->
 
         <!--/*/<script type="text/ng-template" id="contest-view.html">/*/-->
-        <p class="text-center">
-            <b><font size="5">Contest - {{contest.title}}</font></b>
-        </p>
-        <p class="text-center">Start time: <span style="color: #939">{{contest.startTime * 1000|date:'yyyy-MM-dd HH:mm:ss'}}</span> End time: <span style="color: #939">{{contest.endTime * 1000|date:'yyyy-MM-dd HH:mm:ss'}}</span><br/>Current System Time: <span style="color: #939" current-time="yyyy-MM-dd HH:mm:ss" interval="1000">2016-03-28 16:17:18</span> Contest Status: <span style="color: red">{{contest ? contestStatus(contest) : ''}}</span>
-        </p>
+        <h2 class="text-center">Contest - {{contest.title}}</h2>
+        <div class="text-center">
+            <div>
+                <label>Start time: </label><span style="color: #939">{{contest.startTime * 1000|date:'yyyy-MM-dd HH:mm:ss'}}</span>
+                <label>End time: </label><span style="color: #939">{{contest.endTime * 1000|date:'yyyy-MM-dd HH:mm:ss'}}</span>
+            </div>
+            <div>
+                <label>Current System Time: </label><span style="color: #939" current-time="yyyy-MM-dd HH:mm:ss" interval="1000">2016-03-28 16:17:18</span>
+                <label>Contest Status: </label><span style="color: red">{{contest ? contestStatus(contest) : ''}}</span>
+            </div>
+        </div>
         <div class="table-responsive">
             <form role="form" ng-submit="add()">
                 <table class="text-center table table-striped table-hover problems">

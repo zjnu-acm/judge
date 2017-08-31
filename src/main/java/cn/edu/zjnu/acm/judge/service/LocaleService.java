@@ -74,6 +74,13 @@ public class LocaleService {
         return localeMapper.findAll();
     }
 
+    public DomainLocale findOne(String id) {
+        if (Locale.ROOT.toLanguageTag().equalsIgnoreCase(id)) {
+            return null;
+        }
+        return localeMapper.findOne(id);
+    }
+
     public List<DomainLocale> support(boolean all) {
         Locale[] locales = Locale.getAvailableLocales();
         Stream<Locale> stream = Arrays.stream(locales);

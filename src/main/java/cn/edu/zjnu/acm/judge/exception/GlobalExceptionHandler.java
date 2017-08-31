@@ -18,16 +18,15 @@ package cn.edu.zjnu.acm.judge.exception;
 import cn.edu.zjnu.acm.judge.config.JudgeHandlerInterceptor;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.NoSuchMessageException;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.servlet.LocaleResolver;
 
 @ControllerAdvice
 @Order(0)
@@ -44,17 +43,13 @@ public class GlobalExceptionHandler {
 
     @Autowired
     private MessageSource messageSource;
-    @Autowired
-    private LocaleResolver localeResolver;
 
     @ExceptionHandler(MessageException.class)
-    public String messageExceptionHandler(HttpServletRequest request, HttpServletResponse response, MessageException ex) {
+    public String messageExceptionHandler(MessageException ex, Locale locale,
+            HttpServletRequest request, HttpServletResponse response) {
         String message = ex.getMessage();
         HttpStatus code = ex.getHttpStatus();
-        try {
-            message = messageSource.getMessage(message, null, localeResolver.resolveLocale(request));
-        } catch (NoSuchMessageException ignore) {
-        }
+        message = messageSource.getMessage(message, null, message, locale);
         request.setAttribute("message", message);
         if (code.is4xxClientError()) {
             response.setStatus(code.value());

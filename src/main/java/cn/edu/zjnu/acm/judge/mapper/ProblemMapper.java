@@ -15,8 +15,8 @@
  */
 package cn.edu.zjnu.acm.judge.mapper;
 
+import cn.edu.zjnu.acm.judge.data.dto.ScoreCount;
 import cn.edu.zjnu.acm.judge.domain.Problem;
-import cn.edu.zjnu.acm.judge.domain.ScoreCount;
 import java.time.Instant;
 import java.util.List;
 import javax.annotation.Nullable;
@@ -126,7 +126,6 @@ public interface ProblemMapper {
             + "</script>")
     List<Problem> findAll(@Param("pageable") Pageable pageable, @Param("lang") String lang);
 
-    // TODO not used
     @Select("<script>"
             + "select" + LIST_COLUMNS
             + STATUS

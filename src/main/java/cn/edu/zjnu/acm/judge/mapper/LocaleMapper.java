@@ -19,6 +19,7 @@ import cn.edu.zjnu.acm.judge.domain.DomainLocale;
 import java.util.List;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 /**
@@ -33,5 +34,8 @@ public interface LocaleMapper {
 
     @Insert("insert into locale(id,name,created_time,modified_time)values(#{id},#{name},now(),now())")
     int save(DomainLocale locale);
+
+    @Select("select id,name from locale where id=#{id} and not disabled")
+    public DomainLocale findOne(@Param("id") String id);
 
 }

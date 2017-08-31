@@ -108,13 +108,6 @@ public class ContestController {
         return "contests/standing";
     }
 
-    //@ResponseBody
-    //@GetMapping(value = "problems", produces = APPLICATION_JSON_VALUE)
-    public List<Problem> problems(@PathVariable("contestId") long contest, Locale locale) {
-        // TODO user is empty
-        return contestMapper.getProblems(contest, null, localeService.resolve(locale));
-    }
-
     @GetMapping("")
     public String index(@PathVariable("contestId") long contestId, RedirectAttributes redirectAttributes) {
         redirectAttributes.addAttribute("contestId", contestId);

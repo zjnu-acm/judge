@@ -201,15 +201,6 @@ public class ContestMapperTest {
     }
 
     /**
-     * Test of findAll method, of class ContestMapper.
-     */
-    @Test
-    public void testFindAll() {
-        log.info("findAll");
-        instance.findAll();
-    }
-
-    /**
      * Test of pending method, of class ContestMapper.
      */
     @Test
@@ -243,15 +234,6 @@ public class ContestMapperTest {
     public void testContests() {
         log.info("contests");
         instance.contests();
-    }
-
-    /**
-     * Test of runningAndScheduling method, of class ContestMapper.
-     */
-    @Test
-    public void testRunningAndScheduling() {
-        log.info("runningAndScheduling");
-        instance.runningAndScheduling();
     }
 
     /**

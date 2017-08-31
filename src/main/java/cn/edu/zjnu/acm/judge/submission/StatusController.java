@@ -79,7 +79,7 @@ public class StatusController {
                 }
             }
         }
-        SubmissionQueryForm criteria = SubmissionQueryForm.builder()
+        SubmissionQueryForm form = SubmissionQueryForm.builder()
                 .problem(problemId == 0 ? null : problemId)
                 .contest(contestId)
                 .score(sc)
@@ -89,8 +89,8 @@ public class StatusController {
                 .user(!StringUtils.isEmptyOrWhitespace(userId) ? userId : null)
                 .language(language != -1 ? language : null)
                 .build();
-        log.debug("{}", criteria);
-        List<Submission> submissions = submissionMapper.findAllByCriteria(criteria);
+        log.debug("{}", form);
+        List<Submission> submissions = submissionMapper.findAllByCriteria(form);
 
         OptionalLong min = submissions.stream()
                 .mapToLong(Submission::getId)
