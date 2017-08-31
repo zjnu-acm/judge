@@ -15,14 +15,11 @@
  */
 package cn.edu.zjnu.acm.judge.user;
 
-import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.exception.BadRequestException;
-import cn.edu.zjnu.acm.judge.mapper.UserMapper;
+import cn.edu.zjnu.acm.judge.service.AccountService;
 import cn.edu.zjnu.acm.judge.util.URLBuilder;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -44,7 +41,7 @@ public class UserListController {
     );
 
     @Autowired
-    private UserMapper userMapper;
+    private AccountService accountService;
 
     @GetMapping({"/userlist", "/users"})
     @SuppressWarnings("AssignmentToMethodParameter")
@@ -67,11 +64,8 @@ public class UserListController {
             throw new BadRequestException();
         }
 
-        long totalUsers = userMapper.countByDisabledFalse();
-        List<User> users = userMapper.findAll(pageable);
-        PageImpl<User> page = new PageImpl<>(users, pageable, totalUsers);
         request.setAttribute("url", query);
-        request.setAttribute("page", page);
+        request.setAttribute("page", accountService.findAll(pageable));
         return "users/list";
     }
 

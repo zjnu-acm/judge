@@ -36,7 +36,7 @@ public class Problem implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private long id;
+    private Long id;
     private String title;
     private String description;
     private String input;
@@ -45,15 +45,15 @@ public class Problem implements Serializable {
     private String sampleOutput;
     private String hint;
     private String source;
-    private long timeLimit;
-    private long memoryLimit;
+    private Long timeLimit;
+    private Long memoryLimit;
 
-    private long accepted;
-    private long submit;
-    private long submitUser;
-    private long solved;
+    private Long accepted;
+    private Long submit;
+    private Long submitUser;
+    private Long solved;
     private Instant inDate;
-    private boolean disabled;
+    private Boolean disabled;
     private Instant createdTime;
     private Instant modifiedTime;
 
@@ -62,16 +62,16 @@ public class Problem implements Serializable {
     private Long origin;
 
     // 0 not submitted, 1 accepted, 2 wrong answer
-    private int status;
+    private Integer status;
 
     @JsonIgnore
     public int getRatio() {
-        return submit == 0 ? 0 : (int) Math.round(accepted * 100.0 / submit);
+        return submit == null || accepted == null || submit == 0 ? 0 : (int) Math.round(accepted * 100.0 / submit);
     }
 
     @JsonIgnore
     public int getDifficulty() {
-        return submit == 0 ? 0 : (int) Math.round((submit - accepted) * 100.0 / submit);
+        return submit == null || accepted == null || submit == 0 ? 0 : (int) Math.round((submit - accepted) * 100.0 / submit);
     }
 
 }

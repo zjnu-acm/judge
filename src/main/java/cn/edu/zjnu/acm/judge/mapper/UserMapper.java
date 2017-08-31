@@ -46,8 +46,13 @@ public interface UserMapper {
             + "WHERE user_id=#{id}")
     long update(User user);
 
-    @Select("SELECT COUNT(*) total FROM users WHERE not disabled")
-    long countByDisabledFalse();
+    @Select("<script>"
+            + "SELECT COUNT(*) total FROM users"
+            + "<where>"
+            + "<if test='!includeDisabled'> not disabled </if>"
+            + "</where>"
+            + "</script>")
+    long count(@Param("includeDisabled") boolean includeDisabled);
 
     String ON = " (u1.solved>u2.solved or u1.solved=u2.solved and u1.submit<u2.submit or u1.solved=u2.solved and u1.submit=u2.submit and u1.user_id<u2.user_id) ";
 
@@ -73,8 +78,12 @@ public interface UserMapper {
     List<User> recentrank(@Param("count") int count);
 
     @Select("<script>select" + LIST_COLUMNS
-            + "from users where not disabled "
-            + "<if test='sort!=null'><foreach item='item' index='index' collection='sort' open='order by' separator=','>"
+            + "from users"
+            + "<where>"
+            + "<if test='!includeDisabled'> not disabled </if>"
+            + "</where>"
+            + "<if test='pageable.sort!=null'>"
+            + "<foreach item='item' index='index' collection='pageable.sort' open='order by' separator=','>"
             + "<choose>"
             + "<when test='item.property==&quot;user_id&quot;'>user_id</when>"
             + "<when test='item.property==&quot;nick&quot;'>nick</when>"
@@ -84,9 +93,9 @@ public interface UserMapper {
             + "</choose>"
             + "<if test='not item.ascending'>desc</if>"
             + "</foreach></if>"
-            + "limit #{offset},#{size}"
+            + "limit #{pageable.offset},#{pageable.size}"
             + "</script>")
-    List<User> findAll(Pageable pageable);
+    List<User> findAll(@Param("includeDisabled") boolean includeDisabled, @Param("pageable") Pageable pageable);
 
     @Select("select " + LIST_COLUMNS + " from users WHERE (user_id like #{query} or nick like #{query}) and not disabled order by solved desc,submit asc")
     List<User> findAllBySearch(@Param("query") String query);

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.domain;
+package cn.edu.zjnu.acm.judge.data.form;
 
 import java.io.Serializable;
 import lombok.AccessLevel;
@@ -32,7 +32,7 @@ import lombok.Setter;
 @Data
 @NoArgsConstructor
 @Setter(AccessLevel.PRIVATE)
-public class SubmissionCriteria implements Serializable {
+public class SubmissionQueryForm implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

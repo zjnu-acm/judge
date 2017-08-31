@@ -1,8 +1,8 @@
 package cn.edu.zjnu.acm.judge.submission;
 
+import cn.edu.zjnu.acm.judge.data.form.SubmissionQueryForm;
 import cn.edu.zjnu.acm.judge.domain.Language;
 import cn.edu.zjnu.acm.judge.domain.Submission;
-import cn.edu.zjnu.acm.judge.domain.SubmissionCriteria;
 import cn.edu.zjnu.acm.judge.exception.BadRequestException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
@@ -79,7 +79,7 @@ public class StatusController {
                 }
             }
         }
-        SubmissionCriteria criteria = SubmissionCriteria.builder()
+        SubmissionQueryForm criteria = SubmissionQueryForm.builder()
                 .problem(problemId == 0 ? null : problemId)
                 .contest(contestId)
                 .score(sc)

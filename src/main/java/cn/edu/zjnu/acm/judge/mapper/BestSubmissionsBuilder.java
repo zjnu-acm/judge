@@ -31,7 +31,6 @@ import org.springframework.data.domain.Sort;
  * @author zhanhb
  */
 @Slf4j
-@SuppressWarnings("UtilityClassWithoutPrivateConstructor")
 public class BestSubmissionsBuilder {
 
     private static final Set<String> ALLOW_COLUMNS
@@ -82,6 +81,10 @@ public class BestSubmissionsBuilder {
                 .append(",")
                 .append(pageable.getPageSize())
                 .toString();
+    }
+
+    // should be public
+    public BestSubmissionsBuilder() {
     }
 
 }

@@ -15,9 +15,9 @@
  */
 package cn.edu.zjnu.acm.judge.service;
 
-import cn.edu.zjnu.acm.judge.domain.Problem;
-import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
-import java.util.Locale;
+import cn.edu.zjnu.acm.judge.domain.User;
+import cn.edu.zjnu.acm.judge.mapper.UserMapper;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -29,16 +29,19 @@ import org.springframework.stereotype.Service;
  * @author zhanhb
  */
 @Service
-public class ProblemService {
+public class AccountService {
 
     @Autowired
-    private ProblemMapper problemMapper;
-    @Autowired
-    private LocaleService localeService;
+    private UserMapper userMapper;
 
-    public Page<Problem> findAll(Pageable pageable, Locale locale) {
-        long total = problemMapper.count();
-        return new PageImpl<>(problemMapper.findAll(pageable, localeService.resolve(locale)), pageable, total);
+    public Page<User> findAll(boolean includeDisabled, Pageable pageable) {
+        List<User> list = userMapper.findAll(includeDisabled, pageable);
+        long count = userMapper.count(includeDisabled);
+        return new PageImpl<>(list, pageable, count);
+    }
+
+    public Page<User> findAll(Pageable pageable) {
+        return findAll(false, pageable);
     }
 
 }

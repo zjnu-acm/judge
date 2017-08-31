@@ -74,6 +74,8 @@ public class ProblemControllerTest {
                 .sampleOutput("")
                 .hint("")
                 .source("")
+                .timeLimit(1000L)
+                .memoryLimit(65536 * 1024L)
                 .build();
         mvc.perform(post("/api/problems")
                 .accept(MediaType.APPLICATION_JSON)

@@ -16,16 +16,16 @@
 package cn.edu.zjnu.acm.judge.mapper;
 
 import cn.edu.zjnu.acm.judge.Application;
+import cn.edu.zjnu.acm.judge.data.form.SubmissionQueryForm;
 import cn.edu.zjnu.acm.judge.domain.Submission;
-import cn.edu.zjnu.acm.judge.domain.SubmissionCriteria;
+import cn.edu.zjnu.acm.judge.util.Pageables;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
@@ -48,7 +48,7 @@ public class SubmissionMapperTest {
     @Test
     public void testFindAllByCriteria() {
         log.info("findAllByCriteria");
-        SubmissionCriteria submissionCriteria = SubmissionCriteria
+        SubmissionQueryForm submissionCriteria = SubmissionQueryForm
                 .builder()
                 .contest(1058L)
                 .problem(1449L)
@@ -65,14 +65,9 @@ public class SubmissionMapperTest {
     public void testBestSubmission() {
         log.info("bestSubmission");
         long problemId = 1000;
-        Sort sort = new Sort(Sort.Direction.DESC, "time", "memory", "code_length");
-        PageRequest pageRequest = new PageRequest(5, 20, sort);
-        instance.bestSubmission(problemId, pageRequest);
-        sort = new Sort(Sort.Direction.DESC, "solution_id");
-        pageRequest = new PageRequest(5, 20, sort);
-        instance.bestSubmission(problemId, pageRequest);
-        pageRequest = new PageRequest(9, 1);
-        instance.bestSubmission(problemId, pageRequest);
+        for (Pageable pageable : Pageables.bestSubmission()) {
+            instance.bestSubmission(problemId, pageable);
+        }
     }
 
 }

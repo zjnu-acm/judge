@@ -51,7 +51,8 @@ public class ShowProblemController {
                     }
                 }
             }
-            if (!problem.isDisabled()) {
+            Boolean disabled = problem.getDisabled();
+            if (disabled == null || !disabled) {
                 return problem;
             }
             break;

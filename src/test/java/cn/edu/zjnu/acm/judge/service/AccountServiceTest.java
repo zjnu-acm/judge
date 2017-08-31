@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 ZJNU ACM.
+ * Copyright 2017 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.mapper;
+package cn.edu.zjnu.acm.judge.service;
 
 import cn.edu.zjnu.acm.judge.Application;
-import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.util.Pageables;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,57 +26,28 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import static org.junit.Assert.assertEquals;
-
 /**
  *
  * @author zhanhb
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@Slf4j
 @SpringBootTest(classes = Application.class)
 @WebAppConfiguration
-public class UserMapperTest {
+@Slf4j
+public class AccountServiceTest {
 
     @Autowired
-    private UserMapper instance;
+    private AccountService accountService;
 
     /**
-     * Test of findOne method, of class UserMapper.
-     */
-    @Ignore
-    @Test
-    public void testFindOne() {
-        log.info("findOne");
-        String id = "coach";
-        String expResult = id;
-        String result = instance.findOne(id).getId();
-        assertEquals(expResult, result);
-    }
-
-    @Test
-    public void testNeighbours() {
-        log.info("neighbours");
-        String userId = "coach";
-        List<User> result = instance.neighbours(userId, 4);
-        log.info("{}", result.size());
-        log.info("{}", result);
-    }
-
-    /**
-     * Test of findAll method, of class UserMapper.
+     * Test of findAll method, of class AccountService.
      */
     @Test
     public void testFindAll() {
-        testFindAll0(true);
-        testFindAll0(false);
-    }
-
-    private void testFindAll0(boolean includeDisabled) {
         log.info("findAll");
         for (Pageable pageable : Pageables.users()) {
-            List<User> result = instance.findAll(includeDisabled, pageable);
-            log.debug("{}", result);
+            accountService.findAll(true, pageable);
+            accountService.findAll(false, pageable);
         }
     }
 

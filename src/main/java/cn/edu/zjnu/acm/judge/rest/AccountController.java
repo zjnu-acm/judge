@@ -15,15 +15,15 @@
  */
 package cn.edu.zjnu.acm.judge.rest;
 
-import cn.edu.zjnu.acm.judge.domain.DomainLocale;
-import cn.edu.zjnu.acm.judge.service.LocaleService;
+import cn.edu.zjnu.acm.judge.domain.User;
+import cn.edu.zjnu.acm.judge.service.AccountService;
 import cn.edu.zjnu.acm.judge.util.BooleanUtils;
-import java.util.List;
-import java.util.Locale;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,32 +34,18 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  *
  * @author zhanhb
  */
-@RequestMapping(value = "/api/locales", produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/accounts", produces = APPLICATION_JSON_VALUE)
 @RestController
 @Secured("ROLE_ADMIN")
-public class LocaleController {
+@Slf4j
+public class AccountController {
 
     @Autowired
-    private LocaleService localeService;
-
-    @GetMapping("current")
-    public DomainLocale current(Locale locale) {
-        return localeService.toDomainLocale(localeService.toSupported(locale), locale);
-    }
-
-    @GetMapping("{id}")
-    public DomainLocale findOne(@PathVariable("id") String name) {
-        return localeService.toDomainLocale(name);
-    }
+    private AccountService accountService;
 
     @GetMapping
-    public List<DomainLocale> findAll() {
-        return localeService.findAll();
-    }
-
-    @GetMapping(params = "all")
-    public List<DomainLocale> supported(@RequestParam("all") String all) {
-        return localeService.support(BooleanUtils.isTrue(all));
+    public Page<User> findAll(@RequestParam(value = "includeDisabled", required = false) String includeDisabled, Pageable pageable) {
+        return accountService.findAll(BooleanUtils.isTrue(includeDisabled), pageable);
     }
 
 }

@@ -15,8 +15,8 @@
  */
 package cn.edu.zjnu.acm.judge.mapper;
 
+import cn.edu.zjnu.acm.judge.data.form.SubmissionQueryForm;
 import cn.edu.zjnu.acm.judge.domain.Submission;
-import cn.edu.zjnu.acm.judge.domain.SubmissionCriteria;
 import cn.edu.zjnu.acm.judge.util.ResultType;
 import java.util.List;
 import org.apache.ibatis.annotations.Insert;
@@ -91,7 +91,7 @@ public interface SubmissionMapper {
         "<if test='bottom!=null'>) tmp order by id desc</if>",
         "</script>"
     })
-    List<Submission> findAllByCriteria(SubmissionCriteria submissionCriteria);
+    List<Submission> findAllByCriteria(SubmissionQueryForm submissionCriteria);
 
     @Select("select solution_id from solution s where problem_id=#{problemId} and score<> "
             + ResultType.SCORE_ACCEPT

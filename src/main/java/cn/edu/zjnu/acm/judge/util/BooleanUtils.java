@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 ZJNU ACM.
+ * Copyright 2017 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,29 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.mapper;
+package cn.edu.zjnu.acm.judge.util;
 
-import cn.edu.zjnu.acm.judge.util.Pageables;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
-import org.springframework.data.domain.Pageable;
+import lombok.experimental.UtilityClass;
 
 /**
  *
  * @author zhanhb
  */
-@Slf4j
-public class BestSubmissionsBuilderTest {
+@UtilityClass
+@SuppressWarnings("FinalClass")
+public class BooleanUtils {
 
-    /**
-     * Test of bestSubmissions method, of class BestSubmissionsBuilder.
-     */
-    @Test
-    public void testBestSubmissions() {
-        log.info("bestSubmissions");
-        for (Pageable pageable : Pageables.bestSubmission()) {
-            log.debug(BestSubmissionsBuilder.bestSubmissions(1000, pageable));
-        }
+    public static boolean isTrue(String all) {
+        return all != null && (all.isEmpty() || all.equals("1") || all.equalsIgnoreCase("true"));
     }
 
 }
