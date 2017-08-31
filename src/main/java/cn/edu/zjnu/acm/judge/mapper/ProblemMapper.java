@@ -178,8 +178,7 @@ public interface ProblemMapper {
             + "p.sample_output=COALESCE(#{p.sampleOutput},''),"
             + "p.time_limit=COALESCE(#{p.timeLimit},0),"
             + "p.memory_limit=COALESCE(#{p.memoryLimit},0),"
-            + "p.modified_time=#{p.modifiedTime},"
-            + "p.contest_id=#{p.contest} "
+            + "p.modified_time=#{p.modifiedTime}"
             + "WHERE p.problem_id=#{p.id}</script>")
     long update(@Param("p") Problem build, @Param("lang") String lang);
 

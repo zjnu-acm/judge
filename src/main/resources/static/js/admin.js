@@ -288,7 +288,6 @@
             hint: 'Modify problem ' + $stateParams.id,
             hint2: 'Modify problem'
         };
-        $scope.contests = contestRepository.query({include: 'PENDING,RUNNING'});
         $scope.save = function () {
             $scope.problem.$update({locale: $scope.locale}, function () {
                 $state.go('problem-view-locale', {id: $stateParams.id, locale: $scope.locale});

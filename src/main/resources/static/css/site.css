@@ -260,6 +260,6 @@ a.self {
 .clearfix:after {
     clear: both;
 }
-form.form-horizontal .ng-invalid {
+form.form-horizontal .ng-dirty.ng-invalid {
     border-color: #cb1b1b;
 }

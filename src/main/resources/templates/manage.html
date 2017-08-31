@@ -182,7 +182,7 @@
                 <textarea th:id="${#ids.seq('source')}" class="editable" th:ckfinder="@{/webjars/ckfinder/2.6.2.1/}" name="source" rows="1" style="width: 80%" ng-model="problem.source"></textarea>
             </p>
             <!--/* TODO contest field in problem */-->
-            <p align="left">
+            <p align="left" ng-hide="problem.id">
                 <label th:for="${#ids.next('contest')}">contest:</label>
                 <select th:id="${#ids.seq('contest')}" name="contest" ng-model="problem.contest">
                     <option value="">no contest</option>

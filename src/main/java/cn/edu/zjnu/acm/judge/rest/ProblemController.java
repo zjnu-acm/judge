@@ -133,8 +133,6 @@ public class ProblemController {
         if (problem == null) {
             throw new MessageException("no such problem " + problemId, HttpStatus.NOT_FOUND);
         }
-        Long oldContestId = problem.getContest();
-        Long contestId = p.getContest();
         String computedLang = convert(lang);
 
         if (!StringUtils.isEmpty(computedLang)) {
@@ -154,25 +152,6 @@ public class ProblemController {
                 .contest(p.getContest())
                 .modifiedTime(Instant.now())
                 .build(), computedLang);
-        if (oldContestId != null && !Objects.equals(oldContestId, contestId)) {
-            boolean started = contestMapper.findOneByIdAndDisabledFalse(oldContestId).isStarted();
-            if (!started) {
-                contestService.removeProblem(oldContestId, problemId);
-            }
-        }
-        if (contestId != null) {
-            contestMapper.updateProblemTitle(contestId, problemId);
-            if (!Objects.equals(oldContestId, contestId)) {
-                Contest newContest = contestMapper.findOneByIdAndDisabledFalse(contestId);
-                if (newContest == null) {
-                    throw new BusinessException(BusinessCode.NO_SUCH_CONTEST);
-                }
-                boolean started = newContest.isStarted();
-                if (!started) {
-                    contestService.addProblem(contestId, problemId);
-                }
-            }
-        }
     }
 
     private String convert(String lang) {
