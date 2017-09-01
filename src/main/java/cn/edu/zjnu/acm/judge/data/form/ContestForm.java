@@ -24,7 +24,7 @@ import lombok.Data;
  */
 @Data
 @SuppressWarnings({"AssignmentToCollectionOrArrayFieldFromParameter", "ReturnOfCollectionOrArrayField"})
-public class ContestQueryForm implements Serializable {
+public class ContestForm implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

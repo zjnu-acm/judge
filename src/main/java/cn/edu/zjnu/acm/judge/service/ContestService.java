@@ -17,7 +17,7 @@ package cn.edu.zjnu.acm.judge.service;
 
 import cn.edu.zjnu.acm.judge.data.dto.ContestDto;
 import cn.edu.zjnu.acm.judge.data.form.ContestAddProblemForm;
-import cn.edu.zjnu.acm.judge.data.form.ContestQueryForm;
+import cn.edu.zjnu.acm.judge.data.form.ContestForm;
 import cn.edu.zjnu.acm.judge.data.form.ContestStatus;
 import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.domain.Problem;
@@ -106,7 +106,7 @@ public class ContestService {
         updateContestOrder(contestId, 1000);
     }
 
-    public List<Contest> findAll(ContestQueryForm form) {
+    public List<Contest> findAll(ContestForm form) {
         EnumSet<ContestStatus> exclude = parse(form.getExclude());
         EnumSet<ContestStatus> include = parse(form.getInclude());
         Set<ContestStatus> result;

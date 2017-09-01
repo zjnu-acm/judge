@@ -17,7 +17,7 @@ package cn.edu.zjnu.acm.judge.rest;
 
 import cn.edu.zjnu.acm.judge.data.dto.ContestDto;
 import cn.edu.zjnu.acm.judge.data.form.ContestAddProblemForm;
-import cn.edu.zjnu.acm.judge.data.form.ContestQueryForm;
+import cn.edu.zjnu.acm.judge.data.form.ContestForm;
 import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.service.ContestService;
 import java.util.List;
@@ -57,7 +57,7 @@ public class ContestController {
     }
 
     @GetMapping
-    public List<Contest> list(ContestQueryForm form) {
+    public List<Contest> list(ContestForm form) {
         log.info("form: {}", form);
         return contestService.findAll(form);
     }
