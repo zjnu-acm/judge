@@ -61,7 +61,7 @@
                 <th:block th:unless="${#request.userPrincipal==null}">
                     <span th:text="|#{onlinejudge.login.welcome} |">欢迎 </span><br/>
                     <b th:text="${#request.userPrincipal.name}">userId</b>
-                    <a th:href="@{/logout}" th:text="#{onlinejudge.login.logout}">退出登录</a>
+                    <a th:href="@{/logout.html}" th:text="#{onlinejudge.login.logout}">退出登录</a>
                     <br/>
                     <a th:href="@{/mail}">
                         <span style="color: blue">

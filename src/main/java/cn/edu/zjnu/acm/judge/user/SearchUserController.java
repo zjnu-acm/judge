@@ -21,7 +21,7 @@ public class SearchUserController {
     public String searchuser(Model model,
             @RequestParam(value = "user_id", defaultValue = "") String keyword,
             @RequestParam(value = "position", required = false) String position) {
-        if (keyword.length() < 2) {
+        if (keyword.replace("%", "").length() < 2) {
             throw new MessageException("search key word whose length must be greater than 2", HttpStatus.BAD_REQUEST);
         }
         String like = keyword;

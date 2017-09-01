@@ -45,7 +45,7 @@
 
                             <td th:if="${#request.userPrincipal != null}">
                                 <b>[[${#request.userPrincipal.name}]] </b>
-                                <a th:href="@{/logout}">Logout</a>
+                                <a th:href="@{/logout.html}">Logout</a>
                             </td>
                             <td th:unless="${#request.userPrincipal != null}">
                                 <a th:href="@{/login(url=${backUrl})}">Login</a>

@@ -37,7 +37,7 @@ public interface UserMapper {
             + "<if test='form.userId!=null and form.userId!=\"\"'>user_id like concat('%',#{form.userId},'%')</if>"
             + "<if test='form.nick!=null and form.nick!=\"\"'> and nick like concat('%',#{form.nick},'%')</if>"
             + "<if test='form.query!=null and form.query!=\"\"'> and (user_id like #{form.query} or nick like #{form.query})</if>"
-            + "<if test='form.disabled!=null'> and disabled=#{form.disabled} </if>"
+            + "<if test='form.disabled!=null'> and <if test='!form.disabled'> not </if> disabled</if>"
             + "</where>";
 
     @Select("select user_id id,nick,email,vcode,expire_time expireTime,password,school,ip,solved,submit,accesstime,created_time createdTime,modified_time modifiedTime from users where user_id=#{id}")
@@ -59,22 +59,22 @@ public interface UserMapper {
             + "</script>")
     long count(@Param("form") AccountForm form);
 
-    String ON = " (u1.solved>u2.solved or u1.solved=u2.solved and u1.submit<u2.submit or u1.solved=u2.solved and u1.submit=u2.submit and u1.user_id<u2.user_id) ";
+    String ON = " on (u1.solved>u2.solved or u1.solved=u2.solved and u1.submit<u2.submit or u1.solved=u2.solved and u1.submit=u2.submit and u1.user_id<u2.user_id) ";
 
     @Select("select count(u1.user_id) "
             + "from users u1 join users u2 "
-            + "on" + ON + "and not u1.disabled where u2.user_id=#{id}")
+            + ON + "and not u1.disabled where u2.user_id=#{id}")
     long rank(@Param("id") String userId);
 
     @Select("select user_id id,nick,solved,submit from (( "
             + "select u1.* from users u1 join users u2 "
-            + "on " + ON + "and not u1.disabled "
+            + ON + "and not u1.disabled "
             + "where u2.user_id=#{id} order by u1.solved,u1.submit desc,u1.user_id desc limit #{c} "
             + ") union ("
             + "select * from users where user_id=#{id} "
             + ") union ( "
             + "select u2.* from users u1 join users u2 "
-            + "on " + ON + " and not u2.disabled "
+            + ON + " and not u2.disabled "
             + "where u1.user_id=#{id} order by u2.solved desc,u2.submit,u2.user_id limit #{c} "
             + ") order by solved desc,submit,user_id) z")
     List<User> neighbours(@Param("id") String userId, @Param("c") int count);

@@ -231,7 +231,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="clearfix">
+        <div class="clearfix" ng-hide="1 >= page.totalPages && page.number === 0">
             <pagination total-items="page.totalElements" ng-model="currentPage" max-size="10" items-per-page="page.size" ng-change="pageChanged()" boundary-links="true" direction-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
         </div>
         <!--/*/</script>/*/-->

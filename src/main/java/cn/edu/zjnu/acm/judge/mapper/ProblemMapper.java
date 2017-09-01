@@ -153,11 +153,11 @@ public interface ProblemMapper {
     long setInDate(@Param("id") long problemId, @Param("inDate") Instant timestamp);
 
     @Update("<script>UPDATE problem p "
-            + "<if test='lang!=null and lang!=&quot;&quot;'>"
+            + "<if test='lang!=null and lang!=\"\"'>"
             + "left join problem_i18n pi on p.problem_id = pi.id and pi.locale=#{lang}"
             + "</if>"
             + "SET "
-            + "<if test='lang==null or lang==&quot;&quot;'>"
+            + "<if test='lang==null or lang==\"\"'>"
             + "p.title=COALESCE(#{p.title},''),"
             + "p.description=COALESCE(#{p.description},''),"
             + "p.input=COALESCE(#{p.input},''),"
@@ -165,7 +165,7 @@ public interface ProblemMapper {
             + "p.hint=COALESCE(#{p.hint},''),"
             + "p.source=COALESCE(#{p.source},''),"
             + "</if>"
-            + "<if test='lang!=null and lang!=&quot;&quot;'>"
+            + "<if test='lang!=null and lang!=\"\"'>"
             + "pi.title=nullif(nullif(#{p.title},''),p.title),"
             + "pi.description=nullif(nullif(#{p.description},''),p.description),"
             + "pi.input=nullif(nullif(#{p.input},''),p.input),"
