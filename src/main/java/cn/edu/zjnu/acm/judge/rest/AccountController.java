@@ -15,17 +15,22 @@
  */
 package cn.edu.zjnu.acm.judge.rest;
 
+import cn.edu.zjnu.acm.judge.data.form.AccountForm;
 import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.service.AccountService;
-import cn.edu.zjnu.acm.judge.util.BooleanUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -44,8 +49,14 @@ public class AccountController {
     private AccountService accountService;
 
     @GetMapping
-    public Page<User> findAll(@RequestParam(value = "includeDisabled", required = false) String includeDisabled, Pageable pageable) {
-        return accountService.findAll(BooleanUtils.isTrue(includeDisabled), pageable);
+    public Page<User> findAll(AccountForm form, @PageableDefault(50) Pageable pageable) {
+        return accountService.findAll(form, pageable);
+    }
+
+    @PatchMapping("{userId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void patch(@PathVariable("userId") String userId, @RequestBody User user) {
+        accountService.patch(userId, user);
     }
 
 }

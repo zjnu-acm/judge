@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 ZJNU ACM.
+ * Copyright 2017 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,19 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.data.dto;
+package cn.edu.zjnu.acm.judge.data.form;
 
 import java.io.Serializable;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  *
  * @author zhanhb
  */
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder(builderClassName = "Builder", toBuilder = true)
 @Data
-public class ScoreCount implements Serializable {
+@NoArgsConstructor
+public class AccountForm implements Serializable {
 
-    private int score;
-    private long count;
+    private static final long serialVersionUID = 1L;
+
+    private String userId;
+    private String nick;
+    private String query;
+    private Boolean disabled;
 
 }

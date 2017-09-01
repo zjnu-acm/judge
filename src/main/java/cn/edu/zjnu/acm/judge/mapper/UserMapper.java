@@ -15,6 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.mapper;
 
+import cn.edu.zjnu.acm.judge.data.form.AccountForm;
 import cn.edu.zjnu.acm.judge.domain.User;
 import java.util.List;
 import org.apache.ibatis.annotations.Insert;
@@ -32,6 +33,12 @@ import org.springframework.data.domain.Pageable;
 public interface UserMapper {
 
     String LIST_COLUMNS = " user_id id,solved,submit,nick ";
+    String FORM_CONDITION = "<where>"
+            + "<if test='form.userId!=null and form.userId!=\"\"'>user_id like concat('%',#{form.userId},'%')</if>"
+            + "<if test='form.nick!=null and form.nick!=\"\"'> and nick like concat('%',#{form.nick},'%')</if>"
+            + "<if test='form.query!=null and form.query!=\"\"'> and (user_id like #{form.query} or nick like #{form.query})</if>"
+            + "<if test='form.disabled!=null'> and disabled=#{form.disabled} </if>"
+            + "</where>";
 
     @Select("select user_id id,nick,email,vcode,expire_time expireTime,password,school,ip,solved,submit,accesstime,created_time createdTime,modified_time modifiedTime from users where user_id=#{id}")
     User findOne(@Param("id") String id);
@@ -48,11 +55,9 @@ public interface UserMapper {
 
     @Select("<script>"
             + "SELECT COUNT(*) total FROM users"
-            + "<where>"
-            + "<if test='!includeDisabled'> not disabled </if>"
-            + "</where>"
+            + FORM_CONDITION
             + "</script>")
-    long count(@Param("includeDisabled") boolean includeDisabled);
+    long count(@Param("form") AccountForm form);
 
     String ON = " (u1.solved>u2.solved or u1.solved=u2.solved and u1.submit<u2.submit or u1.solved=u2.solved and u1.submit=u2.submit and u1.user_id<u2.user_id) ";
 
@@ -78,11 +83,9 @@ public interface UserMapper {
     List<User> recentrank(@Param("count") int count);
 
     @Select("<script>select" + LIST_COLUMNS
-            + "<if test='includeDisabled'>,disabled</if>"
+            + "<if test='form.disabled==null or form.disabled==true'>,disabled</if>"
             + "from users"
-            + "<where>"
-            + "<if test='!includeDisabled'> not disabled </if>"
-            + "</where>"
+            + FORM_CONDITION
             + "<if test='pageable.sort!=null'>"
             + "<foreach item='item' index='index' collection='pageable.sort' open='order by' separator=','>"
             + "<choose>"
@@ -96,9 +99,20 @@ public interface UserMapper {
             + "</foreach></if>"
             + "limit #{pageable.offset},#{pageable.size}"
             + "</script>")
-    List<User> findAll(@Param("includeDisabled") boolean includeDisabled, @Param("pageable") Pageable pageable);
+    List<User> findAll(@Param("form") AccountForm form, @Param("pageable") Pageable pageable);
 
+    @Deprecated
     @Select("select " + LIST_COLUMNS + " from users WHERE (user_id like #{query} or nick like #{query}) and not disabled order by solved desc,submit asc")
     List<User> findAllBySearch(@Param("query") String query);
+
+    @Update("<script>"
+            + "update users"
+            + "<set>"
+            + "<if test='user.password!=null'>password=#{user.password},</if>"
+            + "<if test='user.disabled!=null'>disabled=#{user.disabled},</if>"
+            + "</set>"
+            + "<where>user_id=#{userId}</where>"
+            + "</script>")
+    int updateSelective(@Param("userId") String userId, @Param("user") User user);
 
 }

@@ -17,7 +17,6 @@ package cn.edu.zjnu.acm.judge.mapper;
 
 import cn.edu.zjnu.acm.judge.Application;
 import cn.edu.zjnu.acm.judge.domain.User;
-import cn.edu.zjnu.acm.judge.util.Pageables;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Ignore;
@@ -25,7 +24,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
@@ -62,25 +60,7 @@ public class UserMapperTest {
         log.info("neighbours");
         String userId = "coach";
         List<User> result = instance.neighbours(userId, 4);
-        log.info("{}", result.size());
         log.info("{}", result);
-    }
-
-    /**
-     * Test of findAll method, of class UserMapper.
-     */
-    @Test
-    public void testFindAll() {
-        testFindAll0(true);
-        testFindAll0(false);
-    }
-
-    private void testFindAll0(boolean includeDisabled) {
-        log.info("findAll");
-        for (Pageable pageable : Pageables.users()) {
-            List<User> result = instance.findAll(includeDisabled, pageable);
-            log.debug("{}", result);
-        }
     }
 
 }

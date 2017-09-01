@@ -16,6 +16,7 @@
 package cn.edu.zjnu.acm.judge.service;
 
 import cn.edu.zjnu.acm.judge.Application;
+import cn.edu.zjnu.acm.judge.data.form.AccountForm;
 import cn.edu.zjnu.acm.judge.util.Pageables;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -46,9 +47,24 @@ public class AccountServiceTest {
     public void testFindAll() {
         log.info("findAll");
         for (Pageable pageable : Pageables.users()) {
-            accountService.findAll(true, pageable);
-            accountService.findAll(false, pageable);
+            accountService.findAll(pageable);
+            for (AccountForm accountForm : buildForms()) {
+                accountService.findAll(accountForm, pageable);
+                accountService.findAll(accountForm.toBuilder().disabled(true).build(), pageable);
+                accountService.findAll(accountForm.toBuilder().disabled(false).build(), pageable);
+            }
         }
     }
 
+    private AccountForm[] buildForms() {
+        String test = "test";
+        return new AccountForm[]{
+            AccountForm.builder().userId(test).build(),
+            AccountForm.builder().nick(test).build(),
+            AccountForm.builder().build(),
+            AccountForm.builder().nick(test).userId(test).build(),
+            AccountForm.builder().query("%").build(),
+            AccountForm.builder().query(test).nick(test).build()
+        };
+    }
 }

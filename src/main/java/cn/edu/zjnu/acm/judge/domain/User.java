@@ -35,6 +35,7 @@ public class User implements Serializable {
     private Instant expireTime;
     private Instant createdTime;
     private Instant modifiedTime;
+    private Boolean disabled;
 
     @JsonIgnore
     public double getRatio() {
