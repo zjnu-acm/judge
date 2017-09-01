@@ -78,6 +78,7 @@ public interface UserMapper {
     List<User> recentrank(@Param("count") int count);
 
     @Select("<script>select" + LIST_COLUMNS
+            + "<if test='includeDisabled'>,disabled</if>"
             + "from users"
             + "<where>"
             + "<if test='!includeDisabled'> not disabled </if>"

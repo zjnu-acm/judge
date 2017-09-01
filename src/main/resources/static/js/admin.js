@@ -16,6 +16,13 @@
     var path, problemRepository, contestRepository, localeRepository, problemListCache;
 
     var app = angular.module('adminApp', ['ngResource', 'ui.router', 'ngSanitize', 'angular-loading-bar', 'ui.bootstrap', 'ngCkeditor', 'datetime']);
+    app.service('reload', ['$state',
+        function ($state) {
+            return function (params, options) {
+                return $state.go($state.current.name, $.extend({}, $state.params, params), options || {location: 'replace', reload: true});
+            };
+        }
+    ]);
     app.directive('requestFocus', function ($timeout) {
         return {
             restrict: 'A',
@@ -222,8 +229,11 @@
         veryslow = $sniffer.msie && $sniffer.msie < 9;
     });
 
-    app.controller('problem-list', function ($stateParams, $scope, $state, $timeout, $http) {
-        (veryslow && !$stateParams.size) && ($stateParams.size = 20);
+    app.controller('problem-list', function ($stateParams, $scope, $timeout, $http, reload) {
+        if (veryslow && !$stateParams.size && !$stateParams.page) {
+            reload({size: 20});
+            return;
+        }
         $scope.push = function (sort) {
             var sorts = $stateParams.sort || [];
             sorts = typeof sorts === 'string' ? [sorts] : $.extend([], sorts);
@@ -235,12 +245,12 @@
                 }
             }
             sorts.unshift(sort);
-            $state.go($state.current.name, $.extend({}, $stateParams, {sort: sorts, page: null}), {location: 'replace', reload: true});
+            reload({sort: sorts, page: null});
         };
         $scope.page = problemListCache;
         $timeout(function () {
             $scope.pageChanged = function () {
-                $state.go($state.current.name, $.extend({}, $stateParams, {page: $scope.currentPage - 1}), {location: 'replace', reload: true});
+                reload({page: $scope.currentPage - 1});
             };
         });
         problemRepository.query($stateParams, function (page) {
@@ -478,9 +488,6 @@
                     return {color: 'darkred'};
             }
             return {};
-        };
-        $rootScope.reload = function () {
-            $state.go($state.current.name, $state.params, {location: 'replace', reload: true});
         };
     });
 

@@ -28,8 +28,8 @@ public class User implements Serializable {
     private String password;
     private String nick;
     private String school;
-    private long submit;
-    private long solved;
+    private Long submit;
+    private Long solved;
     private Instant accesstime;
     private String ip;
     private Instant expireTime;
@@ -37,8 +37,12 @@ public class User implements Serializable {
     private Instant modifiedTime;
 
     @JsonIgnore
-    public int getRatio() {
-        return submit == 0 ? 0 : (int) Math.round(solved * 100.0 / submit);
+    public double getRatio() {
+        try {
+            return Math.round(solved * 1000.0 / submit) / 10.0;
+        } catch (NullPointerException ex) {
+            return 0;
+        }
     }
 
 }

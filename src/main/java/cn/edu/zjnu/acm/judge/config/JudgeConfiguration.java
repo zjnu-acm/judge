@@ -53,7 +53,7 @@ public class JudgeConfiguration {
         return uploadDirectory;
     }
 
-    public String getValue(String key) {
+    private String getValue(String key) {
         String property = BUNDLE.getString(key);
         String ctx = getContextPath();
         if (property != null && ctx != null) {
