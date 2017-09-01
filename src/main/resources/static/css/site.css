@@ -263,3 +263,6 @@ a.self {
 form.form-horizontal .ng-dirty.ng-invalid {
     border-color: #cb1b1b;
 }
+.sortable {
+    cursor: pointer;
+}
