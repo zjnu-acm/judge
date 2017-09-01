@@ -15,6 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.config;
 
+import cn.edu.zjnu.acm.judge.security.password.AcceptNullPasswordEncoder;
 import cn.edu.zjnu.acm.judge.security.password.CombinePasswordEncoder;
 import cn.edu.zjnu.acm.judge.security.password.LengthLimitedPasswordEncoder;
 import cn.edu.zjnu.acm.judge.security.password.MessageDigestPasswordEncoder;
@@ -34,7 +35,7 @@ public class PasswordConfiguration {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new LengthLimitedPasswordEncoder(
+        PasswordEncoder passwordEncoder = new LengthLimitedPasswordEncoder(
                 new CombinePasswordEncoder(1,
                         NoOpPasswordEncoder.getInstance(),
                         new MultiPasswordSupport(
@@ -45,6 +46,7 @@ public class PasswordConfiguration {
                                 )
                         )
                 ), 30);
+        return new AcceptNullPasswordEncoder(passwordEncoder);
     }
 
 }
