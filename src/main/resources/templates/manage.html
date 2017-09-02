@@ -84,6 +84,16 @@
                 <button th:id="${#ids.seq('submit')}" type="submit" class="btn btn-default" ng-disabled="fix.disabled">修复提交数和Accepted数</button>
             </form>
         </div>
+        <div style="color: #339">
+            <form ng-submit="setContestOnly()" role="form">
+                <label th:for="${#ids.next('contestOnly')}">只允许比赛提交：</label>
+                <select th:id="${#ids.seq('contestOnly')}" ng-model="contestOnly.value">
+                    <option value="">允许比赛外提交</option>
+                    <option ng-repeat="contest in contests" value="{{contest.id}}" ng-selected="contest.id === contestOnly.value">{{contest.id}}: {{contest.title}}</option>
+                </select>
+                <button th:id="${#ids.seq('submit')}" type="submit" class="btn btn-default">设置</button>
+            </form>
+        </div>
         <!--/*/</script>/*/-->
 
         <!--/*/<script type="text/ng-template" id="contest-edit.html">/*/-->

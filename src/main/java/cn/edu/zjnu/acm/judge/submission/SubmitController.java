@@ -14,6 +14,7 @@ import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserPreferenceMapper;
+import cn.edu.zjnu.acm.judge.service.ContestOnlyService;
 import cn.edu.zjnu.acm.judge.service.LanguageService;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import cn.edu.zjnu.acm.judge.util.ResultType;
@@ -46,6 +47,8 @@ public class SubmitController {
     private JudgeConfiguration judgeConfiguration;
     @Autowired
     private LanguageService languageService;
+    @Autowired
+    private ContestOnlyService contestOnlyService;
 
     @Secured("ROLE_USER")
     @PostMapping("/submit")
@@ -109,7 +112,7 @@ public class SubmitController {
                 num = Optional.ofNullable(contestMapper.getProblemIdInContest(contestId, problemId)).orElse(-1L);
             }
         }
-
+        contestOnlyService.checkSubmit(request, contestId, problemId);
         // 插入solution数据库表
         Submission submission = Submission.builder()
                 .problem(problemId)

@@ -4,6 +4,7 @@ import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserPreferenceMapper;
+import cn.edu.zjnu.acm.judge.service.ContestOnlyService;
 import cn.edu.zjnu.acm.judge.service.LanguageService;
 import cn.edu.zjnu.acm.judge.service.SubmissionService;
 import cn.edu.zjnu.acm.judge.util.ResultType;
@@ -27,6 +28,8 @@ public class ShowSourceController {
     private SubmissionService submissionService;
     @Autowired
     private LanguageService languageService;
+    @Autowired
+    private ContestOnlyService contestOnlyService;
 
     @Secured("ROLE_USER")
     @GetMapping("/showsource")
@@ -40,6 +43,7 @@ public class ShowSourceController {
         if (submission == null) {
             throw new MessageException("No such solution", HttpStatus.NOT_FOUND);
         }
+        contestOnlyService.checkViewSource(request, submission);
         String userId = authentication != null ? authentication.getName() : null;
         if (!submissionService.canView(request, submission)) {
             throw new MessageException("You have no permission to view the source.", HttpStatus.FORBIDDEN);

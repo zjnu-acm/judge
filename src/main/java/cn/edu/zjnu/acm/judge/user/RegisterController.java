@@ -3,6 +3,7 @@ package cn.edu.zjnu.acm.judge.user;
 import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
+import cn.edu.zjnu.acm.judge.service.ContestOnlyService;
 import cn.edu.zjnu.acm.judge.util.ValueCheck;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +24,8 @@ public class RegisterController {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private ContestOnlyService contestOnlyService;
 
     @PostMapping("/register")
     @SuppressWarnings("AssignmentToMethodParameter")
@@ -34,6 +37,7 @@ public class RegisterController {
             @RequestParam("password") String password,
             @RequestParam("email") String email,
             @RequestParam("rptPassword") String rptPassword) {
+        contestOnlyService.checkRegister();
         ValueCheck.checkUserId(userId);
         ValueCheck.checkPassword(password);
         ValueCheck.checkEmail(email);

@@ -16,8 +16,10 @@
 package cn.edu.zjnu.acm.judge.rest;
 
 import cn.edu.zjnu.acm.judge.config.JudgeConfiguration;
+import cn.edu.zjnu.acm.judge.data.form.ContestOnlyForm;
 import cn.edu.zjnu.acm.judge.data.form.SystemInfoForm;
 import cn.edu.zjnu.acm.judge.mapper.UserProblemMapper;
+import cn.edu.zjnu.acm.judge.service.ContestOnlyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
@@ -45,6 +47,8 @@ public class MiscController {
     private UserProblemMapper userProblemMapper;
     @Autowired
     private JudgeConfiguration judgeConfiguration;
+    @Autowired
+    private ContestOnlyService contestOnlyService;
 
     @PostMapping("fix")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -81,6 +85,17 @@ public class MiscController {
             systemInfo.setPureText(true);
         }
         return systemInfo;
+    }
+
+    @GetMapping("contestOnly")
+    public ContestOnlyForm contestOnly() {
+        return ContestOnlyForm.builder().value(contestOnlyService.getContestOnly()).build();
+    }
+
+    @PutMapping("contestOnly")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void setContestOnly(@RequestBody ContestOnlyForm form) {
+        contestOnlyService.setContestOnly(form.getValue());
     }
 
 }

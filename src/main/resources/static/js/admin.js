@@ -201,7 +201,7 @@
             second: 'ss'
         });
     });
-    app.controller('index', function ($scope, $http) {
+    app.controller('index', function ($scope, $http, $resource) {
         var systemInfoURL = path.api + 'misc/systemInfo.json';
         $scope.setSystemInfo = function () {
             $http.put(systemInfoURL, $scope.form).then(function (page) {
@@ -222,6 +222,14 @@
         $http.get(systemInfoURL).then(function (resp) {
             $scope.form = resp.data;
         });
+        var contestOnlnyResource = $resource(path.api + 'misc/contestOnly.json', null, {put: {method: 'PUT'}});
+        $scope.contestOnly = contestOnlnyResource.get();
+        $scope.setContestOnly = function () {
+            contestOnlnyResource.put($scope.contestOnly, function () {
+                alert('设置成功');
+            });
+        };
+        $scope.contests = contestRepository.query({include: 'PENDING,RUNNING'});
     });
 
     var veryslow;
