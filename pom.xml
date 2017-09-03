@@ -50,7 +50,7 @@
         <flyway.version>4.2.0</flyway.version>
         <guava.version>21.0</guava.version>
         <hibernate-validator.version>6.0.2.Final</hibernate-validator.version>
-        <hikaricp.version>2.6.3</hikaricp.version>
+        <hikaricp.version>2.7.0</hikaricp.version>
         <jackson.version>2.9.0</jackson.version>
         <java.version>1.8</java.version>
         <javax-mail.version>1.6.0</javax-mail.version>
