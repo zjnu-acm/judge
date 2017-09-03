@@ -237,7 +237,7 @@ public class Judger {
         int score = accept >= 0 ? (int) Math.round(accept * 100.0 / caseNum) : accept;
         if (score == 0 && accept != 0) {
             ++score;
-        } else if (score == 100 && accept != caseNum) {
+        } else if (score == ResultType.SCORE_ACCEPT && accept != caseNum) {
             --score;
         }
         submissionMapper.updateResult(runRecord.getSubmissionId(), score, time, memory);

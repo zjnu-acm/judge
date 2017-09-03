@@ -41,7 +41,7 @@ public class LengthLimitedPasswordEncoder extends PasswordEncoderWrapper {
     }
 
     private CharSequence limit(CharSequence originPassword) {
-        return originPassword == null || originPassword.length() <= length
+        return originPassword.length() <= length
                 ? originPassword
                 : originPassword.subSequence(0, length);
     }

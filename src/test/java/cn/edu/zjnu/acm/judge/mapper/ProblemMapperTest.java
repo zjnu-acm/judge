@@ -65,7 +65,7 @@ public class ProblemMapperTest {
     public void testFindAll() {
         log.debug("findAll");
         Pageable pageable = new PageRequest(0, 20);
-        instance.findAll(pageable, lang);
+        instance.findAll(lang, pageable);
     }
 
     /**

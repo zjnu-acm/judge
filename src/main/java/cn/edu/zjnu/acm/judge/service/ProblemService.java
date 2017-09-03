@@ -50,7 +50,7 @@ public class ProblemService {
 
     public Page<Problem> findAll(Pageable pageable, Locale locale) {
         long total = problemMapper.count();
-        return new PageImpl<>(problemMapper.findAll(pageable, localeService.resolve(locale)), pageable, total);
+        return new PageImpl<>(problemMapper.findAll(localeService.resolve(locale), pageable), pageable, total);
     }
 
     public void update(long problemId, Problem p, String lang) {

@@ -92,6 +92,7 @@ public class ContestService {
         updateContestOrder(contestId, 1000);
     }
 
+    @Transactional
     public void addProblems(long contestId, ContestAddProblemForm[] form) {
         Contest contest = getContest(contestId);
         if (contest.isEnded()) {

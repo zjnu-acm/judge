@@ -27,7 +27,6 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -49,7 +48,7 @@ public class LocaleService {
 
     public Locale toSupported(Locale locale) {
         List<Locale> candidateLocales = ControlHolder.CONTROL.getCandidateLocales("", locale);
-        Set<String> collect = findAll().stream().map(DomainLocale::getName)
+        Set<String> collect = findAll().stream().map(DomainLocale::getId)
                 .collect(Collectors.toCollection(() -> new TreeSet<>(String.CASE_INSENSITIVE_ORDER)));
         for (Locale candidateLocale : candidateLocales) {
             if (collect.contains(candidateLocale.toLanguageTag())) {
@@ -64,12 +63,11 @@ public class LocaleService {
         return DomainLocale.builder().id(locale.toLanguageTag()).name(displayName).build();
     }
 
-    public DomainLocale toDomainLocale(String localeName) {
+    public DomainLocale toDomainLocale(String localeName, boolean support) {
         Locale locale = Locale.forLanguageTag(localeName);
-        return toDomainLocale(locale, locale);
+        return toDomainLocale(support ? toSupported(locale) : locale, locale);
     }
 
-    @Cacheable("locales")
     public List<DomainLocale> findAll() {
         return localeMapper.findAll();
     }

@@ -131,7 +131,7 @@
             </div>
             <div class="text-center">
                 <button type="submit" class="btn btn-default" ng-disabled="contestEditForm.$invalid">Submit</button>
-                <button type="button" class="btn btn-danger" ng-click="reset()">Reset</button>
+                <button type="button" class="btn btn-danger" ng-click="reset(form)">Reset</button>
             </div>
         </form>
         <!--/*/</script>/*/-->
@@ -247,6 +247,10 @@
         <!--/*/</script>/*/-->
 
         <!--/*/<script type="text/ng-template" id="problem-view.html">/*/-->
+        <select ng-show="locales.length >= 1" ng-change="change()" ng-model="locale" class="ng-hide">
+            <option value="und">默认语言</option>
+            <option ng-repeat="item in locales" value="{{item.id}}" ng-selected="locale === item.id">{{item.name}}</option>
+        </select>
         <h2 class="text-center">{{problem.title}}</h2>
         <p class="text-center">Time Limit:{{problem.timeLimit}}MS&nbsp; Memory Limit:{{problem.memoryLimit}}K<br/>Total Submit:{{problem.submit}} Accepted:{{problem.accepted}}</p>
         <p align="left"><b><font color="#339" size="5">Description</font></b></p>

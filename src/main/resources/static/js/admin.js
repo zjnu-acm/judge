@@ -1,28 +1,57 @@
 !function (window, undefined) {
     'use strict';
-    function toTitle(title) {
-        return (title || 'Untitled Page') + ' - 在线评测系统管理后台';
-    }
-    function title(title) {
-        return title ? $document.prop('title', toTitle(title)) : $document.prop('title');
-    }
-    function normalize(url) {
-        var a = $('<a>', {href: url}).appendTo('body'), href = a.prop('href');
-        return a.remove(), href;
-    }
-
-    var $ = window.jQuery, angular = window.angular, $document = $(window.document);
+    var $ = window.jQuery, angular = window.angular;
     var isLocal = window.location.protocol === 'file:';
-    var path, problemRepository, contestRepository, localeRepository, problemListCache;
+    var problemListCache;
 
     var app = angular.module('adminApp', ['ngResource', 'ui.router', 'ngSanitize', 'angular-loading-bar', 'ui.bootstrap', 'ngCkeditor', 'datetime']);
-    app.service('reload', ['$state',
-        function ($state) {
-            return function (params, options) {
-                return $state.go($state.current.name, $.extend({}, $state.params, params), options || {location: 'replace', reload: true});
+    app.factory('reload', ['$state', function ($state) {
+            return function () {
+                var args = arguments, view = $state.current.name;
+                var params = args[0], options = args[1];
+                if (typeof params === 'string') {
+                    view = params;
+                    params = args[1];
+                    options = args[2];
+                }
+                return $state.go(view, $.extend({}, $state.params || {}, params || {}), options || {location: 'replace', reload: true});
             };
         }
     ]);
+    app.factory('title', function ($document) {
+        function toTitle(title) {
+            return (title || 'Untitled Page') + ' - 在线评测系统管理后台';
+        }
+        return function (title) {
+            return title ? $document.prop('title', toTitle(title)) : $document.prop('title');
+        };
+    });
+    app.factory('path', function ($rootScope) {
+        function normalize(url) {
+            var a = $('<a>', {href: url}).appendTo('body'), href = a.prop('href');
+            return a.remove(), href;
+        }
+        var adminHref = normalize($('base').prop('href')),
+                baseHref = normalize(adminHref + '../');
+        var path = {
+            admin: adminHref,
+            api: baseHref + 'api/',
+            base: baseHref
+        };
+        return $rootScope.path = path;
+    });
+    app.factory('problemRepository', function ($resource, path) {
+        return $resource(path.api + 'problems/:id.json', {id: '@id'}, {
+            'query': {method: 'GET', isArray: false},
+            'update': {method: 'PUT'}
+        });
+    });
+    app.factory('contestRepository', function ($resource, path) {
+        return $resource(path.api + 'contests/:id.json', {id: '@id'});
+    });
+    app.factory('localeRepository', function ($resource, path) {
+        return $resource(path.api + 'locales/:id.json', {id: '@id'});
+    });
     app.directive('requestFocus', function ($timeout) {
         return {
             restrict: 'A',
@@ -31,7 +60,7 @@
             }
         };
     });
-    app.directive('currentTime', function ($http, $filter) {
+    app.directive('currentTime', function ($http, $filter, path) {
         var timeDiff = 0;
         $http.get(path.api + 'system/time.json').then(function (resp) {
             timeDiff = new Date() - resp.data * 1000;
@@ -169,7 +198,7 @@
             'Cache-Control': 'no-cache',
             'Pragma': 'no-cache'
         });
-        $httpProvider.interceptors.push(['$q', function ($q) {
+        $httpProvider.interceptors.push(['$q', 'path', function ($q, path) {
                 return {
                     'responseError': function (response) {
                         if (response.status === 401) {
@@ -201,7 +230,7 @@
             second: 'ss'
         });
     });
-    app.controller('index', function ($scope, $http, $resource) {
+    app.controller('index', function ($scope, $http, $resource, path, contestRepository) {
         var systemInfoURL = path.api + 'misc/systemInfo.json';
         $scope.setSystemInfo = function () {
             $http.put(systemInfoURL, $scope.form).then(function (page) {
@@ -222,10 +251,10 @@
         $http.get(systemInfoURL).then(function (resp) {
             $scope.form = resp.data;
         });
-        var contestOnlnyResource = $resource(path.api + 'misc/contestOnly.json', null, {put: {method: 'PUT'}});
+        var contestOnlnyResource = $resource(path.api + 'misc/contestOnly.json', null, {update: {method: 'PUT'}});
         $scope.contestOnly = contestOnlnyResource.get();
         $scope.setContestOnly = function () {
-            contestOnlnyResource.put($scope.contestOnly, function () {
+            $scope.contestOnly.$update(function () {
                 alert('设置成功');
             });
         };
@@ -237,7 +266,7 @@
         veryslow = $sniffer.msie && $sniffer.msie < 9;
     });
 
-    app.controller('problem-list', function ($stateParams, $scope, $timeout, $http, reload) {
+    app.controller('problem-list', function ($stateParams, $scope, $timeout, $http, reload, problemRepository, path) {
         if (veryslow && !$stateParams.size && !$stateParams.page) {
             reload({size: 20});
             return;
@@ -277,19 +306,23 @@
             });
         };
     });
-    app.controller('problem-view-current', function ($state, $stateParams) {
+    app.controller('problem-view-current', function (localeRepository, reload) {
         localeRepository.get({id: 'current'}, function (locale) {
-            $state.go('problem-view-locale', {id: $stateParams.id, locale: locale && locale.id || 'default'}, {location: 'replace', reload: true});
+            reload('problem-view-locale', {locale: locale && locale.id || 'und'});
         });
     });
-    app.controller('problem-view-locale', function ($scope, $stateParams) {
+    app.controller('problem-view-locale', function ($scope, $stateParams, problemRepository, title, localeRepository, reload) {
         problemRepository.get($stateParams, function (problem) {
             $scope.problem = problem;
             problem.title && title(problem.title);
         });
         $scope.locale = $stateParams.locale;
+        $scope.locales = localeRepository.query();
+        $scope.change = function () {
+            reload({locale: $scope.locale});
+        };
     });
-    app.controller('problem-edit-locale', function ($scope, $stateParams, $state) {
+    app.controller('problem-edit-locale', function ($scope, $stateParams, $state, problemRepository, localeRepository, title, reload) {
         $scope.problem = problemRepository.get($stateParams, function (problem) {
             problem.title && title('编辑 ' + problem.title);
         });
@@ -297,7 +330,7 @@
         $scope.locales = localeRepository.query();
         $scope.change = function () {
             if (!$scope.problemEditForm.$dirty || confirm('你已经修改题目，继续操作将会丢失修改，是否继续？')) {
-                $state.go('problem-edit-locale', {id: $stateParams.id, locale: $scope.locale}, {location: 'replace', reload: true});
+                reload({locale: $scope.locale});
             } else {
                 $scope.locale = $stateParams.locale;
             }
@@ -312,12 +345,12 @@
             });
         };
     });
-    app.controller('problem-edit-current', function ($state, $stateParams) {
+    app.controller('problem-edit-current', function (localeRepository, reload) {
         localeRepository.get({id: 'current'}, function (locale) {
-            $state.go('problem-edit-locale', {id: $stateParams.id, locale: locale && locale.id || 'default'}, {location: 'replace', reload: true});
+            reload('problem-edit-locale', {locale: locale && locale.id || 'und'});
         });
     });
-    app.controller('problem-add', function ($scope, $state) {
+    app.controller('problem-add', function ($scope, $state, problemRepository, contestRepository) {
         $scope.editor = {
             hint: 'Add New problem',
             hint2: 'Add a Problem'
@@ -330,7 +363,7 @@
             });
         };
     });
-    app.controller('contest-list', function ($scope, $http) {
+    app.controller('contest-list', function ($scope, $http, path, contestRepository) {
         function toParam(obj) {
             var include = [], exclude = [], t = {}, hasOwn = t.hasOwnProperty;
             for (var i in obj) {
@@ -361,7 +394,7 @@
             });
         };
     });
-    app.controller('contest-view', function ($stateParams, $scope, $http) {
+    app.controller('contest-view', function ($stateParams, $scope, $http, problemRepository, path, contestRepository, title) {
         function load() {
             contestRepository.get($stateParams, function (data) {
                 $.extend($scope, data);// contest, problems
@@ -415,6 +448,7 @@
         }
         var form;
         form = $scope.form = {};
+        $scope.reset = reset;
         $scope.$watch('form.start', change);
         $scope.$watch('form.length', change);
         $scope.save = function () {
@@ -429,12 +463,9 @@
         };
         reset(form);
         change();
-        $scope.reset = function () {
-            reset(form);
-        };
     }
 
-    app.controller('contest-add', function ($scope, $state) {
+    app.controller('contest-add', function ($scope, $state, contestRepository) {
         initContestEdit($scope, function (form) {
             var now = new Date();
             now.setDate(now.getDate() + 1);
@@ -456,25 +487,12 @@
             });
         });
     });
-    app.run(function ($rootScope, $resource, $state, $interpolate) {
-        var adminHref = normalize($('base').prop('href')),
-                baseHref = normalize(adminHref + '../');
+    app.run(function ($rootScope, $state, $interpolate, title) {
         $rootScope.$on('$stateChangeSuccess', function (event, state) {
             var currentState = $state.$current;
             var tt = currentState.title || currentState.data && currentState.data.pageTitle || $rootScope.pageTitle || 'Untitled Page';
             title($interpolate(tt)(currentState));
         });
-        $rootScope.path = path = {
-            admin: adminHref,
-            api: baseHref + 'api/',
-            base: baseHref
-        };
-        problemRepository = $resource(path.api + 'problems/:id.json', {id: '@id'}, {
-            'query': {method: 'GET', isArray: false},
-            'update': {method: 'PUT'}
-        });
-        contestRepository = $resource(path.api + 'contests/:id.json', {id: '@id'});
-        localeRepository = $resource(path.api + 'locales/:id.json', {id: '@id'});
         function contestStatus(contest) {
             var now = +new Date() / 1000;
             var disabled = !!contest.disabled;

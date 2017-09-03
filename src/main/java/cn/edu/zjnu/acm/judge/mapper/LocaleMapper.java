@@ -21,6 +21,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.cache.annotation.Cacheable;
 
 /**
  *
@@ -29,6 +30,7 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface LocaleMapper {
 
+    @Cacheable("locales")
     @Select("select id,name from locale where not disabled")
     List<DomainLocale> findAll();
 

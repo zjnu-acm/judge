@@ -29,7 +29,6 @@ import javax.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author zhanhb
@@ -57,7 +56,6 @@ public class LoginlogService {
         executorService.shutdownNow();
     }
 
-    @Transactional
     public void save(LoginLog loginlog) {
         Objects.requireNonNull(loginlog);
         lock.lock();

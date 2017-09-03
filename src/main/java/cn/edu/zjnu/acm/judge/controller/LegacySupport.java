@@ -36,6 +36,14 @@ public class LegacySupport {
         return "redirect:/admin/problems/{problemId}.html";
     }
 
+    @Secured("ROLE_ADMIN")
+    @GetMapping("/admin.showcontest")
+    public String showContest(@RequestParam("contest_id") long contestId,
+            RedirectAttributes redirectAttributes) {
+        redirectAttributes.addAttribute("contestId", contestId);
+        return "redirect:/admin/contests/{contestId}.html";
+    }
+
     @GetMapping("/conteststanding")
     public String contestStanding(@RequestParam("contest_id") long contestId) {
         return "forward:/contests/" + contestId + "/standing";
