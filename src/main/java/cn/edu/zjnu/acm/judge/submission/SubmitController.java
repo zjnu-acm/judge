@@ -20,7 +20,6 @@ import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import cn.edu.zjnu.acm.judge.util.ResultType;
 import java.nio.file.Path;
 import java.time.Instant;
-import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -92,7 +91,6 @@ public class SubmitController {
         long memoryLimit = problem.getMemoryLimit();
         long timeLimit = problem.getTimeLimit();
 
-        long num = -1;
         if (contestId != null) { //竞赛是否存在
             Contest contest = contestMapper.findOne(contestId);
 
@@ -108,8 +106,6 @@ public class SubmitController {
             if (contest.isEnded()) {
                 problemMapper.setContest(problemId, null);
                 contestId = null;
-            } else { //num为竞赛中的题目编号
-                num = Optional.ofNullable(contestMapper.getProblemIdInContest(contestId, problemId)).orElse(-1L);
             }
         }
         contestOnlyService.checkSubmit(request, contestId, problemId);
@@ -122,7 +118,6 @@ public class SubmitController {
                 .language(languageId)
                 .ip(request.getRemoteAddr())
                 .contest(contestId)
-                .num(num)
                 .score(ResultType.QUEUING)
                 .build();
         submissionMapper.save(submission);

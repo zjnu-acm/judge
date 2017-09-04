@@ -6,6 +6,7 @@ import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
+import cn.edu.zjnu.acm.judge.service.ContestService;
 import cn.edu.zjnu.acm.judge.service.LocaleService;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -31,6 +32,8 @@ public class ShowProblemController {
     private JudgeConfiguration judgeConfiguration;
     @Autowired
     private LocaleService localeService;
+    @Autowired
+    private ContestService contestService;
 
     private Problem getProblem(long problemId, Locale locale) {
         Problem problem = problemMapper.findOne(problemId, localeService.resolve(locale));
@@ -75,8 +78,7 @@ public class ShowProblemController {
             title1 = problemId + " -- " + problem.getTitle();
             title2 = problem.getTitle();
         } else {
-            Long problemIdInContest = contestMapper.getProblemIdInContest(contestId, problemId);
-            long contestNum = problemIdInContest == null ? -1 : problemIdInContest;
+            int contestNum = contestService.getNumMap(contestId).getOrDefault(problemId, -1);
             List<Problem> problems = contestMapper.getProblems(contestId, null, localeService.resolve(locale));
             model.addAttribute("problems", problems);
             title1 = (char) (contestNum + 'A') + ":" + problemId + " -- " + problem.getTitle();

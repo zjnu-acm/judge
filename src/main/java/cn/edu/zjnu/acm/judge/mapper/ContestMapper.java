@@ -160,11 +160,6 @@ public interface ContestMapper {
             @Param("title") String title,
             @Param("num") int num);
 
-    @Deprecated
-    @Nullable
-    @Select("select num-1000 from contest_problem where contest_id=#{cid} and problem_id=#{pid}")
-    Long getProblemIdInContest(@Param("cid") long contestId, @Param("pid") long problemId);
-
     @Select("select" + COLUMNS + "from contest where now()<start_time and start_time<end_time and not disabled order by contest_id")
     List<Contest> pending();
 

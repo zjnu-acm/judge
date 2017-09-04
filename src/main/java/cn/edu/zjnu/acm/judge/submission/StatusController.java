@@ -6,6 +6,7 @@ import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.exception.BadRequestException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
+import cn.edu.zjnu.acm.judge.service.ContestService;
 import cn.edu.zjnu.acm.judge.service.LanguageService;
 import cn.edu.zjnu.acm.judge.service.SubmissionService;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
@@ -15,6 +16,7 @@ import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.OptionalLong;
@@ -39,6 +41,8 @@ public class StatusController {
     private SubmissionMapper submissionMapper;
     @Autowired
     private ContestMapper contestMapper;
+    @Autowired
+    private ContestService contestService;
     @Autowired
     private SubmissionService submissionService;
     @Autowired
@@ -67,15 +71,23 @@ public class StatusController {
             throw new BadRequestException();
         }
         log.debug("query={}", query);
+        Map<Long, Integer> map = Collections.emptyMap();
+        if (contestId != null) {
+            map = contestService.getNumMap(contestId);
+        }
         try {
             problemId = Long.parseLong(pid);
         } catch (NumberFormatException ex) {
             if (contestId != null && pid.length() == 1) {
                 // TODO the character is the index in the list.
                 int x = Character.toUpperCase(pid.charAt(0)) - 'A';
-                try {
-                    problemId = contestMapper.getProblems(contestId, null, null).get(x).getOrigin();
-                } catch (IndexOutOfBoundsException ignore) {
+                for (Map.Entry<Long, Integer> entry : map.entrySet()) {
+                    long key = entry.getKey();
+                    int value = entry.getValue();
+                    if (x == value) {
+                        problemId = key;
+                        break;
+                    }
                 }
             }
         }
@@ -131,7 +143,7 @@ public class StatusController {
             String user_id1 = submission.getUser();
             long problem_id1 = submission.getProblem();
             Long contest_id1 = submission.getContest();
-            long num = submission.getNum();
+            int num = map.getOrDefault(problem_id1, -1);
             int score = submission.getScore();
             Instant inDate = submission.getInDate();
             String language1 = languageService.getLanguageName(submission.getLanguage());
@@ -143,7 +155,7 @@ public class StatusController {
             }
             sb.append("<tr align=center><td>").append(id).append("</td>");
             String problemString;
-            if (contestId == null || num == -1) {
+            if (num == -1) {
                 problemString = "" + problem_id1;
             } else {
                 problemString = Character.toString((char) (num + 'A'));

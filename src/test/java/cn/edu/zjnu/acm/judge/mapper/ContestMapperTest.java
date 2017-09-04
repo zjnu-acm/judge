@@ -169,18 +169,6 @@ public class ContestMapperTest {
     }
 
     /**
-     * Test of getProblemIdInContest method, of class ContestMapper.
-     */
-    @Test
-    @SuppressWarnings("deprecation")
-    public void testGetProblemIdInContest() {
-        log.info("getProblemIdInContest");
-        long contestId = 0L;
-        long problemId = 0L;
-        instance.getProblemIdInContest(contestId, problemId);
-    }
-
-    /**
      * Test of pending method, of class ContestMapper.
      */
     @Test

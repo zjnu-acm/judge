@@ -31,7 +31,10 @@ import java.time.Instant;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -204,6 +207,12 @@ public class ContestService {
         if (result == 0) {
             throw new BusinessException(BusinessCode.NOT_FOUND);
         }
+    }
+
+    public Map<Long, Integer> getNumMap(long id) {
+        List<Problem> problems = contestMapper.getProblems(id, null, null);
+        AtomicInteger atomic = new AtomicInteger();
+        return problems.stream().collect(Collectors.toMap(Problem::getOrigin, __ -> atomic.getAndIncrement()));
     }
 
 }

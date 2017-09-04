@@ -49,8 +49,6 @@ public class Submission implements Serializable {
     private String ip;
     private int sourceLength;
     private Instant inDate;
-    @Deprecated
-    private long num;
     private Integer on;
 
 }

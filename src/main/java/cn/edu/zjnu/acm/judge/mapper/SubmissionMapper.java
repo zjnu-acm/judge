@@ -35,8 +35,8 @@ import org.springframework.data.domain.Pageable;
 @Mapper
 public interface SubmissionMapper {
 
-    String COLUMNS = " s.solution_id id,s.problem_id problem,s.user_id user,s.contest_id contest,s.time,s.memory,s.score,s.language,s.ip,s.code_length sourceLength,s.in_date inDate,s.num ";
-    String LIST_COLUMNS = " s.solution_id id,s.problem_id problem,s.user_id user,s.contest_id contest,s.time,s.memory,s.score,s.language,s.code_length sourceLength,s.in_date inDate,s.num ";
+    String COLUMNS = " s.solution_id id,s.problem_id problem,s.user_id user,s.contest_id contest,s.time,s.memory,s.score,s.language,s.ip,s.code_length sourceLength,s.in_date inDate ";
+    String LIST_COLUMNS = " s.solution_id id,s.problem_id problem,s.user_id user,s.contest_id contest,s.time,s.memory,s.score,s.language,s.code_length sourceLength,s.in_date inDate ";
 
     @Select("select source from submission_source where solution_id=#{id}")
     String findSourceById(@Param("id") long id);
@@ -44,8 +44,8 @@ public interface SubmissionMapper {
     @Select("SELECT error FROM compileinfo WHERE solution_id=#{id}")
     String findCompileInfoById(@Param("id") long id);
 
-    @Insert("INSERT INTO solution (solution_id,problem_id,user_id,in_date,code_length,score,language,ip,contest_id,num) VALUES"
-            + " (#{id},#{problem},#{user},#{inDate},#{sourceLength},#{score},#{language},#{ip},#{contest},#{num})")
+    @Insert("INSERT INTO solution (solution_id,problem_id,user_id,in_date,code_length,score,language,ip,contest_id) VALUES"
+            + " (#{id},#{problem},#{user},#{inDate},#{sourceLength},#{score},#{language},#{ip},#{contest})")
     @SelectKey(statement = "select COALESCE(max(solution_id)+1,1000) maxp from solution",
             before = true, keyProperty = "id", resultType = long.class)
     long save(Submission submission);
