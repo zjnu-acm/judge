@@ -31,6 +31,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -53,7 +54,7 @@ public class ProblemService {
         return new PageImpl<>(problemMapper.findAll(localeService.resolve(locale), pageable), pageable, total);
     }
 
-    public void update(long problemId, Problem p, String lang) {
+    public void updateSelective(long problemId, Problem p, String lang) {
         Problem problem = problemMapper.findOne(problemId, lang);
         if (problem == null) {
             throw new BusinessException(BusinessCode.NOT_FOUND);
@@ -62,31 +63,19 @@ public class ProblemService {
         if (computedLang != null) {
             problemMapper.touchI18n(problemId, computedLang);
         }
-        problemMapper.update(problem.toBuilder()
-                .title(p.getTitle())
-                .description(p.getDescription())
-                .input(p.getInput())
-                .output(p.getOutput())
-                .sampleInput(p.getSampleInput())
-                .sampleOutput(p.getSampleOutput())
-                .hint(p.getHint())
-                .source(p.getSource())
-                .timeLimit(p.getTimeLimit())
-                .memoryLimit(p.getMemoryLimit())
-                .modifiedTime(Instant.now())
-                .build(), computedLang);
+        p.setModifiedTime(Instant.now());
+        problemMapper.updateSelective(problemId, p, computedLang);
     }
 
     public Problem save(Problem problem) {
         problemMapper.save(problem);
         long id = problem.getId();
-        Path problemDir = judgeConfiguration.getDataDirectory(id);
         Long contest = problem.getContest();
         if (contest != null) {
             contestService.addProblem(contest, id);
         }
         try {
-            Files.createDirectories(problemDir);
+            Files.createDirectories(getDataDirectory(id));
         } catch (IOException ex) {
         }
         return problem;
@@ -105,12 +94,24 @@ public class ProblemService {
         return problem;
     }
 
-    public void setDisabled(long id, boolean b) {
-        problemMapper.setDisabled(id, b);
+    public Problem findOne(long id) {
+        Problem problem = problemMapper.findOne(id, null);
+        if (problem == null) {
+            throw new BusinessException(BusinessCode.NOT_FOUND);
+        }
+        return problem;
     }
 
     public Path getDataDirectory(long id) {
         return judgeConfiguration.getDataDirectory(id);
+    }
+
+    @Transactional
+    public void delete(long id) {
+        long total = problemMapper.deleteI18n(id) + problemMapper.delete(id);
+        if (total == 0) {
+            throw new BusinessException(BusinessCode.NOT_FOUND);
+        }
     }
 
 }

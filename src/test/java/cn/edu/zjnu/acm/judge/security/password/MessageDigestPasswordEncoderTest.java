@@ -15,10 +15,16 @@
  */
 package cn.edu.zjnu.acm.judge.security.password;
 
+import java.lang.invoke.MethodHandles;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.Arrays;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  *
@@ -59,6 +65,19 @@ public class MessageDigestPasswordEncoderTest {
         String a = MessageDigestPasswordEncoder.md5().encode(null);
         String b = MessageDigestPasswordEncoder.md5().encode("");
         assertEquals(a, b);
+    }
+
+    @Test
+    public void testAll() {
+        Arrays.stream(MessageDigestPasswordEncoder.class.getMethods())
+                .filter(method -> Modifier.isStatic(method.getModifiers()))
+                .map(this::invokeStatic)
+                .forEach(encoder -> assertTrue(encoder.matches("test", encoder.encode("test"))));
+    }
+
+    @SneakyThrows
+    private MessageDigestPasswordEncoder invokeStatic(Method method) {
+        return (MessageDigestPasswordEncoder) MethodHandles.publicLookup().unreflect(method).invoke();
     }
 
 }

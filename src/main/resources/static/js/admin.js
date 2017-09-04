@@ -6,24 +6,19 @@
 
     var app = angular.module('adminApp', ['ngResource', 'ui.router', 'ngSanitize', 'angular-loading-bar', 'ui.bootstrap', 'ngCkeditor', 'datetime']);
     app.factory('reload', ['$state', function ($state) {
-            return function () {
-                var args = arguments, view = $state.current.name;
-                var params = args[0], options = args[1];
-                if (typeof params === 'string') {
-                    view = params;
-                    params = args[1];
-                    options = args[2];
+            return function (view, params, options) {
+                if (typeof view !== 'string') {
+                    options = params;
+                    params = view;
+                    view = $state.current.name;
                 }
                 return $state.go(view, $.extend({}, $state.params || {}, params || {}), options || {location: 'replace', reload: true});
             };
         }
     ]);
     app.factory('title', function ($document) {
-        function toTitle(title) {
-            return (title || 'Untitled Page') + ' - 在线评测系统管理后台';
-        }
         return function (title) {
-            return title ? $document.prop('title', toTitle(title)) : $document.prop('title');
+            return title ? $document.prop('title', title + ' - 在线评测系统管理后台') : $document.prop('title');
         };
     });
     app.factory('path', function ($rootScope) {
@@ -40,17 +35,26 @@
         };
         return $rootScope.path = path;
     });
-    app.factory('problemRepository', function ($resource, path) {
+    app.factory('problemApi', function ($resource, path) {
         return $resource(path.api + 'problems/:id.json', {id: '@id'}, {
             'query': {method: 'GET', isArray: false},
-            'update': {method: 'PUT'}
+            'update': {method: 'PATCH'}
         });
     });
-    app.factory('contestRepository', function ($resource, path) {
+    app.factory('contestApi', function ($resource, path) {
         return $resource(path.api + 'contests/:id.json', {id: '@id'});
     });
-    app.factory('localeRepository', function ($resource, path) {
+    app.factory('localeApi', function ($resource, path) {
         return $resource(path.api + 'locales/:id.json', {id: '@id'});
+    });
+    app.factory('miscApi', function ($resource, path) {
+        return $resource(path.api + "misc/:action.json", null, {
+            getSystemInfo: {method: 'GET', params: {action: 'systemInfo'}},
+            setSystemInfo: {method: 'PUT', params: {action: 'systemInfo'}},
+            fix: {method: 'POST', params: {action: 'fix'}},
+            getContestOnly: {method: 'GET', params: {action: 'contestOnly'}},
+            setContestOnly: {method: 'PUT', params: {action: 'contestOnly'}}
+        });
     });
     app.directive('requestFocus', function ($timeout) {
         return {
@@ -230,35 +234,27 @@
             second: 'ss'
         });
     });
-    app.controller('index', function ($scope, $http, $resource, path, contestRepository) {
-        var systemInfoURL = path.api + 'misc/systemInfo.json';
+    app.controller('index', function ($scope, contestApi, miscApi) {
+        $scope.form = miscApi.getSystemInfo();
         $scope.setSystemInfo = function () {
-            $http.put(systemInfoURL, $scope.form).then(function (page) {
+            miscApi.setSystemInfo($scope.form, function () {
                 alert('设置完成');
             });
         };
-        $scope.form = {
-            info: '',
-            pureText: true
-        };
         $scope.fix = function () {
             $scope.fix.disabled = true;
-            $http.post(path.api + 'misc/fix.json').then(function () {
+            miscApi.fix(function () {
                 alert('修复完成');
                 $scope.fix.disabled = false;
             });
         };
-        $http.get(systemInfoURL).then(function (resp) {
-            $scope.form = resp.data;
-        });
-        var contestOnlnyResource = $resource(path.api + 'misc/contestOnly.json', null, {update: {method: 'PUT'}});
-        $scope.contestOnly = contestOnlnyResource.get();
+        $scope.contestOnly = miscApi.getContestOnly();
         $scope.setContestOnly = function () {
-            $scope.contestOnly.$update(function () {
+            miscApi.setContestOnly($scope.contestOnly, function () {
                 alert('设置成功');
             });
         };
-        $scope.contests = contestRepository.query({include: 'PENDING,RUNNING'});
+        $scope.contests = contestApi.query({include: 'PENDING,RUNNING'});
     });
 
     var veryslow;
@@ -266,7 +262,7 @@
         veryslow = $sniffer.msie && $sniffer.msie < 9;
     });
 
-    app.controller('problem-list', function ($stateParams, $scope, $timeout, $http, reload, problemRepository, path) {
+    app.controller('problem-list', function ($stateParams, $scope, $timeout, reload, problemApi) {
         if (veryslow && !$stateParams.size && !$stateParams.page) {
             reload({size: 20});
             return;
@@ -290,44 +286,54 @@
                 reload({page: $scope.currentPage - 1});
             };
         });
-        problemRepository.query($stateParams, function (page) {
+        problemApi.query($stateParams, function (page) {
             $scope.page = problemListCache = page;
             $scope.currentPage = page.number + 1;
         });
         $scope.currentPage = (+$stateParams.page || 0) + 1;
         $scope.enable = function (problem) {
-            $http.post(path.api + 'problems/' + problem.id + '/resume.json').then(function () {
+            problemApi.update({id: problem.id, disabled: false}, function () {
                 problem.disabled = false;
             });
         };
         $scope.disable = function (problem) {
-            problemRepository['delete']({id: problem.id}, function () {
+            problemApi.update({id: problem.id, disabled: true}, function () {
                 problem.disabled = true;
             });
         };
     });
-    app.controller('problem-view-current', function (localeRepository, reload) {
-        localeRepository.get({id: 'current'}, function (locale) {
+    app.controller('problem-view-current', function (localeApi, reload) {
+        localeApi.get({id: 'current'}, function (locale) {
             reload('problem-view-locale', {locale: locale && locale.id || 'und'});
         });
     });
-    app.controller('problem-view-locale', function ($scope, $stateParams, problemRepository, title, localeRepository, reload) {
-        problemRepository.get($stateParams, function (problem) {
+    app.controller('problem-view-locale', function ($scope, $stateParams, problemApi, title, localeApi, reload) {
+        problemApi.get($stateParams, function (problem) {
             $scope.problem = problem;
             problem.title && title(problem.title);
+            $scope.disable = function () {
+                problemApi.update({id: problem.id, disabled: true}, function () {
+                    problem.disabled = true;
+                });
+            };
+            $scope.enable = function () {
+                problemApi.update({id: problem.id, disabled: false}, function () {
+                    problem.disabled = false;
+                });
+            };
         });
         $scope.locale = $stateParams.locale;
-        $scope.locales = localeRepository.query();
+        $scope.locales = localeApi.query();
         $scope.change = function () {
             reload({locale: $scope.locale});
         };
     });
-    app.controller('problem-edit-locale', function ($scope, $stateParams, $state, problemRepository, localeRepository, title, reload) {
-        $scope.problem = problemRepository.get($stateParams, function (problem) {
+    app.controller('problem-edit-locale', function ($scope, $stateParams, $state, problemApi, localeApi, title, reload) {
+        $scope.problem = problemApi.get($stateParams, function (problem) {
             problem.title && title('编辑 ' + problem.title);
         });
         $scope.locale = $stateParams.locale;
-        $scope.locales = localeRepository.query();
+        $scope.locales = localeApi.query();
         $scope.change = function () {
             if (!$scope.problemEditForm.$dirty || confirm('你已经修改题目，继续操作将会丢失修改，是否继续？')) {
                 reload({locale: $scope.locale});
@@ -345,25 +351,25 @@
             });
         };
     });
-    app.controller('problem-edit-current', function (localeRepository, reload) {
-        localeRepository.get({id: 'current'}, function (locale) {
+    app.controller('problem-edit-current', function (localeApi, reload) {
+        localeApi.get({id: 'current'}, function (locale) {
             reload('problem-edit-locale', {locale: locale && locale.id || 'und'});
         });
     });
-    app.controller('problem-add', function ($scope, $state, problemRepository, contestRepository) {
+    app.controller('problem-add', function ($scope, $state, problemApi, contestApi) {
         $scope.editor = {
             hint: 'Add New problem',
             hint2: 'Add a Problem'
         };
-        $scope.problem = new problemRepository();
-        $scope.contests = contestRepository.query({include: 'PENDING,RUNNING'});
+        $scope.problem = new problemApi();
+        $scope.contests = contestApi.query({include: 'PENDING,RUNNING'});
         $scope.save = function () {
             $scope.problem.$save(function (problem) {
                 $state.go('problem-view-current', {id: problem.id});
             });
         };
     });
-    app.controller('contest-list', function ($scope, $http, path, contestRepository) {
+    app.controller('contest-list', function ($scope, $http, path, contestApi) {
         function toParam(obj) {
             var include = [], exclude = [], t = {}, hasOwn = t.hasOwnProperty;
             for (var i in obj) {
@@ -372,7 +378,7 @@
             return {include: include, exclude: exclude};
         }
         function load() {
-            contestRepository.query($.extend({}, query.includeDisabled ? {includeDisabled: true} : {}, toParam(query.include)), function (list) {
+            contestApi.query($.extend({}, query.includeDisabled ? {includeDisabled: true} : {}, toParam(query.include)), function (list) {
                 $scope.list = list;
             });
         }
@@ -389,14 +395,14 @@
             });
         };
         $scope.disable = function (contest) {
-            contestRepository['delete']({id: contest.id}, function () {
+            contestApi['delete']({id: contest.id}, function () {
                 contest.disabled = true;
             });
         };
     });
-    app.controller('contest-view', function ($stateParams, $scope, $http, problemRepository, path, contestRepository, title) {
+    app.controller('contest-view', function ($stateParams, $scope, $http, problemApi, path, contestApi, title) {
         function load() {
-            contestRepository.get($stateParams, function (data) {
+            contestApi.get($stateParams, function (data) {
                 $.extend($scope, data);// contest, problems
                 data.contest.title && title(data.contest.title);
             });
@@ -407,7 +413,7 @@
             var code = {'404': 'Not found.'};
             var val = newProblem.id;
             if (/^[1-9][0-9]*$/.test(val)) {
-                problemRepository.get({id: newProblem.id}, function (p) {
+                problemApi.get({id: newProblem.id}, function (p) {
                     newProblem.title = p.title || 'No Title';
                     $scope.disabled = false;
                 }).$promise['catch'](function (resp) {
@@ -465,7 +471,7 @@
         change();
     }
 
-    app.controller('contest-add', function ($scope, $state, contestRepository) {
+    app.controller('contest-add', function ($scope, $state, contestApi) {
         initContestEdit($scope, function (form) {
             var now = new Date();
             now.setDate(now.getDate() + 1);
@@ -482,7 +488,7 @@
                 description: ''
             });
         }, function (form) {
-            contestRepository.save(form, function (contest) {
+            contestApi.save(form, function (contest) {
                 $state.go('contest-view', {id: contest.id});
             });
         });
@@ -493,27 +499,21 @@
             var tt = currentState.title || currentState.data && currentState.data.pageTitle || $rootScope.pageTitle || 'Untitled Page';
             title($interpolate(tt)(currentState));
         });
-        function contestStatus(contest) {
+        function getStatus(contest) {
             var now = +new Date() / 1000;
             var disabled = !!contest.disabled;
             var started = !contest.startTime || contest.startTime < now;
             var ended = !contest.endTime || contest.endTime < now;
             var error = contest.startTime && contest.startTime > contest.endTime;
-            return disabled ? 'DISABLED' : error ? 'ERROR' : started && !ended ? 'RUNNING' : ended ? 'ENDED' : 'Pending';
+            return disabled ? 4 : error ? 3 : started && !ended ? 1 : ended ? 2 : 0;
         }
-        $rootScope.contestStatus = contestStatus;
+        var text = ['Pending', 'RUNNING', 'ENDED', 'ERROR', 'DISABLED'];
+        var style = [{color: 'red'}, {color: 'blue'}, {color: 'green'}, , {color: 'darkred'}];
+        $rootScope.contestStatus = function (contest) {
+            return text[getStatus(contest)];
+        };
         $rootScope.statusColor = function (contest) {
-            switch (contestStatus(contest)) {
-                case 'RUNNING':
-                    return {color: 'blue'};
-                case 'ENDED':
-                    return {color: 'green'};
-                case 'Pending':
-                    return {color: 'red'};
-                case 'DISABLED':
-                    return {color: 'darkred'};
-            }
-            return {};
+            return style[getStatus(contest)];
         };
     });
 

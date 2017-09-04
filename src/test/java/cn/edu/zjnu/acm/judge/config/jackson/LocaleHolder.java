@@ -13,25 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.exception;
+package cn.edu.zjnu.acm.judge.config.jackson;
+
+import java.util.Locale;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  *
  * @author zhanhb
  */
-public class BusinessException extends RuntimeException {
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
+@Data
+@NoArgsConstructor
+public class LocaleHolder {
 
-    private static final long serialVersionUID = 1L;
-
-    private final BusinessCode code;
-
-    public BusinessException(BusinessCode errorCode) {
-        super(errorCode.name());
-        this.code = errorCode;
-    }
-
-    public BusinessCode getCode() {
-        return code;
-    }
+    private Locale locale;
 
 }

@@ -59,13 +59,17 @@ public class LocaleService {
     }
 
     public DomainLocale toDomainLocale(Locale locale, Locale inLocale) {
+        DomainLocale domainLocale = localeMapper.findOne(locale.toLanguageTag());
+        if (domainLocale != null) {
+            return domainLocale;
+        }
         String displayName = locale.getDisplayName(inLocale);
         return DomainLocale.builder().id(locale.toLanguageTag()).name(displayName).build();
     }
 
-    public DomainLocale toDomainLocale(String localeName, boolean support) {
+    public DomainLocale toDomainLocale(String localeName, boolean supportOnly) {
         Locale locale = Locale.forLanguageTag(localeName);
-        return toDomainLocale(support ? toSupported(locale) : locale, locale);
+        return toDomainLocale(supportOnly ? toSupported(locale) : locale, locale);
     }
 
     public List<DomainLocale> findAll() {

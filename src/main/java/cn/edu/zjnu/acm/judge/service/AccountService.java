@@ -18,6 +18,7 @@ package cn.edu.zjnu.acm.judge.service;
 import cn.edu.zjnu.acm.judge.data.form.AccountForm;
 import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
+import java.time.Instant;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -49,8 +50,8 @@ public class AccountService {
         return findAll(form, pageable);
     }
 
-    public void patch(String userId, User user) {
-        User build = user.toBuilder().password(passwordEncoder.encode(user.getPassword())).build();
+    public void update(String userId, User user) {
+        User build = user.toBuilder().password(passwordEncoder.encode(user.getPassword())).modifiedTime(Instant.now()).build();
         userMapper.updateSelective(userId, build);
     }
 

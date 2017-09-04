@@ -18,7 +18,7 @@ package cn.edu.zjnu.acm.judge.config.jackson;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import java.io.IOException;
 import java.util.Locale;
 import org.springframework.boot.jackson.JsonComponent;
@@ -28,7 +28,13 @@ import org.springframework.boot.jackson.JsonComponent;
  * @author zhanhb
  */
 @JsonComponent
-public class CustomLocaleDeserializer extends JsonDeserializer<Locale> {
+public class CustomLocaleDeserializer extends StdDeserializer<Locale> {
+
+    private static final long serialVersionUID = 1L;
+
+    public CustomLocaleDeserializer() {
+        super(Locale.class);
+    }
 
     @Override
     public Locale deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {

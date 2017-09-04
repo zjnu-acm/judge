@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.domain;
+package cn.edu.zjnu.acm.judge.config.jackson;
 
 import cn.edu.zjnu.acm.judge.Application;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,7 +37,7 @@ import static org.junit.Assert.assertEquals;
 @Slf4j
 @SpringBootTest(classes = Application.class)
 @WebAppConfiguration
-public class DomainLocaleTest {
+public class LocaleSerializeTest {
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -45,15 +45,22 @@ public class DomainLocaleTest {
     @Test
     public void testToJson() throws IOException {
         for (Locale expect : new Locale[]{
-            new Locale("zh", "TW", "Hant"),
             Locale.US,
+            new Locale("zh", "TW", "Hant"),
             Locale.ENGLISH,
             Locale.ROOT,
             null
         }) {
             String str = objectMapper.writeValueAsString(expect);
+            assertEquals(expect == null ? "null" : '"' + expect.toLanguageTag() + '"', str);
             Locale result = objectMapper.readValue(str, Locale.class);
             log.info("str={}, expect={}, result={}", str, expect, result);
+            assertEquals(expect, result);
+
+            str = objectMapper.writeValueAsString(LocaleHolder.builder().locale(expect).build());
+            log.info("str={}, expect={}, result={}", str, expect, result);
+
+            result = objectMapper.readValue(str, LocaleHolder.class).getLocale();
             assertEquals(expect, result);
         }
     }

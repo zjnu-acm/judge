@@ -109,6 +109,7 @@ public interface UserMapper {
             + "update users"
             + "<set>"
             + "<if test='user.password!=null'>password=#{user.password},</if>"
+            + "<if test='user.modifiedTime!=null'>modified_time=#{user.modifiedTime},</if>"
             + "<if test='user.disabled!=null'>disabled=#{user.disabled},</if>"
             + "</set>"
             + "<where>user_id=#{userId}</where>"

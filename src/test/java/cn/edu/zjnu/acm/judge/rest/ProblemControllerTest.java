@@ -17,6 +17,9 @@ package cn.edu.zjnu.acm.judge.rest;
 
 import cn.edu.zjnu.acm.judge.Application;
 import cn.edu.zjnu.acm.judge.domain.Problem;
+import cn.edu.zjnu.acm.judge.exception.BusinessCode;
+import cn.edu.zjnu.acm.judge.exception.BusinessException;
+import cn.edu.zjnu.acm.judge.service.ProblemService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
@@ -26,12 +29,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.util.NestedServletException;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -41,7 +52,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
  *
  * @author zhanhb
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
 @WebAppConfiguration
@@ -52,6 +63,8 @@ public class ProblemControllerTest {
     private WebApplicationContext context;
     @Autowired
     private ObjectMapper mapper;
+    @Autowired
+    private ProblemService problemService;
     private MockMvc mvc;
 
     @Before
@@ -59,12 +72,15 @@ public class ProblemControllerTest {
         mvc = webAppContextSetup(context).build();
     }
 
-    /**
-     * Test of save method, of class ProblemController.
-     */
     @Test
-    public void testSave() throws Exception {
-        log.info("save");
+    public void testFindAll() throws Exception {
+        mvc.perform(get("/api/problems.json"))
+                .andDo(print())
+                .andExpect(status().is2xxSuccessful());
+    }
+
+    @Test
+    public void test() throws Exception {
         Problem problem = Problem.builder()
                 .title("")
                 .description("")
@@ -77,39 +93,58 @@ public class ProblemControllerTest {
                 .timeLimit(1000L)
                 .memoryLimit(65536 * 1024L)
                 .build();
-        mvc.perform(post("/api/problems")
-                .accept(MediaType.APPLICATION_JSON)
+        Long id = mapper.readValue(mvc.perform(post("/api/problems.json")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsBytes(problem))
         )
                 .andDo(print())
+                .andExpect(status().is2xxSuccessful())
+                .andReturn().getResponse().getContentAsString(), Problem.class).getId();
+        assertNotNull(id);
+        assertNotNull(problemService.findOne(id));
+
+        assertFalse(problemService.findOne(id).getDisabled());
+        mvc.perform(patch("/api/problems/{id}.json", id).content("{\"disabled\":true}").contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
                 .andExpect(status().is2xxSuccessful());
-    }
+        assertTrue(problemService.findOne(id).getDisabled());
 
-    /**
-     * Test of delete method, of class ProblemController.
-     */
-    @Test
-    @WithMockUser(roles = "ADMIN")
-    public void testDelete() throws Exception {
-        log.info("delete");
-        long id = 0L;
-        mvc.perform(delete("/api/problems/{id}", id).accept(MediaType.APPLICATION_JSON))
+        mvc.perform(patch("/api/problems/{id}.json", id).content("{\"disabled\":false}").contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isNoContent());
-    }
+                .andExpect(status().is2xxSuccessful());
+        assertFalse(problemService.findOne(id).getDisabled());
 
-    /**
-     * Test of resume method, of class ProblemController.
-     */
-    @Test
-    @WithMockUser(roles = "ADMIN")
-    public void testResume() throws Exception {
-        log.info("resume");
-        long id = 0L;
-        mvc.perform(post("/api/problems/{id}/resume", id).accept(MediaType.APPLICATION_JSON))
+        mvc.perform(delete("/api/problems/{id}.json", id))
                 .andDo(print())
-                .andExpect(status().isNoContent());
+                .andExpect(status().is2xxSuccessful());
+
+        try {
+            Problem p = problemService.findOne(id);
+            assertNull(p);
+        } catch (BusinessException ex) {
+            assertEquals(BusinessCode.NOT_FOUND, ex.getCode());
+        }
+        try {
+            mvc.perform(get("/api/problems/{id}.json", id))
+                    .andExpect(status().isNotFound());
+        } catch (NestedServletException ex) {
+            assertTrue(ex.getCause() instanceof BusinessException);
+            assertEquals(BusinessCode.NOT_FOUND, ((BusinessException) ex.getCause()).getCode());
+        }
+        try {
+            mvc.perform(delete("/api/problems/{id}.json", id))
+                    .andExpect(status().isNotFound());
+        } catch (NestedServletException ex) {
+            assertTrue(ex.getCause() instanceof BusinessException);
+            assertEquals(BusinessCode.NOT_FOUND, ((BusinessException) ex.getCause()).getCode());
+        }
+        try {
+            mvc.perform(patch("/api/problems/{id}.json", id).contentType(MediaType.APPLICATION_JSON).content("{}"))
+                    .andExpect(status().isNotFound());
+        } catch (NestedServletException ex) {
+            assertTrue(ex.getCause() instanceof BusinessException);
+            assertEquals(BusinessCode.NOT_FOUND, ((BusinessException) ex.getCause()).getCode());
+        }
     }
 
 }

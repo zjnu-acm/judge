@@ -20,6 +20,7 @@ import cn.edu.zjnu.acm.judge.domain.Problem;
 import java.time.Instant;
 import java.util.List;
 import javax.annotation.Nullable;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -156,30 +157,33 @@ public interface ProblemMapper {
             + "<if test='lang!=null and lang!=\"\"'>"
             + "left join problem_i18n pi on p.problem_id = pi.id and pi.locale=#{lang}"
             + "</if>"
-            + "SET "
+            + "<set>"
             + "<if test='lang==null or lang==\"\"'>"
-            + "p.title=COALESCE(#{p.title},''),"
-            + "p.description=COALESCE(#{p.description},''),"
-            + "p.input=COALESCE(#{p.input},''),"
-            + "p.output=COALESCE(#{p.output},''),"
-            + "p.hint=COALESCE(#{p.hint},''),"
-            + "p.source=COALESCE(#{p.source},''),"
+            + "<if test='p.title!=null'>p.title=#{p.title},</if>"
+            + "<if test='p.description!=null'>p.description=#{p.description},</if>"
+            + "<if test='p.input!=null'>p.input=#{p.input},</if>"
+            + "<if test='p.output!=null'>p.output=#{p.output},</if>"
+            + "<if test='p.hint!=null'>p.hint=#{p.hint},</if>"
+            + "<if test='p.source!=null'>p.source=#{p.source},</if>"
             + "</if>"
             + "<if test='lang!=null and lang!=\"\"'>"
-            + "pi.title=nullif(nullif(#{p.title},''),p.title),"
-            + "pi.description=nullif(nullif(#{p.description},''),p.description),"
-            + "pi.input=nullif(nullif(#{p.input},''),p.input),"
-            + "pi.output=nullif(nullif(#{p.output},''),p.output),"
-            + "pi.hint=nullif(nullif(#{p.hint},''),p.hint),"
-            + "pi.source=nullif(nullif(#{p.source},''),p.source),"
+            + "<if test='p.title!=null'>pi.title=nullif(#{p.title},p.title),</if>"
+            + "<if test='p.description!=null'>pi.description=nullif(#{p.description},p.description),</if>"
+            + "<if test='p.input!=null'>pi.input=nullif(#{p.input},p.input),</if>"
+            + "<if test='p.output!=null'>pi.output=nullif(#{p.output},p.output),</if>"
+            + "<if test='p.hint!=null'>pi.hint=nullif(#{p.hint},p.hint),</if>"
+            + "<if test='p.source!=null'>pi.source=nullif(#{p.source},p.source),</if>"
             + "</if>"
-            + "p.sample_input=COALESCE(#{p.sampleInput},''),"
-            + "p.sample_output=COALESCE(#{p.sampleOutput},''),"
-            + "p.time_limit=COALESCE(#{p.timeLimit},0),"
-            + "p.memory_limit=COALESCE(#{p.memoryLimit},0),"
-            + "p.modified_time=#{p.modifiedTime}"
-            + "WHERE p.problem_id=#{p.id}</script>")
-    long update(@Param("p") Problem build, @Param("lang") String lang);
+            + "<if test='p.sampleInput!=null'>p.sample_input=#{p.sampleInput},</if>"
+            + "<if test='p.sampleOutput!=null'>p.sample_output=#{p.sampleOutput},</if>"
+            + "<if test='p.timeLimit!=null'>p.time_limit=#{p.timeLimit},</if>"
+            + "<if test='p.memoryLimit!=null'>p.memory_limit=#{p.memoryLimit},</if>"
+            + "<if test='p.modifiedTime!=null'>p.modified_time=#{p.modifiedTime},</if>"
+            + "<if test='p.disabled!=null'>p.disabled=#{p.disabled}</if>"
+            + "</set>"
+            + "<where>p.problem_id=#{id}</where>"
+            + "</script>")
+    long updateSelective(@Param("id") long id, @Param("p") Problem build, @Param("lang") String lang);
 
     @Select({"<script>"
         + "select" + LIST_COLUMNS_SOURCE + STATUS
@@ -220,5 +224,11 @@ public interface ProblemMapper {
             @Param("problemId") long problemId,
             @Param("lang") String lang,
             @Param("problem") Problem problem);
+
+    @Delete("delete from `problem` where problem_id=#{id}")
+    long delete(@Param("id") long id);
+
+    @Delete("delete from `problem_i18n` where id=#{id}")
+    long deleteI18n(@Param("id") long id);
 
 }

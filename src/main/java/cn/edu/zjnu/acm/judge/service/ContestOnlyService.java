@@ -20,6 +20,9 @@ import cn.edu.zjnu.acm.judge.exception.MessageException;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import lombok.NonNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -30,17 +33,28 @@ import org.springframework.stereotype.Service;
 @Service
 public class ContestOnlyService {
 
-    private Long contestOnly;
+    private static final String KEY = "value";
+    private Cache cache;
+
+    @Autowired
+    public void setCacheManager(CacheManager cacheManager) {
+        cache = cacheManager.getCache("contest-only");
+    }
 
     public Long getContestOnly() {
-        return contestOnly;
+        return cache.get(KEY, Long.class);
     }
 
     public void setContestOnly(Long contestOnly) {
-        this.contestOnly = contestOnly;
+        if (contestOnly == null) {
+            cache.evict(KEY);
+        } else {
+            cache.put(KEY, contestOnly);
+        }
     }
 
     public void checkSubmit(HttpServletRequest request, Long contest, long problemId) {
+        Long contestOnly = getContestOnly();
         if (contestOnly == null) {
             return;
         }
@@ -53,6 +67,7 @@ public class ContestOnlyService {
     }
 
     public void checkRegister() {
+        Long contestOnly = getContestOnly();
         if (contestOnly == null) {
             return;
         }
@@ -66,6 +81,7 @@ public class ContestOnlyService {
     }
 
     public boolean canViewSource(HttpServletRequest request, Submission submission) {
+        Long contestOnly = getContestOnly();
         if (contestOnly == null) {
             return true;
         }

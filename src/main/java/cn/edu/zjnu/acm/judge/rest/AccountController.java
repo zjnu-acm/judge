@@ -55,8 +55,8 @@ public class AccountController {
 
     @PatchMapping("{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void patch(@PathVariable("userId") String userId, @RequestBody User user) {
-        accountService.patch(userId, user);
+    public void update(@PathVariable("userId") String userId, @RequestBody User user) {
+        accountService.update(userId, user);
     }
 
 }

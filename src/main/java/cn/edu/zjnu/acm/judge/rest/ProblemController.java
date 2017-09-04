@@ -29,9 +29,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -63,13 +63,7 @@ public class ProblemController {
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("id") long id) {
-        problemService.setDisabled(id, true);
-    }
-
-    @PostMapping("{id}/resume")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void resume(@PathVariable("id") long id) {
-        problemService.setDisabled(id, false);
+        problemService.delete(id);
     }
 
     @GetMapping("{id}/dataDir")
@@ -89,11 +83,11 @@ public class ProblemController {
         return problemService.findAll(pageable, locale);
     }
 
-    @PutMapping("{id}")
+    @PatchMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@PathVariable("id") long problemId, @RequestBody Problem p,
             @RequestParam(value = "locale", required = false) String lang) {
-        problemService.update(problemId, p, lang);
+        problemService.updateSelective(problemId, p, lang);
     }
 
 }

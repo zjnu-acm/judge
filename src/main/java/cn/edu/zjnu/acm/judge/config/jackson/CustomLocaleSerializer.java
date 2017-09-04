@@ -16,8 +16,8 @@
 package cn.edu.zjnu.acm.judge.config.jackson;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import java.io.IOException;
 import java.util.Locale;
 import org.springframework.boot.jackson.JsonComponent;
@@ -27,7 +27,13 @@ import org.springframework.boot.jackson.JsonComponent;
  * @author zhanhb
  */
 @JsonComponent
-public class CustomLocaleSerializer extends JsonSerializer<Locale> {
+public class CustomLocaleSerializer extends StdSerializer<Locale> {
+
+    private static final long serialVersionUID = 1L;
+
+    public CustomLocaleSerializer() {
+        super(Locale.class);
+    }
 
     @Override
     public void serialize(Locale value, JsonGenerator gen, SerializerProvider serializers) throws IOException {

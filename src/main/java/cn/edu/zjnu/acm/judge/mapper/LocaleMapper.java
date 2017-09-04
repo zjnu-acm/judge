@@ -37,6 +37,7 @@ public interface LocaleMapper {
     @Insert("insert into locale(id,name,created_time,modified_time)values(#{id},#{name},now(),now())")
     int save(DomainLocale locale);
 
+    @Cacheable("locales")
     @Select("select id,name from locale where id=#{id} and not disabled")
     public DomainLocale findOne(@Param("id") String id);
 
