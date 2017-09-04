@@ -19,7 +19,6 @@ import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import java.io.Serializable;
 import java.util.List;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Value;
@@ -28,15 +27,13 @@ import lombok.Value;
  *
  * @author zhanhb
  */
-@Builder(builderClassName = "Builder")
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 @Getter
 @SuppressWarnings("FinalClass")
 @Value
-public class ContestDto implements Serializable {
+public class ContestDto extends Contest implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private Contest contest;
     private List<Problem> problems;
 
 }

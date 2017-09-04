@@ -22,7 +22,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  *
@@ -32,7 +31,6 @@ import lombok.Setter;
 @Builder(builderClassName = "Builder")
 @Data
 @NoArgsConstructor
-@Setter
 public class DomainLocale implements Serializable {
 
     private static final long serialVersionUID = 1L;

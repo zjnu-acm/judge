@@ -28,6 +28,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -56,22 +57,16 @@ public class ContestController {
         return contestService.save(contest);
     }
 
+    @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable("id") long id) {
+        contestService.delete(id);
+    }
+
     @GetMapping
     public List<Contest> list(ContestForm form) {
         log.info("form: {}", form);
         return contestService.findAll(form);
-    }
-
-    @DeleteMapping("{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable("id") long id) {
-        contestService.disable(id);
-    }
-
-    @PostMapping("{id}/resume")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void resume(@PathVariable("id") long id) {
-        contestService.enable(id);
     }
 
     @GetMapping("{id}")
@@ -89,6 +84,12 @@ public class ContestController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("id") long id, @PathVariable("problemId") long problemId) {
         contestService.removeProblem(id, problemId);
+    }
+
+    @PatchMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void update(@PathVariable("id") long id, @RequestBody Contest contest) {
+        contestService.updateSelective(id, contest);
     }
 
 }

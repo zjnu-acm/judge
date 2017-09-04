@@ -169,26 +169,6 @@ public class ContestMapperTest {
     }
 
     /**
-     * Test of enable method, of class ContestMapper.
-     */
-    @Test
-    public void testEnable() {
-        log.info("enable");
-        long contestId = 0L;
-        instance.enable(contestId);
-    }
-
-    /**
-     * Test of disable method, of class ContestMapper.
-     */
-    @Test
-    public void testDisable() {
-        log.info("disable");
-        long contestId = 0L;
-        instance.disable(contestId);
-    }
-
-    /**
      * Test of getProblemIdInContest method, of class ContestMapper.
      */
     @Test

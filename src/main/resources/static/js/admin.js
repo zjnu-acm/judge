@@ -42,7 +42,9 @@
         });
     });
     app.factory('contestApi', function ($resource, path) {
-        return $resource(path.api + 'contests/:id.json', {id: '@id'});
+        return $resource(path.api + 'contests/:id.json', {id: '@id'}, {
+            update: {method: 'PATCH'}
+        });
     });
     app.factory('localeApi', function ($resource, path) {
         return $resource(path.api + 'locales/:id.json', {id: '@id'});
@@ -390,12 +392,12 @@
         $scope.load = load;
         load();
         $scope.enable = function (contest) {
-            $http.post(path.api + 'contests/' + contest.id + '/resume.json').then(function () {
+            contestApi.update({id: contest.id, disabled: false}, function () {
                 contest.disabled = false;
             });
         };
         $scope.disable = function (contest) {
-            contestApi['delete']({id: contest.id}, function () {
+            contestApi.update({id: contest.id, disabled: true}, function () {
                 contest.disabled = true;
             });
         };
@@ -403,8 +405,9 @@
     app.controller('contest-view', function ($stateParams, $scope, $http, problemApi, path, contestApi, title) {
         function load() {
             contestApi.get($stateParams, function (data) {
-                $.extend($scope, data);// contest, problems
-                data.contest.title && title(data.contest.title);
+                var contest = $scope.contest = data;
+                $scope.problems = data.problems;
+                title(contest.title);
             });
         }
         $scope.fromCharCode = String.fromCharCode;

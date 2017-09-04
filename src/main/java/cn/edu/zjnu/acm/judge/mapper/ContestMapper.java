@@ -160,12 +160,6 @@ public interface ContestMapper {
             @Param("title") String title,
             @Param("num") int num);
 
-    @Update("update contest set disabled=0 where contest_id=#{id}")
-    long enable(@Param("id") long contestId);
-
-    @Update("update contest set disabled=1 where contest_id=#{id}")
-    long disable(@Param("id") long contestId);
-
     @Deprecated
     @Nullable
     @Select("select num-1000 from contest_problem where contest_id=#{cid} and problem_id=#{pid}")
@@ -210,5 +204,26 @@ public interface ContestMapper {
             + "</where>"
             + " order by contest_id desc</script>")
     List<Contest> findAllByQuery(@Param("includeDisabled") boolean includeDisabled, @Param("mask") int mask);
+
+    @Delete("delete from contest_problem where contest_id=#{id}")
+    long deleteContestProblems(long id);
+
+    @Delete("delete from contest where contest_id=#{id}")
+    long deleteByPrimaryKey(@Param("id") long id);
+
+    @Update("<script>update contest"
+            + "<set>"
+            + "<if test='c.title!=null'>title=#{c.title},</if>"
+            + "<if test='c.description!=null'>description=#{c.description},</if>"
+            + "<if test='c.startTime!=null'>start_time=#{c.startTime},</if>"
+            + "<if test='c.endTime!=null'>end_time=#{c.endTime},</if>"
+            + "<if test='c.disabled!=null'>disabled=#{c.disabled},</if>"
+            + "<if test='c.description!=null'>description=#{c.description},</if>"
+            + "<if test='c.createdTime!=null'>created_time=#{c.createdTime},</if>"
+            + "<if test='c.modifiedTime!=null'>modified_time=#{c.modifiedTime}</if>"
+            + "</set>"
+            + "<where>contest_id=#{id}</where>"
+            + "</script>")
+    long updateSelective(@Param("id") long id, @Param("c") Contest contest);
 
 }

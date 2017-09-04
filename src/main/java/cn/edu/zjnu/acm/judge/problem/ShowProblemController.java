@@ -38,7 +38,7 @@ public class ShowProblemController {
             Long contestId = problem.getContest();
             if (contestId != null) {
                 Contest contest = contestMapper.findOne(contestId);
-                if (contest != null && !contest.isDisabled()) {
+                if (contest != null && !(contest.getDisabled() != null && contest.getDisabled())) {
                     boolean started = contest.isStarted();
                     if (!contest.isEnded()) {
                         if (started) {

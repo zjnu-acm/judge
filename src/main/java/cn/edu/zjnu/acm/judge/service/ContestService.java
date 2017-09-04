@@ -25,12 +25,15 @@ import cn.edu.zjnu.acm.judge.exception.BusinessCode;
 import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
+import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.util.SpecialCall;
+import java.time.Instant;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,11 +52,14 @@ public class ContestService {
     @Autowired
     private ProblemMapper problemMapper;
     @Autowired
+    private SubmissionMapper submissionMapper;
+    @Autowired
     private LocaleService localeService;
 
     @SpecialCall("contests/problems.html")
     public String getStatus(Contest contest) {
-        if (contest.isDisabled()) {
+        Boolean disabled = contest.getDisabled();
+        if (disabled != null && disabled) {
             return "Disabled";
         } else if (contest.isError()) {
             return "Error";
@@ -160,14 +166,6 @@ public class ContestService {
         return contestMapper.findOne(id);
     }
 
-    public void disable(long id) {
-        contestMapper.disable(id);
-    }
-
-    public void enable(long id) {
-        contestMapper.enable(id);
-    }
-
     public Contest save(Contest contest) {
         contestMapper.save(contest);
         return contest;
@@ -176,7 +174,9 @@ public class ContestService {
     public ContestDto getContestAndProblems(long contestId, String userId, Locale locale) {
         Contest contest = getContest(contestId);
         List<Problem> problems = contestMapper.getProblems(contestId, userId, localeService.resolve(locale));
-        return ContestDto.builder().contest(contest).problems(problems).build();
+        ContestDto contestDto = new ContestDto(problems);
+        BeanUtils.copyProperties(contest, contestDto, Contest.class);
+        return contestDto;
     }
 
     private Contest getContest(long contestId) {
@@ -185,6 +185,25 @@ public class ContestService {
             throw new BusinessException(BusinessCode.NOT_FOUND);
         }
         return contest;
+    }
+
+    @Transactional
+    public void delete(long id) {
+        long result = submissionMapper.clearByContestId(id)
+                + problemMapper.clearByContestId(id)
+                + contestMapper.deleteContestProblems(id)
+                + contestMapper.deleteByPrimaryKey(id);
+        if (result == 0) {
+            throw new BusinessException(BusinessCode.NOT_FOUND);
+        }
+    }
+
+    public void updateSelective(long id, Contest contest) {
+        contest.setModifiedTime(Instant.now());
+        long result = contestMapper.updateSelective(id, contest);
+        if (result == 0) {
+            throw new BusinessException(BusinessCode.NOT_FOUND);
+        }
     }
 
 }

@@ -101,4 +101,7 @@ public interface SubmissionMapper {
     @SelectProvider(type = BestSubmissionsBuilder.class, method = "bestSubmissions")
     List<Submission> bestSubmission(@Param("problemId") long problemId, @Param("pageable") Pageable pageable);
 
+    @Update("update solution set contest_id=null where contest_id=#{id}")
+    long clearByContestId(@Param("id") long id);
+
 }

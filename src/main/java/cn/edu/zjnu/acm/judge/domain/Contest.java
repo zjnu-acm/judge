@@ -23,7 +23,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  *
@@ -33,17 +32,16 @@ import lombok.Setter;
 @Builder(builderClassName = "Builder")
 @Data
 @NoArgsConstructor
-@Setter
 public class Contest implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private long id;
+    private Long id;
     private String title;
     private String description;
     private Instant startTime;
     private Instant endTime;
-    private boolean disabled;
+    private Boolean disabled;
     private Instant createdTime;
     private Instant modifiedTime;
 

@@ -231,4 +231,7 @@ public interface ProblemMapper {
     @Delete("delete from `problem_i18n` where id=#{id}")
     long deleteI18n(@Param("id") long id);
 
+    @Update("update problem set contest_id=null where contest_id=#{id}")
+    long clearByContestId(long id);
+
 }
