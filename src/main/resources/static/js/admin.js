@@ -236,6 +236,21 @@
             second: 'ss'
         });
     });
+    app.run(function (ckeditor, path) {
+        ckeditor.options = {
+            toolbar: [
+                ['Source'],
+                ['TextColor', '-', 'Bold', 'Italic', 'Underline', '-', 'Subscript', 'Superscript', 'RemoveFormat'],
+                ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord'],
+                ['Link', 'Unlink', 'Image', 'Table'],
+                '/',
+                ['Find', 'Replace', '-', 'SelectAll'],
+                ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+                ['Font', 'FontSize', 'Maximize']
+            ]
+        };
+        ckeditor.ckfinder = path.base + "webjars/ckfinder/2.6.2.1/";
+    });
     app.controller('index', function ($scope, contestApi, miscApi) {
         $scope.form = miscApi.getSystemInfo();
         $scope.setSystemInfo = function () {

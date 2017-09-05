@@ -160,16 +160,16 @@
             <p align="left">
                 <label th:for="${#ids.next('description')}">Description:</label>
                 <br/>
-                <textarea th:id="${#ids.seq('description')}" class="editable" th:ckfinder="@{/webjars/ckfinder/2.6.2.1/}" rows="13" name="description"  style="width: 100%;" ng-model="problem.description"></textarea>
+                <textarea th:id="${#ids.seq('description')}" class="editable" rows="13" name="description"  style="width: 100%;" ng-model="problem.description"></textarea>
             </p>
             <p align="left">
                 <label th:for="${#ids.next('input')}">Input:</label>
                 <br/>
-                <textarea th:id="${#ids.seq('input')}" class="editable" th:ckfinder="@{/webjars/ckfinder/2.6.2.1/}" rows="13" name="input" style="width: 100%;" ng-model="problem.input"></textarea></p>
+                <textarea th:id="${#ids.seq('input')}" class="editable" rows="13" name="input" style="width: 100%;" ng-model="problem.input"></textarea></p>
             <p align="left">
                 <label th:for="${#ids.next('output')}">Output:</label>
                 <br/>
-                <textarea th:id="${#ids.seq('output')}" class="editable" th:ckfinder="@{/webjars/ckfinder/2.6.2.1/}" rows="13" name="output"  style="width: 100%;" ng-model="problem.output"></textarea>
+                <textarea th:id="${#ids.seq('output')}" class="editable" rows="13" name="output"  style="width: 100%;" ng-model="problem.output"></textarea>
             </p>
             <p align="left">
                 <label th:for="${#ids.next('sampleInput')}">Sample Input:</label>
@@ -184,12 +184,12 @@
             <p align="left">
                 <label th:for="${#ids.next('hint')}">Hint:</label>
                 <br/>
-                <textarea th:id="${#ids.seq('hint')}" class="editable" th:ckfinder="@{/webjars/ckfinder/2.6.2.1/}" rows="13" name="hint"  style="width: 100%;" ng-model="problem.hint"></textarea>
+                <textarea th:id="${#ids.seq('hint')}" class="editable" rows="13" name="hint"  style="width: 100%;" ng-model="problem.hint"></textarea>
             </p>
             <p align="left">
                 <label th:for="${#ids.next('source')}">Source:</label>
                 <br/>
-                <textarea th:id="${#ids.seq('source')}" class="editable" th:ckfinder="@{/webjars/ckfinder/2.6.2.1/}" name="source" rows="1" style="width: 80%" ng-model="problem.source"></textarea>
+                <textarea th:id="${#ids.seq('source')}" class="editable" name="source" rows="1" style="width: 80%" ng-model="problem.source"></textarea>
             </p>
             <!--/* TODO contest field in problem */-->
             <p align="left" ng-hide="problem.id">

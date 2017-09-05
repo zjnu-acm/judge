@@ -23,7 +23,7 @@
         CKEDITOR.on('loaded', checkLoaded);
         $timeout(checkLoaded, 100);
     }
-    function bind($timeout, $q) {
+    function bind($timeout, $q, ckeditor) {
         var CKFinder = window.CKFinder;
         var instance;
         return {
@@ -39,18 +39,7 @@
 
                 function onLoad() {
                     instance && instance.destroy();
-                    var options = {
-                        toolbar: [
-                            ['Source'],
-                            ['TextColor', '-', 'Bold', 'Italic', 'Underline', '-', 'Subscript', 'Superscript', 'RemoveFormat'],
-                            ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord'],
-                            ['Link', 'Unlink', 'Image', 'Table'],
-                            '/',
-                            ['Find', 'Replace', '-', 'SelectAll'],
-                            ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
-                            ['Font', 'FontSize', 'Maximize']
-                        ]
-                    };
+                    var options = angular.extend({}, ckeditor.options, attrs.ckeditor);
                     instance = isTextarea ? CKEDITOR.replace(element[0], options) : CKEDITOR.inline(element[0], options);
                     var configLoaderDef = $q.defer();
                     var setModelData = function (setPristine) {
@@ -94,7 +83,8 @@
                             onUpdateModelData();
                         }
                     };
-                    attrs.ckfinder && CKFinder.setupCKEditor(instance, attrs.ckfinder);
+                    var ckfinder = typeof attrs.ckfinder === 'undefined' ? ckeditor.ckfinder : attrs.ckfinder;
+                    ckfinder && CKFinder.setupCKEditor(instance, ckfinder);
                 }
 
                 element.on('focus', function () {
@@ -113,5 +103,10 @@
         };
     }
     var $defer, loaded = false;
-    return angular.module('ngCkeditor', []).run(['$q', '$timeout', run]).directive('editable', ['$timeout', '$q', bind]);
+    return angular.module('ngCkeditor', []).run(['$q', '$timeout', run]).directive('editable', ['$timeout', '$q', 'ckeditor', bind]).provider("ckeditor", function () {
+        this.options = {};
+        this.$get = function () {
+            return this;
+        };
+    });
 }));
