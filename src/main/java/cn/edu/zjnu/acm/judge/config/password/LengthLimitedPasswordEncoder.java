@@ -13,30 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.security.password;
+package cn.edu.zjnu.acm.judge.config.password;
 
-import java.util.StringTokenizer;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  *
  * @author zhanhb
  */
-public class MultiPasswordSupport extends PasswordEncoderWrapper {
+public class LengthLimitedPasswordEncoder extends PasswordEncoderWrapper {
 
-    public MultiPasswordSupport(PasswordEncoder encoder) {
-        super(encoder);
+    private final int length;
+
+    public LengthLimitedPasswordEncoder(PasswordEncoder parent, int length) {
+        super(parent);
+        this.length = length;
+    }
+
+    @Override
+    public String encode(CharSequence rawPassword) {
+        return super.encode(limit(rawPassword));
     }
 
     @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
-        for (StringTokenizer tokenizer = new StringTokenizer(encodedPassword, ",");
-                tokenizer.hasMoreElements();) {
-            if (super.matches(rawPassword, tokenizer.nextToken())) {
-                return true;
-            }
-        }
-        return false;
+        return super.matches(limit(rawPassword), encodedPassword);
+    }
+
+    private CharSequence limit(CharSequence originPassword) {
+        return originPassword.length() <= length
+                ? originPassword
+                : originPassword.subSequence(0, length);
     }
 
 }

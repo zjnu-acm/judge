@@ -18,4 +18,4 @@
  *
  * @see cn.edu.zjnu.acm.judge.config.PasswordConfiguration#passwordEncoder()
  */
-package cn.edu.zjnu.acm.judge.security.password;
+package cn.edu.zjnu.acm.judge.config.password;

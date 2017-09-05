@@ -15,11 +15,11 @@
  */
 package cn.edu.zjnu.acm.judge.config;
 
-import cn.edu.zjnu.acm.judge.security.password.AcceptNullPasswordEncoder;
-import cn.edu.zjnu.acm.judge.security.password.CombinePasswordEncoder;
-import cn.edu.zjnu.acm.judge.security.password.LengthLimitedPasswordEncoder;
-import cn.edu.zjnu.acm.judge.security.password.MessageDigestPasswordEncoder;
-import cn.edu.zjnu.acm.judge.security.password.MultiPasswordSupport;
+import cn.edu.zjnu.acm.judge.config.password.AcceptNullPasswordEncoder;
+import cn.edu.zjnu.acm.judge.config.password.CombinePasswordEncoder;
+import cn.edu.zjnu.acm.judge.config.password.LengthLimitedPasswordEncoder;
+import cn.edu.zjnu.acm.judge.config.password.MessageDigestPasswordEncoder;
+import cn.edu.zjnu.acm.judge.config.password.MultiPasswordSupport;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
