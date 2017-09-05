@@ -15,7 +15,6 @@
  */
 package cn.edu.zjnu.acm.judge.controller.api;
 
-import cn.edu.zjnu.acm.judge.data.dto.ContestDto;
 import cn.edu.zjnu.acm.judge.data.form.ContestAddProblemForm;
 import cn.edu.zjnu.acm.judge.data.form.ContestForm;
 import cn.edu.zjnu.acm.judge.domain.Contest;
@@ -70,7 +69,7 @@ public class ContestController {
     }
 
     @GetMapping("{id}")
-    public ContestDto findOne(@PathVariable("id") long contestId, Locale locale) {
+    public Contest findOne(@PathVariable("id") long contestId, Locale locale) {
         return contestService.getContestAndProblems(contestId, null, locale);
     }
 

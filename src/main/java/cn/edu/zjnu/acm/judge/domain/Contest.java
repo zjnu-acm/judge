@@ -18,6 +18,7 @@ package cn.edu.zjnu.acm.judge.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,6 +45,7 @@ public class Contest implements Serializable {
     private Boolean disabled;
     private Instant createdTime;
     private Instant modifiedTime;
+    private List<Problem> problems;
 
     @JsonIgnore
     public boolean isStarted() {

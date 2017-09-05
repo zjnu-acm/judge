@@ -15,7 +15,6 @@
  */
 package cn.edu.zjnu.acm.judge.service;
 
-import cn.edu.zjnu.acm.judge.data.dto.ContestDto;
 import cn.edu.zjnu.acm.judge.data.form.ContestAddProblemForm;
 import cn.edu.zjnu.acm.judge.data.form.ContestForm;
 import cn.edu.zjnu.acm.judge.data.form.ContestStatus;
@@ -36,7 +35,6 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -174,12 +172,11 @@ public class ContestService {
         return contest;
     }
 
-    public ContestDto getContestAndProblems(long contestId, String userId, Locale locale) {
+    public Contest getContestAndProblems(long contestId, String userId, Locale locale) {
         Contest contest = getContest(contestId);
         List<Problem> problems = contestMapper.getProblems(contestId, userId, localeService.resolve(locale));
-        ContestDto contestDto = new ContestDto(problems);
-        BeanUtils.copyProperties(contest, contestDto, Contest.class);
-        return contestDto;
+        contest.setProblems(problems);
+        return contest;
     }
 
     private Contest getContest(long contestId) {
