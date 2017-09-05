@@ -15,6 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.mapper;
 
+import cn.edu.zjnu.acm.judge.config.Constants;
 import cn.edu.zjnu.acm.judge.domain.Language;
 import java.util.List;
 import org.apache.ibatis.annotations.Delete;
@@ -32,11 +33,11 @@ import org.springframework.cache.annotation.Cacheable;
 @Mapper
 public interface LanguageMapper {
 
-    @CacheEvict(value = "languages", allEntries = true)
+    @CacheEvict(value = Constants.Cache.LANGUAGE, allEntries = true)
     @Insert("insert into language(id,name,source_extension,compile_command,execute_command,executable_extension,time_factor,ext_memory,description) values(#{id},#{name},#{sourceExtension},#{compileCommand},#{executeCommand},#{executableExtension},#{timeFactor},#{extMemory},#{description})")
     long save(Language language);
 
-    @CacheEvict(value = "languages", allEntries = true)
+    @CacheEvict(value = Constants.Cache.LANGUAGE, allEntries = true)
     @Delete("<script>delete from language"
             + "<where>"
             + "<if test='id!=null'> and id=#{id}</if><if test='id==null'> and id is null</if>"
@@ -52,19 +53,19 @@ public interface LanguageMapper {
             + "</script>")
     long delete(Language language);
 
-    @CacheEvict(value = "languages", allEntries = true)
+    @CacheEvict(value = Constants.Cache.LANGUAGE, allEntries = true)
     @Delete("update language set disabled=1 where id=#{param1}")
     long deleteById(long id);
 
-    @Cacheable("languages")
+    @Cacheable(Constants.Cache.LANGUAGE)
     @Select("select id id,name name,source_extension sourceExtension,compile_command compileCommand,execute_command executeCommand,executable_extension executableExtension,time_factor timeFactor,ext_memory extMemory,description description from language where not disabled")
     List<Language> findAll();
 
-    @Cacheable("languages")
+    @Cacheable(Constants.Cache.LANGUAGE)
     @Select("select id id,name name,source_extension sourceExtension,compile_command compileCommand,execute_command executeCommand,executable_extension executableExtension,time_factor timeFactor,ext_memory extMemory,description description from language where id=#{param1}")
     Language findOne(long id);
 
-    @CacheEvict(value = "languages", allEntries = true)
+    @CacheEvict(value = Constants.Cache.LANGUAGE, allEntries = true)
     @Update("<script>update language "
             + "<set>"
             + "<if test='param2.id!=null'>id=#{param2.id},</if>"

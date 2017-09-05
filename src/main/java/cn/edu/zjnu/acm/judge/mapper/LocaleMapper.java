@@ -15,12 +15,14 @@
  */
 package cn.edu.zjnu.acm.judge.mapper;
 
+import cn.edu.zjnu.acm.judge.config.Constants;
 import cn.edu.zjnu.acm.judge.domain.DomainLocale;
 import java.util.List;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 
 /**
@@ -30,14 +32,15 @@ import org.springframework.cache.annotation.Cacheable;
 @Mapper
 public interface LocaleMapper {
 
-    @Cacheable("locales")
+    @Cacheable(Constants.Cache.LOCALE)
     @Select("select id,name from locale where not disabled")
     List<DomainLocale> findAll();
 
+    @CacheEvict(value = Constants.Cache.LOCALE, allEntries = true)
     @Insert("insert into locale(id,name,created_time,modified_time)values(#{id},#{name},now(),now())")
     int save(DomainLocale locale);
 
-    @Cacheable("locales")
+    @Cacheable(Constants.Cache.LOCALE)
     @Select("select id,name from locale where id=#{id} and not disabled")
     public DomainLocale findOne(@Param("id") String id);
 
