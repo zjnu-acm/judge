@@ -16,95 +16,56 @@
 package cn.edu.zjnu.acm.judge.config;
 
 import cn.edu.zjnu.acm.judge.data.form.SystemInfoForm;
+import cn.edu.zjnu.acm.judge.service.SystemService;
 import cn.edu.zjnu.acm.judge.util.SpecialCall;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Locale;
-import java.util.ResourceBundle;
-import javax.annotation.PostConstruct;
-import javax.servlet.ServletContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.util.StringUtils;
 
 @Service
 @Slf4j
+@SpecialCall("fragment/notice.html")
 public class JudgeConfiguration {
 
     public static final String VALIDATE_FILE_NAME = "compare.exe";
 
-    private static final String SERVER_CONFIG_PROPERTIES = "serverConfig";
-    private static final String WEB_PROPERTIES = "web";
-    private static final ResourceBundle BUNDLE = ResourceBundle.getBundle(SERVER_CONFIG_PROPERTIES, Locale.US);
-
-    private Path uploadDirectory;
-
-    private Path dataFilesPath;
-    private volatile SystemInfoForm systemInfo;
-    private String contextPath;
-    private Path workingPath;
-    private boolean deleteTempFile;
-
     @Autowired
-    private ServletContext servletContext;
+    private SystemService systemService;
+    private volatile SystemInfoForm systemInfo;
 
     public Path getUploadDirectory() {
-        return uploadDirectory;
-    }
-
-    private String getValue(String key) {
-        String property = BUNDLE.getString(key);
-        String ctx = getContextPath();
-        if (property != null && ctx != null) {
-            property = property.replace("%CONTEXT_PATH%", ctx);
-        }
-        log.info("{}={}", key, property);
-        return property;
+        return Paths.get(systemService.getUploadPath());
     }
 
     public boolean isDeleteTempFile() {
-        return deleteTempFile;
+        return Boolean.parseBoolean(systemService.getDeleteTempFile());
+    }
+
+    private Path getDataFilesPath() {
+        return Paths.get(systemService.getDataFilesPath());
     }
 
     public Path getDataDirectory(long problemId) {
-        return dataFilesPath.resolve(String.valueOf(problemId));
+        return getDataFilesPath().resolve(String.valueOf(problemId));
+    }
+
+    private Path getWorkingPath() {
+        return Paths.get(systemService.getWorkingPath());
     }
 
     public Path getWorkDirectory(long submissionId) {
-        return workingPath.resolve(String.valueOf(submissionId));
+        return getWorkingPath().resolve(String.valueOf(submissionId));
     }
 
-    public String getContextPath() {
-        return contextPath;
-    }
-
-    private String fixContextPath(String contextPath) {
-        return StringUtils.isEmpty(contextPath) || contextPath.equals("/") ? "ROOT"
-                : contextPath.replace("/", "");
-    }
-
-    @SpecialCall("notice.html")
+    @SpecialCall("fragment/notice.html")
     public SystemInfoForm getSystemInfo() {
         return systemInfo;
     }
 
     public void setSystemInfo(SystemInfoForm systemInfoForm) {
         systemInfo = systemInfoForm;
-    }
-
-    @PostConstruct
-    public void init() {
-        {
-            ResourceBundle bundle = ResourceBundle.getBundle(WEB_PROPERTIES, Locale.US);
-            bundle.keySet().forEach(key -> servletContext.setAttribute(key, bundle.getObject(key)));
-        }
-
-        contextPath = fixContextPath(servletContext.getContextPath());
-        dataFilesPath = Paths.get(getValue("DataFilesPath"));
-        workingPath = Paths.get(getValue("WorkingPath"));
-        uploadDirectory = Paths.get(getValue("UploadPath"));
-        deleteTempFile = Boolean.parseBoolean(getValue("DeleteTempFile"));
     }
 
 }

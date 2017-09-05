@@ -32,7 +32,7 @@
             <br/>
             <hr/>
             <p class="text-center">
-                <font size="3">All Copyright Reserved 2006-[[${T(java.time.Year).now()}]]<br/>Any problem, Please Contact <a th:remove="${#strings.isEmpty(application['admin.mail'])?'tag':_}" th:href="|mailto:${application.get('admin.mail')}|">Administrator</a>
+                <font size="3">All Copyright Reserved 2006-[[${T(java.time.Year).now()}]]<br/>Any problem, Please Contact <a th:with="mail=${@systemService.adminMail}" th:remove="${#strings.isEmpty(mail)?'tag':_}" th:href="|mailto:${mail}|">Administrator</a>
                 </font>
             </p>
         </div>

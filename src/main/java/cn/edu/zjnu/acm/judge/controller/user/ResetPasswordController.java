@@ -15,9 +15,9 @@
  */
 package cn.edu.zjnu.acm.judge.controller.user;
 
-import cn.edu.zjnu.acm.judge.config.JudgeConfiguration;
 import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
+import cn.edu.zjnu.acm.judge.service.SystemService;
 import cn.edu.zjnu.acm.judge.util.Utility;
 import cn.edu.zjnu.acm.judge.util.ValueCheck;
 import java.io.IOException;
@@ -60,7 +60,7 @@ public class ResetPasswordController {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
-    private JudgeConfiguration judgeConfiguration;
+    private SystemService systemService;
 
     @GetMapping(value = "/resetPassword", produces = TEXT_HTML_VALUE)
     public String doGet(HttpServletRequest request) {
@@ -109,12 +109,12 @@ public class ResetPasswordController {
             user = user.toBuilder().vcode(vc).expireTime(Instant.now().plus(1, ChronoUnit.HOURS)).build();
             userMapper.update(user);
             String url = getPath(request, "/resetPassword.html?vc=", vc + "&u=", user.getId());
+            String title = systemService.getResetPasswordTitle();
             HashMap<String, Object> map = new HashMap<>(2);
             map.put("url", url);
-            map.put("ojName", judgeConfiguration.getContextPath() + " OJ");
+            map.put("title", title);
 
             String content = templateEngine.process("users/password", new Context(locale, map));
-            String title = templateEngine.process("users/passwordTitle", new Context(locale, map));
 
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 

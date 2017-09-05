@@ -74,7 +74,7 @@
                     </font>
                 </p>
                 <hr/>
-                <p align="center" style="font-size: medium;">All Copyright Reserved 2006-[[${T(java.time.Year).now()}]] ZJNU ACM<br/>Any problem, Please Contact <a th:remove="${#strings.isEmpty(application['admin.mail'])?'tag':_}" th:href="|mailto:${application['admin.mail']}|">Administrator</a></p>
+                <p align="center" style="font-size: medium;">All Copyright Reserved 2006-[[${T(java.time.Year).now()}]] ZJNU ACM<br/>Any problem, Please Contact <a th:with="mail=${@systemService.adminMail}" th:remove="${#strings.isEmpty(mail)?'tag':_}" th:href="|mailto:${mail}|">Administrator</a></p>
             </div>
             <!-- end footer -->
         </div>

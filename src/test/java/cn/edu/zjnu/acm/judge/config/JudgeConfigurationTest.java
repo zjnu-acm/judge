@@ -66,13 +66,4 @@ public class JudgeConfigurationTest {
         judgeConfiguration.getUploadDirectory();
     }
 
-    /**
-     * Test of getContextPath method, of class JudgeConfiguration.
-     */
-    @Test
-    public void testGetContextPath() {
-        log.info("getContextPath");
-        judgeConfiguration.getContextPath();
-    }
-
 }

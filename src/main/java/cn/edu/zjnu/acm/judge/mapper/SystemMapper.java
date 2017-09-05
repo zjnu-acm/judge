@@ -13,33 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.config;
+package cn.edu.zjnu.acm.judge.mapper;
+
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 /**
  *
  * @author zhanhb
  */
-@SuppressWarnings("PublicInnerClass")
-public interface Constants {
+@Mapper
+public interface SystemMapper {
 
-    interface Cache {
-
-        String LANGUAGE = "languages";
-        String LOCALE = "locales";
-        String MAIL = "mails";
-        String SYSTEM = "system";
-
-    }
-
-    interface SystemKey {
-
-        String ADMIN_MAIL = "admin_mail";
-        String DATA_FILES_PATH = "data_files_path";
-        String DELETE_TEMP_FILE = "delete_temp_file";
-        String RESETPASSWORD_TITLE = "resetpassword_title";
-        String UPLOAD_PATH = "upload_path";
-        String WORKING_PATH = "working_path";
-
-    }
+    @Select("select value from `system` where name=#{name}")
+    String getValueByName(@Param("name") String name);
 
 }
