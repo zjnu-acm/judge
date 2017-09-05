@@ -129,14 +129,12 @@ public class Judger {
         if (problem == null) {
             return;
         }
-        Path dataPath = judgeConfiguration.getDataDirectory(problem.getId());
         RunRecord runRecord = RunRecord.builder()
                 .submissionId(submission.getId())
                 .language(languageService.getAvailableLanguage(submission.getLanguage()))
                 .problemId(submission.getProblem())
                 .userId(submission.getUser())
                 .source(submissionMapper.findSourceById(submissionId))
-                .dataPath(dataPath)
                 .memoryLimit(problem.getMemoryLimit())
                 .timeLimit(problem.getTimeLimit())
                 .build();
@@ -144,12 +142,12 @@ public class Judger {
     }
 
     private boolean runProcess(RunRecord runRecord) throws IOException {
-        Path dataPath = runRecord.getDataPath();
+        Path dataPath = judgeConfiguration.getDataDirectory(runRecord.getProblemId());
         Objects.requireNonNull(dataPath, "dataPath");
         Path specialFile = dataPath.resolve(JudgeConfiguration.VALIDATE_FILE_NAME);
         boolean isSpecial = Files.exists(specialFile);
         if (!Files.isDirectory(dataPath)) {
-            log.error("{} not exists", runRecord.getDataPath());
+            log.error("{} not exists", dataPath);
             return false;
         }
         List<Path[]> files = new ArrayList<>(20);
@@ -251,7 +249,7 @@ public class Judger {
         if (StringUtils.isEmptyOrWhitespace(source)) {
             return false;
         }
-        Path work = runRecord.getWorkDirectory();
+        Path work = judgeConfiguration.getWorkDirectory(runRecord.getSubmissionId());
         final String main = "Main";
         Files.createDirectories(work);
         Path sourceFile = work.resolve(main + "." + runRecord.getLanguage().getSourceExtension()); //源码码文件
@@ -308,13 +306,11 @@ public class Judger {
     }
 
     private void judgeInternal(RunRecord runRecord) {
-        Path workDirectory = judgeConfiguration.getWorkDirectory(runRecord.getSubmissionId());
-        runRecord.setWorkDirectory(workDirectory);
         try {
             if (compile(runRecord)) {
                 runProcess(runRecord);
             }
-            judgeServerService.delete(workDirectory);
+            judgeServerService.delete(judgeConfiguration.getWorkDirectory(runRecord.getSubmissionId()));
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);
         }

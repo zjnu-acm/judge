@@ -2,7 +2,6 @@ package cn.edu.zjnu.acm.judge.data.dto;
 
 import cn.edu.zjnu.acm.judge.domain.Language;
 import java.io.Serializable;
-import java.nio.file.Path;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
@@ -21,9 +20,6 @@ public class RunRecord implements Serializable {
     private long timeLimit;
     private long memoryLimit;
     private String source;
-    private Path dataPath;
     private String userId;
-    @Setter(AccessLevel.PUBLIC)
-    private Path workDirectory;
 
 }

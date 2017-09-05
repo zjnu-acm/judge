@@ -1,6 +1,5 @@
 package cn.edu.zjnu.acm.judge.controller.submission;
 
-import cn.edu.zjnu.acm.judge.config.JudgeConfiguration;
 import cn.edu.zjnu.acm.judge.core.Judger;
 import cn.edu.zjnu.acm.judge.data.dto.RunRecord;
 import cn.edu.zjnu.acm.judge.data.dto.UserModel;
@@ -18,7 +17,6 @@ import cn.edu.zjnu.acm.judge.service.ContestOnlyService;
 import cn.edu.zjnu.acm.judge.service.LanguageService;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import cn.edu.zjnu.acm.judge.util.ResultType;
-import java.nio.file.Path;
 import java.time.Instant;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +40,6 @@ public class SubmitController {
     private ContestMapper contestMapper;
     @Autowired
     private UserPreferenceMapper userPerferenceMapper;
-    @Autowired
-    private JudgeConfiguration judgeConfiguration;
     @Autowired
     private LanguageService languageService;
     @Autowired
@@ -85,7 +81,6 @@ public class SubmitController {
         if (problem == null) {
             throw new MessageException("No such problem", HttpStatus.NOT_FOUND);
         }
-        Path dataPath = judgeConfiguration.getDataDirectory(problemId);
 
         Long contestId = problem.getContest();
         long memoryLimit = problem.getMemoryLimit();
@@ -102,7 +97,7 @@ public class SubmitController {
                 throw new MessageException("No such problem", HttpStatus.NOT_FOUND);
             }
 
-            // set problem id to null if the contest is ended.
+            // set contest id of the problem to null if the contest is ended.
             if (contest.isEnded()) {
                 problemMapper.setContest(problemId, null);
                 contestId = null;
@@ -129,7 +124,6 @@ public class SubmitController {
                 .memoryLimit(memoryLimit)
                 .timeLimit(timeLimit)
                 .language(language)
-                .dataPath(dataPath)
                 .source(source)
                 .userId(userId)
                 .build();
