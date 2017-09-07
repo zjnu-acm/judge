@@ -41,9 +41,7 @@ public class SourceVisitor {
         StringWriter sw = new StringWriter();
         PrintWriter out = new PrintWriter(sw);
         Files.walk(Paths.get("src/main"))
-                .filter(path -> !path.getParent().toString().contains("ckfinder"))
-                .filter(path -> path.getFileName().toString().endsWith(".html")
-                || path.getFileName().toString().endsWith(".jsp"))
+                .filter(path -> path.getFileName().toString().endsWith(".html") || path.getFileName().toString().matches(".*\\.jspx?"))
                 .forEach(path -> {
                     try {
                         String string = new String(Files.readAllBytes(path), StandardCharsets.ISO_8859_1);

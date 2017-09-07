@@ -33,8 +33,10 @@ public class SystemService {
 
     @Autowired
     private SystemMapper systemMapper;
-    @Autowired
-    private FlywayMigrationInitializer flywayMigrationInitializer; // ensure flyway initialize before this service
+
+    @Autowired // ensure flyway initialize before this service
+    public void setFlywayMigrationInitializer(FlywayMigrationInitializer flywayMigrationInitializer) {
+    }
 
     public String getUploadPath() {
         return systemMapper.getValueByName(Constants.SystemKey.UPLOAD_PATH);

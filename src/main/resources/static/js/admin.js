@@ -66,11 +66,16 @@
             }
         };
     });
-    app.directive('currentTime', function ($http, $filter, path) {
+    app.factory('serverTime', function ($http, path) {
         var timeDiff = 0;
         $http.get(path.api + 'system/time.json').then(function (resp) {
-            timeDiff = new Date() - resp.data * 1000;
+            timeDiff = new Date - resp.data * 1000;
         });
+        return function () {
+            return new Date - timeDiff;
+        };
+    });
+    app.directive('currentTime', function (serverTime, $filter) {
         return {
             restrict: 'A',
             scope: {
@@ -79,8 +84,7 @@
             },
             link: function (scope, element) {
                 function apply() {
-                    var date = new Date() - timeDiff;
-                    element[isInput ? 'val' : 'text']($filter('date')(date, format));
+                    element[isInput ? 'val' : 'text']($filter('date')(serverTime(), format));
                 }
                 var isInput = element.is(':input'), format = scope.format;
                 var stopTime = setInterval(apply, +scope.interval || 200);
@@ -252,9 +256,9 @@
         ckeditor.ckfinder = path.base + "webjars/ckfinder/2.6.2.1/";
     });
     app.controller('index', function ($scope, contestApi, miscApi) {
-        $scope.form = miscApi.getSystemInfo();
+        $scope.systemInfo = miscApi.getSystemInfo();
         $scope.setSystemInfo = function () {
-            miscApi.setSystemInfo($scope.form, function () {
+            miscApi.setSystemInfo($scope.systemInfo, function () {
                 alert('设置完成');
             });
         };
@@ -327,7 +331,7 @@
     app.controller('problem-view-locale', function ($scope, $stateParams, problemApi, title, localeApi, reload) {
         problemApi.get($stateParams, function (problem) {
             $scope.problem = problem;
-            problem.title && title(problem.title);
+            title(problem.title);
             $scope.disable = function () {
                 problemApi.update({id: problem.id, disabled: true}, function () {
                     problem.disabled = true;
@@ -491,7 +495,7 @@
 
     app.controller('contest-add', function ($scope, $state, contestApi) {
         initContestEdit($scope, function (form) {
-            var now = new Date();
+            var now = new Date;
             now.setDate(now.getDate() + 1);
             now.setHours(12);
             now.setMinutes(0);
@@ -501,7 +505,7 @@
             $.extend(form, {
                 start: new Date(now),
                 length: '5:00:00',
-                min: new Date(),
+                min: new Date,
                 title: '',
                 description: ''
             });
@@ -518,7 +522,7 @@
             title($interpolate(tt)(currentState));
         });
         function getStatus(contest) {
-            var now = +new Date() / 1000;
+            var now = +new Date / 1000;
             var disabled = !!contest.disabled;
             var started = !contest.startTime || contest.startTime < now;
             var ended = !contest.endTime || contest.endTime < now;

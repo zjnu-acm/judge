@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,9 @@ public class ContestStatisticsController {
     private LanguageService languageService;
 
     @GetMapping(value = "/conteststatistics", produces = TEXT_HTML_VALUE)
-    public ResponseEntity<String> contestStatistics(Model model,
+    public ResponseEntity<String> contestStatistics(
+            HttpServletRequest request,
+            Model model,
             @RequestParam("contest_id") long contestId) throws SQLException {
         Instant now = Instant.now();
         Contest contest = contestMapper.findOneByIdAndDisabledFalse(contestId);
@@ -50,7 +53,7 @@ public class ContestStatisticsController {
         }
         String title = contest.getTitle();
         Instant endTime = contest.getEndTime();
-        model.addAttribute("contestId", contestId);
+        request.setAttribute("contestId", contestId);
 
         StringBuilder sb = new StringBuilder("<html><head><title>Contest Statistics</title></head><body><p align=center><font size=5 color=blue>Contest Statistics--");
         sb.append(StringUtils.escapeXml(title));
@@ -92,7 +95,7 @@ public class ContestStatisticsController {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     long problemId = rs.getLong("problem_id");
-                    int num = numMap.getOrDefault(rs, -1);
+                    int num = numMap.getOrDefault(problemId, -1);
                     sb.append("<tr><th><a href=showproblem?problem_id=").append(problemId).append(">").append((char) ('A' + num)).append("</a></th>");
                     for (int i = 0; i < judgeStatus.length; ++i) {
                         long value = rs.getLong(judgeStatus[i]);

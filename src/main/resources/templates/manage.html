@@ -73,8 +73,8 @@
         </p>
         <div class="setsysteminfo" style="color: #339">
             <form ng-submit="setSystemInfo()" role="form">
-                <input type="text" ng-model="form.info"/>
-                <input th:id="${#ids.seq('pureText')}" type="checkbox" name="pureText" ng-model="form.pureText" />
+                <input type="text" ng-model="systemInfo.info"/>
+                <input th:id="${#ids.seq('pureText')}" type="checkbox" name="pureText" ng-model="systemInfo.pureText" />
                 <label th:for="${#ids.prev('pureText')}">纯文本</label>
                 <button type="submit">set</button>
             </form>
@@ -126,7 +126,7 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">结束时间：</label>
                 <div class="col-sm-9">
-                    <input readonly ng-value="form.end|date:'yyyy-MM-dd HH:mm:ss'" class="form-control"/>
+                    <input readonly ng-value="form.end|date:'yyyy-MM-dd HH:mm:ss'" class="form-control" name="endTime" />
                 </div>
             </div>
             <div class="text-center">
@@ -226,7 +226,7 @@
                             <a ui-sref="problem-view-current({id:p.id})" ui-sref-opts="{reload: true}">{{p.title||'无标题'}}</a>
                         </td>
                         <td>
-                            <a ng-show="!!p.contest"
+                            <a ng-show="p.contest"
                                ui-sref="contest-view({id:p.contest})" ui-sref-opts="{reload: true}">{{p.contest}}</a>
                         </td>
                         <td>{{p.disabled?'已禁用':'可用'}}</td>
@@ -313,8 +313,8 @@
                             <span ng-hide="contestStatus(item) === 'ERROR'" ng-style="statusColor(item)">{{contestStatus(item)}}</span>
                         </td>
                         <td>
-                            <a ng-show="item.disabled" href="" ng-click="enable(item)">启用</a>
-                            <a ng-hide="item.disabled" href="" ng-click="disable(item)">禁用</a>
+                            <a class="btn btn-default" ng-show="item.disabled" href="" ng-click="enable(item)">启用</a>
+                            <a class="btn btn-default" ng-hide="item.disabled" href="" ng-click="disable(item)">禁用</a>
                         </td>
                     </tr>
                 </tbody>
@@ -354,7 +354,7 @@
                             </td>
                             <td class="col-sm-3 text-center">
                                 <a class="btn btn-link edit" ui-sref="problem-edit-current({id:p.origin})" ui-sref-opts="{reload: true}">Edit</a>
-                                <button type="button" class="btn btn-default delete" ng-click="remove(p.origin)">DELETE</button>
+                                <button type="button" class="btn btn-default" ng-click="remove(p.origin)">DELETE</button>
                             </td>
                         </tr>
                         <tr class="row item">
