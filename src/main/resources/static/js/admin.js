@@ -192,6 +192,15 @@
                     controller: 'contest-view'
                 }
             }
+        }).state('contest-edit', {
+            title: '比赛编辑',
+            url: '/contests/:id/edit.html',
+            views: {
+                '': {
+                    templateUrl: 'contest-edit.html',
+                    controller: 'contest-edit'
+                }
+            }
         });
         isLocal || $urlRouterProvider.when(/^#?\/?$/, '/').otherwise('404.html');
     });
@@ -390,7 +399,7 @@
             });
         };
     });
-    app.controller('contest-list', function ($scope, $http, path, contestApi) {
+    app.controller('contest-list', function ($scope, contestApi) {
         function toParam(obj) {
             var include = [], exclude = [], t = {}, hasOwn = t.hasOwnProperty;
             for (var i in obj) {
@@ -421,7 +430,7 @@
             });
         };
     });
-    app.controller('contest-view', function ($stateParams, $scope, $http, problemApi, path, contestApi, title) {
+    app.controller('contest-view', function ($stateParams, $scope, contestApi, title, $state, serverTime) {
         function load() {
             contestApi.get($stateParams, function (data) {
                 var contest = $scope.contest = data;
@@ -430,99 +439,162 @@
             });
         }
         $scope.fromCharCode = String.fromCharCode;
-        var newProblem = $scope.newProblem = {};
-        $scope.change = function () {
-            var code = {'404': 'Not found.'};
-            var val = newProblem.id;
-            if (/^[1-9][0-9]*$/.test(val)) {
-                problemApi.get({id: newProblem.id}, function (p) {
-                    newProblem.title = p.title || 'No Title';
-                    $scope.disabled = false;
-                }).$promise['catch'](function (resp) {
-                    newProblem.title = code[resp.status] || 'Error';
-                    $scope.disabled = true;
-                });
-            } else {
-                newProblem.title = '';
-                $scope.disabled = true;
-            }
-        };
-        $scope.add = function () {
-            $http.post(path.api + 'contests/' + $scope.contest.id + '/problems.json', [{id: newProblem.id}]).then(function () {
-                load();
-                newProblem.id = newProblem.title = '';
-            });
-        };
-        $scope.remove = function (p) {
-            $http['delete'](path.api + 'contests/' + $scope.contest.id + '/problems/' + p + '.json').then(function () {
-                load();
-                newProblem.id = newProblem.title = '';
-            });
-        };
         load();
+        $scope['delete'] = function (contest) {
+            confirm("确认删除这场比赛？删除后将无法恢复。") && contestApi['delete']({id: contest.id}, function () {
+                $state.go('contest-list');
+            });
+        }
+        $scope.isStarted = function (contest) {
+            return contest && (!contest.startTime || contest.startTime < serverTime() / 1000);
+        };
     });
 
-    function initContestEdit($scope, reset, save) {
-        function change() {
-            var t = /^(?:(\d+)\D+)?(\d+):(\d+):(\d+)$/.exec(form.length);
-            var start = +form.start;
-            if (t && start === start) {
-                var day = t[1] || 0;
-                var end = start + (day * 86400 + t[2] * 3600 + t[3] * 60 + +t[4]) * 1000;
-                form.end = new Date(end);
-            } else {
-                form.end = null;
-            }
+    app.service('initContestEdit', function (problemApi) {
+        function p(t) {
+            return t < 10 ? '0' + t : t;
         }
-        var form;
-        form = $scope.form = {};
-        $scope.reset = reset;
-        $scope.$watch('form.start', change);
-        $scope.$watch('form.length', change);
-        $scope.save = function () {
+        function toLength(contest) {
+            var t = (contest.endTime - contest.startTime) >> 0, s = t % 60, m = ((t /= 60) >> 0) % 60,
+                    h = ((t /= 60) >> 0) % 24, d = (t / 24) >> 0;
+            return (d ? d + ' ' : '') + h + ':' + p(m) + ':' + p(s);
+        }
+        return function ($scope, contest, min, save) {
+            function change() {
+                var t = /^(?:(\d+)\D+)?(\d+):(\d+):(\d+)$/.exec(form.length);
+                var start = +form.start;
+                if (t && start === start) {
+                    var day = t[1] || 0;
+                    var end = start + (day * 86400 + t[2] * 3600 + t[3] * 60 + +t[4]) * 1000;
+                    form.end = new Date(end);
+                } else {
+                    form.end = null;
+                }
+            }
+            function getProblems(problems) {
+                for (var res = [], i = 0, len = problems && problems.length; i < len; ++i) {
+                    var p = problems[i];
+                    res[i] = {origin: p.origin, title: p.title};
+                }
+                return res;
+            }
+            function reset() {
+                $.extend(form, {
+                    id: contest.id,
+                    start: new Date(contest.startTime * 1000),
+                    length: toLength(contest),
+                    min: new Date(+min),
+                    title: contest.title,
+                    description: contest.description,
+                    problems: getProblems(contest.problems)
+                });
+            }
+            var form;
+            form = $scope.form = {};
+            $scope.reset = reset;
+            $scope.$watch('form.start', change);
+            $scope.$watch('form.length', change);
+            $scope.save = function () {
+                change();
+                save({
+                    id: form.id,
+                    title: form.title,
+                    description: form.description,
+                    startTime: +form.start / 1000,
+                    endTime: +form.end / 1000,
+                    problems: form.problems
+                });
+            };
+            $scope.change = function (problem, innerForm) {
+                var code = {'404': 'Not found.'};
+                var val = problem.origin;
+                var validator = $.proxy(innerForm, '$setValidity', 'origin');
+                if (/^[1-9][0-9]*$/.test(val)) {
+                    validator(undefined);
+                    problemApi.get({id: problem.origin}, function (p) {
+                        validator(true);
+                        problem.title = p.title;
+                        problem.$message = '';
+                    }).$promise['catch'](function (resp) {
+                        validator(false);
+                        problem.title = '';
+                        problem.$message = code[resp.status] || resp.data && resp.data.error || 'Error';
+                    });
+                } else {
+                    validator(false);
+                    problem.title = '';
+                    problem.$message = '';
+                }
+            };
+            $scope.add = function () {
+                $scope.form.problems.push({});
+            };
+            $scope.moveUp = function (i) {
+                if (i > 0) {
+                    var p = $scope.form.problems, t = p[i];
+                    p[i] = p[i - 1];
+                    p[i - 1] = t;
+                }
+            };
+            $scope.moveDown = function (i) {
+                var p = $scope.form.problems, t = p[i];
+                if (i + 1 < p.length) {
+                    p[i] = p[i + 1];
+                    p[i + 1] = t;
+                }
+            };
+            $scope.remove = function (i) {
+                $scope.form.problems.splice(i, 1);
+            };
+            $scope.toProblemIndex = function (x) {
+                return String.fromCharCode(x + 65);
+            };
+            reset();
             change();
-            save({
-                id: form.id,
-                title: form.title,
-                description: form.description,
-                startTime: +form.start / 1000,
-                endTime: +form.end / 1000
-            });
         };
-        reset(form);
-        change();
-    }
+    });
 
-    app.controller('contest-add', function ($scope, $state, contestApi) {
-        initContestEdit($scope, function (form) {
-            var now = new Date;
+    app.controller('contest-add', function ($scope, $state, contestApi, initContestEdit, serverTime) {
+        var startTime = function () {
+            var now = new Date(serverTime());
             now.setDate(now.getDate() + 1);
             now.setHours(12);
             now.setMinutes(0);
             now.setSeconds(0);
             now.setMilliseconds(0);
-            now = now.getTime();
-            $.extend(form, {
-                start: new Date(now),
-                length: '5:00:00',
-                min: new Date,
-                title: '',
-                description: ''
-            });
-        }, function (form) {
+            return now.getTime() / 1000;
+        }();
+        var contest = {
+            startTime: startTime,
+            endTime: startTime + 5 * 60 * 60,
+            title: '',
+            description: '',
+            contests: []
+        };
+        initContestEdit($scope, contest, new Date(serverTime()), function (form) {
             contestApi.save(form, function (contest) {
                 $state.go('contest-view', {id: contest.id});
             });
         });
     });
-    app.run(function ($rootScope, $state, $interpolate, title) {
+    app.controller('contest-edit', function ($scope, $state, $stateParams, contestApi, title, initContestEdit, serverTime) {
+        contestApi.get({id: $stateParams.id}, function (contest) {
+            initContestEdit($scope, contest, Math.min(contest.startTime * 1000, serverTime()), function (form) {
+                contestApi.update(form, function (contest) {
+                    $state.go('contest-view', {id: contest.id});
+                });
+            });
+            contest.title && title('编辑 - ' + contest.id + (contest.title ? ': ' + contest.title : ''));
+        });
+    });
+    app.run(function ($rootScope, $state, $interpolate, title, serverTime) {
         $rootScope.$on('$stateChangeSuccess', function (event, state) {
             var currentState = $state.$current;
             var tt = currentState.title || currentState.data && currentState.data.pageTitle || $rootScope.pageTitle || 'Untitled Page';
             title($interpolate(tt)(currentState));
         });
         function getStatus(contest) {
-            var now = +new Date / 1000;
+            var now = +serverTime() / 1000;
             var disabled = !!contest.disabled;
             var started = !contest.startTime || contest.startTime < now;
             var ended = !contest.endTime || contest.endTime < now;

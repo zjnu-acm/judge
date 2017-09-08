@@ -15,7 +15,6 @@
  */
 package cn.edu.zjnu.acm.judge.service;
 
-import cn.edu.zjnu.acm.judge.data.form.ContestAddProblemForm;
 import cn.edu.zjnu.acm.judge.data.form.ContestForm;
 import cn.edu.zjnu.acm.judge.data.form.ContestStatus;
 import cn.edu.zjnu.acm.judge.domain.Contest;
@@ -26,6 +25,8 @@ import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.util.SpecialCall;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
 import java.time.Instant;
 import java.util.EnumSet;
 import java.util.List;
@@ -56,6 +57,8 @@ public class ContestService {
     private SubmissionMapper submissionMapper;
     @Autowired
     private LocaleService localeService;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @SpecialCall("contests/problems.html")
     public String getStatus(Contest contest) {
@@ -73,45 +76,9 @@ public class ContestService {
         }
     }
 
-    private void updateContestOrder(long contest, long base) {
-        contestMapper.updateContestOrder(contest, base + 99999999L);
-        contestMapper.updateContestOrder(contest, base);
-    }
-
-    @Transactional
-    public void addProblem(long contestId, long problemId) {
+    void addProblem(long contestId, long problemId) {
         problemMapper.setContest(problemId, contestId);
-        contestMapper.addProblem(contestId, problemId, null, 9999999);
-        updateContestOrder(contestId, 1000);
-    }
-
-    @Transactional
-    public void removeProblem(long contestId, long problemId) {
-        Contest contest = getContest(contestId);
-        if (contest.isEnded()) {
-            throw new BusinessException(BusinessCode.CONTEST_ENDED);
-        }
-        if (contest.isStarted()) {
-            throw new BusinessException(BusinessCode.CONTEST_STARTED);
-        }
-        problemMapper.setContest(problemId, null);
-        contestMapper.deleteContestProblem(contestId, problemId);
-        updateContestOrder(contestId, 1000);
-    }
-
-    @Transactional
-    public void addProblems(long contestId, ContestAddProblemForm[] form) {
-        Contest contest = getContest(contestId);
-        if (contest.isEnded()) {
-            throw new BusinessException(BusinessCode.CONTEST_ENDED);
-        }
-        int num = 9999999;
-        for (ContestAddProblemForm contestAddProblemForm : form) {
-            problemMapper.setContest(contestAddProblemForm.getId(), contestId);
-            contestMapper.addProblem(contestId, contestAddProblemForm.getId(), null, num);
-            ++num;
-        }
-        updateContestOrder(contestId, 1000);
+        contestMapper.addProblem(contestId, problemId, null);
     }
 
     public List<Contest> findAll(ContestForm form) {
@@ -126,12 +93,20 @@ public class ContestService {
         } else {
             result = EnumSet.allOf(ContestStatus.class);
         }
+        return contestMapper.findAllByQuery(form.isIncludeDisabled(), toMask(result));
+    }
+
+    public List<Contest> findAll(ContestStatus first, ContestStatus... rest) {
+        return contestMapper.findAllByQuery(false, toMask(EnumSet.of(first, rest)));
+    }
+
+    private int toMask(Set<ContestStatus> result) {
         int mask = 0;
         for (ContestStatus contestStatus : result) {
             mask |= 1 << contestStatus.ordinal();
         }
         log.info("mask: {}", mask);
-        return contestMapper.findAllByQuery(form.isIncludeDisabled(), mask);
+        return mask;
     }
 
     private EnumSet<ContestStatus> parse(String[] filter) {
@@ -167,8 +142,14 @@ public class ContestService {
         return contestMapper.findOne(id);
     }
 
+    @Transactional
     public Contest save(Contest contest) {
         contestMapper.save(contest);
+        Long id = contest.getId();
+        List<Problem> problems = contest.getProblems();
+        if (problems != null) {
+            add(id, problems);
+        }
         return contest;
     }
 
@@ -188,7 +169,12 @@ public class ContestService {
     }
 
     @Transactional
-    public void delete(long id) {
+    public void delete(long id) throws IOException {
+        if (log.isWarnEnabled()) {
+            List<Long> submissions = submissionMapper.findAllByContestId(id);
+            List<Problem> problems = contestMapper.getProblems(id, null, null);
+            log.warn("delete contest id: {}, submissions: {}, problems: {}", id, objectMapper.writeValueAsString(submissions), objectMapper.writeValueAsString(problems));
+        }
         long result = submissionMapper.clearByContestId(id)
                 + problemMapper.clearByContestId(id)
                 + contestMapper.deleteContestProblems(id)
@@ -198,11 +184,17 @@ public class ContestService {
         }
     }
 
+    @Transactional
     public void updateSelective(long id, Contest contest) {
         contest.setModifiedTime(Instant.now());
         long result = contestMapper.updateSelective(id, contest);
         if (result == 0) {
             throw new BusinessException(BusinessCode.NOT_FOUND);
+        }
+        List<Problem> problems = contest.getProblems();
+        if (problems != null) {
+            contestMapper.deleteContestProblems(id);
+            add(id, problems);
         }
     }
 
@@ -210,6 +202,22 @@ public class ContestService {
         List<Problem> problems = contestMapper.getProblems(id, null, null);
         AtomicInteger atomic = new AtomicInteger();
         return problems.stream().collect(Collectors.toMap(Problem::getOrigin, __ -> atomic.getAndIncrement()));
+    }
+
+    public List<Long> submittedProblems(long id) {
+        if (contestMapper.findOne(id) == null) {
+            throw new BusinessException(BusinessCode.NOT_FOUND);
+        }
+        return contestMapper.submittedProblems(id);
+    }
+
+    private void add(long contestId, List<Problem> problems) {
+        assert problems != null;
+        if (!problems.isEmpty()) {
+            long[] array = problems.stream().mapToLong(Problem::getOrigin).toArray();
+            contestMapper.addProblems(contestId, 1000, array);
+            problemMapper.setContestBatch(array, contestId);
+        }
     }
 
 }

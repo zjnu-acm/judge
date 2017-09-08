@@ -101,39 +101,77 @@
             <h4 class="text-center">{{form.id ? '编辑比赛' + form.id : '添加比赛'}}</h4>
             <div class="form-group">
                 <label th:for="${#ids.next('title')}" class="col-sm-2 control-label">标题：</label>
-                <div class="col-sm-9">
+                <div class="col-sm-7">
                     <input th:id="${#ids.seq('title')}" class="form-control" type="text" name="title" ng-model="form.title" required/>
                 </div>
             </div>
             <div class="form-group">
                 <label th:for="${#ids.next('description')}" class="col-sm-2 control-label">描述：</label>
-                <div class="col-sm-9">
-                    <input th:id="${#ids.seq('description')}" class="form-control" name="description" ng-model="form.description" required />
+                <div class="col-sm-7">
+                    <input th:id="${#ids.seq('description')}" class="form-control" name="description" ng-model="form.description" />
                 </div>
             </div>
             <div class="form-group">
                 <label th:for="${#ids.next('start')}" class="col-sm-2 control-label">开始时间：</label>
-                <div class="col-sm-9">
+                <div class="col-sm-7">
                     <input th:id="${#ids.seq('start')}" type="text" datetime="yyyy-MM-dd HH:mm:ss" placeholder="yyyy-MM-dd HH:mm:ss" class="form-control" ng-model="form.start" min="{{form.min.toUTCString()}}" required />
                 </div>
             </div>
             <div class="form-group">
                 <label th:for="${#ids.next('length')}" class="col-sm-2 control-label">比赛长度：</label>
-                <div class="col-sm-9">
+                <div class="col-sm-7">
                     <input th:id="${#ids.seq('length')}" type="text" name="length" placeholder="d H:mm:ss" value="5:00:00" class="form-control" required pattern="(\d+\s+)?\d+:[0-5]?[0-9]:[0-5]?[0-9]" ng-model="form.length"/>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-2 control-label">结束时间：</label>
-                <div class="col-sm-9">
-                    <input readonly ng-value="form.end|date:'yyyy-MM-dd HH:mm:ss'" class="form-control" name="endTime" />
+                <div class="col-sm-7">
+                    <input readonly ng-value="form.end|date:'yyyy-MM-dd HH:mm:ss'" class="form-control" name="endTime"/>
                 </div>
             </div>
-            <div class="text-center">
-                <button type="submit" class="btn btn-default" ng-disabled="contestEditForm.$invalid">Submit</button>
-                <button type="button" class="btn btn-danger" ng-click="reset(form)">Reset</button>
-            </div>
+            <div class="table-responsive">
+                <table class="text-center table table-striped table-hover problems">
+                    <thead>
+                        <tr class="row">
+                            <th class="col-sm-1 text-center">编号</th>
+                            <th class="col-sm-3 text-center">题目ID</th>
+                            <th class="col-sm-5 text-left">标题</th>
+                            <th class="col-sm-3 text-center">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="row" ng-repeat="p in form.problems">
+                            <ng-form name="innerForm" omit-parent-validation="true">
+                                <td class="col-sm-1 text-center" style="vertical-align:middle">
+                                    <b>{{toProblemIndex($index)}}</b>
+                                </td>
+                                <td class="col-sm-3 text-center" style="vertical-align:middle">
+                                    <input name="origin" type="number" autofocus="autofocus" required="required" autocomplete="off" ng-model="p.origin" ng-change="change(p, innerForm)" pattern="[1-9][0-9]+" request-focus/>
+                                </td>
+                                <td class="col-sm-5 text-left" style="vertical-align:middle">
+                                    <span ng-show="p.title">{{p.title}}</span>
+                                    <span ng-show="p.$message" style="color: red">{{p.$message}}</span>
+                                </td>
+                                <td class="col-sm-3 text-center">
+                                    <button type="button" class="btn btn-default" ng-click="moveUp($index)" ng-disabled="$first">上移</button>
+                                    <button type="button" class="btn btn-default" ng-click="moveDown($index)" ng-disabled="$last">下移</button>
+                                    <button type="button" class="btn btn-default" ng-click="remove($index)">移除</button>
+                                </td>
+                            </ng-form>
+                        </tr>
+                        <tr class="row item">
+                            <td class="col-sm-12 text-center" colspan="4">
+                                <button type="button" class="btn btn-default" ng-click="add()">添加题目</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-default" ng-disabled="contestEditForm.$invalid">Submit</button>
+                    <button type="button" class="btn btn-danger" ng-click="reset()">Reset</button>
+                </div>
         </form>
+        </div>
         <!--/*/</script>/*/-->
 
         <!--/*/<script type="text/ng-template" id="problem-edit.html">/*/-->
@@ -334,43 +372,36 @@
                 <label>Contest Status: </label><span style="color: red">{{contest ? contestStatus(contest) : ''}}</span>
             </div>
         </div>
+        <div class="row" ng-hide="isStarted(contest)">
+            <a class="btn btn-default col-sm-offset-5 col-sm-1" ui-sref="contest-edit({id:contest.id})" ui-sref-opts="{reload: true}">编辑</a>
+            <button class="btn btn-danger col-sm-1" ng-click="delete(contest)">删除</button>
+        </div>
+        <div class="row" ng-show="isStarted(contest)">
+            <button class="btn btn-danger col-sm-offset-5 col-sm-1" ng-click="delete(contest)">删除</button>
+        </div>
         <div class="table-responsive">
-            <form role="form" ng-submit="add()">
-                <table class="text-center table table-striped table-hover problems">
-                    <thead>
-                        <tr class="row">
-                            <th class="col-sm-4 text-center">编号</th>
-                            <th class="col-sm-5 text-left">标题</th>
-                            <th class="col-sm-3 text-center">操作</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="row item" ng-repeat="p in problems">
-                            <td class="col-sm-4 text-center" style="vertical-align:middle">
-                                <b>{{p.origin}} Problem {{fromCharCode(65 + $index)}}</b>
-                            </td>
-                            <td class="col-sm-5 text-left" style="vertical-align:middle">
-                                <a ui-sref="problem-view-current({id:p.origin})" ui-sref-opts="{reload: true}">{{p.title}}</a>
-                            </td>
-                            <td class="col-sm-3 text-center">
-                                <a class="btn btn-link edit" ui-sref="problem-edit-current({id:p.origin})" ui-sref-opts="{reload: true}">Edit</a>
-                                <button type="button" class="btn btn-default" ng-click="remove(p.origin)">DELETE</button>
-                            </td>
-                        </tr>
-                        <tr class="row item">
-                            <td class="col-sm-4 text-center">
-                                <input name="problemId" type="number" autofocus="autofocus" required="required" autocomplete="off" ng-model="newProblem.id" ng-change="change()" pattern="[1-9][0-9]+" request-focus/>
-                            </td>
-                            <td class="col-sm-5 text-left">
-                                <span class="title">{{newProblem.title}}</span>
-                            </td>
-                            <td class="col-sm-3 text-center">
-                                <button type="submit" class="btn btn-default add" ng-disabled="disabled">ADD</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </form>
+            <table class="text-center table table-striped table-hover problems">
+                <thead>
+                    <tr class="row">
+                        <th class="col-sm-5 text-center">编号</th>
+                        <th class="col-sm-5 text-left">标题</th>
+                        <th class="col-sm-2 text-left">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="row" ng-repeat="p in problems">
+                        <td class="col-sm-5 text-center" style="vertical-align:middle">
+                            <b>{{p.origin}} Problem {{fromCharCode(65 + $index)}}</b>
+                        </td>
+                        <td class="col-sm-5 text-left" style="vertical-align:middle">
+                            <a ui-sref="problem-view-current({id:p.origin})" ui-sref-opts="{reload: true}">{{p.title}}</a>
+                        </td>
+                        <td class="col-sm-2 text-left" style="vertical-align:middle">
+                            <a class="btn btn-default" ui-sref="problem-edit-current({id:p.origin})" ui-sref-opts="{reload: true}">编辑</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <!--/*/</script>/*/-->
     </body>

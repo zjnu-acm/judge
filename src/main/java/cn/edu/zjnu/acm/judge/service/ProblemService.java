@@ -67,6 +67,7 @@ public class ProblemService {
         problemMapper.updateSelective(problemId, p, computedLang);
     }
 
+    @Transactional
     public Problem save(Problem problem) {
         problemMapper.save(problem);
         long id = problem.getId();

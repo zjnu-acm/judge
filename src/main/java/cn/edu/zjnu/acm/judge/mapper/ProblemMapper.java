@@ -98,6 +98,14 @@ public interface ProblemMapper {
     @Update("update problem set contest_id=#{cid} where problem_id=#{id}")
     long setContest(@Param("id") long problem, @Param("cid") Long contest);
 
+    @Deprecated
+    @Update("<script>update problem set contest_id=#{contest} where problem_id in"
+            + "<foreach item='item' collection='problems' open='(' separator=',' close=')'>"
+            + "#{item}"
+            + "</foreach>"
+            + "</script>")
+    long setContestBatch(@Param("problems") long[] problem, @Param("contest") Long contest);
+
     // TODO not used
     @Nullable
     @Select("select" + COLUMNS + FROM + " where problem_id=#{id} AND not disabled")

@@ -15,10 +15,10 @@
  */
 package cn.edu.zjnu.acm.judge.controller.api;
 
-import cn.edu.zjnu.acm.judge.data.form.ContestAddProblemForm;
 import cn.edu.zjnu.acm.judge.data.form.ContestForm;
 import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.service.ContestService;
+import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import lombok.extern.slf4j.Slf4j;
@@ -58,7 +58,7 @@ public class ContestController {
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable("id") long id) {
+    public void delete(@PathVariable("id") long id) throws IOException {
         contestService.delete(id);
     }
 
@@ -73,22 +73,15 @@ public class ContestController {
         return contestService.getContestAndProblems(contestId, null, locale);
     }
 
-    @PostMapping("{id}/problems")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void add(@PathVariable("id") long id, @RequestBody ContestAddProblemForm[] body) {
-        contestService.addProblems(id, body);
-    }
-
-    @DeleteMapping("{id}/problems/{problemId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable("id") long id, @PathVariable("problemId") long problemId) {
-        contestService.removeProblem(id, problemId);
-    }
-
     @PatchMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@PathVariable("id") long id, @RequestBody Contest contest) {
         contestService.updateSelective(id, contest);
+    }
+
+    @GetMapping("{id}/problems/submitted")
+    public List<Long> submittedProblems(@PathVariable("id") long id) {
+        return contestService.submittedProblems(id);
     }
 
 }

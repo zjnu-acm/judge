@@ -99,27 +99,6 @@ public class ContestMapperTest {
     }
 
     /**
-     * Test of updateContestOrder method, of class ContestMapper.
-     */
-    @Test
-    public void testUpdateContestOrder() {
-        log.info("updateContestOrder");
-        long contestId = 0L;
-        instance.updateContestOrder(contestId, 0);
-    }
-
-    /**
-     * Test of deleteContestProblem method, of class ContestMapper.
-     */
-    @Test
-    public void testDeleteContestProblem() {
-        log.info("deleteContestProblem");
-        long contestId = 0L;
-        long problemId = 0L;
-        instance.deleteContestProblem(contestId, problemId);
-    }
-
-    /**
      * Test of findOne method, of class ContestMapper.
      */
     @Test
@@ -166,42 +145,6 @@ public class ContestMapperTest {
         List<User> expResult = Arrays.asList();
         List<User> result = instance.attenders(contestId);
         assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of pending method, of class ContestMapper.
-     */
-    @Test
-    public void testPending() {
-        log.info("pending");
-        instance.pending();
-    }
-
-    /**
-     * Test of past method, of class ContestMapper.
-     */
-    @Test
-    public void testPast() {
-        log.info("past");
-        instance.past();
-    }
-
-    /**
-     * Test of current method, of class ContestMapper.
-     */
-    @Test
-    public void testCurrent() {
-        log.info("current");
-        instance.current();
-    }
-
-    /**
-     * Test of contests method, of class ContestMapper.
-     */
-    @Test
-    public void testContests() {
-        log.info("contests");
-        instance.contests();
     }
 
     /**

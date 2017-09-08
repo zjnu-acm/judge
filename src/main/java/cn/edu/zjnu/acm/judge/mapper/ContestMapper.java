@@ -70,23 +70,6 @@ public interface ContestMapper {
             @Nullable @Param("userId") String userId,
             @Param("lang") String lang);
 
-    @Update("update contest_problem cp left join ( "
-            + "select cp1.contest_id,cp1.problem_id,count(cp2.problem_id) num "
-            + "from contest_problem cp1 left join contest_problem cp2 "
-            + "on cp1.contest_id=cp2.contest_id and cp1.num > cp2.num "
-            + "group by contest_id,problem_id "
-            + ") tmp on cp.problem_id=tmp.problem_id and cp.contest_id=tmp.contest_id "
-            + "set cp.num=tmp.num+#{base} "
-            + "where cp.contest_id=#{contest}")
-    long updateContestOrder(
-            @Param("contest") long contestId,
-            @Param("base") long base);
-
-    @Delete("delete from contest_problem where contest_id=#{contest} and problem_id=#{problem}")
-    long deleteContestProblem(
-            @Param("contest") long contestId,
-            @Param("problem") long problemId);
-
     @Select("select "
             + " ac.user_id `user`,"
             + " cp.num `problem`,"
@@ -155,22 +138,18 @@ public interface ContestMapper {
     List<User> attenders(@Param("id") long contestId);
 
     @Insert("insert ignore into contest_problem (contest_id,problem_id,title,num) "
-            + "values(#{id},#{problem},nullif(#{title},''),#{num})")
+            + "select #{id},#{problem},nullif(#{title},''),COALESCE(max(num)+1,1000) num "
+            + "from contest_problem cp where contest_id=#{id}")
     long addProblem(@Param("id") long contestId, @Param("problem") long problem,
-            @Param("title") String title,
-            @Param("num") int num);
+            @Param("title") String title);
 
-    @Select("select" + COLUMNS + "from contest where now()<start_time and start_time<end_time and not disabled order by contest_id")
-    List<Contest> pending();
-
-    @Select("select" + COLUMNS + "from contest where start_time<end_time and end_time<now() and not disabled order by contest_id desc")
-    List<Contest> past();
-
-    @Select("select" + COLUMNS + "from contest where start_time<now() and end_time>now() and not disabled order by contest_id desc")
-    List<Contest> current();
-
-    @Select("select" + COLUMNS + "from contest where start_time<end_time and not disabled order by contest_id desc")
-    List<Contest> contests();
+    @Insert("<script>insert into contest_problem (contest_id,problem_id,title,num)"
+            + "select #{contest_id} AS contest_id,origin,null title,num from "
+            + "<foreach item='item' index='index' collection='problems' open='(' separator=' union ' close=')'>"
+            + "select problem_id origin,${base}+#{index} as num from problem where problem_id=#{item}"
+            + "</foreach> as t"
+            + "</script>")
+    long addProblems(@Param("contest_id") long contest_id, @Param("base") int base, @Param("problems") long[] problems);
 
     @Update("update contest_problem set title=null where problem_id=#{problem} and contest_id=#{contest}")
     long updateProblemTitle(@Param("contest") long contestId, @Param("problem") long problemId);
@@ -220,5 +199,8 @@ public interface ContestMapper {
             + "<where>contest_id=#{id}</where>"
             + "</script>")
     long updateSelective(@Param("id") long id, @Param("c") Contest contest);
+
+    @Select("select distinct(problem_id) from solution where contest_id=#{id}")
+    List<Long> submittedProblems(@Param("id") long id);
 
 }
