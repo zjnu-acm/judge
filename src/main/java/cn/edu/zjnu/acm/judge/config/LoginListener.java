@@ -16,6 +16,7 @@ package cn.edu.zjnu.acm.judge.config;
  * limitations under the License.
  */
 import cn.edu.zjnu.acm.judge.domain.LoginLog;
+import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
 import cn.edu.zjnu.acm.judge.service.LoginlogService;
 import java.time.Instant;
@@ -61,11 +62,10 @@ public class LoginListener {
             Authentication authentication = event.getAuthentication();
             String ip = saveEvent(loginlogService, authentication);
             Optional.ofNullable(userMapper.findOne(authentication.getName())).ifPresent(user -> {
-                userMapper.update(
-                        user.toBuilder()
-                                .accesstime(Instant.now())
-                                .ip(ip)
-                                .build());
+                userMapper.updateSelective(user.getId(), User.builder()
+                        .accesstime(Instant.now())
+                        .ip(ip)
+                        .build());
             });
         }
 

@@ -58,8 +58,7 @@ public class ModifyUserController {
         }
         ValueCheck.checkEmail(email);
         ValueCheck.checkNick(nick);
-        user = user
-                .toBuilder()
+        user = User.builder()
                 .id(userId)
                 .email(email)
                 .nick(nick)
@@ -67,7 +66,7 @@ public class ModifyUserController {
                 .school(school)
                 .modifiedTime(Instant.now())
                 .build();
-        userMapper.update(user);
+        userMapper.updateSelective(userId, user);
         model.addAttribute("user", user);
         return "modifyusersuccess";
     }

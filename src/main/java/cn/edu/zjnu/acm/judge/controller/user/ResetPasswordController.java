@@ -106,9 +106,9 @@ public class ResetPasswordController {
             if (vc == null || user.getExpireTime() != null && user.getExpireTime().compareTo(Instant.now()) < 0) {
                 vc = Utility.getRandomString(16);
             }
-            user = user.toBuilder().vcode(vc).expireTime(Instant.now().plus(1, ChronoUnit.HOURS)).build();
-            userMapper.update(user);
-            String url = getPath(request, "/resetPassword.html?vc=", vc + "&u=", user.getId());
+            String id = user.getId();
+            userMapper.updateSelective(id, User.builder().vcode(vc).expireTime(Instant.now().plus(1, ChronoUnit.HOURS)).build());
+            String url = getPath(request, "/resetPassword.html?vc=", vc + "&u=", id);
             String title = systemService.getResetPasswordTitle();
             HashMap<String, Object> map = new HashMap<>(2);
             map.put("url", url);
