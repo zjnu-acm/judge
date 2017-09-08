@@ -15,17 +15,10 @@
  */
 package cn.edu.zjnu.acm.judge.config;
 
-import cn.edu.zjnu.acm.judge.domain.LoginLog;
-import cn.edu.zjnu.acm.judge.mapper.UserMapper;
-import cn.edu.zjnu.acm.judge.service.LoginlogService;
-import cn.edu.zjnu.acm.judge.service.PasswordConfuser;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import com.github.zhanhb.ckfinder.connector.autoconfigure.CKFinderProperties;
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.time.Instant;
-import java.util.Optional;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
@@ -39,7 +32,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.DefaultRedirectStrategy;
@@ -66,12 +58,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private PersistentTokenRepository persistentTokenRepository;
     @Autowired
-    private LoginlogService loginlogService;
-    @Autowired
-    private PasswordConfuser passwordConfuser;
-    @Autowired
-    private UserMapper userMapper;
-    @Autowired
     private CKFinderProperties ckfinder;
 
     @Bean(name = "authenticationManager")
@@ -81,29 +67,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    private void saveLoginLog(HttpServletRequest request, boolean success) {
-        String userId = Optional.ofNullable(request.getParameter("user_id1")).orElse("");
-        String password = Optional.ofNullable(request.getParameter("password1")).orElse("");
-        loginlogService.save(LoginLog.builder()
-                .user(userId)
-                .password(passwordConfuser.confuse(password))
-                .ip(request.getRemoteAddr())
-                .success(success)
-                .build());
-        if (success) {
-            Optional.ofNullable(userMapper.findOne(userId)).ifPresent(user -> {
-                userMapper.update(
-                        user.toBuilder()
-                                .accesstime(Instant.now())
-                                .ip(request.getRemoteAddr())
-                                .build());
-            });
-        }
-    }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        SimpleUrlAuthenticationSuccessHandler simpleUrlAuthenticationSuccessHandler = new JudgeAuthenticationSuccessHandler("/");
+        SimpleUrlAuthenticationSuccessHandler simpleUrlAuthenticationSuccessHandler = new SimpleUrlAuthenticationSuccessHandler("/");
         simpleUrlAuthenticationSuccessHandler.setUseReferer(false);
         simpleUrlAuthenticationSuccessHandler.setTargetUrlParameter("url");
         DefaultRedirectStrategy defaultRedirectStrategy = new DefaultRedirectStrategy();
@@ -170,7 +136,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         String defaultFailureUrl = "/login?error";
         RedirectStrategy redirectStrategy = new FailureRedirectStrategy();
         return (request, response, exception) -> {
-            saveLoginLog(request, false);
             redirectStrategy.sendRedirect(request, response, defaultFailureUrl);
         };
     }
@@ -187,20 +152,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             } else {
                 redirectStrategy.sendRedirect(request, response, url);
             }
-        }
-    }
-
-    private class JudgeAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-
-        JudgeAuthenticationSuccessHandler(String defaultTargetUrl) {
-            super(defaultTargetUrl);
-        }
-
-        @Override
-        public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
-                throws IOException, ServletException {
-            saveLoginLog(request, true);
-            super.onAuthenticationSuccess(request, response, authentication);
         }
     }
 
