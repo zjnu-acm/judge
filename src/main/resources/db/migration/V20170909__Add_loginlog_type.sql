@@ -1,0 +1,7 @@
+ALTER TABLE `loginlog`
+	CHANGE COLUMN `user_id` `user_id` VARCHAR(255) NULL DEFAULT '' AFTER `id`,
+	CHANGE COLUMN `password` `password` VARCHAR(40) NULL DEFAULT '' AFTER `user_id`,
+	ADD COLUMN `type` VARCHAR(40) NULL DEFAULT 'UsernamePassword' AFTER `password`,
+	CHANGE COLUMN `ip` `ip` VARCHAR(100) NULL DEFAULT '' AFTER `type`,
+	CHANGE COLUMN `time` `time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `ip`,
+	CHANGE COLUMN `success` `success` BIT(1) NOT NULL DEFAULT b'1' COMMENT '表示登录是否成功' AFTER `time`;

@@ -41,11 +41,16 @@ public class LoginListener {
         Object details = authentication.getDetails();
         String remoteAddress = "";
         boolean success = authentication.isAuthenticated();
+        String type = authentication.getClass().getSimpleName();
+        final String tokenSuffix = "AuthenticationToken";
+        if (type.endsWith(tokenSuffix)) {
+            type = type.substring(0, type.length() - tokenSuffix.length());
+        }
         if (details instanceof WebAuthenticationDetails) {
             WebAuthenticationDetails webAuthenticationDetails = (WebAuthenticationDetails) details;
             remoteAddress = webAuthenticationDetails.getRemoteAddress();
         }
-        loginlogService.save(LoginLog.builder().ip(remoteAddress).success(success).password("").user(authentication.getName()).build());
+        loginlogService.save(LoginLog.builder().ip(remoteAddress).success(success).type(type).user(authentication.getName()).build());
         return remoteAddress;
     }
 

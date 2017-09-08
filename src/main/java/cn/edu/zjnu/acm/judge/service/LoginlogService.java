@@ -39,21 +39,20 @@ public class LoginlogService {
 
     @Autowired
     private LoginlogMapper loginlogMapper;
-    private ExecutorService executorService;
+    private Thread thread;
     private final List<LoginLog> list = new ArrayList<>(4);
     private final ReentrantLock lock = new ReentrantLock();
     private final Condition condition = lock.newCondition();
 
     @PostConstruct
     public void init() {
-        executorService = Executors.newSingleThreadExecutor();
-        executorService.submit(this::saveBatch);
-        executorService.shutdown();
+        thread = new Thread(this::saveBatch);
+        thread.start();
     }
 
     @PreDestroy
     public void destroy() {
-        executorService.shutdownNow();
+        thread.interrupt();
     }
 
     public void save(LoginLog loginlog) {
@@ -93,8 +92,8 @@ public class LoginlogService {
         }
     }
 
-    ExecutorService getExecutor() {
-        return executorService;
+    Thread getThread() {
+        return thread;
     }
 
 }

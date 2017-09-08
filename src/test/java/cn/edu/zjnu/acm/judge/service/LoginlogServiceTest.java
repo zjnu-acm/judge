@@ -55,7 +55,7 @@ public class LoginlogServiceTest {
         executorService.shutdown();
         executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
         loginlogService.destroy();
-        loginlogService.getExecutor().awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
+        loginlogService.getThread().join();
     }
 
     /**

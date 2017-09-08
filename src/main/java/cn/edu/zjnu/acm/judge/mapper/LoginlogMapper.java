@@ -27,9 +27,9 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface LoginlogMapper {
 
-    @Insert("<script>insert into loginlog (user_id,password,ip,time,success) values"
+    @Insert("<script>insert into loginlog (user_id,password,type,ip,time,success) values"
             + "<foreach item='item' index='index' collection='array' separator=','>"
-            + "(#{item.user},#{item.password},#{item.ip},now(),#{item.success})"
+            + "(#{item.user},'',#{item.type},#{item.ip},now(),#{item.success})"
             + "</foreach>"
             + "</script>")
     long save(@Param("array") LoginLog... loginLogs);

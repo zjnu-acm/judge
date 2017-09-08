@@ -38,6 +38,7 @@ public class LoginLog implements Serializable {
     private long id;
     private String user;
     private String password;
+    private String type;
     private String ip;
     private boolean success;
 
