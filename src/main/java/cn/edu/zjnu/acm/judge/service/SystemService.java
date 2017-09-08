@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
  * @author zhanhb
  */
 @Service
-@SpecialCall({"index.html", "manager.html", "layout/main.html"})
+@SpecialCall({"index.html", "manager.html", "layout/main.html", "fragment/ga.html"})
 public class SystemService {
 
     @Autowired
@@ -46,6 +46,12 @@ public class SystemService {
     @SpecialCall({"index.html", "manager.html", "layout/main.html"})
     public String getAdminMail() {
         return systemMapper.getValueByName(Constants.SystemKey.ADMIN_MAIL);
+    }
+
+    @Cacheable(value = Constants.Cache.SYSTEM, key = "'ga'")
+    @SpecialCall("fragment/ga.html")
+    public String getGa() {
+        return systemMapper.getValueByName(Constants.SystemKey.GA);
     }
 
     public String getDataFilesPath() {

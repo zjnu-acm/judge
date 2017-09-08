@@ -39,6 +39,7 @@ public interface Constants {
         String RESETPASSWORD_TITLE = "resetpassword_title";
         String UPLOAD_PATH = "upload_path";
         String WORKING_PATH = "working_path";
+        String GA = "ga";
 
     }
 
