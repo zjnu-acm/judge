@@ -17,6 +17,8 @@ package cn.edu.zjnu.acm.judge.controller.contest;
 
 import cn.edu.zjnu.acm.judge.Application;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -26,8 +28,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.ui.ExtendedModelMap;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.servlet.ModelAndView;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -57,13 +59,13 @@ public class ContestControllerTest {
      * Test of standingHtml method, of class ContestController.
      */
     @Test
-    public void testStandingHtml() {
+    public void testStandingHtml() throws InterruptedException, ExecutionException {
         log.info("standingHtml");
         long cid = 1058;
-        ExtendedModelMap map = new ExtendedModelMap();
-        String result = instance.standingHtml(cid, map, locale);
-        assertEquals("contests/standing", result);
-        assertNotNull(map.get("problems"));
+        Future<ModelAndView> future = instance.standingHtml(cid, locale);
+        String viewName = future.get().getViewName();
+        assertEquals("contests/standing", viewName);
+        assertNotNull(future.get().getModelMap().get("problems"));
     }
 
     @Test

@@ -28,15 +28,20 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.Future;
 import java.util.function.ObjIntConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static org.springframework.http.MediaType.ALL_VALUE;
@@ -49,6 +54,8 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 @Controller("contest")
 @RequestMapping("/contests/{contestId}")
 public class ContestController {
+
+    private static final ConcurrentMap<Long, CompletableFuture<UserStanding[]>> STANDINGS = new ConcurrentHashMap<>(20);
 
     @Autowired
     private ContestMapper contestMapper;
@@ -73,45 +80,58 @@ public class ContestController {
 
     @ResponseBody
     @GetMapping(value = "standing", produces = APPLICATION_JSON_VALUE)
-    public UserStanding[] standing(@PathVariable("contestId") long contestId) {
-        Map<String, UserStanding> hashMap = new HashMap<>(80);
-        contestMapper.standing(contestId).forEach(standing
-                -> hashMap.computeIfAbsent(standing.getUser(), UserStanding::new)
-                        .add(standing.getProblem(), standing.getTime(), standing.getPenalty())
-        );
-        contestMapper.attenders(contestId).forEach(attender
-                -> Optional.ofNullable(hashMap.get(attender.getId()))
-                        .ifPresent(us -> us.setNick(attender.getNick()))
-        );
-        UserStanding[] standings = hashMap.values().stream().sorted(UserStanding.COMPARATOR).toArray(UserStanding[]::new);
-        setIndexes(standings, Comparator.nullsFirst(UserStanding.COMPARATOR), UserStanding::setIndex);
-        return standings;
+    public CompletableFuture<UserStanding[]> standing(@PathVariable("contestId") long contestId) {
+        return STANDINGS.computeIfAbsent(contestId, id -> CompletableFuture.supplyAsync(() -> {
+            Map<String, UserStanding> hashMap = new HashMap<>(80);
+            contestMapper.standing(id).forEach(standing
+                    -> hashMap.computeIfAbsent(standing.getUser(), UserStanding::new)
+                            .add(standing.getProblem(), standing.getTime(), standing.getPenalty())
+            );
+            contestMapper.attenders(id).forEach(attender
+                    -> Optional.ofNullable(hashMap.get(attender.getId()))
+                            .ifPresent(us -> us.setNick(attender.getNick()))
+            );
+            UserStanding[] standings = hashMap.values().stream().sorted(UserStanding.COMPARATOR).toArray(UserStanding[]::new);
+            setIndexes(standings, Comparator.nullsFirst(UserStanding.COMPARATOR), UserStanding::setIndex);
+            STANDINGS.remove(id);
+            return standings;
+        }));
     }
 
     @GetMapping(value = "standing", produces = {TEXT_HTML_VALUE, ALL_VALUE})
-    public String standingHtml(@PathVariable("contestId") long id, Model model, Locale locale) {
-        Contest contest = contestMapper.findOneByIdAndDisabledFalse(id);
-        // TODO
-        model.addAttribute("contestId", id);
-        model.addAttribute("contest", contest);
-        if (contest == null) {
-            throw new MessageException("onlinejudge.contest.nosuchcontest", HttpStatus.NOT_FOUND);
-        }
-        if (!contest.isStarted()) {
-            throw new MessageException("Contest not started yet", HttpStatus.OK);
-        }
-        // TODO user is empty
-        List<Problem> problems = contestMapper.getProblems(id, null, localeService.resolve(locale));
-        model.addAttribute("id", id);
-        model.addAttribute("problems", problems);
-        model.addAttribute("standing", standing(id));
-        return "contests/standing";
+    public Future<ModelAndView> standingHtml(@PathVariable("contestId") long contestId, Locale locale) {
+        return standing(contestId).thenApplyAsync(standing -> {
+            Contest contest = contestMapper.findOneByIdAndDisabledFalse(contestId);
+            // TODO
+            ModelAndView modelAndView = new ModelAndView("contests/standing");
+            ModelMap model = modelAndView.getModelMap();
+            model.addAttribute("contestId", contestId);
+            model.addAttribute("contest", contest);
+            if (contest == null) {
+                throw new MessageException("onlinejudge.contest.nosuchcontest", HttpStatus.NOT_FOUND);
+            }
+            if (!contest.isStarted()) {
+                throw new MessageException("Contest not started yet", HttpStatus.OK);
+            }
+            // TODO user is empty
+            List<Problem> problems = contestMapper.getProblems(contestId, null, localeService.resolve(locale));
+            model.addAttribute("id", contestId);
+            model.addAttribute("problems", problems);
+            model.addAttribute("standing", standing);
+            return modelAndView;
+        });
     }
 
-    @GetMapping("")
+    @GetMapping
     public String index(@PathVariable("contestId") long contestId, RedirectAttributes redirectAttributes) {
         redirectAttributes.addAttribute("contestId", contestId);
         return "redirect:/contests/{contestId}/problems";
+    }
+
+    @GetMapping("problems")
+    public String problems(@PathVariable("contestId") long contestId, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addAttribute("contest_id", contestId);
+        return "redirect:/showcontest";
     }
 
     @GetMapping("problems/{pid}")

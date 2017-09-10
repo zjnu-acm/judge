@@ -158,7 +158,7 @@ public class StatusController {
             if (num == -1) {
                 problemString = "" + problem_id1;
             } else {
-                problemString = Character.toString((char) (num + 'A'));
+                problemString = contestService.toProblemIndex(num);
             }
             sb.append("<td><a href=userstatus?user_id=").append(user_id1)
                     .append(">").append(user_id1).append("</a></td><td><a href=showproblem?problem_id=")

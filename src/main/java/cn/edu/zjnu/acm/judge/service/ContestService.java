@@ -220,4 +220,9 @@ public class ContestService {
         }
     }
 
+    public String toProblemIndex(int num) {
+        char t = (char) ('A' + num);
+        return String.valueOf(t);
+    }
+
 }

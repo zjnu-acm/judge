@@ -48,7 +48,7 @@ public class ContestStatisticsController {
             @RequestParam("contest_id") long contestId) throws SQLException {
         Instant now = Instant.now();
         Contest contest = contestMapper.findOneByIdAndDisabledFalse(contestId);
-        if (contest == null || !contest.isStarted()) {
+        if (contest == null) {
             throw new MessageException("onlinejudge.contest.nosuchcontest", HttpStatus.NOT_FOUND);
         }
         String title = contest.getTitle();
@@ -74,7 +74,7 @@ public class ContestStatisticsController {
         for (int i : languages.keySet()) {
             sql.append("sum(if(language=").append(i).append(",1,0)) g").append(i).append(",");
         }
-        sql.append("problem_id,sum(if(score=100,1,0)) A,sum(if(score<100 and score >=70,1,0)) B,sum(if(score<70 and score >30,1,0)) D,sum(if(score>0 and score <=30,1,0)) C,sum(if(score=0,1,0)) E,sum(if(score=-7,1,0)) F,sum(if(score<-7 or score > 100,1,0)) G,count(*) Total from solution where contest_id=? group by problem_id order by num");
+        sql.append("s.problem_id,sum(if(score=100,1,0)) A,sum(if(score<100 and score >=70,1,0)) B,sum(if(score<70 and score >30,1,0)) D,sum(if(score>0 and score <=30,1,0)) C,sum(if(score=0,1,0)) E,sum(if(score=-7,1,0)) F,sum(if(score<-7 or score > 100,1,0)) G,count(*) Total from contest_problem cp left join solution s on cp.problem_id=s.problem_id and cp.contest_id=s.contest_id where s.contest_id=? group by cp.problem_id order by cp.num");
 
         String[] judgeStatus = {"A", "B", "C", "D", "E", "F", "G", "Total"};
         long[] byScore = new long[judgeStatus.length];
@@ -87,7 +87,7 @@ public class ContestStatisticsController {
                 .forEach(languageName -> sb.append("<th>").append(languageName).append("</th>"));
         sb.append("</tr>");
         log.debug("{}", sql);
-        
+
         Map<Long, Integer> numMap = contestService.getNumMap(contestId);
         try (Connection conn = dataSource.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql.toString())) {
@@ -96,7 +96,7 @@ public class ContestStatisticsController {
                 while (rs.next()) {
                     long problemId = rs.getLong("problem_id");
                     int num = numMap.getOrDefault(problemId, -1);
-                    sb.append("<tr><th><a href=showproblem?problem_id=").append(problemId).append(">").append((char) ('A' + num)).append("</a></th>");
+                    sb.append("<tr><th><a href=showproblem?problem_id=").append(problemId).append(">").append(contestService.toProblemIndex(num)).append("</a></th>");
                     for (int i = 0; i < judgeStatus.length; ++i) {
                         long value = rs.getLong(judgeStatus[i]);
                         byScore[i] += value;

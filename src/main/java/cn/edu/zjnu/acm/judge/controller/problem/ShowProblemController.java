@@ -81,8 +81,9 @@ public class ShowProblemController {
             int contestNum = contestService.getNumMap(contestId).getOrDefault(problemId, -1);
             List<Problem> problems = contestMapper.getProblems(contestId, null, localeService.resolve(locale));
             model.addAttribute("problems", problems);
-            title1 = (char) (contestNum + 'A') + ":" + problemId + " -- " + problem.getTitle();
-            title2 = (char) (contestNum + 'A') + ":" + problem.getTitle();
+            String index = contestService.toProblemIndex(contestNum);
+            title1 = index + ":" + problemId + " -- " + problem.getTitle();
+            title2 = index + ":" + problem.getTitle();
         }
         model.addAttribute("title1", title1);
         model.addAttribute("title2", title2);

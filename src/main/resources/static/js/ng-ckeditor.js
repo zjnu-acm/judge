@@ -103,10 +103,5 @@
         };
     }
     var $defer, loaded = false;
-    return angular.module('ngCkeditor', []).run(['$q', '$timeout', run]).directive('editable', ['$timeout', '$q', 'ckeditor', bind]).provider("ckeditor", function () {
-        this.options = {};
-        this.$get = function () {
-            return this;
-        };
-    });
+    return angular.module('ngCkeditor', []).run(['$q', '$timeout', run]).directive('editable', ['$timeout', '$q', 'ckeditor', bind]).constant("ckeditor", {});
 }));
