@@ -187,7 +187,7 @@ public interface ProblemMapper {
             + "<if test='p.timeLimit!=null'>p.time_limit=#{p.timeLimit},</if>"
             + "<if test='p.memoryLimit!=null'>p.memory_limit=#{p.memoryLimit},</if>"
             + "<if test='p.modifiedTime!=null'>p.modified_time=#{p.modifiedTime},</if>"
-            + "<if test='p.disabled!=null'>p.disabled=#{p.disabled}</if>"
+            + "<if test='p.disabled!=null'>p.disabled=#{p.disabled},</if>"
             + "</set>"
             + "<where>p.problem_id=#{id}</where>"
             + "</script>")

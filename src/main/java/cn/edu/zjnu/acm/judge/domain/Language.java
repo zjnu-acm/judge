@@ -54,5 +54,6 @@ public class Language implements Serializable {
     private String description;
     private Instant createdTime;
     private Instant modifiedTime;
+    private Boolean disabled;
 
 }

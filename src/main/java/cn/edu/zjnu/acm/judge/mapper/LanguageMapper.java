@@ -76,7 +76,8 @@ public interface LanguageMapper {
             + "<if test='param2.executableExtension!=null'>executable_extension=#{param2.executableExtension},</if>"
             + "<if test='param2.timeFactor!=null'>time_factor=#{param2.timeFactor},</if>"
             + "<if test='param2.extMemory!=null'>ext_memory=#{param2.extMemory},</if>"
-            + "<if test='param2.description!=null'>description=#{param2.description}</if>"
+            + "<if test='param2.description!=null'>description=#{param2.description},</if>"
+            + "<if test='param2.disabled!=null'>disabled=#{param2.disabled},</if>"
             + "</set> where id=#{param1}"
             + "</script>")
     long update(long id, Language language);

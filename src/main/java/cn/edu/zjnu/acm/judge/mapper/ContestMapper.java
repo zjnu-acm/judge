@@ -126,15 +126,8 @@ public interface ContestMapper {
     @Select("select" + COLUMNS + "from contest where contest_id=#{id} and not disabled")
     Contest findOneByIdAndDisabledFalse(@Param("id") long contestId);
 
-    @Select("select "
-            + " s.user_id id,u.nick "
-            + "from "
-            + " solution s "
-            + "left join "
-            + " users u "
-            + "on s.user_id=u.user_id "
-            + "where s.contest_id=#{id} "
-            + "group by s.user_id")
+    @Select("select s.user_id id,u.nick from solution s left join users u "
+            + "on s.user_id=u.user_id where s.contest_id=#{id} group by s.user_id")
     List<User> attenders(@Param("id") long contestId);
 
     @Insert("insert ignore into contest_problem (contest_id,problem_id,title,num) "
@@ -194,7 +187,7 @@ public interface ContestMapper {
             + "<if test='c.disabled!=null'>disabled=#{c.disabled},</if>"
             + "<if test='c.description!=null'>description=#{c.description},</if>"
             + "<if test='c.createdTime!=null'>created_time=#{c.createdTime},</if>"
-            + "<if test='c.modifiedTime!=null'>modified_time=#{c.modifiedTime}</if>"
+            + "<if test='c.modifiedTime!=null'>modified_time=#{c.modifiedTime},</if>"
             + "</set>"
             + "<where>contest_id=#{id}</where>"
             + "</script>")

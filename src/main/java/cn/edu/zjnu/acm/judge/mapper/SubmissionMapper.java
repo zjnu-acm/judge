@@ -73,23 +73,23 @@ public interface SubmissionMapper {
     String getSubmissionDetail(@Param("id") long id);
 
     @Select({
-        "<script>",
-        "<if test='bottom!=null'>select * from (</if>",
-        "select" + LIST_COLUMNS + "from solution s ",
-        "<where>",
-        "<if test='contest!=null'>and contest_id=#{contest}</if>",
-        "<if test='problem!=null'>and problem_id=#{problem}</if>",
-        "<if test='user!=null'>and user_id=#{user}</if>",
-        "<if test='language!=null'>and language=#{language}</if>",
-        "<if test='score!=null'>and score=#{score}</if>",
-        "<if test='bottom!=null'>and solution_id&gt;#{bottom}</if>",
-        "<if test='top!=null'>and solution_id&lt;#{top}</if>",
-        "</where>",
-        "order by solution_id",
-        "<if test='bottom==null'>desc</if>",
-        "limit #{size}",
-        "<if test='bottom!=null'>) tmp order by id desc</if>",
-        "</script>"
+        "<script>"
+        + "<if test='bottom!=null'>select * from (</if>"
+        + "select" + LIST_COLUMNS + "from solution s "
+        + "<where>"
+        + "<if test='contest!=null'> and contest_id=#{contest}</if>"
+        + "<if test='problem!=null'> and problem_id=#{problem}</if>"
+        + "<if test='user!=null'> and user_id=#{user}</if>"
+        + "<if test='language!=null'> and language=#{language}</if>"
+        + "<if test='score!=null'> and score=#{score}</if>"
+        + "<if test='bottom!=null'> and solution_id&gt;#{bottom}</if>"
+        + "<if test='top!=null'> and solution_id&lt;#{top}</if>"
+        + "</where>"
+        + "order by solution_id"
+        + "<if test='bottom==null'>desc</if>"
+        + "limit #{size}"
+        + "<if test='bottom!=null'>) tmp order by id desc</if>"
+        + "</script>"
     })
     List<Submission> findAllByCriteria(SubmissionQueryForm submissionQueryForm);
 
