@@ -15,6 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.controller.api;
 
+import cn.edu.zjnu.acm.judge.data.form.ProblemForm;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.service.ProblemService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -78,9 +79,9 @@ public class ProblemController {
     }
 
     @GetMapping
-    public Page<Problem> list(@PageableDefault(100) Pageable pageable, Locale locale) {
+    public Page<Problem> list(ProblemForm problemForm, @PageableDefault(100) Pageable pageable, Locale locale) {
         log.info("pageable: {}", pageable);
-        return problemService.findAll(pageable, locale);
+        return problemService.findAll(problemForm, null, pageable, locale);
     }
 
     @PatchMapping("{id}")

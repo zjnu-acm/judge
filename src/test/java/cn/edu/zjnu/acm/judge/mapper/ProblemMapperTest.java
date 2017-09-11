@@ -23,8 +23,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
@@ -46,26 +44,6 @@ public class ProblemMapperTest {
 
     void setLang(String lang) {
         this.lang = lang;
-    }
-
-    /**
-     * Test of findOneByIdAndDisabledFalse method, of class ProblemMapper.
-     */
-    @Test
-    public void testFindOneByIdAndDisabledFalse() {
-        log.debug("findOneByIdAndDisabledFalse");
-        long pid = 0L;
-        instance.findOneByIdAndDisabledFalse(pid, lang);
-    }
-
-    /**
-     * Test of findAll method, of class ProblemMapper.
-     */
-    @Test
-    public void testFindAll() {
-        log.debug("findAll");
-        Pageable pageable = new PageRequest(0, 20);
-        instance.findAll(lang, pageable);
     }
 
     /**
@@ -99,21 +77,6 @@ public class ProblemMapperTest {
         log.debug("findOne");
         instance.findOneNoI18n(0);
         instance.findOneNoI18n(1000);
-    }
-
-    /**
-     * Test of findAllBySearchTitleOrSourceAndDisabledFalse method, of class
-     * ProblemMapper.
-     */
-    @Test
-    public void testFindAllBySearchTitleOrSourceAndDisabledFalse() {
-        log.debug("findAllBySearchTitleOrSourceAndDisabledFalse");
-        String query = "初级";
-        String userId = "coach";
-        List<Problem> result = instance.findAllBySearchTitleOrSourceAndDisabledFalse(query, userId, lang);
-        int size = result.size();
-        result = instance.findAllBySearchTitleOrSourceAndDisabledFalse(query, null, lang);
-        assertEquals(size, result.size());
     }
 
     /**

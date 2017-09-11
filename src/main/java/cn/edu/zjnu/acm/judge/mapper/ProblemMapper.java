@@ -16,6 +16,7 @@
 package cn.edu.zjnu.acm.judge.mapper;
 
 import cn.edu.zjnu.acm.judge.data.dto.ScoreCount;
+import cn.edu.zjnu.acm.judge.data.form.ProblemForm;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import java.time.Instant;
 import java.util.List;
@@ -83,9 +84,6 @@ public interface ProblemMapper {
     @Select("select COALESCE(max(problem_id)+1,1000) maxp from problem")
     long nextId();
 
-    @Select("SELECT COUNT(*) total from problem")
-    long count();
-
     @Insert("INSERT INTO problem (problem_id,title,description,input,output,sample_input,sample_output,"
             + "hint,source,in_date,time_limit,memory_limit,contest_id) values ("
             + "#{id},COALESCE(#{title},''),COALESCE(#{description},''),COALESCE(#{input},''),COALESCE(#{output},''),COALESCE(#{sampleInput},''),COALESCE(#{sampleOutput},''),"
@@ -106,35 +104,7 @@ public interface ProblemMapper {
             + "</script>")
     long setContestBatch(@Param("problems") long[] problem, @Param("contest") Long contest);
 
-    // TODO not used
-    @Nullable
-    @Select("select" + COLUMNS + FROM + " where problem_id=#{id} AND not disabled")
-    Problem findOneByIdAndDisabledFalse(@Param("id") long pid, @Param("lang") String lang);
-
-    @Select("<script>"
-            + "SELECT" + LIST_COLUMNS + FROM
-            + " order by "
-            + "<if test='pageable.sort!=null'>"
-            + "<foreach item='item' index='index' collection='pageable.sort'"
-            + "      separator=',' close=','>"
-            + "        <choose>"
-            + "    <when test='\"inDate\".equalsIgnoreCase(item.property)'>inDate</when>"
-            + "    <when test='\"date\".equalsIgnoreCase(item.property)'>inDate</when>"
-            + "    <when test='\"title\".equalsIgnoreCase(item.property)'>title</when>"
-            + "    <when test='\"id\".equalsIgnoreCase(item.property)'>id</when>"
-            + "    <when test='\"timeLimit\".equalsIgnoreCase(item.property)'>timeLimit</when>"
-            + "    <when test='\"memoryLimit\".equalsIgnoreCase(item.property)'>memoryLimit</when>"
-            + "    <when test='\"defunct\".equalsIgnoreCase(item.property)'>p.disabled</when>"
-            + "    <when test='\"disabled\".equalsIgnoreCase(item.property)'>p.disabled</when>"
-            + "    <when test='\"contest\".equalsIgnoreCase(item.property)'>p.contest_id</when>"
-            + "    <otherwise>id</otherwise>"
-            + "  </choose>"
-            + "<if test='item.descending'> DESC</if>"
-            + "  </foreach>"
-            + "</if> problem_id limit #{pageable.offset},#{pageable.pageSize}"
-            + "</script>")
-    List<Problem> findAll(@Param("lang") String lang, @Param("pageable") Pageable pageable);
-
+    @Deprecated
     @Select("<script>"
             + "select" + LIST_COLUMNS
             + STATUS
@@ -193,20 +163,43 @@ public interface ProblemMapper {
             + "</script>")
     long updateSelective(@Param("id") long id, @Param("p") Problem build, @Param("lang") String lang);
 
-    @Select({"<script>"
-        + "select" + LIST_COLUMNS_SOURCE + STATUS
-        + FROM
-        + "<if test='userId!=null'>left join user_problem up on up.problem_id=p.problem_id and up.user_id=#{userId}</if>"
-        + "WHERE (instr(p.title,#{query})&gt;0 or instr(p.source,#{query})&gt;0) "
-        + "and not p.disabled"
-        + "<if test='userId!=null'>group by p.problem_id</if>"
-        + "ORDER BY p.problem_id"
-        + "</script>"
-    })
-    List<Problem> findAllBySearchTitleOrSourceAndDisabledFalse(
-            @Param("query") String query,
-            @Param("userId") String userId,
-            @Param("lang") String lang);
+    String WHERE = "<where>"
+            + "<if test='form.query!=null'> (instr(p.title,#{form.query})&gt;0 or instr(p.source,#{form.query})&gt;0) </if>"
+            + "<if test='form.disabled!=null'> and <if test='!form.disabled'> not </if> disabled</if>"
+            + "</where>";
+
+    @Select("<script>"
+            + "select" + LIST_COLUMNS
+            + STATUS + FROM
+            + "<if test='userId!=null'>left join user_problem up on up.problem_id=p.problem_id and up.user_id=#{userId}</if>"
+            + WHERE
+            + "<if test='userId!=null'>group by p.problem_id</if>"
+            + " order by <if test='pageable.sort!=null'>"
+            + "<foreach item='item' index='index' collection='pageable.sort'"
+            + "      separator=',' close=','>"
+            + "        <choose>"
+            + "    <when test='\"inDate\".equalsIgnoreCase(item.property)'>inDate</when>"
+            + "    <when test='\"date\".equalsIgnoreCase(item.property)'>inDate</when>"
+            + "    <when test='\"title\".equalsIgnoreCase(item.property)'>title</when>"
+            + "    <when test='\"id\".equalsIgnoreCase(item.property)'>id</when>"
+            + "    <when test='\"timeLimit\".equalsIgnoreCase(item.property)'>timeLimit</when>"
+            + "    <when test='\"memoryLimit\".equalsIgnoreCase(item.property)'>memoryLimit</when>"
+            + "    <when test='\"defunct\".equalsIgnoreCase(item.property)'>p.disabled</when>"
+            + "    <when test='\"disabled\".equalsIgnoreCase(item.property)'>p.disabled</when>"
+            + "    <when test='\"contest\".equalsIgnoreCase(item.property)'>p.contest_id</when>"
+            + "    <otherwise>id</otherwise>"
+            + "  </choose>"
+            + "<if test='item.descending'> DESC</if>"
+            + "  </foreach>"
+            + "</if> p.problem_id limit #{pageable.offset},#{pageable.pageSize}"
+            + "</script>")
+    List<Problem> findAll(@Param("form") ProblemForm form, @Param("userId") String userId, @Param("lang") String lang, @Param("pageable") Pageable pageable);
+
+    @Select("<script>"
+            + "SELECT COUNT(*) total from problem p"
+            + WHERE
+            + "</script>")
+    long count(@Param("form") ProblemForm form);
 
     @Select("select score,count(*) count from solution where problem_id=#{problemId} group by score")
     List<ScoreCount> groupByScore(@Param("problemId") long problemId);

@@ -1,12 +1,14 @@
 package cn.edu.zjnu.acm.judge.controller.problem;
 
+import cn.edu.zjnu.acm.judge.data.form.ProblemForm;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
-import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
-import cn.edu.zjnu.acm.judge.service.LocaleService;
-import java.util.List;
+import cn.edu.zjnu.acm.judge.service.ProblemService;
 import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -19,20 +21,21 @@ import org.thymeleaf.util.StringUtils;
 public class SearchProblemController {
 
     @Autowired
-    private ProblemMapper problemMapper;
-    @Autowired
-    private LocaleService localeService;
+    private ProblemService problemService;
 
     @GetMapping("/searchproblem")
     public String searchProblem(Model model,
             @RequestParam(value = "sstr", required = false) String query,
-            Locale locale,
+            Locale locale, @PageableDefault(100) Pageable pageable,
             Authentication authentication) {
         if (StringUtils.isEmpty(query)) {
             throw new MessageException("Please input the keyword to the problem.", HttpStatus.BAD_REQUEST);
         }
         String userId = authentication != null ? authentication.getName() : null;
-        List<Problem> problems = problemMapper.findAllBySearchTitleOrSourceAndDisabledFalse(query, userId, localeService.resolve(locale));
+        ProblemForm problemForm = new ProblemForm();
+        problemForm.setDisabled(Boolean.FALSE);
+        problemForm.setQuery(query);
+        Page<Problem> problems = problemService.findAll(problemForm, userId, pageable, locale);
 
         model.addAttribute("query", query);
         model.addAttribute("problems", problems);

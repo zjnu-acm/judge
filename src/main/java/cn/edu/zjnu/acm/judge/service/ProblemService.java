@@ -16,6 +16,7 @@
 package cn.edu.zjnu.acm.judge.service;
 
 import cn.edu.zjnu.acm.judge.config.JudgeConfiguration;
+import cn.edu.zjnu.acm.judge.data.form.ProblemForm;
 import cn.edu.zjnu.acm.judge.domain.DomainLocale;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.exception.BusinessCode;
@@ -30,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,9 +51,9 @@ public class ProblemService {
     @Autowired
     private JudgeConfiguration judgeConfiguration;
 
-    public Page<Problem> findAll(Pageable pageable, Locale locale) {
-        long total = problemMapper.count();
-        return new PageImpl<>(problemMapper.findAll(localeService.resolve(locale), pageable), pageable, total);
+    public Page<Problem> findAll(ProblemForm problemForm, String userId, Pageable pageable, Locale locale) {
+        long total = problemMapper.count(problemForm);
+        return new PageImpl<>(problemMapper.findAll(problemForm, userId, localeService.resolve(locale), pageable), pageable, total);
     }
 
     public void updateSelective(long problemId, Problem p, String lang) {
