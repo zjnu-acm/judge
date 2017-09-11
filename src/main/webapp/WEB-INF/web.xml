@@ -6,4 +6,8 @@
             http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <display-name>ZJNU Online Judge</display-name>
     <distributable/>
+    <error-page>
+        <exception-type>org.springframework.security.web.authentication.rememberme.CookieTheftException</exception-type>
+        <location>/login</location>
+    </error-page>
 </web-app>
