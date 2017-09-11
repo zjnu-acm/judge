@@ -27,7 +27,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="problem:${problems}" th:object="${problem}" th:class="*{status==1?'ac':status==2?'wa':''}">
+                    <tr th:each="problem:${page}" th:object="${problem}" th:class="*{status==1?'ac':status==2?'wa':''}">
                         <td class="status"></td>
                         <td th:text="*{id}">id</td>
                         <td><a th:href="@{/showproblem(problem_id=*{id})}" th:text="*{title}">title</a></td>
@@ -37,7 +37,7 @@
             </table>
         </div>
         <div class="text-center">
-            <font style="color: blue" size="5">Total [[${problems.totalElements}]] Problems match!</font>
+            <font style="color: blue" size="5">Total [[${page.totalElements}]] Problems match!</font>
         </div>
         <!--/*/</th:block>/*/-->
     </body>

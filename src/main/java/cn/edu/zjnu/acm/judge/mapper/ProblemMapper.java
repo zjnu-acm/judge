@@ -80,10 +80,6 @@ public interface ProblemMapper {
     @Update("update problem set disabled=#{disabled} where problem_id=#{id}")
     long setDisabled(@Param("id") long id, @Param("disabled") boolean disabled);
 
-    @Deprecated
-    @Select("select COALESCE(max(problem_id)+1,1000) maxp from problem")
-    long nextId();
-
     @Insert("INSERT INTO problem (problem_id,title,description,input,output,sample_input,sample_output,"
             + "hint,source,in_date,time_limit,memory_limit,contest_id) values ("
             + "#{id},COALESCE(#{title},''),COALESCE(#{description},''),COALESCE(#{input},''),COALESCE(#{output},''),COALESCE(#{sampleInput},''),COALESCE(#{sampleOutput},''),"
@@ -103,22 +99,6 @@ public interface ProblemMapper {
             + "</foreach>"
             + "</script>")
     long setContestBatch(@Param("problems") long[] problem, @Param("contest") Long contest);
-
-    @Deprecated
-    @Select("<script>"
-            + "select" + LIST_COLUMNS
-            + STATUS
-            + FROM
-            + "<if test='userId!=null'>left join user_problem up "
-            + "on up.user_id=#{userId} and up.problem_id=p.problem_id </if>"
-            + "where not p.disabled and p.problem_id&gt;=#{start} and p.problem_id&lt;=#{end}"
-            + "</script>"
-    )
-    List<Problem> findAllByDisabledFalse(
-            @Nullable @Param("userId") String userId,
-            @Param("start") long start,
-            @Param("end") long end,
-            @Param("lang") String lang);
 
     @Nullable
     @Select("select" + COLUMNS + FROM + " where problem_id=#{id}")
@@ -164,8 +144,9 @@ public interface ProblemMapper {
     long updateSelective(@Param("id") long id, @Param("p") Problem build, @Param("lang") String lang);
 
     String WHERE = "<where>"
-            + "<if test='form.query!=null'> (instr(p.title,#{form.query})&gt;0 or instr(p.source,#{form.query})&gt;0) </if>"
+            + "<if test='form.sstr!=null and form.sstr!=\"\"'> (instr(p.title,#{form.sstr})&gt;0 or instr(p.source,#{form.sstr})&gt;0) </if>"
             + "<if test='form.disabled!=null'> and <if test='!form.disabled'> not </if> disabled</if>"
+            + "<if test='form.notInPendingContest'> and p.problem_id not in (select distinct(cp.problem_id) from contest c,contest_problem cp where c.contest_id=cp.contest_id and c.start_time>now() and not c.disabled)</if>"
             + "</where>";
 
     @Select("<script>"
@@ -187,6 +168,11 @@ public interface ProblemMapper {
             + "    <when test='\"defunct\".equalsIgnoreCase(item.property)'>p.disabled</when>"
             + "    <when test='\"disabled\".equalsIgnoreCase(item.property)'>p.disabled</when>"
             + "    <when test='\"contest\".equalsIgnoreCase(item.property)'>p.contest_id</when>"
+            + "    <when test='\"accepted\".equalsIgnoreCase(item.property)'>p.accepted</when>"
+            + "    <when test='\"submit\".equalsIgnoreCase(item.property)'>p.submit</when>"
+            + "    <when test='\"submit\".equalsIgnoreCase(item.property)'>p.submit</when>"
+            + "    <when test='\"ratio\".equalsIgnoreCase(item.property)'>p.accepted/p.submit</when>"
+            + "    <when test='\"difficulty\".equalsIgnoreCase(item.property)'>(p.submit-p.accepted)/p.submit</when>"
             + "    <otherwise>id</otherwise>"
             + "  </choose>"
             + "<if test='item.descending'> DESC</if>"

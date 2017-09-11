@@ -10,9 +10,9 @@
         <!--/*/<th:block layout:fragment="content">/*/-->
         <ul class="text-center pagination">
             <li style="font-size: x-large">Volume </li>
-            <li th:each="i:${#numbers.sequence(1,totalVolume)}">
-                <a th:href="@{/problemlist(volume=${i})}" th:class="${i==volume?'self':_}">
-                    <font size="5" th:text="${i}">1</font>
+            <li th:each="i:${#numbers.sequence(0,page.totalPages-1)}">
+                <a th:href="@{${url}(page=${i})}" th:class="${i==page.number?'self':_}">
+                    <font size="5" th:text="${i+1}">1</font>
                 </a>
             </li>
         </ul>
@@ -26,27 +26,27 @@
                 <tr class="inc">
                     <th class="status" width="5%" align="center"></th>
                     <th class="id" width="10%" align="center">
-                        <a class="sortable" th:href="@{/problemlist(volume=${volume})}">ID</a>
+                        <a class="sortable" th:href="@{/problemlist}">ID</a>
                     </th>
                     <th class="title" width="50%" align="center">
-                        <a class="sortable" th:href="@{/problemlist(orderby=title,volume=${volume})}">Title</a>
+                        <a class="sortable" th:href="@{/problemlist(sort=title)}">Title</a>
                     </th>
                     <th width="15%" align="center" style="font-weight: bold">
-                        <a class="sortable" th:href="@{/problemlist(orderby=ratio,volume=${volume})}">Ratio</a>
+                        <a class="sortable" th:href="@{/problemlist(sort=ratio)}">Ratio</a>
                         <span>(</span>
-                        <a class="sortable" th:href="@{/problemlist(orderby=accepted,volume=${volume})}">AC</a>
+                        <a class="sortable" th:href="@{/problemlist(sort=accepted)}">AC</a>
                         <span>/</span>
-                        <a class="sortable" th:href="@{/problemlist(orderby=submit,volume=${volume})}">submit</a>
+                        <a class="sortable" th:href="@{/problemlist(sort=submit)}">submit</a>
                         <span>)</span>
                     </th>
                     <th width="8%" align="center">
-                        <a th:href="@{/problemlist(orderby=difficulty,volume=${volume})}" style="font-weight: bold;color: white">Difficulty</a>
+                        <a th:href="@{/problemlist(sort=difficulty)}" style="font-weight: bold;color: white">Difficulty</a>
                     </th>
                     <th width="12%" align="center" style="font-weight: bold">Date</th>
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="problem:${problems}" th:object="${problem}" th:class="*{status==1?'ac':status==2?'wa':''}">
+                <tr th:each="problem:${page}" th:object="${problem}" th:class="*{status==1?'ac':status==2?'wa':''}">
                     <td class="status"></td>
                     <td align="center" th:text="*{id}">problem.id</td>
                     <td><a th:href="@{/showproblem(problem_id=*{id})}" th:text="*{title}">title</a></td>

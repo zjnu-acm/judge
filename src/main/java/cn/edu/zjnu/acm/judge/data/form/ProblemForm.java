@@ -27,7 +27,9 @@ public class ProblemForm implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String query;
+    private String sstr;
     private Boolean disabled;
+    @Deprecated
+    private boolean notInPendingContest;
 
 }

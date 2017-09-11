@@ -17,7 +17,6 @@ package cn.edu.zjnu.acm.judge.mapper;
 
 import cn.edu.zjnu.acm.judge.Application;
 import cn.edu.zjnu.acm.judge.domain.Problem;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,8 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  *
@@ -44,19 +41,6 @@ public class ProblemMapperTest {
 
     void setLang(String lang) {
         this.lang = lang;
-    }
-
-    /**
-     * Test of findAllByDisabledFalse method, of class ProblemMapper.
-     */
-    @Test
-    public void testFindAllByDisabledFalse() {
-        log.debug("findAllByDisabledFalse");
-        String userId = "coach";
-        long start = 1000L;
-        long end = 1099L;
-        instance.findAllByDisabledFalse(userId, start, end, lang);
-        instance.findAllByDisabledFalse(null, start, end, lang);
     }
 
     /**

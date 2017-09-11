@@ -27,12 +27,6 @@ import org.apache.ibatis.annotations.Update;
 @Mapper
 public interface UserPreferenceMapper {
 
-    @Select("select volume from users where user_id=#{userId}")
-    long getVolume(@Param("userId") String userId);
-
-    @Update("update users set volume=#{volumn} where user_id=#{userId}")
-    long setVolumn(@Param("userId") String userId, @Param("volumn") long volumn);
-
     @Select("select style from users where user_id=#{userId}")
     int getStyle(@Param("userId") String userId);
 
