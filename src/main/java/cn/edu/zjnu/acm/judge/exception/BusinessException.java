@@ -40,4 +40,9 @@ public class BusinessException extends RuntimeException {
         return params.clone();
     }
 
+    @Override
+    public Throwable fillInStackTrace() {
+        return this;
+    }
+
 }

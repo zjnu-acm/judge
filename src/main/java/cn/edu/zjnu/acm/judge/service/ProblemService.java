@@ -58,7 +58,7 @@ public class ProblemService {
     public void updateSelective(long problemId, Problem p, String requestLocale) {
         Problem problem = problemMapper.findOne(problemId, requestLocale);
         if (problem == null) {
-            throw new BusinessException(BusinessCode.NOT_FOUND);
+            throw new BusinessException(BusinessCode.PROBLEM_NOT_FOUND, problemId);
         }
         String locale = convert(requestLocale);
         if (locale != null) {
@@ -91,7 +91,7 @@ public class ProblemService {
     public Problem findOne(long id, String lang) {
         Problem problem = problemMapper.findOne(id, convert(lang));
         if (problem == null) {
-            throw new BusinessException(BusinessCode.NOT_FOUND);
+            throw new BusinessException(BusinessCode.PROBLEM_NOT_FOUND, id);
         }
         return problem;
     }
@@ -99,7 +99,7 @@ public class ProblemService {
     public Problem findOne(long id) {
         Problem problem = problemMapper.findOne(id, null);
         if (problem == null) {
-            throw new BusinessException(BusinessCode.NOT_FOUND);
+            throw new BusinessException(BusinessCode.PROBLEM_NOT_FOUND, id);
         }
         return problem;
     }
@@ -112,7 +112,7 @@ public class ProblemService {
     public void delete(long id) {
         long total = problemMapper.deleteI18n(id) + problemMapper.delete(id);
         if (total == 0) {
-            throw new BusinessException(BusinessCode.NOT_FOUND);
+            throw new BusinessException(BusinessCode.PROBLEM_NOT_FOUND, id);
         }
     }
 

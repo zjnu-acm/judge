@@ -3,7 +3,8 @@ package cn.edu.zjnu.acm.judge.controller.problem;
 import cn.edu.zjnu.acm.judge.config.JudgeConfiguration;
 import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.domain.Problem;
-import cn.edu.zjnu.acm.judge.exception.MessageException;
+import cn.edu.zjnu.acm.judge.exception.BusinessCode;
+import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.service.ContestService;
@@ -13,7 +14,6 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,7 +60,7 @@ public class ShowProblemController {
             }
             break;
         }
-        throw new MessageException("Can not find problem (ID:" + problemId + ")", HttpStatus.NOT_FOUND);
+        throw new BusinessException(BusinessCode.PROBLEM_NOT_FOUND, problemId);
     }
 
     @GetMapping(value = "/showproblem", produces = TEXT_HTML_VALUE)

@@ -26,9 +26,17 @@ public enum BusinessCode {
     NOT_FOUND("未找到", HttpStatus.NOT_FOUND),
     UNAUTHORIZED("未登录", HttpStatus.UNAUTHORIZED),
     FORBIDDEN("没有权限", HttpStatus.FORBIDDEN),
-    NO_SUCH_CONTEST("onlinejudge.contest.nosuchcontest"),
     CONTEST_STARTED("比赛已经开始"),
-    CONTEST_ENDED("比赛已经结束");
+    CONTEST_ENDED("比赛已经结束"),
+    SUBMISSION_NOT_FOUND("No such solution", HttpStatus.NOT_FOUND),
+    USER_SEARCH_KEYWORD_SHORT("search key word whose length must be greater than 2"),
+    USER_NOT_FOUND("onlinejudge.user.notfound", HttpStatus.NOT_FOUND),
+    CONTEST_NOT_FOUND("onlinejudge.contest.nosuchcontest", HttpStatus.NOT_FOUND),
+    CONTEST_ONLY_SUBMIT("onlinejudge.contest.only.submit"),
+    CONTEST_ONLY_REGISTER("onlinejudge.contest.only.register"),
+    CONTEST_ONLY_VIEW_SOURCE("onlinejudge.contest.only.view.souree"),
+    PROBLEM_NOT_FOUND("onlinejudge.problem.notfound", HttpStatus.NOT_FOUND),
+    LANGUAGE_NOT_FOUND("onlinejudge.language.notfound");
 
     private final HttpStatus status;
     private final String message;

@@ -172,7 +172,7 @@ public class ContestService {
     private Contest getContest(long contestId) {
         Contest contest = contestMapper.findOne(contestId);
         if (contest == null) {
-            throw new BusinessException(BusinessCode.NOT_FOUND);
+            throw new BusinessException(BusinessCode.CONTEST_NOT_FOUND, contestId);
         }
         return contest;
     }
@@ -189,7 +189,7 @@ public class ContestService {
                 + contestMapper.deleteContestProblems(id)
                 + contestMapper.deleteByPrimaryKey(id);
         if (result == 0) {
-            throw new BusinessException(BusinessCode.NOT_FOUND);
+            throw new BusinessException(BusinessCode.CONTEST_NOT_FOUND, id);
         }
     }
 
@@ -198,7 +198,7 @@ public class ContestService {
         contest.setModifiedTime(Instant.now());
         long result = contestMapper.updateSelective(id, contest);
         if (result == 0) {
-            throw new BusinessException(BusinessCode.NOT_FOUND);
+            throw new BusinessException(BusinessCode.CONTEST_NOT_FOUND, id);
         }
         List<Problem> problems = contest.getProblems();
         if (problems != null) {
@@ -215,7 +215,7 @@ public class ContestService {
 
     public List<Long> submittedProblems(long id) {
         if (contestMapper.findOne(id) == null) {
-            throw new BusinessException(BusinessCode.NOT_FOUND);
+            throw new BusinessException(BusinessCode.CONTEST_NOT_FOUND, id);
         }
         return contestMapper.submittedProblems(id);
     }

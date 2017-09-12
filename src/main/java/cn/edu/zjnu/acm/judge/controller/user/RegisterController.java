@@ -51,7 +51,7 @@ public class RegisterController {
         }
         ValueCheck.checkNick(nick);
         if (userMapper.findOne(userId) != null) {
-            throw new MessageException("The ID( " + userId + ") existed", HttpStatus.NOT_FOUND);
+            throw new MessageException("The ID( " + userId + ") existed", HttpStatus.BAD_REQUEST);
         }
         User user = User.builder().id(userId)
                 .password(passwordEncoder.encode(password))

@@ -1,6 +1,8 @@
 package cn.edu.zjnu.acm.judge.controller.submission;
 
 import cn.edu.zjnu.acm.judge.domain.Submission;
+import cn.edu.zjnu.acm.judge.exception.BusinessCode;
+import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserPreferenceMapper;
@@ -41,7 +43,7 @@ public class ShowSourceController {
         Submission submission = submissionMapper.findOne(submissionId);
 
         if (submission == null) {
-            throw new MessageException("No such solution", HttpStatus.NOT_FOUND);
+            throw new BusinessException(BusinessCode.SUBMISSION_NOT_FOUND, submissionId);
         }
         contestOnlyService.checkViewSource(request, submission);
         String userId = authentication != null ? authentication.getName() : null;

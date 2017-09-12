@@ -1,10 +1,10 @@
 package cn.edu.zjnu.acm.judge.controller.user;
 
 import cn.edu.zjnu.acm.judge.domain.User;
-import cn.edu.zjnu.acm.judge.exception.MessageException;
+import cn.edu.zjnu.acm.judge.exception.BusinessCode;
+import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -25,9 +25,10 @@ public class ModifyUserPageController {
         User user = userMapper.findOne(userId);
 
         if (user == null) {
-            throw new MessageException("user not exists.", HttpStatus.NOT_FOUND);
+            throw new BusinessException(BusinessCode.USER_NOT_FOUND, userId);
         }
         model.addAttribute("user", user);
         return "users/edit";
     }
+
 }

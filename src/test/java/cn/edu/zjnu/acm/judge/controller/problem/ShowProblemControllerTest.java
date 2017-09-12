@@ -16,6 +16,8 @@
 package cn.edu.zjnu.acm.judge.controller.problem;
 
 import cn.edu.zjnu.acm.judge.Application;
+import cn.edu.zjnu.acm.judge.exception.BusinessCode;
+import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +27,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.util.NestedServletException;
 
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -54,10 +58,14 @@ public class ShowProblemControllerTest {
 
     @Test
     public void testShowproblemNotFound() throws Exception {
-        MockMvc mvc = webAppContextSetup(context).build();
-        mvc.perform(get("/showproblem").param("problem_id", "999"))
-                .andExpect(status().isNotFound())
-                .andDo(print());
+        try {
+            MockMvc mvc = webAppContextSetup(context).build();
+            mvc.perform(get("/showproblem").param("problem_id", "999"))
+                    .andExpect(status().isNotFound())
+                    .andDo(print());
+        } catch (NestedServletException ex) {
+            assertTrue(((BusinessException) ex.getCause()).getCode() == BusinessCode.PROBLEM_NOT_FOUND);
+        }
     }
 
 }

@@ -16,7 +16,8 @@
 package cn.edu.zjnu.acm.judge.controller.contest;
 
 import cn.edu.zjnu.acm.judge.domain.Problem;
-import cn.edu.zjnu.acm.judge.exception.EntityNotFoundException;
+import cn.edu.zjnu.acm.judge.exception.BusinessCode;
+import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.service.ContestService;
 import java.util.Locale;
@@ -77,7 +78,7 @@ public class ContestController {
             RedirectAttributes redirectAttributes) {
         Problem problem = contestMapper.getProblem(contestId, problemNum);
         if (problem == null) {
-            throw new EntityNotFoundException();
+            throw new BusinessException(BusinessCode.PROBLEM_NOT_FOUND, problemNum);
         }
         redirectAttributes.addAttribute("problem_id", problem.getOrigin());
         return "redirect:/showproblem";

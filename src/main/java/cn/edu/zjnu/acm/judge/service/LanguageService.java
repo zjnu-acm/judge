@@ -16,7 +16,8 @@
 package cn.edu.zjnu.acm.judge.service;
 
 import cn.edu.zjnu.acm.judge.domain.Language;
-import cn.edu.zjnu.acm.judge.exception.NoSuchLanguageException;
+import cn.edu.zjnu.acm.judge.exception.BusinessCode;
+import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.LanguageMapper;
 import cn.edu.zjnu.acm.judge.util.SpecialCall;
 import java.util.LinkedHashMap;
@@ -50,8 +51,11 @@ public class LanguageService {
     }
 
     public Language getAvailableLanguage(int languageId) {
-        return Optional.ofNullable(languageMapper.findOne(languageId))
-                .orElseThrow(() -> new NoSuchLanguageException("no such language " + languageId));
+        Language language = languageMapper.findOne(languageId);
+        if (language == null) {
+            throw new BusinessException(BusinessCode.LANGUAGE_NOT_FOUND);
+        }
+        return language;
     }
 
     @SpecialCall("problems/status.html")

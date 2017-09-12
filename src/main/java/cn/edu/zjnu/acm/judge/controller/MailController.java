@@ -16,6 +16,8 @@
 package cn.edu.zjnu.acm.judge.controller;
 
 import cn.edu.zjnu.acm.judge.domain.Mail;
+import cn.edu.zjnu.acm.judge.exception.BusinessCode;
+import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.MailMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
@@ -93,7 +95,7 @@ public class MailController {
             throw new MessageException("Sorry, content too long", HttpStatus.PAYLOAD_TOO_LARGE);
         }
         if (userMapper.findOne(to) == null) {
-            throw new MessageException("Sorry, no such user:" + to, HttpStatus.NOT_FOUND);
+            throw new BusinessException(BusinessCode.USER_NOT_FOUND, to);
         }
 
         mailMapper.save(Mail.builder()

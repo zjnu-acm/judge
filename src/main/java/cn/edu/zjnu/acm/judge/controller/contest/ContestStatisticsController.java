@@ -2,7 +2,8 @@ package cn.edu.zjnu.acm.judge.controller.contest;
 
 import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.domain.Language;
-import cn.edu.zjnu.acm.judge.exception.MessageException;
+import cn.edu.zjnu.acm.judge.exception.BusinessCode;
+import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.service.ContestService;
 import cn.edu.zjnu.acm.judge.service.LanguageService;
@@ -17,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -49,7 +49,7 @@ public class ContestStatisticsController {
         Instant now = Instant.now();
         Contest contest = contestMapper.findOneByIdAndNotDisabled(contestId);
         if (contest == null) {
-            throw new MessageException("onlinejudge.contest.nosuchcontest", HttpStatus.NOT_FOUND);
+            throw new BusinessException(BusinessCode.CONTEST_NOT_FOUND, contestId);
         }
         String title = contest.getTitle();
         Instant endTime = contest.getEndTime();

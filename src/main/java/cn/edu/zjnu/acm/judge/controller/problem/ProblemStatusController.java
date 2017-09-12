@@ -18,7 +18,8 @@ package cn.edu.zjnu.acm.judge.controller.problem;
 import cn.edu.zjnu.acm.judge.data.dto.ScoreCount;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.domain.Submission;
-import cn.edu.zjnu.acm.judge.exception.MessageException;
+import cn.edu.zjnu.acm.judge.exception.BusinessCode;
+import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
@@ -34,7 +35,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -80,7 +80,7 @@ public class ProblemStatusController {
         }
         Problem problem = problemMapper.findOneNoI18n(id);
         if (problem == null) {
-            throw new MessageException("No such problem", HttpStatus.NOT_FOUND);
+            throw new BusinessException(BusinessCode.PROBLEM_NOT_FOUND, id);
         }
         final Long contestId = problem.getContest();
         request.setAttribute("contestId", contestId);

@@ -2,7 +2,6 @@ package cn.edu.zjnu.acm.judge.controller.problem;
 
 import cn.edu.zjnu.acm.judge.data.form.ProblemForm;
 import cn.edu.zjnu.acm.judge.domain.Problem;
-import cn.edu.zjnu.acm.judge.exception.BadRequestException;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.service.ProblemService;
 import cn.edu.zjnu.acm.judge.util.URLBuilder;
@@ -32,12 +31,7 @@ public class SearchProblemController {
             throw new MessageException("Please input the keyword to the problem.", HttpStatus.BAD_REQUEST);
         }
         String currentUserId = authentication != null ? authentication.getName() : null;
-        String url;
-        try {
-            url = URLBuilder.fromRequest(request).replaceQueryParam("page").toString();
-        } catch (IllegalStateException | IllegalArgumentException ex) {
-            throw new BadRequestException();
-        }
+        String url = URLBuilder.fromRequest(request).replaceQueryParam("page").toString();
         model.addAttribute("url", url);
         form.setDisabled(Boolean.FALSE);
         form.setNotInPendingContest(true);

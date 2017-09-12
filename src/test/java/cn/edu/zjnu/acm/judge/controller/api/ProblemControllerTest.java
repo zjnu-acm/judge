@@ -122,28 +122,28 @@ public class ProblemControllerTest {
             Problem p = problemService.findOne(id);
             assertNull(p);
         } catch (BusinessException ex) {
-            assertEquals(BusinessCode.NOT_FOUND, ex.getCode());
+            assertEquals(BusinessCode.PROBLEM_NOT_FOUND, ex.getCode());
         }
         try {
             mvc.perform(get("/api/problems/{id}.json", id))
                     .andExpect(status().isNotFound());
         } catch (NestedServletException ex) {
             assertTrue(ex.getCause() instanceof BusinessException);
-            assertEquals(BusinessCode.NOT_FOUND, ((BusinessException) ex.getCause()).getCode());
+            assertEquals(BusinessCode.PROBLEM_NOT_FOUND, ((BusinessException) ex.getCause()).getCode());
         }
         try {
             mvc.perform(delete("/api/problems/{id}.json", id))
                     .andExpect(status().isNotFound());
         } catch (NestedServletException ex) {
             assertTrue(ex.getCause() instanceof BusinessException);
-            assertEquals(BusinessCode.NOT_FOUND, ((BusinessException) ex.getCause()).getCode());
+            assertEquals(BusinessCode.PROBLEM_NOT_FOUND, ((BusinessException) ex.getCause()).getCode());
         }
         try {
             mvc.perform(patch("/api/problems/{id}.json", id).contentType(MediaType.APPLICATION_JSON).content("{}"))
                     .andExpect(status().isNotFound());
         } catch (NestedServletException ex) {
             assertTrue(ex.getCause() instanceof BusinessException);
-            assertEquals(BusinessCode.NOT_FOUND, ((BusinessException) ex.getCause()).getCode());
+            assertEquals(BusinessCode.PROBLEM_NOT_FOUND, ((BusinessException) ex.getCause()).getCode());
         }
     }
 

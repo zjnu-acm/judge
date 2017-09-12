@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 zhanhb.
+ * Copyright 2017 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,6 @@
  */
 package cn.edu.zjnu.acm.judge.exception;
 
-import cn.edu.zjnu.acm.judge.config.JudgeHandlerInterceptor;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,27 +22,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.ModelAndView;
 
-@ControllerAdvice
-@Order(0)
+/**
+ *
+ * @author zhanhb
+ */
+@ControllerAdvice(annotations = Controller.class)
+@Order
 public class GlobalExceptionHandler {
-
-    public static String unauthorized(HttpServletRequest request) {
-        String url = (String) request.getAttribute(JudgeHandlerInterceptor.BACK_URL_ATTRIBUTE_NAME);
-        try {
-            return url == null ? "redirect:/login" : "redirect:/login?url=" + URLEncoder.encode(url, "UTF-8");
-        } catch (UnsupportedEncodingException ex) {
-            throw new AssertionError(ex);
-        }
-    }
 
     @Autowired
     private MessageSource messageSource;
 
+    @ExceptionHandler(BusinessException.class)
+    public ModelAndView handler(BusinessException businessException, Locale locale, HttpServletResponse response) {
+        BusinessCode code = businessException.getCode();
+        HttpStatus status = code.getStatus();
+        String message = code.getMessage();
+        message = messageSource.getMessage(message, businessException.getParams(), message, locale);
+        if (status.is4xxClientError()) {
+            response.setStatus(status.value());
+        }
+        ModelMap modelMap = new ModelMap();
+        modelMap.addAttribute("message", message);
+        return new ModelAndView("message", modelMap);
+    }
+
     @ExceptionHandler(MessageException.class)
-    public String messageExceptionHandler(MessageException ex, Locale locale,
+    public ModelAndView messageExceptionHandler(MessageException ex, Locale locale,
             HttpServletRequest request, HttpServletResponse response) {
         String message = ex.getMessage();
         HttpStatus code = ex.getHttpStatus();
@@ -54,12 +63,9 @@ public class GlobalExceptionHandler {
         if (code.is4xxClientError()) {
             response.setStatus(code.value());
         }
-        return "message";
-    }
-
-    @ExceptionHandler(ForbiddenException.class)
-    public String forbiddenExceptionHandler(HttpServletRequest request) {
-        return unauthorized(request);
+        ModelMap modelMap = new ModelMap();
+        modelMap.addAttribute("message", message);
+        return new ModelAndView("message", modelMap);
     }
 
 }

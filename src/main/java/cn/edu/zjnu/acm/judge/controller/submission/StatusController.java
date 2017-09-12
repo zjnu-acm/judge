@@ -3,7 +3,6 @@ package cn.edu.zjnu.acm.judge.controller.submission;
 import cn.edu.zjnu.acm.judge.data.form.SubmissionQueryForm;
 import cn.edu.zjnu.acm.judge.domain.Language;
 import cn.edu.zjnu.acm.judge.domain.Submission;
-import cn.edu.zjnu.acm.judge.exception.BadRequestException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.service.ContestService;
@@ -61,15 +60,10 @@ public class StatusController {
             @RequestParam(value = "top", required = false) final Long top,
             Authentication authentication) {
         long problemId = 0;
-        String query;
-        try {
-            query = URLBuilder.fromRequest(request)
-                    .replaceQueryParam("top")
-                    .replaceQueryParam("bottom")
-                    .toString();
-        } catch (IllegalStateException | IllegalArgumentException ex) {
-            throw new BadRequestException();
-        }
+        String query = URLBuilder.fromRequest(request)
+                .replaceQueryParam("top")
+                .replaceQueryParam("bottom")
+                .toString();
         log.debug("query={}", query);
         Map<Long, Integer> map = Collections.emptyMap();
         if (contestId != null) {

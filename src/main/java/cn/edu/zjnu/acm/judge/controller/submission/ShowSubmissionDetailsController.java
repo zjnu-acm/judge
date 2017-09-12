@@ -3,6 +3,8 @@ package cn.edu.zjnu.acm.judge.controller.submission;
 import cn.edu.zjnu.acm.judge.data.dto.SubmissionDetail;
 import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.domain.Submission;
+import cn.edu.zjnu.acm.judge.exception.BusinessCode;
+import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
@@ -33,7 +35,7 @@ public class ShowSubmissionDetailsController {
             Authentication authentication) {
         Submission submission = submissionMapper.findOne(submissionId);
         if (submission == null) {
-            throw new MessageException("No such solution", HttpStatus.NOT_FOUND);
+            throw new BusinessException(BusinessCode.SUBMISSION_NOT_FOUND, submissionId);
         }
         Long contestId = submission.getContest();
         if (contestId != null) {

@@ -2,13 +2,13 @@ package cn.edu.zjnu.acm.judge.controller.contest;
 
 import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.domain.Problem;
-import cn.edu.zjnu.acm.judge.exception.MessageException;
+import cn.edu.zjnu.acm.judge.exception.BusinessCode;
+import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.service.LocaleService;
 import java.util.List;
 import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,7 +30,7 @@ public class ContestProblemListController {
             Locale locale, Authentication authentication) {
         Contest contest = contestMapper.findOneByIdAndNotDisabled(contestId);
         if (contest == null) {
-            throw new MessageException("onlinejudge.contest.nosuchcontest", HttpStatus.NOT_FOUND);
+            throw new BusinessException(BusinessCode.CONTEST_NOT_FOUND, contestId);
         }
         model.addAttribute("contestId", contestId);
         model.addAttribute("contest", contest);

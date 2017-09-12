@@ -1,10 +1,10 @@
 package cn.edu.zjnu.acm.judge.controller.submission;
 
-import cn.edu.zjnu.acm.judge.exception.MessageException;
+import cn.edu.zjnu.acm.judge.exception.BusinessCode;
+import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.util.JudgeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +21,7 @@ public class ShowCompileInfoController {
         String compileInfo = submissionMapper.findCompileInfoById(submissionId);
 
         if (compileInfo == null) {
-            throw new MessageException("No such solution", HttpStatus.NOT_FOUND);
+            throw new BusinessException(BusinessCode.SUBMISSION_NOT_FOUND, submissionId);
         }
 
         model.addAttribute("compileInfo", JudgeUtils.escapeCompileInfo(compileInfo));

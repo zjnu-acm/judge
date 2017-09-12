@@ -1,6 +1,8 @@
 package cn.edu.zjnu.acm.judge.controller.user;
 
 import cn.edu.zjnu.acm.judge.domain.User;
+import cn.edu.zjnu.acm.judge.exception.BusinessCode;
+import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
 import cn.edu.zjnu.acm.judge.util.ValueCheck;
@@ -42,7 +44,7 @@ public class ModifyUserController {
         String userId = authentication != null ? authentication.getName() : null;
         User user = userMapper.findOne(userId);
         if (user == null) {
-            throw new MessageException("The ID( " + userId + " ) is not existed", HttpStatus.CONFLICT);
+            throw new BusinessException(BusinessCode.USER_NOT_FOUND, userId);
         }
         String password = user.getPassword();
         if (!passwordEncoder.matches(oldPassword, password)) {

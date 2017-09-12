@@ -15,8 +15,10 @@
  */
 package cn.edu.zjnu.acm.judge.controller;
 
-import cn.edu.zjnu.acm.judge.exception.GlobalExceptionHandler;
+import cn.edu.zjnu.acm.judge.config.JudgeHandlerInterceptor;
 import cn.edu.zjnu.acm.judge.service.ContestOnlyService;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -62,8 +64,9 @@ public class MainController {
     }
 
     @GetMapping(value = "/unauthorized", produces = {TEXT_HTML_VALUE, ALL_VALUE})
-    public String unauthorizedHtml(HttpServletRequest request) {
-        return GlobalExceptionHandler.unauthorized(request);
+    public String unauthorizedHtml(HttpServletRequest request) throws UnsupportedEncodingException {
+        String url = (String) request.getAttribute(JudgeHandlerInterceptor.BACK_URL_ATTRIBUTE_NAME);
+        return url == null ? "redirect:/login" : "redirect:/login?url=" + URLEncoder.encode(url, "UTF-8");
     }
 
     @GetMapping(value = "/unauthorized", produces = APPLICATION_JSON_VALUE)

@@ -15,7 +15,6 @@
  */
 package cn.edu.zjnu.acm.judge.controller.user;
 
-import cn.edu.zjnu.acm.judge.exception.BadRequestException;
 import cn.edu.zjnu.acm.judge.service.AccountService;
 import cn.edu.zjnu.acm.judge.util.URLBuilder;
 import javax.servlet.http.HttpServletRequest;
@@ -55,14 +54,9 @@ public class UserListController {
 
         pageable = new PageRequest(pageable.getPageNumber(), pageSize, sort);
 
-        String query;
-        try {
-            query = URLBuilder.fromRequest(request)
-                    .replaceQueryParam("page")
-                    .toString();
-        } catch (IllegalStateException | IllegalArgumentException ex) {
-            throw new BadRequestException();
-        }
+        String query = URLBuilder.fromRequest(request)
+                .replaceQueryParam("page")
+                .toString();
 
         request.setAttribute("url", query);
         request.setAttribute("page", accountService.findAll(pageable));

@@ -1,14 +1,14 @@
 package cn.edu.zjnu.acm.judge.controller.user;
 
 import cn.edu.zjnu.acm.judge.domain.UserProblem;
-import cn.edu.zjnu.acm.judge.exception.MessageException;
+import cn.edu.zjnu.acm.judge.exception.BusinessCode;
+import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserProblemMapper;
 import java.util.BitSet;
 import java.util.List;
 import java.util.function.BiConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,7 +52,7 @@ public class UserCompareController {
 
     private void checkUser(String uid) {
         if (userMapper.findOne(uid) == null) {
-            throw new MessageException("No such user:" + uid, HttpStatus.NOT_FOUND);
+            throw new BusinessException(BusinessCode.USER_NOT_FOUND, uid);
         }
     }
 

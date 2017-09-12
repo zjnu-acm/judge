@@ -16,14 +16,14 @@
 package cn.edu.zjnu.acm.judge.service;
 
 import cn.edu.zjnu.acm.judge.domain.Submission;
-import cn.edu.zjnu.acm.judge.exception.MessageException;
+import cn.edu.zjnu.acm.judge.exception.BusinessCode;
+import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 /**
@@ -62,7 +62,7 @@ public class ContestOnlyService {
             return;
         }
         if (!Objects.equals(contest, contestOnly)) {
-            throw new MessageException("onlinejudge.contest.only.submit", HttpStatus.BAD_REQUEST);
+            throw new BusinessException(BusinessCode.CONTEST_ONLY_SUBMIT);
         }
     }
 
@@ -71,12 +71,12 @@ public class ContestOnlyService {
         if (contestOnly == null) {
             return;
         }
-        throw new MessageException("onlinejudge.contest.only.register", HttpStatus.BAD_REQUEST);
+        throw new BusinessException(BusinessCode.CONTEST_ONLY_REGISTER);
     }
 
     public void checkViewSource(HttpServletRequest request, @NonNull Submission submission) {
         if (!canViewSource(request, submission)) {
-            throw new MessageException("onlinejudge.contest.only.view.souree", HttpStatus.BAD_REQUEST);
+            throw new BusinessException(BusinessCode.CONTEST_ONLY_VIEW_SOURCE, submission.getId());
         }
     }
 

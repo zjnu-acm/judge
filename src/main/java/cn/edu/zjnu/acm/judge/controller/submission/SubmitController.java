@@ -7,7 +7,8 @@ import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.domain.Language;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.domain.Submission;
-import cn.edu.zjnu.acm.judge.exception.ForbiddenException;
+import cn.edu.zjnu.acm.judge.exception.BusinessCode;
+import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
@@ -64,7 +65,7 @@ public class SubmitController {
         if (source.length() < 10) {
             throw new MessageException("Source code too short, submit FAILED;if you really need submit this source please contact administrator", HttpStatus.BAD_REQUEST);
         }
-        UserModel userModel = UserDetailService.getCurrentUser(request).orElseThrow(ForbiddenException::new);
+        UserModel userModel = UserDetailService.getCurrentUser(request).orElseThrow(() -> new BusinessException(BusinessCode.UNAUTHORIZED));
         Instant instant = Instant.now();
         long now = instant.toEpochMilli();  //获取当前时间
 
@@ -79,7 +80,7 @@ public class SubmitController {
 
         //检查该题是否被禁用
         if (problem == null) {
-            throw new MessageException("No such problem", HttpStatus.NOT_FOUND);
+            throw new BusinessException(BusinessCode.PROBLEM_NOT_FOUND, problemId);
         }
 
         Long contestId = problem.getContest();
@@ -94,7 +95,7 @@ public class SubmitController {
 
             // contest not started yet, can't view the problem.
             if (!contest.isStarted()) {
-                throw new MessageException("No such problem", HttpStatus.NOT_FOUND);
+                throw new BusinessException(BusinessCode.PROBLEM_NOT_FOUND, problemId);
             }
 
             // set contest id of the problem to null if the contest is ended.
