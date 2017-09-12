@@ -18,9 +18,11 @@ package cn.edu.zjnu.acm.judge.controller.api;
 import cn.edu.zjnu.acm.judge.data.form.ContestForm;
 import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.service.ContestService;
+import cn.edu.zjnu.acm.judge.service.UserStanding;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Future;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -82,6 +84,11 @@ public class ContestController {
     @GetMapping("{id}/problems/submitted")
     public List<Long> submittedProblems(@PathVariable("id") long id) {
         return contestService.submittedProblems(id);
+    }
+
+    @GetMapping("{id}/standing")
+    public Future<List<UserStanding>> standing(@PathVariable("id") long id) {
+        return contestService.standingAsync(id);
     }
 
 }

@@ -55,17 +55,17 @@ public class ProblemService {
         return new PageImpl<>(problemMapper.findAll(problemForm, userId, localeService.resolve(locale), pageable), pageable, total);
     }
 
-    public void updateSelective(long problemId, Problem p, String lang) {
-        Problem problem = problemMapper.findOne(problemId, lang);
+    public void updateSelective(long problemId, Problem p, String requestLocale) {
+        Problem problem = problemMapper.findOne(problemId, requestLocale);
         if (problem == null) {
             throw new BusinessException(BusinessCode.NOT_FOUND);
         }
-        String computedLang = convert(lang);
-        if (computedLang != null) {
-            problemMapper.touchI18n(problemId, computedLang);
+        String locale = convert(requestLocale);
+        if (locale != null) {
+            problemMapper.touchI18n(problemId, locale);
         }
         p.setModifiedTime(Instant.now());
-        problemMapper.updateSelective(problemId, p, computedLang);
+        problemMapper.updateSelective(problemId, p, locale);
     }
 
     @Transactional

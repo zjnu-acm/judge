@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.controller.contest;
+package cn.edu.zjnu.acm.judge.service;
 
 import java.util.Comparator;
 import java.util.HashMap;

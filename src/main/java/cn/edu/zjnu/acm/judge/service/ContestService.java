@@ -28,12 +28,20 @@ import cn.edu.zjnu.acm.judge.util.SpecialCall;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.ObjIntConsumer;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +67,7 @@ public class ContestService {
     private LocaleService localeService;
     @Autowired
     private ObjectMapper objectMapper;
+    private static final ConcurrentMap<Long, CompletableFuture<List<UserStanding>>> STANDINGS = new ConcurrentHashMap<>(20);
 
     @SpecialCall("contests/problems.html")
     public String getStatus(Contest contest) {
@@ -84,7 +93,7 @@ public class ContestService {
     public List<Contest> findAll(ContestForm form) {
         EnumSet<ContestStatus> exclude = parse(form.getExclude());
         EnumSet<ContestStatus> include = parse(form.getInclude());
-        Set<ContestStatus> result;
+        EnumSet<ContestStatus> result;
         if (!exclude.isEmpty()) {
             result = EnumSet.allOf(ContestStatus.class);
             result.removeAll(exclude);
@@ -100,7 +109,7 @@ public class ContestService {
         return contestMapper.findAllByQuery(false, toMask(EnumSet.of(first, rest)));
     }
 
-    private int toMask(Set<ContestStatus> result) {
+    private int toMask(EnumSet<ContestStatus> result) {
         int mask = 0;
         for (ContestStatus contestStatus : result) {
             mask |= 1 << contestStatus.ordinal();
@@ -223,6 +232,45 @@ public class ContestService {
     public String toProblemIndex(int num) {
         char t = (char) ('A' + num);
         return String.valueOf(t);
+    }
+
+    public List<UserStanding> standing(long id) {
+        Map<String, UserStanding> hashMap = new HashMap<>(80);
+        contestMapper.standing(id).forEach(standing
+                -> hashMap.computeIfAbsent(standing.getUser(), UserStanding::new)
+                        .add(standing.getProblem(), standing.getTime(), standing.getPenalty())
+        );
+        contestMapper.attenders(id).forEach(attender
+                -> Optional.ofNullable(hashMap.get(attender.getId()))
+                        .ifPresent(us -> us.setNick(attender.getNick()))
+        );
+        UserStanding[] standings = hashMap.values().stream().sorted(UserStanding.COMPARATOR).toArray(UserStanding[]::new);
+        setIndexes(standings, Comparator.nullsFirst(UserStanding.COMPARATOR), UserStanding::setIndex);
+        return Arrays.asList(standings);
+    }
+
+    public CompletableFuture<List<UserStanding>> standingAsync(long id) {
+        return STANDINGS.computeIfAbsent(id, contestId -> CompletableFuture.supplyAsync(() -> {
+            List<UserStanding> result = standing(contestId);
+            STANDINGS.remove(id);
+            return result;
+        }));
+    }
+
+    @SuppressWarnings("ValueOfIncrementOrDecrementUsed")
+    private <T> void setIndexes(T[] standings, Comparator<T> c, ObjIntConsumer<T> consumer) {
+        Objects.requireNonNull(standings, "standings");
+        Objects.requireNonNull(c, "c");
+        Objects.requireNonNull(consumer, "consumer");
+        int i = 0, len = standings.length, lastIndex = 0;
+
+        for (T last = null, standing; i < len; last = standing) {
+            standing = standings[i++];
+            if (c.compare(standing, last) != 0) {
+                lastIndex = i;
+            }
+            consumer.accept(standing, lastIndex);
+        }
     }
 
 }

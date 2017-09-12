@@ -87,8 +87,8 @@ public class ProblemController {
     @PatchMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@PathVariable("id") long problemId, @RequestBody Problem p,
-            @RequestParam(value = "locale", required = false) String lang) {
-        problemService.updateSelective(problemId, p, lang);
+            @RequestParam(value = "locale", required = false) String requestLocale) {
+        problemService.updateSelective(problemId, p, requestLocale);
     }
 
 }
