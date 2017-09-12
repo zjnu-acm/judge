@@ -24,14 +24,20 @@ public class BusinessException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     private final BusinessCode code;
+    private final Object[] params;
 
-    public BusinessException(BusinessCode errorCode) {
+    public BusinessException(BusinessCode errorCode, Object... params) {
         super(errorCode.name());
         this.code = errorCode;
+        this.params = params == null ? new Object[0] : params.clone();
     }
 
     public BusinessCode getCode() {
         return code;
+    }
+
+    public Object[] getParams() {
+        return params.clone();
     }
 
 }

@@ -15,27 +15,39 @@
  */
 package cn.edu.zjnu.acm.judge.exception;
 
+import org.springframework.http.HttpStatus;
+
 /**
  *
  * @author zhanhb
  */
 public enum BusinessCode {
 
-    NOT_FOUND("未找到"),
-    UNAUTHORIZED("未登录"),
-    FORBIDDEN("没有权限"),
+    NOT_FOUND("未找到", HttpStatus.NOT_FOUND),
+    UNAUTHORIZED("未登录", HttpStatus.UNAUTHORIZED),
+    FORBIDDEN("没有权限", HttpStatus.FORBIDDEN),
     NO_SUCH_CONTEST("onlinejudge.contest.nosuchcontest"),
     CONTEST_STARTED("比赛已经开始"),
     CONTEST_ENDED("比赛已经结束");
 
+    private final HttpStatus status;
     private final String message;
 
     BusinessCode(String message) {
+        this(message, HttpStatus.BAD_REQUEST);
+    }
+
+    BusinessCode(String message, HttpStatus httpStatus) {
         this.message = message;
+        this.status = httpStatus;
     }
 
     public String getMessage() {
         return message;
+    }
+
+    public HttpStatus getStatus() {
+        return status;
     }
 
 }

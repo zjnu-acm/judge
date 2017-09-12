@@ -19,7 +19,6 @@ import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -39,22 +38,9 @@ public class BusinessExceptionHandler {
     public ResponseEntity<?> handler(BusinessException businessException, Locale locale) {
         ResponseEntity.BodyBuilder builder;
         BusinessCode code = businessException.getCode();
-        switch (code) {
-            case NOT_FOUND:
-                builder = ResponseEntity.status(HttpStatus.NOT_FOUND);
-                break;
-            case UNAUTHORIZED:
-                builder = ResponseEntity.status(HttpStatus.UNAUTHORIZED);
-                break;
-            case FORBIDDEN:
-                builder = ResponseEntity.status(HttpStatus.FORBIDDEN);
-                break;
-            default:
-                builder = ResponseEntity.badRequest();
-                break;
-        }
+        builder = ResponseEntity.status(code.getStatus());
         String message = code.getMessage();
-        return builder.body(new GenericExceptionBean(messageSource.getMessage(message, null, message, locale)));
+        return builder.body(new GenericExceptionBean(messageSource.getMessage(message, businessException.getParams(), message, locale)));
     }
 
 }
