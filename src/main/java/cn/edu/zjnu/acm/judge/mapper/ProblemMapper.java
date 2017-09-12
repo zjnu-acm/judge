@@ -77,9 +77,6 @@ public interface ProblemMapper {
 
     String FROM = " from problem p left join problem_i18n pi on p.problem_id=pi.id and pi.locale=#{lang} ";
 
-    @Update("update problem set disabled=#{disabled} where problem_id=#{id}")
-    long setDisabled(@Param("id") long id, @Param("disabled") boolean disabled);
-
     @Insert("INSERT INTO problem (problem_id,title,description,input,output,sample_input,sample_output,"
             + "hint,source,in_date,time_limit,memory_limit,contest_id) values ("
             + "#{id},COALESCE(#{title},''),COALESCE(#{description},''),COALESCE(#{input},''),COALESCE(#{output},''),COALESCE(#{sampleInput},''),COALESCE(#{sampleOutput},''),"
@@ -143,7 +140,7 @@ public interface ProblemMapper {
             + "</script>")
     long updateSelective(@Param("id") long id, @Param("p") Problem build, @Param("lang") String lang);
 
-    String WHERE = "<where>"
+    String FORM_CONDITION = "<where>"
             + "<if test='form.sstr!=null and form.sstr!=\"\"'> (instr(p.title,#{form.sstr})&gt;0 or instr(p.source,#{form.sstr})&gt;0) </if>"
             + "<if test='form.disabled!=null'> and <if test='!form.disabled'> not </if> disabled</if>"
             + "<if test='form.notInPendingContest'> and p.problem_id not in (select distinct(cp.problem_id) from contest c,contest_problem cp where c.contest_id=cp.contest_id and c.start_time>now() and not c.disabled)</if>"
@@ -153,7 +150,7 @@ public interface ProblemMapper {
             + "select" + LIST_COLUMNS
             + STATUS + FROM
             + "<if test='userId!=null'>left join user_problem up on up.problem_id=p.problem_id and up.user_id=#{userId}</if>"
-            + WHERE
+            + FORM_CONDITION
             + "<if test='userId!=null'>group by p.problem_id</if>"
             + " order by <if test='pageable.sort!=null'>"
             + "<foreach item='item' index='index' collection='pageable.sort'"
@@ -183,7 +180,7 @@ public interface ProblemMapper {
 
     @Select("<script>"
             + "SELECT COUNT(*) total from problem p"
-            + WHERE
+            + FORM_CONDITION
             + "</script>")
     long count(@Param("form") ProblemForm form);
 

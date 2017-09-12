@@ -78,7 +78,7 @@ public interface UserProblemMapper {
     long updateProblems();
 
     @Select("select problem_id from user_problem where user_id=#{userId} and accepted!=0 order by problem_id")
-    List<Long> findAllByUserIdAndAcceptedNot0(@Param("userId") String userId);
+    List<Long> findAllSolvedByUserId(@Param("userId") String userId);
 
     @Select("select" + COLUMNS + "from user_problem where user_id=#{userId} order by problem_id")
     List<UserProblem> findAllByUserId(@Param("userId") String userId);

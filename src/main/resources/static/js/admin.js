@@ -5,17 +5,16 @@
     var problemListCache;
 
     var app = angular.module('adminApp', ['ngResource', 'ui.router', 'ngSanitize', 'angular-loading-bar', 'ui.bootstrap', 'ngCkeditor', 'datetime']);
-    app.factory('reload', ['$state', function ($state) {
-            return function (view, params, options) {
-                if (typeof view !== 'string') {
-                    options = params;
-                    params = view;
-                    view = $state.current.name;
-                }
-                return $state.go(view, $.extend({}, $state.params || {}, params || {}), options || {location: 'replace', reload: true});
-            };
-        }
-    ]);
+    app.factory('reload', function ($state) {
+        return function (view, params, options) {
+            if (typeof view !== 'string') {
+                options = params;
+                params = view;
+                view = $state.current.name;
+            }
+            return $state.go(view, $.extend({}, $state.params || {}, params || {}), options || {location: 'replace', reload: true});
+        };
+    });
     app.factory('title', function ($document) {
         return function (title) {
             return title ? $document.prop('title', title + ' - 在线评测系统管理后台') : $document.prop('title');

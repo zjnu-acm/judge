@@ -101,7 +101,7 @@ public class ContestController {
     @GetMapping(value = "standing", produces = {TEXT_HTML_VALUE, ALL_VALUE})
     public Future<ModelAndView> standingHtml(@PathVariable("contestId") long contestId, Locale locale) {
         return standing(contestId).thenApplyAsync(standing -> {
-            Contest contest = contestMapper.findOneByIdAndDisabledFalse(contestId);
+            Contest contest = contestMapper.findOneByIdAndNotDisabled(contestId);
             // TODO
             ModelAndView modelAndView = new ModelAndView("contests/standing");
             ModelMap model = modelAndView.getModelMap();

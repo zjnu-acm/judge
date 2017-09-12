@@ -124,14 +124,14 @@ public class ContestMapperTest {
     }
 
     /**
-     * Test of findOneByIdAndDisabledFalse method, of class ContestMapper.
+     * Test of findOneByIdAndNotDisabled method, of class ContestMapper.
      */
     @Test
     public void testFindOneByIdAndDisabledFalse() {
         log.info("findOneByIdAndDisabledFalse");
         long contestId = 0L;
         Contest expResult = null;
-        Contest result = instance.findOneByIdAndDisabledFalse(contestId);
+        Contest result = instance.findOneByIdAndNotDisabled(contestId);
         assertEquals(expResult, result);
     }
 
@@ -145,18 +145,6 @@ public class ContestMapperTest {
         List<User> expResult = Arrays.asList();
         List<User> result = instance.attenders(contestId);
         assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of updateProblemTitle method, of class ContestMapper.
-     */
-    @Test
-    public void testUpdateProblemTitle() {
-        log.info("updateProblemTitle");
-        long contestId = 0L;
-        long problemId = 0L;
-        // nothing happen for there will neither be a contest nor a problem id 0.
-        instance.updateProblemTitle(contestId, problemId);
     }
 
 }

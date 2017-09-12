@@ -28,7 +28,7 @@ public class ContestProblemListController {
     @GetMapping(value = "/showcontest", produces = TEXT_HTML_VALUE)
     public String showContest(Model model, @RequestParam("contest_id") long contestId,
             Locale locale, Authentication authentication) {
-        Contest contest = contestMapper.findOneByIdAndDisabledFalse(contestId);
+        Contest contest = contestMapper.findOneByIdAndNotDisabled(contestId);
         if (contest == null) {
             throw new MessageException("onlinejudge.contest.nosuchcontest", HttpStatus.NOT_FOUND);
         }

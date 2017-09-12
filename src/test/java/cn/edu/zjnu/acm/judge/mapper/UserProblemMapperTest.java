@@ -107,14 +107,14 @@ public class UserProblemMapperTest {
     }
 
     /**
-     * Test of findAllByUserIdAndAcceptedNot0 method, of class
-     * UserProblemMapper.
+     * Test of findAllSolvedByUserId method, of class
+ UserProblemMapper.
      */
     @Test
     public void testFindAllByUserIdAndAcceptedNot0() {
         log.info("findAllByUserIdAndAcceptedNot0");
         String userId = "";
-        instance.findAllByUserIdAndAcceptedNot0(userId);
+        instance.findAllSolvedByUserId(userId);
     }
 
     /**

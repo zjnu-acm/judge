@@ -36,7 +36,7 @@ public class UserStatusController {
         long rank = userMapper.rank(userId) + 1;
         long rankFirst = Math.max(rank - display, 1);
         List<User> neighbours = userMapper.neighbours(userId, display);
-        List<Long> solvedProblems = userProblemMapper.findAllByUserIdAndAcceptedNot0(userId);
+        List<Long> solvedProblems = userProblemMapper.findAllSolvedByUserId(userId);
         model.addAttribute("neighbours", neighbours);
         model.addAttribute("solvedProblems", solvedProblems);
         model.addAttribute("rankFirst", rankFirst);

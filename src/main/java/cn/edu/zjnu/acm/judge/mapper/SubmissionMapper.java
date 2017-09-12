@@ -96,7 +96,7 @@ public interface SubmissionMapper {
     @Select("select solution_id from solution s where problem_id=#{problemId} and score<> "
             + ResultType.SCORE_ACCEPT
             + " order by solution_id desc")
-    List<Long> findAllByProblemIdAndREsultNotAccept(@Param("problemId") long problemId);
+    List<Long> findAllByProblemIdAndResultNotAccept(@Param("problemId") long problemId);
 
     @SelectProvider(type = BestSubmissionsBuilder.class, method = "bestSubmissions")
     List<Submission> bestSubmission(@Param("problemId") long problemId, @Param("pageable") Pageable pageable);

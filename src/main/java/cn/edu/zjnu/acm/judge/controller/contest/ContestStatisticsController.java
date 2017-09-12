@@ -47,7 +47,7 @@ public class ContestStatisticsController {
             Model model,
             @RequestParam("contest_id") long contestId) throws SQLException {
         Instant now = Instant.now();
-        Contest contest = contestMapper.findOneByIdAndDisabledFalse(contestId);
+        Contest contest = contestMapper.findOneByIdAndNotDisabled(contestId);
         if (contest == null) {
             throw new MessageException("onlinejudge.contest.nosuchcontest", HttpStatus.NOT_FOUND);
         }

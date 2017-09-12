@@ -124,7 +124,7 @@ public interface ContestMapper {
             @Param("problem") long problemNum);
 
     @Select("select" + COLUMNS + "from contest where contest_id=#{id} and not disabled")
-    Contest findOneByIdAndDisabledFalse(@Param("id") long contestId);
+    Contest findOneByIdAndNotDisabled(@Param("id") long contestId);
 
     @Select("select s.user_id id,u.nick from solution s left join users u "
             + "on s.user_id=u.user_id where s.contest_id=#{id} group by s.user_id")
@@ -143,9 +143,6 @@ public interface ContestMapper {
             + "</foreach> as t"
             + "</script>")
     long addProblems(@Param("contest_id") long contest_id, @Param("base") int base, @Param("problems") long[] problems);
-
-    @Update("update contest_problem set title=null where problem_id=#{problem} and contest_id=#{contest}")
-    long updateProblemTitle(@Param("contest") long contestId, @Param("problem") long problemId);
 
     @Select("<script>select" + COLUMNS + "from contest"
             + "<where>"
