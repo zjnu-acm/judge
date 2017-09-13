@@ -2,7 +2,7 @@
     'use strict';
     var $ = window.jQuery, angular = window.angular;
     var isLocal = window.location.protocol === 'file:';
-    var problemListCache;
+    var problemListCache, accountListCache;
 
     var app = angular.module('adminApp', ['ngResource', 'ui.router', 'ngSanitize', 'angular-loading-bar', 'ui.bootstrap', 'ngCkeditor', 'datetime']);
     app.factory('reload', function ($state) {
@@ -48,6 +48,13 @@
     app.factory('localeApi', function ($resource, path) {
         return $resource(path.api + 'locales/:id.json', {id: '@id'});
     });
+    app.factory('accountApi', function ($resource, path) {
+        return $resource(path.api + 'accounts/:id.json', {id: '@id'}, {
+            query: {method: 'GET', isArray: false},
+            update: {method: 'PATCH'},
+            updatePassword: {method: 'PATCH', url: path.api + 'accounts/:id/password.json'}
+        });
+    });
     app.factory('miscApi', function ($resource, path) {
         return $resource(path.api + "misc/:action.json", null, {
             getSystemInfo: {method: 'GET', params: {action: 'systemInfo'}},
@@ -72,6 +79,13 @@
         });
         return function () {
             return new Date - timeDiff;
+        };
+    });
+    app.factory('returnIt', function () {
+        return function (x) {
+            return function () {
+                return x;
+            };
         };
     });
     app.directive('currentTime', function (serverTime, $filter) {
@@ -200,6 +214,24 @@
                     controller: 'contest-edit'
                 }
             }
+        }).state('account-list', {
+            title: '用户列表',
+            url: '/accounts.html?userId&nick&query&disabled&page&size&sort',
+            views: {
+                '': {
+                    templateUrl: 'account-list.html',
+                    controller: 'account-list'
+                }
+            }
+        }).state('account-password', {
+            title: '用户列表',
+            url: '/accounts/:id/password.html',
+            views: {
+                '': {
+                    templateUrl: 'account-password.html',
+                    controller: 'account-password'
+                }
+            }
         });
         isLocal || $urlRouterProvider.when(/^#?\/?$/, '/').otherwise('404.html');
     });
@@ -223,7 +255,8 @@
                             window.location = path.base + 'login?url=' + encodeURIComponent(document.location.href);
                             return;
                         }
-                        if (response.status === 400) {
+                        var code = response.status, seris = code / 100 >> 0;
+                        if (seris === 4 && code !== 404) {
                             alert(response.data && response.data.message || response.data);
                         }
                         return $q.reject(response);
@@ -443,7 +476,7 @@
             confirm("确认删除这场比赛？删除后将无法恢复。") && contestApi['delete']({id: contest.id}, function () {
                 $state.go('contest-list');
             });
-        }
+        };
         $scope.isStarted = function (contest) {
             return contest && (!contest.startTime || contest.startTime < serverTime() / 1000);
         };
@@ -585,6 +618,79 @@
             });
             contest.title && title('编辑 - ' + contest.id + (contest.title ? ': ' + contest.title : ''));
         });
+    });
+    app.controller('account-list', function ($scope, $stateParams, $timeout, reload, accountApi, $modal, returnIt) {
+        $scope.params = $.extend({}, $stateParams);
+        function getSorts(sort) {
+            var sorts = sort || [];
+            return typeof sorts === 'string' ? [sorts] : $.extend([], sorts);
+        }
+        function toReqParam() {
+            var args = [{}];
+            args = args.concat.apply(args, arguments);
+            var res = $.extend.apply(null, args);
+            return $.extend({}, res, {sort: getSorts(res.sort).concat(DEFAULT_SORT)});
+        }
+        var DEFAULT_SORT = ['solved,desc', 'submit'];
+        $scope.push = function (sort) {
+            var sorts = $stateParams.sort || [];
+            sorts = typeof sorts === 'string' ? [sorts] : $.extend([], sorts);
+            for (var i = 0, len = sorts.length; i < len; ++i) {
+                if (sorts[i].split(',')[0] === sort) {
+                    i === 0 && sorts[i] === sort && (sort += ',desc');
+                    sorts.splice(i, 1);
+                    --len;
+                }
+            }
+            sorts.unshift(sort);
+            reload({sort: sorts, page: null});
+        };
+        $timeout(function () {
+            $scope.pageChanged = function () {
+                reload({page: $scope.currentPage - 1});
+            };
+        });
+        $scope.page = accountListCache;
+        accountApi.query(toReqParam($stateParams), function (page) {
+            $scope.page = accountListCache = page;
+            $scope.currentPage = page.number + 1;
+        });
+        $scope.currentPage = (+$stateParams.page || 0) + 1;
+        $scope.disable = function (user) {
+            accountApi.update({id: user.id, disabled: true}, function () {
+                user.disabled = true;
+            });
+        };
+        $scope.enable = function (user) {
+            accountApi.update({id: user.id, disabled: false}, function () {
+                user.disabled = false;
+            });
+        };
+        $scope.submit = function () {
+            reload($.extend({}, $scope.params, {page: null}));
+        };
+        $scope.resetPassword = function (u) {
+            $modal.open({
+                templateUrl: 'account-password.html',
+                controller: 'account-password',
+                resolve: {
+                    user: returnIt(u)
+                }
+            });
+        };
+    });
+    app.controller('account-password', function ($scope, accountApi, user, $modalInstance, $interval) {
+        var id = user.id;
+        $scope.user = {id: id, password: id};
+        $scope.submit = function () {
+            $scope.user.password && accountApi.updatePassword($scope.user, function () {
+                alert('重置成功');
+                $modalInstance.dismiss('cancel');
+            });
+        };
+        $scope.dismiss = function (reason) {
+            $modalInstance.dismiss(reason || 'cancel');
+        };
     });
     app.run(function ($rootScope, $state, $interpolate, title, serverTime) {
         $rootScope.$on('$stateChangeSuccess', function (event, state) {

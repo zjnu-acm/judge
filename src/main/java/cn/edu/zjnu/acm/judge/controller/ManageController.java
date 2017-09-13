@@ -43,7 +43,8 @@ public class ManageController {
         "/contests",
         "/contests/add",
         "/contests/{id}",
-        "/contests/{id}/edit"
+        "/contests/{id}/edit",
+        "/accounts"
     })
     public String manage() {
         return "manage";

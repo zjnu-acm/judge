@@ -17,7 +17,10 @@ package cn.edu.zjnu.acm.judge.service;
 
 import cn.edu.zjnu.acm.judge.data.form.AccountForm;
 import cn.edu.zjnu.acm.judge.domain.User;
+import cn.edu.zjnu.acm.judge.exception.BusinessCode;
+import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
+import cn.edu.zjnu.acm.judge.mapper.UserRoleMapper;
 import java.time.Instant;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +41,8 @@ public class AccountService {
     private UserMapper userMapper;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private UserRoleMapper userRoleMapper;
 
     public Page<User> findAll(AccountForm form, Pageable pageable) {
         List<User> list = userMapper.findAll(form, pageable);
@@ -51,8 +56,19 @@ public class AccountService {
     }
 
     public void update(String userId, User user) {
-        User build = user.toBuilder().password(passwordEncoder.encode(user.getPassword())).modifiedTime(Instant.now()).build();
-        userMapper.updateSelective(userId, build);
+        String password = user.getPassword();
+        if (password != null) {
+            List<String> permissions = userRoleMapper.findAllByUserId(userId);
+            for (String permission : permissions) {
+                if ("administrator".equalsIgnoreCase(permission)) {
+                    throw new BusinessException(BusinessCode.RESET_PASSWORD_FORBIDDEN);
+                }
+            }
+            User build = user.toBuilder().password(passwordEncoder.encode(password)).modifiedTime(Instant.now()).build();
+            userMapper.updateSelective(userId, build);
+        } else {
+            userMapper.updateSelective(userId, user.toBuilder().modifiedTime(Instant.now()).build());
+        }
     }
 
 }

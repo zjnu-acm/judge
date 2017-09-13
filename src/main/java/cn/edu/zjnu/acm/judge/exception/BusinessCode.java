@@ -36,7 +36,8 @@ public enum BusinessCode {
     CONTEST_ONLY_REGISTER("onlinejudge.contest.only.register"),
     CONTEST_ONLY_VIEW_SOURCE("onlinejudge.contest.only.view.souree"),
     PROBLEM_NOT_FOUND("onlinejudge.problem.notfound", HttpStatus.NOT_FOUND),
-    LANGUAGE_NOT_FOUND("onlinejudge.language.notfound");
+    LANGUAGE_NOT_FOUND("onlinejudge.language.notfound"),
+    RESET_PASSWORD_FORBIDDEN("由于安全原因，无法重置管理员的密码", HttpStatus.FORBIDDEN);
 
     private final HttpStatus status;
     private final String message;

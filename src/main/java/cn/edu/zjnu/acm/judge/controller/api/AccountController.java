@@ -16,6 +16,7 @@
 package cn.edu.zjnu.acm.judge.controller.api;
 
 import cn.edu.zjnu.acm.judge.data.form.AccountForm;
+import cn.edu.zjnu.acm.judge.data.form.UserPasswordForm;
 import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,13 @@ public class AccountController {
     @PatchMapping("{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@PathVariable("userId") String userId, @RequestBody User user) {
-        accountService.update(userId, user);
+        accountService.update(userId, user.toBuilder().password(null).build());
+    }
+
+    @PatchMapping("{userId}/password")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updatePassword(@PathVariable("userId") String userId, @RequestBody UserPasswordForm user) {
+        accountService.update(userId, User.builder().password(user.getPassword()).build());
     }
 
 }
