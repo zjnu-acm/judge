@@ -51,8 +51,9 @@ public class ProblemService {
     private JudgeConfiguration judgeConfiguration;
 
     public Page<Problem> findAll(ProblemForm problemForm, String userId, Pageable pageable, Locale locale) {
-        long total = problemMapper.count(problemForm);
-        return new PageImpl<>(problemMapper.findAll(problemForm, userId, localeService.resolve(locale), pageable), pageable, total);
+        String resolve = localeService.resolve(locale);
+        long total = problemMapper.count(problemForm, resolve);
+        return new PageImpl<>(problemMapper.findAll(problemForm, userId, resolve, pageable), pageable, total);
     }
 
     public void updateSelective(long problemId, Problem p, String requestLocale) {

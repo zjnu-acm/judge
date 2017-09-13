@@ -29,7 +29,7 @@ public enum BusinessCode {
     CONTEST_STARTED("比赛已经开始"),
     CONTEST_ENDED("比赛已经结束"),
     SUBMISSION_NOT_FOUND("No such solution", HttpStatus.NOT_FOUND),
-    USER_SEARCH_KEYWORD_SHORT("search key word whose length must be greater than 2"),
+    USER_SEARCH_KEYWORD_SHORT("onlinejudge.user.search.short"),
     USER_NOT_FOUND("onlinejudge.user.notfound", HttpStatus.NOT_FOUND),
     CONTEST_NOT_FOUND("onlinejudge.contest.nosuchcontest", HttpStatus.NOT_FOUND),
     CONTEST_ONLY_SUBMIT("onlinejudge.contest.only.submit"),

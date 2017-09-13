@@ -61,16 +61,12 @@ public interface ProblemMapper {
     String LIST_COLUMNS = " p.problem_id id,"
             + "COALESCE(pi.title,p.title) title,"
             + "p.in_date inDate,"
-            + "p.time_limit timeLimit,"
-            + "p.memory_limit memoryLimit,"
             + "p.contest_id contest,"
             + "p.disabled,"
             + "p.accepted,"
             + "p.submit,"
             + "p.solved,"
-            + "p.submit_user submitUser ";
-
-    String LIST_COLUMNS_SOURCE = LIST_COLUMNS + ","
+            + "p.submit_user submitUser,"
             + "COALESCE(pi.source,p.source) source ";
 
     String STATUS = "<if test='userId!=null'>,if(up.submit is null or up.submit=0,0,if(up.accepted!=0,1,2)) status </if>";
@@ -141,7 +137,7 @@ public interface ProblemMapper {
     long updateSelective(@Param("id") long id, @Param("p") Problem build, @Param("lang") String lang);
 
     String FORM_CONDITION = "<where>"
-            + "<if test='form.sstr!=null and form.sstr!=\"\"'> (instr(p.title,#{form.sstr})&gt;0 or instr(p.source,#{form.sstr})&gt;0) </if>"
+            + "<if test='form.sstr!=null and form.sstr!=\"\"'> (instr(COALESCE(pi.title,p.title),#{form.sstr})&gt;0 or instr(COALESCE(pi.source,p.source),#{form.sstr})&gt;0) </if>"
             + "<if test='form.disabled!=null'> and <if test='!form.disabled'> not </if> disabled</if>"
             + "<if test='form.notInPendingContest'> and p.problem_id not in (select distinct(cp.problem_id) from contest c,contest_problem cp where c.contest_id=cp.contest_id and c.start_time>now() and not c.disabled)</if>"
             + "</where>";
@@ -176,13 +172,20 @@ public interface ProblemMapper {
             + "  </foreach>"
             + "</if> p.problem_id limit #{pageable.offset},#{pageable.pageSize}"
             + "</script>")
-    List<Problem> findAll(@Param("form") ProblemForm form, @Param("userId") String userId, @Param("lang") String lang, @Param("pageable") Pageable pageable);
+    List<Problem> findAll(
+            @Param(value = "form") ProblemForm form,
+            @Param(value = "userId") String userId,
+            @Param(value = "lang") String lang,
+            @Param(value = "pageable") Pageable pageable);
 
     @Select("<script>"
             + "SELECT COUNT(*) total from problem p"
+            + "<if test='lang!=null and lang!=\"\"'>"
+            + "<if test='form.sstr!=null'>left join problem_i18n pi on p.problem_id = pi.id and pi.locale=#{lang}</if>"
+            + "</if>"
             + FORM_CONDITION
             + "</script>")
-    long count(@Param("form") ProblemForm form);
+    long count(@Param("form") ProblemForm form, @Param("lang") String lang);
 
     @Select("select score,count(*) count from solution where problem_id=#{problemId} group by score")
     List<ScoreCount> groupByScore(@Param("problemId") long problemId);
