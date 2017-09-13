@@ -20,12 +20,10 @@ import cn.edu.zjnu.acm.judge.service.SystemService;
 import cn.edu.zjnu.acm.judge.util.SpecialCall;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-@Slf4j
 @SpecialCall("fragment/notice.html")
 public class JudgeConfiguration {
 

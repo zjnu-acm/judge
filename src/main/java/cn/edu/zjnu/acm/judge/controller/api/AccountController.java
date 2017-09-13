@@ -18,7 +18,6 @@ package cn.edu.zjnu.acm.judge.controller.api;
 import cn.edu.zjnu.acm.judge.data.form.AccountForm;
 import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.service.AccountService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,7 +41,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping(value = "/api/accounts", produces = APPLICATION_JSON_VALUE)
 @RestController
 @Secured("ROLE_ADMIN")
-@Slf4j
 public class AccountController {
 
     @Autowired
