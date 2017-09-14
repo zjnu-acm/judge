@@ -15,15 +15,13 @@
  */
 package cn.edu.zjnu.acm.judge.exception;
 
+import java.util.Collections;
 import java.util.Locale;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -40,32 +38,20 @@ public class GlobalExceptionHandler {
     private MessageSource messageSource;
 
     @ExceptionHandler(BusinessException.class)
-    public ModelAndView handler(BusinessException businessException, Locale locale, HttpServletResponse response) {
+    public ModelAndView handler(BusinessException businessException, Locale locale) {
         BusinessCode code = businessException.getCode();
         HttpStatus status = code.getStatus();
         String message = code.getMessage();
         message = messageSource.getMessage(message, businessException.getParams(), message, locale);
-        if (status.is4xxClientError()) {
-            response.setStatus(status.value());
-        }
-        ModelMap modelMap = new ModelMap();
-        modelMap.addAttribute("message", message);
-        return new ModelAndView("message", modelMap);
+        return new ModelAndView("message", Collections.singletonMap("message", message), status);
     }
 
     @ExceptionHandler(MessageException.class)
-    public ModelAndView messageExceptionHandler(MessageException ex, Locale locale,
-            HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView messageExceptionHandler(MessageException ex, Locale locale) {
         String message = ex.getMessage();
-        HttpStatus code = ex.getHttpStatus();
+        HttpStatus status = ex.getHttpStatus();
         message = messageSource.getMessage(message, null, message, locale);
-        request.setAttribute("message", message);
-        if (code.is4xxClientError()) {
-            response.setStatus(code.value());
-        }
-        ModelMap modelMap = new ModelMap();
-        modelMap.addAttribute("message", message);
-        return new ModelAndView("message", modelMap);
+        return new ModelAndView("message", Collections.singletonMap("message", message), status);
     }
 
 }

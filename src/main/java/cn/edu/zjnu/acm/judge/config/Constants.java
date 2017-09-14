@@ -28,6 +28,7 @@ public interface Constants {
         String LOCALE = "locales";
         String MAIL = "mails";
         String SYSTEM = "system";
+        String CONTEST_ONLY = "contest-only";
 
     }
 

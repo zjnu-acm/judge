@@ -22,7 +22,7 @@
             <h4 class="text-center" style="color: #339">Welcome To Administrator's Page of Judge Online of ACM ICPC, ZheJiang Normal University</h4>
             <hr/>
         </div>
-        <div class="container" ui-view>
+        <div class="container" ui-view="">
             <div class="text-center">加载中...</div>
         </div><!-- /#content -->
         <div class="container">
@@ -77,9 +77,9 @@
         <div class="setsysteminfo" style="color: #339">
             <form ng-submit="setSystemInfo()" role="form">
                 <input type="text" ng-model="systemInfo.info"/>
-                <input th:id="${#ids.seq('pureText')}" type="checkbox" name="pureText" ng-model="systemInfo.pureText" />
+                <input th:id="${#ids.seq('pureText')}" type="checkbox" name="pureText" ng-model="systemInfo.pureText"/>
                 <label th:for="${#ids.prev('pureText')}">纯文本</label>
-                <button type="submit">set</button>
+                <button class="btn btn-default" type="submit">set</button>
             </form>
         </div>
         <div style="color: #339">
@@ -105,31 +105,31 @@
             <div class="form-group">
                 <label th:for="${#ids.next('title')}" class="col-sm-2 control-label">标题：</label>
                 <div class="col-sm-7">
-                    <input th:id="${#ids.seq('title')}" class="form-control" type="text" name="title" ng-model="form.title" required/>
+                    <input th:id="${#ids.seq('title')}" class="form-control" type="text" name="title" ng-model="form.title" required=""/>
                 </div>
             </div>
             <div class="form-group">
                 <label th:for="${#ids.next('description')}" class="col-sm-2 control-label">描述：</label>
                 <div class="col-sm-7">
-                    <input th:id="${#ids.seq('description')}" class="form-control" name="description" ng-model="form.description" />
+                    <input th:id="${#ids.seq('description')}" class="form-control" name="description" ng-model="form.description"/>
                 </div>
             </div>
             <div class="form-group">
                 <label th:for="${#ids.next('start')}" class="col-sm-2 control-label">开始时间：</label>
                 <div class="col-sm-7">
-                    <input th:id="${#ids.seq('start')}" type="text" datetime="yyyy-MM-dd HH:mm:ss" placeholder="yyyy-MM-dd HH:mm:ss" class="form-control" ng-model="form.start" min="{{form.min.toUTCString()}}" required />
+                    <input th:id="${#ids.seq('start')}" type="text" datetime="yyyy-MM-dd HH:mm:ss" placeholder="yyyy-MM-dd HH:mm:ss" class="form-control" ng-model="form.start" min="{{form.min.toUTCString()}}" required=""/>
                 </div>
             </div>
             <div class="form-group">
                 <label th:for="${#ids.next('length')}" class="col-sm-2 control-label">比赛长度：</label>
                 <div class="col-sm-7">
-                    <input th:id="${#ids.seq('length')}" type="text" name="length" placeholder="d H:mm:ss" value="5:00:00" class="form-control" required pattern="(\d+\s+)?\d+:[0-5]?[0-9]:[0-5]?[0-9]" ng-model="form.length"/>
+                    <input th:id="${#ids.seq('length')}" type="text" name="length" placeholder="d H:mm:ss" value="5:00:00" class="form-control" required="" pattern="(\d+\s+)?\d+:[0-5]?[0-9]:[0-5]?[0-9]" ng-model="form.length"/>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-2 control-label">结束时间：</label>
                 <div class="col-sm-7">
-                    <input readonly ng-value="form.end|date:'yyyy-MM-dd HH:mm:ss'" class="form-control" name="endTime"/>
+                    <input readonly="" ng-value="form.end|date:'yyyy-MM-dd HH:mm:ss'" class="form-control" name="endTime"/>
                 </div>
             </div>
             <div class="table-responsive">
@@ -149,7 +149,7 @@
                                     <b>{{toProblemIndex($index)}}</b>
                                 </td>
                                 <td class="col-sm-3 text-center" style="vertical-align:middle">
-                                    <input name="origin" type="number" autofocus="autofocus" required="required" autocomplete="off" ng-model="p.origin" ng-change="change(p, innerForm)" pattern="[1-9][0-9]+" request-focus/>
+                                    <input name="origin" type="number" autofocus="autofocus" required="required" autocomplete="off" ng-model="p.origin" ng-change="change(p, innerForm)" pattern="[1-9][0-9]+" request-focus=""/>
                                 </td>
                                 <td class="col-sm-5 text-left" style="vertical-align:middle">
                                     <span ng-show="p.title">{{p.title}}</span>
@@ -173,8 +173,8 @@
                     <button type="submit" class="btn btn-default" ng-disabled="contestEditForm.$invalid">Submit</button>
                     <button type="button" class="btn btn-danger" ng-click="reset()">Reset</button>
                 </div>
+            </div>
         </form>
-        </div>
         <!--/*/</script>/*/-->
 
         <!--/*/<script type="text/ng-template" id="problem-edit.html">/*/-->
@@ -201,7 +201,7 @@
             <p align="left">
                 <label th:for="${#ids.next('description')}">Description:</label>
                 <br/>
-                <textarea th:id="${#ids.seq('description')}" class="editable" rows="13" name="description"  style="width: 100%;" ng-model="problem.description"></textarea>
+                <textarea th:id="${#ids.seq('description')}" class="editable" rows="13" name="description" style="width: 100%;" ng-model="problem.description"></textarea>
             </p>
             <p align="left">
                 <label th:for="${#ids.next('input')}">Input:</label>
@@ -210,12 +210,12 @@
             <p align="left">
                 <label th:for="${#ids.next('output')}">Output:</label>
                 <br/>
-                <textarea th:id="${#ids.seq('output')}" class="editable" rows="13" name="output"  style="width: 100%;" ng-model="problem.output"></textarea>
+                <textarea th:id="${#ids.seq('output')}" class="editable" rows="13" name="output" style="width: 100%;" ng-model="problem.output"></textarea>
             </p>
             <p align="left">
                 <label th:for="${#ids.next('sampleInput')}">Sample Input:</label>
                 <br/>
-                <textarea th:id="${#ids.seq('sampleInput')}" rows="13" name="sampleInput"  style="width: 100%;" ng-model="problem.sampleInput"></textarea>
+                <textarea th:id="${#ids.seq('sampleInput')}" rows="13" name="sampleInput" style="width: 100%;" ng-model="problem.sampleInput"></textarea>
             </p>
             <p align="left">
                 <label th:for="${#ids.next('sampleOutput')}">Sample Output:</label>
@@ -225,7 +225,7 @@
             <p align="left">
                 <label th:for="${#ids.next('hint')}">Hint:</label>
                 <br/>
-                <textarea th:id="${#ids.seq('hint')}" class="editable" rows="13" name="hint"  style="width: 100%;" ng-model="problem.hint"></textarea>
+                <textarea th:id="${#ids.seq('hint')}" class="editable" rows="13" name="hint" style="width: 100%;" ng-model="problem.hint"></textarea>
             </p>
             <p align="left">
                 <label th:for="${#ids.next('source')}">Source:</label>
@@ -267,15 +267,14 @@
                             <a ui-sref="problem-view-current({id:p.id})" ui-sref-opts="{reload: true}">{{p.title||'无标题'}}</a>
                         </td>
                         <td>
-                            <a ng-show="p.contest"
-                               ui-sref="contest-view({id:p.contest})" ui-sref-opts="{reload: true}">{{p.contest}}</a>
+                            <a ng-show="p.contest" ui-sref="contest-view({id:p.contest})" ui-sref-opts="{reload: true}">{{p.contest}}</a>
                         </td>
                         <td>{{p.disabled?'已禁用':'可用'}}</td>
                         <td>{{p.inDate * 1000|date:'yyyy-MM-dd HH:mm:ss'}}</td>
                         <td>
-                            <a class="btn btn-default"  ui-sref="problem-edit-current({id:p.id})" ui-sref-opts="{reload: true}">编辑</a>
-                            <a class="btn btn-default"  ng-show="p.disabled" href="" ng-click="enable(p)">启用</a>
-                            <a class="btn btn-default" ng-hide="p.disabled" href="" ng-click="disable(p)">禁用</a>
+                            <a class="btn btn-default" ui-sref="problem-edit-current({id:p.id})" ui-sref-opts="{reload: true}">编辑</a>
+                            <button class="btn btn-default" type="button" ng-show="p.disabled" ng-click="enable(p)">启用</button>
+                            <button class="btn btn-default" type="button" ng-hide="p.disabled" ng-click="disable(p)">禁用</button>
                         </td>
                     </tr>
                 </tbody>
@@ -310,8 +309,8 @@
         <font color="#339" size="3">
             <p class="text-center">
                 <span>[</span>
-                <a ng-hide="problem.disabled" href="" ng-click="disable(problem)">禁用</a>
-                <a ng-show="problem.disabled" href="" ng-click="enable(problem)">启用</a>
+                <a ng-hide="problem.disabled" href="javascript:void(0)" ng-click="disable(problem)">禁用</a>
+                <a ng-show="problem.disabled" href="javascript:void(0)" ng-click="enable(problem)">启用</a>
                 <span>]&nbsp;&nbsp;</span>
                 <span>[</span>
                 <a ui-sref="problem-edit-locale({id:problem.id,locale:locale})" ui-sref-opts="{reload: true}">编辑</a>
@@ -354,8 +353,8 @@
                             <span ng-hide="contestStatus(item) === 'ERROR'" ng-style="statusColor(item)">{{contestStatus(item)}}</span>
                         </td>
                         <td>
-                            <a class="btn btn-default" ng-show="item.disabled" href="" ng-click="enable(item)">启用</a>
-                            <a class="btn btn-default" ng-hide="item.disabled" href="" ng-click="disable(item)">禁用</a>
+                            <button class="btn btn-default" ng-show="item.disabled" type="button" ng-click="enable(item)">启用</button>
+                            <button class="btn btn-default" ng-hide="item.disabled" type="button" ng-click="disable(item)">禁用</button>
                         </td>
                     </tr>
                 </tbody>
@@ -377,10 +376,10 @@
         </div>
         <div class="row" ng-hide="isStarted(contest)">
             <a class="btn btn-default col-sm-offset-5 col-sm-1" ui-sref="contest-edit({id:contest.id})" ui-sref-opts="{reload: true}">编辑</a>
-            <button class="btn btn-danger col-sm-1" ng-click="delete(contest)">删除</button>
+            <button class="btn btn-danger col-sm-1" type="button" ng-click="delete(contest)">删除</button>
         </div>
         <div class="row" ng-show="isStarted(contest)">
-            <button class="btn btn-danger col-sm-offset-5 col-sm-1" ng-click="delete(contest)">删除</button>
+            <button class="btn btn-danger col-sm-offset-5 col-sm-1" type="button" ng-click="delete(contest)">删除</button>
         </div>
         <div class="table-responsive">
             <table class="text-center table table-striped table-hover problems">
@@ -421,7 +420,7 @@
                 <option value="true">已隐藏</option>
                 <option value="">所有</option>
             </select>
-            <button type="submit">查询</button>
+            <button class="btn btn-default" type="submit">查询</button>
         </form>
         <div class="table-responsive">
             <table class="table table-striped table-hover table-bordered">
@@ -444,8 +443,8 @@
                         <td>{{u.submit}}</td>
                         <td>
                             <button class="btn btn-default" type="button" ng-click="resetPassword(u)">重置密码</button>
-                            <a class="btn btn-default" ng-show="u.disabled" href="" ng-click="enable(u)">启用</a>
-                            <a class="btn btn-default" ng-hide="u.disabled" href="" ng-click="disable(u)">禁用</a>
+                            <button class="btn btn-default" type="button" ng-show="u.disabled" ng-click="enable(u)">启用</button>
+                            <button class="btn btn-default" type="button" ng-hide="u.disabled" ng-click="disable(u)">禁用</button>
                         </td>
                     </tr>
                 </tbody>
@@ -457,7 +456,7 @@
         <!--/*/</script>/*/-->
 
         <!--/*/<script type="text/ng-template" id="account-password.html">/*/-->
-        <form class="modal-content" ng-submit="submit()" name="accountPassword" role="form" novalidate>
+        <form class="modal-content" ng-submit="submit()" name="accountPassword" role="form" novalidate="">
             <div class="modal-header">
                 <button type="button" class="close" ng-click="dismiss('modal')" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -469,13 +468,13 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label" th:for="${#ids.next('id')}">ID</label>
                         <div class="col-sm-10">
-                            <input class="form-control" th:id="${#ids.seq('id')}" ng-model="user.id" autocomplete="off" readonly/>
+                            <input class="form-control" th:id="${#ids.seq('id')}" ng-model="user.id" autocomplete="off" readonly=""/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label" th:for="${#ids.next('description')}">密码</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" name="description" th:id="${#ids.seq('description')}" placeholder="请输入新密码" ng-model="user.password" maxlength="20" autocomplete="off" request-focus="true" required/>
+                            <input type="text" class="form-control" name="description" th:id="${#ids.seq('description')}" placeholder="请输入新密码" ng-model="user.password" maxlength="20" autocomplete="off" request-focus="true" required=""/>
                         </div>
                     </div>
                 </div>

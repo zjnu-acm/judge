@@ -20,6 +20,7 @@ import cn.edu.zjnu.acm.judge.data.form.ContestOnlyForm;
 import cn.edu.zjnu.acm.judge.data.form.SystemInfoForm;
 import cn.edu.zjnu.acm.judge.mapper.UserProblemMapper;
 import cn.edu.zjnu.acm.judge.service.ContestOnlyService;
+import java.util.concurrent.CompletableFuture;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
@@ -52,10 +53,11 @@ public class MiscController {
 
     @PostMapping("fix")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void fix() {
+    public CompletableFuture<?> fix() {
         userProblemMapper.init();
-        userProblemMapper.updateProblems();
-        userProblemMapper.updateUsers();
+        CompletableFuture<?> b = CompletableFuture.runAsync(userProblemMapper::updateProblems);
+        CompletableFuture<?> c = CompletableFuture.runAsync(userProblemMapper::updateUsers);
+        return CompletableFuture.allOf(b, c);
     }
 
     @PutMapping("systemInfo")

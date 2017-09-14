@@ -133,9 +133,6 @@ tr.top {
     padding-left: 2px;
     padding-right: 2px;
 }
-.standing td {
-    white-space: pre;
-}
 .standing th {
     padding-left: 8px;
     padding-right: 8px;
@@ -265,4 +262,7 @@ form.form-horizontal .ng-dirty.ng-invalid {
 }
 .sortable {
     cursor: pointer;
+}
+a.btn-default,a.btn-default:link,a.btn-default:visited{
+    color: #333;
 }

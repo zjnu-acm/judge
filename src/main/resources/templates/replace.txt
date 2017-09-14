@@ -1,7 +1,7 @@
 (\b(href|src)="\.\./\.\.(\/[^"]++)")(\s*+(?:\>|(?!th:)))
 $1 th:$2="@{$3}"$4
 
-(\<(?:input|meta|br|hr|img|link)(?:\s+[^\>]*[^/])?)(\>)
+(\<(?:input|meta|br|hr|img|link|base)(?:\s+[^\>]*[^/])?)(\>)
 $1/$2
 
 (<script\s+[^>]+>)\s+(</script>)

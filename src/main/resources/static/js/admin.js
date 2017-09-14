@@ -223,15 +223,6 @@
                     controller: 'account-list'
                 }
             }
-        }).state('account-password', {
-            title: '用户列表',
-            url: '/accounts/:id/password.html',
-            views: {
-                '': {
-                    templateUrl: 'account-password.html',
-                    controller: 'account-password'
-                }
-            }
         });
         isLocal || $urlRouterProvider.when(/^#?\/?$/, '/').otherwise('404.html');
     });
@@ -255,8 +246,8 @@
                             window.location = path.base + 'login?url=' + encodeURIComponent(document.location.href);
                             return;
                         }
-                        var code = response.status, seris = code / 100 >> 0;
-                        if (seris === 4 && code !== 404) {
+                        var code = response.status, series = code / 100 >> 0;
+                        if (series === 4 && code !== 404) {
                             alert(response.data && response.data.message || response.data);
                         }
                         return $q.reject(response);

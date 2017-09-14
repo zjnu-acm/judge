@@ -31,7 +31,7 @@ public class StartUpConfiguration {
 
     @Autowired
     public void setStartUpDate(ServletContext servlet, ApplicationContext application) {
-        servlet.setAttribute("startUpDate", application.getStartupDate());
+        servlet.setAttribute("startupDate", application.getStartupDate());
         log.debug("{}: {}", ServletContext.TEMPDIR, servlet.getAttribute(ServletContext.TEMPDIR));
     }
 

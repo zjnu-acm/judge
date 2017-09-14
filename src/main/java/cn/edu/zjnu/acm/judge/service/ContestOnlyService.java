@@ -15,6 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.service;
 
+import cn.edu.zjnu.acm.judge.config.Constants;
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.exception.BusinessCode;
 import cn.edu.zjnu.acm.judge.exception.BusinessException;
@@ -38,7 +39,7 @@ public class ContestOnlyService {
 
     @Autowired
     public void setCacheManager(CacheManager cacheManager) {
-        cache = cacheManager.getCache("contest-only");
+        cache = cacheManager.getCache(Constants.Cache.CONTEST_ONLY);
     }
 
     public Long getContestOnly() {

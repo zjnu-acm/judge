@@ -17,7 +17,6 @@ package cn.edu.zjnu.acm.judge.controller.api;
 
 import cn.edu.zjnu.acm.judge.domain.DomainLocale;
 import cn.edu.zjnu.acm.judge.service.LocaleService;
-import cn.edu.zjnu.acm.judge.util.BooleanUtils;
 import java.util.List;
 import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,8 +58,8 @@ public class LocaleController {
     }
 
     @GetMapping(params = "all")
-    public List<DomainLocale> supported(@RequestParam("all") String all) {
-        return localeService.support(BooleanUtils.isTrue(all));
+    public List<DomainLocale> supported(@RequestParam("all") boolean all) {
+        return localeService.support(all);
     }
 
 }
