@@ -18,24 +18,6 @@ public interface Kernel32 extends com.sun.jna.platform.win32.Kernel32 {
     boolean AssignProcessToJobObject(HANDLE hJob, HANDLE hProcess);
 
     /**
-     * Controls whether the system will handle the specified types of serious
-     * errors or whether the process will handle them.
-     *
-     *
-     * @param uMode The process error mode. This parameter can be one or more of
-     * the following values.
-     * @return The return value is the previous state of the error-mode bit
-     * flags.
-     * @see
-     * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms680621(v=vs.85).aspx">SetErrorMode</a>
-     * @see #SEM_FAILCRITICALERRORS
-     * @see #SEM_NOALIGNMENTFAULTEXCEPT
-     * @see #SEM_NOGPFAULTERRORBOX
-     * @see #SEM_NOOPENFILEERRORBOX
-     */
-    int SetErrorMode(int /* UINT */ uMode);
-
-    /**
      * The system does not display the critical-error-handler message box.
      * Instead, the system sends the error to the calling process.
      */

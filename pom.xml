@@ -56,7 +56,7 @@
         <java.version>1.8</java.version>
         <javax-mail.version>1.6.0</javax-mail.version>
         <javax-validation.version>2.0.0.Final</javax-validation.version>
-        <jna.version>4.4.0</jna.version>
+        <jna.version>4.5.0</jna.version>
         <logback.version>1.2.3</logback.version>
         <mariadb.version>2.1.1</mariadb.version>
         <maven-compiler-plugin.version>3.6.2</maven-compiler-plugin.version>
