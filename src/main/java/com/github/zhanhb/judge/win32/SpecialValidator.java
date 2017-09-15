@@ -15,7 +15,7 @@
  */
 package com.github.zhanhb.judge.win32;
 
-import cn.edu.zjnu.acm.judge.core.MyPrintWriter;
+import cn.edu.zjnu.acm.judge.service.MyPrintWriter;
 import com.github.zhanhb.judge.common.JudgeException;
 import com.github.zhanhb.judge.common.Status;
 import com.github.zhanhb.judge.common.Validator;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.core;
+package cn.edu.zjnu.acm.judge.service;
 
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;

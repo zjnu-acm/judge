@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.core;
+package cn.edu.zjnu.acm.judge.service;
 
 import cn.edu.zjnu.acm.judge.config.JudgeConfiguration;
 import cn.edu.zjnu.acm.judge.data.dto.RunRecord;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.domain.Submission;
+import cn.edu.zjnu.acm.judge.exception.BusinessCode;
+import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserProblemMapper;
-import cn.edu.zjnu.acm.judge.service.JudgeServerService;
-import cn.edu.zjnu.acm.judge.service.LanguageService;
 import cn.edu.zjnu.acm.judge.util.ResultType;
 import com.github.zhanhb.judge.common.ExecuteResult;
 import com.github.zhanhb.judge.common.JudgeBridge;
@@ -51,16 +51,10 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -99,20 +93,6 @@ public class Judger {
     private JudgeConfiguration judgeConfiguration;
     @Autowired
     private LanguageService languageService;
-    private ExecutorService executorService;
-
-    @PostConstruct
-    public void init() {
-        final ThreadGroup group = new ThreadGroup("judge group");
-        final AtomicInteger counter = new AtomicInteger();
-        final ThreadFactory threadFactory = runnable -> new Thread(group, runnable, "judge thread " + counter.incrementAndGet());
-        executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors(), threadFactory);
-    }
-
-    @PreDestroy
-    public void destroy() {
-        executorService.shutdownNow();
-    }
 
     private void updateSubmissionStatus(RunRecord runRecord) {
         userProblemMapper.update(runRecord.getUserId(), runRecord.getProblemId());
@@ -120,14 +100,14 @@ public class Judger {
         userProblemMapper.updateProblem(runRecord.getProblemId());
     }
 
-    public void reJudge(long submissionId) throws InterruptedException, ExecutionException {
+    CompletableFuture<?> toCompletableFuture(Executor executor, long submissionId) {
         Submission submission = submissionMapper.findOne(submissionId);
         if (submission == null) {
-            return;
+            throw new BusinessException(BusinessCode.SUBMISSION_NOT_FOUND);
         }
         Problem problem = problemMapper.findOneNoI18n(submission.getProblem());
         if (problem == null) {
-            return;
+            throw new BusinessException(BusinessCode.PROBLEM_NOT_FOUND);
         }
         RunRecord runRecord = RunRecord.builder()
                 .submissionId(submission.getId())
@@ -138,7 +118,7 @@ public class Judger {
                 .memoryLimit(problem.getMemoryLimit())
                 .timeLimit(problem.getTimeLimit())
                 .build();
-        executorService.submit(() -> judgeInternal(runRecord)).get();
+        return CompletableFuture.runAsync(() -> judgeInternal(runRecord), executor);
     }
 
     private boolean runProcess(RunRecord runRecord) throws IOException {
@@ -299,10 +279,6 @@ public class Judger {
             updateSubmissionStatus(runRecord);
         }
         return compileOK;
-    }
-
-    public Future<?> judge(RunRecord runRecord) {
-        return executorService.submit(() -> judgeInternal(runRecord));
     }
 
     private void judgeInternal(RunRecord runRecord) {

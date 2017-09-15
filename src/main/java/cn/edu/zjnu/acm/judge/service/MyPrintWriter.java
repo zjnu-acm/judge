@@ -1,4 +1,4 @@
-package cn.edu.zjnu.acm.judge.core;
+package cn.edu.zjnu.acm.judge.service;
 
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;

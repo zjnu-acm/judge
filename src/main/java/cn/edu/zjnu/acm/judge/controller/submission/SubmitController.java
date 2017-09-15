@@ -1,10 +1,7 @@
 package cn.edu.zjnu.acm.judge.controller.submission;
 
-import cn.edu.zjnu.acm.judge.core.Judger;
-import cn.edu.zjnu.acm.judge.data.dto.RunRecord;
 import cn.edu.zjnu.acm.judge.data.dto.UserModel;
 import cn.edu.zjnu.acm.judge.domain.Contest;
-import cn.edu.zjnu.acm.judge.domain.Language;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.exception.BusinessCode;
@@ -15,6 +12,7 @@ import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserPreferenceMapper;
 import cn.edu.zjnu.acm.judge.service.ContestOnlyService;
+import cn.edu.zjnu.acm.judge.service.JudgePool;
 import cn.edu.zjnu.acm.judge.service.LanguageService;
 import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import cn.edu.zjnu.acm.judge.util.ResultType;
@@ -32,7 +30,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class SubmitController {
 
     @Autowired
-    private Judger judger;
+    private JudgePool judgePool;
     @Autowired
     private SubmissionMapper submissionMapper;
     @Autowired
@@ -53,9 +51,8 @@ public class SubmitController {
             @RequestParam("problem_id") long problemId,
             @RequestParam("source") String source,
             RedirectAttributes redirectAttributes) {
-        Language language;
         try {
-            language = languageService.getAvailableLanguage(languageId);
+            languageService.getAvailableLanguage(languageId);
         } catch (IllegalArgumentException ex) {
             throw new MessageException("Please choose a language", HttpStatus.BAD_REQUEST);
         }
@@ -84,8 +81,6 @@ public class SubmitController {
         }
 
         Long contestId = problem.getContest();
-        long memoryLimit = problem.getMemoryLimit();
-        long timeLimit = problem.getTimeLimit();
 
         if (contestId != null) { //竞赛是否存在
             Contest contest = contestMapper.findOne(contestId);
@@ -118,21 +113,11 @@ public class SubmitController {
                 .build();
         submissionMapper.save(submission);
         long submissionId = submission.getId();
-
-        RunRecord runRecord = RunRecord.builder()
-                .submissionId(submissionId)
-                .problemId(problemId)
-                .memoryLimit(memoryLimit)
-                .timeLimit(timeLimit)
-                .language(language)
-                .source(source)
-                .userId(userId)
-                .build();
         problemMapper.setInDate(problemId, instant);
 
         // 插入source_code表
         submissionMapper.saveSource(submissionId, source);
-        judger.judge(runRecord);
+        judgePool.add(submissionId);
         userPerferenceMapper.setLanguage(userId, languageId);
 
         //提交是否在竞赛中
