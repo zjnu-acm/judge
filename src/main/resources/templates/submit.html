@@ -14,6 +14,7 @@
                     <font size="4" color="#339">Submit Your Solution Via Web</font>
                 </p>
                 <p align="center">
+                    <input type="hidden" th:if="contestId!=null" name="contest_id" th:value="${contestId}"/>
                     <label th:for="${#ids.next('pid')}">Problem ID:</label>
                     <input th:id="${#ids.seq('pid')}" type="number" name="problem_id" th:value="${problemId}" accesskey="p" required="required"/>
                     <br/>

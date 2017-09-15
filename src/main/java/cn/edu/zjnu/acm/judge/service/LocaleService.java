@@ -43,7 +43,8 @@ public class LocaleService {
     private LocaleMapper localeMapper;
 
     public String resolve(Locale locale) {
-        return toSupported(locale).toLanguageTag();
+        Locale toSupported = toSupported(locale);
+        return toSupported.equals(Locale.ROOT) ? null : toSupported.toLanguageTag();
     }
 
     public Locale toSupported(Locale locale) {

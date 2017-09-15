@@ -62,7 +62,7 @@ public interface ContestMapper {
             + "on cp.problem_id=temp.problem_id</if>"
             + "left join problem p "
             + "on cp.problem_id=p.problem_id "
-            + "left join problem_i18n pi on p.problem_id=pi.id and pi.locale=#{lang} "
+            + "left join problem_i18n pi on p.problem_id=pi.id and pi.locale<choose><when test='lang==null'> is null</when><otherwise>=#{lang}</otherwise></choose> "
             + "where cp.contest_id=#{contest} "
             + "order by cp.num</script>")
     List<Problem> getProblems(
@@ -113,15 +113,16 @@ public interface ContestMapper {
     @Select("select" + COLUMNS + "from contest where contest_id=#{id}")
     Contest findOne(@Param("id") long contestId);
 
-    // TODO not necessary support for i18n,
-    // for return value only the id is used
-    @Select("select cp.num id,if(cp.title is null or trim(cp.title)='',p.title,cp.title) title,p.problem_id origin "
+    @Select("<script>select cp.num id,if(cp.title is null or trim(cp.title)='',p.title,cp.title) title,p.problem_id origin,"
+            + ProblemMapper.EXTERN_COLUMNS
             + "from contest_problem cp "
             + "join problem p on cp.problem_id=p.problem_id "
-            + "where cp.contest_id=#{contest} and cp.num=#{problem}")
+            + "left join problem_i18n pi on p.problem_id=pi.id and pi.locale<choose><when test='lang==null'> is null</when><otherwise>=#{lang}</otherwise></choose> "
+            + "where cp.contest_id=#{contest} and cp.num=#{problem}</script>")
     Problem getProblem(
             @Param("contest") long contestId,
-            @Param("problem") long problemNum);
+            @Param("problem") long problemNum,
+            @Param("lang") String lang);
 
     @Select("select" + COLUMNS + "from contest where contest_id=#{id} and not disabled")
     Contest findOneByIdAndNotDisabled(@Param("id") long contestId);

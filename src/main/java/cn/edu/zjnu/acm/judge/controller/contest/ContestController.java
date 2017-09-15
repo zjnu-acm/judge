@@ -15,16 +15,22 @@
  */
 package cn.edu.zjnu.acm.judge.controller.contest;
 
+import cn.edu.zjnu.acm.judge.config.JudgeConfiguration;
+import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.exception.BusinessCode;
 import cn.edu.zjnu.acm.judge.exception.BusinessException;
-import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.service.ContestService;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,7 +49,7 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 public class ContestController {
 
     @Autowired
-    private ContestMapper contestMapper;
+    private JudgeConfiguration judgeConfiguration;
     @Autowired
     private ContestService contestService;
 
@@ -73,15 +79,26 @@ public class ContestController {
     }
 
     @GetMapping("problems/{pid}")
-    public String showProblem(@PathVariable("contestId") long contestId,
-            @PathVariable("pid") long problemNum,
-            RedirectAttributes redirectAttributes) {
-        Problem problem = contestMapper.getProblem(contestId, problemNum);
+    public String showProblem(@PathVariable("contestId") long contestId, @PathVariable("pid") long problemNum, Model model, Locale locale) {
+        Contest contest = contestService.getContestAndProblems(contestId, null, locale);
+        if (contest == null) {
+            throw new BusinessException(BusinessCode.CONTEST_NOT_FOUND, contest);
+        }
+        Problem problem = contestService.getProblem(contestId, problemNum, locale);
         if (problem == null) {
             throw new BusinessException(BusinessCode.PROBLEM_NOT_FOUND, problemNum);
         }
-        redirectAttributes.addAttribute("problem_id", problem.getOrigin());
-        return "redirect:/showproblem";
+        model.addAttribute("problem", problem);
+        model.addAttribute("problems", contest.getProblems());
+        Path dataPath = judgeConfiguration.getDataDirectory(problem.getOrigin());
+        model.addAttribute("isSpecial", Files.exists(dataPath.resolve(JudgeConfiguration.VALIDATE_FILE_NAME)));
+        List<Long> problemsId = contest.getProblems().stream().map(Problem::getOrigin).collect(Collectors.toList());
+        String index = contestService.toProblemIndex(problemsId.indexOf(problem.getOrigin()));
+        String title1 = index + ":" + problem.getOrigin() + " -- " + problem.getTitle();
+        String title2 = index + ":" + problem.getTitle();
+        model.addAttribute("title1", title1);
+        model.addAttribute("title2", title2);
+        return "contests/problem";
     }
 
 }

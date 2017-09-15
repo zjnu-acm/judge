@@ -29,7 +29,5 @@ public class ProblemForm implements Serializable {
 
     private String sstr;
     private Boolean disabled;
-    @Deprecated
-    private boolean notInPendingContest;
 
 }

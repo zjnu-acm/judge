@@ -54,6 +54,7 @@ public class SystemService {
         return systemMapper.getValueByName(Constants.SystemKey.GA);
     }
 
+    @Cacheable(value = Constants.Cache.SYSTEM, key = "'data-path'")
     public String getDataFilesPath() {
         return systemMapper.getValueByName(Constants.SystemKey.DATA_FILES_PATH);
     }

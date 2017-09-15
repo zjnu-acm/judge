@@ -119,7 +119,7 @@ public class ContestMapperTest {
         long contestId = 0L;
         long problemOrder = 0L;
         Problem expResult = null;
-        Problem result = instance.getProblem(contestId, problemOrder);
+        Problem result = instance.getProblem(contestId, problemOrder, locale.toLanguageTag());
         assertEquals(expResult, result);
     }
 

@@ -57,6 +57,8 @@ import org.springframework.transaction.annotation.Transactional;
 @SpecialCall("contests/problems.html")
 public class ContestService {
 
+    private static final ConcurrentMap<Long, CompletableFuture<List<UserStanding>>> STANDINGS = new ConcurrentHashMap<>(20);
+
     @Autowired
     private ContestMapper contestMapper;
     @Autowired
@@ -67,7 +69,6 @@ public class ContestService {
     private LocaleService localeService;
     @Autowired
     private ObjectMapper objectMapper;
-    private static final ConcurrentMap<Long, CompletableFuture<List<UserStanding>>> STANDINGS = new ConcurrentHashMap<>(20);
 
     @SpecialCall("contests/problems.html")
     public String getStatus(Contest contest) {
@@ -271,6 +272,10 @@ public class ContestService {
             }
             consumer.accept(standing, lastIndex);
         }
+    }
+
+    public Problem getProblem(long contestId, long problemNum, Locale locale) {
+        return contestMapper.getProblem(contestId, problemNum, localeService.resolve(locale));
     }
 
 }

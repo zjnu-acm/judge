@@ -50,6 +50,7 @@ public class SubmitController {
             @RequestParam("language") int languageId,
             @RequestParam("problem_id") long problemId,
             @RequestParam("source") String source,
+            @RequestParam(value = "contest_id", required = false) Long contestId,
             RedirectAttributes redirectAttributes) {
         try {
             languageService.getAvailableLanguage(languageId);
@@ -73,14 +74,11 @@ public class SubmitController {
         }
         userModel.setLastSubmitTime(now);
         String userId = userModel.getUserId();
-        Problem problem = problemMapper.findOneNoI18n(problemId);
 
-        //检查该题是否被禁用
-        if (problem == null) {
+        //检查该题是否存在
+        if (problemMapper.findOneNoI18n(problemId) == null) {
             throw new BusinessException(BusinessCode.PROBLEM_NOT_FOUND, problemId);
         }
-
-        Long contestId = problem.getContest();
 
         if (contestId != null) { //竞赛是否存在
             Contest contest = contestMapper.findOne(contestId);

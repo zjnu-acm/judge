@@ -37,9 +37,7 @@ import org.springframework.data.domain.Pageable;
 @Mapper
 public interface ProblemMapper {
 
-    String COLUMNS = " p.problem_id id,"
-            + "COALESCE(pi.title,p.title) title,"
-            + "COALESCE(pi.description,p.description) description,"
+    String EXTERN_COLUMNS = "COALESCE(pi.description,p.description) description,"
             + "COALESCE(pi.input,p.input) input,"
             + "COALESCE(pi.output,p.output) output,"
             + "p.sample_input sampleInput,"
@@ -51,6 +49,8 @@ public interface ProblemMapper {
             + "p.contest_id contest,p.disabled,"
             + "p.accepted,p.submit,p.solved,p.submit_user submitUser,"
             + "p.created_time createdTime,p.modified_time modifiedTime ";
+
+    String COLUMNS = " p.problem_id id,COALESCE(pi.title,p.title) title," + EXTERN_COLUMNS;
 
     String COLUMNS_NO_I18N = " p.problem_id id,"
             + "p.in_date inDate,p.time_limit timeLimit,"
@@ -71,7 +71,7 @@ public interface ProblemMapper {
 
     String STATUS = "<if test='userId!=null'>,if(up.submit is null or up.submit=0,0,if(up.accepted!=0,1,2)) status </if>";
 
-    String FROM = " from problem p left join problem_i18n pi on p.problem_id=pi.id and pi.locale=#{lang} ";
+    String FROM = " from problem p left join problem_i18n pi on p.problem_id=pi.id and pi.locale<choose><when test='lang==null'> is null</when><otherwise>=#{lang}</otherwise></choose> ";
 
     @Insert("INSERT INTO problem (problem_id,title,description,input,output,sample_input,sample_output,"
             + "hint,source,in_date,time_limit,memory_limit,contest_id) values ("
@@ -94,7 +94,7 @@ public interface ProblemMapper {
     long setContestBatch(@Param("problems") long[] problem, @Param("contest") Long contest);
 
     @Nullable
-    @Select("select" + COLUMNS + FROM + " where problem_id=#{id}")
+    @Select("<script>select" + COLUMNS + FROM + " where problem_id=#{id}</script>")
     Problem findOne(@Param("id") long id, @Param("lang") String lang);
 
     @Nullable
@@ -106,7 +106,7 @@ public interface ProblemMapper {
 
     @Update("<script>UPDATE problem p "
             + "<if test='lang!=null and lang!=\"\"'>"
-            + "left join problem_i18n pi on p.problem_id = pi.id and pi.locale=#{lang}"
+            + "left join problem_i18n pi on p.problem_id = pi.id and pi.locale<choose><when test='lang==null'> is null</when><otherwise>=#{lang}</otherwise></choose>"
             + "</if>"
             + "<set>"
             + "<if test='lang==null or lang==\"\"'>"
@@ -139,7 +139,6 @@ public interface ProblemMapper {
     String FORM_CONDITION = "<where>"
             + "<if test='form.sstr!=null and form.sstr!=\"\"'> (instr(COALESCE(pi.title,p.title),#{form.sstr})&gt;0 or instr(COALESCE(pi.source,p.source),#{form.sstr})&gt;0) </if>"
             + "<if test='form.disabled!=null'> and <if test='!form.disabled'> not </if> disabled</if>"
-            + "<if test='form.notInPendingContest'> and p.problem_id not in (select distinct(cp.problem_id) from contest c,contest_problem cp where c.contest_id=cp.contest_id and c.start_time>now() and not c.disabled)</if>"
             + "</where>";
 
     @Select("<script>"
@@ -181,7 +180,7 @@ public interface ProblemMapper {
     @Select("<script>"
             + "SELECT COUNT(*) total from problem p"
             + "<if test='lang!=null and lang!=\"\"'>"
-            + "<if test='form.sstr!=null'>left join problem_i18n pi on p.problem_id = pi.id and pi.locale=#{lang}</if>"
+            + "<if test='form.sstr!=null'>left join problem_i18n pi on p.problem_id = pi.id and pi.locale<choose><when test='lang==null'> is null</when><otherwise>=#{lang}</otherwise></choose></if>"
             + "</if>"
             + FORM_CONDITION
             + "</script>")
@@ -205,7 +204,7 @@ public interface ProblemMapper {
             + "<if test='problem.hint!=null'>hint=nullif(#{problem.hint},''),</if>"
             + "<if test='problem.source!=null'>source=nullif(#{problem.source},''),</if>"
             + "</set>"
-            + "where id=#{problemId} and locale=#{lang}"
+            + "where id=#{problemId} and locale<choose><when test='lang==null'> is null</when><otherwise>=#{lang}</otherwise></choose>"
             + "</script>")
     long updateI18n(
             @Param("problemId") long problemId,

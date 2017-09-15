@@ -28,7 +28,6 @@ public class ProblemListController {
         String url = URLBuilder.fromRequest(request).replaceQueryParam("page").toString();
         model.addAttribute("url", url);
         form.setDisabled(Boolean.FALSE);
-        form.setNotInPendingContest(true);
         Page<Problem> page = problemService.findAll(form, currentUserId, pageable, locale);
         model.addAttribute("page", page);
         return "problems/list";
