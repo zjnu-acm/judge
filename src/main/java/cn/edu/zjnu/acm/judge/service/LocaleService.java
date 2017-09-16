@@ -17,13 +17,13 @@ package cn.edu.zjnu.acm.judge.service;
 
 import cn.edu.zjnu.acm.judge.domain.DomainLocale;
 import cn.edu.zjnu.acm.judge.mapper.LocaleMapper;
+import com.google.common.collect.ImmutableSortedSet;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +50,7 @@ public class LocaleService {
     public Locale toSupported(Locale locale) {
         List<Locale> candidateLocales = ControlHolder.CONTROL.getCandidateLocales("", locale);
         Set<String> collect = findAll().stream().map(DomainLocale::getId)
-                .collect(Collectors.toCollection(() -> new TreeSet<>(String.CASE_INSENSITIVE_ORDER)));
+                .collect(ImmutableSortedSet.toImmutableSortedSet(String.CASE_INSENSITIVE_ORDER));
         for (Locale candidateLocale : candidateLocales) {
             if (collect.contains(candidateLocale.toLanguageTag())) {
                 return candidateLocale;

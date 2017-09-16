@@ -21,6 +21,7 @@ import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.exception.BusinessCode;
 import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.service.ContestService;
+import com.google.common.collect.ImmutableMap;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -31,7 +32,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,13 +56,13 @@ public class ContestController {
     @GetMapping(value = "standing", produces = {TEXT_HTML_VALUE, ALL_VALUE})
     public Future<ModelAndView> standingHtml(@PathVariable("contestId") long contestId, Locale locale) {
         return contestService.standingAsync(contestId).thenCombineAsync(CompletableFuture.supplyAsync(() -> contestService.getContestAndProblems(contestId, null, locale)), (standing, contest) -> {
-            ModelMap model = new ModelMap();
-            model.addAttribute("contestId", contestId);
-            model.addAttribute("contest", contest);
-            model.addAttribute("id", contestId);
-            model.addAttribute("problems", contest.getProblems());
-            model.addAttribute("standing", standing);
-            return new ModelAndView("contests/standing", model);
+            return new ModelAndView("contests/standing", ImmutableMap.<String, Object>builder()
+                    .put("contestId", contestId)
+                    .put("contest", contest)
+                    .put("id", contestId)
+                    .put("problems", contest.getProblems())
+                    .put("standing", standing)
+                    .build());
         });
     }
 

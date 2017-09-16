@@ -26,6 +26,7 @@ import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.util.SpecialCall;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableMap;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.Arrays;
@@ -42,7 +43,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.ObjIntConsumer;
-import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -211,7 +211,7 @@ public class ContestService {
     public Map<Long, Integer> getNumMap(long id) {
         List<Problem> problems = contestMapper.getProblems(id, null, null);
         AtomicInteger atomic = new AtomicInteger();
-        return problems.stream().collect(Collectors.toMap(Problem::getOrigin, __ -> atomic.getAndIncrement()));
+        return problems.stream().collect(ImmutableMap.toImmutableMap(Problem::getOrigin, __ -> atomic.getAndIncrement()));
     }
 
     public List<Long> submittedProblems(long id) {

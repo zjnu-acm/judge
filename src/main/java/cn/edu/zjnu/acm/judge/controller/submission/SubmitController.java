@@ -1,6 +1,5 @@
 package cn.edu.zjnu.acm.judge.controller.submission;
 
-import cn.edu.zjnu.acm.judge.data.dto.UserModel;
 import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.domain.Submission;
@@ -14,13 +13,17 @@ import cn.edu.zjnu.acm.judge.mapper.UserPreferenceMapper;
 import cn.edu.zjnu.acm.judge.service.ContestOnlyService;
 import cn.edu.zjnu.acm.judge.service.JudgePool;
 import cn.edu.zjnu.acm.judge.service.LanguageService;
-import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import cn.edu.zjnu.acm.judge.util.ResultType;
+import com.google.common.cache.CacheBuilder;
 import java.time.Instant;
+import java.util.Collections;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,6 +46,7 @@ public class SubmitController {
     private LanguageService languageService;
     @Autowired
     private ContestOnlyService contestOnlyService;
+    private final Set<String> cache = Collections.newSetFromMap(CacheBuilder.newBuilder().expireAfterWrite(10, TimeUnit.SECONDS).<String, Boolean>build().asMap());
 
     @Secured("ROLE_USER")
     @PostMapping("/submit")
@@ -51,7 +55,8 @@ public class SubmitController {
             @RequestParam("problem_id") long problemId,
             @RequestParam("source") String source,
             @RequestParam(value = "contest_id", required = false) Long contestId,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes,
+            Authentication authentication) {
         try {
             languageService.getAvailableLanguage(languageId);
         } catch (IllegalArgumentException ex) {
@@ -63,17 +68,14 @@ public class SubmitController {
         if (source.length() < 10) {
             throw new MessageException("Source code too short, submit FAILED;if you really need submit this source please contact administrator", HttpStatus.BAD_REQUEST);
         }
-        UserModel userModel = UserDetailService.getCurrentUser(request).orElseThrow(() -> new BusinessException(BusinessCode.UNAUTHORIZED));
+        String userId = authentication.getName();
         Instant instant = Instant.now();
-        long now = instant.toEpochMilli();  //获取当前时间
-
-        // 8秒交一次。。。
+        // 10秒交一次。。。
         // 使用绝对值，如果系统时间被改了依然可用
-        if (Math.abs(userModel.getLastSubmitTime() - now) < 10000) {
+        if (cache.contains(userId) || !cache.add(userId)) {
             throw new MessageException("Sorry, please don't submit again within 10 seconds.", HttpStatus.BAD_REQUEST);
         }
-        userModel.setLastSubmitTime(now);
-        String userId = userModel.getUserId();
+        Problem problem = problemMapper.findOneNoI18n(problemId);
 
         //检查该题是否存在
         if (problemMapper.findOneNoI18n(problemId) == null) {

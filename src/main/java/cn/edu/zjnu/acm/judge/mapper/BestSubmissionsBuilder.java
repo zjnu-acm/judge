@@ -15,11 +15,11 @@
  */
 package cn.edu.zjnu.acm.judge.mapper;
 
+import com.google.common.collect.ImmutableSortedSet;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
@@ -33,10 +33,7 @@ import org.springframework.data.domain.Sort;
 @Slf4j
 public class BestSubmissionsBuilder {
 
-    private static final Set<String> ALLOW_COLUMNS
-            = Arrays.asList("memory", "time", "code_length", "in_date", "solution_id")
-                    .stream().collect(Collectors
-                            .toCollection(() -> new TreeSet<>(String.CASE_INSENSITIVE_ORDER)));
+    private static final Set<String> ALLOW_COLUMNS = ImmutableSortedSet.orderedBy(String.CASE_INSENSITIVE_ORDER).add("memory", "time", "code_length", "in_date", "solution_id").build();
     private static final Sort DEFAULT_SORT = new Sort(Sort.Direction.DESC, "in_date");
 
     public static String bestSubmissions(@Param("problemId") long problemId, @Param("pageable") Pageable pageable) {
