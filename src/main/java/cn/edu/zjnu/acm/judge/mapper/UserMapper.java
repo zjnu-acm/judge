@@ -15,6 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.mapper;
 
+import cn.edu.zjnu.acm.judge.data.excel.Account;
 import cn.edu.zjnu.acm.judge.data.form.AccountForm;
 import cn.edu.zjnu.acm.judge.domain.User;
 import java.util.List;
@@ -81,9 +82,8 @@ public interface UserMapper {
 
     @Select("select temp.user_id id,sol solved,sub submit,nick from ( select user_id,sum(if(score=100,1,0)) sol,count(*) sub from ( select * from solution order by solution_id desc limit #{count} ) s group by user_id order by sol desc,sub asc limit 50 ) temp,users where temp.user_id=users.user_id")
     List<User> recentrank(@Param("count") int count);
-
-    @Select("<script>select" + LIST_COLUMNS
-            + "<if test='form.disabled==null or form.disabled==true'>,disabled</if>"
+    String FIND_ALL_CONDITION
+            = "<if test='form.disabled==null or form.disabled==true'>,disabled</if>"
             + "from users"
             + FORM_CONDITION
             + "<if test='pageable.sort!=null'>"
@@ -97,9 +97,13 @@ public interface UserMapper {
             + "</choose>"
             + "<if test='not item.ascending'>desc</if>"
             + "</foreach></if>"
-            + "limit #{pageable.offset},#{pageable.size}"
-            + "</script>")
+            + "limit #{pageable.offset},#{pageable.size}";
+
+    @Select("<script>select" + LIST_COLUMNS + FIND_ALL_CONDITION + "</script>")
     List<User> findAll(@Param("form") AccountForm form, @Param("pageable") Pageable pageable);
+
+    @Select("<script>select" + LIST_COLUMNS + ",password,email,school" + FIND_ALL_CONDITION + "</script>")
+    List<Account> findAllByExport(@Param("form") AccountForm form, @Param("pageable") Pageable pageable);
 
     @Deprecated
     @Select("select " + LIST_COLUMNS + " from users WHERE (user_id like #{query} or nick like #{query}) and not disabled order by solved desc,submit asc")

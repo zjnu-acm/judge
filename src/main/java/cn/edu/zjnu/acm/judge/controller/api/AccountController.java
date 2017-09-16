@@ -15,15 +15,21 @@
  */
 package cn.edu.zjnu.acm.judge.controller.api;
 
+import cn.edu.zjnu.acm.judge.data.excel.Account;
 import cn.edu.zjnu.acm.judge.data.form.AccountForm;
 import cn.edu.zjnu.acm.judge.data.form.UserPasswordForm;
 import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.service.AccountService;
+import cn.edu.zjnu.acm.judge.util.excel.ExcelUtil;
+import cn.edu.zjnu.acm.judge.util.excel.Type;
+import java.util.List;
+import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -62,6 +68,18 @@ public class AccountController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updatePassword(@PathVariable("userId") String userId, @RequestBody UserPasswordForm user) {
         accountService.update(userId, User.builder().password(user.getPassword()).build());
+    }
+
+    @GetMapping(produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    public ResponseEntity<?> findAllXlsx(AccountForm form, Pageable pageable, Locale locale) {
+        List<Account> content = accountService.findAllByExport(form, pageable);
+        return ExcelUtil.toResponse(Account.class, content, locale, Type.XLSX);
+    }
+
+    @GetMapping(produces = "application/vnd.ms-excel")
+    public ResponseEntity<?> findAllXls(AccountForm form, Pageable pageable, Locale locale) {
+        List<Account> content = accountService.findAllByExport(form, pageable);
+        return ExcelUtil.toResponse(Account.class, content, locale, Type.XLS);
     }
 
 }

@@ -15,6 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.service;
 
+import cn.edu.zjnu.acm.judge.data.excel.Account;
 import cn.edu.zjnu.acm.judge.data.form.AccountForm;
 import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.exception.BusinessCode;
@@ -26,6 +27,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -48,6 +50,10 @@ public class AccountService {
         List<User> list = userMapper.findAll(form, pageable);
         long count = userMapper.count(form);
         return new PageImpl<>(list, pageable, count);
+    }
+
+    public List<Account> findAllByExport(AccountForm form, Pageable pageable) {
+        return userMapper.findAllByExport(form, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort()));
     }
 
     public Page<User> findAll(Pageable pageable) {
