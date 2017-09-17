@@ -22,6 +22,7 @@ import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.service.AccountService;
 import cn.edu.zjnu.acm.judge.util.excel.ExcelUtil;
 import cn.edu.zjnu.acm.judge.util.excel.Type;
+import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +35,16 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 /**
  *
@@ -80,6 +85,11 @@ public class AccountController {
     public ResponseEntity<?> findAllXls(AccountForm form, Pageable pageable, Locale locale) {
         List<Account> content = accountService.findAllByExport(form, pageable);
         return ExcelUtil.toResponse(Account.class, content, locale, Type.XLS);
+    }
+
+    @PostMapping(consumes = MULTIPART_FORM_DATA_VALUE)
+    public List<Account> parseExcel(@RequestParam("file") MultipartFile multipartFile, Locale locale) throws IOException {
+        return ExcelUtil.parse(multipartFile.getBytes(), Account.class, locale);
     }
 
 }

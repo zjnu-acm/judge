@@ -22,10 +22,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -58,8 +60,7 @@ public class AccountControllerTest {
     @Test
     public void testFindAllXlsx() throws Exception {
         log.info("findAllXlsx");
-        mvc.perform(get("/api/accounts.xlsx"))
-                .andExpect(status().is2xxSuccessful());
+        test("/api/accounts.xlsx");
     }
 
     /**
@@ -68,7 +69,16 @@ public class AccountControllerTest {
     @Test
     public void testFindAllXls() throws Exception {
         log.info("findAllXls");
-        mvc.perform(get("/api/accounts.xls"))
+        test("/api/accounts.xls");
+    }
+
+    private void test(String url) throws Exception {
+        byte[] content = mvc.perform(get(url))
+                .andExpect(status().is2xxSuccessful())
+                .andReturn().getResponse().getContentAsByteArray();
+        MockMultipartFile file = new MockMultipartFile("file", content);
+        mvc.perform(MockMvcRequestBuilders.fileUpload("/api/accounts.json")
+                .file(file))
                 .andExpect(status().is2xxSuccessful());
     }
 

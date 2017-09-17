@@ -16,9 +16,10 @@
 package cn.edu.zjnu.acm.judge.util.excel;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
@@ -41,12 +42,11 @@ class Metainfo<T> {
             ResourceBundle bundle = null;
             String bundleName = clazz.getName().replace('.', '/');
             try {
-                bundle = ResourceBundle.getBundle(bundleName, locale);
+                bundle = ResourceBundle.getBundle(bundleName, locale, clazz.getClassLoader());
             } catch (MissingResourceException ignore) {
             }
             Field[] fields = elementType.getDeclaredFields();
-            List<String> head = new ArrayList<>(fields.length);
-            List<Field> filteredFields = new ArrayList<>(fields.length);
+            Map<String, Field> map = new LinkedHashMap<>(fields.length);
             for (Field field : fields) {
                 Excel excel = field.getAnnotation(Excel.class);
                 if (excel != null) {
@@ -59,28 +59,29 @@ class Metainfo<T> {
                     } catch (MissingResourceException ignore) {
                     }
                     field.setAccessible(true);
-                    head.add(name);
-                    filteredFields.add(field);
+                    map.put(name, field);
                 }
             }
-            return new Metainfo<>(head, filteredFields);
+            return new Metainfo<>(map);
         });
     }
 
-    private final List<String> head;
-    private final List<Field> fields;
+    private final Map<String, Field> fieldMap;
 
-    Metainfo(List<String> head, List<Field> fields) {
-        this.head = head;
-        this.fields = fields;
+    Metainfo(Map<String, Field> fieldMap) {
+        this.fieldMap = fieldMap;
     }
 
-    public Stream<String> getHead() {
-        return head.stream();
+    public Stream<String> getHeaderAsStream() {
+        return fieldMap.keySet().stream();
     }
 
-    public Stream<Field> getFields() {
-        return fields.stream();
+    public Stream<Field> getFieldsAsStream() {
+        return fieldMap.values().stream();
+    }
+
+    public Map<String, Field> getFieldMap() {
+        return Collections.unmodifiableMap(fieldMap);
     }
 
 }

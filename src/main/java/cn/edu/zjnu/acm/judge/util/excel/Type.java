@@ -15,6 +15,9 @@
  */
 package cn.edu.zjnu.acm.judge.util.excel;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.http.MediaType;
 
 /**
@@ -23,8 +26,18 @@ import org.springframework.http.MediaType;
  */
 public enum Type {
 
-    XLS(new MediaType("application", "vnd.ms-excel")),
-    XLSX(new MediaType("application", "vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
+    XLS(new MediaType("application", "vnd.ms-excel")) {
+        @Override
+        Workbook createWorkBook() {
+            return new HSSFWorkbook();
+        }
+    },
+    XLSX(new MediaType("application", "vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
+        @Override
+        Workbook createWorkBook() {
+            return new XSSFWorkbook();
+        }
+    };
 
     private final MediaType mediaType;
 
@@ -39,5 +52,7 @@ public enum Type {
     public String getExtension() {
         return name().toLowerCase();
     }
+
+    abstract Workbook createWorkBook();
 
 }
