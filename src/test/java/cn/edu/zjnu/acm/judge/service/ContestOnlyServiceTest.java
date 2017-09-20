@@ -16,8 +16,6 @@
 package cn.edu.zjnu.acm.judge.service;
 
 import cn.edu.zjnu.acm.judge.Application;
-import cn.edu.zjnu.acm.judge.exception.BusinessCode;
-import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,10 +27,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.util.NestedServletException;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -87,20 +83,12 @@ public class ContestOnlyServiceTest {
     }
 
     private void request(HttpStatus status) throws Exception {
-        try {
-            mvc.perform(get("/registerpage"))
-                    .andDo(print())
-                    .andExpect(status().is(status.value()));
-        } catch (NestedServletException ex) {
-            assertTrue(((BusinessException) ex.getCause()).getCode() == BusinessCode.CONTEST_ONLY_REGISTER);
-        }
-        try {
-            mvc.perform(get("/register"))
-                    .andDo(print())
-                    .andExpect(status().is(status.value()));
-        } catch (NestedServletException ex) {
-            assertTrue(((BusinessException) ex.getCause()).getCode() == BusinessCode.CONTEST_ONLY_REGISTER);
-        }
+        mvc.perform(get("/registerpage"))
+                .andDo(print())
+                .andExpect(status().is(status.value()));
+        mvc.perform(get("/register"))
+                .andDo(print())
+                .andExpect(status().is(status.value()));
     }
 
 }

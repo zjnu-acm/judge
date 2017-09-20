@@ -33,7 +33,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.util.NestedServletException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -124,27 +123,12 @@ public class ProblemControllerTest {
         } catch (BusinessException ex) {
             assertEquals(BusinessCode.PROBLEM_NOT_FOUND, ex.getCode());
         }
-        try {
-            mvc.perform(get("/api/problems/{id}.json", id))
-                    .andExpect(status().isNotFound());
-        } catch (NestedServletException ex) {
-            assertTrue(ex.getCause() instanceof BusinessException);
-            assertEquals(BusinessCode.PROBLEM_NOT_FOUND, ((BusinessException) ex.getCause()).getCode());
-        }
-        try {
-            mvc.perform(delete("/api/problems/{id}.json", id))
-                    .andExpect(status().isNotFound());
-        } catch (NestedServletException ex) {
-            assertTrue(ex.getCause() instanceof BusinessException);
-            assertEquals(BusinessCode.PROBLEM_NOT_FOUND, ((BusinessException) ex.getCause()).getCode());
-        }
-        try {
-            mvc.perform(patch("/api/problems/{id}.json", id).contentType(MediaType.APPLICATION_JSON).content("{}"))
-                    .andExpect(status().isNotFound());
-        } catch (NestedServletException ex) {
-            assertTrue(ex.getCause() instanceof BusinessException);
-            assertEquals(BusinessCode.PROBLEM_NOT_FOUND, ((BusinessException) ex.getCause()).getCode());
-        }
+        mvc.perform(get("/api/problems/{id}.json", id))
+                .andExpect(status().isNotFound());
+        mvc.perform(delete("/api/problems/{id}.json", id))
+                .andExpect(status().isNotFound());
+        mvc.perform(patch("/api/problems/{id}.json", id).contentType(MediaType.APPLICATION_JSON).content("{}"))
+                .andExpect(status().isNotFound());
     }
 
 }

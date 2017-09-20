@@ -19,7 +19,6 @@ import java.util.Collections;
 import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -30,7 +29,6 @@ import org.springframework.web.bind.annotation.RestController;
  * @author zhanhb
  */
 @ControllerAdvice(annotations = RestController.class)
-@Order
 public class BusinessExceptionHandler {
 
     @Autowired

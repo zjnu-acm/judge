@@ -19,7 +19,6 @@ import java.util.Collections;
 import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -31,7 +30,6 @@ import org.springframework.web.servlet.ModelAndView;
  * @author zhanhb
  */
 @ControllerAdvice(annotations = Controller.class)
-@Order
 public class GlobalExceptionHandler {
 
     @Autowired
