@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  *
@@ -12,15 +11,6 @@ import static org.junit.Assert.assertTrue;
  */
 @Slf4j
 public class JudgeUtilsTest {
-
-    @Test
-    public void testGetHtmlFormattedString() {
-        log.info("getHtmlFormattedString");
-        String string = "\n\n";
-        String pattern = "(?:&nbsp;)?";
-        String result = JudgeUtils.getHtmlFormattedString(string);
-        assertTrue("'" + result + "' doesn't match '" + pattern + "'", result.matches(pattern));
-    }
 
     /**
      * Test of formatTime method, of class JudgeUtils.

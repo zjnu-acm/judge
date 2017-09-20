@@ -51,14 +51,6 @@ public interface JudgeUtils {
         return buf.append(s).toString();
     }
 
-    static String escapeCompileInfo(String string) {
-        if (StringUtils.isEmptyOrWhitespace(string)) {
-            return "";
-        }
-        return string
-                .replaceAll("\\w:[/\\\\](?:\\w+[/\\\\])+?(?i)(?=Main\\.)(?-i)", "");
-    }
-
     static String getReplyString(String string) {
         if (StringUtils.isEmptyOrWhitespace(string)) {
             return "";
@@ -66,26 +58,6 @@ public interface JudgeUtils {
         return StringUtils.escapeXml(new BufferedReader(new StringReader(string)).lines()
                 .filter(line -> !line.startsWith("> "))
                 .collect(Collectors.joining("\n> ", "> ", "\n")));
-    }
-
-    static String getHtmlFormattedString(String str) {
-        if (StringUtils.isEmptyOrWhitespace(str)) {
-            return "";
-        }
-        for (int i = 0, len = str.length(); i < len; ++i) {
-            char ch = str.charAt(i);
-            if (Character.isWhitespace(ch)) {
-                continue;
-            }
-            if (ch == '<') {
-                return str;
-            }
-            break;
-        }
-        return str.replaceAll("(?:(?:\r\n)|\n|\r|<br\\s*/?>)++(?!\\s*(?:<|&lt;)p)", "<br />")
-                .replaceAll("<(?=\\s|\\d)", "&lt;")
-                .replaceAll("(?:<br />)+$", "")
-                .replace("<br />", "<br />\n");
     }
 
     static String formatTime(Instant a, Instant b) {
