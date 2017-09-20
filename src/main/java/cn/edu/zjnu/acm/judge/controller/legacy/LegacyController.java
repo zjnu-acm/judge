@@ -13,36 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.controller;
+package cn.edu.zjnu.acm.judge.controller.legacy;
 
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
  * @author zhanhb
  */
 @Controller
-public class LegacySupport {
-
-    @Secured("ROLE_ADMIN")
-    @GetMapping("/admin.showproblem")
-    public String showProblem(@RequestParam("problem_id") long problemId,
-            RedirectAttributes redirectAttributes) {
-        redirectAttributes.addAttribute("problemId", problemId);
-        return "redirect:/admin/problems/{problemId}.html";
-    }
-
-    @Secured("ROLE_ADMIN")
-    @GetMapping("/admin.showcontest")
-    public String showContest(@RequestParam("contest_id") long contestId,
-            RedirectAttributes redirectAttributes) {
-        redirectAttributes.addAttribute("contestId", contestId);
-        return "redirect:/admin/contests/{contestId}.html";
-    }
+public class LegacyController {
 
     @GetMapping("/conteststanding")
     public String contestStanding(@RequestParam("contest_id") long contestId) {
