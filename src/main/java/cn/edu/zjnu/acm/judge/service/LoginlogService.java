@@ -20,8 +20,11 @@ import cn.edu.zjnu.acm.judge.mapper.LoginlogMapper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
@@ -37,61 +40,38 @@ public class LoginlogService {
 
     @Autowired
     private LoginlogMapper loginlogMapper;
-    private Thread thread;
-    private final List<LoginLog> list = new ArrayList<>(4);
-    private final ReentrantLock lock = new ReentrantLock();
-    private final Condition condition = lock.newCondition();
+    private ExecutorService executorService;
+    private final BlockingQueue<LoginLog> list = new ArrayBlockingQueue<>(200);
 
     @PostConstruct
     public void init() {
-        thread = new Thread(this::saveBatch);
-        thread.start();
+        executorService = Executors.newSingleThreadExecutor();
     }
 
     @PreDestroy
     public void destroy() {
-        thread.interrupt();
+        executorService.shutdown();
     }
 
     public void save(LoginLog loginlog) {
         Objects.requireNonNull(loginlog);
-        lock.lock();
         try {
-            list.add(loginlog);
-            condition.signal();
-        } finally {
-            lock.unlock();
+            list.put(loginlog);
+            executorService.submit(this::saveBatch);
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
         }
     }
 
     private void saveBatch() {
-        while (true) {
-            LoginLog[] array;
-            try {
-                lock.lock();
-                try {
-                    while (list.isEmpty()) {
-                        condition.await();
-                    }
-                    array = list.toArray(new LoginLog[list.size()]);
-                    list.clear();
-                } finally {
-                    lock.unlock();
-                }
-            } catch (InterruptedException ex) {
-                log.info("finish save log");
-                return;
-            }
-            try {
-                loginlogMapper.save(array);
-            } catch (RuntimeException ex) {
-                log.error("save login log", ex);
-            }
+        List<LoginLog> tmp = new ArrayList<>(list.size());
+        if (list.drainTo(tmp) > 0) {
+            loginlogMapper.save(tmp);
         }
     }
 
-    Thread getThread() {
-        return thread;
+    void await() throws InterruptedException {
+        executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
     }
 
 }

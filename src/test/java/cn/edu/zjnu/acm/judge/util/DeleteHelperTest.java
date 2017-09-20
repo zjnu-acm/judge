@@ -67,4 +67,13 @@ public class DeleteHelperTest {
         DeleteHelper.delete(Paths.get("target/test1"));
     }
 
+    @Test
+    public void testDeleteEmptyDirectory() throws IOException {
+        log.info("delete");
+        Path d = Paths.get("target/test1.txt");
+        Files.createDirectories(d);
+        DeleteHelper.delete(d);
+        assertTrue(!Files.exists(d));
+    }
+
 }

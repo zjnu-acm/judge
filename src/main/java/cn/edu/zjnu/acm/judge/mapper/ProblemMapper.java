@@ -180,7 +180,7 @@ public interface ProblemMapper {
     @Select("<script>"
             + "SELECT COUNT(*) total from problem p"
             + "<if test='lang!=null and lang!=\"\"'>"
-            + "<if test='form.sstr!=null'>left join problem_i18n pi on p.problem_id = pi.id and pi.locale<choose><when test='lang==null'> is null</when><otherwise>=#{lang}</otherwise></choose></if>"
+            + "<if test='form.sstr!=null'>left join problem_i18n pi on p.problem_id = pi.id and pi.locale=#{lang}</if>"
             + "</if>"
             + FORM_CONDITION
             + "</script>")

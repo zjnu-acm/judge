@@ -55,6 +55,16 @@ public class AccountControllerTest {
     }
 
     /**
+     * Test of findAll method, of class AccountController.
+     */
+    @Test
+    public void testFindAll() throws Exception {
+        log.info("findAll");
+        mvc.perform(get("/api/accounts.json"))
+                .andExpect(status().is2xxSuccessful());
+    }
+
+    /**
      * Test of findAllXlsx method, of class AccountController.
      */
     @Test

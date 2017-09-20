@@ -72,7 +72,7 @@
             }
         };
     });
-    app.factory('serverTime', function ($http, path) {
+    app.factory('currentTime', function ($http, path) {
         var timeDiff = 0;
         $http.get(path.api + 'system/time.json').then(function (resp) {
             timeDiff = new Date - resp.data * 1000;
@@ -88,7 +88,7 @@
             };
         };
     });
-    app.directive('currentTime', function (serverTime, $filter) {
+    app.directive('currentTime', function (currentTime, $filter) {
         return {
             restrict: 'A',
             scope: {
@@ -97,7 +97,7 @@
             },
             link: function (scope, element) {
                 function apply() {
-                    element[isInput ? 'val' : 'text']($filter('date')(serverTime(), format));
+                    element[isInput ? 'val' : 'text']($filter('date')(currentTime(), format));
                 }
                 var isInput = element.is(':input'), format = scope.format;
                 var stopTime = setInterval(apply, +scope.interval || 200);
@@ -453,7 +453,7 @@
             });
         };
     });
-    app.controller('contest-view', function ($stateParams, $scope, contestApi, title, $state, serverTime) {
+    app.controller('contest-view', function ($stateParams, $scope, contestApi, title, $state, currentTime) {
         function load() {
             contestApi.get($stateParams, function (data) {
                 var contest = $scope.contest = data;
@@ -469,7 +469,7 @@
             });
         };
         $scope.isStarted = function (contest) {
-            return contest && (!contest.startTime || contest.startTime < serverTime() / 1000);
+            return contest && (!contest.startTime || contest.startTime < currentTime() / 1000);
         };
     });
 
@@ -577,15 +577,14 @@
         };
     });
 
-    app.controller('contest-add', function ($scope, $state, contestApi, initContestEdit, serverTime) {
+    app.controller('contest-add', function ($scope, $state, contestApi, initContestEdit, currentTime) {
         var startTime = function () {
-            var now = new Date(serverTime());
+            var now = new Date(currentTime());
             now.setDate(now.getDate() + 1);
             now.setHours(12);
             now.setMinutes(0);
             now.setSeconds(0);
-            now.setMilliseconds(0);
-            return now.getTime() / 1000;
+            return now.getTime() / 1000 >> 0;
         }();
         var contest = {
             startTime: startTime,
@@ -594,15 +593,15 @@
             description: '',
             contests: []
         };
-        initContestEdit($scope, contest, new Date(serverTime()), function (form) {
+        initContestEdit($scope, contest, new Date(currentTime()), function (form) {
             contestApi.save(form, function (contest) {
                 $state.go('contest-view', {id: contest.id});
             });
         });
     });
-    app.controller('contest-edit', function ($scope, $state, $stateParams, contestApi, title, initContestEdit, serverTime) {
+    app.controller('contest-edit', function ($scope, $state, $stateParams, contestApi, title, initContestEdit, currentTime) {
         contestApi.get({id: $stateParams.id}, function (contest) {
-            initContestEdit($scope, contest, Math.min(contest.startTime * 1000, serverTime()), function (form) {
+            initContestEdit($scope, contest, Math.min(contest.startTime * 1000, currentTime()), function (form) {
                 contestApi.update(form, function (contest) {
                     $state.go('contest-view', {id: contest.id});
                 });
@@ -676,21 +675,21 @@
         $scope.submit = function () {
             $scope.user.password && accountApi.updatePassword($scope.user, function () {
                 alert('重置成功');
-                $modalInstance.dismiss('cancel');
+                $modalInstance.dismiss();
             });
         };
         $scope.dismiss = function (reason) {
             $modalInstance.dismiss(reason || 'cancel');
         };
     });
-    app.run(function ($rootScope, $state, $interpolate, title, serverTime) {
+    app.run(function ($rootScope, $state, $interpolate, title, currentTime) {
         $rootScope.$on('$stateChangeSuccess', function (event, state) {
             var currentState = $state.$current;
             var tt = currentState.title || currentState.data && currentState.data.pageTitle || $rootScope.pageTitle || 'Untitled Page';
             title($interpolate(tt)(currentState));
         });
         function getStatus(contest) {
-            var now = +serverTime() / 1000;
+            var now = +currentTime() / 1000;
             var disabled = !!contest.disabled;
             var started = !contest.startTime || contest.startTime < now;
             var ended = !contest.endTime || contest.endTime < now;
@@ -698,7 +697,7 @@
             return disabled ? 4 : error ? 3 : started && !ended ? 1 : ended ? 2 : 0;
         }
         var text = ['Pending', 'RUNNING', 'ENDED', 'ERROR', 'DISABLED'];
-        var style = [{color: 'red'}, {color: 'blue'}, {color: 'green'}, , {color: 'darkred'}];
+        var style = [{color: 'red'}, {color: 'blue'}, {color: 'green'}, {color: 'red'}, {color: 'darkred'}];
         $rootScope.contestStatus = function (contest) {
             return text[getStatus(contest)];
         };

@@ -8,7 +8,7 @@
     </head>
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
-        <ul class="text-center pagination">
+        <ul th:if="${page.totalPages gt 1 or page.number!=0}" class="text-center pagination">
             <li style="font-size: x-large">Volume </li>
             <li th:each="i:${#numbers.sequence(0,page.totalPages-1)}">
                 <a th:href="@{${url}(page=${i})}" th:class="${i==page.number?'self':_}">
