@@ -24,6 +24,7 @@ import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserProblemMapper;
+import cn.edu.zjnu.acm.judge.util.DeleteHelper;
 import cn.edu.zjnu.acm.judge.util.ResultType;
 import com.github.zhanhb.judge.common.ExecuteResult;
 import com.github.zhanhb.judge.common.JudgeBridge;
@@ -66,7 +67,7 @@ import org.thymeleaf.util.StringUtils;
  */
 @Service
 @Slf4j
-public class Judger {
+public class JudgeService {
 
     private static final File NULL_FILE = Paths.get(com.sun.jna.Platform.isWindows() ? "NUL" : "/dev/null").toFile();
 
@@ -87,8 +88,6 @@ public class Judger {
     private UserProblemMapper userProblemMapper;
     @Autowired
     private ProblemMapper problemMapper;
-    @Autowired
-    private JudgeServerService judgeServerService;
     @Autowired
     private JudgeConfiguration judgeConfiguration;
     @Autowired
@@ -286,9 +285,27 @@ public class Judger {
             if (compile(runRecord)) {
                 runProcess(runRecord);
             }
-            judgeServerService.delete(judgeConfiguration.getWorkDirectory(runRecord.getSubmissionId()));
+            delete(judgeConfiguration.getWorkDirectory(runRecord.getSubmissionId()));
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);
+        }
+    }
+
+    @SuppressWarnings("CallToThreadYield")
+    private void delete(Path path) {
+        if (!judgeConfiguration.isDeleteTempFile()) {
+            return;
+        }
+        try {
+            DeleteHelper.delete(Objects.requireNonNull(path));
+        } catch (IOException ignore) {
+            // delete again
+            System.gc();
+            Thread.yield();
+            try {
+                DeleteHelper.delete(path);
+            } catch (IOException ignore2) {
+            }
         }
     }
 

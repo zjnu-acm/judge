@@ -35,7 +35,7 @@ public class JudgePool {
 
     private ExecutorService executorService;
     @Autowired
-    private Judger judger;
+    private JudgeService judger;
 
     @PostConstruct
     public void init() {
