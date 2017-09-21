@@ -92,8 +92,8 @@ public class ContestService {
     }
 
     public List<Contest> findAll(ContestForm form) {
-        EnumSet<ContestStatus> exclude = parse(form.getExclude());
-        EnumSet<ContestStatus> include = parse(form.getInclude());
+        EnumSet<ContestStatus> exclude = ContestStatus.parse(form.getExclude());
+        EnumSet<ContestStatus> include = ContestStatus.parse(form.getInclude());
         EnumSet<ContestStatus> result;
         if (!exclude.isEmpty()) {
             result = EnumSet.allOf(ContestStatus.class);
@@ -117,35 +117,6 @@ public class ContestService {
         }
         log.info("mask: {}", mask);
         return mask;
-    }
-
-    private EnumSet<ContestStatus> parse(String[] filter) {
-        EnumSet<ContestStatus> set = EnumSet.noneOf(ContestStatus.class);
-        if (filter != null) {
-            for (String exclude : filter) {
-                if (exclude != null) {
-                    for (String name : exclude.split("\\W+")) {
-                        ContestStatus contestStatus;
-                        try {
-                            contestStatus = ContestStatus.valueOf(name.trim().toUpperCase(Locale.US));
-                        } catch (IllegalArgumentException ex) {
-                            continue;
-                        }
-                        switch (contestStatus) {
-                            case PENDING:
-                            case RUNNING:
-                            case ENDED:
-                            case ERROR:
-                                set.add(contestStatus);
-                                break;
-                            default:
-                                throw new AssertionError();
-                        }
-                    }
-                }
-            }
-        }
-        return set;
     }
 
     public Contest findOne(long id) {

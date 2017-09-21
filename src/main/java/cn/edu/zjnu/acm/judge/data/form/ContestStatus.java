@@ -15,12 +15,35 @@
  */
 package cn.edu.zjnu.acm.judge.data.form;
 
+import java.util.EnumSet;
+import java.util.Locale;
+
 /**
  *
  * @author zhanhb
  */
 public enum ContestStatus {
 
-    PENDING, RUNNING, ENDED, ERROR
+    PENDING, RUNNING, ENDED, ERROR;
+
+    public static EnumSet<ContestStatus> parse(String[] filter) {
+        EnumSet<ContestStatus> set = EnumSet.noneOf(ContestStatus.class);
+        if (filter != null) {
+            for (String exclude : filter) {
+                if (exclude != null) {
+                    for (String name : exclude.split("\\W+")) {
+                        ContestStatus contestStatus;
+                        try {
+                            contestStatus = ContestStatus.valueOf(name.trim().toUpperCase(Locale.US));
+                        } catch (IllegalArgumentException ex) {
+                            continue;
+                        }
+                        set.add(contestStatus);
+                    }
+                }
+            }
+        }
+        return set;
+    }
 
 }
