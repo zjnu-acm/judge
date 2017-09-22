@@ -16,14 +16,18 @@
 package cn.edu.zjnu.acm.judge.util.excel;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -46,11 +50,12 @@ class Metainfo<T> {
             } catch (MissingResourceException ignore) {
             }
             Field[] fields = elementType.getDeclaredFields();
-            Map<String, Field> map = new LinkedHashMap<>(fields.length);
+            List<Member> list = new ArrayList<>(fields.length);
             for (Field field : fields) {
                 Excel excel = field.getAnnotation(Excel.class);
                 if (excel != null) {
-                    String key = excel.value();
+                    String key = excel.name();
+                    int order = excel.order();
                     String name = key;
                     try {
                         if (bundle != null) {
@@ -59,10 +64,11 @@ class Metainfo<T> {
                     } catch (MissingResourceException ignore) {
                     }
                     field.setAccessible(true);
-                    map.put(name, field);
+                    list.add(new Member(name, order, field));
                 }
             }
-            return new Metainfo<>(map);
+            return new Metainfo<>(list.stream().sorted(Comparator.comparingInt(Member::getOrder))
+                    .collect(Collectors.toMap(Member::getName, Member::getField, (a, b) -> b, LinkedHashMap::new)));
         });
     }
 
@@ -82,6 +88,32 @@ class Metainfo<T> {
 
     public Map<String, Field> getFieldMap() {
         return Collections.unmodifiableMap(fieldMap);
+    }
+
+    private static class Member {
+
+        private final String name;
+        private final int order;
+        private final Field field;
+
+        Member(String name, int order, Field field) {
+            this.name = name;
+            this.order = order;
+            this.field = field;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public int getOrder() {
+            return order;
+        }
+
+        public Field getField() {
+            return field;
+        }
+
     }
 
 }

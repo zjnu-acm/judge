@@ -25,15 +25,15 @@ import lombok.Data;
 @Data
 public class Account {
 
-    @Excel("id")
+    @Excel(name = "id", order = 1)
     private String id;
-    @Excel("password")
+    @Excel(name = "password", order = 2)
     private String password;
-    @Excel("nick")
+    @Excel(name = "nick", order = 3)
     private String nick;
-    @Excel("school")
+    @Excel(name = "school", order = 4)
     private String school;
-    @Excel("email")
+    @Excel(name = "email", order = 5)
     private String email;
 
 }
