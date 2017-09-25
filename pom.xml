@@ -58,7 +58,7 @@
         <javax-validation.version>2.0.0.Final</javax-validation.version>
         <jna.version>4.5.0</jna.version>
         <logback.version>1.2.3</logback.version>
-        <mariadb.version>2.1.1</mariadb.version>
+        <mariadb.version>2.1.2</mariadb.version>
         <maven-compiler-plugin.version>3.6.2</maven-compiler-plugin.version>
         <maven-enforcer-plugin.version>1.4.1</maven-enforcer-plugin.version>
         <maven-war-plugin.version>3.1.0</maven-war-plugin.version>
