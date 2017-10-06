@@ -15,7 +15,6 @@
  */
 package cn.edu.zjnu.acm.judge.service;
 
-import cn.edu.zjnu.acm.judge.data.dto.UserModel;
 import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserRoleMapper;
@@ -24,12 +23,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +38,7 @@ import org.springframework.stereotype.Service;
  * @author zhanhb
  */
 @Service
-public class UserDetailService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
     private static final List<GrantedAuthority> ROLE_ADMIN = Collections.unmodifiableList(AuthorityUtils.createAuthorityList("ROLE_ADMIN", "ROLE_SOURCE_BROWSER", "ROLE_USER"));
     private static final List<GrantedAuthority> ROLE_SOURCE_BROWSER = Collections.unmodifiableList(AuthorityUtils.createAuthorityList("ROLE_SOURCE_BROWSER", "ROLE_USER"));
@@ -53,16 +53,6 @@ public class UserDetailService {
         return request.isUserInRole("SOURCE_BROWSER");
     }
 
-    @Nonnull
-    public static Optional<UserModel> getCurrentUser(@Nonnull HttpServletRequest request) {
-        return Optional.ofNullable(request.getUserPrincipal())
-                .filter(x -> x instanceof Authentication)
-                .map(Authentication.class::cast)
-                .map(Authentication::getPrincipal)
-                .filter(x -> x instanceof UserModel)
-                .map(UserModel.class::cast);
-    }
-
     public static boolean isUser(Authentication authentication, String userId) {
         return userId != null && Optional.ofNullable(authentication).map(Principal::getName)
                 .map(userId::equals).orElse(false);
@@ -73,7 +63,8 @@ public class UserDetailService {
     @Autowired
     private UserMapper userMapper;
 
-    public UserModel getUserModel(String userId) {
+    @Override
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
         User user = userMapper.findOne(userId);
         if (user == null) {
             throw new UsernameNotFoundException(userId);
@@ -97,7 +88,7 @@ public class UserDetailService {
             }
         }
 
-        return new UserModel(user, ROLES.get(role));
+        return org.springframework.security.core.userdetails.User.withUsername(userId).password(user.getPassword()).authorities(ROLES.get(role)).build();
     }
 
 }

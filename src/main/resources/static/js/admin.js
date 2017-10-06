@@ -313,7 +313,7 @@
     });
 
     app.config(function ($sceProvider) {
-        // Completely disable SCE.  For demonstration purposes only!
+        // Completely disable SCE. For demonstration purposes only!
         // Do not use in new projects or libraries.
         $sceProvider.enabled(false);
     });
@@ -438,6 +438,13 @@
         });
         isLocal || $urlRouterProvider.when(/^#?\/?$/, '/').otherwise('404.html');
     });
+    app.run(function ($rootScope, $state, $interpolate, title) {
+        $rootScope.$on('$stateChangeSuccess', function () {
+            var currentState = $state.$current;
+            var tt = currentState.title || currentState.data && currentState.data.pageTitle || $rootScope.pageTitle || 'Untitled Page';
+            title($interpolate(tt)(currentState));
+        });
+    });
     app.config(function ($httpProvider) {
         //initialize get if not there
         var headers = $httpProvider.defaults.headers;
@@ -527,7 +534,7 @@
 
     var veryslow;
     app.run(function ($sniffer) {
-        veryslow = $sniffer.msie && $sniffer.msie < 9;
+        veryslow = $sniffer.msie < 9;
     });
 
     app.controller('problem-list', function ($stateParams, $scope, $timeout, reload, problemApi, Sort) {
@@ -849,9 +856,10 @@
                 var key = kks[i], v = p[key];
                 if (v === null || typeof v === 'undefined')
                     continue;
+                key = encodeURIComponent(key);
                 v = [].concat(v);
                 for (var j = 0, vlen = v.length; j < vlen; ++j) {
-                    parts.push(encodeURIComponent(key) + '=' + encodeURIComponent(v[j]));
+                    parts.push(key + '=' + encodeURIComponent(v[j]));
                 }
             }
             return parts.length ? url + ((url.indexOf('?') === -1) ? '?' : '&') + parts.join('&') : url;
@@ -911,7 +919,7 @@
             $scope.files = undefined;
         };
     });
-    app.controller('account-password', function ($scope, accountApi, user, $modalInstance, $interval) {
+    app.controller('account-password', function ($scope, accountApi, user, $modalInstance) {
         var id = user.id;
         $scope.user = {id: id, password: id};
         $scope.submit = function () {
@@ -1025,15 +1033,10 @@
             {name: '重置用户信息', type: 'RESET_USERINFO'}
         ];
     });
-    app.run(function ($rootScope, $state, $interpolate, title, currentTime) {
-        $rootScope.$on('$stateChangeSuccess', function (event, state) {
-            var currentState = $state.$current;
-            var tt = currentState.title || currentState.data && currentState.data.pageTitle || $rootScope.pageTitle || 'Untitled Page';
-            title($interpolate(tt)(currentState));
-        });
+    app.run(function ($rootScope, currentTime) {
         function getStatus(contest) {
             var now = +currentTime() / 1000;
-            var disabled = !!contest.disabled;
+            var disabled = contest.disabled;
             var started = !contest.startTime || contest.startTime < now;
             var ended = !contest.endTime || contest.endTime < now;
             var error = contest.startTime && contest.startTime > contest.endTime;

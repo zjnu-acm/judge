@@ -16,7 +16,6 @@
 package cn.edu.zjnu.acm.judge.mapper;
 
 import cn.edu.zjnu.acm.judge.Application;
-import cn.edu.zjnu.acm.judge.domain.Problem;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -71,27 +70,6 @@ public class ProblemMapperTest {
         log.info("touchI18n");
         long problemId = 0L;
         instance.touchI18n(problemId, lang);
-    }
-
-    /**
-     * Test of updateI18n method, of class ProblemMapper.
-     */
-    @Test
-    public void testUpdateI18n() {
-        log.info("updateI18n");
-        long problemId = 0L;
-        Problem problem = new Problem();
-        problem = problem.toBuilder()
-                .title("")
-                .input("")
-                .output("")
-                .description("")
-                .hint("")
-                .source("")
-                .build();
-        instance.updateI18n(problemId, lang, problem);
-        problem = new Problem().toBuilder().title("").build();
-        instance.updateI18n(problemId, lang, problem);
     }
 
 }

@@ -22,7 +22,7 @@ import cn.edu.zjnu.acm.judge.exception.BusinessCode;
 import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
-import cn.edu.zjnu.acm.judge.service.UserDetailService;
+import cn.edu.zjnu.acm.judge.service.UserDetailsServiceImpl;
 import cn.edu.zjnu.acm.judge.util.ResultType;
 import cn.edu.zjnu.acm.judge.util.URLBuilder;
 import java.util.ArrayList;
@@ -97,8 +97,8 @@ public class ProblemStatusController {
         List<Submission> bestSubmissions = submissionMapper.bestSubmission(id, pageable);
         long total = pageable.getOffset() + bestSubmissions.size() + (pageable.getPageSize() == bestSubmissions.size() ? 1 : 0);
         PageImpl<Submission> page = new PageImpl<>(bestSubmissions, pageable, total);
-        boolean isAdmin = UserDetailService.isAdminLoginned(request);
-        boolean isSourceBrowser = UserDetailService.isSourceBrowser(request);
+        boolean isAdmin = UserDetailsServiceImpl.isAdminLoginned(request);
+        boolean isSourceBrowser = UserDetailsServiceImpl.isSourceBrowser(request);
         boolean canView = isAdmin || isSourceBrowser;
 
         request.setAttribute("page", page);

@@ -38,11 +38,11 @@ a.sortable:hover {
 }
 div.sd1 {
     position: absolute;
-    left: 0px;
+    left: 0;
 }
 div.sd2 {
     position: absolute;
-    right: 0px;
+    right: 0;
 }
 div.ptt {
     text-align: center;
@@ -128,7 +128,7 @@ tr.top {
     border-spacing: 0;
     width: 100%;
 }
-.standing td,.standing th {
+.standing td, .standing th {
     border: 1px white solid;
     padding-left: 2px;
     padding-right: 2px;
@@ -263,7 +263,7 @@ form.form-horizontal .ng-dirty.ng-invalid {
 .sortable {
     cursor: pointer;
 }
-a.btn-default,a.btn-default:link,a.btn-default:visited{
+a.btn-default, a.btn-default:link, a.btn-default:visited {
     color: #333;
 }
 .multiSelect > button {

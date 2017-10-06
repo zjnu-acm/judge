@@ -35,7 +35,6 @@ import com.github.zhanhb.judge.common.Validator;
 import com.github.zhanhb.judge.win32.ProcessCreationHelper;
 import com.github.zhanhb.judge.win32.SpecialValidator;
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,7 +46,6 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -232,7 +230,7 @@ public class JudgeService {
         final String main = "Main";
         Files.createDirectories(work);
         Path sourceFile = work.resolve(main + "." + runRecord.getLanguage().getSourceExtension()); //源码码文件
-        Files.copy(new ByteArrayInputStream(source.getBytes(Platform.getCharset())), sourceFile, StandardCopyOption.REPLACE_EXISTING);
+        Files.write(sourceFile, source.getBytes(Platform.getCharset()));
 
         String compileCommand = runRecord.getLanguage().getCompileCommand();
         log.debug("Compile Command: {}", compileCommand); //编译命令
@@ -250,7 +248,7 @@ public class JudgeService {
                 .redirectOutput(compileInfo.toFile())
                 .redirectErrorStream(true)::start);
         try {
-            process.waitFor(45, TimeUnit.SECONDS);
+            process.waitFor(1, TimeUnit.MINUTES);
         } catch (InterruptedException ex) {
             throw new InterruptedIOException();
         }

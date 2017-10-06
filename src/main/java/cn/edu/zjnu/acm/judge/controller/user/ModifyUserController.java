@@ -58,7 +58,11 @@ public class ModifyUserController {
         } else {
             ValueCheck.checkPassword(newPassword);
         }
-        ValueCheck.checkEmail(email);
+        if (StringUtils.isEmptyOrWhitespace(email)) {
+            email = null;
+        } else {
+            ValueCheck.checkEmail(email);
+        }
         ValueCheck.checkNick(nick);
         user = User.builder()
                 .id(userId)

@@ -87,8 +87,7 @@ public class AccountControllerTest {
                 .andExpect(status().is2xxSuccessful())
                 .andReturn().getResponse().getContentAsByteArray();
         MockMultipartFile file = new MockMultipartFile("file", content);
-        mvc.perform(MockMvcRequestBuilders.fileUpload("/api/accounts.json")
-                .file(file))
+        mvc.perform(MockMvcRequestBuilders.fileUpload("/api/accounts.json").file(file))
                 .andExpect(status().is2xxSuccessful());
     }
 

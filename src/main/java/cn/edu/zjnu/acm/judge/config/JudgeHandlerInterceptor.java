@@ -38,11 +38,7 @@ public class JudgeHandlerInterceptor {
     public static final String BACK_URL_ATTRIBUTE_NAME = "backUrl";
 
     private static String getString(String attributeName, Function<HttpServletRequest, String> supplier, HttpServletRequest request) {
-        String value = (String) request.getAttribute(attributeName);
-        if (value != null) {
-            return value;
-        }
-        return supplier.apply(request);
+        return Optional.ofNullable((String) request.getAttribute(attributeName)).orElseGet(() -> supplier.apply(request));
     }
 
     @Autowired

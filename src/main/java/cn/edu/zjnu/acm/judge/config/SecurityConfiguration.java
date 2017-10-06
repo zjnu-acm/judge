@@ -15,7 +15,6 @@
  */
 package cn.edu.zjnu.acm.judge.config;
 
-import cn.edu.zjnu.acm.judge.service.UserDetailService;
 import com.github.zhanhb.ckfinder.connector.autoconfigure.CKFinderProperties;
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -32,6 +31,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.DefaultRedirectStrategy;
@@ -52,7 +52,7 @@ import org.springframework.security.web.savedrequest.NullRequestCache;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UserDetailService userDetailService;
+    private UserDetailsService userDetailsService;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
@@ -120,8 +120,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailService::getUserModel)
-                .passwordEncoder(passwordEncoder);
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
     }
 
     @Bean

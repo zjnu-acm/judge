@@ -34,14 +34,14 @@ public class SubmissionService {
     private ContestMapper contestMapper;
 
     public boolean canView(HttpServletRequest request, Submission submission) {
-        if (UserDetailService.isAdminLoginned(request)) {
+        if (UserDetailsServiceImpl.isAdminLoginned(request)) {
             return true;
         }
         // TODO cast to Authentication
-        if (UserDetailService.isUser((Authentication) request.getUserPrincipal(), submission.getUser())) {
+        if (UserDetailsServiceImpl.isUser((Authentication) request.getUserPrincipal(), submission.getUser())) {
             return true;
         }
-        boolean sourceBrowser = UserDetailService.isSourceBrowser(request);
+        boolean sourceBrowser = UserDetailsServiceImpl.isSourceBrowser(request);
         if (sourceBrowser) {
             Long contestId = submission.getContest();
             if (contestId == null) {

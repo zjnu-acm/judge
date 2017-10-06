@@ -57,7 +57,7 @@ public class LanguageController {
     }
 
     @GetMapping("{id}")
-    public Language findOne(long id) {
+    public Language findOne(@PathVariable("id") long id) {
         return languageMapper.findOne(id);
     }
 

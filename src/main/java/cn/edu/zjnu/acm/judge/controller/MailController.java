@@ -21,7 +21,7 @@ import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.MailMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
-import cn.edu.zjnu.acm.judge.service.UserDetailService;
+import cn.edu.zjnu.acm.judge.service.UserDetailsServiceImpl;
 import cn.edu.zjnu.acm.judge.util.JudgeUtils;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +54,7 @@ public class MailController {
         if (mail == null) {
             throw new MessageException("No such mail", HttpStatus.NOT_FOUND);
         }
-        if (!UserDetailService.isUser(authentication, mail.getTo())) {
+        if (!UserDetailsServiceImpl.isUser(authentication, mail.getTo())) {
             throw new MessageException("Sorry, invalid access", HttpStatus.FORBIDDEN);
         }
         mailMapper.delete(mailId);
@@ -122,7 +122,7 @@ public class MailController {
                 throw new MessageException("No such mail", HttpStatus.NOT_FOUND);
             }
             String toUser = parent.getTo();
-            if (!UserDetailService.isUser(authentication, toUser)) {
+            if (!UserDetailsServiceImpl.isUser(authentication, toUser)) {
                 throw new MessageException("invalid access", HttpStatus.FORBIDDEN);
             }
             userId = parent.getFrom();
@@ -147,7 +147,7 @@ public class MailController {
         if (mail == null) {
             throw new MessageException("No such mail", HttpStatus.NOT_FOUND);
         }
-        if (!UserDetailService.isUser(authentication, mail.getTo())) {
+        if (!UserDetailsServiceImpl.isUser(authentication, mail.getTo())) {
             throw new MessageException("Sorry, invalid access", HttpStatus.FORBIDDEN);
         }
         mailMapper.readed(mailId);

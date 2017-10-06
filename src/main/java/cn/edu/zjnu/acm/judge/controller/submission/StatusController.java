@@ -8,7 +8,7 @@ import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.service.ContestService;
 import cn.edu.zjnu.acm.judge.service.LanguageService;
 import cn.edu.zjnu.acm.judge.service.SubmissionService;
-import cn.edu.zjnu.acm.judge.service.UserDetailService;
+import cn.edu.zjnu.acm.judge.service.UserDetailsServiceImpl;
 import cn.edu.zjnu.acm.judge.util.ResultType;
 import cn.edu.zjnu.acm.judge.util.URLBuilder;
 import java.sql.Timestamp;
@@ -128,8 +128,8 @@ public class StatusController {
                 + "<TABLE cellSpacing=0 cellPadding=0 width=100% border=1 class=table-back style=\"border-collapse: collapse\" bordercolor=#FFF>"
                 + "<tr bgcolor=#6589D1><td align=center width=8%><b>Run ID</b></td><td align=center width=10%><b>User</b></td><td align=center width=6%><b>Problem</b></td>"
                 + "<td align=center width=10%><b>Result</b></td><td align=center width=10%><b>Score</b></td><td align=center width=7%><b>Memory</b></td><td align=center width=7%><b>Time</b></td><td align=center width=7%><b>Language</b></td><td align=center width=7%><b>Code Length</b></td><td align=center width=17%><b>Submit Time</b></td></tr>");
-        boolean admin = UserDetailService.isAdminLoginned(request);
-        boolean sourceBrowser = UserDetailService.isSourceBrowser(request);
+        boolean admin = UserDetailsServiceImpl.isAdminLoginned(request);
+        boolean sourceBrowser = UserDetailsServiceImpl.isSourceBrowser(request);
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         for (Submission submission : submissions) {
@@ -183,7 +183,7 @@ public class StatusController {
             } else {
                 sb.append("<td>&nbsp;</td><td>&nbsp;</td>");
             }
-            if (admin || sourceBrowser || UserDetailService.isUser(authentication, user_id1)) {
+            if (admin || sourceBrowser || UserDetailsServiceImpl.isUser(authentication, user_id1)) {
                 sb.append("<td><a href=showsource?solution_id=").append(id).append(" target=_blank>").append(language1).append("</a></td>");
             } else {
                 sb.append("<td>").append(language1).append("</td>");

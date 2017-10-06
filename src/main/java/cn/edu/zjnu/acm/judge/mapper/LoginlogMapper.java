@@ -29,7 +29,7 @@ import org.apache.ibatis.annotations.Param;
 public interface LoginlogMapper {
 
     @Insert("<script>insert into loginlog (user_id,password,type,ip,time,success) values"
-            + "<foreach item='item' index='index' collection='list' separator=','>"
+            + "<foreach item='item' collection='list' separator=','>"
             + "(#{item.user},'',#{item.type},#{item.ip},now(),#{item.success})"
             + "</foreach>"
             + "</script>")

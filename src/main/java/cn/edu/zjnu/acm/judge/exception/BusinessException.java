@@ -15,6 +15,8 @@
  */
 package cn.edu.zjnu.acm.judge.exception;
 
+import java.util.Objects;
+
 /**
  *
  * @author zhanhb
@@ -29,7 +31,7 @@ public class BusinessException extends RuntimeException {
     public BusinessException(BusinessCode errorCode, Object... params) {
         super(errorCode.name());
         this.code = errorCode;
-        this.params = params == null ? new Object[0] : params.clone();
+        this.params = Objects.requireNonNull(params, "params").clone();
     }
 
     public BusinessCode getCode() {

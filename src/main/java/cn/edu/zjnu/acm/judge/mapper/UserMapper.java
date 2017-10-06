@@ -90,7 +90,7 @@ public interface UserMapper {
             + "from users"
             + FORM_CONDITION
             + "<if test='pageable.sort!=null'>"
-            + "<foreach item='item' index='index' collection='pageable.sort' open='order by' separator=','>"
+            + "<foreach item='item' collection='pageable.sort' open='order by' separator=','>"
             + "<choose>"
             + "<when test='item.property==&quot;user_id&quot;'>user_id</when>"
             + "<when test='item.property==&quot;nick&quot;'>nick</when>"

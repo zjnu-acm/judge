@@ -148,8 +148,7 @@ public interface ProblemMapper {
             + FORM_CONDITION
             + "<if test='userId!=null'>group by p.problem_id</if>"
             + " order by <if test='pageable.sort!=null'>"
-            + "<foreach item='item' index='index' collection='pageable.sort'"
-            + "      separator=',' close=','>"
+            + "<foreach item='item' collection='pageable.sort' separator=',' close=','>"
             + "        <choose>"
             + "    <when test='\"inDate\".equalsIgnoreCase(item.property)'>inDate</when>"
             + "    <when test='\"date\".equalsIgnoreCase(item.property)'>inDate</when>"
@@ -194,29 +193,13 @@ public interface ProblemMapper {
             @Param("problemId") long problemId,
             @Param("lang") String lang);
 
-    @Update("<script>"
-            + "update problem_i18n"
-            + "<set>"
-            + "<if test='problem.title!=null'>title=nullif(#{problem.title},''),</if>"
-            + "<if test='problem.description!=null'>description=nullif(#{problem.description},''),</if>"
-            + "<if test='problem.input!=null'>input=nullif(#{problem.input},''),</if>"
-            + "<if test='problem.output!=null'>output=nullif(#{problem.output},''),</if>"
-            + "<if test='problem.hint!=null'>hint=nullif(#{problem.hint},''),</if>"
-            + "<if test='problem.source!=null'>source=nullif(#{problem.source},''),</if>"
-            + "</set>"
-            + "where id=#{problemId} and locale<choose><when test='lang==null'> is null</when><otherwise>=#{lang}</otherwise></choose>"
-            + "</script>")
-    long updateI18n(
-            @Param("problemId") long problemId,
-            @Param("lang") String lang,
-            @Param("problem") Problem problem);
-
     @Delete("delete from `problem` where problem_id=#{id}")
     long delete(@Param("id") long id);
 
     @Delete("delete from `problem_i18n` where id=#{id}")
     long deleteI18n(@Param("id") long id);
 
+    @Deprecated
     @Update("update problem set contest_id=null where contest_id=#{id}")
     long clearByContestId(long id);
 
