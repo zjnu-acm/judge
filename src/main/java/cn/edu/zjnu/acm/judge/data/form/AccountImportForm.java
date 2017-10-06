@@ -13,9 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.data.excel;
+package cn.edu.zjnu.acm.judge.data.form;
 
-import cn.edu.zjnu.acm.judge.util.excel.Excel;
+import cn.edu.zjnu.acm.judge.data.excel.Account;
+import cn.edu.zjnu.acm.judge.mapper.UserMapper;
+import com.google.common.collect.Lists;
+import java.util.List;
 import lombok.Data;
 
 /**
@@ -23,18 +26,19 @@ import lombok.Data;
  * @author zhanhb
  */
 @Data
-public class Account {
+@SuppressWarnings({"AssignmentToCollectionOrArrayFieldFromParameter", "ReturnOfCollectionOrArrayField", "PublicInnerClass"})
+public class AccountImportForm {
 
-    @Excel(name = "id", order = 1)
-    private String id;
-    @Excel(name = "password", order = 2)
-    private String password;
-    @Excel(name = "nick", order = 3)
-    private String nick;
-    @Excel(name = "school", order = 4)
-    private String school;
-    @Excel(name = "email", order = 5)
-    private String email;
-    private Boolean exists;
+    private List<Account> content;
+    private List<ExistPolicy> existsPolicy = Lists.newArrayList();
+
+    /**
+     * {@link UserMapper#batchUpdate(java.util.List, int)}
+     */
+    public static enum ExistPolicy {
+        ENABLE,
+        RESET_PASSWORD,
+        RESET_USERINFO,
+    }
 
 }

@@ -37,7 +37,17 @@ public enum BusinessCode {
     CONTEST_ONLY_VIEW_SOURCE("onlinejudge.contest.only.view.souree"),
     PROBLEM_NOT_FOUND("onlinejudge.problem.notfound", HttpStatus.NOT_FOUND),
     LANGUAGE_NOT_FOUND("onlinejudge.language.notfound"),
-    RESET_PASSWORD_FORBIDDEN("由于安全原因，无法重置管理员的密码", HttpStatus.FORBIDDEN);
+    IMPORT_USER_EMPTY("导入用户为空"),
+    EMPTY_USER_ID("用户名为空"),
+    EMPTY_PASSWORD("onlinejudge.password.empty"),
+    PASSWORD_TOO_LONG("onlinejudge.password.long"),
+    PASSWORD_TOO_SHORT("onlinejudge.password.short"),
+    PASSWORD_HAS_SPACE("onlinejudge.password.space"),
+    PASSWORD_INVALID_CHARACTER("onlinejudge.password.invalid"),
+    RESET_PASSWORD_FORBIDDEN("由于安全原因，无法重置管理员的密码", HttpStatus.FORBIDDEN),
+    IMPORT_USER_EXISTS("部分用户已经存在，请移除或选择存在策略后再导入"),
+    IMPORT_USER_EXISTS_CHANGE("用户已经变化，请重新导入Excel"),
+    IMPORT_USER_RESET_PASSWORD_FORBIDDEN("由于安全原因，无法更新管理员的密码", HttpStatus.FORBIDDEN);
 
     private final HttpStatus status;
     private final String message;

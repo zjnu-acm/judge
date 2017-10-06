@@ -24,6 +24,7 @@ import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
+import cn.edu.zjnu.acm.judge.util.EnumUtils;
 import cn.edu.zjnu.acm.judge.util.SpecialCall;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
@@ -103,20 +104,11 @@ public class ContestService {
         } else {
             result = EnumSet.allOf(ContestStatus.class);
         }
-        return contestMapper.findAllByQuery(form.isIncludeDisabled(), toMask(result));
+        return contestMapper.findAllByQuery(form.isIncludeDisabled(), EnumUtils.toMask(result));
     }
 
     public List<Contest> findAll(ContestStatus first, ContestStatus... rest) {
-        return contestMapper.findAllByQuery(false, toMask(EnumSet.of(first, rest)));
-    }
-
-    private int toMask(EnumSet<ContestStatus> result) {
-        int mask = 0;
-        for (ContestStatus contestStatus : result) {
-            mask |= 1 << contestStatus.ordinal();
-        }
-        log.info("mask: {}", mask);
-        return mask;
+        return contestMapper.findAllByQuery(false, EnumUtils.toMask(EnumSet.of(first, rest)));
     }
 
     public Contest findOne(long id) {

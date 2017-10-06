@@ -15,11 +15,11 @@
  */
 package cn.edu.zjnu.acm.judge.util.excel;
 
+import com.google.common.collect.ImmutableMap;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -27,8 +27,8 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import lombok.Value;
 
 /**
  *
@@ -42,11 +42,11 @@ class Metainfo<T> {
     static <T> Metainfo<T> forType(Class<T> elementType, Locale paramLocale) {
         Locale locale = paramLocale == null ? Locale.ROOT : paramLocale;
         ConcurrentMap<Class<?>, Metainfo<?>> metainfos = MAP.computeIfAbsent(locale, __ -> new ConcurrentHashMap<>(1));
-        return (Metainfo<T>) metainfos.computeIfAbsent(elementType, clazz -> {
+        return (Metainfo<T>) metainfos.computeIfAbsent(elementType, type -> {
             ResourceBundle bundle = null;
-            String bundleName = clazz.getName().replace('.', '/');
+            String bundleName = type.getName().replace('.', '/');
             try {
-                bundle = ResourceBundle.getBundle(bundleName, locale, clazz.getClassLoader());
+                bundle = ResourceBundle.getBundle(bundleName, locale, type.getClassLoader());
             } catch (MissingResourceException ignore) {
             }
             Field[] fields = elementType.getDeclaredFields();
@@ -67,8 +67,9 @@ class Metainfo<T> {
                     list.add(new Member(name, order, field));
                 }
             }
+            // entries in ImmutableMap are sorted in the order as the input
             return new Metainfo<>(list.stream().sorted(Comparator.comparingInt(Member::getOrder))
-                    .collect(Collectors.toMap(Member::getName, Member::getField, (a, b) -> b, LinkedHashMap::new)));
+                    .collect(ImmutableMap.toImmutableMap(Member::getName, Member::getField)));
         });
     }
 
@@ -90,29 +91,13 @@ class Metainfo<T> {
         return Collections.unmodifiableMap(fieldMap);
     }
 
+    @Value
+    @SuppressWarnings("FinalClass")
     private static class Member {
 
-        private final String name;
-        private final int order;
-        private final Field field;
-
-        Member(String name, int order, Field field) {
-            this.name = name;
-            this.order = order;
-            this.field = field;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public int getOrder() {
-            return order;
-        }
-
-        public Field getField() {
-            return field;
-        }
+        private String name;
+        private int order;
+        private Field field;
 
     }
 

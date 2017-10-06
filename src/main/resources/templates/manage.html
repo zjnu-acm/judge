@@ -12,6 +12,7 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css" th:href="@{/webjars/bootstrap/3.3.7/dist/css/bootstrap.min.css}" rel="stylesheet"/>
         <link href="../static/css/site.css" th:href="@{/css/site.css(_=${T(org.springframework.web.context.support.WebApplicationContextUtils).getRequiredWebApplicationContext(#servletContext).startupDate})}" rel="stylesheet"/>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.9.0/loading-bar.css" th:href="@{/webjars/angular-loading-bar/0.9.0/build/loading-bar.min.css}" rel="stylesheet"/>
+        <link href="https://rawgit.com/isteven/angular-multi-select/v4.0.0/isteven-multi-select.css" th:href="@{/webjars/angular-multi-select/4.0.0/isteven-multi-select.css}" rel="stylesheet"/>
         <!--[if lt IE 9]>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" th:src="@{/webjars/html5shiv/3.7.3/html5shiv.min.js}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js" th:src="@{/webjars/respond/1.4.2/dest/respond.matchmedia.addListener.min.js}"></script>
@@ -42,6 +43,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.9.0/loading-bar.js" th:src="@{/webjars/angular-loading-bar/0.9.0/build/loading-bar.min.js}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.32/angular-resource.js" th:src="@{/webjars/angular-resource/1.2.32/angular-resource.min.js}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.32/angular-sanitize.js" th:src="@{/webjars/angular-sanitize/1.2.32/angular-sanitize.min.js}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/12.2.13/ng-file-upload-all.js" th:src="@{/webjars/ng-file-upload/12.2.13/dist/ng-file-upload-all.min.js}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.1/ui-bootstrap.js" th:src="@{/webjars/angular-ui-bootstrap/0.12.1/ui-bootstrap.min.js}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.1/ui-bootstrap-tpls.js" th:src="@{/webjars/angular-ui-bootstrap/0.12.1/ui-bootstrap-tpls.min.js}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.js" th:src="@{/webjars/angular-ui-router/0.2.18/release/angular-ui-router.min.js}"></script>
@@ -49,6 +51,7 @@
         <script src="https://rawgit.com/eight04/custom-input/v0.2.1/dist/custom-input.js" th:src="@{/webjars/custom-input/0.2.1/dist/custom-input.js}"></script>
         <script src="https://rawgit.com/eight04/angular-datetime/v5.1.3/dist/datetime.js" th:src="@{/webjars/angular-datetime-input/5.1.3/dist/datetime.js}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.7.3/ckeditor.js" th:src="@{/webjars/ckeditor/4.7.3/full/ckeditor.js}"></script>
+        <script src="https://rawgit.com/isteven/angular-multi-select/v4.0.0/isteven-multi-select.js" th:src="@{/webjars/angular-multi-select/4.0.0/isteven-multi-select.js}"></script>
         <script th:src="@{/webjars/ckfinder/2.6.2.1/ckfinder.js}"></script>
         <script src="../static/js/ng-ckeditor.js" th:src="@{/js/ng-ckeditor.js(_=${T(org.springframework.web.context.support.WebApplicationContextUtils).getRequiredWebApplicationContext(#servletContext).startupDate})}"></script>
         <script src="../static/js/admin.js" th:src="@{/js/admin.js(_=${T(org.springframework.web.context.support.WebApplicationContextUtils).getRequiredWebApplicationContext(#servletContext).startupDate})}"></script>
@@ -254,9 +257,9 @@
                     <tr class="text-center">
                         <th width="10%" class="sortable" ng-click="push('id')">编号</th>
                         <th width="25%" class="sortable" ng-click="push('title')">标题</th>
-                        <th width="10%" class="sortable" ng-click="push('contest')">比赛</th>
+                        <th width="10%" class="sortable" ng-click="push('contest,desc')">比赛</th>
                         <th width="8%" class="sortable" ng-click="push('disabled')">状态</th>
-                        <th width="20%" class="sortable" ng-click="push('inDate')">最后提交</th>
+                        <th width="20%" class="sortable" ng-click="push('inDate,desc')">最后提交</th>
                         <th width="16%">操作</th>
                     </tr>
                 </thead>
@@ -422,6 +425,8 @@
             </select>
             <button class="btn btn-default" type="submit">查询</button>
         </form>
+        <div ngf-select ngf-drop ng-model="files" ngf-keep="false" class="btn btn-default" ngf-accept="'.xls,.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel'" ngf-allow-dir="false" ngf-change="fileChange()" ngf-multiple="true">选择excel文件用于用户导入</div>
+        <a ng-href="{{exportUrl}}" class="btn btn-default">导出查询结果</a>
         <div class="table-responsive">
             <table class="table table-striped table-hover table-bordered">
                 <thead>
@@ -429,8 +434,8 @@
                         <th>编号</th>
                         <th class="sortable" ng-click="push('id')">用户名</th>
                         <th class="sortable" ng-click="push('title')">昵称</th>
-                        <th class="sortable" ng-click="push('solved')">solved</th>
-                        <th class="sortable" ng-click="push('submit')">提交</th>
+                        <th class="sortable" ng-click="push('solved,desc')">solved</th>
+                        <th class="sortable" ng-click="push('submit,desc')">提交</th>
                         <th>操作</th>
                     </tr>
                 </thead>
@@ -484,6 +489,57 @@
                 <button type="submit" class="btn btn-primary" ng-disabled="accountPassword.$invalid">重置</button>
             </div>
         </form>
+        <!--/*/</script>/*/-->
+
+        <!--/*/<script type="text/ng-template" id="account-import.html">/*/-->
+        <h3>导入用户</h3>
+        <form ng-submit="pageChanged(0,params)">
+            <label th:for="${#ids.next('userId')}">用户名：</label>
+            <input th:id="${#ids.seq('userId')}" name="userId" ng-model="params.id"/>
+            <label th:for="${#ids.next('nick')}">昵称</label>
+            <input th:id="${#ids.seq('nick')}" name="nick" ng-model="params.nick"/>
+            <label th:for="${#ids.next('school')}">班级</label>
+            <input th:id="${#ids.seq('school')}" name="nick" ng-model="params.school"/>
+            <label th:for="${#ids.next('email')}">邮箱</label>
+            <input th:id="${#ids.seq('email')}" name="nick" ng-model="params.email"/>
+            <button class="btn btn-default">查询</button>
+        </form>
+        <div>准备导入{{page.totalElements()}}个用户<span ng-show="exists">，其中{{exists}}个用户已经存在</span>
+            <span ng-show="count.duplicate()">，{{count.duplicate()}}个用户重复</span><span>。</span>
+            <span ng-show="exists">已经存在用户导入策略：<span isteven-multi-select input-model="existPolicy" output-model="outputPolicy" button-label="name" item-label="name" tick-property="selected" disable-property="disabled" helper-elements="all none" output-properties="type" translation="{nothingSelected:'未选择存在策略',selectAll:'全选',selectNone:'清空'}"></span></span>
+            <button class="btn btn-default" ng-click="import()">导入</button>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-bordered">
+                <thead>
+                    <tr class="text-center">
+                        <th class="sortable" ng-click="push('$index')">编号</th>
+                        <th class="sortable" ng-click="push('id')">用户名</th>
+                        <th class="sortable" ng-click="push('password')">密码</th>
+                        <th class="sortable" ng-click="push('nick')">昵称</th>
+                        <th class="sortable" ng-click="push('school')">班级</th>
+                        <th class="sortable" ng-click="push('email')">邮箱</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="text-center" ng-repeat="u in list">
+                        <td>{{u.$index}}</td>
+                        <td>{{u.id}}</td>
+                        <td style="overflow:hidden;text-overflow:ellipsis;max-width: 120px;">{{u.password}}</td>
+                        <td style="overflow:hidden;text-overflow:ellipsis;max-width: 120px;">{{u.nick}}</td>
+                        <td>{{u.school}}</td>
+                        <td>{{u.email}}</td>
+                        <td>
+                            <button class="btn btn-default" type="button" ng-click="remove(u)">移除</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="clearfix" ng-hide="1 >= page.totalPages() && page.number() === 0">
+            <pagination total-items="filteredElements" ng-model="currentPage" max-size="10" items-per-page="page.pageSize()" ng-change="pageChanged(currentPage - 1)" boundary-links="true" direction-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-init="currentPage = page.number() + 1"></pagination>
+        </div>
         <!--/*/</script>/*/-->
     </body>
 </html>

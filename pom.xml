@@ -135,6 +135,17 @@
             </dependency>
             <dependency>
                 <groupId>org.webjars</groupId>
+                <artifactId>angular-multi-select</artifactId>
+                <version>4.0.0</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>angularjs</artifactId>
+                        <groupId>org.webjars</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.webjars</groupId>
                 <artifactId>jquery</artifactId>
                 <version>1.12.4</version>
             </dependency>
@@ -179,6 +190,17 @@
                 <groupId>org.webjars.npm</groupId>
                 <artifactId>custom-input</artifactId>
                 <version>0.2.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.webjars.npm</groupId>
+                <artifactId>ng-file-upload</artifactId>
+                <version>12.2.13</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>angular</artifactId>
+                        <groupId>org.webjars.npm</groupId>
+                    </exclusion>
+                </exclusions>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -339,6 +361,11 @@
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
+            <artifactId>angular-multi-select</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
             <artifactId>ckeditor</artifactId>
             <version>4.7.3</version>
             <scope>runtime</scope>
@@ -427,6 +454,11 @@
             <groupId>org.webjars.npm</groupId>
             <artifactId>bootstrap</artifactId>
             <version>3.3.7</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>ng-file-upload</artifactId>
             <scope>runtime</scope>
         </dependency>
     </dependencies>

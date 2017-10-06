@@ -17,6 +17,7 @@ package cn.edu.zjnu.acm.judge.controller.api;
 
 import cn.edu.zjnu.acm.judge.data.excel.Account;
 import cn.edu.zjnu.acm.judge.data.form.AccountForm;
+import cn.edu.zjnu.acm.judge.data.form.AccountImportForm;
 import cn.edu.zjnu.acm.judge.data.form.UserPasswordForm;
 import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.service.AccountService;
@@ -89,7 +90,12 @@ public class AccountController {
 
     @PostMapping(consumes = MULTIPART_FORM_DATA_VALUE)
     public List<Account> parseExcel(@RequestParam("file") MultipartFile multipartFile, Locale locale) throws IOException {
-        return ExcelUtil.parse(multipartFile.getBytes(), Account.class, locale);
+        return accountService.parseExcel(multipartFile.getBytes(), locale);
+    }
+
+    @PostMapping(value = "import", consumes = APPLICATION_JSON_VALUE)
+    public void importUsers(@RequestBody AccountImportForm form) {
+        accountService.importUsers(form);
     }
 
 }

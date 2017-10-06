@@ -15,6 +15,8 @@
  */
 package cn.edu.zjnu.acm.judge.util;
 
+import cn.edu.zjnu.acm.judge.exception.BusinessCode;
+import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import org.springframework.http.HttpStatus;
 import org.thymeleaf.util.StringUtils;
@@ -40,23 +42,23 @@ public interface ValueCheck {
 
     static void checkPassword(String password) {
         if (StringUtils.isEmpty(password)) {
-            throw new MessageException("Password can not be NULL", HttpStatus.BAD_REQUEST);
+            throw new BusinessException(BusinessCode.EMPTY_PASSWORD);
         }
         if (password.length() > 20) {
-            throw new MessageException("Password is too long", HttpStatus.BAD_REQUEST);
+            throw new BusinessException(BusinessCode.PASSWORD_TOO_LONG);
         }
         if (password.length() < 6) {
-            throw new MessageException("Password is too short", HttpStatus.BAD_REQUEST);
+            throw new BusinessException(BusinessCode.PASSWORD_TOO_SHORT);
         }
         for (int i = 0; i < password.length(); ++i) {
             if (password.charAt(i) == ' ') {
-                throw new MessageException("Password can not contain spaces", HttpStatus.BAD_REQUEST);
+                throw new BusinessException(BusinessCode.PASSWORD_HAS_SPACE);
             }
         }
         for (int i = 0; i < password.length(); ++i) {
             char ch = password.charAt(i);
             if (ch >= 127 || ch < 32) {
-                throw new MessageException("Password contains invalid character", HttpStatus.BAD_REQUEST);
+                throw new BusinessException(BusinessCode.PASSWORD_INVALID_CHARACTER);
             }
         }
     }

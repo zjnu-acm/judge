@@ -13,28 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.data.excel;
+package cn.edu.zjnu.acm.judge.util;
 
-import cn.edu.zjnu.acm.judge.util.excel.Excel;
-import lombok.Data;
+import java.util.Collection;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  *
  * @author zhanhb
  */
-@Data
-public class Account {
+@Slf4j
+@SuppressWarnings("UtilityClassWithoutPrivateConstructor")
+public class EnumUtils {
 
-    @Excel(name = "id", order = 1)
-    private String id;
-    @Excel(name = "password", order = 2)
-    private String password;
-    @Excel(name = "nick", order = 3)
-    private String nick;
-    @Excel(name = "school", order = 4)
-    private String school;
-    @Excel(name = "email", order = 5)
-    private String email;
-    private Boolean exists;
+    public static <E extends Enum<E>> int toMask(Collection<E> list) {
+        int mask = 0;
+        for (E e : list) {
+            mask |= 1 << e.ordinal();
+        }
+        log.info("mask: {}", mask);
+        return mask;
+    }
 
 }

@@ -17,7 +17,9 @@ package cn.edu.zjnu.acm.judge.mapper;
 
 import cn.edu.zjnu.acm.judge.data.excel.Account;
 import cn.edu.zjnu.acm.judge.data.form.AccountForm;
+import cn.edu.zjnu.acm.judge.data.form.AccountImportForm;
 import cn.edu.zjnu.acm.judge.domain.User;
+import java.util.Collection;
 import java.util.List;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -123,5 +125,48 @@ public interface UserMapper {
             + "<where>user_id=#{userId}</where>"
             + "</script>")
     int updateSelective(@Param("userId") String userId, @Param("user") User user);
+
+    @Select("<script>select user_id id from users where user_id in"
+            + "<foreach item='item' collection='userIds' open='(' separator=',' close=')'>"
+            + "#{item}"
+            + "</foreach>"
+            + "</script>")
+    List<String> findAllByUserIds(@Param("userIds") Collection<String> userIds);
+
+    @Select("<script>select count(user_id) cnt from users where user_id in"
+            + "<foreach item='item' collection='userIds' open='(' separator=',' close=')'>"
+            + "#{item}"
+            + "</foreach>"
+            + "</script>")
+    long countAllByUserIds(@Param("userIds") Collection<String> collect);
+
+    /**
+     * {@link AccountImportForm.ExistPolicy}
+     */
+    @Update("<script>"
+            + "update users u join"
+            + "<foreach item='item' index='index' collection='accounts' open='(' separator='union' close=')'>"
+            + "<if test='index==0'>(select #{item.id} id,#{item.password} password,#{item.nick} nick,#{item.school} school,#{item.email} email)</if>"
+            + "<if test='index!=0'>(select #{item.id},#{item.password},#{item.nick},#{item.school},#{item.email})</if>"
+            + "</foreach>"
+            + "t on u.user_id=t.id"
+            + "<set>"
+            + "<if test='(mask&amp;1)!=0'>u.disabled=false,</if>"
+            + "<if test='(mask&amp;2)!=0'>u.password=t.password,</if>"
+            + "<if test='(mask&amp;4)!=0'>"
+            + "u.nick=t.nick,u.school=t.school,u.email=t.email,"
+            + "</if>"
+            + "modified_time=now()"
+            + "</set>"
+            + "</script>")
+    int batchUpdate(@Param("accounts") List<Account> accounts, @Param("mask") int mask);
+
+    @Insert("<script>"
+            + "insert into users(user_id,nick,password,school,email)values"
+            + "<foreach item='item' collection='accounts' separator=','>"
+            + "(#{item.id},#{item.nick},#{item.password},#{item.school},#{item.email})"
+            + "</foreach>"
+            + "</script>")
+    void insert(@Param("accounts") List<Account> accounts);
 
 }

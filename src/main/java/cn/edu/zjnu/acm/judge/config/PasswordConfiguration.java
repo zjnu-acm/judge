@@ -33,6 +33,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class PasswordConfiguration {
 
+    public static final int MAX_PASSWORD_LENGTH = 30;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         PasswordEncoder passwordEncoder = new LengthLimitedPasswordEncoder(
@@ -45,7 +47,7 @@ public class PasswordConfiguration {
                                         MessageDigestPasswordEncoder.md5()
                                 )
                         )
-                ), 30);
+                ), MAX_PASSWORD_LENGTH);
         return new AcceptNullPasswordEncoder(passwordEncoder);
     }
 

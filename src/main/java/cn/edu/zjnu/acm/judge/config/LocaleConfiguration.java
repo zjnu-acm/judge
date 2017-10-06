@@ -15,9 +15,14 @@
  */
 package cn.edu.zjnu.acm.judge.config;
 
+import java.util.Locale;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -43,7 +48,17 @@ public class LocaleConfiguration extends WebMvcConfigurerAdapter {
     /* Store preferred language configuration in a cookie */
     @Bean(name = "localeResolver")
     public LocaleResolver localeResolver(ServletContext container) {
-        CookieLocaleResolver localeResolver = new CookieLocaleResolver();
+        CookieLocaleResolver localeResolver = new CookieLocaleResolver() {
+
+            @Override
+            protected Locale determineDefaultLocale(HttpServletRequest request) {
+                Locale locale = super.determineDefaultLocale(request);
+                HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getResponse();
+                addCookie(response, (locale != null ? toLocaleValue(locale) : "-"));
+                return locale;
+            }
+
+        };
         localeResolver.setCookieName("locale");
         localeResolver.setCookieMaxAge(15 * 24 * 60 * 60);
         localeResolver.setCookiePath(getCookiePath(container));
