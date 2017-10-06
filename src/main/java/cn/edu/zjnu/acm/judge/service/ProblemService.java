@@ -71,11 +71,24 @@ public class ProblemService {
 
     @Transactional
     public Problem save(Problem problem) {
+        boolean disabled = true;
+        long[] contests = problem.getContests();
+        if (contests != null) {
+            for (long contest : contests) {
+                if (contest == 0) {
+                    disabled = false;
+                }
+            }
+        }
+        problem.setDisabled(disabled);
         problemMapper.save(problem);
         long id = problem.getId();
-        Long contest = problem.getContest();
-        if (contest != null) {
-            contestService.addProblem(contest, id);
+        if (contests != null) {
+            for (long contest : contests) {
+                if (contest != 0) {
+                    contestService.addProblem(contest, id);
+                }
+            }
         }
         try {
             Files.createDirectories(getDataDirectory(id));

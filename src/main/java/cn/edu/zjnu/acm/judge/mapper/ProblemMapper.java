@@ -45,8 +45,7 @@ public interface ProblemMapper {
             + "COALESCE(pi.hint,p.hint) hint,"
             + "COALESCE(pi.source,p.source) source,"
             + "p.in_date inDate,p.time_limit timeLimit,"
-            + "p.memory_limit memoryLimit,"
-            + "p.contest_id contest,p.disabled,"
+            + "p.memory_limit memoryLimit,p.disabled,"
             + "p.accepted,p.submit,p.solved,p.submit_user submitUser,"
             + "p.created_time createdTime,p.modified_time modifiedTime ";
 
@@ -54,14 +53,12 @@ public interface ProblemMapper {
 
     String COLUMNS_NO_I18N = " p.problem_id id,"
             + "p.in_date inDate,p.time_limit timeLimit,"
-            + "p.memory_limit memoryLimit,"
-            + "p.contest_id contest,p.disabled,"
+            + "p.memory_limit memoryLimit,p.disabled,"
             + "p.accepted,p.submit,p.solved,p.submit_user submitUser ";
 
     String LIST_COLUMNS = " p.problem_id id,"
             + "COALESCE(pi.title,p.title) title,"
             + "p.in_date inDate,"
-            + "p.contest_id contest,"
             + "p.disabled,"
             + "p.accepted,"
             + "p.submit,"
@@ -74,24 +71,12 @@ public interface ProblemMapper {
     String FROM = " from problem p left join problem_i18n pi on p.problem_id=pi.id and pi.locale<choose><when test='lang==null'> is null</when><otherwise>=#{lang}</otherwise></choose> ";
 
     @Insert("INSERT INTO problem (problem_id,title,description,input,output,sample_input,sample_output,"
-            + "hint,source,in_date,time_limit,memory_limit,contest_id) values ("
+            + "hint,source,in_date,time_limit,memory_limit,disabled) values ("
             + "#{id},COALESCE(#{title},''),COALESCE(#{description},''),COALESCE(#{input},''),COALESCE(#{output},''),COALESCE(#{sampleInput},''),COALESCE(#{sampleOutput},''),"
-            + "COALESCE(#{hint},''),COALESCE(#{source},''),now(),#{timeLimit},#{memoryLimit},#{contest})")
+            + "COALESCE(#{hint},''),COALESCE(#{source},''),now(),#{timeLimit},#{memoryLimit},#{disabled})")
     @SelectKey(statement = "select COALESCE(max(problem_id)+1,1000) maxp from problem",
             before = true, keyProperty = "id", resultType = long.class)
     long save(Problem problem);
-
-    @Deprecated
-    @Update("update problem set contest_id=#{cid} where problem_id=#{id}")
-    long setContest(@Param("id") long problem, @Param("cid") Long contest);
-
-    @Deprecated
-    @Update("<script>update problem set contest_id=#{contest} where problem_id in"
-            + "<foreach item='item' collection='problems' open='(' separator=',' close=')'>"
-            + "#{item}"
-            + "</foreach>"
-            + "</script>")
-    long setContestBatch(@Param("problems") long[] problem, @Param("contest") Long contest);
 
     @Nullable
     @Select("<script>select" + COLUMNS + FROM + " where problem_id=#{id}</script>")
@@ -158,7 +143,6 @@ public interface ProblemMapper {
             + "    <when test='\"memoryLimit\".equalsIgnoreCase(item.property)'>memoryLimit</when>"
             + "    <when test='\"defunct\".equalsIgnoreCase(item.property)'>p.disabled</when>"
             + "    <when test='\"disabled\".equalsIgnoreCase(item.property)'>p.disabled</when>"
-            + "    <when test='\"contest\".equalsIgnoreCase(item.property)'>p.contest_id</when>"
             + "    <when test='\"accepted\".equalsIgnoreCase(item.property)'>p.accepted</when>"
             + "    <when test='\"submit\".equalsIgnoreCase(item.property)'>p.submit</when>"
             + "    <when test='\"submit\".equalsIgnoreCase(item.property)'>p.submit</when>"
@@ -198,9 +182,5 @@ public interface ProblemMapper {
 
     @Delete("delete from `problem_i18n` where id=#{id}")
     long deleteI18n(@Param("id") long id);
-
-    @Deprecated
-    @Update("update problem set contest_id=null where contest_id=#{id}")
-    long clearByContestId(long id);
 
 }

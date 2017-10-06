@@ -37,8 +37,8 @@ import org.springframework.web.context.WebApplicationContext;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -91,6 +91,7 @@ public class ProblemControllerTest {
                 .source("")
                 .timeLimit(1000L)
                 .memoryLimit(65536 * 1024L)
+                .contests(new long[]{0})
                 .build();
         Long id = mapper.readValue(mvc.perform(post("/api/problems.json")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -119,7 +120,7 @@ public class ProblemControllerTest {
 
         try {
             Problem p = problemService.findOne(id);
-            assertNull(p);
+            fail("should throw a BusinessException");
         } catch (BusinessException ex) {
             assertEquals(BusinessCode.PROBLEM_NOT_FOUND, ex.getCode());
         }

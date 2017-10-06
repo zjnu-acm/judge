@@ -95,7 +95,6 @@ public class SubmitController {
 
             // set contest id of the problem to null if the contest is ended.
             if (contest.isEnded()) {
-                problemMapper.setContest(problemId, null);
                 contestId = null;
             }
         }

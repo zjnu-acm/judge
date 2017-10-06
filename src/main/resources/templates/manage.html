@@ -237,11 +237,8 @@
             </p>
             <!--/* TODO contest field in problem */-->
             <p align="left" ng-hide="problem.id">
-                <label th:for="${#ids.next('contest')}">contest:</label>
-                <select th:id="${#ids.seq('contest')}" name="contest" ng-model="problem.contest">
-                    <option value="">no contest</option>
-                    <option ng-repeat="contest in contests" value="{{contest.id}}" ng-selected="contest.id === problem.contest">{{contest.id}}: {{contest.title}}</option>
-                </select>
+                <label th:for="${#ids.next('contest')}">添加到比赛：</label>
+                <span isteven-multi-select input-model="contests" output-model="problem.contests" button-label="title" item-label="id title" tick-property="selected" disable-property="disabled" helper-elements="all none" output-properties="id" translation="{nothingSelected:'不加到任何比赛，题目将不可用',selectAll:'全选',selectNone:'清空'}"></span>
             </p>
             <div class="text-center"><button type="submit">Submit</button></div>
         </form>
@@ -256,8 +253,7 @@
                 <thead>
                     <tr class="text-center">
                         <th width="10%" class="sortable" ng-click="push('id')">编号</th>
-                        <th width="25%" class="sortable" ng-click="push('title')">标题</th>
-                        <th width="10%" class="sortable" ng-click="push('contest,desc')">比赛</th>
+                        <th width="45%" class="sortable" ng-click="push('title')">标题</th>
                         <th width="8%" class="sortable" ng-click="push('disabled')">状态</th>
                         <th width="20%" class="sortable" ng-click="push('inDate,desc')">最后提交</th>
                         <th width="16%">操作</th>
@@ -268,9 +264,6 @@
                         <td>{{p.id}}</td>
                         <td align="left">
                             <a ui-sref="problem-view-current({id:p.id})" ui-sref-opts="{reload: true}">{{p.title||'无标题'}}</a>
-                        </td>
-                        <td>
-                            <a ng-show="p.contest" ui-sref="contest-view({id:p.contest})" ui-sref-opts="{reload: true}">{{p.contest}}</a>
                         </td>
                         <td>{{p.disabled?'已禁用':'可用'}}</td>
                         <td>{{p.inDate * 1000|date:'yyyy-MM-dd HH:mm:ss'}}</td>

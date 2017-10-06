@@ -22,7 +22,6 @@ import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.exception.BusinessCode;
 import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
-import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.util.EnumUtils;
 import cn.edu.zjnu.acm.judge.util.SpecialCall;
@@ -63,8 +62,6 @@ public class ContestService {
     @Autowired
     private ContestMapper contestMapper;
     @Autowired
-    private ProblemMapper problemMapper;
-    @Autowired
     private SubmissionMapper submissionMapper;
     @Autowired
     private LocaleService localeService;
@@ -88,7 +85,6 @@ public class ContestService {
     }
 
     void addProblem(long contestId, long problemId) {
-        problemMapper.setContest(problemId, contestId);
         contestMapper.addProblem(contestId, problemId, null);
     }
 
@@ -149,7 +145,6 @@ public class ContestService {
             log.warn("delete contest id: {}, submissions: {}, problems: {}", id, objectMapper.writeValueAsString(submissions), objectMapper.writeValueAsString(problems));
         }
         long result = submissionMapper.clearByContestId(id)
-                + problemMapper.clearByContestId(id)
                 + contestMapper.deleteContestProblems(id)
                 + contestMapper.deleteByPrimaryKey(id);
         if (result == 0) {
@@ -189,7 +184,6 @@ public class ContestService {
         if (!problems.isEmpty()) {
             long[] array = problems.stream().mapToLong(Problem::getOrigin).toArray();
             contestMapper.addProblems(contestId, 1000, array);
-            problemMapper.setContestBatch(array, contestId);
         }
     }
 

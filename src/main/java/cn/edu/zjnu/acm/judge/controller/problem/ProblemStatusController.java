@@ -73,6 +73,7 @@ public class ProblemStatusController {
     public String status(HttpServletRequest request,
             @RequestParam("problem_id") long id,
             @PageableDefault(size = 20, sort = {"time", "memory", "code_length"}) Pageable pageable,
+            @RequestParam(value = "contest_id", required = false) Long contestId,
             Authentication authentication) {
         log.debug("{}", pageable);
         if (pageable.getPageSize() > 500) {
@@ -82,7 +83,6 @@ public class ProblemStatusController {
         if (problem == null) {
             throw new BusinessException(BusinessCode.PROBLEM_NOT_FOUND, id);
         }
-        final Long contestId = problem.getContest();
         request.setAttribute("contestId", contestId);
         List<ScoreCount> list = problemMapper.groupByScore(id);
         ArrayList<String> scores = new ArrayList<>(list.size());

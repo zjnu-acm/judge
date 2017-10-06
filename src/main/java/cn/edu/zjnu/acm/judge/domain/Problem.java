@@ -57,9 +57,8 @@ public class Problem implements Serializable {
     private Instant createdTime;
     private Instant modifiedTime;
 
-    @Deprecated
-    private Long contest;
     private Long origin;
+    private long[] contests;
 
     // 0 not submitted, 1 accepted, 2 wrong answer
     private Integer status;

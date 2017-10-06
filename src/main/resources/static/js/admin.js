@@ -624,14 +624,21 @@
         });
     });
     app.controller('problem-add', function ($scope, $state, problemApi, contestApi) {
+        function getId(x) {
+            return x.id;
+        }
         $scope.editor = {
             hint: 'Add New problem',
             hint2: 'Add a Problem'
         };
-        $scope.problem = new problemApi();
-        $scope.contests = contestApi.query({include: 'PENDING,RUNNING'});
+        $scope.problem = {};
+        var slice = [].slice;
+        contestApi.query({include: 'PENDING,RUNNING'}, function (contests) {
+            $scope.contests = [{id: 0, title: '全局练习', selected: true}].concat(slice.call(contests));
+        });
         $scope.save = function () {
-            $scope.problem.$save(function (problem) {
+            var problem = $scope.problem;
+            problemApi.save($.extend({}, problem, {contests: $.map(problem.contests || [], getId)}), function (problem) {
                 $state.go('problem-view-current', {id: problem.id});
             });
         };
