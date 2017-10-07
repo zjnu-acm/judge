@@ -15,11 +15,17 @@
  */
 package cn.edu.zjnu.acm.judge.service;
 
+import cn.edu.zjnu.acm.judge.data.form.BestSubmissionForm;
 import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
+import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +38,8 @@ public class SubmissionService {
 
     @Autowired
     private ContestMapper contestMapper;
+    @Autowired
+    private SubmissionMapper submissionMapper;
 
     public boolean canView(HttpServletRequest request, Submission submission) {
         if (UserDetailsServiceImpl.isAdminLoginned(request)) {
@@ -51,6 +59,12 @@ public class SubmissionService {
             return contest == null || contest.isEnded();
         }
         return false;
+    }
+
+    public Page<Submission> bestSubmission(Long contestId, long problemId, Pageable pageable, long total) {
+        BestSubmissionForm form = BestSubmissionForm.builder().contestId(contestId).problemId(problemId).build();
+        List<Submission> bestSubmissions = submissionMapper.bestSubmission(form, pageable);
+        return new PageImpl<>(bestSubmissions, pageable, total);
     }
 
 }

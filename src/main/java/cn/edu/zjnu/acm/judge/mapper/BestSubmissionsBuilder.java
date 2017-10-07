@@ -15,6 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.mapper;
 
+import cn.edu.zjnu.acm.judge.data.form.BestSubmissionForm;
 import com.google.common.collect.ImmutableSortedSet;
 import java.util.Arrays;
 import java.util.Optional;
@@ -36,7 +37,9 @@ public class BestSubmissionsBuilder {
     private static final Set<String> ALLOW_COLUMNS = ImmutableSortedSet.orderedBy(String.CASE_INSENSITIVE_ORDER).add("memory", "time", "code_length", "in_date", "solution_id").build();
     private static final Sort DEFAULT_SORT = new Sort(Sort.Direction.DESC, "in_date");
 
-    public static String bestSubmissions(@Param("problemId") long problemId, @Param("pageable") Pageable pageable) {
+    public static String bestSubmissions(@Param("form") BestSubmissionForm form, @Param("pageable") Pageable pageable) {
+        Long contestId = form.getContestId();
+        long problemId = form.getProblemId();
         Set<String> dejaVu = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
         Sort sort = Optional.ofNullable(pageable.getSort())
                 .map(s -> s.and(DEFAULT_SORT)).orElse(DEFAULT_SORT);
@@ -47,6 +50,9 @@ public class BestSubmissionsBuilder {
         log.debug("{}", Arrays.asList(orders));
 
         StringBuilder sb = new StringBuilder("select " + SubmissionMapper.LIST_COLUMNS + " from solution s where problem_id=").append(problemId).append(" and score=100 ");
+        if (contestId != null) {
+            sb.append("and contest_id=").append(contestId).append(' ');
+        }
         for (int i = length - 1; i >= 0; --i) {
             sb.append("and(user_id");
             for (int j = 0; j <= i; ++j) {
@@ -57,6 +63,9 @@ public class BestSubmissionsBuilder {
                 sb.append(',').append(orders[j].getProperty());
             }
             sb.append(',').append(orders[i].isAscending() ? "min" : "max").append("(").append(orders[i].getProperty()).append(")").append(orders[i].getProperty()).append(" from solution where problem_id=").append(problemId).append(" and score=100 ");
+            if (contestId != null) {
+                sb.append("and contest_id=").append(contestId).append(' ');
+            }
         }
         for (int i = 0; i < length; ++i) {
             sb.append("group by user_id)");

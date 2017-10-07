@@ -43,6 +43,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.ObjIntConsumer;
+import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -122,15 +123,27 @@ public class ContestService {
         return contest;
     }
 
-    public Contest getContestAndProblems(long contestId, String userId, Locale locale) {
-        Contest contest = getContest(contestId);
+    @Nonnull
+    public Contest getContestAndProblems(long contestId, Locale locale) {
+        Contest contest = contestMapper.findOne(contestId);
+        if (contest == null) {
+            throw new BusinessException(BusinessCode.CONTEST_NOT_FOUND, contestId);
+        }
+        List<Problem> problems = contestMapper.getProblems(contestId, null, localeService.resolve(locale));
+        contest.setProblems(problems);
+        return contest;
+    }
+
+    @Nonnull
+    public Contest getContestAndProblemsNotDisabled(long contestId, String userId, Locale locale) {
+        Contest contest = getEnabledContest(contestId);
         List<Problem> problems = contestMapper.getProblems(contestId, userId, localeService.resolve(locale));
         contest.setProblems(problems);
         return contest;
     }
 
-    private Contest getContest(long contestId) {
-        Contest contest = contestMapper.findOne(contestId);
+    private Contest getEnabledContest(long contestId) {
+        Contest contest = contestMapper.findOneByIdAndNotDisabled(contestId);
         if (contest == null) {
             throw new BusinessException(BusinessCode.CONTEST_NOT_FOUND, contestId);
         }
@@ -231,8 +244,17 @@ public class ContestService {
         }
     }
 
+    @Nonnull
     public Problem getProblem(long contestId, long problemNum, Locale locale) {
-        return contestMapper.getProblem(contestId, problemNum, localeService.resolve(locale));
+        Problem problem = contestMapper.getProblem(contestId, problemNum, localeService.resolve(locale));
+        if (problem == null) {
+            throw new BusinessException(BusinessCode.CONTEST_PROBLEM_NOT_FOUND, contestId, problemNum);
+        }
+        return problem;
+    }
+
+    public Contest findOneByIdAndNotDisabled(long contestId) {
+        return getEnabledContest(contestId);
     }
 
 }

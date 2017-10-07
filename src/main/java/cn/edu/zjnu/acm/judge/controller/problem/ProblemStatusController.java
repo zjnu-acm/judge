@@ -22,6 +22,7 @@ import cn.edu.zjnu.acm.judge.exception.BusinessCode;
 import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
+import cn.edu.zjnu.acm.judge.service.SubmissionService;
 import cn.edu.zjnu.acm.judge.service.UserDetailsServiceImpl;
 import cn.edu.zjnu.acm.judge.util.ResultType;
 import cn.edu.zjnu.acm.judge.util.URLBuilder;
@@ -31,7 +32,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -51,6 +52,8 @@ public class ProblemStatusController {
 
     @Autowired
     private ProblemMapper problemMapper;
+    @Autowired
+    private SubmissionService submissionService;
     @Autowired
     private SubmissionMapper submissionMapper;
 
@@ -73,7 +76,6 @@ public class ProblemStatusController {
     public String status(HttpServletRequest request,
             @RequestParam("problem_id") long id,
             @PageableDefault(size = 20, sort = {"time", "memory", "code_length"}) Pageable pageable,
-            @RequestParam(value = "contest_id", required = false) Long contestId,
             Authentication authentication) {
         log.debug("{}", pageable);
         if (pageable.getPageSize() > 500) {
@@ -83,8 +85,7 @@ public class ProblemStatusController {
         if (problem == null) {
             throw new BusinessException(BusinessCode.PROBLEM_NOT_FOUND, id);
         }
-        request.setAttribute("contestId", contestId);
-        List<ScoreCount> list = problemMapper.groupByScore(id);
+        List<ScoreCount> list = submissionMapper.groupByScore(null, id);
         ArrayList<String> scores = new ArrayList<>(list.size());
         ArrayList<Long> counts = new ArrayList<>(list.size());
         ArrayList<String> urls = new ArrayList<>(list.size());
@@ -94,9 +95,7 @@ public class ProblemStatusController {
             counts.add(scoreCount.getCount());
             urls.add(request.getContextPath() + "/status?problem_id=" + id + "&score=" + score);
         }
-        List<Submission> bestSubmissions = submissionMapper.bestSubmission(id, pageable);
-        long total = pageable.getOffset() + bestSubmissions.size() + (pageable.getPageSize() == bestSubmissions.size() ? 1 : 0);
-        PageImpl<Submission> page = new PageImpl<>(bestSubmissions, pageable, total);
+        Page<Submission> page = submissionService.bestSubmission(null, id, pageable, problem.getSubmitUser());
         boolean isAdmin = UserDetailsServiceImpl.isAdminLoginned(request);
         boolean isSourceBrowser = UserDetailsServiceImpl.isSourceBrowser(request);
         boolean canView = isAdmin || isSourceBrowser;
@@ -105,7 +104,6 @@ public class ProblemStatusController {
         request.setAttribute("sa", Arrays.asList(counts, scores, urls));
         request.setAttribute("problem", problem);
         request.setAttribute("url", URLBuilder.fromRequest(request).replaceQueryParam("page").toString());
-        request.setAttribute("contestId", contestId);
         request.setAttribute("canView", canView);
         request.setAttribute("authentication", authentication);
 

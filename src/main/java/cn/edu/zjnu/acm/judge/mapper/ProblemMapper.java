@@ -15,7 +15,6 @@
  */
 package cn.edu.zjnu.acm.judge.mapper;
 
-import cn.edu.zjnu.acm.judge.data.dto.ScoreCount;
 import cn.edu.zjnu.acm.judge.data.form.ProblemForm;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import java.time.Instant;
@@ -46,10 +45,10 @@ public interface ProblemMapper {
             + "COALESCE(pi.source,p.source) source,"
             + "p.in_date inDate,p.time_limit timeLimit,"
             + "p.memory_limit memoryLimit,p.disabled,"
-            + "p.accepted,p.submit,p.solved,p.submit_user submitUser,"
             + "p.created_time createdTime,p.modified_time modifiedTime ";
 
-    String COLUMNS = " p.problem_id id,COALESCE(pi.title,p.title) title," + EXTERN_COLUMNS;
+    String COLUMNS = " p.problem_id id,COALESCE(pi.title,p.title) title," + EXTERN_COLUMNS
+            + ",p.accepted,p.submit,p.solved,p.submit_user submitUser";
 
     String COLUMNS_NO_I18N = " p.problem_id id,"
             + "p.in_date inDate,p.time_limit timeLimit,"
@@ -168,9 +167,6 @@ public interface ProblemMapper {
             + FORM_CONDITION
             + "</script>")
     long count(@Param("form") ProblemForm form, @Param("lang") String lang);
-
-    @Select("select score,count(*) count from solution where problem_id=#{problemId} group by score")
-    List<ScoreCount> groupByScore(@Param("problemId") long problemId);
 
     @Insert("insert ignore into problem_i18n(id,locale) values(#{problemId},#{lang})")
     long touchI18n(

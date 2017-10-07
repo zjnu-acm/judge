@@ -15,6 +15,8 @@
  */
 package cn.edu.zjnu.acm.judge.mapper;
 
+import cn.edu.zjnu.acm.judge.data.dto.ScoreCount;
+import cn.edu.zjnu.acm.judge.data.form.BestSubmissionForm;
 import cn.edu.zjnu.acm.judge.data.form.SubmissionQueryForm;
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.util.ResultType;
@@ -99,7 +101,13 @@ public interface SubmissionMapper {
     List<Long> findAllByProblemIdAndResultNotAccept(@Param("problemId") long problemId);
 
     @SelectProvider(type = BestSubmissionsBuilder.class, method = "bestSubmissions")
-    List<Submission> bestSubmission(@Param("problemId") long problemId, @Param("pageable") Pageable pageable);
+    List<Submission> bestSubmission(@Param("form") BestSubmissionForm form, @Param("pageable") Pageable pageable);
+
+    @Select("<script>"
+            + "select score,count(*) count from solution where problem_id=#{problemId}"
+            + "<if test='contestId!=null'> and contest_id = #{contestId}</if> group by score"
+            + "</script>")
+    List<ScoreCount> groupByScore(@Param("contestId") Long contestId, @Param("problemId") long problemId);
 
     @Update("update solution set contest_id=null where contest_id=#{contest}")
     long clearByContestId(@Param("contest") long contest);

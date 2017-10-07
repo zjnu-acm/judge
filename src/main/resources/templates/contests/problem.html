@@ -22,7 +22,7 @@
             <span>[</span>
             <a th:href="@{/submitpage(problem_id=${problem.origin},contest_id=${contestId})}">Submit</a>
             <span>]&nbsp;&nbsp;[</span>
-            <a th:href="@{/problemstatus(problem_id=${problem.origin},contest_id=${contestId})}">Status</a>
+            <a th:href="@{/contests/{contest_id}/problems/{problem_id}/status.html(problem_id=${problem.id},contest_id=${contestId})}">Status</a>
             <span>]&nbsp;&nbsp; [</span>
             <a th:href="@{/bbs(problem_id=${problem.origin},contest_id=${contestId})}">Discuss</a>
             <span>]</span>

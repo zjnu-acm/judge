@@ -19,6 +19,7 @@ import cn.edu.zjnu.acm.judge.data.dto.Standing;
 import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.domain.User;
+import cn.edu.zjnu.acm.judge.util.ResultType;
 import java.util.List;
 import javax.annotation.Nullable;
 import org.apache.ibatis.annotations.Delete;
@@ -114,11 +115,13 @@ public interface ContestMapper {
     Contest findOne(@Param("id") long contestId);
 
     @Select("<script>select cp.num id,if(cp.title is null or trim(cp.title)='',p.title,cp.title) title,p.problem_id origin,"
-            + ProblemMapper.EXTERN_COLUMNS
+            + ProblemMapper.EXTERN_COLUMNS + ",count(distinct sa.solution_id)accepted,count(distinct s.solution_id) submit,count(distinct sa.user_id)solved,count(distinct s.user_id)submitUser "
             + "from contest_problem cp "
             + "join problem p on cp.problem_id=p.problem_id "
-            + "left join problem_i18n pi on p.problem_id=pi.id and pi.locale<choose><when test='lang==null'> is null</when><otherwise>=#{lang}</otherwise></choose> "
-            + "where cp.contest_id=#{contest} and cp.num=#{problem}</script>")
+            + "left join problem_i18n pi on p.problem_id=pi.id and pi.locale<choose><when test='lang==null'> is null</when><otherwise>=#{lang}</otherwise></choose>"
+            + " left join solution s on s.problem_id=p.problem_id and s.contest_id=#{contest}"
+            + " left join solution sa on sa.problem_id=p.problem_id and sa.contest_id=#{contest} and sa.score=" + ResultType.SCORE_ACCEPT
+            + " where cp.contest_id=#{contest} and cp.num=#{problem} group by p.problem_id</script>")
     Problem getProblem(
             @Param("contest") long contestId,
             @Param("problem") long problemNum,

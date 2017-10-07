@@ -72,7 +72,7 @@ public class ContestController {
 
     @GetMapping("{id}")
     public Contest findOne(@PathVariable("id") long contestId, Locale locale) {
-        return contestService.getContestAndProblems(contestId, null, locale);
+        return contestService.getContestAndProblems(contestId, locale);
     }
 
     @PatchMapping("{id}")

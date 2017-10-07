@@ -16,6 +16,7 @@
 package cn.edu.zjnu.acm.judge.mapper;
 
 import cn.edu.zjnu.acm.judge.Application;
+import cn.edu.zjnu.acm.judge.data.form.BestSubmissionForm;
 import cn.edu.zjnu.acm.judge.data.form.SubmissionQueryForm;
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.util.Pageables;
@@ -67,8 +68,9 @@ public class SubmissionMapperTest {
     public void testBestSubmission() {
         log.info("bestSubmission");
         long problemId = 1000;
+        BestSubmissionForm form = BestSubmissionForm.builder().problemId(problemId).build();
         for (Pageable pageable : Pageables.bestSubmission()) {
-            instance.bestSubmission(problemId, pageable);
+            instance.bestSubmission(form, pageable);
         }
     }
 

@@ -1,12 +1,7 @@
 package cn.edu.zjnu.acm.judge.controller.contest;
 
 import cn.edu.zjnu.acm.judge.domain.Contest;
-import cn.edu.zjnu.acm.judge.domain.Problem;
-import cn.edu.zjnu.acm.judge.exception.BusinessCode;
-import cn.edu.zjnu.acm.judge.exception.BusinessException;
-import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
-import cn.edu.zjnu.acm.judge.service.LocaleService;
-import java.util.List;
+import cn.edu.zjnu.acm.judge.service.ContestService;
 import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -21,22 +16,18 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 public class ContestProblemListController {
 
     @Autowired
-    private ContestMapper contestMapper;
-    @Autowired
-    private LocaleService localeService;
+    private ContestService contestService;
 
     @GetMapping(value = "/showcontest", produces = TEXT_HTML_VALUE)
     public String showContest(Model model, @RequestParam("contest_id") long contestId,
             Locale locale, Authentication authentication) {
-        Contest contest = contestMapper.findOneByIdAndNotDisabled(contestId);
-        if (contest == null) {
-            throw new BusinessException(BusinessCode.CONTEST_NOT_FOUND, contestId);
-        }
+        Contest contest = contestService.getContestAndProblemsNotDisabled(contestId, authentication != null ? authentication.getName() : null, locale);
         model.addAttribute("contestId", contestId);
         model.addAttribute("contest", contest);
         if (contest.isStarted()) {
-            List<Problem> problems = contestMapper.getProblems(contestId, authentication != null ? authentication.getName() : null, localeService.resolve(locale));
-            model.addAttribute("problems", problems);
+            model.addAttribute("problems", contest.getProblems());
+        } else {
+            contest.setProblems(null);
         }
 
         return "contests/problems";

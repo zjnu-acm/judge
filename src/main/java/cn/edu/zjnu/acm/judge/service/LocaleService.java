@@ -48,6 +48,9 @@ public class LocaleService {
     }
 
     public Locale toSupported(Locale locale) {
+        if (locale == null) {
+            return Locale.ROOT;
+        }
         List<Locale> candidateLocales = ControlHolder.CONTROL.getCandidateLocales("", locale);
         Set<String> collect = findAll().stream().map(DomainLocale::getId)
                 .collect(ImmutableSortedSet.toImmutableSortedSet(String.CASE_INSENSITIVE_ORDER));

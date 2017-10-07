@@ -15,6 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.mapper;
 
+import cn.edu.zjnu.acm.judge.data.form.BestSubmissionForm;
 import cn.edu.zjnu.acm.judge.util.Pageables;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -36,7 +37,8 @@ public class BestSubmissionsBuilderTest {
     public void testBestSubmissions() {
         log.info("bestSubmissions");
         for (Pageable pageable : Pageables.bestSubmission()) {
-            log.debug(BestSubmissionsBuilder.bestSubmissions(1000, pageable));
+            BestSubmissionForm form = BestSubmissionForm.builder().problemId(1000).build();
+            log.debug(BestSubmissionsBuilder.bestSubmissions(form, pageable));
         }
     }
 

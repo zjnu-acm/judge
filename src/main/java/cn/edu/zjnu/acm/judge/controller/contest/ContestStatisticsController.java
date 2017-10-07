@@ -2,9 +2,6 @@ package cn.edu.zjnu.acm.judge.controller.contest;
 
 import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.domain.Language;
-import cn.edu.zjnu.acm.judge.exception.BusinessCode;
-import cn.edu.zjnu.acm.judge.exception.BusinessException;
-import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.service.ContestService;
 import cn.edu.zjnu.acm.judge.service.LanguageService;
 import cn.edu.zjnu.acm.judge.util.JudgeUtils;
@@ -35,8 +32,6 @@ public class ContestStatisticsController {
     @Autowired
     private DataSource dataSource;
     @Autowired
-    private ContestMapper contestMapper;
-    @Autowired
     private ContestService contestService;
     @Autowired
     private LanguageService languageService;
@@ -47,10 +42,7 @@ public class ContestStatisticsController {
             Model model,
             @RequestParam("contest_id") long contestId) throws SQLException {
         Instant now = Instant.now();
-        Contest contest = contestMapper.findOneByIdAndNotDisabled(contestId);
-        if (contest == null) {
-            throw new BusinessException(BusinessCode.CONTEST_NOT_FOUND, contestId);
-        }
+        Contest contest = contestService.findOneByIdAndNotDisabled(contestId);
         String title = contest.getTitle();
         Instant endTime = contest.getEndTime();
         request.setAttribute("contestId", contestId);

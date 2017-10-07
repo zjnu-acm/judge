@@ -15,33 +15,25 @@
  */
 package cn.edu.zjnu.acm.judge.data.form;
 
-import cn.edu.zjnu.acm.judge.data.excel.Account;
-import cn.edu.zjnu.acm.judge.mapper.UserMapper;
-import com.google.common.collect.Lists;
 import java.io.Serializable;
-import java.util.List;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  *
  * @author zhanhb
  */
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder(builderClassName = "Builder", toBuilder = true)
 @Data
-@SuppressWarnings({"AssignmentToCollectionOrArrayFieldFromParameter", "ReturnOfCollectionOrArrayField", "PublicInnerClass"})
-public class AccountImportForm implements Serializable {
+@NoArgsConstructor
+public class BestSubmissionForm implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    private List<Account> content;
-    private List<ExistPolicy> existsPolicy = Lists.newArrayList();
-
-    /**
-     * {@link UserMapper#batchUpdate(java.util.List, int)}
-     */
-    public static enum ExistPolicy {
-        ENABLE,
-        RESET_PASSWORD,
-        RESET_USERINFO,
-    }
+    private Long contestId;
+    private long problemId;
 
 }
