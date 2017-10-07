@@ -19,12 +19,14 @@ import cn.edu.zjnu.acm.judge.util.Pageables;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author zhanhb
  */
 @Slf4j
+@Transactional
 public class BestSubmissionsBuilderTest {
 
     /**

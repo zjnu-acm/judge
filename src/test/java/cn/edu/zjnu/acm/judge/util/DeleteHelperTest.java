@@ -21,6 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.Assert.assertTrue;
 
@@ -29,6 +30,7 @@ import static org.junit.Assert.assertTrue;
  * @author zhanhb
  */
 @Slf4j
+@Transactional
 public class DeleteHelperTest {
 
     /**

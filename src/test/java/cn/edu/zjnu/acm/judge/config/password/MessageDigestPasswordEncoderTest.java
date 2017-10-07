@@ -22,6 +22,7 @@ import java.util.Arrays;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -31,6 +32,7 @@ import static org.junit.Assert.assertTrue;
  * @author zhanhb
  */
 @Slf4j
+@Transactional
 public class MessageDigestPasswordEncoderTest {
 
     /**

@@ -17,11 +17,13 @@ package cn.edu.zjnu.acm.judge.mapper;
 
 import org.junit.AssumptionViolatedException;
 import org.junit.Before;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author zhanhb
  */
+@Transactional
 public class ProblemMapperNullLocaleTest extends ProblemMapperTest {
 
     @Before

@@ -20,7 +20,6 @@ import cn.edu.zjnu.acm.judge.domain.Language;
 import cn.edu.zjnu.acm.judge.service.LanguageService;
 import java.util.Collection;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringRunner.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
+@Transactional
 @WebAppConfiguration
 public class LanguageMapperTest {
 
@@ -44,9 +44,7 @@ public class LanguageMapperTest {
     @Autowired
     private LanguageService languageService;
 
-    @Ignore
     @Test
-    @Transactional
     public void test() {
         log.debug("delete");
         Collection<Language> languages = languageService.getAvailableLanguages().values();
