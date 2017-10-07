@@ -6,28 +6,6 @@ a:active, a:hover {
     color: red;
     text-decoration: underline;
 }
-/* required problemstatus.js */
-a.sssss {
-    text-transform: none;
-    text-decoration: none;
-    color: black;
-}
-a.sssss:hover {
-    color: white;
-    text-decoration: none;
-}
-a.sssss0 {
-    text-transform: none;
-    text-decoration: none;
-    color: #FF9;
-    font-weight: bold;
-}
-a.sssss0:hover {
-    text-decoration: underline;
-    color: #FF9;
-    font-weight: bold;
-}
-/* required problemstatus.js ended*/
 /* class sortable required /problemlist and problemstatus */
 a.sortable {
     text-decoration: none;
