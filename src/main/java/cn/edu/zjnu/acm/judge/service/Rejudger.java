@@ -4,7 +4,6 @@ import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserProblemMapper;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,8 +28,8 @@ public class Rejudger {
         });
     }
 
-    public CompletableFuture<?> bySubmissionId(long submissionId) throws InterruptedException, ExecutionException {
-        return judgePool.add(submissionId);
+    public CompletableFuture<?> bySubmissionId(long submissionId) {
+        return judgePool.add(submissionId).thenApply(__ -> submissionMapper.findOne(submissionId));
     }
 
 }
