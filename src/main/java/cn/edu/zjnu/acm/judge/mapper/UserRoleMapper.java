@@ -35,6 +35,6 @@ public interface UserRoleMapper {
             + "#{item}"
             + "</foreach>"
             + " and rightstr='administrator'</script>")
-    int hasAdmin(@Param("array") String[] toArray);
+    int countAdmin(@Param("array") String... toArray);
 
 }

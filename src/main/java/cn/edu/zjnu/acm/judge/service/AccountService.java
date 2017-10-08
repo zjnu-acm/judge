@@ -33,8 +33,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -70,7 +73,7 @@ public class AccountService {
         return userMapper.findAllByExport(form, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort()));
     }
 
-    public List<Account> parseExcel(byte[] content, Locale locale) throws IOException {
+    public List<Account> parseExcel(byte[] content, @Nullable Locale locale) throws IOException {
         List<Account> accounts = ExcelUtil.parse(content, Account.class, locale).stream()
                 .filter(account -> StringUtils.hasText(account.getId()))
                 .collect(Collectors.toList());
@@ -92,19 +95,21 @@ public class AccountService {
         return findAll(form, pageable);
     }
 
-    public void update(String userId, User user) {
-        String password = user.getPassword();
-        if (password != null) {
-            List<String> permissions = userRoleMapper.findAllByUserId(userId);
-            for (String permission : permissions) {
-                if ("administrator".equalsIgnoreCase(permission)) {
-                    throw new BusinessException(BusinessCode.RESET_PASSWORD_FORBIDDEN);
-                }
-            }
-            User build = user.toBuilder().password(passwordEncoder.encode(password)).modifiedTime(Instant.now()).build();
-            userMapper.updateSelective(userId, build);
-        } else {
-            userMapper.updateSelective(userId, user.toBuilder().modifiedTime(Instant.now()).build());
+    public void updateSelective(String userId, User user) {
+        if (userMapper.updateSelective(userId, user.toBuilder().modifiedTime(Instant.now())
+                .password(Optional.ofNullable(user.getPassword()).map(passwordEncoder::encode).orElse(null))
+                .build()) == 0) {
+            throw new BusinessException(BusinessCode.USER_NOT_FOUND, userId);
+        }
+    }
+
+    public void updatePassword(String userId, String password) {
+        if (userRoleMapper.countAdmin(userId) != 0) {
+            throw new BusinessException(BusinessCode.RESET_PASSWORD_FORBIDDEN);
+        }
+        if (0 == userMapper.updateSelective(userId,
+                User.builder().password(passwordEncoder.encode(password)).build())) {
+            throw new BusinessException(BusinessCode.USER_NOT_FOUND, userId);
         }
     }
 
@@ -122,7 +127,7 @@ public class AccountService {
             if (mask == 0) {
                 throw new BusinessException(BusinessCode.IMPORT_USER_EXISTS);
             }
-            boolean hasAdmin = userRoleMapper.hasAdmin(exists.stream().map(Account::getId).toArray(String[]::new)) != 0;
+            boolean hasAdmin = userRoleMapper.countAdmin(exists.stream().map(Account::getId).toArray(String[]::new)) != 0;
             if (hasAdmin && (mask & (1 << AccountImportForm.ExistPolicy.RESET_PASSWORD.ordinal())) != 0) {
                 throw new BusinessException(BusinessCode.IMPORT_USER_RESET_PASSWORD_FORBIDDEN);
             }
@@ -162,7 +167,26 @@ public class AccountService {
             if (!StringUtils.hasText(account.getEmail())) {
                 account.setEmail(null);
             }
+            if (!StringUtils.hasText(account.getNick())) {
+                account.setNick(account.getId());
+            }
+            if (account.getSchool() == null) {
+                account.setSchool("");
+            }
         }
+    }
+
+    public void save(@Nonnull User user) {
+        userMapper.save(user);
+    }
+
+    @Nonnull
+    public User findOne(String id) {
+        User user = userMapper.findOne(id);
+        if (user == null) {
+            throw new BusinessException(BusinessCode.USER_NOT_FOUND, id);
+        }
+        return user;
     }
 
 }

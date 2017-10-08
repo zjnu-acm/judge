@@ -21,6 +21,7 @@ import cn.edu.zjnu.acm.judge.data.form.SubmissionQueryForm;
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.util.ResultType;
 import java.util.List;
+import javax.annotation.Nullable;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -40,9 +41,11 @@ public interface SubmissionMapper {
     String COLUMNS = " s.solution_id id,s.problem_id problem,s.user_id user,s.contest_id contest,s.time,s.memory,s.score,s.language,s.ip,s.code_length sourceLength,s.in_date inDate ";
     String LIST_COLUMNS = " s.solution_id id,s.problem_id problem,s.user_id user,s.contest_id contest,s.time,s.memory,s.score,s.language,s.code_length sourceLength,s.in_date inDate ";
 
+    @Nullable
     @Select("select source from submission_source where solution_id=#{id}")
     String findSourceById(@Param("id") long id);
 
+    @Nullable
     @Select("SELECT error FROM compileinfo WHERE solution_id=#{id}")
     String findCompileInfoById(@Param("id") long id);
 
@@ -52,6 +55,7 @@ public interface SubmissionMapper {
             before = true, keyProperty = "id", resultType = long.class)
     long save(Submission submission);
 
+    @Nullable
     @Select("SELECT" + COLUMNS + "FROM solution s WHERE solution_id=#{id}")
     Submission findOne(@Param("id") long id);
 
@@ -71,6 +75,7 @@ public interface SubmissionMapper {
     @Insert("replace into compileinfo (solution_id,error) values(#{id},#{errorInfo})")
     long saveCompileInfo(@Param("id") long id, @Param("errorInfo") String errorInfo);
 
+    @Nullable
     @Select("SELECT details FROM solution_details WHERE solution_id=#{id}")
     String getSubmissionDetail(@Param("id") long id);
 
@@ -107,7 +112,9 @@ public interface SubmissionMapper {
             + "select score,count(*) count from solution where problem_id=#{problemId}"
             + "<if test='contestId!=null'> and contest_id = #{contestId}</if> group by score"
             + "</script>")
-    List<ScoreCount> groupByScore(@Param("contestId") Long contestId, @Param("problemId") long problemId);
+    List<ScoreCount> groupByScore(
+            @Nullable @Param("contestId") Long contestId,
+            @Param("problemId") long problemId);
 
     @Update("update solution set contest_id=null where contest_id=#{contest}")
     long clearByContestId(@Param("contest") long contest);

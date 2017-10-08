@@ -18,10 +18,8 @@ package cn.edu.zjnu.acm.judge.controller.problem;
 import cn.edu.zjnu.acm.judge.data.dto.ScoreCount;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.domain.Submission;
-import cn.edu.zjnu.acm.judge.exception.BusinessCode;
-import cn.edu.zjnu.acm.judge.exception.BusinessException;
-import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
+import cn.edu.zjnu.acm.judge.service.ProblemService;
 import cn.edu.zjnu.acm.judge.service.SubmissionService;
 import cn.edu.zjnu.acm.judge.service.UserDetailsServiceImpl;
 import cn.edu.zjnu.acm.judge.util.ResultType;
@@ -51,7 +49,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class ProblemStatusController {
 
     @Autowired
-    private ProblemMapper problemMapper;
+    private ProblemService problemService;
     @Autowired
     private SubmissionService submissionService;
     @Autowired
@@ -81,10 +79,7 @@ public class ProblemStatusController {
         if (pageable.getPageSize() > 500) {
             pageable = new PageRequest(pageable.getPageNumber(), 500, pageable.getSort());
         }
-        Problem problem = problemMapper.findOneNoI18n(id);
-        if (problem == null) {
-            throw new BusinessException(BusinessCode.PROBLEM_NOT_FOUND, id);
-        }
+        Problem problem = problemService.findOneNoI18n(id);
         List<ScoreCount> list = submissionMapper.groupByScore(null, id);
         ArrayList<String> scores = new ArrayList<>(list.size());
         ArrayList<Long> counts = new ArrayList<>(list.size());

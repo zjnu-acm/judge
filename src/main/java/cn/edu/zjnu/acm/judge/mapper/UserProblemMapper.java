@@ -18,6 +18,7 @@ package cn.edu.zjnu.acm.judge.mapper;
 import cn.edu.zjnu.acm.judge.domain.UserProblem;
 import cn.edu.zjnu.acm.judge.util.ResultType;
 import java.util.List;
+import javax.annotation.Nullable;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -41,6 +42,7 @@ public interface UserProblemMapper {
             + "from solution where score!=" + ResultType.QUEUING + " group by user_id,problem_id")
     long init();
 
+    @Nullable
     @Select("select" + COLUMNS + "from user_problem where user_id=#{userId} and problem_id=#{problemId}")
     UserProblem findOne(@Param("userId") String userId, @Param("problemId") long problemId);
 

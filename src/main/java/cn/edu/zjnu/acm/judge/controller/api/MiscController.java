@@ -24,6 +24,7 @@ import java.util.concurrent.CompletableFuture;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -31,7 +32,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.thymeleaf.util.StringUtils;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -66,11 +66,11 @@ public class MiscController {
         String info = json.getInfo();
         boolean pureText = json.isPureText();
         SystemInfoForm systemInfo = new SystemInfoForm();
-        if (StringUtils.isEmptyOrWhitespace(info)) {
-            systemInfo.setPureText(true);
-        } else {
+        if (StringUtils.hasText(info)) {
             systemInfo.setPureText(pureText);
             systemInfo.setInfo(info.trim());
+        } else {
+            systemInfo.setPureText(true);
         }
         judgeConfiguration.setSystemInfo(systemInfo);
     }
@@ -83,7 +83,7 @@ public class MiscController {
             systemInfo.setPureText(true);
             return systemInfo;
         }
-        if (StringUtils.isEmptyOrWhitespace(systemInfo.getInfo())) {
+        if (!StringUtils.hasText(systemInfo.getInfo())) {
             systemInfo.setPureText(true);
         }
         return systemInfo;

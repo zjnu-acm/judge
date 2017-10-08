@@ -99,10 +99,7 @@ public class ContestProblemController {
             @PathVariable("pid") int problemNum,
             @PageableDefault(size = 20, sort = {"time", "memory", "code_length"}) Pageable pageable,
             Model model, Authentication authentication, HttpServletRequest request) {
-        Contest contest = contestService.findOneByIdAndNotDisabled(contestId);
-        if (contest == null) {
-            throw new BusinessException(BusinessCode.CONTEST_NOT_FOUND, contest);
-        }
+        contestService.findOneByIdAndNotDisabled(contestId); // check if problem exists and not disabled
         Problem problem = contestService.getProblem(contestId, problemNum, null);
         Page<Submission> page = submissionService.bestSubmission(contestId, problem.getOrigin(), pageable, problem.getSubmitUser());
         model.addAttribute("page", page);

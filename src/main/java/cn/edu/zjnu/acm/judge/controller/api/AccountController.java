@@ -67,13 +67,13 @@ public class AccountController {
     @PatchMapping("{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@PathVariable("userId") String userId, @RequestBody User user) {
-        accountService.update(userId, user.toBuilder().password(null).build());
+        accountService.updateSelective(userId, user.toBuilder().password(null).build());
     }
 
     @PatchMapping("{userId}/password")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updatePassword(@PathVariable("userId") String userId, @RequestBody UserPasswordForm user) {
-        accountService.update(userId, User.builder().password(user.getPassword()).build());
+        accountService.updatePassword(userId, user.getPassword());
     }
 
     @GetMapping(produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")

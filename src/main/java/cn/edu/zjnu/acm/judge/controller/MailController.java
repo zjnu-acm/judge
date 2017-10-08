@@ -30,10 +30,10 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.thymeleaf.util.StringUtils;
 
 /**
  *
@@ -88,7 +88,7 @@ public class MailController {
             @RequestParam("content") String content,
             Authentication authentication) {
         String userId = authentication != null ? authentication.getName() : null;
-        if (StringUtils.isEmptyOrWhitespace(title)) {
+        if (!StringUtils.hasText(title)) {
             title = "No Topic";
         }
         if (content.length() > 40000) {

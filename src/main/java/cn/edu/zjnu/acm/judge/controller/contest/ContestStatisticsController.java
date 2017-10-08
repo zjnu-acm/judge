@@ -21,7 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.thymeleaf.util.StringUtils;
+import org.unbescape.html.HtmlEscape;
 
 import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 
@@ -48,7 +48,7 @@ public class ContestStatisticsController {
         request.setAttribute("contestId", contestId);
 
         StringBuilder sb = new StringBuilder("<html><head><title>Contest Statistics</title></head><body><p align=center><font size=5 color=blue>Contest Statistics--");
-        sb.append(StringUtils.escapeXml(title));
+        sb.append(HtmlEscape.escapeHtml4Xml(title));
         if (!contest.isEnded()) {
             if (endTime != null) {
                 sb.append("<br/>Time to go:").append(JudgeUtils.formatTime(now, endTime));
@@ -75,7 +75,7 @@ public class ContestStatisticsController {
         languages.values()
                 .stream()
                 .map(Language::getName)
-                .map(StringUtils::escapeXml)
+                .map(HtmlEscape::escapeHtml4Xml)
                 .forEach(languageName -> sb.append("<th>").append(languageName).append("</th>"));
         sb.append("</tr>");
         log.debug("{}", sql);

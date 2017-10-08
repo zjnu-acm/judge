@@ -12,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.thymeleaf.util.StringUtils;
 
 @Controller
 @Slf4j
@@ -44,10 +44,10 @@ public class RegisterController {
         if (!Objects.equals(password, rptPassword)) {
             throw new MessageException("Passwords are not match", HttpStatus.BAD_REQUEST);
         }
-        if (StringUtils.isEmpty(nick)) {
-            nick = userId;
-        } else {
+        if (StringUtils.hasText(nick)) {
             nick = nick.trim();
+        } else {
+            nick = userId;
         }
         ValueCheck.checkNick(nick);
         if (userMapper.findOne(userId) != null) {

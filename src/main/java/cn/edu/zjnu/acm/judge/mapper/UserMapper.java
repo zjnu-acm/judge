@@ -21,6 +21,8 @@ import cn.edu.zjnu.acm.judge.data.form.AccountImportForm;
 import cn.edu.zjnu.acm.judge.domain.User;
 import java.util.Collection;
 import java.util.List;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -43,6 +45,7 @@ public interface UserMapper {
             + "<if test='form.disabled!=null'> and <if test='!form.disabled'> not </if> disabled</if>"
             + "</where>";
 
+    @Nullable
     @Select("select user_id id,nick,email,vcode,expire_time expireTime,password,school,ip,solved,submit,accesstime,created_time createdTime,modified_time modifiedTime from users where user_id=#{id}")
     User findOne(@Param("id") String id);
 
@@ -50,7 +53,7 @@ public interface UserMapper {
             + "(#{id},#{password},#{email},now(),#{nick},#{school},ip=#{ip})")
     long save(User user);
 
-    @Update("UPDATE users SET password=#{password},email=#{email},nick=#{nick},"
+    @Update("UPDATE users SET password=#{password},email=nullif(#{email},''),nick=#{nick},"
             + "school=#{school},ip=#{ip},accesstime=#{accesstime},vcode=#{vcode},expire_time=#{expireTime},"
             + "created_time=#{createdTime},modified_time=#{modifiedTime} "
             + "WHERE user_id=#{id}")
@@ -80,7 +83,7 @@ public interface UserMapper {
             + ON + " and not u2.disabled "
             + "where u1.user_id=#{id} order by u2.solved desc,u2.submit,u2.user_id limit #{c} "
             + ") order by solved desc,submit,user_id) z")
-    List<User> neighbours(@Param("id") String userId, @Param("c") int count);
+    List<User> neighbours(@Nonnull @Param("id") String userId, @Param("c") int count);
 
     @Select("select temp.user_id id,sol solved,sub submit,nick from ( select user_id,sum(if(score=100,1,0)) sol,count(*) sub from ( select * from solution order by solution_id desc limit #{count} ) s group by user_id order by sol desc,sub asc limit 50 ) temp,users where temp.user_id=users.user_id")
     List<User> recentrank(@Param("count") int count);
@@ -111,9 +114,9 @@ public interface UserMapper {
     @Update("<script>"
             + "update users"
             + "<set>"
-            + "<if test='user.email!=null'>email=#{user.email},</if>"
+            + "<if test='user.email!=null'>email=nullif(#{user.email},''),</if>"
             + "<if test='user.nick!=null'>nick=#{user.nick},</if>"
-            + "<if test='user.school!=null'>school=#{user.school},</if>"
+            + "<if test='user.school!=null'>school=COALESCE(#{user.school},''),</if>"
             + "<if test='user.vcode!=null'>vcode=#{user.vcode},</if>"
             + "<if test='user.expireTime!=null'>expire_time=#{user.expireTime},</if>"
             + "<if test='user.password!=null'>password=#{user.password},</if>"
@@ -124,7 +127,7 @@ public interface UserMapper {
             + "</set>"
             + "<where>user_id=#{userId}</where>"
             + "</script>")
-    int updateSelective(@Param("userId") String userId, @Param("user") User user);
+    int updateSelective(@Nonnull @Param("userId") String userId, @Param("user") User user);
 
     @Select("<script>select user_id id from users where user_id in"
             + "<foreach item='item' collection='userIds' open='(' separator=',' close=')'>"
@@ -154,7 +157,7 @@ public interface UserMapper {
             + "<if test='(mask&amp;1)!=0'>u.disabled=false,</if>"
             + "<if test='(mask&amp;2)!=0'>u.password=t.password,</if>"
             + "<if test='(mask&amp;4)!=0'>"
-            + "u.nick=t.nick,u.school=t.school,u.email=t.email,"
+            + "u.nick=t.nick,u.school=t.school,u.email=nullif(t.email,''),"
             + "</if>"
             + "modified_time=now()"
             + "</set>"
@@ -164,7 +167,7 @@ public interface UserMapper {
     @Insert("<script>"
             + "insert into users(user_id,nick,password,school,email)values"
             + "<foreach item='item' collection='accounts' separator=','>"
-            + "(#{item.id},#{item.nick},#{item.password},#{item.school},#{item.email})"
+            + "(#{item.id},#{item.nick},#{item.password},#{item.school},nullif(#{item.email},''))"
             + "</foreach>"
             + "</script>")
     void insert(@Param("accounts") List<Account> accounts);

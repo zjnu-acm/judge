@@ -18,10 +18,12 @@ package cn.edu.zjnu.acm.judge.mapper;
 import cn.edu.zjnu.acm.judge.config.Constants;
 import cn.edu.zjnu.acm.judge.domain.Language;
 import java.util.List;
+import javax.annotation.Nullable;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -35,6 +37,8 @@ public interface LanguageMapper {
 
     @CacheEvict(value = Constants.Cache.LANGUAGE, allEntries = true)
     @Insert("insert into language(id,name,source_extension,compile_command,execute_command,executable_extension,time_factor,ext_memory,description) values(#{id},#{name},#{sourceExtension},#{compileCommand},#{executeCommand},#{executableExtension},#{timeFactor},#{extMemory},#{description})")
+    @SelectKey(statement = "select COALESCE(max(id)+1,1) maxp from language",
+            keyProperty = "id", before = true, resultType = int.class)
     long save(Language language);
 
     @CacheEvict(value = Constants.Cache.LANGUAGE, allEntries = true)
@@ -62,6 +66,7 @@ public interface LanguageMapper {
     List<Language> findAll();
 
     @Cacheable(Constants.Cache.LANGUAGE)
+    @Nullable
     @Select("select id id,name name,source_extension sourceExtension,compile_command compileCommand,execute_command executeCommand,executable_extension executableExtension,time_factor timeFactor,ext_memory extMemory,description description from language where id=#{param1}")
     Language findOne(long id);
 

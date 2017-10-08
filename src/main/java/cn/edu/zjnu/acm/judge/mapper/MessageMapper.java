@@ -17,6 +17,7 @@ package cn.edu.zjnu.acm.judge.mapper;
 
 import cn.edu.zjnu.acm.judge.domain.Message;
 import java.util.List;
+import javax.annotation.Nullable;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -38,6 +39,7 @@ public interface MessageMapper {
     @Select("select COALESCE(max(message_id)+1,1000) maxp from message")
     long nextId();
 
+    @Nullable
     @Select("select" + COLUMNS + "from message where message_id=#{id}")
     Message findOne(@Param("id") long id);
 
@@ -72,10 +74,10 @@ public interface MessageMapper {
             + "<if test='limit!=null'> limit #{limit}</if>"
             + "</script>")
     List<Message> findAllByThreadIdBetween(
-            @Param("min") Long min, // inclusive
-            @Param("max") Long max, // exclude
-            @Param("problemId") Long problemId,
-            @Param("limit") Integer limit);
+            @Nullable @Param("min") Long min, // inclusive
+            @Nullable @Param("max") Long max, // exclude
+            @Nullable @Param("problemId") Long problemId,
+            @Nullable @Param("limit") Integer limit);
 
     @Select("<script>"
             + "select COALESCE(min(thread_id),#{coalesce}) as mint from ("
@@ -87,7 +89,11 @@ public interface MessageMapper {
             + " order by thread_id desc limit #{limit}"
             + ") as temp"
             + "</script>")
-    long mint(@Param("top") long top, @Param("problemId") Long problemId, @Param("limit") int limit, @Param("coalesce") long coalesce);
+    long mint(
+            @Param("top") long top,
+            @Nullable @Param("problemId") Long problemId,
+            @Param("limit") int limit,
+            @Param("coalesce") long coalesce);
 
     @Select("<script>"
             + "select COALESCE(max(thread_id),#{coalesce}) as maxt from ("
@@ -99,6 +105,6 @@ public interface MessageMapper {
             + "order by thread_id limit #{limit}"
             + ") temp"
             + "</script>")
-    long maxt(@Param("top") long top, @Param("problemId") Long problemId, @Param("limit") int limit, @Param("coalesce") long coalesce);
+    long maxt(@Param("top") long top, @Nullable @Param("problemId") Long problemId, @Param("limit") int limit, @Param("coalesce") long coalesce);
 
 }

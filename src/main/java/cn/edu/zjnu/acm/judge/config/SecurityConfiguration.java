@@ -132,11 +132,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     private AuthenticationFailureHandler failureHandler() {
-        String defaultFailureUrl = "/login?error";
+        final String defaultFailureUrl = "/login?error";
         RedirectStrategy redirectStrategy = new FailureRedirectStrategy();
-        return (request, response, exception) -> {
-            redirectStrategy.sendRedirect(request, response, defaultFailureUrl);
-        };
+        return (request, response, exception) -> redirectStrategy.sendRedirect(request, response, defaultFailureUrl);
     }
 
     private static class FailureRedirectStrategy implements RedirectStrategy {

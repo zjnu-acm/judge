@@ -16,7 +16,8 @@
 package cn.edu.zjnu.acm.judge.data.form;
 
 import lombok.Data;
-import org.thymeleaf.util.StringUtils;
+import org.springframework.util.StringUtils;
+import org.unbescape.html.HtmlEscape;
 
 /**
  *
@@ -30,7 +31,7 @@ public class SystemInfoForm {
 
     @Override
     public String toString() {
-        return !pureText || StringUtils.isEmptyOrWhitespace(info) ? info : StringUtils.escapeXml(info);
+        return pureText && StringUtils.hasText(info) ? HtmlEscape.escapeHtml4Xml(info) : info;
     }
 
 }

@@ -55,7 +55,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Slf4j
-@SpecialCall("contests/problems.html")
+@SpecialCall("contests/problems")
 public class ContestService {
 
     private static final ConcurrentMap<Long, CompletableFuture<List<UserStanding>>> STANDINGS = new ConcurrentHashMap<>(20);
@@ -69,7 +69,7 @@ public class ContestService {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @SpecialCall("contests/problems.html")
+    @SpecialCall("contests/problems")
     public String getStatus(Contest contest) {
         Boolean disabled = contest.getDisabled();
         if (disabled != null && disabled) {
@@ -108,10 +108,6 @@ public class ContestService {
         return contestMapper.findAllByQuery(false, EnumUtils.toMask(EnumSet.of(first, rest)));
     }
 
-    public Contest findOne(long id) {
-        return contestMapper.findOne(id);
-    }
-
     @Transactional
     public Contest save(Contest contest) {
         contestMapper.save(contest);
@@ -125,10 +121,7 @@ public class ContestService {
 
     @Nonnull
     public Contest getContestAndProblems(long contestId, Locale locale) {
-        Contest contest = contestMapper.findOne(contestId);
-        if (contest == null) {
-            throw new BusinessException(BusinessCode.CONTEST_NOT_FOUND, contestId);
-        }
+        Contest contest = checkedGet(contestId);
         List<Problem> problems = contestMapper.getProblems(contestId, null, localeService.resolve(locale));
         contest.setProblems(problems);
         return contest;
@@ -142,8 +135,18 @@ public class ContestService {
         return contest;
     }
 
+    @Nonnull
     private Contest getEnabledContest(long contestId) {
         Contest contest = contestMapper.findOneByIdAndNotDisabled(contestId);
+        if (contest == null) {
+            throw new BusinessException(BusinessCode.CONTEST_NOT_FOUND, contestId);
+        }
+        return contest;
+    }
+
+    @Nonnull
+    private Contest checkedGet(long contestId) {
+        Contest contest = contestMapper.findOne(contestId);
         if (contest == null) {
             throw new BusinessException(BusinessCode.CONTEST_NOT_FOUND, contestId);
         }
@@ -186,9 +189,7 @@ public class ContestService {
     }
 
     public List<Long> submittedProblems(long id) {
-        if (contestMapper.findOne(id) == null) {
-            throw new BusinessException(BusinessCode.CONTEST_NOT_FOUND, id);
-        }
+        checkedGet(id);
         return contestMapper.submittedProblems(id);
     }
 
@@ -221,6 +222,7 @@ public class ContestService {
     }
 
     public CompletableFuture<List<UserStanding>> standingAsync(long id) {
+        getEnabledContest(id);
         return STANDINGS.computeIfAbsent(id, contestId -> CompletableFuture.supplyAsync(() -> {
             List<UserStanding> result = standing(contestId);
             STANDINGS.remove(id);
@@ -253,6 +255,7 @@ public class ContestService {
         return problem;
     }
 
+    @Nonnull
     public Contest findOneByIdAndNotDisabled(long contestId) {
         return getEnabledContest(contestId);
     }

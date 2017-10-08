@@ -26,9 +26,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.thymeleaf.util.StringUtils;
+import org.unbescape.html.HtmlEscape;
 
 import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 
@@ -92,7 +93,7 @@ public class StatusController {
                 .size(Math.max(Math.min(size, 500), 0))
                 .top(top)
                 .bottom(bottom)
-                .user(!StringUtils.isEmptyOrWhitespace(userId) ? userId : null)
+                .user(StringUtils.hasText(userId) ? userId : null)
                 .language(language != -1 ? language : null)
                 .build();
         log.debug("{}", form);
@@ -110,15 +111,15 @@ public class StatusController {
         StringBuilder sb = new StringBuilder("<html><head><title>Problem Status List</title></head><body>"
                 + "<p align=center><font size=4 color=#339>Problem Status List</font></p>"
                 + "<form method=get action='status'/><label for='pid'>Problem ID:</label><input id='pid' type=text name=problem_id size=8 value=\"")
-                .append(StringUtils.escapeXml(pid)).append("\"/> <label for='uid'>User ID:</label><input id='uid' type=text name=user_id size=15 value=\"")
-                .append(StringUtils.escapeXml(userId)).append("\"/>"
+                .append(HtmlEscape.escapeHtml4Xml(pid)).append("\"/> <label for='uid'>User ID:</label><input id='uid' type=text name=user_id size=15 value=\"")
+                .append(HtmlEscape.escapeHtml4Xml(userId)).append("\"/>"
                 + " <label for='languag'>Language:</label>"
                 + "<select id='languag' size=\"1\" name=\"language\">"
                 + "<option value=\"\">All</option>");
         for (Map.Entry<Integer, Language> entry : languageService.getAvailableLanguages().entrySet()) {
             int key = entry.getKey();
             Language value = entry.getValue();
-            sb.append("<option value=\"").append(key).append("\"").append(key == language ? " selected" : "").append(">").append(StringUtils.escapeXml(value.getName())).append("</option>");
+            sb.append("<option value=\"").append(key).append("\"").append(key == language ? " selected" : "").append(">").append(HtmlEscape.escapeHtml4Xml(value.getName())).append("</option>");
         }
         sb.append("</select>");
         if (contestId != null) {

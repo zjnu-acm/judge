@@ -24,7 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-@SpecialCall("fragment/notice.html")
+@SpecialCall("fragment/notice")
 public class JudgeConfiguration {
 
     public static final String VALIDATE_FILE_NAME = "compare.exe";
@@ -57,7 +57,7 @@ public class JudgeConfiguration {
         return getWorkingPath().resolve(String.valueOf(submissionId));
     }
 
-    @SpecialCall("fragment/notice.html")
+    @SpecialCall("fragment/notice")
     public SystemInfoForm getSystemInfo() {
         return systemInfo;
     }

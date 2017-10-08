@@ -24,6 +24,7 @@ import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
+import javax.annotation.Nonnull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,7 @@ import org.springframework.stereotype.Service;
  * @author zhanhb
  */
 @Service
+@SpecialCall({"contests/problems-status", "problems/status"})
 public class LanguageService {
 
     @Autowired
@@ -42,6 +44,7 @@ public class LanguageService {
                 .collect(ImmutableMap.toImmutableMap(Language::getId, Function.identity()));
     }
 
+    @Nonnull
     public Language getAvailableLanguage(int languageId) {
         Language language = languageMapper.findOne(languageId);
         if (language == null) {
@@ -50,7 +53,7 @@ public class LanguageService {
         return language;
     }
 
-    @SpecialCall("problems/status.html")
+    @SpecialCall({"contests/problems-status", "problems/status"})
     public String getLanguageName(int languageId) {
         return Optional.ofNullable(languageMapper.findOne(languageId))
                 .map(Language::getName).orElse("unknown language " + languageId);

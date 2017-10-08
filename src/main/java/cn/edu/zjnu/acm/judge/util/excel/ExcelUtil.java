@@ -38,6 +38,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
+import javax.annotation.Nullable;
 import lombok.SneakyThrows;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
@@ -111,7 +112,7 @@ public class ExcelUtil {
         });
     }
 
-    public static <T> List<T> parse(byte[] content, Class<T> type, Locale locale) throws IOException {
+    public static <T> List<T> parse(byte[] content, Class<T> type, @Nullable Locale locale) throws IOException {
         XSSFWorkbook xssfWorkbook;
         try {
             xssfWorkbook = new XSSFWorkbook(new ByteArrayInputStream(content));
@@ -124,7 +125,7 @@ public class ExcelUtil {
         return parse(xssfWorkbook, evaluator, type, locale);
     }
 
-    private static <T> List<T> parse(Workbook workbook, FormulaEvaluator evaluator, Class<T> type, Locale locale) {
+    private static <T> List<T> parse(Workbook workbook, FormulaEvaluator evaluator, Class<T> type, @Nullable Locale locale) {
         Metainfo<T> metainfo = Metainfo.forType(type, locale);
         Sheet sheet = workbook.getSheetAt(workbook.getActiveSheetIndex());
         Iterator<Row> rows = sheet.rowIterator();

@@ -1,7 +1,6 @@
 package cn.edu.zjnu.acm.judge.controller.submission;
 
 import cn.edu.zjnu.acm.judge.domain.Contest;
-import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.exception.BusinessCode;
 import cn.edu.zjnu.acm.judge.exception.BusinessException;
@@ -13,6 +12,7 @@ import cn.edu.zjnu.acm.judge.mapper.UserPreferenceMapper;
 import cn.edu.zjnu.acm.judge.service.ContestOnlyService;
 import cn.edu.zjnu.acm.judge.service.JudgePool;
 import cn.edu.zjnu.acm.judge.service.LanguageService;
+import cn.edu.zjnu.acm.judge.service.ProblemService;
 import cn.edu.zjnu.acm.judge.util.ResultType;
 import com.google.common.cache.CacheBuilder;
 import java.time.Instant;
@@ -38,6 +38,8 @@ public class SubmitController {
     private SubmissionMapper submissionMapper;
     @Autowired
     private ProblemMapper problemMapper;
+    @Autowired
+    private ProblemService problemService;
     @Autowired
     private ContestMapper contestMapper;
     @Autowired
@@ -75,12 +77,7 @@ public class SubmitController {
         if (cache.contains(userId) || !cache.add(userId)) {
             throw new MessageException("Sorry, please don't submit again within 10 seconds.", HttpStatus.BAD_REQUEST);
         }
-        Problem problem = problemMapper.findOneNoI18n(problemId);
-
-        //检查该题是否存在
-        if (problemMapper.findOneNoI18n(problemId) == null) {
-            throw new BusinessException(BusinessCode.PROBLEM_NOT_FOUND, problemId);
-        }
+        problemService.findOneNoI18n(problemId); //检查该题是否存在
 
         if (contestId != null) { //竞赛是否存在
             Contest contest = contestMapper.findOne(contestId);

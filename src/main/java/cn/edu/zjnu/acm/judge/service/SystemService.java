@@ -18,6 +18,7 @@ package cn.edu.zjnu.acm.judge.service;
 import cn.edu.zjnu.acm.judge.config.Constants;
 import cn.edu.zjnu.acm.judge.mapper.SystemMapper;
 import cn.edu.zjnu.acm.judge.util.SpecialCall;
+import javax.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationInitializer;
 import org.springframework.cache.annotation.Cacheable;
@@ -28,7 +29,7 @@ import org.springframework.stereotype.Service;
  * @author zhanhb
  */
 @Service
-@SpecialCall({"index.html", "manager.html", "layout/main.html", "fragment/ga.html"})
+@SpecialCall({"index", "manager", "layout/main", "fragment/ga"})
 public class SystemService {
 
     @Autowired
@@ -38,35 +39,42 @@ public class SystemService {
     public void setFlywayMigrationInitializer(FlywayMigrationInitializer flywayMigrationInitializer) {
     }
 
+    @Nullable
     public String getUploadPath() {
         return systemMapper.getValueByName(Constants.SystemKey.UPLOAD_PATH);
     }
 
+    @Nullable
     @Cacheable(value = Constants.Cache.SYSTEM, key = "'admin-mail'")
-    @SpecialCall({"index.html", "manager.html", "layout/main.html"})
+    @SpecialCall({"index", "manager", "layout/main"})
     public String getAdminMail() {
         return systemMapper.getValueByName(Constants.SystemKey.ADMIN_MAIL);
     }
 
+    @Nullable
     @Cacheable(value = Constants.Cache.SYSTEM, key = "'ga'")
-    @SpecialCall("fragment/ga.html")
+    @SpecialCall("fragment/ga")
     public String getGa() {
         return systemMapper.getValueByName(Constants.SystemKey.GA);
     }
 
+    @Nullable
     @Cacheable(value = Constants.Cache.SYSTEM, key = "'data-path'")
     public String getDataFilesPath() {
         return systemMapper.getValueByName(Constants.SystemKey.DATA_FILES_PATH);
     }
 
+    @Nullable
     public String getDeleteTempFile() {
         return systemMapper.getValueByName(Constants.SystemKey.DELETE_TEMP_FILE);
     }
 
+    @Nullable
     public String getWorkingPath() {
         return systemMapper.getValueByName(Constants.SystemKey.WORKING_PATH);
     }
 
+    @Nullable
     public String getResetPasswordTitle() {
         return systemMapper.getValueByName(Constants.SystemKey.RESETPASSWORD_TITLE);
     }

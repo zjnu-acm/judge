@@ -15,8 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.thymeleaf.util.StringUtils;
 
 @Controller
 public class SearchProblemController {
@@ -27,7 +27,7 @@ public class SearchProblemController {
     @GetMapping("/searchproblem")
     public String searchProblem(ProblemForm form, Model model, Locale locale, Authentication authentication,
             @PageableDefault(1000) Pageable pageable, HttpServletRequest request) {
-        if (StringUtils.isEmpty(form.getSstr())) {
+        if (!StringUtils.hasText(form.getSstr())) {
             throw new MessageException("Please input the keyword to the problem.", HttpStatus.BAD_REQUEST);
         }
         String currentUserId = authentication != null ? authentication.getName() : null;

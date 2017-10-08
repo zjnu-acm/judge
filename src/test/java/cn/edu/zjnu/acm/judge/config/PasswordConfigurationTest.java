@@ -44,9 +44,41 @@ public class PasswordConfigurationTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    /**
-     * Test of passwordEncoder method, of class PasswordConfiguration.
-     */
+    @Test
+    public void testMatches() {
+        log.info("matches");
+        String rawPassword = "123456";
+        String encodedPassword = "123456";
+        String md5 = "7c4a8d09ca3762af61e59520943dc26494f8941b";
+        assertTrue(passwordEncoder.matches(rawPassword, encodedPassword));
+        encodedPassword = md5;
+        assertTrue(passwordEncoder.matches(rawPassword, encodedPassword));
+        encodedPassword = "123456,123456";
+        assertFalse(passwordEncoder.matches(rawPassword, encodedPassword));
+        String wrong = md5.substring(0, md5.length() - 3) + "ttt";
+        encodedPassword = String.format("%s,%s", md5, wrong);
+        assertTrue(passwordEncoder.matches(rawPassword, encodedPassword));
+        encodedPassword = String.format("%s,%s", wrong, md5);
+        assertTrue(passwordEncoder.matches(rawPassword, encodedPassword));
+        encodedPassword = String.format("%s,%s", wrong, wrong);
+        assertFalse(passwordEncoder.matches(rawPassword, encodedPassword));
+        String p = md5;
+        assertFalse(passwordEncoder.matches(p, p));
+        p = p.substring(0, 20);
+        assertTrue(passwordEncoder.matches(p, p));
+        encodedPassword = String.format("%s,%s", rawPassword, rawPassword);
+        assertFalse(passwordEncoder.matches(rawPassword, encodedPassword));
+    }
+
+    @Test
+    public void testEncode() {
+        log.info("passwordEncoder");
+        String rawPassword = "123456";
+        String result = passwordEncoder.encode(rawPassword);
+        assertTrue(passwordEncoder.matches(rawPassword, result));
+
+    }
+
     @Test
     public void testNull() {
         log.info("passwordEncoder");

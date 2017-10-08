@@ -28,6 +28,7 @@ import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Stream;
+import javax.annotation.Nullable;
 import lombok.Value;
 
 /**
@@ -39,7 +40,7 @@ class Metainfo<T> {
     private static final ConcurrentMap<Locale, ConcurrentMap<Class<?>, Metainfo<?>>> MAP = new ConcurrentHashMap<>(1);
 
     @SuppressWarnings("unchecked")
-    static <T> Metainfo<T> forType(Class<T> elementType, Locale paramLocale) {
+    static <T> Metainfo<T> forType(Class<T> elementType, @Nullable Locale paramLocale) {
         Locale locale = paramLocale == null ? Locale.ROOT : paramLocale;
         ConcurrentMap<Class<?>, Metainfo<?>> metainfos = MAP.computeIfAbsent(locale, __ -> new ConcurrentHashMap<>(1));
         return (Metainfo<T>) metainfos.computeIfAbsent(elementType, type -> {

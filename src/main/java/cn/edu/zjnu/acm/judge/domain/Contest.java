@@ -15,6 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.domain;
 
+import cn.edu.zjnu.acm.judge.util.SpecialCall;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.time.Instant;
@@ -48,6 +49,7 @@ public class Contest implements Serializable {
     private List<Problem> problems;
 
     @JsonIgnore
+    @SpecialCall("contests/problems")
     public boolean isStarted() {
         return startTime == null || startTime.isBefore(Instant.now());
     }

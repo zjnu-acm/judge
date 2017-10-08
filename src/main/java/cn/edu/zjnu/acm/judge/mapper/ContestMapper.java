@@ -21,6 +21,7 @@ import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.util.ResultType;
 import java.util.List;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
@@ -69,7 +70,7 @@ public interface ContestMapper {
     List<Problem> getProblems(
             @Param("contest") long contestId,
             @Nullable @Param("userId") String userId,
-            @Param("lang") String lang);
+            @Nullable @Param("lang") String lang);
 
     @Select("select "
             + " ac.user_id `user`,"
@@ -114,6 +115,7 @@ public interface ContestMapper {
     @Select("select" + COLUMNS + "from contest where contest_id=#{id}")
     Contest findOne(@Param("id") long contestId);
 
+    @Nullable
     @Select("<script>select cp.num id,if(cp.title is null or trim(cp.title)='',p.title,cp.title) title,p.problem_id origin,"
             + ProblemMapper.EXTERN_COLUMNS + ",count(distinct sa.solution_id)accepted,count(distinct s.solution_id) submit,count(distinct sa.user_id)solved,count(distinct s.user_id)submitUser "
             + "from contest_problem cp "
@@ -125,8 +127,9 @@ public interface ContestMapper {
     Problem getProblem(
             @Param("contest") long contestId,
             @Param("problem") long problemNum,
-            @Param("lang") String lang);
+            @Nullable @Param("lang") String lang);
 
+    @Nullable
     @Select("select" + COLUMNS + "from contest where contest_id=#{id} and not disabled")
     Contest findOneByIdAndNotDisabled(@Param("id") long contestId);
 
@@ -138,7 +141,7 @@ public interface ContestMapper {
             + "select #{id},#{problem},nullif(#{title},''),COALESCE(max(num)+1,1000) num "
             + "from contest_problem cp where contest_id=#{id}")
     long addProblem(@Param("id") long contestId, @Param("problem") long problem,
-            @Param("title") String title);
+            @Nullable @Param("title") String title);
 
     @Insert("<script>insert into contest_problem (contest_id,problem_id,title,num)"
             + "select #{contest_id} AS contest_id,origin,null title,num from "
@@ -146,7 +149,7 @@ public interface ContestMapper {
             + "select problem_id origin,${base}+#{index} as num from problem where problem_id=#{item}"
             + "</foreach> as t"
             + "</script>")
-    long addProblems(@Param("contest_id") long contest_id, @Param("base") int base, @Param("problems") long[] problems);
+    long addProblems(@Param("contest_id") long contest_id, @Param("base") int base, @Nonnull @Param("problems") long[] problems);
 
     @Select("<script>select" + COLUMNS + "from contest"
             + "<where>"
@@ -192,7 +195,7 @@ public interface ContestMapper {
             + "</set>"
             + "<where>contest_id=#{id}</where>"
             + "</script>")
-    long updateSelective(@Param("id") long id, @Param("c") Contest contest);
+    long updateSelective(@Param("id") long id, @Nonnull @Param("c") Contest contest);
 
     @Select("select distinct(problem_id) from solution where contest_id=#{id}")
     List<Long> submittedProblems(@Param("id") long id);

@@ -10,6 +10,7 @@ import static com.sun.jna.platform.win32.WinBase.HANDLE_FLAG_INHERIT;
  *
  * @author zhanhb
  */
+@SuppressWarnings("UtilityClassWithoutPrivateConstructor")
 public class Kernel32Util {
 
     public static void assertTrue(boolean test) {

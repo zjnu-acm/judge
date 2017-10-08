@@ -238,7 +238,7 @@
             <!--/* TODO contest field in problem */-->
             <p align="left" ng-hide="problem.id">
                 <label th:for="${#ids.next('contest')}">添加到比赛：</label>
-                <span isteven-multi-select input-model="contests" output-model="problem.contests" button-label="title" item-label="id title" tick-property="selected" disable-property="disabled" helper-elements="all none" output-properties="id" translation="{nothingSelected:'不加到任何比赛，题目将不可用',selectAll:'全选',selectNone:'清空'}"></span>
+                <span th:id="${#ids.seq('contest')}" isteven-multi-select input-model="contests" output-model="problem.contests" button-label="title" item-label="id title" tick-property="selected" disable-property="disabled" helper-elements="all none" output-properties="id" translation="{nothingSelected:'不加到任何比赛，题目将不可用',selectAll:'全选',selectNone:'清空'}"></span>
             </p>
             <div class="text-center"><button type="submit">Submit</button></div>
         </form>

@@ -1,12 +1,9 @@
 package cn.edu.zjnu.acm.judge.controller.user;
 
 import cn.edu.zjnu.acm.judge.domain.User;
-import cn.edu.zjnu.acm.judge.exception.BusinessCode;
-import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
-import cn.edu.zjnu.acm.judge.mapper.UserMapper;
+import cn.edu.zjnu.acm.judge.service.AccountService;
 import cn.edu.zjnu.acm.judge.util.ValueCheck;
-import java.time.Instant;
 import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,22 +12,31 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.thymeleaf.util.StringUtils;
 
 @Controller
+@Secured("ROLE_USER")
 public class ModifyUserController {
 
     @Autowired
-    private UserMapper userMapper;
+    private AccountService accountService;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Secured("ROLE_USER")
+    @GetMapping({"/modifyuserpage", "/modifyuser"})
+    public String updatePage(Model model, Authentication authentication) {
+        String userId = authentication != null ? authentication.getName() : null;
+        User user = accountService.findOne(userId);
+        model.addAttribute("user", user);
+        return "users/edit";
+    }
+
     @PostMapping("/modifyuser")
     @SuppressWarnings("AssignmentToMethodParameter")
-    public String modifyuser(Model model,
+    public String update(Model model,
             @RequestParam("oldPassword") String oldPassword,
             @RequestParam("newPassword") String newPassword,
             @RequestParam("rptPassword") String rptPassword,
@@ -41,11 +47,8 @@ public class ModifyUserController {
         if (!Objects.equals(newPassword, rptPassword)) {
             throw new MessageException("Passwords are not match", HttpStatus.BAD_REQUEST);
         }
-        String userId = authentication != null ? authentication.getName() : null;
-        User user = userMapper.findOne(userId);
-        if (user == null) {
-            throw new BusinessException(BusinessCode.USER_NOT_FOUND, userId);
-        }
+        String userId = authentication.getName();
+        User user = accountService.findOne(userId);
         String password = user.getPassword();
         if (!passwordEncoder.matches(oldPassword, password)) {
             throw new MessageException("password is not correct", HttpStatus.BAD_REQUEST);
@@ -58,21 +61,20 @@ public class ModifyUserController {
         } else {
             ValueCheck.checkPassword(newPassword);
         }
-        if (StringUtils.isEmptyOrWhitespace(email)) {
-            email = null;
-        } else {
+        if (StringUtils.hasText(email)) {
             ValueCheck.checkEmail(email);
+        } else {
+            email = "";
         }
         ValueCheck.checkNick(nick);
         user = User.builder()
                 .id(userId)
                 .email(email)
                 .nick(nick)
-                .password(passwordEncoder.encode(newPassword))
+                .password(newPassword)
                 .school(school)
-                .modifiedTime(Instant.now())
                 .build();
-        userMapper.updateSelective(userId, user);
+        accountService.updateSelective(userId, user);
         model.addAttribute("user", user);
         return "modifyusersuccess";
     }

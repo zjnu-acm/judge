@@ -21,7 +21,6 @@ import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.exception.BusinessCode;
 import cn.edu.zjnu.acm.judge.exception.BusinessException;
-import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserProblemMapper;
 import cn.edu.zjnu.acm.judge.util.DeleteHelper;
@@ -57,7 +56,7 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.util.StringUtils;
+import org.springframework.util.StringUtils;
 
 /**
  *
@@ -85,7 +84,7 @@ public class JudgeService {
     @Autowired
     private UserProblemMapper userProblemMapper;
     @Autowired
-    private ProblemMapper problemMapper;
+    private ProblemService problemService;
     @Autowired
     private JudgeConfiguration judgeConfiguration;
     @Autowired
@@ -102,10 +101,7 @@ public class JudgeService {
         if (submission == null) {
             throw new BusinessException(BusinessCode.SUBMISSION_NOT_FOUND);
         }
-        Problem problem = problemMapper.findOneNoI18n(submission.getProblem());
-        if (problem == null) {
-            throw new BusinessException(BusinessCode.PROBLEM_NOT_FOUND);
-        }
+        Problem problem = problemService.findOneNoI18n(submission.getProblem());
         RunRecord runRecord = RunRecord.builder()
                 .submissionId(submission.getId())
                 .language(languageService.getAvailableLanguage(submission.getLanguage()))
@@ -153,7 +149,7 @@ public class JudgeService {
         long memory = 0; //内存
         String command = runRecord.getLanguage().getExecuteCommand();
         Path work = judgeConfiguration.getWorkDirectory(runRecord.getSubmissionId()); //建立临时文件
-        command = !StringUtils.isEmptyOrWhitespace(command) ? command : work.resolve("Main." + runRecord.getLanguage().getExecutableExtension()).toString();
+        command = StringUtils.hasText(command) ? command : work.resolve("Main." + runRecord.getLanguage().getExecutableExtension()).toString();
         long extTime = runRecord.getLanguage().getExtTime();
         long castTimeLimit = runRecord.getTimeLimit() * runRecord.getLanguage().getTimeFactor() + extTime;
         long extraMemory = runRecord.getLanguage().getExtMemory(); //内存附加
@@ -223,7 +219,7 @@ public class JudgeService {
 
     private boolean compile(RunRecord runRecord) throws IOException {
         String source = runRecord.getSource();
-        if (StringUtils.isEmptyOrWhitespace(source)) {
+        if (!StringUtils.hasText(source)) {
             return false;
         }
         Path work = judgeConfiguration.getWorkDirectory(runRecord.getSubmissionId());
@@ -234,7 +230,7 @@ public class JudgeService {
 
         String compileCommand = runRecord.getLanguage().getCompileCommand();
         log.debug("Compile Command: {}", compileCommand); //编译命令
-        if (StringUtils.isEmptyOrWhitespace(compileCommand)) {
+        if (!StringUtils.hasText(compileCommand)) {
             return true;
         }
         assert compileCommand != null;

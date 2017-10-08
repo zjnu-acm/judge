@@ -6,22 +6,20 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
-import org.thymeleaf.util.StringUtils;
+import org.springframework.util.StringUtils;
+import org.unbescape.html.HtmlEscape;
 
-@SpecialCall({
-    "WEB-INF/templates/fragment/standing.html",
-    "WEB-INF/templates/users/list.html"
-})
+@SpecialCall({"fragment/standing", "users/list"})
 public interface JudgeUtils {
 
     /**
-     * required in WEB-INF/templates/fragment/standing.html
+     * required in fragment/standing
      *
      * @param seconds the time, in seconds
      * @return A string represents the specified seconds
      */
     @SuppressWarnings("AssignmentToMethodParameter")
-    @SpecialCall("fragment/standing.html")
+    @SpecialCall("fragment/standing")
     static String formatTime(long seconds) {
         boolean neg = false;
         if (seconds < 0) {
@@ -52,10 +50,10 @@ public interface JudgeUtils {
     }
 
     static String getReplyString(String string) {
-        if (StringUtils.isEmptyOrWhitespace(string)) {
+        if (!StringUtils.hasText(string)) {
             return "";
         }
-        return StringUtils.escapeXml(new BufferedReader(new StringReader(string)).lines()
+        return HtmlEscape.escapeHtml4Xml(new BufferedReader(new StringReader(string)).lines()
                 .filter(line -> !line.startsWith("> "))
                 .collect(Collectors.joining("\n> ", "> ", "\n")));
     }
@@ -64,7 +62,7 @@ public interface JudgeUtils {
         return formatTime(ChronoUnit.SECONDS.between(a, b));
     }
 
-    @SpecialCall("users/list.html")
+    @SpecialCall("users/list")
     static long[] sequence(long total, long current) {
         if (total <= 0) {
             if (total == 0) {

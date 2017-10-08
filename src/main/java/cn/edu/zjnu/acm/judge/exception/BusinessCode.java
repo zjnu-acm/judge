@@ -35,7 +35,7 @@ public enum BusinessCode {
     CONTEST_NOT_FOUND("onlinejudge.contest.nosuchcontest", HttpStatus.NOT_FOUND),
     CONTEST_ONLY_SUBMIT("onlinejudge.contest.only.submit"),
     CONTEST_ONLY_REGISTER("onlinejudge.contest.only.register"),
-    CONTEST_ONLY_VIEW_SOURCE("onlinejudge.contest.only.view.souree"),
+    CONTEST_ONLY_VIEW_SOURCE("onlinejudge.contest.only.view.source"),
     PROBLEM_NOT_FOUND("onlinejudge.problem.notfound", HttpStatus.NOT_FOUND),
     CONTEST_PROBLEM_NOT_FOUND("onlinejudge.contest.problem.notfound", HttpStatus.NOT_FOUND),
     LANGUAGE_NOT_FOUND("onlinejudge.language.notfound"),

@@ -19,6 +19,7 @@ import cn.edu.zjnu.acm.judge.config.Constants;
 import cn.edu.zjnu.acm.judge.data.dto.MailInfo;
 import cn.edu.zjnu.acm.judge.domain.Mail;
 import java.util.List;
+import javax.annotation.Nullable;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -35,6 +36,7 @@ import org.springframework.cache.annotation.Cacheable;
 @Mapper
 public interface MailMapper {
 
+    @Nullable
     @Select("select mail_id id,from_user `from`,to_user `to`,in_date inDate,title,content from mail where mail_id=#{id} and not disabled")
     Mail findOne(@Param("id") long id);
 

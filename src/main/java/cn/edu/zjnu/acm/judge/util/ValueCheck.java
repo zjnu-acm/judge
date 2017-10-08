@@ -19,7 +19,7 @@ import cn.edu.zjnu.acm.judge.exception.BusinessCode;
 import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import org.springframework.http.HttpStatus;
-import org.thymeleaf.util.StringUtils;
+import org.springframework.util.StringUtils;
 
 public interface ValueCheck {
 
@@ -73,7 +73,7 @@ public interface ValueCheck {
     }
 
     static void checkEmail(String email) {
-        if (!StringUtils.isEmptyOrWhitespace(email) && !email.matches(EMAIL_PATTERN)) {
+        if (StringUtils.hasText(email) && !email.matches(EMAIL_PATTERN)) {
             throw new MessageException("email format incorrect", HttpStatus.BAD_REQUEST);
         }
     }

@@ -38,7 +38,7 @@ public class AccountImportForm implements Serializable {
     /**
      * {@link UserMapper#batchUpdate(java.util.List, int)}
      */
-    public static enum ExistPolicy {
+    public enum ExistPolicy {
         ENABLE,
         RESET_PASSWORD,
         RESET_USERINFO,

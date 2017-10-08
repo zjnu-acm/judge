@@ -19,6 +19,7 @@ import cn.edu.zjnu.acm.judge.data.form.ProblemForm;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import java.time.Instant;
 import java.util.List;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
@@ -79,7 +80,7 @@ public interface ProblemMapper {
 
     @Nullable
     @Select("<script>select" + COLUMNS + FROM + " where problem_id=#{id}</script>")
-    Problem findOne(@Param("id") long id, @Param("lang") String lang);
+    Problem findOne(@Param("id") long id, @Nullable @Param("lang") String lang);
 
     @Nullable
     @Select("select" + COLUMNS_NO_I18N + "from problem p where problem_id=#{id}")
@@ -118,7 +119,7 @@ public interface ProblemMapper {
             + "</set>"
             + "<where>p.problem_id=#{id}</where>"
             + "</script>")
-    long updateSelective(@Param("id") long id, @Param("p") Problem build, @Param("lang") String lang);
+    long updateSelective(@Param("id") long id, @Param("p") Problem build, @Nullable @Param("lang") String lang);
 
     String FORM_CONDITION = "<where>"
             + "<if test='form.sstr!=null and form.sstr!=\"\"'> (instr(COALESCE(pi.title,p.title),#{form.sstr})&gt;0 or instr(COALESCE(pi.source,p.source),#{form.sstr})&gt;0) </if>"
@@ -155,15 +156,13 @@ public interface ProblemMapper {
             + "</script>")
     List<Problem> findAll(
             @Param(value = "form") ProblemForm form,
-            @Param(value = "userId") String userId,
-            @Param(value = "lang") String lang,
+            @Nullable @Param(value = "userId") String userId,
+            @Nullable @Param(value = "lang") String lang,
             @Param(value = "pageable") Pageable pageable);
 
     @Select("<script>"
             + "SELECT COUNT(*) total from problem p"
-            + "<if test='lang!=null and lang!=\"\"'>"
-            + "<if test='form.sstr!=null'>left join problem_i18n pi on p.problem_id = pi.id and pi.locale=#{lang}</if>"
-            + "</if>"
+            + "<if test='form.sstr!=null'>left join problem_i18n pi on p.problem_id = pi.id and pi.locale<choose><when test='lang==null'> is null</when><otherwise>=#{lang}</otherwise></choose></if>"
             + FORM_CONDITION
             + "</script>")
     long count(@Param("form") ProblemForm form, @Param("lang") String lang);
@@ -171,7 +170,7 @@ public interface ProblemMapper {
     @Insert("insert ignore into problem_i18n(id,locale) values(#{problemId},#{lang})")
     long touchI18n(
             @Param("problemId") long problemId,
-            @Param("lang") String lang);
+            @Nonnull @Param("lang") String lang);
 
     @Delete("delete from `problem` where problem_id=#{id}")
     long delete(@Param("id") long id);

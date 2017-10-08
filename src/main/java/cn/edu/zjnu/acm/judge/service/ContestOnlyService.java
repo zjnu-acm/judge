@@ -20,6 +20,7 @@ import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.exception.BusinessCode;
 import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import java.util.Objects;
+import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,11 +43,12 @@ public class ContestOnlyService {
         cache = cacheManager.getCache(Constants.Cache.CONTEST_ONLY);
     }
 
+    @Nullable
     public Long getContestOnly() {
         return cache.get(KEY, Long.class);
     }
 
-    public void setContestOnly(Long contestOnly) {
+    public void setContestOnly(@Nullable Long contestOnly) {
         if (contestOnly == null) {
             cache.evict(KEY);
         } else {
@@ -76,12 +78,14 @@ public class ContestOnlyService {
     }
 
     public void checkViewSource(HttpServletRequest request, @NonNull Submission submission) {
+        Objects.requireNonNull(submission, "submission");
         if (!canViewSource(request, submission)) {
             throw new BusinessException(BusinessCode.CONTEST_ONLY_VIEW_SOURCE, submission.getId());
         }
     }
 
     public boolean canViewSource(HttpServletRequest request, Submission submission) {
+        Objects.requireNonNull(submission, "submission");
         Long contestOnly = getContestOnly();
         if (contestOnly == null) {
             return true;

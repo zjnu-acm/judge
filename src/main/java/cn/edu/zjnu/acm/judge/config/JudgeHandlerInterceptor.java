@@ -22,10 +22,10 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.thymeleaf.util.StringUtils;
 
 /**
  *
@@ -53,7 +53,7 @@ public class JudgeHandlerInterceptor {
         }
         request.setAttribute(APPLIED_ONCE_KEY, true);
 
-        if (!StringUtils.isEmptyOrWhitespace(url)) {
+        if (StringUtils.hasText(url)) {
             request.setAttribute(BACK_URL_ATTRIBUTE_NAME, url);
         } else {
             String uri = getString(RequestDispatcher.FORWARD_SERVLET_PATH, HttpServletRequest::getServletPath, request);

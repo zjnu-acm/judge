@@ -26,6 +26,8 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,11 +44,13 @@ public class LocaleService {
     @Autowired
     private LocaleMapper localeMapper;
 
+    @Nullable
     public String resolve(Locale locale) {
         Locale toSupported = toSupported(locale);
         return toSupported.equals(Locale.ROOT) ? null : toSupported.toLanguageTag();
     }
 
+    @Nonnull
     public Locale toSupported(Locale locale) {
         if (locale == null) {
             return Locale.ROOT;
@@ -80,6 +84,7 @@ public class LocaleService {
         return localeMapper.findAll();
     }
 
+    @Nullable
     public DomainLocale findOne(String id) {
         if (Locale.ROOT.toLanguageTag().equalsIgnoreCase(id)) {
             return null;

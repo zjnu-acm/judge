@@ -24,6 +24,6 @@ package cn.edu.zjnu.acm.judge.util;
  */
 public @interface SpecialCall {
 
-    String[] value() default {};
+    String[] value();
 
 }

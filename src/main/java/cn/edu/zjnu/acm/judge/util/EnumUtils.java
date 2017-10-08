@@ -16,6 +16,7 @@
 package cn.edu.zjnu.acm.judge.util;
 
 import java.util.Collection;
+import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -26,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @SuppressWarnings("UtilityClassWithoutPrivateConstructor")
 public class EnumUtils {
 
-    public static <E extends Enum<E>> int toMask(Collection<E> list) {
+    public static <E extends Enum<E>> int toMask(@Nonnull Collection<E> list) {
         int mask = 0;
         for (E e : list) {
             mask |= 1 << e.ordinal();

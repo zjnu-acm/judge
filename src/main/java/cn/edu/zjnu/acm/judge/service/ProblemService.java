@@ -27,6 +27,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
 import java.util.Locale;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -69,8 +71,9 @@ public class ProblemService {
         problemMapper.updateSelective(problemId, p, locale);
     }
 
+    @Nonnull
     @Transactional
-    public Problem save(Problem problem) {
+    public Problem save(@Nonnull Problem problem) {
         boolean disabled = true;
         long[] contests = problem.getContests();
         if (contests != null) {
@@ -97,11 +100,13 @@ public class ProblemService {
         return problem;
     }
 
+    @Nullable
     private String convert(String lang) {
         DomainLocale domainLocale = localeService.findOne(lang);
         return domainLocale != null ? domainLocale.getId() : null;
     }
 
+    @Nonnull
     public Problem findOne(long id, String lang) {
         Problem problem = problemMapper.findOne(id, convert(lang));
         if (problem == null) {
@@ -110,8 +115,18 @@ public class ProblemService {
         return problem;
     }
 
+    @Nonnull
     public Problem findOne(long id) {
         Problem problem = problemMapper.findOne(id, null);
+        if (problem == null) {
+            throw new BusinessException(BusinessCode.PROBLEM_NOT_FOUND, id);
+        }
+        return problem;
+    }
+
+    @Nonnull
+    public Problem findOneNoI18n(long id) {
+        Problem problem = problemMapper.findOneNoI18n(id);
         if (problem == null) {
             throw new BusinessException(BusinessCode.PROBLEM_NOT_FOUND, id);
         }
