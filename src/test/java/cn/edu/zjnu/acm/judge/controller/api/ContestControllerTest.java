@@ -3,11 +3,13 @@ package cn.edu.zjnu.acm.judge.controller.api;
 import cn.edu.zjnu.acm.judge.Application;
 import cn.edu.zjnu.acm.judge.data.form.ContestForm;
 import cn.edu.zjnu.acm.judge.domain.Contest;
+import cn.edu.zjnu.acm.judge.service.MockDataService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Locale;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +23,14 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
@@ -42,6 +47,8 @@ public class ContestControllerTest {
     private MockMvc mvc;
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private MockDataService mockDataService;
 
     @Before
     public void setUp() {
@@ -56,11 +63,12 @@ public class ContestControllerTest {
     @Test
     public void testSave() throws Exception {
         log.info("save");
-        Contest request = null;
-        MvcResult result = mvc.perform(post("/api/contests")
-                .content(objectMapper.writeValueAsString(request)).contentType(MediaType.APPLICATION_JSON))
+        Contest contest = mockDataService.contest(false);
+        MvcResult result = mvc.perform(post("/api/contests.json")
+                .content(objectMapper.writeValueAsString(contest)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn();
     }
 
@@ -72,10 +80,10 @@ public class ContestControllerTest {
     @Test
     public void testDelete() throws Exception {
         log.info("delete");
-        long id = 0;
-        MvcResult result = mvc.perform(delete("/api/contests/{id}", id))
+        long id = mockDataService.contest().getId();
+        MvcResult result = mvc.perform(delete("/api/contests/{id}.json", id))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isNoContent())
                 .andReturn();
     }
 
@@ -90,12 +98,13 @@ public class ContestControllerTest {
         boolean includeDisabled = false;
         String[] exclude = null;
         String[] include = null;
-        MvcResult result = mvc.perform(get("/api/contests")
+        MvcResult result = mvc.perform(get("/api/contests.json")
                 .param("includeDisabled", Boolean.toString(includeDisabled))
                 .param("exclude", Objects.toString(exclude, ""))
                 .param("include", Objects.toString(include, "")))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn();
     }
 
@@ -107,12 +116,13 @@ public class ContestControllerTest {
     @Test
     public void testFindOne() throws Exception {
         log.info("findOne");
-        long id = 0;
+        long id = mockDataService.contest().getId();
         Locale locale = Locale.getDefault();
-        MvcResult result = mvc.perform(get("/api/contests/{id}", id)
+        MvcResult result = mvc.perform(get("/api/contests/{id}.json", id)
                 .locale(locale))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn();
     }
 
@@ -124,12 +134,12 @@ public class ContestControllerTest {
     @Test
     public void testUpdate() throws Exception {
         log.info("update");
-        long id = 0;
-        Contest request = null;
-        MvcResult result = mvc.perform(patch("/api/contests/{id}", id)
+        long id = mockDataService.contest().getId();
+        Contest request = new Contest();
+        MvcResult result = mvc.perform(patch("/api/contests/{id}.json", id)
                 .content(objectMapper.writeValueAsString(request)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isNoContent())
                 .andReturn();
     }
 
@@ -141,10 +151,11 @@ public class ContestControllerTest {
     @Test
     public void testSubmittedProblems() throws Exception {
         log.info("submittedProblems");
-        long id = 0;
-        MvcResult result = mvc.perform(get("/api/contests/{id}/problems/submitted", id))
+        long id = mockDataService.contest().getId();
+        MvcResult result = mvc.perform(get("/api/contests/{id}/problems/submitted.json", id))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn();
     }
 
@@ -153,13 +164,19 @@ public class ContestControllerTest {
      *
      * @see ContestController#standing(long)
      */
+    @Ignore
     @Test
     public void testStanding() throws Exception {
         log.info("standing");
-        long id = 0;
-        MvcResult result = mvc.perform(get("/api/contests/{id}/standing", id))
+        long id = mockDataService.contest().getId();
+        MvcResult result = mvc.perform(get("/api/contests/{id}/standing.json", id))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(request().asyncStarted())
+                .andReturn();
+        MvcResult asyncResult = mvc.perform(asyncDispatch(result))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
     }
 

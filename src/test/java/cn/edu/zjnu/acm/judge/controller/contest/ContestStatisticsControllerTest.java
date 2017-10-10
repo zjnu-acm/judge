@@ -1,6 +1,7 @@
 package cn.edu.zjnu.acm.judge.controller.contest;
 
 import cn.edu.zjnu.acm.judge.Application;
+import cn.edu.zjnu.acm.judge.service.MockDataService;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
@@ -8,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -18,6 +20,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
@@ -31,6 +34,8 @@ public class ContestStatisticsControllerTest {
     @Autowired
     private WebApplicationContext context;
     private MockMvc mvc;
+    @Autowired
+    private MockDataService mockDataService;
 
     @Before
     public void setUp() {
@@ -46,10 +51,11 @@ public class ContestStatisticsControllerTest {
     @Test
     public void testContestStatistics() throws Exception {
         log.info("contestStatistics");
-        long contest_id = 0;
+        long contest_id = mockDataService.contest().getId();
         MvcResult result = mvc.perform(get("/conteststatistics").param("contest_id", Long.toString(contest_id)))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andReturn();
     }
 

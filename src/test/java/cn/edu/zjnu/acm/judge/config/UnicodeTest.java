@@ -60,7 +60,7 @@ public class UnicodeTest {
 
     private void test0(String laughCry) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
-            connection.prepareStatement("CREATE TABLE `test_table1`(`id` INT NOT NULL, `value` LONGTEXT NULL, PRIMARY KEY (`id`) ) COLLATE='utf8mb4_general_ci'").execute();
+            connection.prepareStatement("CREATE TEMPORARY TABLE `test_table1`(`id` INT NOT NULL, `value` LONGTEXT NULL, PRIMARY KEY (`id`) ) COLLATE='utf8mb4_general_ci'").execute();
             try {
                 try (PreparedStatement ps = connection.prepareStatement("insert into test_table1(id,value)values(1,?)")) {
                     ps.setBytes(1, laughCry.getBytes(StandardCharsets.UTF_8));

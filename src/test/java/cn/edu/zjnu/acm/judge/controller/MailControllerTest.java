@@ -1,12 +1,17 @@
 package cn.edu.zjnu.acm.judge.controller;
 
 import cn.edu.zjnu.acm.judge.Application;
+import cn.edu.zjnu.acm.judge.domain.Mail;
+import cn.edu.zjnu.acm.judge.mapper.MailMapper;
+import cn.edu.zjnu.acm.judge.service.MockDataService;
+import javax.servlet.Filter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -16,10 +21,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringRunner.class)
@@ -32,10 +41,16 @@ public class MailControllerTest {
     @Autowired
     private WebApplicationContext context;
     private MockMvc mvc;
+    @Autowired
+    private Filter springSecurityFilterChain;
+    @Autowired
+    private MockDataService mockDataService;
+    @Autowired
+    private MailMapper mailMapper;
 
     @Before
     public void setUp() {
-        mvc = webAppContextSetup(context).build();
+        mvc = webAppContextSetup(context).addFilter(springSecurityFilterChain).build();
     }
 
     /**
@@ -46,10 +61,13 @@ public class MailControllerTest {
     @Test
     public void testDelete() throws Exception {
         log.info("delete");
-        long mail_id = 0;
-        MvcResult result = mvc.perform(get("/deletemail").param("mail_id", Long.toString(mail_id)))
+        String userId = mockDataService.user().getId();
+        long mailId = newMail(mockDataService.user().getId(), userId).getId();
+        MvcResult result = mvc.perform(get("/deletemail").with(user(userId))
+                .param("mail_id", Long.toString(mailId)))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isFound())
+                .andExpect(redirectedUrl("/mail"))
                 .andReturn();
     }
 
@@ -61,13 +79,16 @@ public class MailControllerTest {
     @Test
     public void testMail() throws Exception {
         log.info("mail");
-        int size = 0;
+        int size = 20;
         long start = 0;
-        MvcResult result = mvc.perform(get("/mail")
+        String userId = mockDataService.user().getId();
+        MvcResult result = mvc.perform(get("/mail").with(user(userId))
                 .param("size", Integer.toString(size))
                 .param("start", Long.toString(start)))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isOk())
+                .andExpect(view().name("mails/list"))
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andReturn();
     }
 
@@ -79,15 +100,17 @@ public class MailControllerTest {
     @Test
     public void testSend() throws Exception {
         log.info("send");
-        String title = "";
-        String to = "";
-        String content = "";
-        MvcResult result = mvc.perform(post("/send")
+        String userId = mockDataService.user().getId();
+        String title = "title";
+        String to = mockDataService.user().getId();
+        String content = "content";
+        MvcResult result = mvc.perform(post("/send").with(user(userId))
                 .param("title", title)
                 .param("to", to)
                 .param("content", content))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isOk())
+                .andExpect(view().name("mails/sendsuccess"))
                 .andReturn();
     }
 
@@ -99,13 +122,15 @@ public class MailControllerTest {
     @Test
     public void testSendPage() throws Exception {
         log.info("sendPage");
-        long reply = 0;
-        String to = "";
-        MvcResult result = mvc.perform(get("/sendpage")
+        long reply = -1;
+        String to = mockDataService.user().getId();
+        String userId = mockDataService.user().getId();
+        MvcResult result = mvc.perform(get("/sendpage").with(user(userId))
                 .param("reply", Long.toString(reply))
                 .param("to", to))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isOk())
+                .andExpect(view().name("mails/sendpage"))
                 .andReturn();
     }
 
@@ -117,11 +142,25 @@ public class MailControllerTest {
     @Test
     public void testShowMail() throws Exception {
         log.info("showMail");
-        long mail_id = 0;
-        MvcResult result = mvc.perform(get("/showmail").param("mail_id", Long.toString(mail_id)))
+        String userId = mockDataService.user().getId();
+        long mailId = newMail(mockDataService.user().getId(), userId).getId();
+        MvcResult result = mvc.perform(get("/showmail").with(user(userId))
+                .param("mail_id", Long.toString(mailId)))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isOk())
+                .andExpect(view().name("mails/view"))
                 .andReturn();
+    }
+
+    private Mail newMail(String from, String to) {
+        Mail mail = Mail.builder()
+                .from(from)
+                .to(to)
+                .title("title5")
+                .content("content12")
+                .build();
+        mailMapper.save(mail);
+        return mail;
     }
 
 }

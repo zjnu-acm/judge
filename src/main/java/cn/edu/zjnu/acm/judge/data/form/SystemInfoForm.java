@@ -15,7 +15,9 @@
  */
 package cn.edu.zjnu.acm.judge.data.form;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
 import org.unbescape.html.HtmlEscape;
 
@@ -23,7 +25,9 @@ import org.unbescape.html.HtmlEscape;
  *
  * @author zhanhb
  */
+@AllArgsConstructor
 @Data
+@NoArgsConstructor
 public class SystemInfoForm {
 
     private String info;

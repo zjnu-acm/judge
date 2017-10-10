@@ -17,9 +17,9 @@ package cn.edu.zjnu.acm.judge.mapper;
 
 import cn.edu.zjnu.acm.judge.Application;
 import cn.edu.zjnu.acm.judge.domain.User;
+import cn.edu.zjnu.acm.judge.service.MockDataService;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,15 +43,16 @@ public class UserMapperTest {
 
     @Autowired
     private UserMapper instance;
+    @Autowired
+    private MockDataService mockDataService;
 
     /**
      * Test of findOne method, of class UserMapper.
      */
-    @Ignore
     @Test
     public void testFindOne() {
         log.info("findOne");
-        String id = "coach";
+        String id = mockDataService.user().getId();
         String expResult = id;
         String result = instance.findOne(id).getId();
         assertEquals(expResult, result);
@@ -60,7 +61,7 @@ public class UserMapperTest {
     @Test
     public void testNeighbours() {
         log.info("neighbours");
-        String userId = "coach";
+        String userId = mockDataService.user().getId();
         List<User> result = instance.neighbours(userId, 4);
         log.info("{}", result);
     }

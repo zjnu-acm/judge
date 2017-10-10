@@ -16,13 +16,14 @@
 package cn.edu.zjnu.acm.judge.controller.user;
 
 import cn.edu.zjnu.acm.judge.Application;
+import cn.edu.zjnu.acm.judge.service.MockDataService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -33,6 +34,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
@@ -40,7 +42,6 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
  *
  * @author zhanhb
  */
-@Ignore
 @RunWith(SpringRunner.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
@@ -51,6 +52,8 @@ public class UserStatusControllerTest {
     @Autowired
     private WebApplicationContext context;
     private MockMvc mvc;
+    @Autowired
+    private MockDataService mockDataService;
 
     @Before
     public void setUp() {
@@ -66,12 +69,13 @@ public class UserStatusControllerTest {
     public void testUserStatus() throws Exception {
         log.info("userStatus");
         int size = 3;
-        String user_id = "coach";
+        String userId = mockDataService.user().getId();
         MvcResult result = mvc.perform(get("/userstatus")
                 .param("size", Integer.toString(size))
-                .param("user_id", user_id))
+                .param("user_id", userId))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andReturn();
     }
 

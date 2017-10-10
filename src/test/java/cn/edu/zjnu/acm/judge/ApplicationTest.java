@@ -45,9 +45,7 @@ public class ApplicationTest {
     @Test
     public void test() throws Exception {
         MockMvc mvc = webAppContextSetup(context).build();
-        mvc.perform(get("/"))
-                .andExpect(status().is2xxSuccessful());
-
+        mvc.perform(get("/")).andExpect(status().isOk());
     }
 
 }

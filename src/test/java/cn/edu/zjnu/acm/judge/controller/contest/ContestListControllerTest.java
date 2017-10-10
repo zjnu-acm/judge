@@ -11,11 +11,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import static org.hamcrest.Matchers.isIn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -47,7 +49,7 @@ public class ContestListControllerTest {
         log.info("contests");
         MvcResult result = mvc.perform(get("/contests"))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(isOkOrFound())
                 .andReturn();
     }
 
@@ -59,9 +61,9 @@ public class ContestListControllerTest {
     @Test
     public void testScheduledContests() throws Exception {
         log.info("scheduledContests");
-        MvcResult result = mvc.perform(get("/scheduledcontests"))
+        MvcResult result = mvc.perform(get("/scheduledcontests.json"))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(isOkOrFound())
                 .andReturn();
     }
 
@@ -75,7 +77,7 @@ public class ContestListControllerTest {
         log.info("pastContests");
         MvcResult result = mvc.perform(get("/pastcontests"))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(isOkOrFound())
                 .andReturn();
     }
 
@@ -89,8 +91,12 @@ public class ContestListControllerTest {
         log.info("currentContests");
         MvcResult result = mvc.perform(get("/currentcontests"))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(isOkOrFound())
                 .andReturn();
+    }
+
+    private ResultMatcher isOkOrFound() {
+        return status().is(isIn(new Integer[]{200, 302}));
     }
 
 }

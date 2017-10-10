@@ -3,10 +3,13 @@ package cn.edu.zjnu.acm.judge.controller.submission;
 import cn.edu.zjnu.acm.judge.Application;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -16,6 +19,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
@@ -24,6 +28,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @SpringBootTest(classes = Application.class)
 @Transactional
 @WebAppConfiguration
+@WithMockUser(roles = "ADMIN")
 public class RejudgeControllerTest {
 
     @Autowired
@@ -40,13 +45,17 @@ public class RejudgeControllerTest {
      *
      * @see RejudgeController#rejudgeSolution(long)
      */
+    @Ignore
     @Test
     public void testRejudgeSolution() throws Exception {
         log.info("rejudgeSolution");
         long solution_id = 0;
-        MvcResult result = mvc.perform(get("/admin.rejudge").param("solution_id", Long.toString(solution_id)))
+        MvcResult result = mvc.perform(get("/admin.rejudge")
+                .accept(MediaType.TEXT_HTML, MediaType.APPLICATION_JSON)
+                .param("solution_id", Long.toString(solution_id)))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn();
     }
 
@@ -59,9 +68,12 @@ public class RejudgeControllerTest {
     public void testRejudgeProblem() throws Exception {
         log.info("rejudgeProblem");
         long problem_id = 0;
-        MvcResult result = mvc.perform(get("/admin.rejudge").param("problem_id", Long.toString(problem_id)))
+        MvcResult result = mvc.perform(get("/admin.rejudge")
+                .accept(MediaType.TEXT_HTML, MediaType.APPLICATION_JSON)
+                .param("problem_id", Long.toString(problem_id)))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isAccepted())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn();
     }
 

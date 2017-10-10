@@ -23,6 +23,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
@@ -53,9 +54,10 @@ public class LanguageControllerTest {
     @Test
     public void testFindAll() throws Exception {
         log.info("findAll");
-        MvcResult result = mvc.perform(get("/api/languages"))
+        MvcResult result = mvc.perform(get("/api/languages.json"))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn();
     }
 
@@ -67,11 +69,16 @@ public class LanguageControllerTest {
     @Test
     public void testSave() throws Exception {
         log.info("save");
-        Language request = null;
-        MvcResult result = mvc.perform(post("/api/languages")
-                .content(objectMapper.writeValueAsString(request)).contentType(MediaType.APPLICATION_JSON))
+        Language language = Language.builder()
+                .name("mock language")
+                .sourceExtension("tmp")
+                .executableExtension("dummy")
+                .description("test description")
+                .build();
+        MvcResult result = mvc.perform(post("/api/languages.json")
+                .content(objectMapper.writeValueAsString(language)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isNoContent())
                 .andReturn();
     }
 
@@ -84,9 +91,10 @@ public class LanguageControllerTest {
     public void testFindOne() throws Exception {
         log.info("findOne");
         long id = 0;
-        MvcResult result = mvc.perform(get("/api/languages/{id}", id))
+        MvcResult result = mvc.perform(get("/api/languages/{id}.json", id))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn();
     }
 
@@ -99,11 +107,15 @@ public class LanguageControllerTest {
     public void testUpdate() throws Exception {
         log.info("update");
         long id = 0;
-        Language request = null;
-        MvcResult result = mvc.perform(put("/api/languages/{id}", id)
+        Language request = Language.builder()
+                .name("mock language")
+                .sourceExtension("tmp")
+                .executableExtension("dummy")
+                .build();
+        MvcResult result = mvc.perform(put("/api/languages/{id}.json", id)
                 .content(objectMapper.writeValueAsString(request)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isNoContent())
                 .andReturn();
     }
 
@@ -116,9 +128,9 @@ public class LanguageControllerTest {
     public void testDelete() throws Exception {
         log.info("delete");
         long id = 0;
-        MvcResult result = mvc.perform(delete("/api/languages/{id}", id))
+        MvcResult result = mvc.perform(delete("/api/languages/{id}.json", id))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isNoContent())
                 .andReturn();
     }
 

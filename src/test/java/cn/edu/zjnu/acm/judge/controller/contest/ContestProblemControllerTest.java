@@ -1,6 +1,7 @@
 package cn.edu.zjnu.acm.judge.controller.contest;
 
 import cn.edu.zjnu.acm.judge.Application;
+import cn.edu.zjnu.acm.judge.service.MockDataService;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -22,7 +24,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringRunner.class)
@@ -35,6 +40,8 @@ public class ContestProblemControllerTest {
     @Autowired
     private WebApplicationContext context;
     private MockMvc mvc;
+    @Autowired
+    private MockDataService mockDataService;
 
     @Before
     public void setUp() {
@@ -49,10 +56,10 @@ public class ContestProblemControllerTest {
     @Test
     public void testProblems() throws Exception {
         log.info("problems");
-        long contestId = 0;
+        long contestId = mockDataService.contest().getId();
         MvcResult result = mvc.perform(get("/contests/{contestId}/problems", contestId))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(redirectedUrl("/showcontest?contest_id=" + contestId))
                 .andReturn();
     }
 
@@ -64,13 +71,15 @@ public class ContestProblemControllerTest {
     @Test
     public void testShowProblem() throws Exception {
         log.info("showProblem");
-        long contestId = 0;
-        long pid = 0;
+        long contestId = mockDataService.contest().getId();
+        long pid = mockDataService.problem(builder -> builder.contests(new long[]{contestId})).getId();
         Locale locale = Locale.getDefault();
-        MvcResult result = mvc.perform(get("/contests/{contestId}/problems/{pid}", contestId, pid)
+        mvc.perform(get("/contests/{contestId}/problems/{pid}", contestId, 1000)
                 .locale(locale))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+                .andExpect(view().name("contests/problem"))
                 .andReturn();
     }
 
@@ -83,11 +92,12 @@ public class ContestProblemControllerTest {
     @Test
     public void testStatus() throws Exception {
         log.info("status");
-        long contestId = 0;
-        int pid = 0;
-        MvcResult result = mvc.perform(get("/contests/{contestId}/problems/{pid}/status", contestId, pid))
+        long contestId = mockDataService.contest().getId();
+        long pid = mockDataService.problem(builder -> builder.contests(new long[]{contestId})).getId();
+        mvc.perform(get("/contests/{contestId}/problems/{pid}/status", contestId, 1000))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andReturn();
     }
 

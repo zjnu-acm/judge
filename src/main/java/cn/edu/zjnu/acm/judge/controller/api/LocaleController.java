@@ -48,8 +48,8 @@ public class LocaleController {
 
     @GetMapping("{id}")
     public DomainLocale findOne(@PathVariable("id") String name,
-            @RequestParam(value = "support", required = false) String support) {
-        return localeService.toDomainLocale(name, support != null);
+            @RequestParam(value = "support", required = false, defaultValue = "false") boolean support) {
+        return localeService.toDomainLocale(name, support);
     }
 
     @GetMapping

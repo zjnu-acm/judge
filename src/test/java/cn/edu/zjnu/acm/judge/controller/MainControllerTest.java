@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -17,7 +18,10 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringRunner.class)
@@ -46,7 +50,8 @@ public class MainControllerTest {
         log.info("index");
         MvcResult result = mvc.perform(get("/"))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isOk())
+                .andExpect(view().name("index"))
                 .andReturn();
     }
 
@@ -60,7 +65,9 @@ public class MainControllerTest {
         log.info("faq");
         MvcResult result = mvc.perform(get("/faq"))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isOk())
+                .andExpect(view().name("faq"))
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andReturn();
     }
 
@@ -74,7 +81,8 @@ public class MainControllerTest {
         log.info("findPassword");
         MvcResult result = mvc.perform(get("/findpassword"))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andReturn();
     }
 
@@ -88,7 +96,8 @@ public class MainControllerTest {
         log.info("registerPage");
         MvcResult result = mvc.perform(get("/registerpage"))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andReturn();
     }
 
@@ -100,9 +109,10 @@ public class MainControllerTest {
     @Test
     public void testUnauthorizedHtml() throws Exception {
         log.info("unauthorizedHtml");
-        MvcResult result = mvc.perform(get("/unauthorized"))
+        MvcResult result = mvc.perform(get("/unauthorized").accept(MediaType.TEXT_HTML))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isFound())
+                .andExpect(redirectedUrl("/login"))
                 .andReturn();
     }
 
@@ -114,9 +124,10 @@ public class MainControllerTest {
     @Test
     public void testUnauthorized() throws Exception {
         log.info("unauthorized");
-        MvcResult result = mvc.perform(get("/unauthorized"))
+        MvcResult result = mvc.perform(get("/unauthorized").accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isUnauthorized())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn();
     }
 

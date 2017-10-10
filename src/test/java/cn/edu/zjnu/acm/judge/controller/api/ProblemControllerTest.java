@@ -19,6 +19,7 @@ import cn.edu.zjnu.acm.judge.Application;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.exception.BusinessCode;
 import cn.edu.zjnu.acm.judge.exception.BusinessException;
+import cn.edu.zjnu.acm.judge.service.MockDataService;
 import cn.edu.zjnu.acm.judge.service.ProblemService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -45,6 +46,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
@@ -67,6 +69,8 @@ public class ProblemControllerTest {
     @Autowired
     private ProblemService problemService;
     private MockMvc mvc;
+    @Autowired
+    private MockDataService mockDataService;
 
     @Before
     public void setUp() {
@@ -82,7 +86,8 @@ public class ProblemControllerTest {
     public void testList() throws Exception {
         mvc.perform(get("/api/problems.json"))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful());
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
     }
 
     /**
@@ -93,25 +98,14 @@ public class ProblemControllerTest {
      */
     @Test
     public void test() throws Exception {
-        Problem problem = Problem.builder()
-                .title("")
-                .description("")
-                .input("")
-                .output("")
-                .sampleInput("")
-                .sampleOutput("")
-                .hint("")
-                .source("")
-                .timeLimit(1000L)
-                .memoryLimit(65536 * 1024L)
-                .contests(new long[]{0})
-                .build();
+        Problem problem = mockDataService.problem(false);
         Long id = objectMapper.readValue(mvc.perform(post("/api/problems.json")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(problem))
         )
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse().getContentAsString(), Problem.class).getId();
         assertNotNull(id);
         assertNotNull(problemService.findOne(id));
@@ -119,17 +113,17 @@ public class ProblemControllerTest {
         assertFalse(problemService.findOne(id).getDisabled());
         mvc.perform(patch("/api/problems/{id}.json", id).content("{\"disabled\":true}").contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful());
+                .andExpect(status().isNoContent());
         assertTrue(problemService.findOne(id).getDisabled());
 
         mvc.perform(patch("/api/problems/{id}.json", id).content("{\"disabled\":false}").contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful());
+                .andExpect(status().isNoContent());
         assertFalse(problemService.findOne(id).getDisabled());
 
         mvc.perform(delete("/api/problems/{id}.json", id))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful());
+                .andExpect(status().isNoContent());
 
         try {
             Problem p = problemService.findOne(id);

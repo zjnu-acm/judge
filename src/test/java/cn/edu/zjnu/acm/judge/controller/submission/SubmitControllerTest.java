@@ -1,10 +1,13 @@
 package cn.edu.zjnu.acm.judge.controller.submission;
 
 import cn.edu.zjnu.acm.judge.Application;
+import cn.edu.zjnu.acm.judge.service.MockDataService;
 import java.util.Objects;
+import javax.servlet.Filter;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +21,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+@Ignore
 @RunWith(SpringRunner.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
@@ -33,10 +39,14 @@ public class SubmitControllerTest {
     @Autowired
     private WebApplicationContext context;
     private MockMvc mvc;
+    @Autowired
+    private MockDataService mockDataService;
+    @Autowired
+    private Filter springSecurityFilterChain;
 
     @Before
     public void setUp() {
-        mvc = webAppContextSetup(context).build();
+        mvc = webAppContextSetup(context).addFilter(springSecurityFilterChain).build();
     }
 
     /**
@@ -52,13 +62,15 @@ public class SubmitControllerTest {
         long problem_id = 0;
         String source = "";
         Long contest_id = null;
-        MvcResult result = mvc.perform(post("/submit")
+        String userId = mockDataService.user().getId();
+        MvcResult result = mvc.perform(post("/submit").with(user(userId))
                 .param("language", Integer.toString(language))
                 .param("problem_id", Long.toString(problem_id))
                 .param("source", source)
                 .param("contest_id", Objects.toString(contest_id, "")))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isFound())
+                .andExpect(redirectedUrl("/status"))
                 .andReturn();
     }
 

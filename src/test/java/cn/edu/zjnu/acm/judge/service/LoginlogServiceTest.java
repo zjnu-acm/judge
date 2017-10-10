@@ -18,12 +18,8 @@ package cn.edu.zjnu.acm.judge.service;
 import cn.edu.zjnu.acm.judge.Application;
 import cn.edu.zjnu.acm.judge.domain.LoginLog;
 import java.util.UUID;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,17 +41,9 @@ public class LoginlogServiceTest {
 
     @Autowired
     private LoginlogService loginlogService;
-    private ExecutorService executorService;
-
-    @Before
-    public void setUp() {
-        executorService = Executors.newFixedThreadPool(100);
-    }
 
     @After
     public void tearDown() throws InterruptedException {
-        executorService.shutdown();
-        executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
         loginlogService.destroy();
         loginlogService.await();
     }
@@ -70,7 +58,7 @@ public class LoginlogServiceTest {
         log.info("save");
         for (int i = 0; i < 10000; ++i) {
             LoginLog loginlog = LoginLog.builder().user(uuid()).password(uuid()).ip("127.0.0.1").build();
-            executorService.submit(() -> loginlogService.save(loginlog));
+            loginlogService.save(loginlog);
         }
         log.info("finish");
     }

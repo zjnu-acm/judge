@@ -16,14 +16,15 @@
 package cn.edu.zjnu.acm.judge.controller.problem;
 
 import cn.edu.zjnu.acm.judge.Application;
+import cn.edu.zjnu.acm.judge.service.MockDataService;
 import java.util.Locale;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -34,6 +35,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
@@ -51,6 +53,8 @@ public class ShowProblemControllerTest {
     @Autowired
     private WebApplicationContext context;
     private MockMvc mvc;
+    @Autowired
+    private MockDataService mockDataService;
 
     @Before
     public void setUp() {
@@ -62,16 +66,16 @@ public class ShowProblemControllerTest {
      *
      * @see ShowProblemController#showProblem(Model, long, Locale)
      */
-    @Ignore
     @Test
     public void testShowProblem() throws Exception {
         log.info("showProblem");
-        long problem_id = 1001;
+        long problemId = mockDataService.problem().getId();
         Locale locale = Locale.getDefault();
-        MvcResult result = mvc.perform(get("/showproblem").param("problem_id", Long.toString(problem_id))
+        MvcResult result = mvc.perform(get("/showproblem").param("problem_id", Long.toString(problemId))
                 .locale(locale))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andReturn();
     }
 

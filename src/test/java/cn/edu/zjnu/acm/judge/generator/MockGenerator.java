@@ -407,7 +407,7 @@ public class MockGenerator {
         testClass.addStaticImport("org.springframework.test.web.servlet.result.MockMvcResultHandlers.print");
         out.println(")");
         out.println("\t\t\t.andDo(print())");
-        out.println("\t\t\t.andExpect(status().is2xxSuccessful())");
+        out.println("\t\t\t.andExpect(status().isOk())");
         out.println("\t\t\t.andReturn();");
         out.println("}");
         testClass.addMethod(sw.toString());

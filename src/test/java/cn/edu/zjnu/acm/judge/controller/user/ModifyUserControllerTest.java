@@ -1,12 +1,16 @@
 package cn.edu.zjnu.acm.judge.controller.user;
 
 import cn.edu.zjnu.acm.judge.Application;
+import cn.edu.zjnu.acm.judge.domain.User;
+import cn.edu.zjnu.acm.judge.service.MockDataService;
+import javax.servlet.Filter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -16,10 +20,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringRunner.class)
@@ -32,10 +39,14 @@ public class ModifyUserControllerTest {
     @Autowired
     private WebApplicationContext context;
     private MockMvc mvc;
+    @Autowired
+    private MockDataService mockDataService;
+    @Autowired
+    private Filter springSecurityFilterChain;
 
     @Before
     public void setUp() {
-        mvc = webAppContextSetup(context).build();
+        mvc = webAppContextSetup(context).addFilter(springSecurityFilterChain).build();
     }
 
     /**
@@ -46,9 +57,11 @@ public class ModifyUserControllerTest {
     @Test
     public void testUpdatePage() throws Exception {
         log.info("updatePage");
-        MvcResult result = mvc.perform(get("/modifyuserpage"))
+        String userId = mockDataService.user().getId();
+        MvcResult result = mvc.perform(get("/modifyuserpage").with(user(userId)))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andReturn();
     }
 
@@ -59,13 +72,15 @@ public class ModifyUserControllerTest {
     @Test
     public void testUpdate() throws Exception {
         log.info("update");
-        String oldPassword = "";
-        String newPassword = "";
-        String rptPassword = "";
+        User user = mockDataService.user();
+        String userId = user.getId();
+        String oldPassword = user.getPassword();
+        String newPassword = ""; // at least 6 characters or empty
+        String rptPassword = newPassword;
         String email = "";
         String nick = "";
         String school = "";
-        MvcResult result = mvc.perform(post("/modifyuser")
+        MvcResult result = mvc.perform(post("/modifyuser").with(user(userId))
                 .param("oldPassword", oldPassword)
                 .param("newPassword", newPassword)
                 .param("rptPassword", rptPassword)
@@ -73,7 +88,9 @@ public class ModifyUserControllerTest {
                 .param("nick", nick)
                 .param("school", school))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+                .andExpect(view().name("modifyusersuccess"))
                 .andReturn();
     }
 

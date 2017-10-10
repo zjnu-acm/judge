@@ -50,12 +50,12 @@ public class CKFinderTest {
     @Autowired
     private CKFinderProperties properties;
     @Autowired
-    private Filter[] filters;
+    private Filter springSecurityFilterChain;
 
     @Test
     public void test() throws Exception {
-        log.info("filters: {}", (Object) filters);
-        MockMvc mvc = webAppContextSetup(context).addFilters(filters).build();
+        log.info("filters: {}", springSecurityFilterChain);
+        MockMvc mvc = webAppContextSetup(context).addFilters(springSecurityFilterChain).build();
         String[] path = properties.getServlet().getPath();
         for (String string : path) {
             mvc.perform(get(string))

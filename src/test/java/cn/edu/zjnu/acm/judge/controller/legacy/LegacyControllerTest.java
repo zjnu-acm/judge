@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -16,6 +17,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
@@ -43,10 +46,10 @@ public class LegacyControllerTest {
     @Test
     public void testContestStanding() throws Exception {
         log.info("contestStanding");
-        long contest_id = 0;
-        MvcResult result = mvc.perform(get("/conteststanding").param("contest_id", Long.toString(contest_id)))
+        long contestId = 0;
+        MvcResult result = mvc.perform(get("/conteststanding").param("contest_id", Long.toString(contestId)))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(forwardedUrl("/contests/" + contestId + "/standing"))
                 .andReturn();
     }
 
@@ -60,7 +63,8 @@ public class LegacyControllerTest {
         log.info("ga");
         MvcResult result = mvc.perform(get("/ga"))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andReturn();
     }
 
@@ -74,7 +78,8 @@ public class LegacyControllerTest {
         log.info("nav");
         MvcResult result = mvc.perform(get("/nav"))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andReturn();
     }
 
@@ -88,7 +93,8 @@ public class LegacyControllerTest {
         log.info("footer");
         MvcResult result = mvc.perform(get("/footer"))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andReturn();
     }
 
