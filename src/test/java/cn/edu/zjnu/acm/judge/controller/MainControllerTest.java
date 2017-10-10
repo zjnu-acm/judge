@@ -38,7 +38,8 @@ public class MainControllerTest {
 
     /**
      * Test of index method, of class MainController.
-     * {@link MainController#index()}
+     *
+     * @see MainController#index()
      */
     @Test
     public void testIndex() throws Exception {
@@ -51,7 +52,8 @@ public class MainControllerTest {
 
     /**
      * Test of faq method, of class MainController.
-     * {@link MainController#faq()}
+     *
+     * @see MainController#faq()
      */
     @Test
     public void testFaq() throws Exception {
@@ -64,7 +66,8 @@ public class MainControllerTest {
 
     /**
      * Test of findPassword method, of class MainController.
-     * {@link MainController#findPassword()}
+     *
+     * @see MainController#findPassword()
      */
     @Test
     public void testFindPassword() throws Exception {
@@ -77,7 +80,8 @@ public class MainControllerTest {
 
     /**
      * Test of registerPage method, of class MainController.
-     * {@link MainController#registerPage()}
+     *
+     * @see MainController#registerPage()
      */
     @Test
     public void testRegisterPage() throws Exception {
@@ -90,7 +94,8 @@ public class MainControllerTest {
 
     /**
      * Test of unauthorizedHtml method, of class MainController.
-     * {@link MainController#unauthorizedHtml(HttpServletRequest)}
+     *
+     * @see MainController#unauthorizedHtml(HttpServletRequest)
      */
     @Test
     public void testUnauthorizedHtml() throws Exception {
@@ -103,7 +108,8 @@ public class MainControllerTest {
 
     /**
      * Test of unauthorized method, of class MainController.
-     * {@link MainController#unauthorized()}
+     *
+     * @see MainController#unauthorized()
      */
     @Test
     public void testUnauthorized() throws Exception {

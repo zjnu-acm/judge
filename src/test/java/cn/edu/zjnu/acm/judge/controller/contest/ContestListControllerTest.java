@@ -39,7 +39,8 @@ public class ContestListControllerTest {
 
     /**
      * Test of contests method, of class ContestListController.
-     * {@link ContestListController#contests(Model, RedirectAttributes)}
+     *
+     * @see ContestListController#contests(Model, RedirectAttributes)
      */
     @Test
     public void testContests() throws Exception {
@@ -52,7 +53,8 @@ public class ContestListControllerTest {
 
     /**
      * Test of scheduledContests method, of class ContestListController.
-     * {@link ContestListController#scheduledContests(Model, RedirectAttributes)}
+     *
+     * @see ContestListController#scheduledContests(Model, RedirectAttributes)
      */
     @Test
     public void testScheduledContests() throws Exception {
@@ -65,7 +67,8 @@ public class ContestListControllerTest {
 
     /**
      * Test of pastContests method, of class ContestListController.
-     * {@link ContestListController#pastContests(Model, RedirectAttributes)}
+     *
+     * @see ContestListController#pastContests(Model, RedirectAttributes)
      */
     @Test
     public void testPastContests() throws Exception {
@@ -78,7 +81,8 @@ public class ContestListControllerTest {
 
     /**
      * Test of currentContests method, of class ContestListController.
-     * {@link ContestListController#currentContests(Model, RedirectAttributes)}
+     *
+     * @see ContestListController#currentContests(Model, RedirectAttributes)
      */
     @Test
     public void testCurrentContests() throws Exception {

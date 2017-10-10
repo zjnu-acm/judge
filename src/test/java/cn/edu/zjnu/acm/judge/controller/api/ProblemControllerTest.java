@@ -75,7 +75,8 @@ public class ProblemControllerTest {
 
     /**
      * Test of list method, of class ProblemController.
-     * {@link ProblemController#list(ProblemForm, Pageable, Locale)}
+     *
+     * @see ProblemController#list(ProblemForm, Pageable, Locale)
      */
     @Test
     public void testList() throws Exception {
@@ -85,10 +86,10 @@ public class ProblemControllerTest {
     }
 
     /**
-     * {@link ProblemController#save(Problem)}
-     * {@link ProblemController#findOne(long, String)}
-     * {@link ProblemController#update(long, Problem, String)}
-     * {@link ProblemController#delete(long)}
+     * @see ProblemController#save(Problem)
+     * @see ProblemController#findOne(long, String)
+     * @see ProblemController#update(long, Problem, String)
+     * @see ProblemController#delete(long)
      */
     @Test
     public void test() throws Exception {

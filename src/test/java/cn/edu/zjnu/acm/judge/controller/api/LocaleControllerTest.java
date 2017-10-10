@@ -40,7 +40,8 @@ public class LocaleControllerTest {
 
     /**
      * Test of current method, of class LocaleController.
-     * {@link LocaleController#current(Locale)}
+     *
+     * @see LocaleController#current(Locale)
      */
     @Test
     public void testCurrent() throws Exception {
@@ -55,7 +56,8 @@ public class LocaleControllerTest {
 
     /**
      * Test of findOne method, of class LocaleController.
-     * {@link LocaleController#findOne(String, String)}
+     *
+     * @see LocaleController#findOne(String, String)
      */
     @Test
     public void testFindOne() throws Exception {
@@ -70,7 +72,8 @@ public class LocaleControllerTest {
 
     /**
      * Test of findAll method, of class LocaleController.
-     * {@link LocaleController#findAll()}
+     *
+     * @see LocaleController#findAll()
      */
     @Test
     public void testFindAll() throws Exception {
@@ -83,7 +86,8 @@ public class LocaleControllerTest {
 
     /**
      * Test of supported method, of class LocaleController.
-     * {@link LocaleController#supported(boolean)}
+     *
+     * @see LocaleController#supported(boolean)
      */
     @Test
     public void testSupported() throws Exception {

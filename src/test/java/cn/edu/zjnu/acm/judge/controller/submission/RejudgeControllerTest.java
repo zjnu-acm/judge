@@ -37,7 +37,8 @@ public class RejudgeControllerTest {
 
     /**
      * Test of rejudgeSolution method, of class RejudgeController.
-     * {@link RejudgeController#rejudgeSolution(long)}
+     *
+     * @see RejudgeController#rejudgeSolution(long)
      */
     @Test
     public void testRejudgeSolution() throws Exception {
@@ -51,7 +52,8 @@ public class RejudgeControllerTest {
 
     /**
      * Test of rejudgeProblem method, of class RejudgeController.
-     * {@link RejudgeController#rejudgeProblem(long)}
+     *
+     * @see RejudgeController#rejudgeProblem(long)
      */
     @Test
     public void testRejudgeProblem() throws Exception {

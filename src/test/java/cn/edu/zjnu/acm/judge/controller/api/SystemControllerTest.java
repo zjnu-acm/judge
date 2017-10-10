@@ -56,7 +56,8 @@ public class SystemControllerTest {
 
     /**
      * Test of time method, of class SystemController.
-     * {@link SystemController#time()}
+     *
+     * @see SystemController#time()
      */
     @Test
     public void testTime() throws Exception {

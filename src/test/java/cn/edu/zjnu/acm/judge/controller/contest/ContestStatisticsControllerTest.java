@@ -39,7 +39,9 @@ public class ContestStatisticsControllerTest {
 
     /**
      * Test of contestStatistics method, of class ContestStatisticsController.
-     * {@link ContestStatisticsController#contestStatistics(HttpServletRequest, Model, long)}
+     *
+     * @see ContestStatisticsController#contestStatistics(HttpServletRequest,
+     * Model, long)
      */
     @Test
     public void testContestStatistics() throws Exception {

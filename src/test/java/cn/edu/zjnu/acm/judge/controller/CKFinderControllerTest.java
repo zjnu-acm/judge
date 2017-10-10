@@ -37,7 +37,8 @@ public class CKFinderControllerTest {
 
     /**
      * Test of ckfinder method, of class CKFinderController.
-     * {@link CKFinderController#ckfinder(String)}
+     *
+     * @see CKFinderController#ckfinder(String)
      */
     @Test
     public void testCkfinder() throws Exception {

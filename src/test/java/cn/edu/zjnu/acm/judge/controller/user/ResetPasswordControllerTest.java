@@ -41,7 +41,8 @@ public class ResetPasswordControllerTest {
 
     /**
      * Test of doGet method, of class ResetPasswordController.
-     * {@link ResetPasswordController#doGet(HttpServletRequest)}
+     *
+     * @see ResetPasswordController#doGet(HttpServletRequest)
      */
     @Test
     public void testDoGet() throws Exception {
@@ -54,7 +55,9 @@ public class ResetPasswordControllerTest {
 
     /**
      * Test of doPost method, of class ResetPasswordController.
-     * {@link ResetPasswordController#doPost(HttpServletRequest, HttpServletResponse, String, String, String, Locale)}
+     *
+     * @see ResetPasswordController#doPost(HttpServletRequest,
+     * HttpServletResponse, String, String, String, Locale)
      */
     @Test
     public void testDoPost() throws Exception {
@@ -75,7 +78,9 @@ public class ResetPasswordControllerTest {
 
     /**
      * Test of changePassword method, of class ResetPasswordController.
-     * {@link ResetPasswordController#changePassword(HttpServletRequest, HttpServletResponse)}
+     *
+     * @see ResetPasswordController#changePassword(HttpServletRequest,
+     * HttpServletResponse)
      */
     @Test
     public void testChangePassword() throws Exception {

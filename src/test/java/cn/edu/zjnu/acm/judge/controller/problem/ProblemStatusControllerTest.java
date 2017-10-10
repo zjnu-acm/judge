@@ -41,7 +41,8 @@ public class ProblemStatusControllerTest {
 
     /**
      * Test of gotoProblem method, of class ProblemStatusController.
-     * {@link ProblemStatusController#gotoProblem(String, RedirectAttributes)}
+     *
+     * @see ProblemStatusController#gotoProblem(String, RedirectAttributes)
      */
     @Test
     public void testGotoProblem() throws Exception {
@@ -55,7 +56,9 @@ public class ProblemStatusControllerTest {
 
     /**
      * Test of status method, of class ProblemStatusController.
-     * {@link ProblemStatusController#status(HttpServletRequest, long, Pageable, Authentication)}
+     *
+     * @see ProblemStatusController#status(HttpServletRequest, long, Pageable,
+     * Authentication)
      */
     @Test
     public void testStatus() throws Exception {

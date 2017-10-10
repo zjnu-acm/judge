@@ -248,8 +248,9 @@ public class MockGenerator {
         for (Class<?> type : method.getParameterTypes()) {
             testClass.addImport(type);
         }
-        out.println(" * {@link " + key.getSimpleName() + "#" + method.getName()
-                + Arrays.stream(method.getParameterTypes()).map(Class::getSimpleName).collect(Collectors.joining(", ", "(", ")")) + "}");
+        out.println(" *");
+        out.println(" * @see " + key.getSimpleName() + "#" + method.getName()
+                + Arrays.stream(method.getParameterTypes()).map(Class::getSimpleName).collect(Collectors.joining(", ", "(", ")")));
         out.println(" */");
         testClass.addImport(Test.class);
         out.println("@Test");

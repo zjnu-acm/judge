@@ -38,8 +38,12 @@ public class ShowSubmissionDetailsControllerTest {
     }
 
     /**
-     * Test of showSolutionDetails method, of class ShowSubmissionDetailsController.
-     * {@link ShowSubmissionDetailsController#showSolutionDetails(HttpServletRequest, long, Authentication)}
+     * Test of showSolutionDetails method, of class
+     * ShowSubmissionDetailsController.
+     *
+     * @see
+     * ShowSubmissionDetailsController#showSolutionDetails(HttpServletRequest,
+     * long, Authentication)
      */
     @Test
     public void testShowSolutionDetails() throws Exception {

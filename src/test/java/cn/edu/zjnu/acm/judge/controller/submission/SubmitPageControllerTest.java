@@ -40,7 +40,8 @@ public class SubmitPageControllerTest {
 
     /**
      * Test of submitPage method, of class SubmitPageController.
-     * {@link SubmitPageController#submitPage(Model, Long, Long, Authentication)}
+     *
+     * @see SubmitPageController#submitPage(Model, Long, Long, Authentication)
      */
     @Test
     public void testSubmitPage() throws Exception {

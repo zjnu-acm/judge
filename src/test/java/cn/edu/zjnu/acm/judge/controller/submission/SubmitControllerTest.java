@@ -41,7 +41,9 @@ public class SubmitControllerTest {
 
     /**
      * Test of submit method, of class SubmitController.
-     * {@link SubmitController#submit(HttpServletRequest, int, long, String, Long, RedirectAttributes, Authentication)}
+     *
+     * @see SubmitController#submit(HttpServletRequest, int, long, String, Long,
+     * RedirectAttributes, Authentication)
      */
     @Test
     public void testSubmit() throws Exception {

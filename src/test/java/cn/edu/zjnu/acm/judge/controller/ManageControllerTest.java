@@ -42,7 +42,8 @@ public class ManageControllerTest {
 
     /**
      * Test of manage method, of class ManageController.
-     * {@link ManageController#manage()}
+     *
+     * @see ManageController#manage()
      */
     @Test
     public void testManage() throws Exception {
@@ -55,7 +56,8 @@ public class ManageControllerTest {
 
     /**
      * Test of index method, of class ManageController.
-     * {@link ManageController#index(RedirectAttributes, Map)}
+     *
+     * @see ManageController#index(RedirectAttributes, Map)
      */
     @Test
     public void testIndex() throws Exception {

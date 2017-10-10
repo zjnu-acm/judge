@@ -47,7 +47,8 @@ public class MiscControllerTest {
 
     /**
      * Test of fix method, of class MiscController.
-     * {@link MiscController#fix()}
+     *
+     * @see MiscController#fix()
      */
     @Test
     public void testFix() throws Exception {
@@ -60,7 +61,8 @@ public class MiscControllerTest {
 
     /**
      * Test of setSystemInfo method, of class MiscController.
-     * {@link MiscController#setSystemInfo(SystemInfoForm)}
+     *
+     * @see MiscController#setSystemInfo(SystemInfoForm)
      */
     @Test
     public void testSetSystemInfo() throws Exception {
@@ -75,7 +77,8 @@ public class MiscControllerTest {
 
     /**
      * Test of systemInfo method, of class MiscController.
-     * {@link MiscController#systemInfo()}
+     *
+     * @see MiscController#systemInfo()
      */
     @Test
     public void testSystemInfo() throws Exception {
@@ -88,7 +91,8 @@ public class MiscControllerTest {
 
     /**
      * Test of contestOnly method, of class MiscController.
-     * {@link MiscController#contestOnly()}
+     *
+     * @see MiscController#contestOnly()
      */
     @Test
     public void testContestOnly() throws Exception {
@@ -101,7 +105,8 @@ public class MiscControllerTest {
 
     /**
      * Test of setContestOnly method, of class MiscController.
-     * {@link MiscController#setContestOnly(ContestOnlyForm)}
+     *
+     * @see MiscController#setContestOnly(ContestOnlyForm)
      */
     @Test
     public void testSetContestOnly() throws Exception {

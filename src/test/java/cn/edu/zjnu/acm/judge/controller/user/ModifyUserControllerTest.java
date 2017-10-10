@@ -40,7 +40,8 @@ public class ModifyUserControllerTest {
 
     /**
      * Test of updatePage method, of class ModifyUserController.
-     * {@link ModifyUserController#updatePage(Model, Authentication)}
+     *
+     * @see ModifyUserController#updatePage(Model, Authentication)
      */
     @Test
     public void testUpdatePage() throws Exception {

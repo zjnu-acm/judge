@@ -40,7 +40,9 @@ public class ContestProblemListControllerTest {
 
     /**
      * Test of showContest method, of class ContestProblemListController.
-     * {@link ContestProblemListController#showContest(Model, long, Locale, Authentication)}
+     *
+     * @see ContestProblemListController#showContest(Model, long, Locale,
+     * Authentication)
      */
     @Test
     public void testShowContest() throws Exception {

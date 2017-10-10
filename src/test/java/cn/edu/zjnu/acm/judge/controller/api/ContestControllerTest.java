@@ -50,7 +50,8 @@ public class ContestControllerTest {
 
     /**
      * Test of save method, of class ContestController.
-     * {@link ContestController#save(Contest)}
+     *
+     * @see ContestController#save(Contest)
      */
     @Test
     public void testSave() throws Exception {
@@ -65,7 +66,8 @@ public class ContestControllerTest {
 
     /**
      * Test of delete method, of class ContestController.
-     * {@link ContestController#delete(long)}
+     *
+     * @see ContestController#delete(long)
      */
     @Test
     public void testDelete() throws Exception {
@@ -79,7 +81,8 @@ public class ContestControllerTest {
 
     /**
      * Test of list method, of class ContestController.
-     * {@link ContestController#list(ContestForm)}
+     *
+     * @see ContestController#list(ContestForm)
      */
     @Test
     public void testList() throws Exception {
@@ -98,7 +101,8 @@ public class ContestControllerTest {
 
     /**
      * Test of findOne method, of class ContestController.
-     * {@link ContestController#findOne(long, Locale)}
+     *
+     * @see ContestController#findOne(long, Locale)
      */
     @Test
     public void testFindOne() throws Exception {
@@ -114,7 +118,8 @@ public class ContestControllerTest {
 
     /**
      * Test of update method, of class ContestController.
-     * {@link ContestController#update(long, Contest)}
+     *
+     * @see ContestController#update(long, Contest)
      */
     @Test
     public void testUpdate() throws Exception {
@@ -130,7 +135,8 @@ public class ContestControllerTest {
 
     /**
      * Test of submittedProblems method, of class ContestController.
-     * {@link ContestController#submittedProblems(long)}
+     *
+     * @see ContestController#submittedProblems(long)
      */
     @Test
     public void testSubmittedProblems() throws Exception {
@@ -144,7 +150,8 @@ public class ContestControllerTest {
 
     /**
      * Test of standing method, of class ContestController.
-     * {@link ContestController#standing(long)}
+     *
+     * @see ContestController#standing(long)
      */
     @Test
     public void testStanding() throws Exception {

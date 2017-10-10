@@ -38,7 +38,8 @@ public class RecentRankControllerTest {
 
     /**
      * Test of recentRank method, of class RecentRankController.
-     * {@link RecentRankController#recentRank(Model, int)}
+     *
+     * @see RecentRankController#recentRank(Model, int)
      */
     @Test
     public void testRecentRank() throws Exception {

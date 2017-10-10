@@ -38,7 +38,8 @@ public class LoginControllerTest {
 
     /**
      * Test of login method, of class LoginController.
-     * {@link LoginController#login(Model, String, String, String)}
+     *
+     * @see LoginController#login(Model, String, String, String)
      */
     @Test
     public void testLogin() throws Exception {

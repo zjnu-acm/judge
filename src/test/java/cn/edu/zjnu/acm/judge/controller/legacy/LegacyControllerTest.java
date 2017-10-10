@@ -37,7 +37,8 @@ public class LegacyControllerTest {
 
     /**
      * Test of contestStanding method, of class LegacyController.
-     * {@link LegacyController#contestStanding(long)}
+     *
+     * @see LegacyController#contestStanding(long)
      */
     @Test
     public void testContestStanding() throws Exception {
@@ -51,7 +52,8 @@ public class LegacyControllerTest {
 
     /**
      * Test of ga method, of class LegacyController.
-     * {@link LegacyController#ga()}
+     *
+     * @see LegacyController#ga()
      */
     @Test
     public void testGa() throws Exception {
@@ -64,7 +66,8 @@ public class LegacyControllerTest {
 
     /**
      * Test of nav method, of class LegacyController.
-     * {@link LegacyController#nav()}
+     *
+     * @see LegacyController#nav()
      */
     @Test
     public void testNav() throws Exception {
@@ -77,7 +80,8 @@ public class LegacyControllerTest {
 
     /**
      * Test of footer method, of class LegacyController.
-     * {@link LegacyController#footer()}
+     *
+     * @see LegacyController#footer()
      */
     @Test
     public void testFooter() throws Exception {

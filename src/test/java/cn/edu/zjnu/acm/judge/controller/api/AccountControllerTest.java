@@ -74,7 +74,8 @@ public class AccountControllerTest {
 
     /**
      * Test of findAll method, of class AccountController.
-     * {@link AccountController#findAll(AccountForm, Pageable)}
+     *
+     * @see AccountController#findAll(AccountForm, Pageable)
      */
     @Test
     public void testFindAll() throws Exception {
@@ -95,7 +96,8 @@ public class AccountControllerTest {
 
     /**
      * Test of update method, of class AccountController.
-     * {@link AccountController#update(String, User)}
+     *
+     * @see AccountController#update(String, User)
      */
     @Test
     public void testUpdate() throws Exception {
@@ -111,7 +113,8 @@ public class AccountControllerTest {
 
     /**
      * Test of updatePassword method, of class AccountController.
-     * {@link AccountController#updatePassword(String, UserPasswordForm)}
+     *
+     * @see AccountController#updatePassword(String, UserPasswordForm)
      */
     @Test
     public void testUpdatePassword() throws Exception {
@@ -127,8 +130,9 @@ public class AccountControllerTest {
 
     /**
      * Test of findAllXlsx method, of class AccountController.
-     * {@link AccountController#findAllXlsx(AccountForm, Pageable, Locale)}
-     * {@link AccountController#parseExcel(MultipartFile, Locale)}
+     *
+     * @see AccountController#findAllXlsx(AccountForm, Pageable, Locale)
+     * @see AccountController#parseExcel(MultipartFile, Locale)
      */
     @Test
     public void testFindAllXlsx() throws Exception {
@@ -138,8 +142,9 @@ public class AccountControllerTest {
 
     /**
      * Test of findAllXls method, of class AccountController.
-     * {@link AccountController#findAllXls(AccountForm, Pageable, Locale)}
-     * {@link AccountController#parseExcel(MultipartFile, Locale)}
+     *
+     * @see AccountController#findAllXls(AccountForm, Pageable, Locale)
+     * @see AccountController#parseExcel(MultipartFile, Locale)
      */
     @Test
     public void testFindAllXls() throws Exception {
@@ -158,7 +163,8 @@ public class AccountControllerTest {
 
     /**
      * Test of importUsers method, of class AccountController.
-     * {@link AccountController#importUsers(AccountImportForm)}
+     *
+     * @see AccountController#importUsers(AccountImportForm)
      */
     @Test
     public void testImportUsers() throws Exception {

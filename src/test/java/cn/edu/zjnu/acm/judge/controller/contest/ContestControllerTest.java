@@ -61,7 +61,8 @@ public class ContestControllerTest {
 
     /**
      * Test of standingHtml method, of class ContestController.
-     * {@link ContestController#standingHtml(long, Locale)}
+     *
+     * @see ContestController#standingHtml(long, Locale)
      */
     @Test
     public void testStandingHtml() throws Exception {
@@ -77,7 +78,8 @@ public class ContestControllerTest {
 
     /**
      * Test of index method, of class ContestController.
-     * {@link ContestController#index(long, RedirectAttributes)}
+     *
+     * @see ContestController#index(long, RedirectAttributes)
      */
     @Test
     public void testIndex() throws Exception {

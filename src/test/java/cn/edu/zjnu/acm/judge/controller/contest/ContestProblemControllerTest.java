@@ -43,7 +43,8 @@ public class ContestProblemControllerTest {
 
     /**
      * Test of problems method, of class ContestProblemController.
-     * {@link ContestProblemController#problems(long, RedirectAttributes)}
+     *
+     * @see ContestProblemController#problems(long, RedirectAttributes)
      */
     @Test
     public void testProblems() throws Exception {
@@ -57,7 +58,8 @@ public class ContestProblemControllerTest {
 
     /**
      * Test of showProblem method, of class ContestProblemController.
-     * {@link ContestProblemController#showProblem(long, long, Model, Locale)}
+     *
+     * @see ContestProblemController#showProblem(long, long, Model, Locale)
      */
     @Test
     public void testShowProblem() throws Exception {
@@ -74,7 +76,9 @@ public class ContestProblemControllerTest {
 
     /**
      * Test of status method, of class ContestProblemController.
-     * {@link ContestProblemController#status(long, int, Pageable, Model, Authentication, HttpServletRequest)}
+     *
+     * @see ContestProblemController#status(long, int, Pageable, Model,
+     * Authentication, HttpServletRequest)
      */
     @Test
     public void testStatus() throws Exception {

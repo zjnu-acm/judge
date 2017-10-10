@@ -59,7 +59,8 @@ public class UserStatusControllerTest {
 
     /**
      * Test of userStatus method, of class UserStatusController.
-     * {@link UserStatusController#userStatus(Model, int, String)}
+     *
+     * @see UserStatusController#userStatus(Model, int, String)
      */
     @Test
     public void testUserStatus() throws Exception {

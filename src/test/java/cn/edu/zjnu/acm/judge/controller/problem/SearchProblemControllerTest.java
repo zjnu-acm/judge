@@ -44,7 +44,9 @@ public class SearchProblemControllerTest {
 
     /**
      * Test of searchProblem method, of class SearchProblemController.
-     * {@link SearchProblemController#searchProblem(ProblemForm, Model, Locale, Authentication, Pageable, HttpServletRequest)}
+     *
+     * @see SearchProblemController#searchProblem(ProblemForm, Model, Locale,
+     * Authentication, Pageable, HttpServletRequest)
      */
     @Test
     public void testSearchProblem() throws Exception {

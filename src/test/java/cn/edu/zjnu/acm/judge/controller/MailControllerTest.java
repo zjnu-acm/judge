@@ -40,7 +40,8 @@ public class MailControllerTest {
 
     /**
      * Test of delete method, of class MailController.
-     * {@link MailController#delete(long, Authentication)}
+     *
+     * @see MailController#delete(long, Authentication)
      */
     @Test
     public void testDelete() throws Exception {
@@ -54,7 +55,8 @@ public class MailControllerTest {
 
     /**
      * Test of mail method, of class MailController.
-     * {@link MailController#mail(Model, int, long, Authentication)}
+     *
+     * @see MailController#mail(Model, int, long, Authentication)
      */
     @Test
     public void testMail() throws Exception {
@@ -71,7 +73,8 @@ public class MailControllerTest {
 
     /**
      * Test of send method, of class MailController.
-     * {@link MailController#send(String, String, String, Authentication)}
+     *
+     * @see MailController#send(String, String, String, Authentication)
      */
     @Test
     public void testSend() throws Exception {
@@ -90,7 +93,8 @@ public class MailControllerTest {
 
     /**
      * Test of sendPage method, of class MailController.
-     * {@link MailController#sendPage(Model, long, String, Authentication)}
+     *
+     * @see MailController#sendPage(Model, long, String, Authentication)
      */
     @Test
     public void testSendPage() throws Exception {
@@ -107,7 +111,8 @@ public class MailControllerTest {
 
     /**
      * Test of showMail method, of class MailController.
-     * {@link MailController#showMail(Model, long, Authentication)}
+     *
+     * @see MailController#showMail(Model, long, Authentication)
      */
     @Test
     public void testShowMail() throws Exception {

@@ -38,7 +38,8 @@ public class UserCompareControllerTest {
 
     /**
      * Test of compare method, of class UserCompareController.
-     * {@link UserCompareController#compare(Model, String, String)}
+     *
+     * @see UserCompareController#compare(Model, String, String)
      */
     @Test
     public void testCompare() throws Exception {

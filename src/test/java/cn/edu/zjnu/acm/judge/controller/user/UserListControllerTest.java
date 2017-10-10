@@ -39,7 +39,8 @@ public class UserListControllerTest {
 
     /**
      * Test of userList method, of class UserListController.
-     * {@link UserListController#userList(HttpServletRequest, Pageable)}
+     *
+     * @see UserListController#userList(HttpServletRequest, Pageable)
      */
     @Test
     public void testUserList() throws Exception {

@@ -40,7 +40,9 @@ public class StatusControllerTest {
 
     /**
      * Test of status method, of class StatusController.
-     * {@link StatusController#status(HttpServletRequest, String, Long, int, int, Long, Integer, String, Long, Authentication)}
+     *
+     * @see StatusController#status(HttpServletRequest, String, Long, int, int,
+     * Long, Integer, String, Long, Authentication)
      */
     @Test
     public void testStatus() throws Exception {

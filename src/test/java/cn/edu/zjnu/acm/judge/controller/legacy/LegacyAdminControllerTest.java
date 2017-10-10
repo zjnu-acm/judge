@@ -18,7 +18,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringRunner.class)
@@ -39,7 +38,8 @@ public class LegacyAdminControllerTest {
 
     /**
      * Test of showProblem method, of class LegacyAdminController.
-     * {@link LegacyAdminController#showProblem(long, RedirectAttributes)}
+     *
+     * @see LegacyAdminController#showProblem(long, RedirectAttributes)
      */
     @Test
     public void testShowProblem() throws Exception {
@@ -53,7 +53,8 @@ public class LegacyAdminControllerTest {
 
     /**
      * Test of showContest method, of class LegacyAdminController.
-     * {@link LegacyAdminController#showContest(long, RedirectAttributes)}
+     *
+     * @see LegacyAdminController#showContest(long, RedirectAttributes)
      */
     @Test
     public void testShowContest() throws Exception {

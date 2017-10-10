@@ -44,7 +44,9 @@ public class ProblemListControllerTest {
 
     /**
      * Test of problemList method, of class ProblemListController.
-     * {@link ProblemListController#problemList(ProblemForm, Model, Locale, Authentication, Pageable, HttpServletRequest)}
+     *
+     * @see ProblemListController#problemList(ProblemForm, Model, Locale,
+     * Authentication, Pageable, HttpServletRequest)
      */
     @Test
     public void testProblemList() throws Exception {

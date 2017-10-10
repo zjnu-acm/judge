@@ -61,7 +61,8 @@ public class BBSControllerTest {
 
     /**
      * Test of bbs method, of class BBSController.
-     * {@link BBSController#bbs(Long, int, long)}
+     *
+     * @see BBSController#bbs(Long, int, long)
      */
     @Test
     public void testBbs() throws Exception {
@@ -80,7 +81,8 @@ public class BBSControllerTest {
 
     /**
      * Test of postpage method, of class BBSController.
-     * {@link BBSController#postpage(Model, Long)}
+     *
+     * @see BBSController#postpage(Model, Long)
      */
     @Test
     public void testPostpage() throws Exception {
@@ -94,7 +96,9 @@ public class BBSControllerTest {
 
     /**
      * Test of post method, of class BBSController.
-     * {@link BBSController#post(Long, Long, String, String, RedirectAttributes, Authentication)}
+     *
+     * @see BBSController#post(Long, Long, String, String, RedirectAttributes,
+     * Authentication)
      */
     @Test
     public void testPost() throws Exception {
@@ -115,7 +119,8 @@ public class BBSControllerTest {
 
     /**
      * Test of showMessage method, of class BBSController.
-     * {@link BBSController#showMessage(long)}
+     *
+     * @see BBSController#showMessage(long)
      */
     @Test
     public void testShowMessage() throws Exception {

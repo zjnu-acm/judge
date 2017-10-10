@@ -39,7 +39,9 @@ public class ShowCompileInfoControllerTest {
 
     /**
      * Test of showCompileInfo method, of class ShowCompileInfoController.
-     * {@link ShowCompileInfoController#showCompileInfo(long, Model, Authentication)}
+     *
+     * @see ShowCompileInfoController#showCompileInfo(long, Model,
+     * Authentication)
      */
     @Test
     public void testShowCompileInfo() throws Exception {

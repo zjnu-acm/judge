@@ -47,7 +47,8 @@ public class LanguageControllerTest {
 
     /**
      * Test of findAll method, of class LanguageController.
-     * {@link LanguageController#findAll()}
+     *
+     * @see LanguageController#findAll()
      */
     @Test
     public void testFindAll() throws Exception {
@@ -60,7 +61,8 @@ public class LanguageControllerTest {
 
     /**
      * Test of save method, of class LanguageController.
-     * {@link LanguageController#save(Language)}
+     *
+     * @see LanguageController#save(Language)
      */
     @Test
     public void testSave() throws Exception {
@@ -75,7 +77,8 @@ public class LanguageControllerTest {
 
     /**
      * Test of findOne method, of class LanguageController.
-     * {@link LanguageController#findOne(long)}
+     *
+     * @see LanguageController#findOne(long)
      */
     @Test
     public void testFindOne() throws Exception {
@@ -89,7 +92,8 @@ public class LanguageControllerTest {
 
     /**
      * Test of update method, of class LanguageController.
-     * {@link LanguageController#update(long, Language)}
+     *
+     * @see LanguageController#update(long, Language)
      */
     @Test
     public void testUpdate() throws Exception {
@@ -105,7 +109,8 @@ public class LanguageControllerTest {
 
     /**
      * Test of delete method, of class LanguageController.
-     * {@link LanguageController#delete(long)}
+     *
+     * @see LanguageController#delete(long)
      */
     @Test
     public void testDelete() throws Exception {

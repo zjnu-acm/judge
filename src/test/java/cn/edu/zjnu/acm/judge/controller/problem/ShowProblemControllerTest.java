@@ -59,7 +59,8 @@ public class ShowProblemControllerTest {
 
     /**
      * Test of showProblem method, of class ShowProblemController.
-     * {@link ShowProblemController#showProblem(Model, long, Locale)}
+     *
+     * @see ShowProblemController#showProblem(Model, long, Locale)
      */
     @Ignore
     @Test

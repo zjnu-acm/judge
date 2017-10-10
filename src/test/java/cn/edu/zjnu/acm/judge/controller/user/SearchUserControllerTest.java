@@ -58,7 +58,8 @@ public class SearchUserControllerTest {
 
     /**
      * Test of searchuser method, of class SearchUserController.
-     * {@link SearchUserController#searchuser(Model, String, String, Pageable)}
+     *
+     * @see SearchUserController#searchuser(Model, String, String, Pageable)
      */
     @Test
     public void testSearchuser() throws Exception {
