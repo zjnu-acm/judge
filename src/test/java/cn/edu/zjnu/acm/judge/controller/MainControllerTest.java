@@ -2,6 +2,7 @@ package cn.edu.zjnu.acm.judge.controller;
 
 import cn.edu.zjnu.acm.judge.Application;
 import javax.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringRunner.class)
+@Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
 @WebAppConfiguration
@@ -40,7 +42,7 @@ public class MainControllerTest {
      */
     @Test
     public void testIndex() throws Exception {
-        System.out.println("index");
+        log.info("index");
         MvcResult result = mvc.perform(get("/"))
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful())
@@ -53,7 +55,7 @@ public class MainControllerTest {
      */
     @Test
     public void testFaq() throws Exception {
-        System.out.println("faq");
+        log.info("faq");
         MvcResult result = mvc.perform(get("/faq"))
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful())
@@ -66,7 +68,7 @@ public class MainControllerTest {
      */
     @Test
     public void testFindPassword() throws Exception {
-        System.out.println("findPassword");
+        log.info("findPassword");
         MvcResult result = mvc.perform(get("/findpassword"))
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful())
@@ -79,7 +81,7 @@ public class MainControllerTest {
      */
     @Test
     public void testRegisterPage() throws Exception {
-        System.out.println("registerPage");
+        log.info("registerPage");
         MvcResult result = mvc.perform(get("/registerpage"))
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful())
@@ -92,7 +94,7 @@ public class MainControllerTest {
      */
     @Test
     public void testUnauthorizedHtml() throws Exception {
-        System.out.println("unauthorizedHtml");
+        log.info("unauthorizedHtml");
         MvcResult result = mvc.perform(get("/unauthorized"))
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful())
@@ -105,7 +107,7 @@ public class MainControllerTest {
      */
     @Test
     public void testUnauthorized() throws Exception {
-        System.out.println("unauthorized");
+        log.info("unauthorized");
         MvcResult result = mvc.perform(get("/unauthorized"))
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful())

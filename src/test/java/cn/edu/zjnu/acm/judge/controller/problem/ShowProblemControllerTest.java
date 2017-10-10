@@ -16,6 +16,9 @@
 package cn.edu.zjnu.acm.judge.controller.problem;
 
 import cn.edu.zjnu.acm.judge.Application;
+import java.util.Locale;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +27,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -37,6 +42,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
  * @author zhanhb
  */
 @RunWith(SpringRunner.class)
+@Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
 @WebAppConfiguration
@@ -44,19 +50,32 @@ public class ShowProblemControllerTest {
 
     @Autowired
     private WebApplicationContext context;
+    private MockMvc mvc;
 
+    @Before
+    public void setUp() {
+        mvc = webAppContextSetup(context).build();
+    }
+
+    /**
+     * Test of showProblem method, of class ShowProblemController.
+     * {@link ShowProblemController#showProblem(Model, long, Locale)}
+     */
     @Ignore
     @Test
-    public void testShowproblem() throws Exception {
-        MockMvc mvc = webAppContextSetup(context).build();
-        mvc.perform(get("/showproblem").param("problem_id", "1001"))
-                .andExpect(status().isOk())
-                .andDo(print());
+    public void testShowProblem() throws Exception {
+        log.info("showProblem");
+        long problem_id = 1001;
+        Locale locale = Locale.getDefault();
+        MvcResult result = mvc.perform(get("/showproblem").param("problem_id", Long.toString(problem_id))
+                .locale(locale))
+                .andDo(print())
+                .andExpect(status().is2xxSuccessful())
+                .andReturn();
     }
 
     @Test
     public void testShowproblemNotFound() throws Exception {
-        MockMvc mvc = webAppContextSetup(context).build();
         mvc.perform(get("/showproblem").param("problem_id", "999"))
                 .andExpect(status().isNotFound())
                 .andDo(print());

@@ -1,6 +1,7 @@
 package cn.edu.zjnu.acm.judge.controller.submission;
 
 import cn.edu.zjnu.acm.judge.Application;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringRunner.class)
+@Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
 @WebAppConfiguration
@@ -41,7 +43,7 @@ public class ShowCompileInfoControllerTest {
      */
     @Test
     public void testShowCompileInfo() throws Exception {
-        System.out.println("showCompileInfo");
+        log.info("showCompileInfo");
         long solution_id = 0;
         MvcResult result = mvc.perform(get("/showcompileinfo").param("solution_id", Long.toString(solution_id)))
                 .andDo(print())

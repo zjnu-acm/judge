@@ -36,6 +36,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.javassist.ClassPool;
 import org.apache.ibatis.javassist.CtMethod;
 import org.junit.Before;
@@ -175,6 +176,7 @@ public class MockGenerator {
             value.sort(Comparator.comparing(info -> info.getHandlerMethod().getMethod(), Comparator.comparing(method -> method.getDeclaringClass().getName().replace(".", "/") + "." + method.getName() + ":" + org.springframework.asm.Type.getMethodDescriptor(method), toMethodComparator(key))));
             TestClass testClass = new TestClass(key,
                     "@RunWith(SpringRunner.class)",
+                    "@Slf4j",
                     "@SpringBootTest(classes = " + mainClass.getSimpleName() + ".class)",
                     "@Transactional",
                     "@WebAppConfiguration");
@@ -182,6 +184,7 @@ public class MockGenerator {
             testClass.addImport(mainClass);
             testClass.addImport(RunWith.class);
             testClass.addImport(SpringRunner.class);
+            testClass.addImport(Slf4j.class);
             testClass.addImport(SpringBootTest.class);
             testClass.addImport(Transactional.class);
             testClass.addImport(WebAppConfiguration.class);
@@ -251,7 +254,7 @@ public class MockGenerator {
         testClass.addImport(Test.class);
         out.println("@Test");
         out.println("public void test" + f(method.getName()) + "() throws Exception {");
-        out.println("\tSystem.out.println(\"" + method.getName() + "\");");
+        out.println("\tlog.info(\"" + method.getName() + "\");");
 
         List<String> variableDeclares = new ArrayList<>(4);
         Map<String, Class<?>> params = new LinkedHashMap<>(4);
@@ -414,7 +417,7 @@ public class MockGenerator {
             assertEquals("upload a multipart file, but request method is " + lowerMethod + ", " + method, "post", lowerMethod);
             testClass.addImport(MockMultipartFile.class);
             variableDeclares.add("\tbyte[] " + name + "Content = null;");
-            variableDeclares.add("\tMockMultipartFile " + name + " = new MockMultipartFile(\"upload\", " + name + "Content);");
+            variableDeclares.add("\tMockMultipartFile " + name + " = new MockMultipartFile(\"" + name + "\", " + name + "Content);");
             files.add(name);
         } else {
             requestParams.put(name, type);

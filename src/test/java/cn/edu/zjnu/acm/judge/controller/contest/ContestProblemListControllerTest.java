@@ -2,6 +2,7 @@ package cn.edu.zjnu.acm.judge.controller.contest;
 
 import cn.edu.zjnu.acm.judge.Application;
 import java.util.Locale;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringRunner.class)
+@Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
 @WebAppConfiguration
@@ -42,7 +44,7 @@ public class ContestProblemListControllerTest {
      */
     @Test
     public void testShowContest() throws Exception {
-        System.out.println("showContest");
+        log.info("showContest");
         long contest_id = 0;
         Locale locale = Locale.getDefault();
         MvcResult result = mvc.perform(get("/showcontest").param("contest_id", Long.toString(contest_id))

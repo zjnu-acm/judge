@@ -1,6 +1,7 @@
 package cn.edu.zjnu.acm.judge.controller.user;
 
 import cn.edu.zjnu.acm.judge.Application;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringRunner.class)
+@Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
 @WebAppConfiguration
@@ -42,7 +44,7 @@ public class ModifyUserControllerTest {
      */
     @Test
     public void testUpdatePage() throws Exception {
-        System.out.println("updatePage");
+        log.info("updatePage");
         MvcResult result = mvc.perform(get("/modifyuserpage"))
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful())
@@ -55,7 +57,7 @@ public class ModifyUserControllerTest {
      */
     @Test
     public void testUpdate() throws Exception {
-        System.out.println("update");
+        log.info("update");
         String oldPassword = "";
         String newPassword = "";
         String rptPassword = "";

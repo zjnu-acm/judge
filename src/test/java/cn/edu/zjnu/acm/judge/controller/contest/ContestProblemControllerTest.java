@@ -3,6 +3,7 @@ package cn.edu.zjnu.acm.judge.controller.contest;
 import cn.edu.zjnu.acm.judge.Application;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringRunner.class)
+@Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
 @WebAppConfiguration
@@ -45,7 +47,7 @@ public class ContestProblemControllerTest {
      */
     @Test
     public void testProblems() throws Exception {
-        System.out.println("problems");
+        log.info("problems");
         long contestId = 0;
         MvcResult result = mvc.perform(get("/contests/{contestId}/problems", contestId))
                 .andDo(print())
@@ -59,7 +61,7 @@ public class ContestProblemControllerTest {
      */
     @Test
     public void testShowProblem() throws Exception {
-        System.out.println("showProblem");
+        log.info("showProblem");
         long contestId = 0;
         long pid = 0;
         Locale locale = Locale.getDefault();
@@ -76,7 +78,7 @@ public class ContestProblemControllerTest {
      */
     @Test
     public void testStatus() throws Exception {
-        System.out.println("status");
+        log.info("status");
         long contestId = 0;
         int pid = 0;
         MvcResult result = mvc.perform(get("/contests/{contestId}/problems/{pid}/status", contestId, pid))

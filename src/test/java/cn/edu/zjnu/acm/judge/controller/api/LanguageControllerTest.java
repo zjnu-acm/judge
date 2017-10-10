@@ -3,12 +3,14 @@ package cn.edu.zjnu.acm.judge.controller.api;
 import cn.edu.zjnu.acm.judge.Application;
 import cn.edu.zjnu.acm.judge.domain.Language;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,9 +27,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringRunner.class)
+@Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
 @WebAppConfiguration
+@WithMockUser(roles = "ADMIN")
 public class LanguageControllerTest {
 
     @Autowired
@@ -47,7 +51,7 @@ public class LanguageControllerTest {
      */
     @Test
     public void testFindAll() throws Exception {
-        System.out.println("findAll");
+        log.info("findAll");
         MvcResult result = mvc.perform(get("/api/languages"))
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful())
@@ -60,7 +64,7 @@ public class LanguageControllerTest {
      */
     @Test
     public void testSave() throws Exception {
-        System.out.println("save");
+        log.info("save");
         Language request = null;
         MvcResult result = mvc.perform(post("/api/languages")
                 .content(objectMapper.writeValueAsString(request)).contentType(MediaType.APPLICATION_JSON))
@@ -75,7 +79,7 @@ public class LanguageControllerTest {
      */
     @Test
     public void testFindOne() throws Exception {
-        System.out.println("findOne");
+        log.info("findOne");
         long id = 0;
         MvcResult result = mvc.perform(get("/api/languages/{id}", id))
                 .andDo(print())
@@ -89,7 +93,7 @@ public class LanguageControllerTest {
      */
     @Test
     public void testUpdate() throws Exception {
-        System.out.println("update");
+        log.info("update");
         long id = 0;
         Language request = null;
         MvcResult result = mvc.perform(put("/api/languages/{id}", id)
@@ -105,7 +109,7 @@ public class LanguageControllerTest {
      */
     @Test
     public void testDelete() throws Exception {
-        System.out.println("delete");
+        log.info("delete");
         long id = 0;
         MvcResult result = mvc.perform(delete("/api/languages/{id}", id))
                 .andDo(print())

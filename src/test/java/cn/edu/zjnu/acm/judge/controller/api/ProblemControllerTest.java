@@ -63,7 +63,7 @@ public class ProblemControllerTest {
     @Autowired
     private WebApplicationContext context;
     @Autowired
-    private ObjectMapper mapper;
+    private ObjectMapper objectMapper;
     @Autowired
     private ProblemService problemService;
     private MockMvc mvc;
@@ -73,13 +73,23 @@ public class ProblemControllerTest {
         mvc = webAppContextSetup(context).build();
     }
 
+    /**
+     * Test of list method, of class ProblemController.
+     * {@link ProblemController#list(ProblemForm, Pageable, Locale)}
+     */
     @Test
-    public void testFindAll() throws Exception {
+    public void testList() throws Exception {
         mvc.perform(get("/api/problems.json"))
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful());
     }
 
+    /**
+     * {@link ProblemController#save(Problem)}
+     * {@link ProblemController#findOne(long, String)}
+     * {@link ProblemController#update(long, Problem, String)}
+     * {@link ProblemController#delete(long)}
+     */
     @Test
     public void test() throws Exception {
         Problem problem = Problem.builder()
@@ -95,9 +105,9 @@ public class ProblemControllerTest {
                 .memoryLimit(65536 * 1024L)
                 .contests(new long[]{0})
                 .build();
-        Long id = mapper.readValue(mvc.perform(post("/api/problems.json")
+        Long id = objectMapper.readValue(mvc.perform(post("/api/problems.json")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsBytes(problem))
+                .content(objectMapper.writeValueAsBytes(problem))
         )
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful())

@@ -2,6 +2,7 @@ package cn.edu.zjnu.acm.judge.controller.problem;
 
 import cn.edu.zjnu.acm.judge.Application;
 import javax.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringRunner.class)
+@Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
 @WebAppConfiguration
@@ -43,7 +45,7 @@ public class ProblemStatusControllerTest {
      */
     @Test
     public void testGotoProblem() throws Exception {
-        System.out.println("gotoProblem");
+        log.info("gotoProblem");
         String pid = "";
         MvcResult result = mvc.perform(get("/gotoproblem").param("pid", pid))
                 .andDo(print())
@@ -57,7 +59,7 @@ public class ProblemStatusControllerTest {
      */
     @Test
     public void testStatus() throws Exception {
-        System.out.println("status");
+        log.info("status");
         long problem_id = 0;
         MvcResult result = mvc.perform(get("/problemstatus").param("problem_id", Long.toString(problem_id)))
                 .andDo(print())

@@ -1,6 +1,7 @@
 package cn.edu.zjnu.acm.judge.controller.user;
 
 import cn.edu.zjnu.acm.judge.Application;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringRunner.class)
+@Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
 @WebAppConfiguration
@@ -40,7 +42,7 @@ public class RecentRankControllerTest {
      */
     @Test
     public void testRecentRank() throws Exception {
-        System.out.println("recentRank");
+        log.info("recentRank");
         int count = 0;
         MvcResult result = mvc.perform(get("/recentrank").param("count", Integer.toString(count)))
                 .andDo(print())

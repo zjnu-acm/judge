@@ -1,6 +1,7 @@
 package cn.edu.zjnu.acm.judge.controller.legacy;
 
 import cn.edu.zjnu.acm.judge.Application;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,10 +17,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringRunner.class)
+@Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
 @WebAppConfiguration
@@ -40,11 +43,11 @@ public class LegacyAdminControllerTest {
      */
     @Test
     public void testShowProblem() throws Exception {
-        System.out.println("showProblem");
+        log.info("showProblem");
         long problem_id = 0;
         MvcResult result = mvc.perform(get("/admin.showproblem").param("problem_id", Long.toString(problem_id)))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(redirectedUrl("/admin/problems/" + problem_id + ".html"))
                 .andReturn();
     }
 
@@ -54,11 +57,11 @@ public class LegacyAdminControllerTest {
      */
     @Test
     public void testShowContest() throws Exception {
-        System.out.println("showContest");
+        log.info("showContest");
         long contest_id = 0;
         MvcResult result = mvc.perform(get("/admin.showcontest").param("contest_id", Long.toString(contest_id)))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(redirectedUrl("/admin/contests/" + contest_id + ".html"))
                 .andReturn();
     }
 

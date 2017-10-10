@@ -6,12 +6,14 @@ import cn.edu.zjnu.acm.judge.domain.Contest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Locale;
 import java.util.Objects;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,9 +30,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringRunner.class)
+@Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
 @WebAppConfiguration
+@WithMockUser(roles = "ADMIN")
 public class ContestControllerTest {
 
     @Autowired
@@ -50,7 +54,7 @@ public class ContestControllerTest {
      */
     @Test
     public void testSave() throws Exception {
-        System.out.println("save");
+        log.info("save");
         Contest request = null;
         MvcResult result = mvc.perform(post("/api/contests")
                 .content(objectMapper.writeValueAsString(request)).contentType(MediaType.APPLICATION_JSON))
@@ -65,7 +69,7 @@ public class ContestControllerTest {
      */
     @Test
     public void testDelete() throws Exception {
-        System.out.println("delete");
+        log.info("delete");
         long id = 0;
         MvcResult result = mvc.perform(delete("/api/contests/{id}", id))
                 .andDo(print())
@@ -79,7 +83,7 @@ public class ContestControllerTest {
      */
     @Test
     public void testList() throws Exception {
-        System.out.println("list");
+        log.info("list");
         boolean includeDisabled = false;
         String[] exclude = null;
         String[] include = null;
@@ -98,7 +102,7 @@ public class ContestControllerTest {
      */
     @Test
     public void testFindOne() throws Exception {
-        System.out.println("findOne");
+        log.info("findOne");
         long id = 0;
         Locale locale = Locale.getDefault();
         MvcResult result = mvc.perform(get("/api/contests/{id}", id)
@@ -114,7 +118,7 @@ public class ContestControllerTest {
      */
     @Test
     public void testUpdate() throws Exception {
-        System.out.println("update");
+        log.info("update");
         long id = 0;
         Contest request = null;
         MvcResult result = mvc.perform(patch("/api/contests/{id}", id)
@@ -130,7 +134,7 @@ public class ContestControllerTest {
      */
     @Test
     public void testSubmittedProblems() throws Exception {
-        System.out.println("submittedProblems");
+        log.info("submittedProblems");
         long id = 0;
         MvcResult result = mvc.perform(get("/api/contests/{id}/problems/submitted", id))
                 .andDo(print())
@@ -144,7 +148,7 @@ public class ContestControllerTest {
      */
     @Test
     public void testStanding() throws Exception {
-        System.out.println("standing");
+        log.info("standing");
         long id = 0;
         MvcResult result = mvc.perform(get("/api/contests/{id}/standing", id))
                 .andDo(print())

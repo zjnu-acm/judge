@@ -5,6 +5,7 @@ import cn.edu.zjnu.acm.judge.data.form.ProblemForm;
 import java.util.Locale;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringRunner.class)
+@Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
 @WebAppConfiguration
@@ -46,7 +48,7 @@ public class ProblemListControllerTest {
      */
     @Test
     public void testProblemList() throws Exception {
-        System.out.println("problemList");
+        log.info("problemList");
         String sstr = "";
         Boolean disabled = null;
         Locale locale = Locale.getDefault();

@@ -4,6 +4,7 @@ import cn.edu.zjnu.acm.judge.Application;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringRunner.class)
+@Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
 @WebAppConfiguration
@@ -43,7 +45,7 @@ public class ResetPasswordControllerTest {
      */
     @Test
     public void testDoGet() throws Exception {
-        System.out.println("doGet");
+        log.info("doGet");
         MvcResult result = mvc.perform(get("/resetPassword"))
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful())
@@ -56,7 +58,7 @@ public class ResetPasswordControllerTest {
      */
     @Test
     public void testDoPost() throws Exception {
-        System.out.println("doPost");
+        log.info("doPost");
         String action = "";
         String verify = "";
         String username = "";
@@ -77,7 +79,7 @@ public class ResetPasswordControllerTest {
      */
     @Test
     public void testChangePassword() throws Exception {
-        System.out.println("changePassword");
+        log.info("changePassword");
         MvcResult result = mvc.perform(post("/resetPassword"))
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful())

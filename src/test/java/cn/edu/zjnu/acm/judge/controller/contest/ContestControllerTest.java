@@ -17,9 +17,8 @@ package cn.edu.zjnu.acm.judge.controller.contest;
 
 import cn.edu.zjnu.acm.judge.Application;
 import java.util.Locale;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,13 +27,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
@@ -52,29 +52,41 @@ public class ContestControllerTest {
 
     @Autowired
     private WebApplicationContext context;
+    private MockMvc mvc;
 
-    @Autowired
-    private ContestController instance;
-    private final Locale locale = Locale.SIMPLIFIED_CHINESE;
+    @Before
+    public void setUp() {
+        mvc = webAppContextSetup(context).build();
+    }
 
     /**
      * Test of standingHtml method, of class ContestController.
+     * {@link ContestController#standingHtml(long, Locale)}
      */
     @Test
-    public void testStandingHtml() throws InterruptedException, ExecutionException {
+    public void testStandingHtml() throws Exception {
         log.info("standingHtml");
-        long cid = 1058;
-        Future<ModelAndView> future = instance.standingHtml(cid, locale);
-        String viewName = future.get().getViewName();
-        assertEquals("contests/standing", viewName);
-        assertNotNull(future.get().getModelMap().get("problems"));
+        long contestId = 1058;
+        Locale locale = Locale.getDefault();
+        MvcResult result = mvc.perform(get("/contests/{contestId}/standing", contestId)
+                .locale(locale))
+                .andDo(print())
+                .andExpect(status().is2xxSuccessful())
+                .andReturn();
     }
 
+    /**
+     * Test of index method, of class ContestController.
+     * {@link ContestController#index(long, RedirectAttributes)}
+     */
     @Test
-    public void testMock() throws Exception {
-        MockMvc mvc = webAppContextSetup(context).build();
-        mvc.perform(get("/contests/{id}/standing", 1058))
-                .andExpect(status().isOk());
+    public void testIndex() throws Exception {
+        log.info("index");
+        long contestId = 1058;
+        MvcResult result = mvc.perform(get("/contests/{contestId}", contestId))
+                .andDo(print())
+                .andExpect(redirectedUrl("/contests/" + contestId + "/problems"))
+                .andReturn();
     }
 
 }

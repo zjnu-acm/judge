@@ -2,11 +2,13 @@ package cn.edu.zjnu.acm.judge.controller.api;
 
 import cn.edu.zjnu.acm.judge.Application;
 import java.util.Locale;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,9 +22,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringRunner.class)
+@Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
 @WebAppConfiguration
+@WithMockUser(roles = "ADMIN")
 public class LocaleControllerTest {
 
     @Autowired
@@ -40,7 +44,7 @@ public class LocaleControllerTest {
      */
     @Test
     public void testCurrent() throws Exception {
-        System.out.println("current");
+        log.info("current");
         Locale locale = Locale.getDefault();
         MvcResult result = mvc.perform(get("/api/locales/current")
                 .locale(locale))
@@ -55,7 +59,7 @@ public class LocaleControllerTest {
      */
     @Test
     public void testFindOne() throws Exception {
-        System.out.println("findOne");
+        log.info("findOne");
         String id = "";
         String support = "";
         MvcResult result = mvc.perform(get("/api/locales/{id}", id).param("support", support))
@@ -70,7 +74,7 @@ public class LocaleControllerTest {
      */
     @Test
     public void testFindAll() throws Exception {
-        System.out.println("findAll");
+        log.info("findAll");
         MvcResult result = mvc.perform(get("/api/locales"))
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful())
@@ -83,7 +87,7 @@ public class LocaleControllerTest {
      */
     @Test
     public void testSupported() throws Exception {
-        System.out.println("supported");
+        log.info("supported");
         boolean all = false;
         MvcResult result = mvc.perform(get("/api/locales").param("all", Boolean.toString(all)))
                 .andDo(print())

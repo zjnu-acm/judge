@@ -1,6 +1,7 @@
 package cn.edu.zjnu.acm.judge.controller.contest;
 
 import cn.edu.zjnu.acm.judge.Application;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringRunner.class)
+@Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
 @WebAppConfiguration
@@ -41,7 +43,7 @@ public class ContestListControllerTest {
      */
     @Test
     public void testContests() throws Exception {
-        System.out.println("contests");
+        log.info("contests");
         MvcResult result = mvc.perform(get("/contests"))
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful())
@@ -54,7 +56,7 @@ public class ContestListControllerTest {
      */
     @Test
     public void testScheduledContests() throws Exception {
-        System.out.println("scheduledContests");
+        log.info("scheduledContests");
         MvcResult result = mvc.perform(get("/scheduledcontests"))
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful())
@@ -67,7 +69,7 @@ public class ContestListControllerTest {
      */
     @Test
     public void testPastContests() throws Exception {
-        System.out.println("pastContests");
+        log.info("pastContests");
         MvcResult result = mvc.perform(get("/pastcontests"))
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful())
@@ -80,7 +82,7 @@ public class ContestListControllerTest {
      */
     @Test
     public void testCurrentContests() throws Exception {
-        System.out.println("currentContests");
+        log.info("currentContests");
         MvcResult result = mvc.perform(get("/currentcontests"))
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful())

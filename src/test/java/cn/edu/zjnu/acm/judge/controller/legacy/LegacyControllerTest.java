@@ -1,6 +1,7 @@
 package cn.edu.zjnu.acm.judge.controller.legacy;
 
 import cn.edu.zjnu.acm.judge.Application;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringRunner.class)
+@Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
 @WebAppConfiguration
@@ -39,7 +41,7 @@ public class LegacyControllerTest {
      */
     @Test
     public void testContestStanding() throws Exception {
-        System.out.println("contestStanding");
+        log.info("contestStanding");
         long contest_id = 0;
         MvcResult result = mvc.perform(get("/conteststanding").param("contest_id", Long.toString(contest_id)))
                 .andDo(print())
@@ -53,7 +55,7 @@ public class LegacyControllerTest {
      */
     @Test
     public void testGa() throws Exception {
-        System.out.println("ga");
+        log.info("ga");
         MvcResult result = mvc.perform(get("/ga"))
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful())
@@ -66,7 +68,7 @@ public class LegacyControllerTest {
      */
     @Test
     public void testNav() throws Exception {
-        System.out.println("nav");
+        log.info("nav");
         MvcResult result = mvc.perform(get("/nav"))
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful())
@@ -79,7 +81,7 @@ public class LegacyControllerTest {
      */
     @Test
     public void testFooter() throws Exception {
-        System.out.println("footer");
+        log.info("footer");
         MvcResult result = mvc.perform(get("/footer"))
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful())

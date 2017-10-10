@@ -2,6 +2,7 @@ package cn.edu.zjnu.acm.judge.controller.submission;
 
 import cn.edu.zjnu.acm.judge.Application;
 import java.util.Objects;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringRunner.class)
+@Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
 @WebAppConfiguration
@@ -42,7 +44,7 @@ public class SubmitPageControllerTest {
      */
     @Test
     public void testSubmitPage() throws Exception {
-        System.out.println("submitPage");
+        log.info("submitPage");
         Long problem_id = null;
         Long contest_id = null;
         MvcResult result = mvc.perform(get("/submitpage")

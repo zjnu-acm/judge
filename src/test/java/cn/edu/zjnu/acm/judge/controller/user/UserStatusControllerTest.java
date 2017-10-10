@@ -16,6 +16,8 @@
 package cn.edu.zjnu.acm.judge.controller.user;
 
 import cn.edu.zjnu.acm.judge.Application;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +26,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -38,6 +42,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
  */
 @Ignore
 @RunWith(SpringRunner.class)
+@Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
 @WebAppConfiguration
@@ -45,13 +50,28 @@ public class UserStatusControllerTest {
 
     @Autowired
     private WebApplicationContext context;
+    private MockMvc mvc;
 
+    @Before
+    public void setUp() {
+        mvc = webAppContextSetup(context).build();
+    }
+
+    /**
+     * Test of userStatus method, of class UserStatusController.
+     * {@link UserStatusController#userStatus(Model, int, String)}
+     */
     @Test
-    public void testUserstatus() throws Exception {
-        MockMvc mvc = webAppContextSetup(context).build();
-        mvc.perform(get("/userstatus").param("user_id", "coach"))
-                .andExpect(status().isOk())
-                .andDo(print());
+    public void testUserStatus() throws Exception {
+        log.info("userStatus");
+        int size = 3;
+        String user_id = "coach";
+        MvcResult result = mvc.perform(get("/userstatus")
+                .param("size", Integer.toString(size))
+                .param("user_id", user_id))
+                .andDo(print())
+                .andExpect(status().is2xxSuccessful())
+                .andReturn();
     }
 
 }

@@ -1,6 +1,7 @@
 package cn.edu.zjnu.acm.judge.controller;
 
 import cn.edu.zjnu.acm.judge.Application;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringRunner.class)
+@Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
 @WebAppConfiguration
@@ -42,7 +44,7 @@ public class MailControllerTest {
      */
     @Test
     public void testDelete() throws Exception {
-        System.out.println("delete");
+        log.info("delete");
         long mail_id = 0;
         MvcResult result = mvc.perform(get("/deletemail").param("mail_id", Long.toString(mail_id)))
                 .andDo(print())
@@ -56,7 +58,7 @@ public class MailControllerTest {
      */
     @Test
     public void testMail() throws Exception {
-        System.out.println("mail");
+        log.info("mail");
         int size = 0;
         long start = 0;
         MvcResult result = mvc.perform(get("/mail")
@@ -73,7 +75,7 @@ public class MailControllerTest {
      */
     @Test
     public void testSend() throws Exception {
-        System.out.println("send");
+        log.info("send");
         String title = "";
         String to = "";
         String content = "";
@@ -92,7 +94,7 @@ public class MailControllerTest {
      */
     @Test
     public void testSendPage() throws Exception {
-        System.out.println("sendPage");
+        log.info("sendPage");
         long reply = 0;
         String to = "";
         MvcResult result = mvc.perform(get("/sendpage")
@@ -109,7 +111,7 @@ public class MailControllerTest {
      */
     @Test
     public void testShowMail() throws Exception {
-        System.out.println("showMail");
+        log.info("showMail");
         long mail_id = 0;
         MvcResult result = mvc.perform(get("/showmail").param("mail_id", Long.toString(mail_id)))
                 .andDo(print())

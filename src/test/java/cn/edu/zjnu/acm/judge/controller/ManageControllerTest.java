@@ -3,11 +3,13 @@ package cn.edu.zjnu.acm.judge.controller;
 import cn.edu.zjnu.acm.judge.Application;
 import java.util.Map;
 import java.util.Objects;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -22,9 +24,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringRunner.class)
+@Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
 @WebAppConfiguration
+@WithMockUser(roles = "ADMIN")
 public class ManageControllerTest {
 
     @Autowired
@@ -42,7 +46,7 @@ public class ManageControllerTest {
      */
     @Test
     public void testManage() throws Exception {
-        System.out.println("manage");
+        log.info("manage");
         MvcResult result = mvc.perform(get("/admin/"))
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful())
@@ -55,7 +59,7 @@ public class ManageControllerTest {
      */
     @Test
     public void testIndex() throws Exception {
-        System.out.println("index");
+        log.info("index");
         Map arg1 = null;
         MvcResult result = mvc.perform(get("/admin").param("arg1", Objects.toString(arg1, "")))
                 .andDo(print())

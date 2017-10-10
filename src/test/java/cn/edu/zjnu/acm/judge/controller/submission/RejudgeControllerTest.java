@@ -1,6 +1,7 @@
 package cn.edu.zjnu.acm.judge.controller.submission;
 
 import cn.edu.zjnu.acm.judge.Application;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringRunner.class)
+@Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
 @WebAppConfiguration
@@ -39,7 +41,7 @@ public class RejudgeControllerTest {
      */
     @Test
     public void testRejudgeSolution() throws Exception {
-        System.out.println("rejudgeSolution");
+        log.info("rejudgeSolution");
         long solution_id = 0;
         MvcResult result = mvc.perform(get("/admin.rejudge").param("solution_id", Long.toString(solution_id)))
                 .andDo(print())
@@ -53,7 +55,7 @@ public class RejudgeControllerTest {
      */
     @Test
     public void testRejudgeProblem() throws Exception {
-        System.out.println("rejudgeProblem");
+        log.info("rejudgeProblem");
         long problem_id = 0;
         MvcResult result = mvc.perform(get("/admin.rejudge").param("problem_id", Long.toString(problem_id)))
                 .andDo(print())
