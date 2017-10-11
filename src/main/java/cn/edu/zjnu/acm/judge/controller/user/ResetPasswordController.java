@@ -17,15 +17,14 @@ package cn.edu.zjnu.acm.judge.controller.user;
 
 import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
+import cn.edu.zjnu.acm.judge.service.ResetPasswordService;
 import cn.edu.zjnu.acm.judge.service.SystemService;
-import cn.edu.zjnu.acm.judge.util.Utility;
 import cn.edu.zjnu.acm.judge.util.ValueCheck;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Optional;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
@@ -61,10 +60,14 @@ public class ResetPasswordController {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private SystemService systemService;
+    @Autowired
+    private ResetPasswordService resetPasswordService;
 
     @GetMapping(value = "/resetPassword", produces = TEXT_HTML_VALUE)
-    public String doGet(HttpServletRequest request) {
-        if (checkVcode(request)) {
+    public String doGet(
+            @RequestParam(value = "u", required = false) String userId,
+            @RequestParam(value = "vc", required = false) String vcode) {
+        if (resetPasswordService.checkVcode(userId, vcode).isPresent()) {
             return "resetPassword";
         } else {
             return "invalid";
@@ -102,13 +105,8 @@ public class ResetPasswordController {
             return;
         }
         try {
-            String vc = user.getVcode();
-            if (vc == null || user.getExpireTime() != null && user.getExpireTime().compareTo(Instant.now()) < 0) {
-                vc = Utility.getRandomString(16);
-            }
-            String id = user.getId();
-            userMapper.updateSelective(id, User.builder().vcode(vc).expireTime(Instant.now().plus(1, ChronoUnit.HOURS)).build());
-            String url = getPath(request, "/resetPassword.html?vc=", vc + "&u=", id);
+            String vc = resetPasswordService.getOrCreate(user.getId());
+            String url = getPath(request, "/resetPassword.html?vc=", vc + "&u=", user.getId());
             String title = systemService.getResetPasswordTitle();
             HashMap<String, Object> map = new HashMap<>(2);
             map.put("url", url);
@@ -126,7 +124,7 @@ public class ResetPasswordController {
 
             javaMailSender.send(mimeMessage);
         } catch (MailException | MessagingException ex) {
-            log.error("", ex);
+            log.error("fail to send email", ex);
             out.print("alert('邮件发送失败，请稍后再试')");
             return;
         }
@@ -134,40 +132,25 @@ public class ResetPasswordController {
     }
 
     @PostMapping(value = "/resetPassword", params = "action=changePassword", produces = "text/javascript")
-    public void changePassword(HttpServletRequest request, HttpServletResponse response)
+    public void changePassword(HttpServletRequest request, HttpServletResponse response,
+            @RequestParam(value = "u", required = false) String userId,
+            @RequestParam(value = "vc", required = false) String vcode)
             throws IOException {
         response.setContentType("text/javascript;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        if (!checkVcode(request)) {
+        Optional<User> optional = resetPasswordService.checkVcode(userId, vcode);
+        if (optional.isPresent()) {
             out.print("alert(\"效链接已失效，请重新获取链接\");");
             return;
         }
         String newPassword = request.getParameter("newPassword");
         ValueCheck.checkPassword(newPassword);
-        User user = userMapper.findOne(request.getParameter("u"));
-        userMapper.update(user.toBuilder()
+        User user = optional.get();
+        userMapper.updateSelective(user.getId(), User.builder()
                 .password(passwordEncoder.encode(newPassword))
-                .vcode(null)
-                .expireTime(null)
                 .build());
         out.print("alert(\"密码修改成功！\");");
         out.print("document.location='" + request.getContextPath() + "'");
-    }
-
-    @SuppressWarnings("NestedAssignment")
-    private boolean checkVcode(HttpServletRequest request) {
-        String uid = request.getParameter("u");
-        String vcode = request.getParameter("vc");
-        User user = null;
-        if (uid != null) {
-            user = userMapper.findOne(uid);
-        }
-        String code;
-        Instant expire;
-        return user != null && (code = user.getVcode()) != null
-                && code.equals(vcode)
-                && ((expire = user.getExpireTime()) == null
-                || expire.toEpochMilli() > System.currentTimeMillis());
     }
 
     private String getPath(HttpServletRequest request, String... params) {

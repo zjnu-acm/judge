@@ -23,7 +23,6 @@ public class User implements Serializable {
 
     private String id;
     private String email;
-    private String vcode;
     @JsonIgnore
     private String password;
     private String nick;
@@ -32,7 +31,6 @@ public class User implements Serializable {
     private Long solved;
     private Instant accesstime;
     private String ip;
-    private Instant expireTime;
     private Instant createdTime;
     private Instant modifiedTime;
     private Boolean disabled;

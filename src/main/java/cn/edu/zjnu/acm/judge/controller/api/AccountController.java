@@ -21,11 +21,13 @@ import cn.edu.zjnu.acm.judge.data.form.AccountImportForm;
 import cn.edu.zjnu.acm.judge.data.form.UserPasswordForm;
 import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.service.AccountService;
+import cn.edu.zjnu.acm.judge.service.ResetPasswordService;
 import cn.edu.zjnu.acm.judge.util.excel.ExcelUtil;
 import cn.edu.zjnu.acm.judge.util.excel.Type;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -58,6 +60,8 @@ public class AccountController {
 
     @Autowired
     private AccountService accountService;
+    @Autowired
+    private ResetPasswordService resetPasswordService;
 
     @GetMapping
     public Page<User> findAll(AccountForm form, @PageableDefault(50) Pageable pageable) {
@@ -96,6 +100,11 @@ public class AccountController {
     @PostMapping(value = "import", consumes = APPLICATION_JSON_VALUE)
     public void importUsers(@RequestBody AccountImportForm form) {
         accountService.importUsers(form);
+    }
+
+    @GetMapping("password/status")
+    public Map<String, ?> passwordStatus() {
+        return resetPasswordService.stats();
     }
 
 }

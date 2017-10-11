@@ -46,18 +46,12 @@ public interface UserMapper {
             + "</where>";
 
     @Nullable
-    @Select("select user_id id,nick,email,vcode,expire_time expireTime,password,school,ip,solved,submit,accesstime,created_time createdTime,modified_time modifiedTime from users where user_id=#{id}")
+    @Select("select user_id id,nick,email,password,school,ip,solved,submit,accesstime,created_time createdTime,modified_time modifiedTime from users where user_id=#{id}")
     User findOne(@Param("id") String id);
 
     @Insert("insert into users(USER_ID,PASSWORD,EMAIL,REG_TIME,NICK,SCHOOL,ip) values"
             + "(#{id},#{password},#{email},now(),#{nick},#{school},ip=#{ip})")
     long save(User user);
-
-    @Update("UPDATE users SET password=#{password},email=nullif(#{email},''),nick=#{nick},"
-            + "school=#{school},ip=#{ip},accesstime=#{accesstime},vcode=#{vcode},expire_time=#{expireTime},"
-            + "created_time=#{createdTime},modified_time=#{modifiedTime} "
-            + "WHERE user_id=#{id}")
-    long update(User user);
 
     @Select("<script>"
             + "SELECT COUNT(*) total FROM users"
@@ -117,8 +111,6 @@ public interface UserMapper {
             + "<if test='user.email!=null'>email=nullif(#{user.email},''),</if>"
             + "<if test='user.nick!=null'>nick=#{user.nick},</if>"
             + "<if test='user.school!=null'>school=COALESCE(#{user.school},''),</if>"
-            + "<if test='user.vcode!=null'>vcode=#{user.vcode},</if>"
-            + "<if test='user.expireTime!=null'>expire_time=#{user.expireTime},</if>"
             + "<if test='user.password!=null'>password=#{user.password},</if>"
             + "<if test='user.modifiedTime!=null'>modified_time=#{user.modifiedTime},</if>"
             + "<if test='user.accesstime!=null'>accesstime=#{user.accesstime},</if>"
