@@ -18,7 +18,6 @@ package cn.edu.zjnu.acm.judge.util;
 import cn.edu.zjnu.acm.judge.exception.BusinessCode;
 import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
-import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
 
 public interface ValueCheck {
@@ -27,16 +26,16 @@ public interface ValueCheck {
 
     static void checkUserId(String userId) {
         if (StringUtils.isEmpty(userId)) {
-            throw new MessageException("User ID can not be NULL", HttpStatus.BAD_REQUEST);
+            throw new MessageException("User ID can not be NULL");
         }
         if (userId.length() < 6) {
-            throw new MessageException("User ID is too short", HttpStatus.BAD_REQUEST);
+            throw new MessageException("User ID is too short");
         }
         if (userId.length() > 20) {
-            throw new MessageException("User ID is too long", HttpStatus.BAD_REQUEST);
+            throw new MessageException("User ID is too long");
         }
         if (!userId.matches("(?i)[a-z0-9_]+")) {
-            throw new MessageException("User ID can only contain number, letter and '_'", HttpStatus.BAD_REQUEST);
+            throw new MessageException("User ID can only contain number, letter and '_'");
         }
     }
 
@@ -65,16 +64,16 @@ public interface ValueCheck {
 
     static void checkNick(String nick) {
         if (StringUtils.isEmpty(nick)) {
-            throw new MessageException("nick can not be NULL", HttpStatus.BAD_REQUEST);
+            throw new MessageException("nick can not be NULL");
         }
         if (nick.length() > 64) {
-            throw new MessageException("nick is too long", HttpStatus.BAD_REQUEST);
+            throw new MessageException("nick is too long");
         }
     }
 
     static void checkEmail(String email) {
         if (StringUtils.hasText(email) && !email.matches(EMAIL_PATTERN)) {
-            throw new MessageException("email format incorrect", HttpStatus.BAD_REQUEST);
+            throw new MessageException("email format incorrect");
         }
     }
 

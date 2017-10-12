@@ -124,7 +124,7 @@ public class BBSController {
             Authentication authentication) {
         final String userId = authentication != null ? authentication.getName() : null;
         if (!StringUtils.hasText(title)) {
-            throw new MessageException("Title can't be blank", HttpStatus.BAD_REQUEST);
+            throw new MessageException("Title can't be blank");
         }
 
         messageService.save(parentId, problemId, userId, title, content);

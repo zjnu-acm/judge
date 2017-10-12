@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +27,7 @@ public class SearchProblemController {
     public String searchProblem(ProblemForm form, Model model, Locale locale, Authentication authentication,
             @PageableDefault(1000) Pageable pageable, HttpServletRequest request) {
         if (!StringUtils.hasText(form.getSstr())) {
-            throw new MessageException("Please input the keyword to the problem.", HttpStatus.BAD_REQUEST);
+            throw new MessageException("Please input the keyword to the problem.");
         }
         String currentUserId = authentication != null ? authentication.getName() : null;
         String url = URLBuilder.fromRequest(request).replaceQueryParam("page").toString();

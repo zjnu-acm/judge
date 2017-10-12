@@ -21,7 +21,6 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -62,20 +61,20 @@ public class SubmitController {
         try {
             languageService.getAvailableLanguage(languageId);
         } catch (IllegalArgumentException ex) {
-            throw new MessageException("Please choose a language", HttpStatus.BAD_REQUEST);
+            throw new MessageException("Please choose a language");
         }
         if (source.length() > 32768) {
-            throw new MessageException("Source code too long, submit FAILED;if you really need submit this source please contact administrator", HttpStatus.BAD_REQUEST);
+            throw new MessageException("Source code too long, submit FAILED;if you really need submit this source please contact administrator");
         }
         if (source.length() < 10) {
-            throw new MessageException("Source code too short, submit FAILED;if you really need submit this source please contact administrator", HttpStatus.BAD_REQUEST);
+            throw new MessageException("Source code too short, submit FAILED;if you really need submit this source please contact administrator");
         }
         String userId = authentication.getName();
         Instant instant = Instant.now();
         // 10秒交一次。。。
         // 使用绝对值，如果系统时间被改了依然可用
         if (cache.contains(userId) || !cache.add(userId)) {
-            throw new MessageException("Sorry, please don't submit again within 10 seconds.", HttpStatus.BAD_REQUEST);
+            throw new MessageException("Sorry, please don't submit again within 10 seconds.");
         }
         problemService.findOneNoI18n(problemId); //检查该题是否存在
 

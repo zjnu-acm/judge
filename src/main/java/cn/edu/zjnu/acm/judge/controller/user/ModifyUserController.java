@@ -6,7 +6,6 @@ import cn.edu.zjnu.acm.judge.service.AccountService;
 import cn.edu.zjnu.acm.judge.util.ValueCheck;
 import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -45,13 +44,13 @@ public class ModifyUserController {
             @RequestParam("school") String school,
             Authentication authentication) {
         if (!Objects.equals(newPassword, rptPassword)) {
-            throw new MessageException("Passwords are not match", HttpStatus.BAD_REQUEST);
+            throw new MessageException("Passwords are not match");
         }
         String userId = authentication.getName();
         User user = accountService.findOne(userId);
         String password = user.getPassword();
         if (!passwordEncoder.matches(oldPassword, password)) {
-            throw new MessageException("password is not correct", HttpStatus.BAD_REQUEST);
+            throw new MessageException("password is not correct");
         }
         if (StringUtils.isEmpty(nick)) {
             nick = userId;

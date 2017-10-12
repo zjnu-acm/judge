@@ -29,6 +29,10 @@ public class MessageException extends RuntimeException {
     @Getter
     private final HttpStatus httpStatus;
 
+    public MessageException(String message) {
+        this(message, HttpStatus.BAD_REQUEST);
+    }
+
     public MessageException(String message, @NonNull HttpStatus httpStatus) {
         super(message);
         this.httpStatus = httpStatus;
