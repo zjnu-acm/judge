@@ -15,12 +15,12 @@
  */
 package cn.edu.zjnu.acm.judge.controller.contest;
 
+import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.exception.BusinessCode;
 import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.service.ContestService;
 import com.google.common.collect.ImmutableMap;
 import java.util.Locale;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,10 +45,11 @@ public class ContestController {
 
     @GetMapping(value = "standing", produces = {TEXT_HTML_VALUE, ALL_VALUE})
     public Future<ModelAndView> standingHtml(@PathVariable("contestId") long contestId, Locale locale) {
-        return contestService.standingAsync(contestId).thenCombineAsync(CompletableFuture.supplyAsync(() -> contestService.getContestAndProblemsNotDisabled(contestId, null, locale)), (standing, contest) -> {
-            if (!contest.isStarted()) {
-                throw new BusinessException(BusinessCode.CONTEST_NOT_STARTED, contest.getId(), contest.getStartTime());
-            }
+        Contest contest = contestService.getContestAndProblemsNotDisabled(contestId, null, locale);
+        if (!contest.isStarted()) {
+            throw new BusinessException(BusinessCode.CONTEST_NOT_STARTED, contest.getId(), contest.getStartTime());
+        }
+        return contestService.standingAsync(contestId).thenApply(standing -> {
             return new ModelAndView("contests/standing", ImmutableMap.<String, Object>builder()
                     .put("contestId", contestId)
                     .put("contest", contest)

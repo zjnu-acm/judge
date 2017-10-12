@@ -20,7 +20,6 @@ import cn.edu.zjnu.acm.judge.service.MockDataService;
 import java.util.Locale;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +69,6 @@ public class ContestControllerTest {
      *
      * @see ContestController#standingHtml(long, Locale)
      */
-    @Ignore
     @Test
     public void testStandingHtml() throws Exception {
         log.info("standingHtml");
@@ -84,7 +82,7 @@ public class ContestControllerTest {
         MvcResult asyncResult = mvc.perform(asyncDispatch(result))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.TEXT_HTML))
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andReturn();
     }
 

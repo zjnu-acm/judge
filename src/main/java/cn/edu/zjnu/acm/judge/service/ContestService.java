@@ -222,7 +222,6 @@ public class ContestService {
     }
 
     public CompletableFuture<List<UserStanding>> standingAsync(long id) {
-        getEnabledContest(id);
         return STANDINGS.computeIfAbsent(id, contestId -> CompletableFuture.supplyAsync(() -> {
             List<UserStanding> result = standing(contestId);
             STANDINGS.remove(id);
