@@ -182,10 +182,12 @@ public class ContestService {
         }
     }
 
-    public Map<Long, Integer> getNumMap(long id) {
+    public Map<Long, long[]> getProblemsMap(long id) {
         List<Problem> problems = contestMapper.getProblems(id, null, null);
         AtomicInteger atomic = new AtomicInteger();
-        return problems.stream().collect(ImmutableMap.toImmutableMap(Problem::getOrigin, __ -> atomic.getAndIncrement()));
+        return problems.stream().collect(ImmutableMap.toImmutableMap(Problem::getOrigin,
+                problem -> new long[]{atomic.getAndIncrement(), problem.getId()}
+        ));
     }
 
     public List<Long> submittedProblems(long id) {
@@ -201,7 +203,7 @@ public class ContestService {
         }
     }
 
-    public String toProblemIndex(int num) {
+    public String toProblemIndex(long num) {
         char t = (char) ('A' + num);
         return String.valueOf(t);
     }

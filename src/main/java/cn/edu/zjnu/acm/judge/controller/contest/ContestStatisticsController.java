@@ -80,15 +80,19 @@ public class ContestStatisticsController {
         sb.append("</tr>");
         log.debug("{}", sql);
 
-        Map<Long, Integer> numMap = contestService.getNumMap(contestId);
+        Map<Long, long[]> problemsMap = contestService.getProblemsMap(contestId);
         try (Connection conn = dataSource.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql.toString())) {
             ps.setLong(1, contestId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     long problemId = rs.getLong("problem_id");
-                    int num = numMap.getOrDefault(problemId, -1);
-                    sb.append("<tr><th><a href=showproblem?problem_id=").append(problemId).append(">").append(contestService.toProblemIndex(num)).append("</a></th>");
+                    long[] num = problemsMap.get(problemId);
+                    if (num != null) {
+                        sb.append("<tr><th><a href=contests/").append(contestId)
+                                .append("/problems/").append(num[1]).append(".html>")
+                                .append(contestService.toProblemIndex(num[0])).append("</a></th>");
+                    }
                     for (int i = 0; i < judgeStatus.length; ++i) {
                         long value = rs.getLong(judgeStatus[i]);
                         byScore[i] += value;

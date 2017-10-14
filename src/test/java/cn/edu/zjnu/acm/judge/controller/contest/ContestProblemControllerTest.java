@@ -25,7 +25,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
@@ -51,15 +50,19 @@ public class ContestProblemControllerTest {
     /**
      * Test of problems method, of class ContestProblemController.
      *
-     * @see ContestProblemController#problems(long, RedirectAttributes)
+     * @see ContestProblemController#problems(Model, Locale, long, Authentication)
      */
     @Test
     public void testProblems() throws Exception {
         log.info("problems");
         long contestId = mockDataService.contest().getId();
-        MvcResult result = mvc.perform(get("/contests/{contestId}/problems", contestId))
+        Locale locale = Locale.getDefault();
+        MvcResult result = mvc.perform(get("/contests/{contestId}/problems", contestId)
+                .locale(locale))
                 .andDo(print())
-                .andExpect(redirectedUrl("/showcontest?contest_id=" + contestId))
+                .andExpect(status().isOk())
+                .andExpect(view().name("contests/problems"))
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andReturn();
     }
 

@@ -18,6 +18,7 @@ package cn.edu.zjnu.acm.judge.controller.legacy;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -26,9 +27,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class LegacyController {
 
+    @Deprecated
     @GetMapping("/conteststanding")
-    public String contestStanding(@RequestParam("contest_id") long contestId) {
-        return "forward:/contests/" + contestId + "/standing";
+    public String contestStanding(@RequestParam("contest_id") long contestId,
+            RedirectAttributes redirectAttributes) {
+        redirectAttributes.addAttribute("contestId", contestId);
+        return "redirect:/contests/{contestId}/standing.html";
+    }
+
+    @Deprecated
+    @GetMapping("/showcontest")
+    public String showContest(@RequestParam("contest_id") long contestId,
+            RedirectAttributes redirectAttributes) {
+        redirectAttributes.addAttribute("contestId", contestId);
+        return "redirect:/contests/{contestId}/problems.html";
     }
 
     @Deprecated

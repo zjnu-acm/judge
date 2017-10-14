@@ -97,7 +97,7 @@ public class ContestControllerTest {
         long contestId = 1058;
         MvcResult result = mvc.perform(get("/contests/{contestId}", contestId))
                 .andDo(print())
-                .andExpect(redirectedUrl("/contests/" + contestId + "/problems"))
+                .andExpect(redirectedUrl("/contests/" + contestId + "/problems.html"))
                 .andReturn();
     }
 

@@ -18,9 +18,9 @@
                     <p align="center">
                         <font size="5" color="#339">
                             <span>Best solutions of Contest </span>
-                            <a th:href="@{/contests/{contestId}(contestId=${contestId})}">[[${contestId}]]</a>
+                            <a th:href="@{/contests/{contestId}.html(contestId=${contestId})}">[[${contestId}]]</a>
                             <span> Problem </span>
-                            <a th:href="@{/contests/{contestId}/problems/{problem_id}.html(contestId=${contestId},problem_id=${problem.id})}">[[${problem.id}]]</a>
+                            <a th:href="@{/contests/{contestId}/problems/{problemId}.html(contestId=${contestId},problemId=${problem.id})}">[[${problem.id}]]</a>
                         </font>
                     </p>
                     <table width="700" class="table-default problem-status table-back">
@@ -31,14 +31,14 @@
                                 <th width="15%">User</th>
                                 <th width="10%">
                                     <a class="sortable"
-                                       th:href="@{/contests/{contestId}/problems/{problem_id}/status.html(problem_id=${problem.id},sort='memory,time,code_length')}">Memory</a>
+                                       th:href="@{/contests/{contestId}/problems/{problemId}/status.html(contestId=${contestId},problemId=${problem.id},sort='memory,time,code_length')}">Memory</a>
                                 </th>
                                 <th width="10%">
                                     <a class="sortable"
-                                       th:href="@{/contests/{contestId}/problems/{problem_id}/status.html(problem_id=${problem.id},sort='time,memory,code_length')}">Time</a>
+                                       th:href="@{/contests/{contestId}/problems/{problemId}/status.html(contestId=${contestId},problemId=${problem.id},sort='time,memory,code_length')}">Time</a>
                                 </th>
                                 <th width="10%">Language</th>
-                                <th width="10%"><a class="sortable" th:href="@{/contests/{contestId}/problems/{problem_id}/status.html(problem_id=${problem.id},sort='code_length,time,memory')}">Code Length</a></th>
+                                <th width="10%"><a class="sortable" th:href="@{/contests/{contestId}/problems/{problemId}/status.html(contestId=${contestId},problemId=${problem.id},sort='code_length,time,memory')}">Code Length</a></th>
                                 <th width="25%">Submit Time</th>
                             </tr>
                         </thead>

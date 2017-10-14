@@ -11,7 +11,7 @@
         <table border="0" width="100%" th:if="${problems!=null}">
             <tr>
                 <td style="text-align:center" th:each="problem,it:${problems}" th:object="${problem}">
-                    <a th:href="@{/contests/{contestId}/problems/{pid}.html(contestId=${contestId},pid=*{id})}">
+                    <a th:href="@{/contests/{contestId}/problems/{problemId}.html(contestId=${contestId},problemId=*{id})}">
                         <b>[[${T(java.lang.Character).toString(65+it.index)}]]</b>
                     </a>
                 </td>
@@ -20,9 +20,9 @@
         <div th:replace="fragment/problem"></div>
         <p align="center" style="font-size: medium; color: #339">
             <span>[</span>
-            <a th:href="@{/submitpage(problem_id=${problem.origin},contest_id=${contestId})}">Submit</a>
+            <a th:href="@{/contests/{contestId}/problems/{problemId}/submit.html(contestId=${contestId},problemId=${problem.id})}">Submit</a>
             <span>]&nbsp;&nbsp;[</span>
-            <a th:href="@{/contests/{contest_id}/problems/{problem_id}/status.html(problem_id=${problem.id},contest_id=${contestId})}">Status</a>
+            <a th:href="@{/contests/{contestId}/problems/{problemId}/status.html(contestId=${contestId},problemId=${problem.id})}">Status</a>
             <span>]&nbsp;&nbsp; [</span>
             <a th:href="@{/bbs(problem_id=${problem.origin},contest_id=${contestId})}">Discuss</a>
             <span>]</span>

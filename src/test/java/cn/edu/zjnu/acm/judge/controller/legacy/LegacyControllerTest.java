@@ -14,11 +14,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
@@ -41,7 +42,7 @@ public class LegacyControllerTest {
     /**
      * Test of contestStanding method, of class LegacyController.
      *
-     * @see LegacyController#contestStanding(long)
+     * @see LegacyController#contestStanding(long, RedirectAttributes)
      */
     @Test
     public void testContestStanding() throws Exception {
@@ -49,7 +50,22 @@ public class LegacyControllerTest {
         long contestId = 0;
         MvcResult result = mvc.perform(get("/conteststanding").param("contest_id", Long.toString(contestId)))
                 .andDo(print())
-                .andExpect(forwardedUrl("/contests/" + contestId + "/standing"))
+                .andExpect(redirectedUrl("/contests/" + contestId + "/standing.html"))
+                .andReturn();
+    }
+
+    /**
+     * Test of showContest method, of class LegacyController.
+     *
+     * @see LegacyController#showContest(long, RedirectAttributes)
+     */
+    @Test
+    public void testShowContest() throws Exception {
+        log.info("showContest");
+        long contestId = 1058;
+        MvcResult result = mvc.perform(get("/showcontest").param("contest_id", Long.toString(contestId)))
+                .andDo(print())
+                .andExpect(redirectedUrl("/contests/" + contestId + "/problems.html"))
                 .andReturn();
     }
 

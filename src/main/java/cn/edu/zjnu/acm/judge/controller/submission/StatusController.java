@@ -66,9 +66,9 @@ public class StatusController {
                 .replaceQueryParam("bottom")
                 .toString();
         log.debug("query={}", query);
-        Map<Long, Integer> map = Collections.emptyMap();
+        Map<Long, long[]> problemsMap = Collections.emptyMap();
         if (contestId != null) {
-            map = contestService.getNumMap(contestId);
+            problemsMap = contestService.getProblemsMap(contestId);
         }
         try {
             problemId = Long.parseLong(pid);
@@ -76,10 +76,10 @@ public class StatusController {
             if (contestId != null && pid.length() == 1) {
                 // TODO the character is the index in the list.
                 int x = Character.toUpperCase(pid.charAt(0)) - 'A';
-                for (Map.Entry<Long, Integer> entry : map.entrySet()) {
+                for (Map.Entry<Long, long[]> entry : problemsMap.entrySet()) {
                     long key = entry.getKey();
-                    int value = entry.getValue();
-                    if (x == value) {
+                    long[] value = entry.getValue();
+                    if (x == value[0]) {
                         problemId = key;
                         break;
                     }
@@ -138,7 +138,7 @@ public class StatusController {
             String user_id1 = submission.getUser();
             long problem_id1 = submission.getProblem();
             Long contest_id1 = submission.getContest();
-            int num = map.getOrDefault(problem_id1, -1);
+            long[] num = problemsMap.getOrDefault(problem_id1, new long[]{-1});
             int score = submission.getScore();
             Instant inDate = submission.getInDate();
             String language1 = languageService.getLanguageName(submission.getLanguage());
@@ -149,16 +149,16 @@ public class StatusController {
                 color = "red";
             }
             sb.append("<tr align=center><td>").append(id).append("</td>");
-            String problemString;
-            if (num == -1) {
-                problemString = "" + problem_id1;
-            } else {
-                problemString = contestService.toProblemIndex(num);
-            }
             sb.append("<td><a href=userstatus?user_id=").append(user_id1)
-                    .append(">").append(user_id1).append("</a></td><td><a href=showproblem?problem_id=")
-                    .append(problem_id1).append(">").append(problemString).append("</a></td>");
-
+                    .append(">").append(user_id1).append("</a></td>");
+            if (contestId == null || num[0] == -1) {
+                sb.append("<td><a href=showproblem?problem_id=")
+                        .append(problem_id1).append(">").append(problem_id1).append("</a></td>");
+            } else {
+                sb.append("<td><a href=contests/")
+                        .append(contestId).append("/problems/").append(num[1])
+                        .append(".html>").append(contestService.toProblemIndex(num[0])).append("</a></td>");
+            }
             if (score == ResultType.COMPILE_ERROR) {
                 if (submissionService.canView(request, submission)) {
                     sb.append("<td><a href=\"showcompileinfo?solution_id=").append(id).append("\" target=_blank><font color=green>").append(ResultType.getResultDescription(score)).append("</font></a></td>");
