@@ -108,18 +108,17 @@ public class ProblemControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse().getContentAsString(), Problem.class).getId();
         assertNotNull(id);
-        assertNotNull(problemService.findOne(id));
 
-        assertFalse(problemService.findOne(id).getDisabled());
+        assertFalse(findOne(id).getDisabled());
         mvc.perform(patch("/api/problems/{id}.json", id).content("{\"disabled\":true}").contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        assertTrue(problemService.findOne(id).getDisabled());
+        assertTrue(findOne(id).getDisabled());
 
         mvc.perform(patch("/api/problems/{id}.json", id).content("{\"disabled\":false}").contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        assertFalse(problemService.findOne(id).getDisabled());
+        assertFalse(findOne(id).getDisabled());
 
         mvc.perform(delete("/api/problems/{id}.json", id))
                 .andDo(print())
@@ -135,8 +134,16 @@ public class ProblemControllerTest {
                 .andExpect(status().isNotFound());
         mvc.perform(delete("/api/problems/{id}.json", id))
                 .andExpect(status().isNotFound());
-        mvc.perform(patch("/api/problems/{id}.json", id).contentType(MediaType.APPLICATION_JSON).content("{}"))
+        mvc.perform(patch("/api/problems/{id}.json", id)
+                .content("{}").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
+    }
+
+    private Problem findOne(long id) throws Exception {
+        return objectMapper.readValue(mvc.perform(get("/api/problems/{id}.json", id))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse().getContentAsString(), Problem.class);
     }
 
 }

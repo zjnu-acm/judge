@@ -18,7 +18,6 @@ package cn.edu.zjnu.acm.judge.util.excel;
 import com.google.common.collect.ImmutableMap;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
@@ -88,8 +87,12 @@ class Metainfo<T> {
         return fieldMap.values().stream();
     }
 
-    public Map<String, Field> getFieldMap() {
-        return Collections.unmodifiableMap(fieldMap);
+    public Field getField(String name) {
+        return fieldMap.get(name);
+    }
+
+    int size() {
+        return fieldMap.size();
     }
 
     @Value

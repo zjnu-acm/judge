@@ -15,8 +15,9 @@
  */
 package cn.edu.zjnu.acm.judge.service;
 
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Maps;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
@@ -47,7 +48,7 @@ public class UserStanding {
     @Setter(AccessLevel.PACKAGE)
     private String nick;
 
-    private final Map<Long, ProblemTimePenalty> map = new HashMap<>(50);
+    private final Map<Long, ProblemTimePenalty> map = Maps.newHashMapWithExpectedSize(50);
 
     /**
      *
@@ -57,9 +58,7 @@ public class UserStanding {
      * @param penalty the number of wrong answer before user get accepted.
      */
     void add(long problem, Long time, long penalty) {
-        if (penalty < 0) {
-            throw new IllegalArgumentException("penalty < 0");
-        }
+        Preconditions.checkArgument(penalty >= 0, "penalty < 0");
         if (map.put(problem, new ProblemTimePenalty(time, penalty)) != null) {
             throw new IllegalStateException();
         }

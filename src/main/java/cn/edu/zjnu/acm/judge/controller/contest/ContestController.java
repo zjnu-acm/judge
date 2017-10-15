@@ -49,15 +49,14 @@ public class ContestController {
         if (!contest.isStarted()) {
             throw new BusinessException(BusinessCode.CONTEST_NOT_STARTED, contest.getId(), contest.getStartTime());
         }
-        return contestService.standingAsync(contestId).thenApply(standing -> {
-            return new ModelAndView("contests/standing", ImmutableMap.<String, Object>builder()
-                    .put("contestId", contestId)
-                    .put("contest", contest)
-                    .put("id", contestId)
-                    .put("problems", contest.getProblems())
-                    .put("standing", standing)
-                    .build());
-        });
+        return contestService.standingAsync(contestId).thenApply(standing
+                -> new ModelAndView("contests/standing", ImmutableMap.<String, Object>builder()
+                        .put("contestId", contestId)
+                        .put("contest", contest)
+                        .put("id", contestId)
+                        .put("problems", contest.getProblems())
+                        .put("standing", standing)
+                        .build()));
     }
 
     @GetMapping

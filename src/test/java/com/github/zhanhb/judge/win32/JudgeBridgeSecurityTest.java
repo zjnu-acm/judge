@@ -27,11 +27,11 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.AssumptionViolatedException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assume.assumeTrue;
 
 /**
  *
@@ -42,12 +42,10 @@ public class JudgeBridgeSecurityTest {
 
     @BeforeClass
     public static void setUpClass() {
-        if (!Platform.isWindows()) {
-            throw new AssumptionViolatedException("not windows");
-        }
+        assumeTrue("not windows", Platform.isWindows());
     }
 
-    private final Validator validator = new SimpleValidator();
+    private final Validator validator = SimpleValidator.NORMAL;
 
     @Test
     public void testExecute() throws IOException, JudgeException {

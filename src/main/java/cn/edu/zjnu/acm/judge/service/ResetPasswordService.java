@@ -46,7 +46,7 @@ public class ResetPasswordService {
     @PostConstruct
     public void init() {
         cache = CacheBuilder.newBuilder()
-                .expireAfterAccess(1, TimeUnit.HOURS)
+                .expireAfterWrite(1, TimeUnit.HOURS)
                 .recordStats()
                 .build();
     }
@@ -59,7 +59,7 @@ public class ResetPasswordService {
     }
 
     public String getOrCreate(String id) {
-        return asMap().computeIfAbsent(id, __ -> Utility.getRandomString(16));
+        return asMap().compute(id, (__, old) -> old != null ? old : Utility.getRandomString(16));
     }
 
     @Nullable

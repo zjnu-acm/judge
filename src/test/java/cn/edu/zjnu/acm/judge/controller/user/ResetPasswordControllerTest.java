@@ -85,7 +85,7 @@ public class ResetPasswordControllerTest {
      * Test of changePassword method, of class ResetPasswordController.
      *
      * @see ResetPasswordController#changePassword(HttpServletRequest,
-     * HttpServletResponse)
+     * HttpServletResponse, String, String)
      */
     @Test
     public void testChangePassword() throws Exception {

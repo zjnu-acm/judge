@@ -1,6 +1,7 @@
 package cn.edu.zjnu.acm.judge.controller.submission;
 
 import cn.edu.zjnu.acm.judge.Application;
+import cn.edu.zjnu.acm.judge.service.MockDataService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -17,9 +18,11 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
@@ -34,6 +37,8 @@ public class RejudgeControllerTest {
     @Autowired
     private WebApplicationContext context;
     private MockMvc mvc;
+    @Autowired
+    private MockDataService mockDataService;
 
     @Before
     public void setUp() {
@@ -49,10 +54,14 @@ public class RejudgeControllerTest {
     @Test
     public void testRejudgeSolution() throws Exception {
         log.info("rejudgeSolution");
-        long solution_id = 0;
+        long solutionId = mockDataService.submission().getId();
         MvcResult result = mvc.perform(get("/admin.rejudge")
                 .accept(MediaType.TEXT_HTML, MediaType.APPLICATION_JSON)
-                .param("solution_id", Long.toString(solution_id)))
+                .param("solution_id", Long.toString(solutionId)))
+                .andDo(print())
+                .andExpect(request().asyncStarted())
+                .andReturn();
+        mvc.perform(asyncDispatch(result))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

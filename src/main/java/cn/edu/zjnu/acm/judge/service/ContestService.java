@@ -27,12 +27,12 @@ import cn.edu.zjnu.acm.judge.util.EnumUtils;
 import cn.edu.zjnu.acm.judge.util.SpecialCall;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -209,7 +209,7 @@ public class ContestService {
     }
 
     public List<UserStanding> standing(long id) {
-        Map<String, UserStanding> hashMap = new HashMap<>(80);
+        Map<String, UserStanding> hashMap = Maps.newHashMapWithExpectedSize(80);
         contestMapper.standing(id).forEach(standing
                 -> hashMap.computeIfAbsent(standing.getUser(), UserStanding::new)
                         .add(standing.getProblem(), standing.getTime(), standing.getPenalty())

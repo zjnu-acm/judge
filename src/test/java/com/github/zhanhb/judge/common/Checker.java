@@ -30,7 +30,8 @@ enum Checker {
     tle(Status.TIME_LIMIT_EXCEED),
     mle(Status.MEMORY_LIMIT_EXCEED),
     ole(Status.OUTPUT_LIMIT_EXCEED),
-    re(Status.RUNTIME_ERROR);
+    re(Status.RUNTIME_ERROR),
+    pe(Status.PRESENTATION_ERROR);
 
     private final Status status;
 

@@ -1,5 +1,6 @@
 package com.github.zhanhb.judge.win32;
 
+import com.google.common.base.Preconditions;
 import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.WinBase;
 import com.sun.jna.platform.win32.WinNT.HANDLE;
@@ -19,9 +20,8 @@ public class SafeHandle implements Closeable {
     private final AtomicBoolean closed = new AtomicBoolean();
 
     public SafeHandle(HANDLE handle) {
-        if (WinBase.INVALID_HANDLE_VALUE.equals(Objects.requireNonNull(handle))) {
-            throw new IllegalArgumentException("invalid handle value");
-        }
+        Objects.requireNonNull(handle);
+        Preconditions.checkArgument(!WinBase.INVALID_HANDLE_VALUE.equals(handle), "invalid handle value");
         this.handle = handle;
     }
 

@@ -15,9 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.config.thymeleaf;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
+import com.google.common.collect.ImmutableSet;
 import java.util.Set;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
 import org.thymeleaf.processor.IProcessor;
@@ -42,7 +40,9 @@ class SpacesDialect extends AbstractProcessorDialect {
 
     @Override
     public Set<IProcessor> getProcessors(String dialectPrefix) {
-        return Collections.unmodifiableSet(new HashSet<>(Arrays.asList(new EmptyTextProcessor(templateMode, getDialectProcessorPrecedence()), new AttributesInnerWhitespacesProcessor(templateMode, getDialectProcessorPrecedence()))));
+        return ImmutableSet.of(
+                new EmptyTextProcessor(templateMode, getDialectProcessorPrecedence()),
+                new AttributesInnerWhitespacesProcessor(templateMode, getDialectProcessorPrecedence()));
     }
 
 }

@@ -15,8 +15,8 @@
  */
 package cn.edu.zjnu.acm.judge.exception;
 
+import java.util.Objects;
 import lombok.Getter;
-import lombok.NonNull;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -33,9 +33,9 @@ public class MessageException extends RuntimeException {
         this(message, HttpStatus.BAD_REQUEST);
     }
 
-    public MessageException(String message, @NonNull HttpStatus httpStatus) {
+    public MessageException(String message, HttpStatus httpStatus) {
         super(message);
-        this.httpStatus = httpStatus;
+        this.httpStatus = Objects.requireNonNull(httpStatus);
     }
 
     // no stack trace

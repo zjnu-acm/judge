@@ -1,5 +1,5 @@
-def res = []
-def cin = new java.util.Scanner(System.in)
-while(cin.hasNextInt()) res.add cin.nextInt() + cin.nextInt()
-if(res.size())res.remove(res.size()-1)
-for(item in res) println item
+for (def cin = new Scanner(System.in); cin.hasNextInt();) {
+    def a = cin.nextInt(), b = cin.nextInt();
+    if (a == 0 && b == 0) break;
+    println a + b;
+}

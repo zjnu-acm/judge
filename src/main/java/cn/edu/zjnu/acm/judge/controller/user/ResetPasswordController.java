@@ -20,10 +20,12 @@ import cn.edu.zjnu.acm.judge.mapper.UserMapper;
 import cn.edu.zjnu.acm.judge.service.ResetPasswordService;
 import cn.edu.zjnu.acm.judge.service.SystemService;
 import cn.edu.zjnu.acm.judge.util.ValueCheck;
+import com.google.common.collect.ImmutableMap;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -108,9 +110,7 @@ public class ResetPasswordController {
             String vc = resetPasswordService.getOrCreate(user.getId());
             String url = getPath(request, "/resetPassword.html?vc=", vc + "&u=", user.getId());
             String title = systemService.getResetPasswordTitle();
-            HashMap<String, Object> map = new HashMap<>(2);
-            map.put("url", url);
-            map.put("title", title);
+            Map<String, Object> map = ImmutableMap.of("url", url, "title", Objects.toString(title, ""));
 
             String content = templateEngine.process("users/password", new Context(locale, map));
 

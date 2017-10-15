@@ -124,12 +124,13 @@ public enum WindowsExecutor implements Executor {
             pi = createProcess(command, hIn.getValue(), hOut.getValue(), hErr.getValue(), redirectErrorStream, workDirectory);
         }
 
-        try (Sandbox sandbox = new Sandbox();
+        try (Job job = new Job();
                 SafeHandle hProcess = new SafeHandle(pi.hProcess);
                 SafeHandle hThread = new SafeHandle(pi.hThread)) {
             JudgeProcess judgeProcess = new JudgeProcess(hProcess.getValue());
             try {
-                sandbox.beforeProcessStart(hProcess.getValue());
+                job.init();
+                job.assignProcess(hProcess.getValue());
 
                 int dwCount = Kernel32.INSTANCE.ResumeThread(hThread.getValue());
                 Kernel32Util.assertTrue(dwCount != -1);
@@ -141,7 +142,7 @@ public enum WindowsExecutor implements Executor {
                         judgeProcess.terminate(Status.MEMORY_LIMIT_EXCEED);
                         break;
                     }
-                    long time = judgeProcess.getActiveTime() - 1000; // extra 1000 millis
+                    long time = judgeProcess.getActiveTime() - 2000; // extra 2000 millis
                     if (time > timeLimit || judgeProcess.getTime() > timeLimit) {
                         judgeProcess.terminate(Status.TIME_LIMIT_EXCEED);
                         judgeProcess.join(TERMINATE_TIMEOUT);
@@ -173,8 +174,11 @@ public enum WindowsExecutor implements Executor {
                 status = Status.RUNTIME_ERROR;
             }
             long time = judgeProcess.getTime();
+            if (status == Status.TIME_LIMIT_EXCEED) {
+                time = ((time - timeLimit - 1) % 200 + 200) % 200 + 1 + timeLimit;
+            }
             return ExecuteResult.builder()
-                    .time(status == Status.TIME_LIMIT_EXCEED ? ((time - timeLimit - 1) % 200 + 200) % 200 + 1 + timeLimit : time)
+                    .time(time)
                     .memory(judgeProcess.getPeakMemory())
                     .code(status)
                     .exitCode(exitCode)

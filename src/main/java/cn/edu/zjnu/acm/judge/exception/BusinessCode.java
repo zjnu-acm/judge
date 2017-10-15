@@ -24,8 +24,6 @@ import org.springframework.http.HttpStatus;
 public enum BusinessCode {
 
     NOT_FOUND("未找到", HttpStatus.NOT_FOUND),
-    UNAUTHORIZED("未登录", HttpStatus.UNAUTHORIZED),
-    FORBIDDEN("没有权限", HttpStatus.FORBIDDEN),
     CONTEST_STARTED("比赛已经开始"),
     CONTEST_NOT_STARTED("onlinejudge.contest.not.started"),
     CONTEST_ENDED("比赛已经结束"),
@@ -46,9 +44,10 @@ public enum BusinessCode {
     PASSWORD_TOO_SHORT("onlinejudge.password.short"),
     PASSWORD_HAS_SPACE("onlinejudge.password.space"),
     PASSWORD_INVALID_CHARACTER("onlinejudge.password.invalid"),
+    INVALID_EXCEL("onlinejudge.excel.invalid"),
     RESET_PASSWORD_FORBIDDEN("由于安全原因，无法重置管理员的密码", HttpStatus.FORBIDDEN),
     IMPORT_USER_EXISTS("部分用户已经存在，请移除或选择存在策略后再导入"),
-    IMPORT_USER_EXISTS_CHANGE("用户已经变化，请重新导入Excel"),
+    IMPORT_USER_EXISTS_CHANGE("用户已经变化，请重新导入Excel", HttpStatus.CONFLICT),
     IMPORT_USER_RESET_PASSWORD_FORBIDDEN("由于安全原因，无法更新管理员的密码", HttpStatus.FORBIDDEN);
 
     private final HttpStatus status;

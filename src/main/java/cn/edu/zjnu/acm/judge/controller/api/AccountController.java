@@ -25,6 +25,7 @@ import cn.edu.zjnu.acm.judge.service.ResetPasswordService;
 import cn.edu.zjnu.acm.judge.util.excel.ExcelUtil;
 import cn.edu.zjnu.acm.judge.util.excel.Type;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -94,7 +95,9 @@ public class AccountController {
 
     @PostMapping(consumes = MULTIPART_FORM_DATA_VALUE)
     public List<Account> parseExcel(@RequestParam("file") MultipartFile multipartFile, Locale locale) throws IOException {
-        return accountService.parseExcel(multipartFile.getBytes(), locale);
+        try (InputStream inputStream = multipartFile.getInputStream()) {
+            return accountService.parseExcel(inputStream, locale);
+        }
     }
 
     @PostMapping(value = "import", consumes = APPLICATION_JSON_VALUE)

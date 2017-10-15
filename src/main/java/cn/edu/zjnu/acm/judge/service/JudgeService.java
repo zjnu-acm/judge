@@ -34,6 +34,7 @@ import com.github.zhanhb.judge.common.Validator;
 import com.github.zhanhb.judge.win32.ProcessCreationHelper;
 import com.github.zhanhb.judge.win32.SpecialValidator;
 import java.io.BufferedReader;
+import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -177,7 +178,7 @@ public class JudgeService {
         String scorePerCase = new DecimalFormat("0.#").format(100.0 / caseNum);
         final Validator validator = isSpecial
                 ? new SpecialValidator(specialFile.toString(), work)
-                : new SimpleValidator();
+                : SimpleValidator.PE_AS_ACCEPTED;
         try {
             ExecuteResult[] ers = JudgeBridge.INSTANCE.judge(optionses, false, validator);
             for (ExecuteResult er : ers) {
@@ -219,7 +220,7 @@ public class JudgeService {
 
     private boolean compile(RunRecord runRecord) throws IOException {
         String source = runRecord.getSource();
-        if (!StringUtils.hasText(source)) {
+        if (StringUtils.isEmpty(source)) {
             return false;
         }
         Path work = judgeConfiguration.getWorkDirectory(runRecord.getSubmissionId());
@@ -275,32 +276,34 @@ public class JudgeService {
     }
 
     private void judgeInternal(RunRecord runRecord) {
-        try {
+        try (Closeable c = () -> delete(judgeConfiguration.getWorkDirectory(runRecord.getSubmissionId()))) {
             if (compile(runRecord)) {
                 runProcess(runRecord);
             }
-            delete(judgeConfiguration.getWorkDirectory(runRecord.getSubmissionId()));
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);
         }
     }
 
     @SuppressWarnings("CallToThreadYield")
-    private void delete(Path path) {
+    private void delete(Path path) throws IOException {
+        Objects.requireNonNull(path, "path");
         if (!judgeConfiguration.isDeleteTempFile()) {
             return;
         }
-        try {
-            DeleteHelper.delete(Objects.requireNonNull(path));
-        } catch (IOException ignore) {
-            // delete again
-            System.gc();
-            Thread.yield();
+        // delete 5 times
+        IOException lastException = null;
+        for (int i = 0; i < 5; ++i) {
             try {
                 DeleteHelper.delete(path);
-            } catch (IOException ignore2) {
+                return;
+            } catch (IOException ex) {
+                System.gc();
+                Thread.yield();
+                lastException = ex;
             }
         }
+        throw lastException;
     }
 
 }

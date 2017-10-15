@@ -26,14 +26,15 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
-import org.junit.AssumptionViolatedException;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assume.assumeTrue;
 
 /**
  *
@@ -44,9 +45,7 @@ public class JudgeBridgeTest {
 
     @BeforeClass
     public static void setUpClass() {
-        if (!Platform.isWindows()) {
-            throw new AssumptionViolatedException("not windows");
-        }
+        assumeTrue("not windows", Platform.isWindows());
     }
 
     private static String build(String... args) {
@@ -56,7 +55,7 @@ public class JudgeBridgeTest {
     }
 
     private final boolean stopOnError = false;
-    private final Validator validator = new SimpleValidator();
+    private final Validator validator = SimpleValidator.NORMAL;
     private final String groovy = getGroovy(System.getProperty("java.class.path"));
     private Path program;
     private Path data;
@@ -69,8 +68,8 @@ public class JudgeBridgeTest {
         URI uri = JudgeBridgeTest.class.getClassLoader().getResource("sample/program").toURI();
         program = Paths.get(uri);
         data = program.resolve("../data").toRealPath();
-        input = data.resolve("a.in");
-        output = data.resolve("a.out");
+        input = data.resolve("b.in");
+        output = data.resolve("b.out");
         tmp = Files.createDirectories(Paths.get("target/tmp"));
     }
 
@@ -104,12 +103,18 @@ public class JudgeBridgeTest {
         checkGroovy(Checker.wa);
     }
 
+    @Test
+    public void testPE() throws Exception {
+        checkGroovy(Checker.pe);
+    }
+
     @After
     public void tearDown() throws IOException {
         DeleteHelper.delete(tmp);
     }
 
-    private void test0(String executable, Checker checker) throws IOException, JudgeException {
+    @SneakyThrows
+    private void test(String executable, Checker checker) {
         Options options = Options.builder().command(build("java", "-cp", groovy, groovy.ui.GroovyMain.class.getName(), executable))
                 .inputFile(input)
                 .outputFile(tmp.resolve(output.getFileName()))
@@ -123,14 +128,6 @@ public class JudgeBridgeTest {
         ExecuteResult er = JudgeBridge.INSTANCE.judge(new Options[]{options}, stopOnError, validator)[0];
         log.info("{}", er);
         assertEquals(executable, checker.getStatus(), er.getCode());
-    }
-
-    private void test(String executable, Checker checker) {
-        try {
-            test0(executable, checker);
-        } catch (IOException | JudgeException ex) {
-            throw new RuntimeException(ex);
-        }
     }
 
     private void checkGroovy(Checker checker) throws IOException {

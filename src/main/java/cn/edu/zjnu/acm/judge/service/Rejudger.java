@@ -1,7 +1,6 @@
 package cn.edu.zjnu.acm.judge.service;
 
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
-import cn.edu.zjnu.acm.judge.mapper.UserProblemMapper;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import lombok.extern.slf4j.Slf4j;
@@ -16,16 +15,10 @@ public class Rejudger {
     private JudgePool judgePool;
     @Autowired
     private SubmissionMapper submissionMapper;
-    @Autowired
-    private UserProblemMapper userProblemMapper;
 
     public CompletableFuture<?> byProblemId(long problemId) {
         List<Long> submissions = submissionMapper.findAllByProblemIdAndResultNotAccept(problemId);
-        CompletableFuture<?> future = judgePool.addAll(submissions.stream().mapToLong(Long::longValue).toArray());
-        return future.thenRun(() -> {
-            userProblemMapper.updateProblem(problemId);
-            userProblemMapper.updateUsers();
-        });
+        return judgePool.addAll(submissions.stream().mapToLong(Long::longValue).toArray());
     }
 
     public CompletableFuture<?> bySubmissionId(long submissionId) {

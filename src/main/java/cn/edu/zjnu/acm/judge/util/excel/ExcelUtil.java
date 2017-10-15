@@ -15,14 +15,17 @@
  */
 package cn.edu.zjnu.acm.judge.util.excel;
 
+import cn.edu.zjnu.acm.judge.exception.BusinessCode;
+import cn.edu.zjnu.acm.judge.exception.BusinessException;
+import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -31,7 +34,6 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -41,9 +43,7 @@ import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import lombok.SneakyThrows;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
-import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.openxml4j.exceptions.NotOfficeXmlFileException;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.CellValue;
@@ -51,8 +51,7 @@ import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFFormulaEvaluator;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 
@@ -112,17 +111,15 @@ public class ExcelUtil {
         });
     }
 
-    public static <T> List<T> parse(byte[] content, Class<T> type, @Nullable Locale locale) throws IOException {
-        XSSFWorkbook xssfWorkbook;
+    public static <T> List<T> parse(InputStream inputStream, Class<T> type, @Nullable Locale locale) throws IOException {
+        Workbook workbook;
         try {
-            xssfWorkbook = new XSSFWorkbook(new ByteArrayInputStream(content));
-        } catch (NotOfficeXmlFileException ignore) { // not office 2007, try office 2003
-            HSSFWorkbook workbook = new HSSFWorkbook(new ByteArrayInputStream(content));
-            HSSFFormulaEvaluator evaluator = new HSSFFormulaEvaluator(workbook);
-            return parse(workbook, evaluator, type, locale);
+            workbook = WorkbookFactory.create(inputStream);
+        } catch (InvalidFormatException ex) {
+            throw new BusinessException(BusinessCode.INVALID_EXCEL);
         }
-        XSSFFormulaEvaluator evaluator = new XSSFFormulaEvaluator(xssfWorkbook);
-        return parse(xssfWorkbook, evaluator, type, locale);
+        FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
+        return parse(workbook, evaluator, type, locale);
     }
 
     private static <T> List<T> parse(Workbook workbook, FormulaEvaluator evaluator, Class<T> type, @Nullable Locale locale) {
@@ -133,26 +130,25 @@ public class ExcelUtil {
             return Collections.emptyList();
         }
         Row firstRow = rows.next();
-        Map<String, Field> fieldMap = metainfo.getFieldMap();
-        Map<Integer, String> fields = new HashMap<>(fieldMap.size());
+        Map<Integer, String> columnIndexToFieldName = Maps.newHashMapWithExpectedSize(metainfo.size());
         for (Iterator<Cell> it = firstRow.cellIterator(); it.hasNext();) {
             Cell cell = it.next();
             JsonElement jsonElement = parseAsJsonElement(cell, evaluator);
             if (jsonElement != null) {
-                Field field = fieldMap.get(jsonElement.getAsString());
+                Field field = metainfo.getField(jsonElement.getAsString());
                 if (field != null) {
                     String name = field.getName();
                     int index = cell.getColumnIndex();
-                    fields.put(index, name);
+                    columnIndexToFieldName.put(index, name);
                 }
             }
         }
-        if (fields.isEmpty()) {
+        if (columnIndexToFieldName.isEmpty()) {
             return Collections.emptyList();
         }
         List<T> result = new ArrayList<>(sheet.getLastRowNum() - sheet.getFirstRowNum());
         while (rows.hasNext()) {
-            result.add(parseRow(evaluator, rows.next(), fields, type));
+            result.add(parseRow(evaluator, rows.next(), columnIndexToFieldName, type));
         }
         return result;
     }

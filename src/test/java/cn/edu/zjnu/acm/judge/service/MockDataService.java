@@ -15,9 +15,13 @@
  */
 package cn.edu.zjnu.acm.judge.service;
 
+import cn.edu.zjnu.acm.judge.data.form.SubmissionQueryForm;
 import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.domain.Problem;
+import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.domain.User;
+import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
+import com.google.common.base.Strings;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
@@ -42,6 +46,10 @@ public class MockDataService {
     private ProblemService problemService;
     @Autowired
     private ContestService contestService;
+    @Autowired
+    private SubmissionService submissionService;
+    @Autowired
+    private SubmissionMapper submissionMapper;
 
     public MockDataService() {
         final AtomicLong seed = new AtomicLong(System.currentTimeMillis());
@@ -118,6 +126,18 @@ public class MockDataService {
             contestService.save(contest);
         }
         return contest;
+    }
+
+    public Submission submission(int languageId, String source, String userId, String ip, long problemId) {
+        submissionService.submit(languageId, source, userId, ip, problemId);
+        return submissionMapper.findAllByCriteria(SubmissionQueryForm.builder().user(userId).size(1).build()).iterator().next();
+    }
+
+    public Submission submission() {
+        String userId = user().getId();
+        long problemId = problem().getId();
+        String source = Strings.repeat(" ", 20);
+        return submission(0, source, userId, "::1", problemId);
     }
 
 }

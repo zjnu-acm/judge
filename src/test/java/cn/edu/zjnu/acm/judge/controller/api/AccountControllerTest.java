@@ -56,6 +56,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
@@ -223,6 +224,22 @@ public class AccountControllerTest {
         account.setEmail(user.getEmail());
         account.setSchool(user.getSchool());
         return account;
+    }
+
+    /**
+     * Test of passwordStatus method, of class AccountController.
+     *
+     * @see AccountController#passwordStatus()
+     */
+    @Test
+    public void testPasswordStatus() throws Exception {
+        log.info("passwordStatus");
+        MvcResult result = mvc.perform(get("/api/accounts/password/status.json"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content").isMap())
+                .andExpect(jsonPath("$.stats").isMap())
+                .andReturn();
     }
 
 }

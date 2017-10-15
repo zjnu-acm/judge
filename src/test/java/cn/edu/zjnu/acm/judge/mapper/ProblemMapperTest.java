@@ -38,11 +38,7 @@ public class ProblemMapperTest {
 
     @Autowired
     private ProblemMapper instance;
-    private String lang = "en";
-
-    void setLang(String lang) {
-        this.lang = lang;
-    }
+    private final String lang = "en";
 
     /**
      * Test of findOne method, of class ProblemMapper.
@@ -50,8 +46,11 @@ public class ProblemMapperTest {
     @Test
     public void testFindOne() {
         log.debug("findOne");
-        instance.findOne(0, lang);
-        instance.findOne(1000, lang);
+        String[] locales = {lang, null};
+        for (String locale : locales) {
+            instance.findOne(0, locale);
+            instance.findOne(1000, locale);
+        }
     }
 
     /**

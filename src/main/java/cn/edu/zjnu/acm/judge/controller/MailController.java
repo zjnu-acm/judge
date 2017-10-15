@@ -16,11 +16,9 @@
 package cn.edu.zjnu.acm.judge.controller;
 
 import cn.edu.zjnu.acm.judge.domain.Mail;
-import cn.edu.zjnu.acm.judge.exception.BusinessCode;
-import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.MailMapper;
-import cn.edu.zjnu.acm.judge.mapper.UserMapper;
+import cn.edu.zjnu.acm.judge.service.AccountService;
 import cn.edu.zjnu.acm.judge.service.UserDetailsServiceImpl;
 import cn.edu.zjnu.acm.judge.util.JudgeUtils;
 import java.util.List;
@@ -44,7 +42,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class MailController {
 
     @Autowired
-    private UserMapper userMapper;
+    private AccountService accountService;
     @Autowired
     private MailMapper mailMapper;
 
@@ -94,9 +92,7 @@ public class MailController {
         if (content.length() > 40000) {
             throw new MessageException("Sorry, content too long", HttpStatus.PAYLOAD_TOO_LARGE);
         }
-        if (userMapper.findOne(to) == null) {
-            throw new BusinessException(BusinessCode.USER_NOT_FOUND, to);
-        }
+        accountService.findOne(to);
 
         mailMapper.save(Mail.builder()
                 .from(userId)

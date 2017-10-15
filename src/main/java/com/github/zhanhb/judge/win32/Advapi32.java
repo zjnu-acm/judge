@@ -45,10 +45,7 @@ public interface Advapi32 extends com.sun.jna.platform.win32.Advapi32 {
 
         public static final List<String> FIELDS = createFieldsOrder("Value");
 
-        public byte[] Value = new byte[6]; // the length of the value must be 6
-
-        public SID_IDENTIFIER_AUTHORITY() {
-        }
+        public byte[] Value; // the length of the value must be 6
 
         public SID_IDENTIFIER_AUTHORITY(byte... values) {
             if (values.length != 6) {

@@ -2,6 +2,7 @@ package cn.edu.zjnu.acm.judge.generator;
 
 import cn.edu.zjnu.acm.judge.Application;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,7 +19,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -70,23 +70,19 @@ import static org.junit.Assert.assertEquals;
 @SpringBootTest(classes = Application.class)
 public class MockGenerator {
 
-    private static final Map<Class<?>, String> DEFAULT_VALUES;
+    private static final Map<Class<?>, String> DEFAULT_VALUES = ImmutableMap.<Class<?>, String>builder()
+            .put(boolean.class, "false")
+            .put(byte.class, "0")
+            .put(char.class, "0")
+            .put(short.class, "0")
+            .put(int.class, "0")
+            .put(long.class, "0")
+            .put(float.class, "0")
+            .put(double.class, "0")
+            .put(String.class, "\"\"")
+            .build();
     private static final Class<?> mainClass = Application.class;
     private static final Path outputDir = Paths.get("target/mock");
-
-    static {
-        Map<Class<?>, String> map = new HashMap<>(9, 1);
-        map.put(boolean.class, "false");
-        map.put(byte.class, "0");
-        map.put(char.class, "0");
-        map.put(short.class, "0");
-        map.put(int.class, "0");
-        map.put(long.class, "0");
-        map.put(float.class, "0");
-        map.put(double.class, "0");
-        map.put(String.class, "\"\"");
-        DEFAULT_VALUES = map;
-    }
 
     private static String f(String x) {
         return Character.toUpperCase(x.charAt(0)) + x.substring(1);

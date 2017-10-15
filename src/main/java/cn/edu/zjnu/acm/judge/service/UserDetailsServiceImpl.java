@@ -18,9 +18,8 @@ package cn.edu.zjnu.acm.judge.service;
 import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserRoleMapper;
+import com.google.common.collect.ImmutableList;
 import java.security.Principal;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import javax.annotation.Nonnull;
@@ -41,10 +40,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private static final List<GrantedAuthority> ROLE_ADMIN = Collections.unmodifiableList(AuthorityUtils.createAuthorityList("ROLE_ADMIN", "ROLE_SOURCE_BROWSER", "ROLE_USER"));
-    private static final List<GrantedAuthority> ROLE_SOURCE_BROWSER = Collections.unmodifiableList(AuthorityUtils.createAuthorityList("ROLE_SOURCE_BROWSER", "ROLE_USER"));
-    private static final List<GrantedAuthority> ROLE_USER = Collections.unmodifiableList(AuthorityUtils.createAuthorityList("ROLE_USER"));
-    private static final List<List<GrantedAuthority>> ROLES = Arrays.asList(ROLE_USER, ROLE_SOURCE_BROWSER, ROLE_ADMIN);
+    private static final List<GrantedAuthority> ROLE_ADMIN = ImmutableList.copyOf(AuthorityUtils.createAuthorityList("ROLE_ADMIN", "ROLE_SOURCE_BROWSER", "ROLE_USER"));
+    private static final List<GrantedAuthority> ROLE_SOURCE_BROWSER = ImmutableList.copyOf(AuthorityUtils.createAuthorityList("ROLE_SOURCE_BROWSER", "ROLE_USER"));
+    private static final List<GrantedAuthority> ROLE_USER = ImmutableList.copyOf(AuthorityUtils.createAuthorityList("ROLE_USER"));
+    private static final List<List<GrantedAuthority>> ROLES = ImmutableList.of(ROLE_USER, ROLE_SOURCE_BROWSER, ROLE_ADMIN);
 
     public static boolean isAdminLoginned(HttpServletRequest request) {
         return request.isUserInRole("ADMIN");

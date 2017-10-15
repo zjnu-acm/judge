@@ -1,10 +1,8 @@
 package cn.edu.zjnu.acm.judge.controller.user;
 
 import cn.edu.zjnu.acm.judge.domain.UserProblem;
-import cn.edu.zjnu.acm.judge.exception.BusinessCode;
-import cn.edu.zjnu.acm.judge.exception.BusinessException;
-import cn.edu.zjnu.acm.judge.mapper.UserMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserProblemMapper;
+import cn.edu.zjnu.acm.judge.service.AccountService;
 import java.util.BitSet;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -26,15 +24,15 @@ public class UserCompareController {
     @Autowired
     private UserProblemMapper userProblemMapper;
     @Autowired
-    private UserMapper userMapper;
+    private AccountService accountService;
 
     @GetMapping("/usercmp")
     @SuppressWarnings("CollectionWithoutInitialCapacity")
     public String compare(Model model,
             @RequestParam("uid1") String userId1,
             @RequestParam("uid2") String userId2) {
-        checkUser(userId1);
-        checkUser(userId2);
+        accountService.findOne(userId1);
+        accountService.findOne(userId2);
         BitSet aac = new BitSet(), awa = new BitSet(), bac = new BitSet(), bwa = new BitSet();
         fill(userId1, aac, awa);
         fill(userId2, bac, bwa);
@@ -48,12 +46,6 @@ public class UserCompareController {
         model.addAttribute("e", calc(bwa, BitSet::andNot, awa));
         model.addAttribute("f", calc(awa, BitSet::and, bwa));
         return "users/compare";
-    }
-
-    private void checkUser(String uid) {
-        if (userMapper.findOne(uid) == null) {
-            throw new BusinessException(BusinessCode.USER_NOT_FOUND, uid);
-        }
     }
 
     private void fill(String userId, BitSet ac, BitSet wa) {

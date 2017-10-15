@@ -36,15 +36,19 @@ public class Advapi32Util {
         Kernel32Util.assertTrue(Advapi32.INSTANCE.CreateRestrictedToken(
                 existingTokenHandle, // ExistingTokenHandle
                 flags, // Flags
-                sidsToDisable != null ? sidsToDisable.length : 0, // DisableSidCount
+                getLength(sidsToDisable), // DisableSidCount
                 sidsToDisable, // SidsToDisable
-                privilegesToDelete != null ? privilegesToDelete.length : 0, // DeletePrivilegeCount
+                getLength(privilegesToDelete), // DeletePrivilegeCount
                 privilegesToDelete, // PrivilegesToDelete
-                sidsToRestrict != null ? sidsToRestrict.length : 0, // RestrictedSidCount
+                getLength(sidsToRestrict), // RestrictedSidCount
                 sidsToRestrict, // SidsToRestrict
                 newTokenHandle // NewTokenHandle
         ));
         return newTokenHandle.getValue();
+    }
+
+    private static <T> int getLength(T[] array) {
+        return array == null ? 0 : array.length;
     }
 
     public static WinNT.HANDLE openProcessToken(WinNT.HANDLE processHandle, int desiredAccess) {

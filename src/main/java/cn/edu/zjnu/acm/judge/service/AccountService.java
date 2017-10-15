@@ -28,6 +28,7 @@ import cn.edu.zjnu.acm.judge.util.EnumUtils;
 import cn.edu.zjnu.acm.judge.util.ValueCheck;
 import cn.edu.zjnu.acm.judge.util.excel.ExcelUtil;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
@@ -73,8 +74,8 @@ public class AccountService {
         return userMapper.findAllByExport(form, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort()));
     }
 
-    public List<Account> parseExcel(byte[] content, @Nullable Locale locale) throws IOException {
-        List<Account> accounts = ExcelUtil.parse(content, Account.class, locale).stream()
+    public List<Account> parseExcel(InputStream inputStream, @Nullable Locale locale) throws IOException {
+        List<Account> accounts = ExcelUtil.parse(inputStream, Account.class, locale).stream()
                 .filter(account -> StringUtils.hasText(account.getId()))
                 .collect(Collectors.toList());
         if (CollectionUtils.isEmpty(accounts)) {

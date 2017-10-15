@@ -36,20 +36,23 @@ public class Pageables {
         PageRequest b = new PageRequest(5, 20, sort);
         PageRequest c = new PageRequest(9, 1);
         Pageable d = new PageRequest(6, 21);
-        return new Pageable[]{a, b, c, d};
+        return new Pageable[]{a, b, c, d, buggy()};
     }
 
     public static Pageable[] users() {
         Pageable a = new PageRequest(0, 50);
 
         Pageable b = new PageRequest(0, 50, new Sort(new Sort.Order(Sort.Direction.DESC, "solved"), new Sort.Order(Sort.Direction.ASC, "submit")));
+        return new Pageable[]{a, b, buggy()};
+    }
 
-        Sort.Order order = new Sort.Order(Sort.Direction.DESC, "solved");
+    private Pageable buggy() {
+        Sort.Order order = new Sort.Order(Sort.Direction.DESC, "dummy");
         ArrayList<Sort.Order> list = new ArrayList<>(1);
         list.add(order);
-        Pageable c = new PageRequest(0, 50, new Sort(list));
+        Pageable pageable = new PageRequest(0, 50, new Sort(list));
         list.clear();
-        return new Pageable[]{a, b, c};
+        return pageable;
     }
 
 }

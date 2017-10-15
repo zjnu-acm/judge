@@ -151,4 +151,12 @@ public class SubmissionService {
         return judgePool.add(submissionId);
     }
 
+    public String findCompileInfo(long submissionId) {
+        Submission submission = submissionMapper.findOne(submissionId);
+        if (submission == null) {
+            throw new BusinessException(BusinessCode.SUBMISSION_NOT_FOUND, submissionId);
+        }
+        return submissionMapper.findCompileInfoById(submissionId);
+    }
+
 }

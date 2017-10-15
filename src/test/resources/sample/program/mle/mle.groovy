@@ -1,4 +1,4 @@
 def a = [];
-while(true) {
+while (true) {
     a.add(new byte[1000000])
 }

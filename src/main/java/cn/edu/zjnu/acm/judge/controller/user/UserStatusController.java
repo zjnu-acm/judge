@@ -1,10 +1,9 @@
 package cn.edu.zjnu.acm.judge.controller.user;
 
 import cn.edu.zjnu.acm.judge.domain.User;
-import cn.edu.zjnu.acm.judge.exception.BusinessCode;
-import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserProblemMapper;
+import cn.edu.zjnu.acm.judge.service.AccountService;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,16 +20,15 @@ public class UserStatusController {
     private UserMapper userMapper;
     @Autowired
     private UserProblemMapper userProblemMapper;
+    @Autowired
+    private AccountService accountService;
 
     @GetMapping("/userstatus")
     @SuppressWarnings("AssignmentToMethodParameter")
     public String userStatus(Model model,
             @RequestParam(value = "size", defaultValue = "3") int display,
             @RequestParam(value = "user_id", required = false) String userId) {
-        User user = userMapper.findOne(userId);
-        if (user == null) {
-            throw new BusinessException(BusinessCode.USER_NOT_FOUND, userId);
-        }
+        User user = accountService.findOne(userId);
         display = Math.max(Math.min(display, 9), 1);
         userId = user.getId();
         long rank = userMapper.rank(userId) + 1;

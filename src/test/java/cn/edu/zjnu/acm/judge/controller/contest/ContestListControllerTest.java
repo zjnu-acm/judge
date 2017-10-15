@@ -61,7 +61,7 @@ public class ContestListControllerTest {
     @Test
     public void testScheduledContests() throws Exception {
         log.info("scheduledContests");
-        MvcResult result = mvc.perform(get("/scheduledcontests.json"))
+        MvcResult result = mvc.perform(get("/scheduledcontests"))
                 .andDo(print())
                 .andExpect(isOkOrFound())
                 .andReturn();

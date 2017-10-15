@@ -110,7 +110,7 @@ public interface UserMapper {
             + "<set>"
             + "<if test='user.email!=null'>email=nullif(#{user.email},''),</if>"
             + "<if test='user.nick!=null'>nick=#{user.nick},</if>"
-            + "<if test='user.school!=null'>school=COALESCE(#{user.school},''),</if>"
+            + "<if test='user.school!=null'>school=#{user.school},</if>"
             + "<if test='user.password!=null'>password=#{user.password},</if>"
             + "<if test='user.modifiedTime!=null'>modified_time=#{user.modifiedTime},</if>"
             + "<if test='user.accesstime!=null'>accesstime=#{user.accesstime},</if>"
@@ -133,7 +133,7 @@ public interface UserMapper {
             + "#{item}"
             + "</foreach>"
             + "</script>")
-    long countAllByUserIds(@Param("userIds") Collection<String> collect);
+    long countAllByUserIds(@Param("userIds") Collection<String> userIds);
 
     /**
      * {@link AccountImportForm.ExistPolicy}

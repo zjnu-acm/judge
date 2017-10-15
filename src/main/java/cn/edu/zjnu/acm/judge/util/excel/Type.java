@@ -17,7 +17,7 @@ package cn.edu.zjnu.acm.judge.util.excel;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.http.MediaType;
 
 /**
@@ -35,7 +35,7 @@ public enum Type {
     XLSX(new MediaType("application", "vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
         @Override
         Workbook createWorkBook() {
-            return new XSSFWorkbook();
+            return new SXSSFWorkbook();
         }
     };
 
