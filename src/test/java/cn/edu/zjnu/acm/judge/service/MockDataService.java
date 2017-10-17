@@ -21,15 +21,21 @@ import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
-import com.google.common.base.Strings;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
+import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import static org.junit.Assume.assumeTrue;
 
 /**
  *
@@ -129,15 +135,37 @@ public class MockDataService {
     }
 
     public Submission submission(int languageId, String source, String userId, String ip, long problemId) {
-        submissionService.submit(languageId, source, userId, ip, problemId);
+        assumeTrue("not windows", com.sun.jna.Platform.isWindows());
+        CompletableFuture<?> future = submissionService.submit(languageId, source, userId, ip, problemId);
+        try {
+            future.get();
+        } catch (InterruptedException ex) {
+            throw new AssertionError(ex);
+        } catch (ExecutionException ex) {
+            throw new RuntimeException(ex.getCause());
+        }
         return submissionMapper.findAllByCriteria(SubmissionQueryForm.builder().user(userId).size(1).build()).iterator().next();
     }
 
-    public Submission submission() {
+    public Submission submission() throws IOException {
         String userId = user().getId();
         long problemId = problem().getId();
-        String source = Strings.repeat(" ", 20);
+        String source = Lazy.SAMPLE_SOURCE;
         return submission(0, source, userId, "::1", problemId);
+    }
+
+    @SuppressWarnings("UtilityClassWithoutPrivateConstructor")
+    private static class Lazy {
+
+        static String SAMPLE_SOURCE;
+
+        static {
+            try {
+                SAMPLE_SOURCE = new String(IOUtils.toByteArray(MockDataService.class.getResourceAsStream("/sample/program/ac/accept.cpp")), StandardCharsets.UTF_8);
+            } catch (IOException ex) {
+                throw new ExceptionInInitializerError(ex);
+            }
+        }
     }
 
 }

@@ -1,6 +1,10 @@
 build: off
 services:
   mysql
+before_test:
+  - 'xcopy /S /Y .appveyor\* src\main\'
+  - 'SET MINGW_HOME=C:\MinGW'
+  - 'SET PATH=%MINGW_HOME%\bin;%PATH%'
 test_script:
   - mvnw -Dspring.datasource.password=Password12! -Djna.nosys=true clean install -B
 cache:
