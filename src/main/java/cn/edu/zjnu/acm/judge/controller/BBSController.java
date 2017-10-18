@@ -14,8 +14,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -41,11 +39,11 @@ public class BBSController {
     private MessageService messageService;
 
     @GetMapping(value = "/bbs", produces = TEXT_HTML_VALUE)
-    public ResponseEntity<String> bbs(
-            HttpServletRequest request,
+    public String bbs(HttpServletRequest request,
             @RequestParam(value = "problem_id", required = false) Long problemId,
             @RequestParam(value = "size", defaultValue = "50") final int threadLimit,
-            @RequestParam(value = "top", defaultValue = "99999999") final long top) {
+            @RequestParam(value = "top", defaultValue = "99999999") final long top,
+            Model model) {
         int limit = Math.max(Math.min(threadLimit, 500), 0);
 
         final long mint = messageMapper.mint(top, problemId, limit, 0);
@@ -53,9 +51,10 @@ public class BBSController {
 
         long currentDepth = 0;
         long lastThreadId = 0;
+        model.addAttribute("title", "Messages");
 
-        StringBuilder sb = new StringBuilder("<html><head><title>Messages</title></head><body>"
-                + "<table width=100% class=\"table-default table-back\"><tr><td><ul>");
+        StringBuilder sb = new StringBuilder("<table width=100% class=\"table-default table-back\">"
+                + "<tr><td><ul>");
         long maxThreadId = messages.stream().mapToLong(Message::getThread).max().orElse(0);
         final long maxt = messageMapper.maxt(maxThreadId, problemId, limit, 999999999999L);
         for (Message message : messages) {
@@ -101,12 +100,14 @@ public class BBSController {
         query.replaceQueryParam("top", Long.toString(maxt));
         sb.append("&nbsp;&nbsp;&nbsp;[<a href=\"").append(query).append("\">Previous</a>]");
         query.replaceQueryParam("top", Long.toString(mint));
-        sb.append("&nbsp;&nbsp;&nbsp;[<a href=\"").append(query).append("\">Next</a>]<br/></center><form action=\"postpage\">");
+        sb.append("&nbsp;&nbsp;&nbsp;[<a href=\"").append(query)
+                .append("\">Next</a>]<br/></center><form action=\"postpage\">");
         if (problemId != null) {
             sb.append("<input type=\"hidden\" name=\"problem_id\" value=\"").append(problemId).append("\">");
         }
-        sb.append("<button type=\"submit\">Post new message</button></form></body></html>");
-        return ResponseEntity.ok().contentType(MediaType.valueOf("text/html;charset=UTF-8")).body(sb.toString());
+        sb.append("<button type=\"submit\">Post new message</button></form>");
+        model.addAttribute("content", sb.toString());
+        return "legacy";
     }
 
     @Secured("ROLE_USER")
@@ -141,8 +142,9 @@ public class BBSController {
 
     @Secured("ROLE_USER")
     @GetMapping(value = "/showmessage", produces = TEXT_HTML_VALUE)
-    public ResponseEntity<String> showMessage(
-            @RequestParam("message_id") long messageId) {
+    public String showMessage(
+            @RequestParam("message_id") long messageId,
+            Model model) {
         Message message = messageMapper.findOne(messageId);
         if (message == null) {
             throw new MessageException("No such message", HttpStatus.NOT_FOUND);
@@ -157,7 +159,9 @@ public class BBSController {
         final long thread = message.getThread();
         final long order = message.getOrder();
 
-        StringBuilder sb = new StringBuilder("<html><head><title>Detail of message</title></head><body>" + "<table border=\"0\" width=\"980\" class=\"table-back\"><tr><td>" + "<center><h2><font color=\"blue\">")
+        model.addAttribute("title", "Detail of message");
+        StringBuilder sb = new StringBuilder("<table border=\"0\" width=\"980\" class=\"table-back\">"
+                + "<tr><td>" + "<center><h2><font color=\"blue\">")
                 .append(HtmlEscape.escapeHtml4Xml(title))
                 .append("</font></h2></center>" + "Posted by <b><a href=\"userstatus?user_id=")
                 .append(uid).append("\"><font color=\"black\">")
@@ -220,8 +224,9 @@ public class BBSController {
                 .append(HtmlEscape.escapeHtml4Xml(!title.regionMatches(true, 0, "re:", 0, 3) ? "Reply:" + title : title))
                 .append("\" size=75><br/>" + "Content:<br/><textarea rows=15 name=content cols=75>")
                 .append(JudgeUtils.getReplyString(message.getContent()))
-                .append("</textarea><br/><button type=\"submit\">reply</button></td></tr></table></body></html>");
-        return ResponseEntity.ok().contentType(MediaType.valueOf("text/html;charset=UTF-8")).body(sb.toString());
+                .append("</textarea><br/><button type=\"submit\">reply</button></td></tr></table>");
+        model.addAttribute("content", sb.toString());
+        return "legacy";
     }
 
 }

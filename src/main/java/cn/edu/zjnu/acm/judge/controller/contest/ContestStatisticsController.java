@@ -15,8 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,7 +35,7 @@ public class ContestStatisticsController {
     private LanguageService languageService;
 
     @GetMapping(value = "/conteststatistics", produces = TEXT_HTML_VALUE)
-    public ResponseEntity<String> contestStatistics(
+    public String contestStatistics(
             HttpServletRequest request,
             Model model,
             @RequestParam("contest_id") long contestId) throws SQLException {
@@ -45,9 +43,10 @@ public class ContestStatisticsController {
         Contest contest = contestService.findOneByIdAndNotDisabled(contestId);
         String title = contest.getTitle();
         Instant endTime = contest.getEndTime();
-        request.setAttribute("contestId", contestId);
+        model.addAttribute("contestId", contestId);
 
-        StringBuilder sb = new StringBuilder("<html><head><title>Contest Statistics</title></head><body><p align=center><font size=5 color=blue>Contest Statistics--");
+        model.addAttribute("title", "Contest Statistics");
+        StringBuilder sb = new StringBuilder("<p align=center><font size=5 color=blue>Contest Statistics--");
         sb.append(HtmlEscape.escapeHtml4Xml(title));
         if (!contest.isEnded()) {
             if (endTime != null) {
@@ -136,8 +135,9 @@ public class ContestStatisticsController {
                 sb.append("<td>").append(byLanguage[i]).append("</td>");
             }
         }
-        sb.append("</tr></table></body></html>");
-        return ResponseEntity.ok().contentType(MediaType.valueOf("text/html;charset=UTF-8")).body(sb.toString());
+        sb.append("</tr></table>");
+        model.addAttribute("content", sb.toString());
+        return "legacy";
     }
 
 }

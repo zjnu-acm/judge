@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.jsp.PageContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -125,10 +124,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AuthenticationEntryPoint authenticationEntryPoint() {
-        return (request, response, authException) -> {
-            request.setAttribute(PageContext.EXCEPTION, authException);
-            request.getRequestDispatcher("/unauthorized").forward(request, response);
-        };
+        return (request, response, authException) -> request.getRequestDispatcher("/unauthorized").forward(request, response);
     }
 
     private AuthenticationFailureHandler failureHandler() {

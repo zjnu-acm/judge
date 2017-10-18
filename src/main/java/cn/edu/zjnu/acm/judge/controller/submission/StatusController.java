@@ -22,10 +22,9 @@ import java.util.OptionalLong;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,7 +49,7 @@ public class StatusController {
 
     @GetMapping(value = {"/status", "/submissions"}, produces = TEXT_HTML_VALUE)
     @SuppressWarnings("AssignmentToMethodParameter")
-    public ResponseEntity<String> status(HttpServletRequest request,
+    public String status(HttpServletRequest request,
             @RequestParam(value = "problem_id", defaultValue = "") String pid,
             @RequestParam(value = "contest_id", required = false) Long contestId,
             @RequestParam(value = "language", defaultValue = "-1") int language,
@@ -59,7 +58,8 @@ public class StatusController {
             @RequestParam(value = "score", required = false) Integer sc,
             @RequestParam(value = "user_id", defaultValue = "") String userId,
             @RequestParam(value = "top", required = false) final Long top,
-            Authentication authentication) {
+            Authentication authentication,
+            Model model) {
         long problemId = 0;
         String query = URLBuilder.fromRequest(request)
                 .replaceQueryParam("top")
@@ -106,10 +106,11 @@ public class StatusController {
                 .mapToLong(Submission::getId)
                 .max();
 
-        request.setAttribute("contestId", contestId);
+        model.addAttribute("contestId", contestId);
+        model.addAttribute("title", "Problem Status List");
 
-        StringBuilder sb = new StringBuilder("<html><head><title>Problem Status List</title></head><body>"
-                + "<p align=center><font size=4 color=#339>Problem Status List</font></p>"
+        StringBuilder sb = new StringBuilder(
+                "<p align=center><font size=4 color=#339>Problem Status List</font></p>"
                 + "<form method=get action='status'/><label for='pid'>Problem ID:</label><input id='pid' type=text name=problem_id size=8 value=\"")
                 .append(HtmlEscape.escapeHtml4Xml(pid)).append("\"/> <label for='uid'>User ID:</label><input id='uid' type=text name=user_id size=15 value=\"")
                 .append(HtmlEscape.escapeHtml4Xml(userId)).append("\"/>"
@@ -202,8 +203,9 @@ public class StatusController {
         sb.append("</table><p align=center>[<a href=\"").append(query).append("\">Top</a>]&nbsp;&nbsp;");
         query += query.contains("?") ? '&' : '?';
         sb.append("[<a href=\"").append(query).append("bottom=").append(max.isPresent() ? max.getAsLong() : "").append("\"><font color=blue>Previous Page</font></a>]" + "&nbsp;&nbsp;[<a href=\"").append(query).append("top=").append(min.isPresent() ? min.getAsLong() : "").append("\"><font color=blue>Next Page</font></a>]&nbsp;&nbsp;</p>"
-                + "<script>!function(w){setTimeout(function(){w.location.reload()},60000)}(this)</script></body></html>");
-        return ResponseEntity.ok().contentType(MediaType.valueOf("text/html;charset=UTF-8")).body(sb.toString());
+                + "<script>!function(w){setTimeout(function(){w.location.reload()},60000)}(this)</script>");
+        model.addAttribute("content", sb.toString());
+        return "legacy";
     }
 
 }

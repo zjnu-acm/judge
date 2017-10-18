@@ -15,7 +15,6 @@
  */
 package cn.edu.zjnu.acm.judge.config;
 
-import javax.servlet.Filter;
 import javax.servlet.Servlet;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -36,15 +35,6 @@ public class RegistrationBeanConfiguration {
         ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(servlet, "/images/rand.jpg");
         servletRegistrationBean.addInitParameter(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_CONFIG_KEY, "word");
         return servletRegistrationBean;
-    }
-
-    @Bean
-    @Deprecated
-    public FilterRegistrationBean sitemesh() {
-        Filter filter = new com.opensymphony.sitemesh.webapp.SiteMeshFilter();
-        FilterRegistrationBean bean = new FilterRegistrationBean(filter);
-        bean.addUrlPatterns("/bbs", "/conteststatistics", "/showmessage", "/status"); // don't pass to sitemesh as possible
-        return bean;
     }
 
     @Bean
