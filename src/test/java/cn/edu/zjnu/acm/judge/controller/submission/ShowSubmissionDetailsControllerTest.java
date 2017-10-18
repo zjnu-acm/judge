@@ -3,13 +3,12 @@ package cn.edu.zjnu.acm.judge.controller.submission;
 import cn.edu.zjnu.acm.judge.Application;
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.service.MockDataService;
-import javax.servlet.Filter;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -18,16 +17,14 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+@AutoConfigureMockMvc(printOnlyOnFailure = false)
 @RunWith(SpringRunner.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
@@ -36,17 +33,9 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 public class ShowSubmissionDetailsControllerTest {
 
     @Autowired
-    private WebApplicationContext context;
     private MockMvc mvc;
     @Autowired
-    private Filter springSecurityFilterChain;
-    @Autowired
     private MockDataService mockDataService;
-
-    @Before
-    public void setUp() {
-        mvc = webAppContextSetup(context).addFilter(springSecurityFilterChain).build();
-    }
 
     /**
      * Test of showSolutionDetails method, of class
@@ -63,7 +52,6 @@ public class ShowSubmissionDetailsControllerTest {
         long solutionId = submission.getId();
         MvcResult result = mvc.perform(get("/showsolutiondetails").with(user(submission.getUser()))
                 .param("solution_id", Long.toString(solutionId)))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(view().name("submissions/detail"))

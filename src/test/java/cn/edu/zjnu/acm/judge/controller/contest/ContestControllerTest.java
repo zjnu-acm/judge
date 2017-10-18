@@ -19,10 +19,10 @@ import cn.edu.zjnu.acm.judge.Application;
 import cn.edu.zjnu.acm.judge.service.MockDataService;
 import java.util.Locale;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -30,22 +30,20 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 /**
  *
  * @author zhanhb
  */
+@AutoConfigureMockMvc(printOnlyOnFailure = false)
 @RunWith(SpringRunner.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
@@ -54,15 +52,9 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 public class ContestControllerTest {
 
     @Autowired
-    private WebApplicationContext context;
     private MockMvc mvc;
     @Autowired
     private MockDataService mockDataService;
-
-    @Before
-    public void setUp() {
-        mvc = webAppContextSetup(context).build();
-    }
 
     /**
      * Test of standingHtml method, of class ContestController.
@@ -76,11 +68,9 @@ public class ContestControllerTest {
         Locale locale = Locale.getDefault();
         MvcResult result = mvc.perform(get("/contests/{contestId}/standing", contestId)
                 .locale(locale))
-                .andDo(print())
                 .andExpect(request().asyncStarted())
                 .andReturn();
         MvcResult asyncResult = mvc.perform(asyncDispatch(result))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andReturn();
@@ -96,7 +86,6 @@ public class ContestControllerTest {
         log.info("index");
         long contestId = 1058;
         MvcResult result = mvc.perform(get("/contests/{contestId}", contestId))
-                .andDo(print())
                 .andExpect(redirectedUrl("/contests/" + contestId + "/problems.html"))
                 .andReturn();
     }

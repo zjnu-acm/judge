@@ -17,27 +17,25 @@ package cn.edu.zjnu.acm.judge.config;
 
 import cn.edu.zjnu.acm.judge.Application;
 import com.github.zhanhb.ckfinder.connector.autoconfigure.CKFinderProperties;
-import javax.servlet.Filter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 /**
  *
  * @author zhanhb
  */
+@AutoConfigureMockMvc(printOnlyOnFailure = false)
 @RunWith(SpringRunner.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
@@ -46,23 +44,17 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 public class CKFinderTest {
 
     @Autowired
-    private WebApplicationContext context;
+    private MockMvc mvc;
     @Autowired
     private CKFinderProperties properties;
-    @Autowired
-    private Filter springSecurityFilterChain;
 
     @Test
     public void test() throws Exception {
-        log.info("filters: {}", springSecurityFilterChain);
-        MockMvc mvc = webAppContextSetup(context).addFilters(springSecurityFilterChain).build();
         String[] path = properties.getServlet().getPath();
         for (String string : path) {
             mvc.perform(get(string))
-                    .andDo(print())
                     .andExpect(forwardedUrl("/unauthorized"));
         }
-
     }
 
 }

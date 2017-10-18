@@ -4,12 +4,11 @@ import cn.edu.zjnu.acm.judge.Application;
 import cn.edu.zjnu.acm.judge.domain.Mail;
 import cn.edu.zjnu.acm.judge.mapper.MailMapper;
 import cn.edu.zjnu.acm.judge.service.MockDataService;
-import javax.servlet.Filter;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -19,18 +18,16 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+@AutoConfigureMockMvc(printOnlyOnFailure = false)
 @RunWith(SpringRunner.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
@@ -39,19 +36,11 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 public class MailControllerTest {
 
     @Autowired
-    private WebApplicationContext context;
     private MockMvc mvc;
-    @Autowired
-    private Filter springSecurityFilterChain;
     @Autowired
     private MockDataService mockDataService;
     @Autowired
     private MailMapper mailMapper;
-
-    @Before
-    public void setUp() {
-        mvc = webAppContextSetup(context).addFilter(springSecurityFilterChain).build();
-    }
 
     /**
      * Test of delete method, of class MailController.
@@ -65,7 +54,6 @@ public class MailControllerTest {
         long mailId = newMail(mockDataService.user().getId(), userId).getId();
         MvcResult result = mvc.perform(get("/deletemail").with(user(userId))
                 .param("mail_id", Long.toString(mailId)))
-                .andDo(print())
                 .andExpect(status().isFound())
                 .andExpect(redirectedUrl("/mail"))
                 .andReturn();
@@ -85,7 +73,6 @@ public class MailControllerTest {
         MvcResult result = mvc.perform(get("/mail").with(user(userId))
                 .param("size", Integer.toString(size))
                 .param("start", Long.toString(start)))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(view().name("mails/list"))
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
@@ -108,7 +95,6 @@ public class MailControllerTest {
                 .param("title", title)
                 .param("to", to)
                 .param("content", content))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(view().name("mails/sendsuccess"))
                 .andReturn();
@@ -128,7 +114,6 @@ public class MailControllerTest {
         MvcResult result = mvc.perform(get("/sendpage").with(user(userId))
                 .param("reply", Long.toString(reply))
                 .param("to", to))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(view().name("mails/sendpage"))
                 .andReturn();
@@ -146,7 +131,6 @@ public class MailControllerTest {
         long mailId = newMail(mockDataService.user().getId(), userId).getId();
         MvcResult result = mvc.perform(get("/showmail").with(user(userId))
                 .param("mail_id", Long.toString(mailId)))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(view().name("mails/view"))
                 .andReturn();

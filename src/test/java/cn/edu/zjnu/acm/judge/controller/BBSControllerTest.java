@@ -20,12 +20,11 @@ import cn.edu.zjnu.acm.judge.mapper.MessageMapper;
 import cn.edu.zjnu.acm.judge.service.MessageService;
 import cn.edu.zjnu.acm.judge.service.MockDataService;
 import java.util.Objects;
-import javax.servlet.Filter;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -37,25 +36,23 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.anonymous;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 /**
  *
  * @author zhanhb
  */
+@AutoConfigureMockMvc(printOnlyOnFailure = false)
 @RunWith(SpringRunner.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
@@ -64,21 +61,13 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 public class BBSControllerTest {
 
     @Autowired
-    private WebApplicationContext context;
     private MockMvc mvc;
     @Autowired
     private MessageService messageService;
     @Autowired
     private MessageMapper messageMapper;
     @Autowired
-    private Filter springSecurityFilterChain;
-    @Autowired
     private MockDataService mockDataService;
-
-    @Before
-    public void setUp() {
-        mvc = webAppContextSetup(context).addFilters(springSecurityFilterChain).build();
-    }
 
     /**
      * Test of bbs method, of class BBSController.
@@ -95,7 +84,6 @@ public class BBSControllerTest {
                 .param("problem_id", Objects.toString(problem_id, ""))
                 .param("size", Integer.toString(size))
                 .param("top", Long.toString(top)))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andReturn();
@@ -105,8 +93,7 @@ public class BBSControllerTest {
         log.info("postpage");
         Long problem_id = null;
         return mvc.perform(get("/postpage").with(postProcessor)
-                .param("problem_id", Objects.toString(problem_id, "")))
-                .andDo(print());
+                .param("problem_id", Objects.toString(problem_id, "")));
     }
 
     /**
@@ -154,7 +141,6 @@ public class BBSControllerTest {
                 .param("parent_id", Objects.toString(parent_id, ""))
                 .param("content", content)
                 .param("title", title))
-                .andDo(print())
                 .andExpect(status().isFound())
                 .andExpect(redirectedUrl("/bbs"))
                 .andReturn();
@@ -173,7 +159,6 @@ public class BBSControllerTest {
         messageService.save(null, null, userId, "title", "content");
         mvc.perform(get("/showmessage").with(user(userId))
                 .param("message_id", Long.toString(message_id)))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andReturn();

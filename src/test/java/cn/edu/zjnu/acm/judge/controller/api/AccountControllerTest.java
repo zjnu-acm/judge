@@ -29,10 +29,10 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -45,7 +45,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.MultipartFile;
 
 import static org.junit.Assert.assertEquals;
@@ -54,16 +53,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 /**
  *
  * @author zhanhb
  */
+@AutoConfigureMockMvc(printOnlyOnFailure = false)
 @RunWith(SpringRunner.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
@@ -73,7 +71,6 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 public class AccountControllerTest {
 
     @Autowired
-    private WebApplicationContext context;
     private MockMvc mvc;
     @Autowired
     private ObjectMapper objectMapper;
@@ -83,11 +80,6 @@ public class AccountControllerTest {
     private MockDataService mockDataService;
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    @Before
-    public void setUp() {
-        mvc = webAppContextSetup(context).build();
-    }
 
     /**
      * Test of findAll method, of class AccountController.
@@ -106,7 +98,6 @@ public class AccountControllerTest {
                 .param("nick", nick)
                 .param("query", query)
                 .param("disabled", Objects.toString(disabled, "")))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn();
@@ -126,7 +117,6 @@ public class AccountControllerTest {
         user = user.toBuilder().school("test school").password("empty").build();
         mvc.perform(patch("/api/accounts/{userId}.json", userId)
                 .content(objectMapper.writeValueAsString(user)).contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
                 .andExpect(status().isNoContent())
                 .andReturn();
         assertEquals("test school", accountService.findOne(userId).getSchool());
@@ -149,7 +139,6 @@ public class AccountControllerTest {
 
         MvcResult result = mvc.perform(patch("/api/accounts/{userId}/password.json", userId)
                 .content(objectMapper.writeValueAsString(form)).contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
                 .andExpect(status().isNoContent())
                 .andReturn();
         assertTrue(passwordEncoder.matches(newPassword, accountService.findOne(userId).getPassword()));
@@ -212,7 +201,6 @@ public class AccountControllerTest {
     private MvcResult expect(AccountImportForm form, HttpStatus status) throws Exception {
         return mvc.perform(post("/api/accounts/import.json")
                 .content(objectMapper.writeValueAsString(form)).contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
                 .andExpect(status().is(status.value()))
                 .andReturn();
     }
@@ -235,7 +223,6 @@ public class AccountControllerTest {
     public void testPasswordStatus() throws Exception {
         log.info("passwordStatus");
         MvcResult result = mvc.perform(get("/api/accounts/password/status.json"))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content").isMap())
                 .andExpect(jsonPath("$.stats").isMap())

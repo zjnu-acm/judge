@@ -3,10 +3,10 @@ package cn.edu.zjnu.acm.judge.controller.api;
 import cn.edu.zjnu.acm.judge.Application;
 import java.util.Locale;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -15,14 +15,12 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+@AutoConfigureMockMvc(printOnlyOnFailure = false)
 @RunWith(SpringRunner.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
@@ -32,13 +30,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 public class LocaleControllerTest {
 
     @Autowired
-    private WebApplicationContext context;
     private MockMvc mvc;
-
-    @Before
-    public void setUp() {
-        mvc = webAppContextSetup(context).build();
-    }
 
     /**
      * Test of current method, of class LocaleController.
@@ -51,7 +43,6 @@ public class LocaleControllerTest {
         Locale locale = Locale.getDefault();
         MvcResult result = mvc.perform(get("/api/locales/current.json")
                 .locale(locale))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn();
@@ -69,7 +60,6 @@ public class LocaleControllerTest {
         boolean support = false;
         MvcResult result = mvc.perform(get("/api/locales/{id}.json", id)
                 .param("support", Boolean.toString(support)))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn();
@@ -84,7 +74,6 @@ public class LocaleControllerTest {
     public void testFindAll() throws Exception {
         log.info("findAll");
         MvcResult result = mvc.perform(get("/api/locales.json"))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn();
@@ -100,7 +89,6 @@ public class LocaleControllerTest {
         log.info("supported");
         boolean all = false;
         MvcResult result = mvc.perform(get("/api/locales.json").param("all", Boolean.toString(all)))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn();

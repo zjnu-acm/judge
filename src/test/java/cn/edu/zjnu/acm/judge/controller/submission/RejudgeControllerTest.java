@@ -17,6 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
@@ -25,18 +26,16 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.Matchers.hasItemInArray;
 import static org.junit.Assume.assumeThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+@AutoConfigureMockMvc(printOnlyOnFailure = false)
 @RunWith(SpringRunner.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
@@ -45,7 +44,6 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 public class RejudgeControllerTest {
 
     @Autowired
-    private WebApplicationContext context;
     private MockMvc mvc;
     @Autowired
     private MockDataService mockDataService;
@@ -59,7 +57,6 @@ public class RejudgeControllerTest {
 
     @Before
     public void setUp() throws IOException, URISyntaxException {
-        mvc = webAppContextSetup(context).build();
         submission = mockDataService.submission();
         Path dataDir = judgeConfiguration.getDataDirectory(submission.getProblem());
         CopyHelper.copy(Paths.get(RejudgeControllerTest.class.getResource("/sample/data").toURI()), dataDir);
@@ -86,11 +83,9 @@ public class RejudgeControllerTest {
         MvcResult result = mvc.perform(get("/admin.rejudge")
                 .accept(MediaType.TEXT_HTML, MediaType.APPLICATION_JSON)
                 .param("solution_id", Long.toString(solutionId)))
-                .andDo(print())
                 .andExpect(request().asyncStarted())
                 .andReturn();
         mvc.perform(asyncDispatch(result))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn();
@@ -108,7 +103,6 @@ public class RejudgeControllerTest {
         MvcResult result = mvc.perform(get("/admin.rejudge")
                 .accept(MediaType.TEXT_HTML, MediaType.APPLICATION_JSON)
                 .param("problem_id", Long.toString(problem_id)))
-                .andDo(print())
                 .andExpect(status().isAccepted())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn();

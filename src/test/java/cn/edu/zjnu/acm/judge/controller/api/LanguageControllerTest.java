@@ -4,10 +4,10 @@ import cn.edu.zjnu.acm.judge.Application;
 import cn.edu.zjnu.acm.judge.domain.Language;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -16,17 +16,15 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+@AutoConfigureMockMvc(printOnlyOnFailure = false)
 @RunWith(SpringRunner.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
@@ -36,15 +34,9 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 public class LanguageControllerTest {
 
     @Autowired
-    private WebApplicationContext context;
     private MockMvc mvc;
     @Autowired
     private ObjectMapper objectMapper;
-
-    @Before
-    public void setUp() {
-        mvc = webAppContextSetup(context).build();
-    }
 
     /**
      * Test of findAll method, of class LanguageController.
@@ -55,7 +47,6 @@ public class LanguageControllerTest {
     public void testFindAll() throws Exception {
         log.info("findAll");
         MvcResult result = mvc.perform(get("/api/languages.json"))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn();
@@ -77,7 +68,6 @@ public class LanguageControllerTest {
                 .build();
         MvcResult result = mvc.perform(post("/api/languages.json")
                 .content(objectMapper.writeValueAsString(language)).contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
                 .andExpect(status().isNoContent())
                 .andReturn();
     }
@@ -92,7 +82,6 @@ public class LanguageControllerTest {
         log.info("findOne");
         long id = 0;
         MvcResult result = mvc.perform(get("/api/languages/{id}.json", id))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn();
@@ -114,7 +103,6 @@ public class LanguageControllerTest {
                 .build();
         MvcResult result = mvc.perform(put("/api/languages/{id}.json", id)
                 .content(objectMapper.writeValueAsString(request)).contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
                 .andExpect(status().isNoContent())
                 .andReturn();
     }
@@ -129,7 +117,6 @@ public class LanguageControllerTest {
         log.info("delete");
         long id = 0;
         MvcResult result = mvc.perform(delete("/api/languages/{id}.json", id))
-                .andDo(print())
                 .andExpect(status().isNoContent())
                 .andReturn();
     }

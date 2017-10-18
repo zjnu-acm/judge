@@ -5,10 +5,10 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -16,15 +16,13 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+@AutoConfigureMockMvc(printOnlyOnFailure = false)
 @RunWith(SpringRunner.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
@@ -33,13 +31,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 public class ResetPasswordControllerTest {
 
     @Autowired
-    private WebApplicationContext context;
     private MockMvc mvc;
-
-    @Before
-    public void setUp() {
-        mvc = webAppContextSetup(context).build();
-    }
 
     /**
      * Test of doGet method, of class ResetPasswordController.
@@ -50,7 +42,6 @@ public class ResetPasswordControllerTest {
     public void testDoGet() throws Exception {
         log.info("doGet");
         MvcResult result = mvc.perform(get("/resetPassword"))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andReturn();
@@ -75,7 +66,6 @@ public class ResetPasswordControllerTest {
                 .param("verify", verify)
                 .param("username", username)
                 .locale(locale))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
     }
@@ -91,7 +81,6 @@ public class ResetPasswordControllerTest {
     public void testChangePassword() throws Exception {
         log.info("changePassword");
         MvcResult result = mvc.perform(post("/resetPassword"))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
     }

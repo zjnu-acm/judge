@@ -16,25 +16,27 @@
 package cn.edu.zjnu.acm.judge.controller.api;
 
 import cn.edu.zjnu.acm.judge.Application;
+import cn.edu.zjnu.acm.judge.data.form.ProblemForm;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.exception.BusinessCode;
 import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.service.MockDataService;
 import cn.edu.zjnu.acm.judge.service.ProblemService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Locale;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.WebApplicationContext;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -45,15 +47,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 /**
  *
  * @author zhanhb
  */
+@AutoConfigureMockMvc(printOnlyOnFailure = false)
 @RunWith(SpringRunner.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
@@ -63,19 +64,13 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 public class ProblemControllerTest {
 
     @Autowired
-    private WebApplicationContext context;
-    @Autowired
     private ObjectMapper objectMapper;
     @Autowired
     private ProblemService problemService;
+    @Autowired
     private MockMvc mvc;
     @Autowired
     private MockDataService mockDataService;
-
-    @Before
-    public void setUp() {
-        mvc = webAppContextSetup(context).build();
-    }
 
     /**
      * Test of list method, of class ProblemController.
@@ -85,7 +80,6 @@ public class ProblemControllerTest {
     @Test
     public void testList() throws Exception {
         mvc.perform(get("/api/problems.json"))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
     }
@@ -103,7 +97,6 @@ public class ProblemControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(problem))
         )
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse().getContentAsString(), Problem.class).getId();
@@ -111,17 +104,14 @@ public class ProblemControllerTest {
 
         assertFalse(findOne(id).getDisabled());
         mvc.perform(patch("/api/problems/{id}.json", id).content("{\"disabled\":true}").contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
                 .andExpect(status().isNoContent());
         assertTrue(findOne(id).getDisabled());
 
         mvc.perform(patch("/api/problems/{id}.json", id).content("{\"disabled\":false}").contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
                 .andExpect(status().isNoContent());
         assertFalse(findOne(id).getDisabled());
 
         mvc.perform(delete("/api/problems/{id}.json", id))
-                .andDo(print())
                 .andExpect(status().isNoContent());
 
         try {

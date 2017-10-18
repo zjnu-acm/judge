@@ -5,10 +5,10 @@ import cn.edu.zjnu.acm.judge.data.form.ContestOnlyForm;
 import cn.edu.zjnu.acm.judge.data.form.SystemInfoForm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,17 +18,15 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.WebApplicationContext;
 
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+@AutoConfigureMockMvc(printOnlyOnFailure = false)
 @RunWith(SpringRunner.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
@@ -38,15 +36,9 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 public class MiscControllerTest {
 
     @Autowired
-    private WebApplicationContext context;
     private MockMvc mvc;
     @Autowired
     private ObjectMapper objectMapper;
-
-    @Before
-    public void setUp() {
-        mvc = webAppContextSetup(context).build();
-    }
 
     /**
      * Test of fix method, of class MiscController.
@@ -57,7 +49,6 @@ public class MiscControllerTest {
     public void testFix() throws Exception {
         log.info("fix");
         MvcResult result = mvc.perform(post("/api/misc/fix.json"))
-                .andDo(print())
                 .andExpect(status().isNoContent())
                 .andReturn();
     }
@@ -73,7 +64,6 @@ public class MiscControllerTest {
         SystemInfoForm request = new SystemInfoForm("test", false);
         MvcResult result = mvc.perform(put("/api/misc/systemInfo.json")
                 .content(objectMapper.writeValueAsString(request)).contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
                 .andExpect(status().isNoContent())
                 .andReturn();
     }
@@ -87,7 +77,6 @@ public class MiscControllerTest {
     public void testSystemInfo() throws Exception {
         log.info("systemInfo");
         MvcResult result = mvc.perform(get("/api/misc/systemInfo.json"))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn();
@@ -95,7 +84,6 @@ public class MiscControllerTest {
 
     private Long getContestOnly() throws Exception {
         return objectMapper.readValue(mvc.perform(get("/api/misc/contestOnly.json"))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse().getContentAsString(), ContestOnlyForm.class).getValue();
@@ -105,7 +93,6 @@ public class MiscControllerTest {
         ContestOnlyForm request = ContestOnlyForm.builder().value(value).build();
         MvcResult result = mvc.perform(put("/api/misc/contestOnly.json")
                 .content(objectMapper.writeValueAsString(request)).contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
                 .andExpect(status().isNoContent())
                 .andReturn();
     }
@@ -142,10 +129,8 @@ public class MiscControllerTest {
 
     private void request(HttpStatus status) throws Exception {
         mvc.perform(get("/registerpage"))
-                .andDo(print())
                 .andExpect(status().is(status.value()));
         mvc.perform(get("/register"))
-                .andDo(print())
                 .andExpect(status().is(status.value()));
     }
 

@@ -39,10 +39,10 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.javassist.ClassPool;
 import org.apache.ibatis.javassist.CtMethod;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
@@ -58,7 +58,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
@@ -171,6 +170,7 @@ public class MockGenerator {
             }
             value.sort(Comparator.comparing(info -> info.getHandlerMethod().getMethod(), Comparator.comparing(method -> method.getDeclaringClass().getName().replace(".", "/") + "." + method.getName() + ":" + org.springframework.asm.Type.getMethodDescriptor(method), toMethodComparator(key))));
             TestClass testClass = new TestClass(key,
+                    "@AutoConfigureMockMvc(printOnlyOnFailure = false)",
                     "@RunWith(SpringRunner.class)",
                     "@Slf4j",
                     "@SpringBootTest(classes = " + mainClass.getSimpleName() + ".class)",
@@ -178,6 +178,7 @@ public class MockGenerator {
                     "@WebAppConfiguration");
 
             testClass.addImport(mainClass);
+            testClass.addImport(AutoConfigureMockMvc.class);
             testClass.addImport(RunWith.class);
             testClass.addImport(SpringRunner.class);
             testClass.addImport(Slf4j.class);
@@ -186,15 +187,7 @@ public class MockGenerator {
             testClass.addImport(WebAppConfiguration.class);
 
             testClass.addImport(Autowired.class);
-            testClass.addField(WebApplicationContext.class, "context", "@Autowired");
-            testClass.addField(MockMvc.class, "mvc");
-
-            testClass.addImport(Before.class);
-            testClass.addStaticImport("org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup");
-            testClass.addMethod("@Before\n"
-                    + "public void setUp() {\n"
-                    + "\tmvc = webAppContextSetup(context).build();\n"
-                    + "}");
+            testClass.addField(MockMvc.class, "mvc", "@Autowired");
 
             for (Info info : value) {
                 RequestMappingInfo requestMappingInfo = info.getRequestMappingInfo();
@@ -400,9 +393,7 @@ public class MockGenerator {
             out.print(".contentType(MediaType.APPLICATION_JSON)");
         }
         testClass.addStaticImport("org.springframework.test.web.servlet.result.MockMvcResultMatchers.status");
-        testClass.addStaticImport("org.springframework.test.web.servlet.result.MockMvcResultHandlers.print");
         out.println(")");
-        out.println("\t\t\t.andDo(print())");
         out.println("\t\t\t.andExpect(status().isOk())");
         out.println("\t\t\t.andReturn();");
         out.println("}");
