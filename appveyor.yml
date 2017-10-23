@@ -1,4 +1,9 @@
 build: off
+environment:
+  APPVEYOR_SAVE_CACHE_ON_ERROR: true
+  matrix:
+    - OS_ARCH: x86
+    - OS_ARCH: x64
 services:
   mysql
 before_test:
@@ -6,10 +11,13 @@ before_test:
   - 'SET MINGW_HOME=C:\MinGW'
   - 'SET PATH=%MINGW_HOME%\bin;%PATH%'
 test_script:
-  - mvnw -Dspring.datasource.password=Password12! -Djna.nosys=true clean install -B
+  - mvnw -Dspring.datasource.password=Password12! -Djna.nosys=true clean verify -B
 cache:
   - '%USERPROFILE%\.m2'
 after_test:
   - 'SET PATH=C:\Python34;C:\Python34\Scripts;%PATH%'
   - pip install codecov
   - codecov -X gcov -f target/site/jacoco/jacoco.xml
+  - mvnw build-helper:remove-project-artifact
+  - >-
+    for /F "delims=" %%A in ('dir /AD /B /S %USERPROFILE%\.m2 ^| FINDSTR SNAPSHOT') DO RMDIR /Q /S %%~fA
