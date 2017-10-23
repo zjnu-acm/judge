@@ -104,8 +104,7 @@ public class LocaleService {
                 .sorted(DEFAULT_DOMAIN_LOCALE_COMPARATOR).distinct().collect(Collectors.toList());
     }
 
-    @SuppressWarnings("UtilityClassWithoutPrivateConstructor")
-    private static class ControlHolder {
+    private static interface ControlHolder {
 
         static final ResourceBundle.Control CONTROL = ResourceBundle.Control.getNoFallbackControl(ResourceBundle.Control.FORMAT_PROPERTIES);
 

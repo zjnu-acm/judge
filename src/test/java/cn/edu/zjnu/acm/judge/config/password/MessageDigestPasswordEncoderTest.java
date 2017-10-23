@@ -18,14 +18,18 @@ package cn.edu.zjnu.acm.judge.config.password;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  *
@@ -34,6 +38,16 @@ import static org.junit.Assert.assertTrue;
 @Slf4j
 @Transactional
 public class MessageDigestPasswordEncoderTest {
+
+    @Test
+    public void testGetMessageDigest() {
+        try {
+            MessageDigestPasswordEncoder.getMessageDigest("");
+            fail();
+        } catch (AssertionError ex) {
+            assertThat(ex.getCause(), instanceOf(NoSuchAlgorithmException.class));
+        }
+    }
 
     /**
      * Test of encode method, of class MessageDigestPasswordEncoder.
@@ -73,6 +87,7 @@ public class MessageDigestPasswordEncoderTest {
     public void testAll() {
         Arrays.stream(MessageDigestPasswordEncoder.class.getMethods())
                 .filter(method -> Modifier.isStatic(method.getModifiers()))
+                .filter(method -> method.getParameterTypes().length == 0)
                 .map(this::invokeStatic)
                 .forEach(encoder -> assertTrue(encoder.matches("test", encoder.encode("test"))));
     }

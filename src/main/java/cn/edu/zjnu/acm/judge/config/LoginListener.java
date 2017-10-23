@@ -34,7 +34,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
  * @author zhanhb
  */
 @Configuration
-@SuppressWarnings({"PublicInnerClass", "UtilityClassWithoutPrivateConstructor"})
+@SuppressWarnings("PublicInnerClass")
 public class LoginListener {
 
     private static String saveEvent(LoginlogService loginlogService, Authentication authentication) {
@@ -52,6 +52,9 @@ public class LoginListener {
         }
         loginlogService.save(LoginLog.builder().ip(remoteAddress).success(success).type(type).user(authentication.getName()).build());
         return remoteAddress;
+    }
+
+    public LoginListener() {
     }
 
     @Configuration

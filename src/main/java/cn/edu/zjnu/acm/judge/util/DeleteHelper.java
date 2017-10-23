@@ -26,7 +26,7 @@ import java.nio.file.Path;
  */
 public interface DeleteHelper {
 
-    public static Path delete(Path path) throws IOException {
+    static Path delete(Path path) throws IOException {
         try {
             return Files.walkFileTree(path, DeleteFileVisitor.INSTANCE);
         } catch (NoSuchFileException ignore) {

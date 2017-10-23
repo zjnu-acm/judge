@@ -15,8 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.config.password;
 
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import java.util.Objects;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
@@ -26,11 +25,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 /* (non-Javadoc)
  * Class should be public for javadoc to access, link source option will generate link to source of this file.
  */
-@RequiredArgsConstructor
 public abstract class PasswordEncoderWrapper implements PasswordEncoder {
 
-    @NonNull
     private final PasswordEncoder encoder;
+
+    public PasswordEncoderWrapper(PasswordEncoder encoder) {
+        this.encoder = Objects.requireNonNull(encoder);
+    }
 
     @Override
     public String encode(CharSequence rawPassword) {

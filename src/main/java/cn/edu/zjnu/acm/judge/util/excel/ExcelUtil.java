@@ -203,13 +203,13 @@ public class ExcelUtil {
         return GsonHolder.GSON.fromJson(jsonObject, type);
     }
 
-    private static class GsonHolder {
+    private static interface GsonHolder {
 
         static Gson GSON = new GsonBuilder().setDateFormat("yyyy-M-d H:mm:ss").create();
 
     }
 
-    private static class DateFormatterHolder {
+    private static interface DateFormatterHolder {
 
         static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d H:mm:ss", Locale.US)
                 .withZone(ZoneId.systemDefault());
