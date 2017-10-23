@@ -44,7 +44,6 @@ public class Submission implements Serializable {
     private long time;
     private long memory;
     private int score;
-    private int result;
     private int language;
     private String ip;
     private int sourceLength;

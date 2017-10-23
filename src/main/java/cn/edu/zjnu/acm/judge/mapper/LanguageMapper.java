@@ -58,8 +58,12 @@ public interface LanguageMapper {
     long delete(Language language);
 
     @CacheEvict(value = Constants.Cache.LANGUAGE, allEntries = true)
-    @Delete("update language set disabled=1 where id=#{param1}")
+    @Delete("delete from language where id=#{param1}")
     long deleteById(long id);
+
+    @CacheEvict(value = Constants.Cache.LANGUAGE, allEntries = true)
+    @Update("update language set disabled=1 where id=#{param1}")
+    long disabled(long id);
 
     @Cacheable(Constants.Cache.LANGUAGE)
     @Select("select id id,name name,source_extension sourceExtension,compile_command compileCommand,execute_command executeCommand,executable_extension executableExtension,time_factor timeFactor,ext_memory extMemory,description description from language where not disabled")

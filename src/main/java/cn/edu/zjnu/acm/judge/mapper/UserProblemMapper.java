@@ -19,6 +19,7 @@ import cn.edu.zjnu.acm.judge.domain.UserProblem;
 import cn.edu.zjnu.acm.judge.util.ResultType;
 import java.util.List;
 import javax.annotation.Nullable;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -84,5 +85,11 @@ public interface UserProblemMapper {
 
     @Select("select" + COLUMNS + "from user_problem where user_id=#{userId} order by problem_id")
     List<UserProblem> findAllByUserId(@Param("userId") String userId);
+
+    @Delete("delete from user_problem where problem_id=#{param1}")
+    long deleteByProblem(long problemId);
+
+    @Delete("delete from user_problem where user_id=#{param1}")
+    long deleteByUser(String userId);
 
 }

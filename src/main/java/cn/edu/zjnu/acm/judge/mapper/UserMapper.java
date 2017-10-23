@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -163,5 +164,8 @@ public interface UserMapper {
             + "</foreach>"
             + "</script>")
     void insert(@Param("accounts") List<Account> accounts);
+
+    @Delete("delete from users where user_id=#{param1}")
+    int delete(String userId);
 
 }

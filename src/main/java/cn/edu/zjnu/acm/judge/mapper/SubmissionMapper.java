@@ -22,6 +22,7 @@ import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.util.ResultType;
 import java.util.List;
 import javax.annotation.Nullable;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -121,5 +122,17 @@ public interface SubmissionMapper {
 
     @Select("select solution_id from solution where contest_id=#{contest}")
     List<Long> findAllByContestId(@Param("contest") long id);
+
+    @Delete("delete from submission_source where solution_id=#{id}")
+    int deleteSource(@Param("id") long id);
+
+    @Delete("delete from compileinfo WHERE solution_id=#{id}")
+    int deleteCompileinfo(@Param("id") long id);
+
+    @Delete("delete from solution WHERE solution_id=#{id}")
+    int deleteSolution(@Param("id") long id);
+
+    @Delete("delete from solution_details WHERE solution_id=#{id}")
+    int deleteDetail(long id);
 
 }

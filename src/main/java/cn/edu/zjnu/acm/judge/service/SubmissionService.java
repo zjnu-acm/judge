@@ -27,6 +27,7 @@ import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserPreferenceMapper;
 import cn.edu.zjnu.acm.judge.util.ResultType;
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.cache.CacheBuilder;
 import java.time.Instant;
 import java.util.Collections;
@@ -41,6 +42,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -157,6 +159,22 @@ public class SubmissionService {
             throw new BusinessException(BusinessCode.SUBMISSION_NOT_FOUND, submissionId);
         }
         return submissionMapper.findCompileInfoById(submissionId);
+    }
+
+    @Transactional
+    public void delete(long id) {
+        int result = submissionMapper.deleteSource(id)
+                + submissionMapper.deleteCompileinfo(id)
+                + submissionMapper.deleteDetail(id)
+                + submissionMapper.deleteSolution(id);
+        if (result == 0) {
+            throw new BusinessException(BusinessCode.SUBMISSION_NOT_FOUND, id);
+        }
+    }
+
+    @VisibleForTesting
+    void remove(String userId) {
+        cache.remove(userId);
     }
 
 }

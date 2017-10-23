@@ -20,13 +20,16 @@ import cn.edu.zjnu.acm.judge.data.excel.Account;
 import cn.edu.zjnu.acm.judge.data.form.AccountForm;
 import cn.edu.zjnu.acm.judge.data.form.AccountImportForm;
 import cn.edu.zjnu.acm.judge.domain.User;
+import cn.edu.zjnu.acm.judge.domain.UserProblem;
 import cn.edu.zjnu.acm.judge.exception.BusinessCode;
 import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
+import cn.edu.zjnu.acm.judge.mapper.UserProblemMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserRoleMapper;
 import cn.edu.zjnu.acm.judge.util.EnumUtils;
 import cn.edu.zjnu.acm.judge.util.ValueCheck;
 import cn.edu.zjnu.acm.judge.util.excel.ExcelUtil;
+import com.google.common.annotations.VisibleForTesting;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Instant;
@@ -63,6 +66,8 @@ public class AccountService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UserRoleMapper userRoleMapper;
+    @Autowired
+    private UserProblemMapper userProblemMapper;
 
     public Page<User> findAll(AccountForm form, Pageable pageable) {
         List<User> list = userMapper.findAll(form, pageable);
@@ -188,6 +193,15 @@ public class AccountService {
             throw new BusinessException(BusinessCode.USER_NOT_FOUND, id);
         }
         return user;
+    }
+
+    @Transactional
+    @VisibleForTesting
+    public void delete(String id) {
+        long result = userProblemMapper.deleteByUser(id) + userMapper.delete(id);
+        if (result == 0) {
+            throw new BusinessException(BusinessCode.USER_NOT_FOUND, id);
+        }
     }
 
 }

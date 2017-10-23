@@ -22,6 +22,7 @@ import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.exception.BusinessCode;
 import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
+import cn.edu.zjnu.acm.judge.mapper.UserProblemMapper;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -51,6 +52,8 @@ public class ProblemService {
     private ContestService contestService;
     @Autowired
     private JudgeConfiguration judgeConfiguration;
+    @Autowired
+    private UserProblemMapper userProblemMapper;
 
     public Page<Problem> findAll(ProblemForm problemForm, String userId, Pageable pageable, Locale locale) {
         String resolve = localeService.resolve(locale);
@@ -139,7 +142,9 @@ public class ProblemService {
 
     @Transactional
     public void delete(long id) {
-        long total = problemMapper.deleteI18n(id) + problemMapper.delete(id);
+        long total = problemMapper.deleteI18n(id)
+                + userProblemMapper.deleteByProblem(id)
+                + problemMapper.delete(id);
         if (total == 0) {
             throw new BusinessException(BusinessCode.PROBLEM_NOT_FOUND, id);
         }

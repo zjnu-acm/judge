@@ -3,8 +3,10 @@ package cn.edu.zjnu.acm.judge.controller.submission;
 import cn.edu.zjnu.acm.judge.Application;
 import cn.edu.zjnu.acm.judge.config.JudgeConfiguration;
 import cn.edu.zjnu.acm.judge.domain.Submission;
+import cn.edu.zjnu.acm.judge.service.AccountService;
+import cn.edu.zjnu.acm.judge.service.AccountServiceTest;
 import cn.edu.zjnu.acm.judge.service.MockDataService;
-import cn.edu.zjnu.acm.judge.service.TestSubmissionService;
+import cn.edu.zjnu.acm.judge.service.SubmissionService;
 import cn.edu.zjnu.acm.judge.util.CopyHelper;
 import cn.edu.zjnu.acm.judge.util.DeleteHelper;
 import java.io.IOException;
@@ -50,10 +52,12 @@ public class RejudgeControllerTest {
     @Autowired
     private Environment environment;
     @Autowired
-    private TestSubmissionService submissionService;
+    private SubmissionService submissionService;
     @Autowired
     private JudgeConfiguration judgeConfiguration;
     private Submission submission;
+    @Autowired
+    private AccountService accountService;
 
     @Before
     public void setUp() throws IOException, URISyntaxException {
@@ -67,6 +71,7 @@ public class RejudgeControllerTest {
         if (submission != null) {
             DeleteHelper.delete(judgeConfiguration.getDataDirectory(submission.getProblem()));
             submissionService.delete(submission.getId());
+            AccountServiceTest.delete(accountService, submission.getUser());
         }
     }
 
