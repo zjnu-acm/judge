@@ -40,6 +40,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.savedrequest.NullRequestCache;
+import org.springframework.util.StringUtils;
 
 /**
  *
@@ -140,7 +141,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         @Override
         public void sendRedirect(HttpServletRequest request, HttpServletResponse response, String url) throws IOException {
             String url1 = request.getParameter("url");
-            if (url1 != null) {
+            if (StringUtils.hasText(url1)) {
                 redirectStrategy.sendRedirect(request, response, url + (url.contains("?") ? '&' : '?') + "url=" + URLEncoder.encode(url1, "UTF-8"));
             } else {
                 redirectStrategy.sendRedirect(request, response, url);
