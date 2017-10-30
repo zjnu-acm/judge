@@ -1,39 +1,45 @@
 package com.github.zhanhb.judge.win32;
 
 import com.github.zhanhb.judge.common.Status;
-import com.github.zhanhb.judge.win32.Psapi.PROCESS_MEMORY_COUNTERS;
-import com.sun.jna.platform.win32.Win32Exception;
-import com.sun.jna.platform.win32.WinBase;
-import com.sun.jna.platform.win32.WinNT;
-import com.sun.jna.ptr.IntByReference;
+import com.github.zhanhb.judge.win32.struct.FILETIME;
+import com.github.zhanhb.judge.win32.struct.PROCESS_MEMORY_COUNTERS;
+import com.google.common.base.Preconditions;
 import java.util.concurrent.atomic.AtomicReference;
+import jnr.ffi.Pointer;
+import jnr.ffi.byref.IntByReference;
 
-import static com.sun.jna.platform.win32.WinBase.WAIT_ABANDONED;
-import static com.sun.jna.platform.win32.WinBase.WAIT_FAILED;
-import static com.sun.jna.platform.win32.WinError.WAIT_TIMEOUT;
+import static com.github.zhanhb.judge.win32.Native.sizeof;
+import static com.github.zhanhb.judge.win32.WinBase.WAIT_ABANDONED;
+import static com.github.zhanhb.judge.win32.WinBase.WAIT_FAILED;
+import static com.github.zhanhb.judge.win32.WinBase.WAIT_TIMEOUT;
 
 public class JudgeProcess {
 
-    private final WinNT.HANDLE hProcess;
+    private static final jnr.ffi.Runtime runtime = jnr.ffi.Runtime.getSystemRuntime();
+
+    private final Pointer /*HANDLE*/ hProcess;
     private final AtomicReference<Status> status = new AtomicReference<>();
 
-    public JudgeProcess(WinNT.HANDLE hProcess) {
+    public JudgeProcess(Pointer /*HANDLE*/ hProcess) {
         this.hProcess = hProcess;
     }
 
     public void terminate(Status errorCode) {
         if (status.compareAndSet(null, errorCode)) {
-            if (hProcess != null && !WinBase.INVALID_HANDLE_VALUE.equals(hProcess)) {
-                // don't check the return value, maybe the process has already exited.
-                Kernel32.INSTANCE.TerminateProcess(hProcess, 1);
+            try {
+                SafeHandle.validateHandle(hProcess);
+            } catch (IllegalArgumentException ex) {
+                return;
             }
+            // don't check the return value, maybe the process has already exited.
+            Kernel32.INSTANCE.TerminateProcess(hProcess, 1);
         }
     }
 
     public long getPeakMemory() {
-        PROCESS_MEMORY_COUNTERS ppsmemCounters = new PROCESS_MEMORY_COUNTERS();
-        Kernel32Util.assertTrue(Psapi.INSTANCE.GetProcessMemoryInfo(hProcess, ppsmemCounters, ppsmemCounters.cb));
-        return ppsmemCounters.PeakWorkingSetSize.longValue();
+        PROCESS_MEMORY_COUNTERS ppsmemCounters = new PROCESS_MEMORY_COUNTERS(runtime);
+        Kernel32Util.assertTrue(Psapi.INSTANCE.GetProcessMemoryInfo(hProcess, ppsmemCounters, sizeof(ppsmemCounters)));
+        return ppsmemCounters.getPeakWorkingSetSize();
     }
 
     private boolean join0(int millis) {
@@ -42,32 +48,32 @@ public class JudgeProcess {
             case WAIT_ABANDONED:
                 throw new IllegalStateException();
             case WAIT_FAILED:
-                throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
+                throw new Win32Exception(runtime.getLastError());
+            case WAIT_TIMEOUT:
+                return false;
+            default:
+                return true;
         }
-        return dwWait != WAIT_TIMEOUT;
     }
 
     public boolean join(long millis) {
-        return join0(millis > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) millis);
+        Preconditions.checkArgument(millis >= 0);
+        return join0((int) Math.min(millis, 0xFFFFFFFEL));
     }
 
     public long getStartTime() {
-        WinBase.FILETIME ftCreateTime = new WinBase.FILETIME();
-        WinBase.FILETIME temp = new WinBase.FILETIME();
+        FILETIME ftCreateTime = new FILETIME(runtime);
+        FILETIME temp = new FILETIME(runtime);
         Kernel32Util.assertTrue(Kernel32.INSTANCE.GetProcessTimes(hProcess, ftCreateTime, temp, temp, temp));
-        return ftCreateTime.toTime();
-    }
-
-    private long getLong(WinBase.FILETIME ft) {
-        return (long) ft.dwHighDateTime << 32 | ft.dwLowDateTime & 0xFFFFFFFFL;
+        return ftCreateTime.toMillis();
     }
 
     public long getTime() {
-        WinBase.FILETIME tmp = new WinBase.FILETIME();
-        WinBase.FILETIME ftKernelTime = new WinBase.FILETIME();
-        WinBase.FILETIME ftUserTime = new WinBase.FILETIME();
+        FILETIME tmp = new FILETIME(runtime);
+        FILETIME ftKernelTime = new FILETIME(runtime);
+        FILETIME ftUserTime = new FILETIME(runtime);
         Kernel32Util.assertTrue(Kernel32.INSTANCE.GetProcessTimes(hProcess, tmp, tmp, ftKernelTime, ftUserTime));
-        return (getLong(ftUserTime) + getLong(ftKernelTime)) / 10000;
+        return (ftUserTime.longValue() + ftKernelTime.longValue()) / 10000;
     }
 
     public Status getStatus() {

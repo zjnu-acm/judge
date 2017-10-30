@@ -40,4 +40,8 @@ class Platform {
         return Charset.defaultCharset();
     }
 
+    static boolean isWindows() {
+        return jnr.ffi.Platform.getNativePlatform().getOS() == jnr.ffi.Platform.OS.WINDOWS;
+    }
+
 }

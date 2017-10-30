@@ -15,8 +15,10 @@
  */
 package com.github.zhanhb.judge.win32;
 
-import com.sun.jna.Platform;
-import com.sun.jna.platform.win32.WinNT;
+import com.github.zhanhb.judge.win32.struct.SID_IDENTIFIER_AUTHORITY;
+import jnr.ffi.Platform;
+import jnr.ffi.Pointer;
+import jnr.ffi.byref.PointerByReference;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -34,7 +36,19 @@ public class Advapi32UtilTest {
 
     @BeforeClass
     public static void setUpClass() {
-        assumeTrue("not windows", Platform.isWindows());
+        assumeTrue("not windows", Platform.getNativePlatform().getOS() == Platform.OS.WINDOWS);
+    }
+
+    private static String convertSidToStringSid(Pointer sid) {
+        PointerByReference stringSid = new PointerByReference();
+        Kernel32Util.assertTrue(Advapi32.INSTANCE.ConvertSidToStringSidW(sid, stringSid));
+
+        Pointer ptr = stringSid.getValue();
+        try {
+            return WString.fromNative(ptr);
+        } finally {
+            Kernel32Util.freeLocalMemory(ptr);
+        }
     }
 
     /**
@@ -43,11 +57,16 @@ public class Advapi32UtilTest {
     @Test
     public void testNewPSID() {
         log.info("newPSID");
-        Advapi32.SID_IDENTIFIER_AUTHORITY pIdentifierAuthority = new Advapi32.SID_IDENTIFIER_AUTHORITY(new byte[]{0, 0, 0, 0, 0, 16});
+        jnr.ffi.Runtime runtime = jnr.ffi.Runtime.getSystemRuntime();
+        SID_IDENTIFIER_AUTHORITY pIdentifierAuthority = new SID_IDENTIFIER_AUTHORITY(runtime, 0, 0, 0, 0, 0, 16);
 
-        WinNT.PSID result = Advapi32Util.newPSID(pIdentifierAuthority, SECURITY_MANDATORY_LOW_RID);
-        String sidString = result.getSidString();
-        assertEquals("S-1-16-4096", sidString);
+        Pointer pSid = Advapi32Util.newPSID(pIdentifierAuthority, SECURITY_MANDATORY_LOW_RID);
+        try {
+            String sidString = convertSidToStringSid(pSid);
+            assertEquals("S-1-16-4096", sidString);
+        } finally {
+            Kernel32Util.assertTrue(Advapi32.INSTANCE.FreeSid(pSid) == null);
+        }
     }
 
 }

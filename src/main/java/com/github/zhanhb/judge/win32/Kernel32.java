@@ -1,21 +1,25 @@
 package com.github.zhanhb.judge.win32;
 
-import com.sun.jna.Native;
-import com.sun.jna.Pointer;
-import com.sun.jna.Structure;
-import com.sun.jna.platform.win32.WinBase;
-import com.sun.jna.platform.win32.WinDef;
-import com.sun.jna.win32.W32APIOptions;
-import java.util.List;
+import com.github.zhanhb.judge.win32.struct.FILETIME;
+import com.github.zhanhb.judge.win32.struct.JOBOBJECT_INFORMATION;
+import com.github.zhanhb.judge.win32.struct.PROCESS_INFORMATION;
+import com.github.zhanhb.judge.win32.struct.SECURITY_ATTRIBUTES;
+import com.github.zhanhb.judge.win32.struct.STARTUPINFO;
 import javax.annotation.Nullable;
+import jnr.ffi.Pointer;
+import jnr.ffi.annotations.In;
+import jnr.ffi.annotations.Out;
+import jnr.ffi.byref.IntByReference;
+import jnr.ffi.byref.PointerByReference;
+import jnr.ffi.types.int32_t;
+import jnr.ffi.types.u_int32_t;
 
-@SuppressWarnings({"PublicInnerClass", "PublicField"})
-public interface Kernel32 extends com.sun.jna.platform.win32.Kernel32 {
+public interface Kernel32 {
 
-    @SuppressWarnings("FieldNameHidesFieldInSuperclass")
-    Kernel32 INSTANCE = Native.loadLibrary("kernel32", Kernel32.class, W32APIOptions.UNICODE_OPTIONS);
+    Kernel32 INSTANCE = Native.loadLibrary("kernel32", Kernel32.class);
 
-    boolean AssignProcessToJobObject(HANDLE hJob, HANDLE hProcess);
+    @int32_t
+    /* BOOL */ int AssignProcessToJobObject(@In Pointer /*HANDLE*/ hJob, @In Pointer /*HANDLE*/ hProcess);
 
     /**
      * The system does not display the critical-error-handler message box.
@@ -46,7 +50,8 @@ public interface Kernel32 extends com.sun.jna.platform.win32.Kernel32 {
      * previous suspend count. If the function fails, the return value is
      * (DWORD) -1. To get extended error information, call GetLastError.
      */
-    int ResumeThread(HANDLE hThread);
+    @u_int32_t
+    int ResumeThread(@In Pointer /*HANDLE*/ hThread);
 
     /**
      *
@@ -75,50 +80,22 @@ public interface Kernel32 extends com.sun.jna.platform.win32.Kernel32 {
      * @see
      * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms683223(v=vs.85).aspx">GetProcessTimes</a>
      */
-    boolean GetProcessTimes(HANDLE hProcess, WinBase.FILETIME lpCreationTime, WinBase.FILETIME lpExitTime, WinBase.FILETIME lpKernelTime, WinBase.FILETIME lpUserTime);
+    @int32_t
+    /* BOOL */ int GetProcessTimes(
+            @In Pointer /*HANDLE*/ hProcess,
+            @Out FILETIME lpCreationTime,
+            @Out FILETIME lpExitTime,
+            @Out FILETIME lpKernelTime,
+            @Out FILETIME lpUserTime);
 
     @Nullable
-    HANDLE CreateJobObject(SECURITY_ATTRIBUTES lpJobAttributes, String lpName);
+    Pointer /*HANDLE*/ CreateJobObjectW(@In SECURITY_ATTRIBUTES lpJobAttributes, @In byte[] lpName);
 
-    abstract class JOBOBJECT_INFORMATION extends Structure {
-    }
+    @u_int32_t
+    int SetErrorMode(@In @u_int32_t int uMode);
 
-    /**
-     *
-     * @see JOBOBJECTINFOCLASS#JobObjectBasicLimitInformation
-     * @see
-     * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms684147(v=vs.85).aspx">JOBOBJECT_BASIC_LIMIT_INFORMATION
-     * </a>
-     */
-    class JOBOBJECT_BASIC_LIMIT_INFORMATION extends JOBOBJECT_INFORMATION {
-
-        public static final List<String> FIELDS = createFieldsOrder("PerProcessUserTimeLimit",
-                "PerJobUserTimeLimit",
-                "LimitFlags",
-                "MinimumWorkingSetSize",
-                "MaximumWorkingSetSize",
-                "ActiveProcessLimit",
-                "Affinity",
-                "PriorityClass",
-                "SchedulingClass");
-
-        public long PerProcessUserTimeLimit;
-        public long PerJobUserTimeLimit;
-        public int LimitFlags;
-        public SIZE_T MinimumWorkingSetSize;
-        public SIZE_T MaximumWorkingSetSize;
-        public int ActiveProcessLimit;
-        public ULONG_PTR Affinity;
-        public int PriorityClass;
-        public int SchedulingClass;
-
-        @Override
-        @SuppressWarnings("ReturnOfCollectionOrArrayField")
-        protected List<String> getFieldOrder() {
-            return FIELDS;
-        }
-
-    }
+    @int32_t
+    /* BOOL */ int GetExitCodeProcess(@In Pointer /*HANDLE*/ hProcess, @Out IntByReference dwExitCode);
 
     int JOB_OBJECT_LIMIT_WORKINGSET = 0x0001;
     int JOB_OBJECT_LIMIT_PROCESS_TIME = 0x0002;
@@ -169,30 +146,14 @@ public interface Kernel32 extends com.sun.jna.platform.win32.Kernel32 {
     int JOB_OBJECT_MSG_PROCESS_MEMORY_LIMIT = 9;
     int JOB_OBJECT_MSG_JOB_MEMORY_LIMIT = 10;
 
-    interface JOBOBJECTINFOCLASS {
+    @int32_t
+    /* BOOL */ int SetHandleInformation(
+            @In Pointer /*HANDLE*/ handle,
+            @In @u_int32_t int /*DWORD*/ dwMask,
+            @In @u_int32_t int /*DWORD*/ dwFlags);
 
-        int JobObjectBasicAccountingInformation = 1;
-        /**
-         * @see JOBOBJECT_BASIC_LIMIT_INFORMATION
-         */
-        int JobObjectBasicLimitInformation = 2;
-        int JobObjectBasicProcessIdList = 3;
-        /**
-         * @see JOBOBJECT_BASIC_UI_RESTRICTIONS
-         */
-        int JobObjectBasicUIRestrictions = 4;
-        int JobObjectSecurityLimitInformation = 5;
-        int JobObjectEndOfJobTimeInformation = 6;
-        int JobObjectAssociateCompletionPortInformation = 7;
-        int JobObjectBasicAndIoAccountingInformation = 8;
-        int JobObjectExtendedLimitInformation = 9;
-        int JobObjectJobSetInformation = 10;
-        int JobObjectGroupInformation = 11;
-        int JobObjectNotificationLimitInformation = 12;
-        int JobObjectLimitViolationInformation = 13;
-        int JobObjectGroupInformationEx = 14;
-        int JobObjectCpuRateControlInformation = 15;
-    }
+    @int32_t
+    /* BOOL */ int CloseHandle(@In Pointer /*HANDLE*/ handle);
 
     /**
      *
@@ -206,40 +167,61 @@ public interface Kernel32 extends com.sun.jna.platform.win32.Kernel32 {
      * @see
      * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms686216(v=vs.85).aspx">SetInformationJobObject</a>
      */
-    boolean SetInformationJobObject(HANDLE hJob, int JobObjectInfoClass, JOBOBJECT_INFORMATION lpJobObjectInfo, int cbJobObjectInfoLength);
-
-    /**
-     *
-     * @see JOBOBJECTINFOCLASS#JobObjectBasicUIRestrictions
-     * @see
-     * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms684152(v=vs.85).aspx">JOBOBJECT_BASIC_UI_RESTRICTIONS</a>
-     */
-    class JOBOBJECT_BASIC_UI_RESTRICTIONS extends JOBOBJECT_INFORMATION {
-
-        public static final List<String> FIELDS = createFieldsOrder("UIRestrictionsClass");
-
-        public int /*DWORD*/ UIRestrictionsClass;
-
-        @Override
-        @SuppressWarnings("ReturnOfCollectionOrArrayField")
-        protected List<String> getFieldOrder() {
-            return FIELDS;
-        }
-
-    };
+    @int32_t
+    /* BOOL */ int SetInformationJobObject(
+            @In Pointer /*HANDLE*/ hJob,
+            @In @u_int32_t int JobObjectInfoClass,
+            @In JOBOBJECT_INFORMATION lpJobObjectInfo,
+            @In @u_int32_t int cbJobObjectInfoLength);
 
     int NORMAL_PRIORITY_CLASS = 0x00000020;
     int IDLE_PRIORITY_CLASS = 0x00000040;
     int HIGH_PRIORITY_CLASS = 0x00000080;
+    int HANDLE_FLAG_INHERIT = 0x00000001;
 
-    boolean CreateProcessAsUser(
-            HANDLE hToken,
-            String lpApplicationName, String lpCommandLine,
-            WinBase.SECURITY_ATTRIBUTES lpProcessAttributes,
-            WinBase.SECURITY_ATTRIBUTES lpThreadAttributes,
-            boolean bInheritHandles, WinDef.DWORD dwCreationFlags,
-            Pointer lpEnvironment, String lpCurrentDirectory,
-            WinBase.STARTUPINFO lpStartupInfo,
-            WinBase.PROCESS_INFORMATION lpProcessInformation);
+    @int32_t
+    /* BOOL */ int CreateProcessAsUserW(
+            @In Pointer /*HANDLE*/ hToken,
+            @In byte[] lpApplicationName,
+            @In /*@Out*/ byte[] lpCommandLine,
+            @In SECURITY_ATTRIBUTES lpProcessAttributes,
+            @In SECURITY_ATTRIBUTES lpThreadAttributes,
+            @In @u_int32_t boolean bInheritHandles,
+            @In @u_int32_t int /*DWORD*/ dwCreationFlags,
+            @In byte[] lpEnvironment,
+            @In byte[] lpCurrentDirectory,
+            @In STARTUPINFO lpStartupInfo,
+            @Out PROCESS_INFORMATION lpProcessInformation);
+
+    Pointer CreateFileW(
+            @In byte[] lpFileName,
+            @In @u_int32_t int dwDesiredAccess,
+            @In @u_int32_t int dwShareMode,
+            @In SECURITY_ATTRIBUTES lpSecurityAttributes,
+            @In @u_int32_t int dwCreationDisposition,
+            @In @u_int32_t int dwFlagsAndAttributes,
+            @In Pointer /*HANDLE*/ hTemplateFile);
+
+    Pointer /*HANDLE*/ GetCurrentProcess();
+
+    @u_int32_t
+    int WaitForSingleObject(
+            @In Pointer hHandle,
+            @In @u_int32_t int /*DWORD*/ millis);
+
+    @int32_t
+    /* BOOL */ int TerminateProcess(@In Pointer hProcess, @In @u_int32_t int uExitCode);
+
+    Pointer LocalFree(@In Pointer hMem);
+
+    @u_int32_t
+    int FormatMessageW(
+            @In @u_int32_t int /*DWORD*/ dwFlags,
+            @In Pointer lpSource,
+            @In @u_int32_t int /*DWORD*/ dwMessageId,
+            @In @u_int32_t int /*DWORD*/ dwLanguageId,
+            @Out PointerByReference lpBuffer,
+            @In @u_int32_t int /*DWORD*/ nSize,
+            @In Object... /**/ arguments);
 
 }

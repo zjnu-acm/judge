@@ -1,13 +1,10 @@
 package com.github.zhanhb.judge.win32;
 
-import com.github.zhanhb.judge.win32.Kernel32.JOBOBJECT_BASIC_LIMIT_INFORMATION;
-import com.github.zhanhb.judge.win32.Kernel32.JOBOBJECT_BASIC_UI_RESTRICTIONS;
-import com.sun.jna.platform.win32.WinNT;
-import com.sun.jna.platform.win32.WinNT.HANDLE;
+import com.github.zhanhb.judge.win32.struct.JOBOBJECT_BASIC_LIMIT_INFORMATION;
+import com.github.zhanhb.judge.win32.struct.JOBOBJECT_BASIC_UI_RESTRICTIONS;
 import java.io.Closeable;
+import jnr.ffi.Pointer;
 
-import static com.github.zhanhb.judge.win32.Kernel32.JOBOBJECTINFOCLASS.JobObjectBasicLimitInformation;
-import static com.github.zhanhb.judge.win32.Kernel32.JOBOBJECTINFOCLASS.JobObjectBasicUIRestrictions;
 import static com.github.zhanhb.judge.win32.Kernel32.JOB_OBJECT_LIMIT_ACTIVE_PROCESS;
 import static com.github.zhanhb.judge.win32.Kernel32.JOB_OBJECT_UILIMIT_DESKTOP;
 import static com.github.zhanhb.judge.win32.Kernel32.JOB_OBJECT_UILIMIT_DISPLAYSETTINGS;
@@ -17,27 +14,31 @@ import static com.github.zhanhb.judge.win32.Kernel32.JOB_OBJECT_UILIMIT_HANDLES;
 import static com.github.zhanhb.judge.win32.Kernel32.JOB_OBJECT_UILIMIT_READCLIPBOARD;
 import static com.github.zhanhb.judge.win32.Kernel32.JOB_OBJECT_UILIMIT_SYSTEMPARAMETERS;
 import static com.github.zhanhb.judge.win32.Kernel32.JOB_OBJECT_UILIMIT_WRITECLIPBOARD;
+import static com.github.zhanhb.judge.win32.struct.JOBOBJECTINFOCLASS.BasicLimitInformation;
+import static com.github.zhanhb.judge.win32.struct.JOBOBJECTINFOCLASS.BasicUIRestrictions;
 
 public class Job implements Closeable {
 
-    private final WinNT.HANDLE hJob;
+    private static final jnr.ffi.Runtime runtime = jnr.ffi.Runtime.getSystemRuntime();
+
+    private final Pointer /*HANDLE*/ hJob;
 
     public Job() {
-        hJob = Kernel32.INSTANCE.CreateJobObject(null, null);
-        Kernel32Util.assertTrue(hJob != null && hJob.getPointer() != null);
+        hJob = Kernel32.INSTANCE.CreateJobObjectW(null, null);
+        Kernel32Util.assertTrue(hJob != null);
     }
 
     public void init() {
-        JOBOBJECT_BASIC_LIMIT_INFORMATION jobli = new JOBOBJECT_BASIC_LIMIT_INFORMATION();
-        jobli.ActiveProcessLimit = 1;
+        JOBOBJECT_BASIC_LIMIT_INFORMATION jobli = new JOBOBJECT_BASIC_LIMIT_INFORMATION(runtime);
+        jobli.setActiveProcessLimit(1);
         // These are the only 1 restrictions I want placed on the job (process).
-        jobli.LimitFlags = JOB_OBJECT_LIMIT_ACTIVE_PROCESS;
-        Kernel32Util.assertTrue(Kernel32.INSTANCE.SetInformationJobObject(hJob, JobObjectBasicLimitInformation, jobli, jobli.size()));
+        jobli.setLimitFlags(JOB_OBJECT_LIMIT_ACTIVE_PROCESS);
+        Kernel32Util.setInformationJobObject(hJob, BasicLimitInformation, jobli);
 
         // Second, set some UI restrictions.
-        JOBOBJECT_BASIC_UI_RESTRICTIONS jobuir = new JOBOBJECT_BASIC_UI_RESTRICTIONS();
-        jobuir.UIRestrictionsClass
-                = // The process can't access USER objects (such as other windows)
+        JOBOBJECT_BASIC_UI_RESTRICTIONS jobuir = new JOBOBJECT_BASIC_UI_RESTRICTIONS(runtime);
+        jobuir.setUIRestrictionsClass(
+                // The process can't access USER objects (such as other windows)
                 // in the system.
                 JOB_OBJECT_UILIMIT_HANDLES
                 | JOB_OBJECT_UILIMIT_READCLIPBOARD
@@ -49,12 +50,11 @@ public class Job implements Closeable {
                 // and switching desktops using the CreateDesktop and SwitchDesktop functions.
                 JOB_OBJECT_UILIMIT_DESKTOP
                 | // The process can't log off the system.
-                JOB_OBJECT_UILIMIT_EXITWINDOWS;
-        Kernel32Util.assertTrue(Kernel32.INSTANCE.SetInformationJobObject(hJob, JobObjectBasicUIRestrictions, jobuir,
-                jobuir.size()));
+                JOB_OBJECT_UILIMIT_EXITWINDOWS);
+        Kernel32Util.setInformationJobObject(hJob, BasicUIRestrictions, jobuir);
     }
 
-    public void assignProcess(HANDLE hProcess) {
+    public void assignProcess(Pointer /*HANDLE*/ hProcess) {
         Kernel32Util.assertTrue(Kernel32.INSTANCE.AssignProcessToJobObject(hJob, hProcess));
     }
 

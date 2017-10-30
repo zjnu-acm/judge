@@ -7,11 +7,13 @@ environment:
 services:
   mysql
 before_test:
+  - 'IF "%OS_ARCH%"=="x86" SET JAVA_HOME=C:\Program Files (x86)\Java\jdk1.8.0'
+  - 'IF "%OS_ARCH%"=="x86" SET SET PATH=%JAVA_HOME%\bin;%PATH%'
   - 'xcopy /S /Y .appveyor\* src\main\'
   - 'SET MINGW_HOME=C:\MinGW'
   - 'SET PATH=%MINGW_HOME%\bin;%PATH%'
 test_script:
-  - mvnw -Dspring.datasource.password=Password12! -Djna.nosys=true clean verify -B
+  - mvnw -Dspring.datasource.password=Password12! clean verify -B
 cache:
   - '%USERPROFILE%\.m2'
 after_test:

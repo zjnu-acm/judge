@@ -135,7 +135,7 @@ public class MockDataService {
     }
 
     public Submission submission(int languageId, String source, String userId, String ip, long problemId) {
-        assumeTrue("not windows", com.sun.jna.Platform.isWindows());
+        assumeTrue("not windows", Platform.isWindows());
         CompletableFuture<?> future = submissionService.submit(languageId, source, userId, ip, problemId);
         try {
             future.get();

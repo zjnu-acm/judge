@@ -22,10 +22,10 @@ import com.github.zhanhb.judge.common.Options;
 import com.github.zhanhb.judge.common.SimpleValidator;
 import com.github.zhanhb.judge.common.Status;
 import com.github.zhanhb.judge.common.Validator;
-import com.sun.jna.Platform;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import jnr.ffi.Platform;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -42,7 +42,7 @@ public class JudgeBridgeSecurityTest {
 
     @BeforeClass
     public static void setUpClass() {
-        assumeTrue("not windows", Platform.isWindows());
+        assumeTrue("not windows", Platform.getNativePlatform().getOS() == Platform.OS.WINDOWS);
     }
 
     private final Validator validator = SimpleValidator.NORMAL;

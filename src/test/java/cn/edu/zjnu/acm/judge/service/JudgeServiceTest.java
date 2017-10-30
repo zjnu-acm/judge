@@ -27,7 +27,6 @@ import cn.edu.zjnu.acm.judge.util.DeleteHelper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.sun.jna.Platform;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;

@@ -67,7 +67,7 @@ import org.springframework.util.StringUtils;
 @Slf4j
 public class JudgeService {
 
-    private static final File NULL_FILE = Paths.get(com.sun.jna.Platform.isWindows() ? "NUL" : "/dev/null").toFile();
+    private static final File NULL_FILE = Paths.get(Platform.isWindows() ? "NUL" : "/dev/null").toFile();
 
     private static String collectLines(Path path) throws IOException {
         Charset charset = Platform.getCharset();

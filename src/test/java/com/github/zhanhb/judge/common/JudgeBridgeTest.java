@@ -16,7 +16,6 @@
 package com.github.zhanhb.judge.common;
 
 import cn.edu.zjnu.acm.judge.util.DeleteHelper;
-import com.sun.jna.Platform;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -26,6 +25,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
+import jnr.ffi.Platform;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
@@ -45,7 +45,7 @@ public class JudgeBridgeTest {
 
     @BeforeClass
     public static void setUpClass() {
-        assumeTrue("not windows", Platform.isWindows());
+        assumeTrue("not windows", Platform.getNativePlatform().getOS() == Platform.OS.WINDOWS);
     }
 
     private static String build(String... args) {
@@ -65,7 +65,7 @@ public class JudgeBridgeTest {
 
     @Before
     public void setUp() throws Exception {
-        URI uri = JudgeBridgeTest.class.getClassLoader().getResource("sample/program").toURI();
+        URI uri = JudgeBridgeTest.class.getResource("/sample/program").toURI();
         program = Paths.get(uri);
         data = program.resolve("../data").toRealPath();
         input = data.resolve("b.in");

@@ -1,23 +1,27 @@
 package com.github.zhanhb.judge.win32;
 
-import com.sun.jna.platform.win32.WinNT;
+import com.github.zhanhb.judge.win32.struct.LUID_AND_ATTRIBUTES;
+import com.github.zhanhb.judge.win32.struct.SID_AND_ATTRIBUTES;
+import com.github.zhanhb.judge.win32.struct.SID_IDENTIFIER_AUTHORITY;
 import java.util.Arrays;
+import jnr.ffi.Pointer;
+import jnr.ffi.byref.PointerByReference;
 
 /**
  *
  * @author zhanhb
  */
 @SuppressWarnings("UtilityClassWithoutPrivateConstructor")
-public class Advapi32Util {
+class Advapi32Util {
 
-    public static WinNT.PSID newPSID(Advapi32.SID_IDENTIFIER_AUTHORITY pIdentifierAuthority,
+    static Pointer newPSID(SID_IDENTIFIER_AUTHORITY pIdentifierAuthority,
             int... dwSubAuthorities) {
         int nSubAuthorityCount = dwSubAuthorities.length;
         if (nSubAuthorityCount > 8 || nSubAuthorityCount == 0) {
             throw new IllegalArgumentException();
         }
         int[] copy = Arrays.copyOf(dwSubAuthorities, 8);
-        WinNT.PSIDByReference psidByReference = new WinNT.PSIDByReference();
+        PointerByReference psidByReference = new PointerByReference();
         Kernel32Util.assertTrue(Advapi32.INSTANCE.AllocateAndInitializeSid(pIdentifierAuthority,
                 (byte) nSubAuthorityCount,
                 copy[0], copy[1], copy[2], copy[3],
@@ -26,13 +30,13 @@ public class Advapi32Util {
         return psidByReference.getValue();
     }
 
-    public static WinNT.HANDLE createRestrictedToken(
-            WinNT.HANDLE existingTokenHandle,
+    static Pointer createRestrictedToken(
+            Pointer /*HANDLE*/ existingTokenHandle,
             int /*DWORD*/ flags,
-            Advapi32.SID_AND_ATTRIBUTES[] sidsToDisable,
-            WinNT.LUID_AND_ATTRIBUTES[] privilegesToDelete,
-            Advapi32.SID_AND_ATTRIBUTES[] sidsToRestrict) {
-        WinNT.HANDLEByReference newTokenHandle = new WinNT.HANDLEByReference();
+            SID_AND_ATTRIBUTES[] sidsToDisable,
+            LUID_AND_ATTRIBUTES[] privilegesToDelete,
+            SID_AND_ATTRIBUTES[] sidsToRestrict) {
+        PointerByReference newTokenHandle = new PointerByReference();
         Kernel32Util.assertTrue(Advapi32.INSTANCE.CreateRestrictedToken(
                 existingTokenHandle, // ExistingTokenHandle
                 flags, // Flags
@@ -51,8 +55,8 @@ public class Advapi32Util {
         return array == null ? 0 : array.length;
     }
 
-    public static WinNT.HANDLE openProcessToken(WinNT.HANDLE processHandle, int desiredAccess) {
-        WinNT.HANDLEByReference tokenHandle = new WinNT.HANDLEByReference();
+    static Pointer openProcessToken(Pointer /*HANDLE*/ processHandle, int desiredAccess) {
+        PointerByReference tokenHandle = new PointerByReference();
         Kernel32Util.assertTrue(Advapi32.INSTANCE.OpenProcessToken(
                 processHandle,
                 desiredAccess,

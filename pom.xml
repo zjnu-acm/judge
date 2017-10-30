@@ -55,7 +55,6 @@
         <jackson.version>2.9.2</jackson.version>
         <java.version>1.8</java.version>
         <javax-mail.version>1.6.0</javax-mail.version>
-        <jna.version>4.5.0</jna.version>
         <logback.version>1.2.3</logback.version>
         <mariadb.version>2.1.2</mariadb.version>
         <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
@@ -222,6 +221,33 @@
             <version>0.0.9</version>
         </dependency>
         <dependency>
+            <groupId>com.github.jnr</groupId>
+            <artifactId>jnr-ffi</artifactId>
+            <version>2.1.7</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>asm-analysis</artifactId>
+                    <groupId>org.ow2.asm</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>asm-commons</artifactId>
+                    <groupId>org.ow2.asm</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>asm-tree</artifactId>
+                    <groupId>org.ow2.asm</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>asm-util</artifactId>
+                    <groupId>org.ow2.asm</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jnr-x86asm</artifactId>
+                    <groupId>com.github.jnr</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
             <groupId>com.github.zhanhb</groupId>
             <artifactId>ckfinder-spring-boot-starter</artifactId>
             <version>0.0.1.BUILD-SNAPSHOT</version>
@@ -269,11 +295,6 @@
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
             <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.java.dev.jna</groupId>
-            <artifactId>jna-platform</artifactId>
-            <version>${jna.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
