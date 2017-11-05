@@ -45,6 +45,7 @@
 
     <properties>
         <angular.version>1.2.32</angular.version>
+        <argLine>-Dfile.encoding=${file.encoding} -ea</argLine>
         <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
         <delombok.directory>${project.build.directory}/delombok</delombok.directory>
         <flyway.version>4.2.0</flyway.version>
@@ -53,6 +54,7 @@
         <guava.version>23.2-jre</guava.version>
         <hikaricp.version>2.7.2</hikaricp.version>
         <jackson.version>2.9.2</jackson.version>
+        <jacoco.propertyName>argLine</jacoco.propertyName>
         <java.version>1.8</java.version>
         <javax-mail.version>1.6.0</javax-mail.version>
         <logback.version>1.2.3</logback.version>
@@ -591,7 +593,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <argLine>-Dfile.encoding=${file.encoding} -ea @{argLine}</argLine>
                     <systemPropertyVariables>
                         <slf4j.detectLoggerNameMismatch>true</slf4j.detectLoggerNameMismatch>
                     </systemPropertyVariables>
@@ -652,7 +653,6 @@
                         <exclude>cn/edu/zjnu/acm/judge/data/*.class</exclude>
                         <exclude>cn/edu/zjnu/acm/judge/data/**/*.class</exclude>
                     </excludes>
-                    <propertyName>argLine</propertyName>
                 </configuration>
             </plugin>
             <plugin>
