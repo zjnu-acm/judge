@@ -67,7 +67,7 @@
         <objenesis.version>2.6</objenesis.version>
         <poi.version>3.17</poi.version>
         <prerequisites.maven>3.3.1</prerequisites.maven>
-        <snakeyaml.version>1.18</snakeyaml.version>
+        <snakeyaml.version>1.19</snakeyaml.version>
         <spring.version>4.3.12.RELEASE</spring.version>
         <start-class>cn.edu.zjnu.acm.judge.Application</start-class>
         <thymeleaf-extras-data-attribute.version>2.0.1</thymeleaf-extras-data-attribute.version>
