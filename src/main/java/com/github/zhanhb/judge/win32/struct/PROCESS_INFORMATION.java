@@ -21,8 +21,8 @@ package com.github.zhanhb.judge.win32.struct;
  */
 public class PROCESS_INFORMATION extends jnr.ffi.Struct {
 
-    private final Pointer hProcess = new Pointer();
-    private final Pointer hThread = new Pointer();
+    private final Address hProcess = new Address();
+    private final Address hThread = new Address();
     private final DWORD dwProcessId = new DWORD();
     private final DWORD dwThreadId = new DWORD();
 
@@ -30,12 +30,12 @@ public class PROCESS_INFORMATION extends jnr.ffi.Struct {
         super(runtime);
     }
 
-    public jnr.ffi.Pointer getProcess() {
-        return hProcess.get();
+    public long getProcess() {
+        return hProcess.get().address();
     }
 
-    public jnr.ffi.Pointer getThread() {
-        return hThread.get();
+    public long getThread() {
+        return hThread.get().address();
     }
 
 }

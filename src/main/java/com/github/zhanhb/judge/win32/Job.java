@@ -3,7 +3,6 @@ package com.github.zhanhb.judge.win32;
 import com.github.zhanhb.judge.win32.struct.JOBOBJECT_BASIC_LIMIT_INFORMATION;
 import com.github.zhanhb.judge.win32.struct.JOBOBJECT_BASIC_UI_RESTRICTIONS;
 import java.io.Closeable;
-import jnr.ffi.Pointer;
 
 import static com.github.zhanhb.judge.win32.Kernel32.JOB_OBJECT_LIMIT_ACTIVE_PROCESS;
 import static com.github.zhanhb.judge.win32.Kernel32.JOB_OBJECT_UILIMIT_DESKTOP;
@@ -21,11 +20,12 @@ public class Job implements Closeable {
 
     private static final jnr.ffi.Runtime runtime = jnr.ffi.Runtime.getSystemRuntime();
 
-    private final Pointer /*HANDLE*/ hJob;
+    private final long /*HANDLE*/ hJob;
 
     public Job() {
-        hJob = Kernel32.INSTANCE.CreateJobObjectW(null, null);
-        Kernel32Util.assertTrue(hJob != null);
+        long handle = Kernel32.INSTANCE.CreateJobObjectW(null, null);
+        Kernel32Util.assertTrue(handle != 0);
+        this.hJob = handle;
     }
 
     public void init() {
@@ -54,7 +54,7 @@ public class Job implements Closeable {
         Kernel32Util.setInformationJobObject(hJob, BasicUIRestrictions, jobuir);
     }
 
-    public void assignProcess(Pointer /*HANDLE*/ hProcess) {
+    public void assignProcess(long /*HANDLE*/ hProcess) {
         Kernel32Util.assertTrue(Kernel32.INSTANCE.AssignProcessToJobObject(hJob, hProcess));
     }
 

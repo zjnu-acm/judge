@@ -5,7 +5,6 @@ import com.github.zhanhb.judge.win32.struct.FILETIME;
 import com.github.zhanhb.judge.win32.struct.PROCESS_MEMORY_COUNTERS;
 import com.google.common.base.Preconditions;
 import java.util.concurrent.atomic.AtomicReference;
-import jnr.ffi.Pointer;
 import jnr.ffi.byref.IntByReference;
 
 import static com.github.zhanhb.judge.win32.Native.sizeof;
@@ -17,10 +16,10 @@ public class JudgeProcess {
 
     private static final jnr.ffi.Runtime runtime = jnr.ffi.Runtime.getSystemRuntime();
 
-    private final Pointer /*HANDLE*/ hProcess;
+    private final long /*HANDLE*/ hProcess;
     private final AtomicReference<Status> status = new AtomicReference<>();
 
-    public JudgeProcess(Pointer /*HANDLE*/ hProcess) {
+    JudgeProcess(long /*HANDLE*/ hProcess) {
         this.hProcess = hProcess;
     }
 

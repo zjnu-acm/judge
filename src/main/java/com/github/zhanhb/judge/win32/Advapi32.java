@@ -5,13 +5,14 @@ import com.github.zhanhb.judge.win32.struct.SID_AND_ATTRIBUTES;
 import com.github.zhanhb.judge.win32.struct.SID_IDENTIFIER_AUTHORITY;
 import com.github.zhanhb.judge.win32.struct.TOKEN_INFORMATION;
 import com.github.zhanhb.judge.win32.struct.TOKEN_INFORMATION_CLASS;
-import jnr.ffi.Pointer;
 import jnr.ffi.annotations.In;
 import jnr.ffi.annotations.Out;
+import jnr.ffi.byref.AddressByReference;
 import jnr.ffi.byref.PointerByReference;
 import jnr.ffi.types.int32_t;
 import jnr.ffi.types.u_int32_t;
 import jnr.ffi.types.u_int8_t;
+import jnr.ffi.types.uintptr_t;
 
 public interface Advapi32 {
 
@@ -19,7 +20,7 @@ public interface Advapi32 {
 
     @int32_t
     /* BOOL */ int CreateRestrictedToken(
-            @In Pointer /*HANDLE*/ ExistingTokenHandle,
+            @In @uintptr_t long /*HANDLE*/ ExistingTokenHandle,
             @In @u_int32_t int /*DWORD*/ Flags,
             @In @u_int32_t int /*DWORD*/ DisableSidCount,
             @In SID_AND_ATTRIBUTES[] SidsToDisable,
@@ -27,7 +28,7 @@ public interface Advapi32 {
             @In LUID_AND_ATTRIBUTES[] PrivilegesToDelete,
             @In @u_int32_t int /*DWORD*/ RestrictedSidCount,
             @In SID_AND_ATTRIBUTES[] SidsToRestrict,
-            @Out PointerByReference /*Pointer of HANDLE*/ NewTokenHandle
+            @Out AddressByReference /*Pointer of HANDLE*/ NewTokenHandle
     );
 
     @int32_t
@@ -42,7 +43,7 @@ public interface Advapi32 {
             @In @u_int32_t int /*DWORD*/ dwSubAuthority5,
             @In @u_int32_t int /*DWORD*/ dwSubAuthority6,
             @In @u_int32_t int /*DWORD*/ dwSubAuthority7,
-            @Out PointerByReference /*Pointer of SID*/ pSid);
+            @Out AddressByReference /*Pointer of SID*/ pSid);
 
     /**
      * @param tokenHandle
@@ -56,14 +57,14 @@ public interface Advapi32 {
      */
     @int32_t
     /* BOOL */ int SetTokenInformation(
-            @In Pointer /*HANDLE*/ tokenHandle,
+            @In @uintptr_t long /*HANDLE*/ tokenHandle,
             @In @u_int32_t int /*TOKEN_INFORMATION_CLASS*/ tokenInformationClass,
             @In TOKEN_INFORMATION tokenInformation,
             @In @u_int32_t int /*DWORD*/ tokenInformationLength
     );
 
     /*https://msdn.microsoft.com/en-us/library/windows/desktop/aa446631(v=vs.85).aspx*/
-    Pointer FreeSid(@In Pointer pSid);
+    @uintptr_t long FreeSid(@In @uintptr_t long pSid);
 
     int SECURITY_MANDATORY_UNTRUSTED_RID = 0x00000000;
     int SECURITY_MANDATORY_LOW_RID = 0x00001000;
@@ -76,14 +77,14 @@ public interface Advapi32 {
 
     @int32_t
     /* BOOL */ int OpenProcessToken(
-            @In Pointer /*HANDLE*/ processHandle,
+            @In @uintptr_t long /*HANDLE*/ processHandle,
             @In @u_int32_t int desiredAccess,
-            @Out PointerByReference /*HANDLE*/ tokenHandle);
+            @Out AddressByReference /*HANDLE*/ tokenHandle);
 
     @u_int32_t
-    /* UINT */ int GetLengthSid(@In Pointer pSid);
+    /* UINT */ int GetLengthSid(@In @uintptr_t long pSid);
 
     @int32_t
-    /* BOOL */ int ConvertSidToStringSidW(@In Pointer sid, @Out PointerByReference stringSid);
+    /* BOOL */ int ConvertSidToStringSidW(@In @uintptr_t long sid, @Out PointerByReference stringSid);
 
 }

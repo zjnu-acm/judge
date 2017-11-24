@@ -44,7 +44,7 @@ public class Kernel32UtilTest {
         log.info("assertTrue");
         IntByReference dwExitCode = new IntByReference();
         try {
-            Kernel32Util.assertTrue(Kernel32.INSTANCE.GetExitCodeProcess(null, dwExitCode));
+            Kernel32Util.assertTrue(Kernel32.INSTANCE.GetExitCodeProcess(0/*NULL*/, dwExitCode));
             fail("should throw a win32 exception");
         } catch (Win32Exception ex) {
             // invalid handle

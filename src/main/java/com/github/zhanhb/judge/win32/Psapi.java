@@ -1,11 +1,11 @@
 package com.github.zhanhb.judge.win32;
 
 import com.github.zhanhb.judge.win32.struct.PROCESS_MEMORY_COUNTERS;
-import jnr.ffi.Pointer;
 import jnr.ffi.annotations.In;
 import jnr.ffi.annotations.Out;
 import jnr.ffi.types.int32_t;
 import jnr.ffi.types.u_int32_t;
+import jnr.ffi.types.uintptr_t;
 
 public interface Psapi {
 
@@ -32,7 +32,7 @@ public interface Psapi {
      */
     @int32_t
     /* BOOL */ int GetProcessMemoryInfo(
-            @In Pointer /*HANDLE*/ hProcess,
+            @In @uintptr_t long /*HANDLE*/ hProcess,
             // this parameter is for out only, cb is not set until the method called
             @Out PROCESS_MEMORY_COUNTERS ppsmemCounters,
             @In @u_int32_t int cb);

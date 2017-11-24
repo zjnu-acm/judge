@@ -24,9 +24,9 @@ import static com.github.zhanhb.judge.win32.Native.sizeof;
 public class STARTUPINFO extends jnr.ffi.Struct {
 
     private final DWORD cb = new DWORD();
-    private final Pointer lpReserved = new Pointer(); //new UTF8String();
-    private final Pointer lpDesktop = new Pointer(); //UTF8String();
-    private final Pointer lpTitle = new Pointer(); //new UTF8String();
+    private final Address lpReserved = new Address(); //new UTF8String();
+    private final Address lpDesktop = new Address(); //UTF8String();
+    private final Address lpTitle = new Address(); //new UTF8String();
     private final DWORD dwX = new DWORD();
     private final DWORD dwY = new DWORD();
     private final DWORD dwXSize = new DWORD();
@@ -37,10 +37,10 @@ public class STARTUPINFO extends jnr.ffi.Struct {
     private final DWORD dwFlags = new DWORD();
     private final WORD wShowWindow = new WORD();
     private final WORD cbReserved2 = new WORD();
-    private final Pointer lpReserved2 = new Pointer();
-    private final Pointer hStdInput = new Pointer();
-    private final Pointer hStdOutput = new Pointer();
-    private final Pointer hStdError = new Pointer();
+    private final Address lpReserved2 = new Address();
+    private final Address hStdInput = new Address();
+    private final Address hStdOutput = new Address();
+    private final Address hStdError = new Address();
 
     @SuppressWarnings("LeakingThisInConstructor")
     public STARTUPINFO(jnr.ffi.Runtime runtime) {
@@ -52,15 +52,15 @@ public class STARTUPINFO extends jnr.ffi.Struct {
         dwFlags.set(flags);
     }
 
-    public void setStandardInput(jnr.ffi.Pointer standardInput) {
+    public void setStandardInput(long standardInput) {
         hStdInput.set(standardInput);
     }
 
-    public void setStandardOutput(jnr.ffi.Pointer standardOutput) {
+    public void setStandardOutput(long standardOutput) {
         hStdOutput.set(standardOutput);
     }
 
-    public void setStandardError(jnr.ffi.Pointer standardError) {
+    public void setStandardError(long standardError) {
         hStdError.set(standardError);
     }
 

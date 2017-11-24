@@ -24,7 +24,7 @@ public class SID_AND_ATTRIBUTES extends jnr.ffi.Struct {
     /**
      * Pointer to a SID structure.
      */
-    private final Pointer Sid = new Pointer();
+    private final Address Sid = new Address();
 
     /**
      * Specifies attributes of the SID. This value contains up to 32 one-bit
@@ -36,7 +36,7 @@ public class SID_AND_ATTRIBUTES extends jnr.ffi.Struct {
         super(runtime);
     }
 
-    public void setSid(jnr.ffi.Pointer sid) {
+    public void setSid(long sid) {
         Sid.set(sid);
     }
 

@@ -39,7 +39,7 @@ public class Advapi32UtilTest {
         assumeTrue("not windows", Platform.getNativePlatform().getOS() == Platform.OS.WINDOWS);
     }
 
-    private static String convertSidToStringSid(Pointer sid) {
+    private static String convertSidToStringSid(long sid) {
         PointerByReference stringSid = new PointerByReference();
         Kernel32Util.assertTrue(Advapi32.INSTANCE.ConvertSidToStringSidW(sid, stringSid));
 
@@ -60,12 +60,12 @@ public class Advapi32UtilTest {
         jnr.ffi.Runtime runtime = jnr.ffi.Runtime.getSystemRuntime();
         SID_IDENTIFIER_AUTHORITY pIdentifierAuthority = new SID_IDENTIFIER_AUTHORITY(runtime, 0, 0, 0, 0, 0, 16);
 
-        Pointer pSid = Advapi32Util.newPSID(pIdentifierAuthority, SECURITY_MANDATORY_LOW_RID);
+        long pSid = Advapi32Util.newPSID(pIdentifierAuthority, SECURITY_MANDATORY_LOW_RID);
         try {
             String sidString = convertSidToStringSid(pSid);
             assertEquals("S-1-16-4096", sidString);
         } finally {
-            Kernel32Util.assertTrue(Advapi32.INSTANCE.FreeSid(pSid) == null);
+            Kernel32Util.assertTrue(Advapi32.INSTANCE.FreeSid(pSid) == 0);
         }
     }
 

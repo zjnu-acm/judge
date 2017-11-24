@@ -30,7 +30,7 @@ public class JOBOBJECT_BASIC_LIMIT_INFORMATION extends JOBOBJECT_INFORMATION {
     private final size_t MinimumWorkingSetSize = new size_t();
     private final size_t MaximumWorkingSetSize = new size_t();
     private final DWORD ActiveProcessLimit = new DWORD();
-    private final Pointer Affinity = new Pointer();
+    private final Address Affinity = new Address();
     private final DWORD PriorityClass = new DWORD();
     private final DWORD SchedulingClass = new DWORD();
 

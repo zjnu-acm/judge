@@ -4,18 +4,16 @@ import com.google.common.base.Preconditions;
 import java.io.Closeable;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
-import jnr.ffi.Pointer;
 
 public class SafeHandle implements Closeable {
 
-    static final jnr.ffi.Runtime runtime = jnr.ffi.Runtime.getSystemRuntime();
-    private static final long INVALID_HANDLE_VALUE = runtime.addressMask();
+    private static final long INVALID_HANDLE_VALUE = jnr.ffi.Runtime.getSystemRuntime().addressMask();
 
-    public static void validateHandle(Pointer /*HANDLE*/ handle) {
-        Preconditions.checkArgument(handle != null && handle.address() != INVALID_HANDLE_VALUE, "invalid handle value");
+    public static void validateHandle(long /*HANDLE*/ handle) {
+        Preconditions.checkArgument(handle != 0 && handle != INVALID_HANDLE_VALUE, "invalid handle value");
     }
 
-    public static void close(Pointer /*HANDLE*/ handle) {
+    public static void close(long /*HANDLE*/ handle) {
         try {
             validateHandle(handle);
         } catch (IllegalArgumentException ex) {
@@ -24,16 +22,16 @@ public class SafeHandle implements Closeable {
         Kernel32Util.assertTrue(Kernel32.INSTANCE.CloseHandle(handle));
     }
 
-    private final Pointer /*HANDLE*/ handle;
+    private final long /*HANDLE*/ handle;
     private final AtomicBoolean closed = new AtomicBoolean();
 
-    public SafeHandle(Pointer /*HANDLE*/ handle) {
+    public SafeHandle(long /*HANDLE*/ handle) {
         Objects.requireNonNull(handle);
         validateHandle(handle);
         this.handle = handle;
     }
 
-    public Pointer /*HANDLE*/ getValue() {
+    public long /*HANDLE*/ getValue() {
         return handle;
     }
 

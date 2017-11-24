@@ -29,7 +29,7 @@ class Kernel32Util {
         assertTrue(test ? 1 : 0);
     }
 
-    static void setInheritable(Pointer handle) {
+    static void setInheritable(long handle) {
         assertTrue(Kernel32.INSTANCE.SetHandleInformation(handle, HANDLE_FLAG_INHERIT, HANDLE_FLAG_INHERIT));
     }
 
@@ -39,7 +39,7 @@ class Kernel32Util {
                 WinBase.FORMAT_MESSAGE_ALLOCATE_BUFFER
                 | WinBase.FORMAT_MESSAGE_FROM_SYSTEM
                 | WinBase.FORMAT_MESSAGE_IGNORE_INSERTS,
-                null,
+                0 /*NULL*/,
                 code,
                 0, // TODO: // MAKELANGID(LANG_NEUTRAL,SUBLANG_DEFAULT)
                 buffer, 0);
@@ -56,10 +56,10 @@ class Kernel32Util {
 
     @VisibleForTesting
     static void freeLocalMemory(Pointer ptr) {
-        assertTrue(Kernel32.INSTANCE.LocalFree(ptr) == null);
+        assertTrue(Kernel32.INSTANCE.LocalFree(ptr.address()) == 0);
     }
 
-    static void setInformationJobObject(Pointer hJob, JOBOBJECTINFOCLASS jobobjectinfoclass, JOBOBJECT_INFORMATION jobj) {
+    static void setInformationJobObject(long hJob, JOBOBJECTINFOCLASS jobobjectinfoclass, JOBOBJECT_INFORMATION jobj) {
         assertTrue(Kernel32.INSTANCE.SetInformationJobObject(hJob, jobobjectinfoclass.value(), jobj, sizeof(jobj)));
     }
 

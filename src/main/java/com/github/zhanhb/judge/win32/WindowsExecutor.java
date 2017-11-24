@@ -28,7 +28,6 @@ import com.github.zhanhb.judge.win32.struct.TOKEN_INFORMATION_CLASS;
 import com.github.zhanhb.judge.win32.struct.TOKEN_MANDATORY_LABEL;
 import java.nio.file.Path;
 import java.util.Objects;
-import jnr.ffi.Pointer;
 
 import static com.github.zhanhb.judge.common.Constants.TERMINATE_TIMEOUT;
 import static com.github.zhanhb.judge.common.Constants.UPDATE_TIME_THRESHOLD;
@@ -130,14 +129,14 @@ public enum WindowsExecutor implements Executor {
                         : FILE_ATTRIBUTE_NORMAL;
 
         int flagsAndAttributes = maybeWriteThrough | maybeDeleteOnClose;
-        Pointer h = Kernel32.INSTANCE.CreateFileW(
+        long h = Kernel32.INSTANCE.CreateFileW(
                 WString.toNative(path.toString()), /* Wide char path name */
                 access, /* Read and/or write permission */
                 sharing, /* File sharing flags */
                 null, /* Security attributes */
                 disposition, /* creation disposition */
                 flagsAndAttributes, /* flags and attributes */
-                null);
+                0 /*NULL*/);
         return new SafeHandle(h);
     }
 
@@ -224,7 +223,7 @@ public enum WindowsExecutor implements Executor {
         }
     }
 
-    private PROCESS_INFORMATION createProcess(String lpCommandLine, Pointer /*HANDLE*/ hIn, Pointer /*HANDLE*/ hOut, Pointer /*HANDLE*/ hErr,
+    private PROCESS_INFORMATION createProcess(String lpCommandLine, long /*HANDLE*/ hIn, long /*HANDLE*/ hOut, long /*HANDLE*/ hErr,
             boolean redirectErrorStream, Path lpCurrentDirectory) {
         SECURITY_ATTRIBUTES sa = new SECURITY_ATTRIBUTES(runtime);
         sa.setInheritHandle(true);
@@ -257,7 +256,7 @@ public enum WindowsExecutor implements Executor {
         try (SafeHandle hToken = new SafeHandle(createRestrictedToken())) {
             SID_IDENTIFIER_AUTHORITY pIdentifierAuthority = new SID_IDENTIFIER_AUTHORITY(runtime, 0, 0, 0, 0, 0, 16);
 
-            Pointer pSid = Advapi32Util.newPSID(pIdentifierAuthority, SECURITY_MANDATORY_LOW_RID);
+            long pSid = Advapi32Util.newPSID(pIdentifierAuthority, SECURITY_MANDATORY_LOW_RID);
 
             try {
                 TOKEN_MANDATORY_LABEL tokenInformation = new TOKEN_MANDATORY_LABEL(runtime);
@@ -286,13 +285,13 @@ public enum WindowsExecutor implements Executor {
                                 lpStartupInfo,
                                 lpProcessInformation)));
             } finally {
-                Kernel32Util.assertTrue(Advapi32.INSTANCE.FreeSid(pSid) == null);
+                Kernel32Util.assertTrue(Advapi32.INSTANCE.FreeSid(pSid) == 0);
             }
         }
         return lpProcessInformation;
     }
 
-    private Pointer /*HANDLE*/ createRestrictedToken() {
+    private long /*HANDLE*/ createRestrictedToken() {
         try (SafeHandle token = new SafeHandle(
                 Advapi32Util.openProcessToken(Kernel32.INSTANCE.GetCurrentProcess(),
                         TOKEN_DUPLICATE | TOKEN_ASSIGN_PRIMARY | TOKEN_QUERY | TOKEN_ADJUST_DEFAULT))) {
