@@ -16,8 +16,8 @@
 package com.github.zhanhb.judge.win32.struct;
 
 /**
- *
- * @author zhanhb
+ * @see
+ * https://msdn.microsoft.com/zh-tw/library/windows/desktop/ms724284(v=vs.85).aspx
  */
 public class FILETIME extends jnr.ffi.Struct {
 

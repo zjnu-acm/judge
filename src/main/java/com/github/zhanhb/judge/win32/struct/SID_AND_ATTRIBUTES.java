@@ -16,8 +16,8 @@
 package com.github.zhanhb.judge.win32.struct;
 
 /**
- *
- * @author zhanhb
+ * @see
+ * https://msdn.microsoft.com/en-us/library/windows/desktop/aa379595(v=vs.85).aspx
  */
 public class SID_AND_ATTRIBUTES extends jnr.ffi.Struct {
 

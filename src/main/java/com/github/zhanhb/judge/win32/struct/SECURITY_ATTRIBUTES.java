@@ -18,8 +18,8 @@ package com.github.zhanhb.judge.win32.struct;
 import static com.github.zhanhb.judge.win32.Native.sizeof;
 
 /**
- *
- * @author zhanhb
+ * @see
+ * https://msdn.microsoft.com/en-us/library/windows/desktop/aa379560(v=vs.85).aspx
  */
 public class SECURITY_ATTRIBUTES extends jnr.ffi.Struct {
 

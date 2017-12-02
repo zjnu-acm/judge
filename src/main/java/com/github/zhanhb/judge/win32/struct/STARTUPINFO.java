@@ -18,8 +18,8 @@ package com.github.zhanhb.judge.win32.struct;
 import static com.github.zhanhb.judge.win32.Native.sizeof;
 
 /**
- *
- * @author zhanhb
+ * @see
+ * https://msdn.microsoft.com/zh-tw/library/windows/desktop/ms686331(v=vs.85).aspx
  */
 public class STARTUPINFO extends jnr.ffi.Struct {
 

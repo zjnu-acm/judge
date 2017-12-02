@@ -16,8 +16,8 @@
 package com.github.zhanhb.judge.win32.struct;
 
 /**
- *
- * @author zhanhb
+ * @see
+ * https://msdn.microsoft.com/en-us/library/windows/desktop/aa379598(v=vs.85).aspx
  */
 public class SID_IDENTIFIER_AUTHORITY extends jnr.ffi.Struct {
 
