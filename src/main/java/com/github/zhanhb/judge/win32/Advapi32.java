@@ -64,7 +64,8 @@ public interface Advapi32 {
     );
 
     /*https://msdn.microsoft.com/en-us/library/windows/desktop/aa446631(v=vs.85).aspx*/
-    @uintptr_t long FreeSid(@In @uintptr_t long pSid);
+    @uintptr_t
+    long FreeSid(@In @uintptr_t long pSid);
 
     int SECURITY_MANDATORY_UNTRUSTED_RID = 0x00000000;
     int SECURITY_MANDATORY_LOW_RID = 0x00001000;

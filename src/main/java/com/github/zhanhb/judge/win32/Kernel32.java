@@ -89,7 +89,8 @@ public interface Kernel32 {
             @Out FILETIME lpUserTime);
 
     @Nullable
-    @uintptr_t long /*HANDLE*/ CreateJobObjectW(@In SECURITY_ATTRIBUTES lpJobAttributes, @In byte[] lpName);
+    @uintptr_t
+    long /*HANDLE*/ CreateJobObjectW(@In SECURITY_ATTRIBUTES lpJobAttributes, @In byte[] lpName);
 
     /**
      * @param uMode
@@ -200,7 +201,8 @@ public interface Kernel32 {
             @In STARTUPINFO lpStartupInfo,
             @Out PROCESS_INFORMATION lpProcessInformation);
 
-    @uintptr_t long CreateFileW(
+    @uintptr_t
+    long CreateFileW(
             @In byte[] lpFileName,
             @In @u_int32_t int dwDesiredAccess,
             @In @u_int32_t int dwShareMode,
@@ -209,7 +211,8 @@ public interface Kernel32 {
             @In @u_int32_t int dwFlagsAndAttributes,
             @In @uintptr_t long /*HANDLE*/ hTemplateFile);
 
-    @uintptr_t long /*HANDLE*/ GetCurrentProcess();
+    @uintptr_t
+    long /*HANDLE*/ GetCurrentProcess();
 
     @u_int32_t
     int WaitForSingleObject(
@@ -219,7 +222,8 @@ public interface Kernel32 {
     @int32_t
     /* BOOL */ int TerminateProcess(@In @uintptr_t long hProcess, @In @u_int32_t int uExitCode);
 
-    @uintptr_t long LocalFree(@In @uintptr_t long hMem);
+    @uintptr_t
+    long LocalFree(@In @uintptr_t long hMem);
 
     @u_int32_t
     int FormatMessageW(
