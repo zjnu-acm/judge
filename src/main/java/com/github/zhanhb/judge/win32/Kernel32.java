@@ -91,8 +91,15 @@ public interface Kernel32 {
     @Nullable
     @uintptr_t long /*HANDLE*/ CreateJobObjectW(@In SECURITY_ATTRIBUTES lpJobAttributes, @In byte[] lpName);
 
-    @u_int32_t
-    int SetErrorMode(@In @u_int32_t int uMode);
+    /**
+     * @param uMode
+     * @param lpOldMode
+     * @return
+     * @see
+     * https://msdn.microsoft.com/en-us/library/windows/desktop/dd553630(v=vs.85).aspx
+     */
+    @int32_t
+    /* BOOL */ int SetThreadErrorMode(@In @u_int32_t int uMode, IntByReference lpOldMode);
 
     @int32_t
     /* BOOL */ int GetExitCodeProcess(@In @uintptr_t long /*HANDLE*/ hProcess, @Out IntByReference dwExitCode);
