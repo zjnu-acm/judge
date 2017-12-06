@@ -16,13 +16,13 @@
 package com.github.zhanhb.judge.win32.struct;
 
 /**
- *
- * @author zhanhb
+ * @see
+ * https://msdn.microsoft.com/en-us/library/windows/desktop/ms684873(v=vs.85).aspx
  */
 public class PROCESS_INFORMATION extends jnr.ffi.Struct {
 
-    private final Address hProcess = new Address();
-    private final Address hThread = new Address();
+    private final uintptr_t /*HANDLE*/ hProcess = new uintptr_t();
+    private final uintptr_t /*HANDLE*/ hThread = new uintptr_t();
     private final DWORD dwProcessId = new DWORD();
     private final DWORD dwThreadId = new DWORD();
 
@@ -31,11 +31,11 @@ public class PROCESS_INFORMATION extends jnr.ffi.Struct {
     }
 
     public long getProcess() {
-        return hProcess.get().address();
+        return hProcess.get();
     }
 
     public long getThread() {
-        return hThread.get().address();
+        return hThread.get();
     }
 
 }

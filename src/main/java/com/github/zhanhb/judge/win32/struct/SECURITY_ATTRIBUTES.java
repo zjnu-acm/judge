@@ -24,7 +24,7 @@ import static com.github.zhanhb.judge.win32.Native.sizeof;
 public class SECURITY_ATTRIBUTES extends jnr.ffi.Struct {
 
     private final DWORD nLength = new DWORD();
-    private final Address lpSecurityDescriptor = new Address();
+    private final uintptr_t /*LPVOID*/ lpSecurityDescriptor = new uintptr_t();
     private final WBOOL bInheritHandle = new WBOOL();
 
     @SuppressWarnings("LeakingThisInConstructor")

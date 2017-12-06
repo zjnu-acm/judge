@@ -44,7 +44,7 @@ public class FILETIME extends jnr.ffi.Struct {
     }
 
     public long longValue() {
-        return getHighDateTime() << 32 + getLowDateTime();
+        return (long) getHighDateTime() << 32 | (getLowDateTime() & 0xFFFFFFFFL);
     }
 
     public long toMillis() {

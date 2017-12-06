@@ -24,7 +24,7 @@ public class SID_AND_ATTRIBUTES extends jnr.ffi.Struct {
     /**
      * Pointer to a SID structure.
      */
-    private final Address Sid = new Address();
+    private final uintptr_t /*PSID*/ Sid = new uintptr_t();
 
     /**
      * Specifies attributes of the SID. This value contains up to 32 one-bit

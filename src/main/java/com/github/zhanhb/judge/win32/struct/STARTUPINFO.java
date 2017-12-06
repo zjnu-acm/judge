@@ -24,9 +24,9 @@ import static com.github.zhanhb.judge.win32.Native.sizeof;
 public class STARTUPINFO extends jnr.ffi.Struct {
 
     private final DWORD cb = new DWORD();
-    private final Address lpReserved = new Address(); //new UTF8String();
-    private final Address lpDesktop = new Address(); //UTF8String();
-    private final Address lpTitle = new Address(); //new UTF8String();
+    private final uintptr_t /*LPTSTR*/ lpReserved = new uintptr_t(); //new UTF8String();
+    private final uintptr_t /*LPTSTR*/ lpDesktop = new uintptr_t(); //UTF8String();
+    private final uintptr_t /*LPTSTR*/ lpTitle = new uintptr_t(); //new UTF8String();
     private final DWORD dwX = new DWORD();
     private final DWORD dwY = new DWORD();
     private final DWORD dwXSize = new DWORD();
@@ -37,10 +37,10 @@ public class STARTUPINFO extends jnr.ffi.Struct {
     private final DWORD dwFlags = new DWORD();
     private final WORD wShowWindow = new WORD();
     private final WORD cbReserved2 = new WORD();
-    private final Address lpReserved2 = new Address();
-    private final Address hStdInput = new Address();
-    private final Address hStdOutput = new Address();
-    private final Address hStdError = new Address();
+    private final uintptr_t /*LPBYTE*/ lpReserved2 = new uintptr_t();
+    private final uintptr_t /*HANDLE*/ hStdInput = new uintptr_t();
+    private final uintptr_t /*HANDLE*/ hStdOutput = new uintptr_t();
+    private final uintptr_t /*HANDLE*/ hStdError = new uintptr_t();
 
     @SuppressWarnings("LeakingThisInConstructor")
     public STARTUPINFO(jnr.ffi.Runtime runtime) {

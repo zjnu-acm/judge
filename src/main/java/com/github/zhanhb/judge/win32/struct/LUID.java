@@ -22,7 +22,7 @@ package com.github.zhanhb.judge.win32.struct;
 public class LUID extends jnr.ffi.Struct {
 
     private final DWORD LowPart = new DWORD();
-    private final LONG HighPart = new LONG();
+    private final Signed32 HighPart = new Signed32();
 
     public LUID(jnr.ffi.Runtime runtime) {
         super(runtime);
