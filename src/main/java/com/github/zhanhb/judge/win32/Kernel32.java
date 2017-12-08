@@ -233,6 +233,6 @@ public interface Kernel32 {
             @In @u_int32_t int /*DWORD*/ dwLanguageId,
             @Out PointerByReference lpBuffer,
             @In @u_int32_t int /*DWORD*/ nSize,
-            @In Object... /**/ arguments);
+            @In @uintptr_t long /* va_list* */ Arguments);
 
 }
