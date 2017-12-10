@@ -52,7 +52,7 @@
         <git-commit-id-plugin.version>2.2.3</git-commit-id-plugin.version>
         <guava.version>23.5-jre</guava.version>
         <hikaricp.version>2.7.4</hikaricp.version>
-        <jackson.version>2.9.2</jackson.version>
+        <jackson.version>2.9.3</jackson.version>
         <jacoco.propertyName>argLine</jacoco.propertyName>
         <java.version>1.8</java.version>
         <javax-mail.version>1.6.0</javax-mail.version>
