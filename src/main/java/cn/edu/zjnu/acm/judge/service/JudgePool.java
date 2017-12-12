@@ -19,10 +19,14 @@ import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +35,7 @@ import org.springframework.stereotype.Service;
  * @author zhanhb
  */
 @Service
+@Slf4j
 public class JudgePool {
 
     private ExecutorService executorService;
@@ -42,7 +47,20 @@ public class JudgePool {
         final ThreadGroup group = new ThreadGroup("judge group");
         final AtomicInteger counter = new AtomicInteger();
         final ThreadFactory threadFactory = runnable -> new Thread(group, runnable, "judge thread " + counter.incrementAndGet());
-        executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors(), threadFactory);
+        int nThreads = Runtime.getRuntime().availableProcessors();
+        executorService = new ThreadPoolExecutor(nThreads, nThreads,
+                0L, TimeUnit.MILLISECONDS,
+                new LinkedBlockingQueue<>(),
+                threadFactory) {
+
+            @Override
+            protected void afterExecute(Runnable r, Throwable t) {
+                if (t != null) {
+                    log.error("{}", r, t);
+                }
+            }
+
+        };
     }
 
     @PreDestroy
