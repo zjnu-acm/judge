@@ -15,17 +15,16 @@
  */
 package com.github.zhanhb.judge.win32.struct;
 
+import jnc.foreign.annotation.Pack;
+
 /**
  *
  * @see <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa379263(v=vs.85).aspx">LUID_AND_ATTRIBUTES</a>
  */
-public class LUID_AND_ATTRIBUTES extends jnr.ffi.Struct {
+@Pack(4)
+public class LUID_AND_ATTRIBUTES extends jnc.foreign.Struct {
 
-    private final LUID Luid = inner(new LUID(getRuntime()));
+    private final LUID Luid = inner(new LUID());
     private final DWORD Attributes = new DWORD();
-
-    public LUID_AND_ATTRIBUTES(jnr.ffi.Runtime runtime) {
-        super(runtime, new Alignment(4));
-    }
 
 }

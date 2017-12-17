@@ -18,8 +18,6 @@ import static com.github.zhanhb.judge.win32.struct.JOBOBJECTINFOCLASS.BasicUIRes
 
 public class Job implements Closeable {
 
-    private static final jnr.ffi.Runtime runtime = jnr.ffi.Runtime.getSystemRuntime();
-
     private final long /*HANDLE*/ hJob;
 
     public Job() {
@@ -29,14 +27,14 @@ public class Job implements Closeable {
     }
 
     public void init() {
-        JOBOBJECT_BASIC_LIMIT_INFORMATION jobli = new JOBOBJECT_BASIC_LIMIT_INFORMATION(runtime);
+        JOBOBJECT_BASIC_LIMIT_INFORMATION jobli = new JOBOBJECT_BASIC_LIMIT_INFORMATION();
         jobli.setActiveProcessLimit(1);
         // These are the only 1 restrictions I want placed on the job (process).
         jobli.setLimitFlags(JOB_OBJECT_LIMIT_ACTIVE_PROCESS);
         Kernel32Util.setInformationJobObject(hJob, BasicLimitInformation, jobli);
 
         // Second, set some UI restrictions.
-        JOBOBJECT_BASIC_UI_RESTRICTIONS jobuir = new JOBOBJECT_BASIC_UI_RESTRICTIONS(runtime);
+        JOBOBJECT_BASIC_UI_RESTRICTIONS jobuir = new JOBOBJECT_BASIC_UI_RESTRICTIONS();
         jobuir.setUIRestrictionsClass(
                 // The process can't access USER objects (such as other windows)
                 // in the system.

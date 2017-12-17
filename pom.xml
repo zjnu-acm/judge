@@ -221,33 +221,6 @@
             <version>0.0.9</version>
         </dependency>
         <dependency>
-            <groupId>com.github.jnr</groupId>
-            <artifactId>jnr-ffi</artifactId>
-            <version>2.1.7</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>asm-analysis</artifactId>
-                    <groupId>org.ow2.asm</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>asm-commons</artifactId>
-                    <groupId>org.ow2.asm</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>asm-tree</artifactId>
-                    <groupId>org.ow2.asm</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>asm-util</artifactId>
-                    <groupId>org.ow2.asm</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>jnr-x86asm</artifactId>
-                    <groupId>com.github.jnr</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
             <groupId>com.github.zhanhb</groupId>
             <artifactId>ckfinder-spring-boot-starter</artifactId>
             <version>0.0.1.BUILD-SNAPSHOT</version>
@@ -257,6 +230,11 @@
             <artifactId>ckfinder-webjars</artifactId>
             <version>0.0.1.BUILD-SNAPSHOT</version>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.zhanhb</groupId>
+            <artifactId>jnc-runtime</artifactId>
+            <version>0.0.1.BUILD-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.github.zhanhb</groupId>

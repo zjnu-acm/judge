@@ -25,10 +25,6 @@ public class JOBOBJECT_BASIC_UI_RESTRICTIONS extends JOBOBJECT_INFORMATION {
 
     private final DWORD UIRestrictionsClass = new DWORD();
 
-    public JOBOBJECT_BASIC_UI_RESTRICTIONS(jnr.ffi.Runtime runtime) {
-        super(runtime);
-    }
-
     public void setUIRestrictionsClass(int uiRestrictionsClass) {
         UIRestrictionsClass.set(uiRestrictionsClass);
     }

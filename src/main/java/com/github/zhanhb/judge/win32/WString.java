@@ -17,7 +17,7 @@ package com.github.zhanhb.judge.win32;
 
 import com.google.common.annotations.VisibleForTesting;
 import java.nio.charset.StandardCharsets;
-import jnr.ffi.Pointer;
+import jnc.foreign.Pointer;
 
 /**
  *
@@ -34,7 +34,7 @@ public class WString {
     static String fromNative(Pointer ptr) {
         int length = LibC.INSTANCE.wcslen(ptr);
         byte[] bytes = new byte[length << 1];
-        ptr.get(0, bytes, 0, bytes.length);
+        ptr.getBytes(0, bytes, 0, bytes.length);
         return new String(bytes, StandardCharsets.UTF_16LE);
     }
 

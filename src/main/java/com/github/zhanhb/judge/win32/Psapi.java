@@ -1,15 +1,18 @@
 package com.github.zhanhb.judge.win32;
 
 import com.github.zhanhb.judge.win32.struct.PROCESS_MEMORY_COUNTERS;
-import jnr.ffi.annotations.In;
-import jnr.ffi.annotations.Out;
-import jnr.ffi.types.int32_t;
-import jnr.ffi.types.u_int32_t;
-import jnr.ffi.types.uintptr_t;
+import jnc.foreign.LibraryLoader;
+import jnc.foreign.abi.Stdcall;
+import jnc.foreign.annotation.In;
+import jnc.foreign.annotation.Out;
+import jnc.foreign.typedef.int32_t;
+import jnc.foreign.typedef.uint32_t;
+import jnc.foreign.typedef.uintptr_t;
 
+@Stdcall
 public interface Psapi {
 
-    Psapi INSTANCE = Native.loadLibrary("psapi", Psapi.class);
+    Psapi INSTANCE = LibraryLoader.create(Psapi.class).load("psapi");
 
     /**
      * Retrieves information about the memory usage of the specified process.
@@ -31,10 +34,10 @@ public interface Psapi {
      * <a href="http://msdn.microsoft.com/en-us/library/ms683219(VS.85).aspx">GetProcessMemoryInfo</a>
      */
     @int32_t
-    /* BOOL */ int GetProcessMemoryInfo(
+    boolean GetProcessMemoryInfo(
             @In @uintptr_t long /*HANDLE*/ hProcess,
             // this parameter is for out only, cb is not set until the method called
             @Out PROCESS_MEMORY_COUNTERS ppsmemCounters,
-            @In @u_int32_t int cb);
+            @In @uint32_t int cb);
 
 }

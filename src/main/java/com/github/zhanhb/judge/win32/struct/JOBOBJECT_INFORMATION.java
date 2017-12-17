@@ -19,10 +19,6 @@ package com.github.zhanhb.judge.win32.struct;
  *
  * @author zhanhb
  */
-public abstract class JOBOBJECT_INFORMATION extends jnr.ffi.Struct {
-
-    public JOBOBJECT_INFORMATION(jnr.ffi.Runtime runtime) {
-        super(runtime);
-    }
+public abstract class JOBOBJECT_INFORMATION extends jnc.foreign.Struct {
 
 }

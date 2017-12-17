@@ -21,11 +21,7 @@ package com.github.zhanhb.judge.win32.struct;
  */
 public class TOKEN_MANDATORY_LABEL extends TOKEN_INFORMATION {
 
-    private final SID_AND_ATTRIBUTES Label = inner(new SID_AND_ATTRIBUTES(getRuntime()));
-
-    public TOKEN_MANDATORY_LABEL(jnr.ffi.Runtime runtime) {
-        super(runtime);
-    }
+    private final SID_AND_ATTRIBUTES Label = inner(new SID_AND_ATTRIBUTES());
 
     public SID_AND_ATTRIBUTES getLabel() {
         return Label;

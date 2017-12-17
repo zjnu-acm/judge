@@ -15,13 +15,11 @@
  */
 package com.github.zhanhb.judge.win32.struct;
 
-import static com.github.zhanhb.judge.win32.Native.sizeof;
-
 /**
  * @see
  * <a href="https://msdn.microsoft.com/zh-tw/library/windows/desktop/ms686331(v=vs.85).aspx">STARTUPINFO</a>
  */
-public class STARTUPINFO extends jnr.ffi.Struct {
+public class STARTUPINFO extends jnc.foreign.Struct {
 
     private final DWORD cb = new DWORD();
     private final uintptr_t /*LPTSTR*/ lpReserved = new uintptr_t(); //new UTF8String();
@@ -42,10 +40,8 @@ public class STARTUPINFO extends jnr.ffi.Struct {
     private final uintptr_t /*HANDLE*/ hStdOutput = new uintptr_t();
     private final uintptr_t /*HANDLE*/ hStdError = new uintptr_t();
 
-    @SuppressWarnings("LeakingThisInConstructor")
-    public STARTUPINFO(jnr.ffi.Runtime runtime) {
-        super(runtime);
-        cb.set(sizeof(this));
+    public STARTUPINFO() {
+        cb.set(size());
     }
 
     public void setFlags(int flags) {

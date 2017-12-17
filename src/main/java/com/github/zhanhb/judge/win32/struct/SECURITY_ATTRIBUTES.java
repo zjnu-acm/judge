@@ -15,22 +15,19 @@
  */
 package com.github.zhanhb.judge.win32.struct;
 
-import static com.github.zhanhb.judge.win32.Native.sizeof;
-
 /**
  * @see
  * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa379560(v=vs.85).aspx">SECURITY_ATTRIBUTES</a>
  */
-public class SECURITY_ATTRIBUTES extends jnr.ffi.Struct {
+public class SECURITY_ATTRIBUTES extends jnc.foreign.Struct {
 
     private final DWORD nLength = new DWORD();
     private final uintptr_t /*LPVOID*/ lpSecurityDescriptor = new uintptr_t();
     private final WBOOL bInheritHandle = new WBOOL();
 
     @SuppressWarnings("LeakingThisInConstructor")
-    public SECURITY_ATTRIBUTES(jnr.ffi.Runtime runtime) {
-        super(runtime);
-        nLength.set(sizeof(this));
+    public SECURITY_ATTRIBUTES() {
+        nLength.set(size());
     }
 
     public void setInheritHandle(boolean inheritable) {

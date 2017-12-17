@@ -19,7 +19,7 @@ package com.github.zhanhb.judge.win32.struct;
  * @see
  * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa379595(v=vs.85).aspx">SID_AND_ATTRIBUTES</a>
  */
-public class SID_AND_ATTRIBUTES extends jnr.ffi.Struct {
+public class SID_AND_ATTRIBUTES extends jnc.foreign.Struct {
 
     /**
      * Pointer to a SID structure.
@@ -31,10 +31,6 @@ public class SID_AND_ATTRIBUTES extends jnr.ffi.Struct {
      * flags. Its meaning depends on the definition and use of the SID.
      */
     private final DWORD Attributes = new DWORD();
-
-    public SID_AND_ATTRIBUTES(jnr.ffi.Runtime runtime) {
-        super(runtime);
-    }
 
     public void setSid(long sid) {
         Sid.set(sid);

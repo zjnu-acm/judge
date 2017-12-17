@@ -19,16 +19,12 @@ package com.github.zhanhb.judge.win32.struct;
  * @see
  * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms684873(v=vs.85).aspx">PROCESS_INFORMATION</a>
  */
-public class PROCESS_INFORMATION extends jnr.ffi.Struct {
+public class PROCESS_INFORMATION extends jnc.foreign.Struct {
 
     private final uintptr_t /*HANDLE*/ hProcess = new uintptr_t();
     private final uintptr_t /*HANDLE*/ hThread = new uintptr_t();
     private final DWORD dwProcessId = new DWORD();
     private final DWORD dwThreadId = new DWORD();
-
-    public PROCESS_INFORMATION(jnr.ffi.Runtime runtime) {
-        super(runtime);
-    }
 
     public long getProcess() {
         return hProcess.get();

@@ -25,7 +25,8 @@ import com.github.zhanhb.judge.common.Validator;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import jnr.ffi.Platform;
+import jnc.foreign.OS;
+import jnc.foreign.Platform;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -42,7 +43,7 @@ public class JudgeBridgeSecurityTest {
 
     @BeforeClass
     public static void setUpClass() {
-        assumeTrue("not windows", Platform.getNativePlatform().getOS() == Platform.OS.WINDOWS);
+        assumeTrue("not windows", Platform.getNativePlatform().getOS() == OS.WINDOWS);
     }
 
     private final Validator validator = SimpleValidator.NORMAL;

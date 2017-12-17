@@ -24,8 +24,8 @@ package com.github.zhanhb.judge.win32.struct;
  */
 public class JOBOBJECT_BASIC_LIMIT_INFORMATION extends JOBOBJECT_INFORMATION {
 
-    private final Signed64 PerProcessUserTimeLimit = new Signed64();
-    private final Signed64 PerJobUserTimeLimit = new Signed64();
+    private final int64_t PerProcessUserTimeLimit = new int64_t();
+    private final int64_t PerJobUserTimeLimit = new int64_t();
     private final DWORD LimitFlags = new DWORD();
     private final size_t MinimumWorkingSetSize = new size_t();
     private final size_t MaximumWorkingSetSize = new size_t();
@@ -33,10 +33,6 @@ public class JOBOBJECT_BASIC_LIMIT_INFORMATION extends JOBOBJECT_INFORMATION {
     private final uintptr_t /*ULONG_PTR*/ Affinity = new uintptr_t();
     private final DWORD PriorityClass = new DWORD();
     private final DWORD SchedulingClass = new DWORD();
-
-    public JOBOBJECT_BASIC_LIMIT_INFORMATION(jnr.ffi.Runtime runtime) {
-        super(runtime);
-    }
 
     public void setActiveProcessLimit(int activeProcessLimit) {
         ActiveProcessLimit.set(activeProcessLimit);

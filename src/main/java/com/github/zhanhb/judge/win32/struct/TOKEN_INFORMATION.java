@@ -19,10 +19,6 @@ package com.github.zhanhb.judge.win32.struct;
  *
  * @author zhanhb
  */
-public abstract class TOKEN_INFORMATION extends jnr.ffi.Struct {
-
-    public TOKEN_INFORMATION(jnr.ffi.Runtime runtime) {
-        super(runtime);
-    }
+public abstract class TOKEN_INFORMATION extends jnc.foreign.Struct {
 
 }

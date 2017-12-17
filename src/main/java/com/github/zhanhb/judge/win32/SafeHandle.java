@@ -4,10 +4,24 @@ import com.google.common.base.Preconditions;
 import java.io.Closeable;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
+import jnc.foreign.Platform;
 
 public class SafeHandle implements Closeable {
 
-    private static final long INVALID_HANDLE_VALUE = jnr.ffi.Runtime.getSystemRuntime().addressMask();
+    private static final long INVALID_HANDLE_VALUE;
+
+    static {
+        switch (Platform.getNativePlatform().getArch()) {
+            case I386:
+                INVALID_HANDLE_VALUE = 0xFFFFFFFFL;
+                break;
+            case X86_64:
+                INVALID_HANDLE_VALUE = -1;
+                break;
+            default:
+                throw new AssertionError();
+        }
+    }
 
     public static void validateHandle(long /*HANDLE*/ handle) {
         Preconditions.checkArgument(handle != 0 && handle != INVALID_HANDLE_VALUE, "invalid handle value");

@@ -44,7 +44,6 @@ import static com.github.zhanhb.judge.win32.Advapi32.SANDBOX_INERT;
 import static com.github.zhanhb.judge.win32.Advapi32.SECURITY_MANDATORY_LOW_RID;
 import static com.github.zhanhb.judge.win32.Advapi32.SE_GROUP_INTEGRITY;
 import static com.github.zhanhb.judge.win32.Kernel32.HIGH_PRIORITY_CLASS;
-import static com.github.zhanhb.judge.win32.Native.sizeof;
 import static com.github.zhanhb.judge.win32.WinBase.CREATE_BREAKAWAY_FROM_JOB;
 import static com.github.zhanhb.judge.win32.WinBase.CREATE_NEW_PROCESS_GROUP;
 import static com.github.zhanhb.judge.win32.WinBase.CREATE_NO_WINDOW;
@@ -64,8 +63,6 @@ import static com.github.zhanhb.judge.win32.struct.AccessRights.TOKEN_QUERY;
 public enum WindowsExecutor implements Executor {
 
     INSTANCE;
-
-    private static final jnr.ffi.Runtime runtime = jnr.ffi.Runtime.getSystemRuntime();
 
     private static final int GENERIC_READ = 0x80000000;
     private static final int GENERIC_WRITE = 0x40000000;
@@ -225,12 +222,12 @@ public enum WindowsExecutor implements Executor {
 
     private PROCESS_INFORMATION createProcess(String lpCommandLine, long /*HANDLE*/ hIn, long /*HANDLE*/ hOut, long /*HANDLE*/ hErr,
             boolean redirectErrorStream, Path lpCurrentDirectory) {
-        SECURITY_ATTRIBUTES sa = new SECURITY_ATTRIBUTES(runtime);
+        SECURITY_ATTRIBUTES sa = new SECURITY_ATTRIBUTES();
         sa.setInheritHandle(true);
 
         String lpApplicationName = null;
-        SECURITY_ATTRIBUTES lpProcessAttributes = new SECURITY_ATTRIBUTES(runtime);
-        SECURITY_ATTRIBUTES lpThreadAttributes = new SECURITY_ATTRIBUTES(runtime);
+        SECURITY_ATTRIBUTES lpProcessAttributes = new SECURITY_ATTRIBUTES();
+        SECURITY_ATTRIBUTES lpThreadAttributes = new SECURITY_ATTRIBUTES();
         int dwCreationFlags
                 = CREATE_SUSPENDED
                 | HIGH_PRIORITY_CLASS
@@ -238,8 +235,8 @@ public enum WindowsExecutor implements Executor {
                 | CREATE_UNICODE_ENVIRONMENT
                 | CREATE_BREAKAWAY_FROM_JOB
                 | CREATE_NO_WINDOW;
-        STARTUPINFO lpStartupInfo = new STARTUPINFO(runtime);
-        PROCESS_INFORMATION lpProcessInformation = new PROCESS_INFORMATION(runtime);
+        STARTUPINFO lpStartupInfo = new STARTUPINFO();
+        PROCESS_INFORMATION lpProcessInformation = new PROCESS_INFORMATION();
 
         // without cursor feed back
         lpStartupInfo.setFlags(STARTF_USESTDHANDLES | STARTF_FORCEOFFFEEDBACK);
@@ -254,12 +251,12 @@ public enum WindowsExecutor implements Executor {
         }
 
         try (SafeHandle hToken = new SafeHandle(createRestrictedToken())) {
-            SID_IDENTIFIER_AUTHORITY pIdentifierAuthority = new SID_IDENTIFIER_AUTHORITY(runtime, 0, 0, 0, 0, 0, 16);
+            SID_IDENTIFIER_AUTHORITY pIdentifierAuthority = new SID_IDENTIFIER_AUTHORITY(0, 0, 0, 0, 0, 16);
 
             long pSid = Advapi32Util.newPSID(pIdentifierAuthority, SECURITY_MANDATORY_LOW_RID);
 
             try {
-                TOKEN_MANDATORY_LABEL tokenInformation = new TOKEN_MANDATORY_LABEL(runtime);
+                TOKEN_MANDATORY_LABEL tokenInformation = new TOKEN_MANDATORY_LABEL();
 
                 SID_AND_ATTRIBUTES sidAndAttributes = tokenInformation.getLabel();
                 sidAndAttributes.setAttributes(SE_GROUP_INTEGRITY);
@@ -269,7 +266,7 @@ public enum WindowsExecutor implements Executor {
                         hToken.getValue(),
                         TOKEN_INFORMATION_CLASS.TokenIntegrityLevel.value(),
                         tokenInformation,
-                        sizeof(tokenInformation) + Advapi32.INSTANCE.GetLengthSid(pSid)));
+                        tokenInformation.size() + Advapi32.INSTANCE.GetLengthSid(pSid)));
 
                 ProcessCreationHelper.execute(()
                         -> Kernel32Util.assertTrue(Kernel32.INSTANCE.CreateProcessAsUserW(

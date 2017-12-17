@@ -19,22 +19,20 @@ package com.github.zhanhb.judge.win32.struct;
  * @see
  * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa379598(v=vs.85).aspx">SID_IDENTIFIER_AUTHORITY</a>
  */
-public class SID_IDENTIFIER_AUTHORITY extends jnr.ffi.Struct {
+public class SID_IDENTIFIER_AUTHORITY extends jnc.foreign.Struct {
 
-    private final Unsigned8[] Value = array(new Unsigned8[6]); // actual type BYTE[6]
+    private final uint8_t[] Value = array(new uint8_t[6]); // actual type BYTE[6]
 
-    public SID_IDENTIFIER_AUTHORITY(jnr.ffi.Runtime runtime) {
-        super(runtime);
+    public SID_IDENTIFIER_AUTHORITY() {
     }
 
-    public SID_IDENTIFIER_AUTHORITY(jnr.ffi.Runtime runtime, int a, int b, int c, int d, int e, int f) {
-        this(runtime);
-        Value[0].set(a);
-        Value[1].set(b);
-        Value[2].set(c);
-        Value[3].set(d);
-        Value[4].set(e);
-        Value[5].set(f);
+    public SID_IDENTIFIER_AUTHORITY(int a, int b, int c, int d, int e, int f) {
+        Value[0].set((short) a);
+        Value[1].set((short) b);
+        Value[2].set((short) c);
+        Value[3].set((short) d);
+        Value[4].set((short) e);
+        Value[5].set((short) f);
     }
 
 }

@@ -19,13 +19,9 @@ package com.github.zhanhb.judge.win32.struct;
  * @see
  * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa379261(v=vs.85).aspx">LUID</a>
  */
-public class LUID extends jnr.ffi.Struct {
+public class LUID extends jnc.foreign.Struct {
 
     private final DWORD LowPart = new DWORD();
-    private final Signed32 HighPart = new Signed32();
-
-    public LUID(jnr.ffi.Runtime runtime) {
-        super(runtime);
-    }
+    private final int32_t HighPart = new int32_t();
 
 }

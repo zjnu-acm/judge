@@ -21,7 +21,7 @@ package com.github.zhanhb.judge.win32.struct;
  * @see
  * <a href="http://msdn.microsoft.com/en-us/library/ms684877(VS.85).aspx">PROCESS_MEMORY_COUNTERS</a>
  */
-public class PROCESS_MEMORY_COUNTERS extends jnr.ffi.Struct {
+public class PROCESS_MEMORY_COUNTERS extends jnc.foreign.Struct {
 
     /**
      * The size of the structure, in bytes.
@@ -66,10 +66,6 @@ public class PROCESS_MEMORY_COUNTERS extends jnr.ffi.Struct {
      * process.
      */
     private final size_t PeakPagefileUsage = new size_t();
-
-    public PROCESS_MEMORY_COUNTERS(jnr.ffi.Runtime runtime) {
-        super(runtime);
-    }
 
     public long getPeakWorkingSetSize() {
         return PeakPagefileUsage.longValue();

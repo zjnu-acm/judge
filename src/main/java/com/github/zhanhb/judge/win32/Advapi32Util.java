@@ -4,7 +4,7 @@ import com.github.zhanhb.judge.win32.struct.LUID_AND_ATTRIBUTES;
 import com.github.zhanhb.judge.win32.struct.SID_AND_ATTRIBUTES;
 import com.github.zhanhb.judge.win32.struct.SID_IDENTIFIER_AUTHORITY;
 import java.util.Arrays;
-import jnr.ffi.byref.AddressByReference;
+import jnc.foreign.byref.AddressByReference;
 
 /**
  *
@@ -26,7 +26,7 @@ class Advapi32Util {
                 copy[0], copy[1], copy[2], copy[3],
                 copy[4], copy[5], copy[6], copy[7],
                 psidByReference));
-        return psidByReference.getValue().address();
+        return psidByReference.getValue();
     }
 
     static long createRestrictedToken(
@@ -47,7 +47,7 @@ class Advapi32Util {
                 sidsToRestrict, // SidsToRestrict
                 newTokenHandle // NewTokenHandle
         ));
-        return newTokenHandle.getValue().address();
+        return newTokenHandle.getValue();
     }
 
     private static <T> int getLength(T[] array) {
@@ -60,7 +60,7 @@ class Advapi32Util {
                 processHandle,
                 desiredAccess,
                 tokenHandle));
-        return tokenHandle.getValue().address();
+        return tokenHandle.getValue();
     }
 
 }

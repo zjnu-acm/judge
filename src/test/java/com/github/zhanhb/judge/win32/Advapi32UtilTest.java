@@ -16,9 +16,10 @@
 package com.github.zhanhb.judge.win32;
 
 import com.github.zhanhb.judge.win32.struct.SID_IDENTIFIER_AUTHORITY;
-import jnr.ffi.Platform;
-import jnr.ffi.Pointer;
-import jnr.ffi.byref.PointerByReference;
+import jnc.foreign.OS;
+import jnc.foreign.Platform;
+import jnc.foreign.Pointer;
+import jnc.foreign.byref.PointerByReference;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -36,7 +37,7 @@ public class Advapi32UtilTest {
 
     @BeforeClass
     public static void setUpClass() {
-        assumeTrue("not windows", Platform.getNativePlatform().getOS() == Platform.OS.WINDOWS);
+        assumeTrue("not windows", Platform.getNativePlatform().getOS() == OS.WINDOWS);
     }
 
     private static String convertSidToStringSid(long sid) {
@@ -57,8 +58,7 @@ public class Advapi32UtilTest {
     @Test
     public void testNewPSID() {
         log.info("newPSID");
-        jnr.ffi.Runtime runtime = jnr.ffi.Runtime.getSystemRuntime();
-        SID_IDENTIFIER_AUTHORITY pIdentifierAuthority = new SID_IDENTIFIER_AUTHORITY(runtime, 0, 0, 0, 0, 0, 16);
+        SID_IDENTIFIER_AUTHORITY pIdentifierAuthority = new SID_IDENTIFIER_AUTHORITY(0, 0, 0, 0, 0, 16);
 
         long pSid = Advapi32Util.newPSID(pIdentifierAuthority, SECURITY_MANDATORY_LOW_RID);
         try {

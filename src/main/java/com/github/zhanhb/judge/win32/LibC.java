@@ -15,9 +15,9 @@
  */
 package com.github.zhanhb.judge.win32;
 
-import jnr.ffi.LibraryLoader;
-import jnr.ffi.Pointer;
-import jnr.ffi.types.size_t;
+import jnc.foreign.LibraryLoader;
+import jnc.foreign.Pointer;
+import jnc.foreign.typedef.size_t;
 
 /**
  *
@@ -25,7 +25,7 @@ import jnr.ffi.types.size_t;
  */
 public interface LibC {
 
-    LibC INSTANCE = LibraryLoader.create(LibC.class).load(jnr.ffi.Platform.getNativePlatform().getStandardCLibraryName());
+    LibC INSTANCE = LibraryLoader.create(LibC.class).load(jnc.foreign.Platform.getNativePlatform().getLibcName());
 
     @size_t
     int wcslen(Pointer pointer);

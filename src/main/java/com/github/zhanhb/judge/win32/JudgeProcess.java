@@ -5,16 +5,13 @@ import com.github.zhanhb.judge.win32.struct.FILETIME;
 import com.github.zhanhb.judge.win32.struct.PROCESS_MEMORY_COUNTERS;
 import com.google.common.base.Preconditions;
 import java.util.concurrent.atomic.AtomicReference;
-import jnr.ffi.byref.IntByReference;
+import jnc.foreign.byref.IntByReference;
 
-import static com.github.zhanhb.judge.win32.Native.sizeof;
 import static com.github.zhanhb.judge.win32.WinBase.WAIT_ABANDONED;
 import static com.github.zhanhb.judge.win32.WinBase.WAIT_FAILED;
 import static com.github.zhanhb.judge.win32.WinBase.WAIT_TIMEOUT;
 
 public class JudgeProcess {
-
-    private static final jnr.ffi.Runtime runtime = jnr.ffi.Runtime.getSystemRuntime();
 
     private final long /*HANDLE*/ hProcess;
     private final AtomicReference<Status> status = new AtomicReference<>();
@@ -36,8 +33,8 @@ public class JudgeProcess {
     }
 
     public long getPeakMemory() {
-        PROCESS_MEMORY_COUNTERS ppsmemCounters = new PROCESS_MEMORY_COUNTERS(runtime);
-        Kernel32Util.assertTrue(Psapi.INSTANCE.GetProcessMemoryInfo(hProcess, ppsmemCounters, sizeof(ppsmemCounters)));
+        PROCESS_MEMORY_COUNTERS ppsmemCounters = new PROCESS_MEMORY_COUNTERS();
+        Kernel32Util.assertTrue(Psapi.INSTANCE.GetProcessMemoryInfo(hProcess, ppsmemCounters, ppsmemCounters.size()));
         return ppsmemCounters.getPeakWorkingSetSize();
     }
 
@@ -47,7 +44,7 @@ public class JudgeProcess {
             case WAIT_ABANDONED:
                 throw new IllegalStateException();
             case WAIT_FAILED:
-                throw new Win32Exception(runtime.getLastError());
+                throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
             case WAIT_TIMEOUT:
                 return false;
             default:
@@ -61,16 +58,16 @@ public class JudgeProcess {
     }
 
     public long getStartTime() {
-        FILETIME ftCreateTime = new FILETIME(runtime);
-        FILETIME temp = new FILETIME(runtime);
+        FILETIME ftCreateTime = new FILETIME();
+        FILETIME temp = new FILETIME();
         Kernel32Util.assertTrue(Kernel32.INSTANCE.GetProcessTimes(hProcess, ftCreateTime, temp, temp, temp));
         return ftCreateTime.toMillis();
     }
 
     public long getTime() {
-        FILETIME tmp = new FILETIME(runtime);
-        FILETIME ftKernelTime = new FILETIME(runtime);
-        FILETIME ftUserTime = new FILETIME(runtime);
+        FILETIME tmp = new FILETIME();
+        FILETIME ftKernelTime = new FILETIME();
+        FILETIME ftUserTime = new FILETIME();
         Kernel32Util.assertTrue(Kernel32.INSTANCE.GetProcessTimes(hProcess, tmp, tmp, ftKernelTime, ftUserTime));
         return (ftUserTime.longValue() + ftKernelTime.longValue()) / 10000;
     }

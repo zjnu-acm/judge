@@ -16,7 +16,7 @@
 package com.github.zhanhb.judge.win32;
 
 import java.util.Objects;
-import jnr.ffi.byref.IntByReference;
+import jnc.foreign.byref.IntByReference;
 
 import static com.github.zhanhb.judge.win32.Kernel32.SEM_NOGPFAULTERRORBOX;
 
@@ -34,7 +34,7 @@ public class ProcessCreationHelper {
         try {
             return supplier.call();
         } finally {
-            Kernel32.INSTANCE.SetThreadErrorMode(oldMode.intValue(), oldMode);
+            Kernel32.INSTANCE.SetThreadErrorMode(oldMode.getValue(), oldMode);
         }
     }
 

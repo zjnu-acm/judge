@@ -19,7 +19,7 @@ package com.github.zhanhb.judge.win32.struct;
  * @see
  * <a href="https://msdn.microsoft.com/zh-tw/library/windows/desktop/ms724284(v=vs.85).aspx">FILETIME</a>
  */
-public class FILETIME extends jnr.ffi.Struct {
+public class FILETIME extends jnc.foreign.Struct {
 
     private static long toMillis(final int high, final int low) {
         final long filetime = (long) high << 32 | low & 0xffffffffL;
@@ -30,10 +30,6 @@ public class FILETIME extends jnr.ffi.Struct {
 
     private final DWORD dwLowDateTime = new DWORD();
     private final DWORD dwHighDateTime = new DWORD();
-
-    public FILETIME(jnr.ffi.Runtime runtime) {
-        super(runtime);
-    }
 
     public int getLowDateTime() {
         return dwLowDateTime.intValue();
