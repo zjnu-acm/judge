@@ -17,7 +17,7 @@ package com.github.zhanhb.judge.win32.struct;
 
 /**
  * @see
- * https://msdn.microsoft.com/en-us/library/windows/desktop/bb394727(v=vs.85).aspx
+ * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb394727(v=vs.85).aspx">TOKEN_MANDATORY_LABEL</a>
  */
 public class TOKEN_MANDATORY_LABEL extends TOKEN_INFORMATION {
 

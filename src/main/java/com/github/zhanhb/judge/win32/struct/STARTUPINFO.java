@@ -19,7 +19,7 @@ import static com.github.zhanhb.judge.win32.Native.sizeof;
 
 /**
  * @see
- * https://msdn.microsoft.com/zh-tw/library/windows/desktop/ms686331(v=vs.85).aspx
+ * <a href="https://msdn.microsoft.com/zh-tw/library/windows/desktop/ms686331(v=vs.85).aspx">STARTUPINFO</a>
  */
 public class STARTUPINFO extends jnr.ffi.Struct {
 

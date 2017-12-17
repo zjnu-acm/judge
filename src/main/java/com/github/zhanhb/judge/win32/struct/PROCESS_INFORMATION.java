@@ -17,7 +17,7 @@ package com.github.zhanhb.judge.win32.struct;
 
 /**
  * @see
- * https://msdn.microsoft.com/en-us/library/windows/desktop/ms684873(v=vs.85).aspx
+ * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms684873(v=vs.85).aspx">PROCESS_INFORMATION</a>
  */
 public class PROCESS_INFORMATION extends jnr.ffi.Struct {
 

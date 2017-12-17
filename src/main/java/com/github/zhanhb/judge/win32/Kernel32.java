@@ -97,7 +97,7 @@ public interface Kernel32 {
      * @param lpOldMode
      * @return
      * @see
-     * https://msdn.microsoft.com/en-us/library/windows/desktop/dd553630(v=vs.85).aspx
+     * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd553630(v=vs.85).aspx">SetThreadErrorMode</a>
      */
     @int32_t
     /* BOOL */ int SetThreadErrorMode(@In @u_int32_t int uMode, IntByReference lpOldMode);

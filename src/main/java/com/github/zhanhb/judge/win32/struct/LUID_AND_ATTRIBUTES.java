@@ -16,9 +16,8 @@
 package com.github.zhanhb.judge.win32.struct;
 
 /**
- * https://msdn.microsoft.com/en-us/library/windows/desktop/aa379263(v=vs.85).aspx
  *
- * @author zhanhb
+ * @see <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa379263(v=vs.85).aspx">LUID_AND_ATTRIBUTES</a>
  */
 public class LUID_AND_ATTRIBUTES extends jnr.ffi.Struct {
 

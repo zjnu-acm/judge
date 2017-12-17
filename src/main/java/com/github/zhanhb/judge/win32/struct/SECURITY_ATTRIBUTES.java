@@ -19,7 +19,7 @@ import static com.github.zhanhb.judge.win32.Native.sizeof;
 
 /**
  * @see
- * https://msdn.microsoft.com/en-us/library/windows/desktop/aa379560(v=vs.85).aspx
+ * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa379560(v=vs.85).aspx">SECURITY_ATTRIBUTES</a>
  */
 public class SECURITY_ATTRIBUTES extends jnr.ffi.Struct {
 
