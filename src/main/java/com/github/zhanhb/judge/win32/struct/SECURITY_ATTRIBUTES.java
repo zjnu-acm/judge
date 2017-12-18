@@ -25,7 +25,6 @@ public class SECURITY_ATTRIBUTES extends jnc.foreign.Struct {
     private final uintptr_t /*LPVOID*/ lpSecurityDescriptor = new uintptr_t();
     private final WBOOL bInheritHandle = new WBOOL();
 
-    @SuppressWarnings("LeakingThisInConstructor")
     public SECURITY_ATTRIBUTES() {
         nLength.set(size());
     }

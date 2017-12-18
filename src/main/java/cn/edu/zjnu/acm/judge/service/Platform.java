@@ -41,7 +41,7 @@ class Platform {
     }
 
     static boolean isWindows() {
-        return jnc.foreign.Platform.getNativePlatform().getOS() == jnc.foreign.OS.WINDOWS;
+        return jnc.foreign.Platform.getNativePlatform().getOS().isWindows();
     }
 
 }

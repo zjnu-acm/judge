@@ -15,17 +15,17 @@
  */
 package com.github.zhanhb.judge.win32.struct;
 
+import java.time.Instant;
+
 /**
  * @see
  * <a href="https://msdn.microsoft.com/zh-tw/library/windows/desktop/ms724284(v=vs.85).aspx">FILETIME</a>
  */
 public class FILETIME extends jnc.foreign.Struct {
 
-    private static long toMillis(final int high, final int low) {
-        final long filetime = (long) high << 32 | low & 0xffffffffL;
-        final long ms_since_16010101 = filetime / (1000 * 10);
-        final long ms_since_19700101 = ms_since_16010101 - 11644473600000L;
-        return ms_since_19700101;
+    private static Instant toInstant(long filetime) {
+        long t = filetime - 116444736000000000L;
+        return Instant.ofEpochSecond(t / 10000000, t % 10000000 * 100);
     }
 
     private final DWORD dwLowDateTime = new DWORD();
@@ -43,8 +43,8 @@ public class FILETIME extends jnc.foreign.Struct {
         return (long) getHighDateTime() << 32 | (getLowDateTime() & 0xFFFFFFFFL);
     }
 
-    public long toMillis() {
-        return toMillis(getHighDateTime(), getLowDateTime());
+    public Instant toInstant() {
+        return toInstant(longValue());
     }
 
 }

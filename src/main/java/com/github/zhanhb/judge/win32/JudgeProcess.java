@@ -4,6 +4,7 @@ import com.github.zhanhb.judge.common.Status;
 import com.github.zhanhb.judge.win32.struct.FILETIME;
 import com.github.zhanhb.judge.win32.struct.PROCESS_MEMORY_COUNTERS;
 import com.google.common.base.Preconditions;
+import java.time.Instant;
 import java.util.concurrent.atomic.AtomicReference;
 import jnc.foreign.byref.IntByReference;
 
@@ -57,11 +58,11 @@ public class JudgeProcess {
         return join0((int) Math.min(millis, 0xFFFFFFFEL));
     }
 
-    public long getStartTime() {
+    public Instant getStartTime() {
         FILETIME ftCreateTime = new FILETIME();
         FILETIME temp = new FILETIME();
         Kernel32Util.assertTrue(Kernel32.INSTANCE.GetProcessTimes(hProcess, ftCreateTime, temp, temp, temp));
-        return ftCreateTime.toMillis();
+        return ftCreateTime.toInstant();
     }
 
     public long getTime() {
@@ -80,10 +81,6 @@ public class JudgeProcess {
         IntByReference dwExitCode = new IntByReference();
         Kernel32Util.assertTrue(Kernel32.INSTANCE.GetExitCodeProcess(hProcess, dwExitCode));
         return dwExitCode.getValue();
-    }
-
-    public long getActiveTime() {
-        return System.currentTimeMillis() - getStartTime();
     }
 
 }

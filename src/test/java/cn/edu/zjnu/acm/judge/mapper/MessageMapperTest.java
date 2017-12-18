@@ -55,6 +55,7 @@ public class MessageMapperTest {
 
     /**
      * Test of findOne method, of class MessageMapper.
+     * @see MessageMapper#findOne(long)
      */
     @Test
     public void testFindOne() {
@@ -68,6 +69,7 @@ public class MessageMapperTest {
     /**
      * Test of findAllByThreadIdAndOrderNumGreaterThanOrderByOrderNum method, of
      * class MessageMapper.
+     * @see MessageMapper#findAllByThreadIdAndOrderNumGreaterThanOrderByOrderNum(long, long)
      */
     @Test
     public void testFindAllByThreadIdAndOrderNumGreaterThanOrderByOrderNum() {
@@ -80,6 +82,7 @@ public class MessageMapperTest {
     /**
      * Test of updateOrderNumByThreadIdAndOrderNumGreaterThan method, of class
      * MessageMapper.
+     * @see MessageMapper#updateOrderNumByThreadIdAndOrderNumGreaterThan(long, long)
      */
     @Test
     public void testUpdateOrderNumByThreadIdAndOrderNumGreaterThan() {
@@ -91,6 +94,7 @@ public class MessageMapperTest {
 
     /**
      * Test of updateThreadIdByThreadId method, of class MessageMapper.
+     * @see MessageMapper#updateThreadIdByThreadId(long, long)
      */
     @Test
     public void testUpdateThreadIdByThreadId() {
@@ -102,6 +106,7 @@ public class MessageMapperTest {
 
     /**
      * Test of findAllByThreadIdBetween method, of class MessageMapper.
+     * @see MessageMapper#findAllByThreadIdBetween(Long, Long, Long, Integer)
      */
     @Test
     public void testFindAllByThreadIdBetween() {
@@ -123,6 +128,7 @@ public class MessageMapperTest {
 
     /**
      * Test of mint method, of class MessageMapper.
+     * @see MessageMapper#mint(long, Long, int, long)
      */
     @Test
     public void testMint() {
@@ -138,6 +144,7 @@ public class MessageMapperTest {
 
     /**
      * Test of maxt method, of class MessageMapper.
+     * @see MessageMapper#maxt(long, Long, int, long)
      */
     @Test
     public void testMaxt() {

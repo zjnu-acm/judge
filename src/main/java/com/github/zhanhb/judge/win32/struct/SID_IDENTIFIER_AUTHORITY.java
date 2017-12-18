@@ -21,7 +21,7 @@ package com.github.zhanhb.judge.win32.struct;
  */
 public class SID_IDENTIFIER_AUTHORITY extends jnc.foreign.Struct {
 
-    private final uint8_t[] Value = array(new uint8_t[6]); // actual type BYTE[6]
+    private final BYTE[] Value = array(new BYTE[6]); // actual type BYTE[6]
 
     public SID_IDENTIFIER_AUTHORITY() {
     }

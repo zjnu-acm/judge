@@ -55,7 +55,7 @@ public class ModifyUserControllerTest {
 
     /**
      * Test of update method, of class ModifyUserController.
-     * {@link ModifyUserController#update(Model, String, String, String, String, String, String, Authentication)}
+     * @see ModifyUserController#update(Model, String, String, String, String, String, String, Authentication)
      */
     @Test
     public void testUpdate() throws Exception {

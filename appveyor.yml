@@ -13,7 +13,7 @@ before_test:
   - 'SET MINGW_HOME=C:\MinGW'
   - 'SET PATH=%MINGW_HOME%\bin;%PATH%'
 test_script:
-  - mvnw -Dspring.datasource.password=Password12! clean verify -B
+  - mvnw -Dspring.datasource.password=Password12! clean install -B
 cache:
   - '%USERPROFILE%\.m2'
 after_test:

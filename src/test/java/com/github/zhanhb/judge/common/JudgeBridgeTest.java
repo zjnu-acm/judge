@@ -25,7 +25,6 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
-import jnc.foreign.OS;
 import jnc.foreign.Platform;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +45,7 @@ public class JudgeBridgeTest {
 
     @BeforeClass
     public static void setUpClass() {
-        assumeTrue("not windows", Platform.getNativePlatform().getOS() == OS.WINDOWS);
+        assumeTrue("not windows", Platform.getNativePlatform().getOS().isWindows());
     }
 
     private static String build(String... args) {

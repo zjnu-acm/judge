@@ -16,7 +16,6 @@
 package com.github.zhanhb.judge.win32;
 
 import com.github.zhanhb.judge.win32.struct.SID_IDENTIFIER_AUTHORITY;
-import jnc.foreign.OS;
 import jnc.foreign.Platform;
 import jnc.foreign.Pointer;
 import jnc.foreign.byref.PointerByReference;
@@ -37,7 +36,7 @@ public class Advapi32UtilTest {
 
     @BeforeClass
     public static void setUpClass() {
-        assumeTrue("not windows", Platform.getNativePlatform().getOS() == OS.WINDOWS);
+        assumeTrue("not windows", Platform.getNativePlatform().getOS().isWindows());
     }
 
     private static String convertSidToStringSid(long sid) {

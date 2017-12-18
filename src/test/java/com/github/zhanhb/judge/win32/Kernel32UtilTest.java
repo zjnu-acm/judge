@@ -15,7 +15,6 @@
  */
 package com.github.zhanhb.judge.win32;
 
-import jnc.foreign.OS;
 import jnc.foreign.Platform;
 import jnc.foreign.byref.IntByReference;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +33,7 @@ public class Kernel32UtilTest {
 
     @BeforeClass
     public static void setUpClass() {
-        assumeTrue("not windows", Platform.getNativePlatform().getOS() == OS.WINDOWS);
+        assumeTrue("not windows", Platform.getNativePlatform().getOS().isWindows());
     }
 
     /**

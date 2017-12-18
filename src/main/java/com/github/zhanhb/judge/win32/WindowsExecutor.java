@@ -27,6 +27,8 @@ import com.github.zhanhb.judge.win32.struct.STARTUPINFO;
 import com.github.zhanhb.judge.win32.struct.TOKEN_INFORMATION_CLASS;
 import com.github.zhanhb.judge.win32.struct.TOKEN_MANDATORY_LABEL;
 import java.nio.file.Path;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 import static com.github.zhanhb.judge.common.Constants.TERMINATE_TIMEOUT;
@@ -170,13 +172,14 @@ public enum WindowsExecutor implements Executor {
                 Kernel32Util.assertTrue(dwCount != -1);
                 hThread.close();
 
+                Instant startTime = judgeProcess.getStartTime();
                 while (true) {
                     long memory = judgeProcess.getPeakMemory();
                     if (memory > memoryLimit) {
                         judgeProcess.terminate(Status.MEMORY_LIMIT_EXCEED);
                         break;
                     }
-                    long time = judgeProcess.getActiveTime() - 2000; // extra 2000 millis
+                    long time = ChronoUnit.MILLIS.between(startTime, Instant.now()) - 5000; // extra 5 seconds
                     if (time > timeLimit || judgeProcess.getTime() > timeLimit) {
                         judgeProcess.terminate(Status.TIME_LIMIT_EXCEED);
                         judgeProcess.join(TERMINATE_TIMEOUT);
