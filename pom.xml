@@ -48,7 +48,7 @@
         <argLine />
         <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
         <delombok.directory>${project.build.directory}/delombok</delombok.directory>
-        <flyway.version>5.0.2</flyway.version>
+        <flyway.version>5.0.3</flyway.version>
         <guava.version>23.6-jre</guava.version>
         <hikaricp.version>2.7.4</hikaricp.version>
         <jackson.version>2.9.3</jackson.version>
