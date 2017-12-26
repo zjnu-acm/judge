@@ -177,6 +177,7 @@ public enum WindowsExecutor implements Executor {
                     long memory = judgeProcess.getPeakMemory();
                     if (memory > memoryLimit) {
                         judgeProcess.terminate(Status.MEMORY_LIMIT_EXCEED);
+                        judgeProcess.join(TERMINATE_TIMEOUT);
                         break;
                     }
                     long time = ChronoUnit.MILLIS.between(startTime, Instant.now()) - 5000; // extra 5 seconds
@@ -195,6 +196,7 @@ public enum WindowsExecutor implements Executor {
                     // TODO maybe we should not check the output limit for current process may wait for the file to be finish
                     if (checkOle(outputPath, errorPath, redirectErrorStream, outputLimit)) {
                         judgeProcess.terminate(Status.OUTPUT_LIMIT_EXCEED);
+                        judgeProcess.join(TERMINATE_TIMEOUT);
                         break;
                     }
                 }
