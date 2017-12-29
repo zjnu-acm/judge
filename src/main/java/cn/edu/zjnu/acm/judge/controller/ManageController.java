@@ -23,12 +23,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
+
 /**
  *
  * @author zhanhb
  */
 @Controller
-@RequestMapping("/admin")
+@RequestMapping(value = "/admin", produces = TEXT_HTML_VALUE)
 @Secured("ROLE_ADMIN")
 public class ManageController {
 
