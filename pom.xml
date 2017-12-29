@@ -389,7 +389,7 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>org.webjars</groupId>
+            <groupId>org.webjars.bower</groupId>
             <artifactId>respond</artifactId>
             <version>1.4.2</version>
             <scope>runtime</scope>
