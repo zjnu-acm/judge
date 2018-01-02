@@ -45,15 +45,15 @@ import static com.github.zhanhb.judge.common.Executor.O_TEMPORARY;
 import static com.github.zhanhb.judge.common.Executor.O_TRUNC;
 import static com.github.zhanhb.judge.common.Executor.O_WRONLY;
 import static com.github.zhanhb.judge.win32.Advapi32.DISABLE_MAX_PRIVILEGE;
-import static com.github.zhanhb.judge.win32.Advapi32.SANDBOX_INERT;
 import static com.github.zhanhb.judge.win32.Advapi32.SECURITY_MANDATORY_LOW_RID;
 import static com.github.zhanhb.judge.win32.Advapi32.SE_GROUP_INTEGRITY;
-import static com.github.zhanhb.judge.win32.Kernel32.HIGH_PRIORITY_CLASS;
 import static com.github.zhanhb.judge.win32.WinBase.CREATE_BREAKAWAY_FROM_JOB;
 import static com.github.zhanhb.judge.win32.WinBase.CREATE_NEW_PROCESS_GROUP;
 import static com.github.zhanhb.judge.win32.WinBase.CREATE_NO_WINDOW;
 import static com.github.zhanhb.judge.win32.WinBase.CREATE_SUSPENDED;
 import static com.github.zhanhb.judge.win32.WinBase.CREATE_UNICODE_ENVIRONMENT;
+import static com.github.zhanhb.judge.win32.WinBase.DETACHED_PROCESS;
+import static com.github.zhanhb.judge.win32.WinBase.HIGH_PRIORITY_CLASS;
 import static com.github.zhanhb.judge.win32.WinBase.STARTF_FORCEOFFFEEDBACK;
 import static com.github.zhanhb.judge.win32.WinBase.STARTF_USESTDHANDLES;
 import static com.github.zhanhb.judge.win32.struct.AccessRights.TOKEN_ADJUST_DEFAULT;
@@ -241,6 +241,7 @@ public enum WindowsExecutor implements Executor {
         SECURITY_ATTRIBUTES lpThreadAttributes = new SECURITY_ATTRIBUTES();
         int dwCreationFlags
                 = CREATE_SUSPENDED
+                | DETACHED_PROCESS
                 | HIGH_PRIORITY_CLASS
                 | CREATE_NEW_PROCESS_GROUP
                 | CREATE_UNICODE_ENVIRONMENT
@@ -305,7 +306,7 @@ public enum WindowsExecutor implements Executor {
                         TOKEN_DUPLICATE | TOKEN_ASSIGN_PRIMARY | TOKEN_QUERY | TOKEN_ADJUST_DEFAULT))) {
             return Advapi32Util.createRestrictedToken(
                     token.getValue(), // ExistingTokenHandle
-                    DISABLE_MAX_PRIVILEGE | SANDBOX_INERT, // Flags
+                    DISABLE_MAX_PRIVILEGE, // Flags
                     null, // SidsToDisable
                     null, // PrivilegesToDelete
                     null // SidsToRestrict

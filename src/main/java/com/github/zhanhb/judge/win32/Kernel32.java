@@ -184,9 +184,6 @@ public interface Kernel32 {
             @In JOBOBJECT_INFORMATION lpJobObjectInfo,
             @In @uint32_t int cbJobObjectInfoLength);
 
-    int NORMAL_PRIORITY_CLASS = 0x00000020;
-    int IDLE_PRIORITY_CLASS = 0x00000040;
-    int HIGH_PRIORITY_CLASS = 0x00000080;
     int HANDLE_FLAG_INHERIT = 0x00000001;
 
     @int32_t
