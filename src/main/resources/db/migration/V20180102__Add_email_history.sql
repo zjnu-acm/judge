@@ -1,0 +1,10 @@
+CREATE TABLE `email_history` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`to` VARCHAR(255) NOT NULL,
+	`subject` VARCHAR(512) NOT NULL,
+	`content` LONGTEXT NOT NULL,
+	`created_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id`)
+)
+COLLATE='utf8mb4_general_ci'
+ENGINE=InnoDB

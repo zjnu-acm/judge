@@ -17,6 +17,7 @@ package cn.edu.zjnu.acm.judge.controller.user;
 
 import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
+import cn.edu.zjnu.acm.judge.service.EmailService;
 import cn.edu.zjnu.acm.judge.service.ResetPasswordService;
 import cn.edu.zjnu.acm.judge.service.SystemService;
 import cn.edu.zjnu.acm.judge.util.ValueCheck;
@@ -28,15 +29,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,7 +50,7 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 public class ResetPasswordController {
 
     @Autowired
-    private JavaMailSenderImpl javaMailSender;
+    private EmailService emailService;
     @Autowired
     private TemplateEngine templateEngine;
 
@@ -114,15 +112,7 @@ public class ResetPasswordController {
 
             String content = templateEngine.process("users/password", new Context(locale, map));
 
-            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-
-            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-            helper.setTo(email);
-            helper.setSubject(title);
-            helper.setText(content, true);
-            helper.setFrom(javaMailSender.getUsername());
-
-            javaMailSender.send(mimeMessage);
+            emailService.send(email, title, content);
         } catch (MailException | MessagingException ex) {
             log.error("fail to send email", ex);
             out.print("alert('邮件发送失败，请稍后再试')");
