@@ -26,6 +26,9 @@ import com.github.zhanhb.judge.win32.struct.SID_IDENTIFIER_AUTHORITY;
 import com.github.zhanhb.judge.win32.struct.STARTUPINFO;
 import com.github.zhanhb.judge.win32.struct.TOKEN_INFORMATION_CLASS;
 import com.github.zhanhb.judge.win32.struct.TOKEN_MANDATORY_LABEL;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.channels.FileChannel;
 import java.nio.file.Path;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -164,7 +167,8 @@ public enum WindowsExecutor implements Executor {
                 SafeHandle hProcess = new SafeHandle(pi.getProcess());
                 SafeHandle hThread = new SafeHandle(pi.getThread())) {
             JudgeProcess judgeProcess = new JudgeProcess(hProcess.getValue());
-            try {
+            try (FileChannel cOut = FileChannel.open(outputPath);
+                    FileChannel cErr = redirectErrorStream ? cOut : FileChannel.open(errorPath)) {
                 job.init();
                 job.assignProcess(hProcess.getValue());
 
@@ -194,13 +198,13 @@ public enum WindowsExecutor implements Executor {
                         break;
                     }
                     // TODO maybe we should not check the output limit for current process may wait for the file to be finish
-                    if (checkOle(outputPath, errorPath, redirectErrorStream, outputLimit)) {
+                    if (checkOle(cOut, cErr, redirectErrorStream, outputLimit)) {
                         judgeProcess.terminate(Status.OUTPUT_LIMIT_EXCEED);
                         judgeProcess.join(TERMINATE_TIMEOUT);
                         break;
                     }
                 }
-                if (checkOle(outputPath, errorPath, redirectErrorStream, outputLimit)) {
+                if (checkOle(cOut, cErr, redirectErrorStream, outputLimit)) {
                     judgeProcess.terminate(Status.OUTPUT_LIMIT_EXCEED);
                 }
             } finally {
@@ -222,6 +226,8 @@ public enum WindowsExecutor implements Executor {
                     .code(status)
                     .exitCode(exitCode)
                     .build();
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
         }
     }
 
@@ -307,9 +313,10 @@ public enum WindowsExecutor implements Executor {
         }
     }
 
-    private boolean checkOle(Path outputPath, Path errorPath, boolean redirectErrorStream, long outputLimit) {
-        return outputPath.toFile().length() > outputLimit
-                || !redirectErrorStream && errorPath.toFile().length() > outputLimit;
+    private boolean checkOle(FileChannel outputPath, FileChannel errorPath,
+            boolean redirectErrorStream, long outputLimit) throws IOException {
+        return outputPath.size() > outputLimit
+                || !redirectErrorStream && errorPath.size() > outputLimit;
     }
 
 }
