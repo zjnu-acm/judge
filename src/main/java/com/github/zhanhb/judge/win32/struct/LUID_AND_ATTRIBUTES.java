@@ -27,4 +27,12 @@ public class LUID_AND_ATTRIBUTES extends jnc.foreign.Struct {
     private final LUID Luid = inner(new LUID());
     private final DWORD Attributes = new DWORD();
 
+    public LUID getLuid() {
+        return Luid;
+    }
+
+    public int getAttributes() {
+        return Attributes.intValue();
+    }
+
 }

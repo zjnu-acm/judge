@@ -24,4 +24,12 @@ public class LUID extends jnc.foreign.Struct {
     private final DWORD LowPart = new DWORD();
     private final int32_t HighPart = new int32_t();
 
+    public int getLowPart() {
+        return LowPart.intValue();
+    }
+
+    public int getHighPart() {
+        return HighPart.get();
+    }
+
 }

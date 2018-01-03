@@ -22,7 +22,7 @@ public interface Kernel32 {
     Kernel32 INSTANCE = LibraryLoader.create(Kernel32.class).load("kernel32");
 
     @int32_t
-    boolean AssignProcessToJobObject(@In @uintptr_t long /*HANDLE*/ hJob, @In @uintptr_t long /*HANDLE*/ hProcess);
+    boolean AssignProcessToJobObject(@uintptr_t long /*HANDLE*/ hJob, @uintptr_t long /*HANDLE*/ hProcess);
 
     /**
      * The system does not display the critical-error-handler message box.
@@ -54,7 +54,7 @@ public interface Kernel32 {
      * (DWORD) -1. To get extended error information, call GetLastError.
      */
     @uint32_t
-    int ResumeThread(@In @uintptr_t long /*HANDLE*/ hThread);
+    int ResumeThread(@uintptr_t long /*HANDLE*/ hThread);
 
     /**
      *
@@ -85,7 +85,7 @@ public interface Kernel32 {
      */
     @int32_t
     boolean GetProcessTimes(
-            @In @uintptr_t long /*HANDLE*/ hProcess,
+            @uintptr_t long /*HANDLE*/ hProcess,
             @Out FILETIME lpCreationTime,
             @Out FILETIME lpExitTime,
             @Out FILETIME lpKernelTime,
@@ -102,10 +102,10 @@ public interface Kernel32 {
      * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd553630(v=vs.85).aspx">SetThreadErrorMode</a>
      */
     @int32_t
-    boolean SetThreadErrorMode(@In @uint32_t int uMode, IntByReference lpOldMode);
+    boolean SetThreadErrorMode(@uint32_t int uMode, IntByReference lpOldMode);
 
     @int32_t
-    boolean GetExitCodeProcess(@In @uintptr_t long /*HANDLE*/ hProcess, @Out IntByReference dwExitCode);
+    boolean GetExitCodeProcess(@uintptr_t long /*HANDLE*/ hProcess, IntByReference/*LPDWORD*/ dwExitCode);
 
     int JOB_OBJECT_LIMIT_WORKINGSET = 0x0001;
     int JOB_OBJECT_LIMIT_PROCESS_TIME = 0x0002;
@@ -158,12 +158,12 @@ public interface Kernel32 {
 
     @int32_t
     boolean SetHandleInformation(
-            @In @uintptr_t long /*HANDLE*/ handle,
-            @In @uint32_t int /*DWORD*/ dwMask,
-            @In @uint32_t int /*DWORD*/ dwFlags);
+            @uintptr_t long /*HANDLE*/ handle,
+            @uint32_t int /*DWORD*/ dwMask,
+            @uint32_t int /*DWORD*/ dwFlags);
 
     @int32_t
-    boolean CloseHandle(@In @uintptr_t long /*HANDLE*/ handle);
+    boolean CloseHandle(@uintptr_t long /*HANDLE*/ handle);
 
     /**
      *
@@ -179,22 +179,22 @@ public interface Kernel32 {
      */
     @int32_t
     boolean SetInformationJobObject(
-            @In @uintptr_t long /*HANDLE*/ hJob,
-            @In @uint32_t int JobObjectInfoClass,
+            @uintptr_t long /*HANDLE*/ hJob,
+            @uint32_t int JobObjectInfoClass,
             @In JOBOBJECT_INFORMATION lpJobObjectInfo,
-            @In @uint32_t int cbJobObjectInfoLength);
+            @uint32_t int cbJobObjectInfoLength);
 
     int HANDLE_FLAG_INHERIT = 0x00000001;
 
     @int32_t
     boolean CreateProcessAsUserW(
-            @In @uintptr_t long /*HANDLE*/ hToken,
+            @uintptr_t long /*HANDLE*/ hToken,
             @In byte[] lpApplicationName,
             @In /*@Out*/ byte[] lpCommandLine,
             @In SECURITY_ATTRIBUTES lpProcessAttributes,
             @In SECURITY_ATTRIBUTES lpThreadAttributes,
-            @In @uint32_t boolean bInheritHandles,
-            @In @uint32_t int /*DWORD*/ dwCreationFlags,
+            @uint32_t boolean bInheritHandles,
+            @uint32_t int /*DWORD*/ dwCreationFlags,
             @In byte[] lpEnvironment,
             @In byte[] lpCurrentDirectory,
             @In STARTUPINFO lpStartupInfo,
@@ -203,36 +203,36 @@ public interface Kernel32 {
     @uintptr_t
     long CreateFileW(
             @In byte[] lpFileName,
-            @In @uint32_t int dwDesiredAccess,
-            @In @uint32_t int dwShareMode,
+            @uint32_t int dwDesiredAccess,
+            @uint32_t int dwShareMode,
             @In SECURITY_ATTRIBUTES lpSecurityAttributes,
-            @In @uint32_t int dwCreationDisposition,
-            @In @uint32_t int dwFlagsAndAttributes,
-            @In @uintptr_t long /*HANDLE*/ hTemplateFile);
+            @uint32_t int dwCreationDisposition,
+            @uint32_t int dwFlagsAndAttributes,
+            @uintptr_t long /*HANDLE*/ hTemplateFile);
 
     @uintptr_t
     long /*HANDLE*/ GetCurrentProcess();
 
     @uint32_t
     int WaitForSingleObject(
-            @In @uintptr_t long hHandle,
-            @In @uint32_t int /*DWORD*/ millis);
+            @uintptr_t long hHandle,
+            @uint32_t int /*DWORD*/ millis);
 
     @int32_t
-    boolean TerminateProcess(@In @uintptr_t long hProcess, @In @uint32_t int uExitCode);
+    boolean TerminateProcess(@uintptr_t long hProcess, @uint32_t int uExitCode);
 
     @uintptr_t
-    long LocalFree(@In @uintptr_t long hMem);
+    long LocalFree(@uintptr_t long hMem);
 
     @uint32_t
     int FormatMessageW(
-            @In @uint32_t int /*DWORD*/ dwFlags,
-            @In @uintptr_t long lpSource,
-            @In @uint32_t int /*DWORD*/ dwMessageId,
-            @In @uint32_t int /*DWORD*/ dwLanguageId,
-            @Out PointerByReference lpBuffer,
-            @In @uint32_t int /*DWORD*/ nSize,
-            @In @uintptr_t long /* va_list* */ Arguments);
+            @uint32_t int /*DWORD*/ dwFlags,
+            @uintptr_t long lpSource,
+            @uint32_t int /*DWORD*/ dwMessageId,
+            @uint32_t int /*DWORD*/ dwLanguageId,
+            PointerByReference lpBuffer,
+            @uint32_t int /*DWORD*/ nSize,
+            @uintptr_t long /* va_list* */ Arguments);
 
     default int GetLastError() {
         return ForeignProviders.getDefault().getLastError();

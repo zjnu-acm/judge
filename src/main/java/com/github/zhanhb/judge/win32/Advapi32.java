@@ -8,7 +8,6 @@ import com.github.zhanhb.judge.win32.struct.TOKEN_INFORMATION_CLASS;
 import jnc.foreign.LibraryLoader;
 import jnc.foreign.abi.Stdcall;
 import jnc.foreign.annotation.In;
-import jnc.foreign.annotation.Out;
 import jnc.foreign.byref.AddressByReference;
 import jnc.foreign.byref.PointerByReference;
 import jnc.foreign.typedef.int32_t;
@@ -23,30 +22,30 @@ public interface Advapi32 {
 
     @int32_t
     boolean CreateRestrictedToken(
-            @In @uintptr_t long /*HANDLE*/ ExistingTokenHandle,
-            @In @uint32_t int /*DWORD*/ Flags,
-            @In @uint32_t int /*DWORD*/ DisableSidCount,
+            @uintptr_t long /*HANDLE*/ ExistingTokenHandle,
+            @uint32_t int /*DWORD*/ Flags,
+            @uint32_t int /*DWORD*/ DisableSidCount,
             @In SID_AND_ATTRIBUTES[] SidsToDisable,
-            @In @uint32_t int /*DWORD*/ DeletePrivilegeCount,
+            @uint32_t int /*DWORD*/ DeletePrivilegeCount,
             @In LUID_AND_ATTRIBUTES[] PrivilegesToDelete,
-            @In @uint32_t int /*DWORD*/ RestrictedSidCount,
+            @uint32_t int /*DWORD*/ RestrictedSidCount,
             @In SID_AND_ATTRIBUTES[] SidsToRestrict,
-            @Out AddressByReference /*Pointer of HANDLE*/ NewTokenHandle
+            AddressByReference /* PHANDLE */ NewTokenHandle
     );
 
     @int32_t
     boolean AllocateAndInitializeSid(
             @In SID_IDENTIFIER_AUTHORITY pIdentifierAuthority,
-            @In @uint8_t byte /*BYTE*/ nSubAuthorityCount,
-            @In @uint32_t int /*DWORD*/ dwSubAuthority0,
-            @In @uint32_t int /*DWORD*/ dwSubAuthority1,
-            @In @uint32_t int /*DWORD*/ dwSubAuthority2,
-            @In @uint32_t int /*DWORD*/ dwSubAuthority3,
-            @In @uint32_t int /*DWORD*/ dwSubAuthority4,
-            @In @uint32_t int /*DWORD*/ dwSubAuthority5,
-            @In @uint32_t int /*DWORD*/ dwSubAuthority6,
-            @In @uint32_t int /*DWORD*/ dwSubAuthority7,
-            @Out AddressByReference /*Pointer of SID*/ pSid);
+            @uint8_t byte /*BYTE*/ nSubAuthorityCount,
+            @uint32_t int /*DWORD*/ dwSubAuthority0,
+            @uint32_t int /*DWORD*/ dwSubAuthority1,
+            @uint32_t int /*DWORD*/ dwSubAuthority2,
+            @uint32_t int /*DWORD*/ dwSubAuthority3,
+            @uint32_t int /*DWORD*/ dwSubAuthority4,
+            @uint32_t int /*DWORD*/ dwSubAuthority5,
+            @uint32_t int /*DWORD*/ dwSubAuthority6,
+            @uint32_t int /*DWORD*/ dwSubAuthority7,
+            AddressByReference /* PSID* */ pSid);
 
     /**
      * @param tokenHandle
@@ -60,10 +59,10 @@ public interface Advapi32 {
      */
     @int32_t
     boolean SetTokenInformation(
-            @In @uintptr_t long /*HANDLE*/ tokenHandle,
-            @In @uint32_t int /*TOKEN_INFORMATION_CLASS*/ tokenInformationClass,
+            @uintptr_t long /*HANDLE*/ tokenHandle,
+            @uint32_t int /*TOKEN_INFORMATION_CLASS*/ tokenInformationClass,
             @In TOKEN_INFORMATION tokenInformation,
-            @In @uint32_t int /*DWORD*/ tokenInformationLength
+            @uint32_t int /*DWORD*/ tokenInformationLength
     );
 
     /*https://msdn.microsoft.com/en-us/library/windows/desktop/aa446631(v=vs.85).aspx*/
@@ -81,14 +80,14 @@ public interface Advapi32 {
 
     @int32_t
     boolean OpenProcessToken(
-            @In @uintptr_t long /*HANDLE*/ processHandle,
-            @In @uint32_t int desiredAccess,
-            @Out AddressByReference /*HANDLE*/ tokenHandle);
+            @uintptr_t long /*HANDLE*/ processHandle,
+            @uint32_t int desiredAccess,
+            AddressByReference /*PHANDLE*/ tokenHandle);
 
     @uint32_t
-    /* UINT */ int GetLengthSid(@In @uintptr_t long pSid);
+    /* UINT */ int GetLengthSid(@uintptr_t long pSid);
 
     @int32_t
-    boolean ConvertSidToStringSidW(@In @uintptr_t long sid, @Out PointerByReference stringSid);
+    boolean ConvertSidToStringSidW(@uintptr_t long sid, PointerByReference /* LPTSTR* */ stringSid);
 
 }

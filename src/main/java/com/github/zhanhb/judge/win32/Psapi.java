@@ -3,7 +3,6 @@ package com.github.zhanhb.judge.win32;
 import com.github.zhanhb.judge.win32.struct.PROCESS_MEMORY_COUNTERS;
 import jnc.foreign.LibraryLoader;
 import jnc.foreign.abi.Stdcall;
-import jnc.foreign.annotation.In;
 import jnc.foreign.annotation.Out;
 import jnc.foreign.typedef.int32_t;
 import jnc.foreign.typedef.uint32_t;
@@ -35,9 +34,9 @@ public interface Psapi {
      */
     @int32_t
     boolean GetProcessMemoryInfo(
-            @In @uintptr_t long /*HANDLE*/ hProcess,
+            @uintptr_t long /*HANDLE*/ hProcess,
             // this parameter is for out only, cb is not set until the method called
             @Out PROCESS_MEMORY_COUNTERS ppsmemCounters,
-            @In @uint32_t int cb);
+            @uint32_t int cb);
 
 }
