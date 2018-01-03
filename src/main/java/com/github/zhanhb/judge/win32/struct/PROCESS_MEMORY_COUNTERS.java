@@ -68,7 +68,7 @@ public class PROCESS_MEMORY_COUNTERS extends jnc.foreign.Struct {
     private final size_t PeakPagefileUsage = new size_t();
 
     public long getPeakWorkingSetSize() {
-        return PeakPagefileUsage.longValue();
+        return PeakWorkingSetSize.get();
     }
 
 }
