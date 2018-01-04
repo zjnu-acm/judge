@@ -1,5 +1,7 @@
 package com.github.zhanhb.judge.common;
 
+import java.io.IOException;
+
 public interface Executor {
 
     int _O_RDONLY = 0;
@@ -57,6 +59,6 @@ public interface Executor {
     int O_SYNC = 0x0800;
     int O_DSYNC = 0x2000;
 
-    ExecuteResult execute(Options options);
+    ExecuteResult execute(Options options) throws IOException;
 
 }

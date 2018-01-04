@@ -27,7 +27,6 @@ import com.github.zhanhb.judge.win32.struct.STARTUPINFO;
 import com.github.zhanhb.judge.win32.struct.TOKEN_INFORMATION_CLASS;
 import com.github.zhanhb.judge.win32.struct.TOKEN_MANDATORY_LABEL;
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.channels.FileChannel;
 import java.nio.file.Path;
 import java.time.Instant;
@@ -143,7 +142,7 @@ public enum WindowsExecutor implements Executor {
     }
 
     @Override
-    public ExecuteResult execute(Options options) {
+    public ExecuteResult execute(Options options) throws IOException {
         Path inputFile = options.getInputFile();
         Path outputPath = options.getOutputFile();
         boolean redirectErrorStream = options.isRedirectErrorStream();
@@ -226,8 +225,6 @@ public enum WindowsExecutor implements Executor {
                     .code(status)
                     .exitCode(exitCode)
                     .build();
-        } catch (IOException ex) {
-            throw new UncheckedIOException(ex);
         }
     }
 

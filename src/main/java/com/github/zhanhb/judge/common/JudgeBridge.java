@@ -29,6 +29,7 @@ public enum JudgeBridge {
                 result = validator.validate(options, result);
                 success = result.isSuccess();
             }
+            log.info("result:{}", result);
             list.add(result);
             if (stopOnError && !success) {
                 break;
