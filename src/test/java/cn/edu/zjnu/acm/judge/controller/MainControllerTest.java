@@ -1,7 +1,6 @@
 package cn.edu.zjnu.acm.judge.controller;
 
 import cn.edu.zjnu.acm.judge.Application;
-import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
