@@ -115,14 +115,14 @@ public class JudgeService {
         return CompletableFuture.runAsync(() -> judgeInternal(runRecord), executor);
     }
 
-    private boolean runProcess(RunRecord runRecord) throws IOException {
+    private void runProcess(RunRecord runRecord) throws IOException {
         Path dataPath = judgeConfiguration.getDataDirectory(runRecord.getProblemId());
         Objects.requireNonNull(dataPath, "dataPath");
         Path specialFile = dataPath.resolve(JudgeConfiguration.VALIDATE_FILE_NAME);
         boolean isSpecial = Files.exists(specialFile);
         if (!Files.isDirectory(dataPath)) {
             log.error("{} not exists", dataPath);
-            return false;
+            return;
         }
         List<Path[]> files = new ArrayList<>(20);
         try (DirectoryStream<Path> listFiles = Files.newDirectoryStream(dataPath)) {
@@ -142,12 +142,11 @@ public class JudgeService {
         int caseNum = files.size();
         log.debug("caseNum = {}", caseNum);
         if (caseNum == 0) {
-            return false;
+            log.error("No test cases found for problem({})", runRecord.getProblemId());
+            return;
         }
         int accept = 0; //最后通过的个数
         ArrayList<String> details = new ArrayList<>(caseNum << 2);
-        long time = 0; //时间
-        long memory = 0; //内存
         String command = runRecord.getLanguage().getExecuteCommand();
         Path work = judgeConfiguration.getWorkDirectory(runRecord.getSubmissionId()); //建立临时文件
         command = StringUtils.hasText(command) ? command : work.resolve("Main." + runRecord.getLanguage().getExecutableExtension()).toString();
@@ -179,13 +178,13 @@ public class JudgeService {
         final Validator validator = isSpecial
                 ? new SpecialValidator(specialFile.toString(), work)
                 : SimpleValidator.PE_AS_ACCEPTED;
+        long time = 0; //时间
+        long memory = 0; //内存
         try {
             ExecuteResult[] ers = JudgeBridge.INSTANCE.judge(optionses, false, validator);
             for (ExecuteResult er : ers) {
-                long tim1 = er.getTime() - extTime;
-                tim1 = Math.max(0, tim1);
-                long mem1 = er.getMemory() / 1024 - extraMemory;
-                mem1 = Math.max(0, mem1);
+                long tim1 = Math.max(0, er.getTime() - extTime);
+                long mem1 = Math.max(0, er.getMemory() / 1024 - extraMemory);
                 String message = er.getMessage();
                 boolean success = er.isSuccess();
                 time = Math.max(time, tim1);
@@ -215,7 +214,6 @@ public class JudgeService {
         submissionMapper.updateResult(runRecord.getSubmissionId(), score, time, memory);
         submissionMapper.saveDetail(runRecord.getSubmissionId(), detailMessageStr != null ? detailMessageStr : details.stream().map(String::valueOf).collect(Collectors.joining(",")));
         updateSubmissionStatus(runRecord);
-        return score == 100;
     }
 
     private boolean compile(RunRecord runRecord) throws IOException {
