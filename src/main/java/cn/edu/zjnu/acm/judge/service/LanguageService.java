@@ -48,7 +48,7 @@ public class LanguageService {
     public Language getAvailableLanguage(int languageId) {
         Language language = languageMapper.findOne(languageId);
         if (language == null) {
-            throw new BusinessException(BusinessCode.LANGUAGE_NOT_FOUND);
+            throw new BusinessException(BusinessCode.LANGUAGE_NOT_FOUND, languageId);
         }
         return language;
     }

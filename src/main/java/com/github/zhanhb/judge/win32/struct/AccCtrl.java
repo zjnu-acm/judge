@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 ZJNU ACM.
+ * Copyright 2018 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,28 +15,18 @@
  */
 package com.github.zhanhb.judge.win32.struct;
 
-import jnc.foreign.annotation.Pack;
-
 /**
  *
- * @see <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa379263(v=vs.85).aspx">LUID_AND_ATTRIBUTES</a>
+ * @author zhanhb
  */
-@Pack(4)
-public class LUID_AND_ATTRIBUTES extends jnc.foreign.Struct {
+public interface AccCtrl {
 
-    private final LUID Luid = inner(new LUID());
-    private final DWORD Attributes = new DWORD();
-
-    public LUID getLuid() {
-        return Luid;
-    }
-
-    public int getAttributes() {
-        return Attributes.intValue();
-    }
-
-    public void setAttributes(int attributes) {
-        this.Attributes.set(attributes);
-    }
+    int NO_INHERITANCE = 0x0;
+    int SUB_OBJECTS_ONLY_INHERIT = 0x1;
+    int SUB_CONTAINERS_ONLY_INHERIT = 0x2;
+    int SUB_CONTAINERS_AND_OBJECTS_INHERIT = 0x3;
+    int INHERIT_NO_PROPAGATE = 0x4;
+    int INHERIT_ONLY = 0x8;
+    int INHERITED_ACCESS_ENTRY = 0x10;
 
 }

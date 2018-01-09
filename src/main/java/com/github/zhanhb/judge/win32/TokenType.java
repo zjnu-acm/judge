@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 ZJNU ACM.
+ * Copyright 2018 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,25 +15,11 @@
  */
 package com.github.zhanhb.judge.win32;
 
-import java.nio.charset.StandardCharsets;
-import jnc.foreign.Pointer;
-
 /**
  *
  * @author zhanhb
  */
-@SuppressWarnings("UtilityClassWithoutPrivateConstructor")
-public class WString {
-
-    public static byte[] toNative(String string) {
-        return string == null ? null : (string + '\0').getBytes(StandardCharsets.UTF_16LE);
-    }
-
-    public static String fromNative(Pointer ptr) {
-        int length = LibC.INSTANCE.wcslen(ptr);
-        byte[] bytes = new byte[length << 1];
-        ptr.getBytes(0, bytes, 0, bytes.length);
-        return new String(bytes, StandardCharsets.UTF_16LE);
-    }
-
+public enum TokenType {
+    IMPERSONATION,
+    PRIMARY
 }

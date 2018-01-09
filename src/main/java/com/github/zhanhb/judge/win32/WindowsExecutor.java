@@ -21,11 +21,7 @@ import com.github.zhanhb.judge.common.Options;
 import com.github.zhanhb.judge.common.Status;
 import com.github.zhanhb.judge.win32.struct.PROCESS_INFORMATION;
 import com.github.zhanhb.judge.win32.struct.SECURITY_ATTRIBUTES;
-import com.github.zhanhb.judge.win32.struct.SID_AND_ATTRIBUTES;
-import com.github.zhanhb.judge.win32.struct.SID_IDENTIFIER_AUTHORITY;
 import com.github.zhanhb.judge.win32.struct.STARTUPINFO;
-import com.github.zhanhb.judge.win32.struct.TOKEN_INFORMATION_CLASS;
-import com.github.zhanhb.judge.win32.struct.TOKEN_MANDATORY_LABEL;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.nio.file.Path;
@@ -43,9 +39,6 @@ import static com.github.zhanhb.judge.common.Executor.O_SYNC;
 import static com.github.zhanhb.judge.common.Executor.O_TEMPORARY;
 import static com.github.zhanhb.judge.common.Executor.O_TRUNC;
 import static com.github.zhanhb.judge.common.Executor.O_WRONLY;
-import static com.github.zhanhb.judge.win32.Advapi32.DISABLE_MAX_PRIVILEGE;
-import static com.github.zhanhb.judge.win32.Advapi32.SECURITY_MANDATORY_LOW_RID;
-import static com.github.zhanhb.judge.win32.Advapi32.SE_GROUP_INTEGRITY;
 import static com.github.zhanhb.judge.win32.WinBase.CREATE_BREAKAWAY_FROM_JOB;
 import static com.github.zhanhb.judge.win32.WinBase.CREATE_NEW_PROCESS_GROUP;
 import static com.github.zhanhb.judge.win32.WinBase.CREATE_NO_WINDOW;
@@ -55,10 +48,16 @@ import static com.github.zhanhb.judge.win32.WinBase.DETACHED_PROCESS;
 import static com.github.zhanhb.judge.win32.WinBase.HIGH_PRIORITY_CLASS;
 import static com.github.zhanhb.judge.win32.WinBase.STARTF_FORCEOFFFEEDBACK;
 import static com.github.zhanhb.judge.win32.WinBase.STARTF_USESTDHANDLES;
-import static com.github.zhanhb.judge.win32.struct.AccessRights.TOKEN_ADJUST_DEFAULT;
-import static com.github.zhanhb.judge.win32.struct.AccessRights.TOKEN_ASSIGN_PRIMARY;
-import static com.github.zhanhb.judge.win32.struct.AccessRights.TOKEN_DUPLICATE;
-import static com.github.zhanhb.judge.win32.struct.AccessRights.TOKEN_QUERY;
+import static com.github.zhanhb.judge.win32.Winnt.CREATE_ALWAYS;
+import static com.github.zhanhb.judge.win32.Winnt.FILE_ATTRIBUTE_NORMAL;
+import static com.github.zhanhb.judge.win32.Winnt.FILE_FLAG_DELETE_ON_CLOSE;
+import static com.github.zhanhb.judge.win32.Winnt.FILE_FLAG_WRITE_THROUGH;
+import static com.github.zhanhb.judge.win32.Winnt.FILE_SHARE_READ;
+import static com.github.zhanhb.judge.win32.Winnt.FILE_SHARE_WRITE;
+import static com.github.zhanhb.judge.win32.Winnt.GENERIC_READ;
+import static com.github.zhanhb.judge.win32.Winnt.GENERIC_WRITE;
+import static com.github.zhanhb.judge.win32.Winnt.OPEN_ALWAYS;
+import static com.github.zhanhb.judge.win32.Winnt.OPEN_EXISTING;
 
 /**
  *
@@ -68,48 +67,9 @@ public enum WindowsExecutor implements Executor {
 
     INSTANCE;
 
-    private static final int GENERIC_READ = 0x80000000;
-    private static final int GENERIC_WRITE = 0x40000000;
-    private static final int GENERIC_EXECUTE = 0x20000000;
-    private static final int GENERIC_ALL = 0x10000000;
-    private static final int FILE_SHARE_READ = 0x00000001;
-    private static final int FILE_SHARE_WRITE = 0x00000002;
-    private static final int FILE_SHARE_DELETE = 0x00000004;
+    private final Sandbox sandbox = new Sandbox();
 
-    private static final int CREATE_NEW = 1;
-    private static final int CREATE_ALWAYS = 2;
-    private static final int OPEN_EXISTING = 3;
-    private static final int OPEN_ALWAYS = 4;
-    private static final int TRUNCATE_EXISTING = 5;
-
-    private static final int FILE_FLAG_WRITE_THROUGH = 0x80000000;
-    private static final int FILE_FLAG_OVERLAPPED = 0x40000000;
-    private static final int FILE_FLAG_NO_BUFFERING = 0x20000000;
-    private static final int FILE_FLAG_RANDOM_ACCESS = 0x10000000;
-    private static final int FILE_FLAG_SEQUENTIAL_SCAN = 0x08000000;
-    private static final int FILE_FLAG_DELETE_ON_CLOSE = 0x04000000;
-    private static final int FILE_FLAG_BACKUP_SEMANTICS = 0x02000000;
-    private static final int FILE_FLAG_POSIX_SEMANTICS = 0x01000000;
-    private static final int FILE_FLAG_OPEN_REPARSE_POINT = 0x00200000;
-    private static final int FILE_FLAG_OPEN_NO_RECALL = 0x00100000;
-
-    private static final int FILE_ATTRIBUTE_READONLY = 0x00000001;
-    private static final int FILE_ATTRIBUTE_HIDDEN = 0x00000002;
-    private static final int FILE_ATTRIBUTE_SYSTEM = 0x00000004;
-    private static final int FILE_ATTRIBUTE_DIRECTORY = 0x00000010;
-    private static final int FILE_ATTRIBUTE_ARCHIVE = 0x00000020;
-    private static final int FILE_ATTRIBUTE_DEVICE = 0x00000040;
-    private static final int FILE_ATTRIBUTE_NORMAL = 0x00000080;
-    private static final int FILE_ATTRIBUTE_TEMPORARY = 0x00000100;
-    private static final int FILE_ATTRIBUTE_SPARSE_FILE = 0x00000200;
-    private static final int FILE_ATTRIBUTE_REPARSE_POINT = 0x00000400;
-    private static final int FILE_ATTRIBUTE_COMPRESSED = 0x00000800;
-    private static final int FILE_ATTRIBUTE_OFFLINE = 0x00001000;
-    private static final int FILE_ATTRIBUTE_NOT_CONTENT_INDEXED = 0x00002000;
-    private static final int FILE_ATTRIBUTE_ENCRYPTED = 0x00004000;
-    private static final int FILE_ATTRIBUTE_VIRTUAL = 0x00010000;
-
-    private SafeHandle fileOpen(Path path, int flags) {
+    private Handle fileOpen(Path path, int flags) {
         int access
                 = (flags & O_WRONLY) != 0 ? GENERIC_WRITE
                         : (flags & O_RDWR) != 0 ? (GENERIC_READ | GENERIC_WRITE)
@@ -138,7 +98,7 @@ public enum WindowsExecutor implements Executor {
                 disposition, /* creation disposition */
                 flagsAndAttributes, /* flags and attributes */
                 0 /*NULL*/);
-        return new SafeHandle(h);
+        return new Handle(h);
     }
 
     @Override
@@ -156,15 +116,15 @@ public enum WindowsExecutor implements Executor {
 
         PROCESS_INFORMATION pi;
 
-        try (SafeHandle hIn = fileOpen(inputFile, O_RDONLY);
-                SafeHandle hOut = fileOpen(outputPath, O_WRONLY | O_CREAT | O_TRUNC);
-                SafeHandle hErr = redirectErrorStream ? hOut : fileOpen(errorPath, O_WRONLY | O_CREAT | O_TRUNC)) {
+        try (Handle hIn = fileOpen(inputFile, O_RDONLY);
+                Handle hOut = fileOpen(outputPath, O_WRONLY | O_CREAT | O_TRUNC);
+                Handle hErr = redirectErrorStream ? hOut : fileOpen(errorPath, O_WRONLY | O_CREAT | O_TRUNC)) {
             pi = createProcess(command, hIn.getValue(), hOut.getValue(), hErr.getValue(), redirectErrorStream, workDirectory);
         }
 
         try (Job job = new Job();
-                SafeHandle hProcess = new SafeHandle(pi.getProcess());
-                SafeHandle hThread = new SafeHandle(pi.getThread())) {
+                Handle hProcess = new Handle(pi.getProcess());
+                Handle hThread = new Handle(pi.getThread())) {
             JudgeProcess judgeProcess = new JudgeProcess(hProcess.getValue());
             try (FileChannel cOut = FileChannel.open(outputPath);
                     FileChannel cErr = redirectErrorStream ? cOut : FileChannel.open(errorPath)) {
@@ -259,56 +219,25 @@ public enum WindowsExecutor implements Executor {
             Kernel32Util.setInheritable(hErr);
         }
 
-        try (SafeHandle hToken = new SafeHandle(createRestrictedToken())) {
-            SID_IDENTIFIER_AUTHORITY pIdentifierAuthority = new SID_IDENTIFIER_AUTHORITY(0, 0, 0, 0, 0, 16);
-
-            long pSid = Advapi32Util.newPSID(pIdentifierAuthority, SECURITY_MANDATORY_LOW_RID);
-
-            try {
-                TOKEN_MANDATORY_LABEL tokenInformation = new TOKEN_MANDATORY_LABEL();
-
-                SID_AND_ATTRIBUTES sidAndAttributes = tokenInformation.getLabel();
-                sidAndAttributes.setAttributes(SE_GROUP_INTEGRITY);
-                sidAndAttributes.setSid(pSid);
-
-                Kernel32Util.assertTrue(Advapi32.INSTANCE.SetTokenInformation(
-                        hToken.getValue(),
-                        TOKEN_INFORMATION_CLASS.TokenIntegrityLevel.value(),
-                        tokenInformation,
-                        tokenInformation.size() + Advapi32.INSTANCE.GetLengthSid(pSid)));
-
-                ProcessCreationHelper.execute(()
-                        -> Kernel32Util.assertTrue(Kernel32.INSTANCE.CreateProcessAsUserW(
-                                hToken.getValue(),
-                                WString.toNative(lpApplicationName), // executable name
-                                WString.toNative(lpCommandLine),// command line
-                                lpProcessAttributes, // process security attribute
-                                lpThreadAttributes, // thread security attribute
-                                true, // inherits system handles
-                                dwCreationFlags, // selected based on exe type
-                                null,
-                                WString.toNative(Objects.toString(lpCurrentDirectory, null)),
-                                lpStartupInfo,
-                                lpProcessInformation)));
-            } finally {
-                Kernel32Util.assertTrue(Advapi32.INSTANCE.FreeSid(pSid) == 0);
-            }
+        try (Handle hToken = new Handle(sandbox.createRestrictedToken(
+                TokenLevel.USER_LIMITED,
+                IntegrityLevel.INTEGRITY_LEVEL_LOW,
+                TokenType.PRIMARY,
+                true))) {
+            ProcessCreationHelper.execute(() -> Kernel32Util.assertTrue(Kernel32.INSTANCE.CreateProcessAsUserW(
+                    hToken.getValue(),
+                    WString.toNative(lpApplicationName), // executable name
+                    WString.toNative(lpCommandLine),// command line
+                    lpProcessAttributes, // process security attribute
+                    lpThreadAttributes, // thread security attribute
+                    true, // inherits system handles
+                    dwCreationFlags, // selected based on exe type
+                    null,
+                    WString.toNative(Objects.toString(lpCurrentDirectory, null)),
+                    lpStartupInfo,
+                    lpProcessInformation)));
         }
         return lpProcessInformation;
-    }
-
-    private long /*HANDLE*/ createRestrictedToken() {
-        try (SafeHandle token = new SafeHandle(
-                Advapi32Util.openProcessToken(Kernel32.INSTANCE.GetCurrentProcess(),
-                        TOKEN_DUPLICATE | TOKEN_ASSIGN_PRIMARY | TOKEN_QUERY | TOKEN_ADJUST_DEFAULT))) {
-            return Advapi32Util.createRestrictedToken(
-                    token.getValue(), // ExistingTokenHandle
-                    DISABLE_MAX_PRIVILEGE, // Flags
-                    null, // SidsToDisable
-                    null, // PrivilegesToDelete
-                    null // SidsToRestrict
-            );
-        }
     }
 
     private boolean checkOle(FileChannel outputPath, FileChannel errorPath,

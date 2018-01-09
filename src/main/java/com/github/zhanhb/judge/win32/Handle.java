@@ -2,11 +2,10 @@ package com.github.zhanhb.judge.win32;
 
 import com.google.common.base.Preconditions;
 import java.io.Closeable;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import jnc.foreign.Platform;
 
-public class SafeHandle implements Closeable {
+public class Handle implements Closeable {
 
     private static final long INVALID_HANDLE_VALUE;
 
@@ -39,8 +38,7 @@ public class SafeHandle implements Closeable {
     private final long /*HANDLE*/ handle;
     private final AtomicBoolean closed = new AtomicBoolean();
 
-    public SafeHandle(long /*HANDLE*/ handle) {
-        Objects.requireNonNull(handle);
+    public Handle(long /*HANDLE*/ handle) {
         validateHandle(handle);
         this.handle = handle;
     }

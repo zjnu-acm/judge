@@ -32,12 +32,20 @@ public class SID_AND_ATTRIBUTES extends jnc.foreign.Struct {
      */
     private final DWORD Attributes = new DWORD();
 
+    public long getSid() {
+        return Sid.get();
+    }
+
     public void setSid(long sid) {
-        Sid.set(sid);
+        this.Sid.set(sid);
+    }
+
+    public int getAttributes() {
+        return Attributes.intValue();
     }
 
     public void setAttributes(int attrubites) {
-        Attributes.set(attrubites);
+        this.Attributes.set(attrubites);
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 ZJNU ACM.
+ * Copyright 2018 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,25 +15,29 @@
  */
 package com.github.zhanhb.judge.win32;
 
-import java.nio.charset.StandardCharsets;
-import jnc.foreign.Pointer;
-
 /**
  *
  * @author zhanhb
  */
-@SuppressWarnings("UtilityClassWithoutPrivateConstructor")
-public class WString {
+public enum IntegrityLevel {
 
-    public static byte[] toNative(String string) {
-        return string == null ? null : (string + '\0').getBytes(StandardCharsets.UTF_16LE);
+    INTEGRITY_LEVEL_SYSTEM("S-1-16-16384"),
+    INTEGRITY_LEVEL_HIGH("S-1-16-12288"),
+    INTEGRITY_LEVEL_MEDIUM("S-1-16-8192"),
+    INTEGRITY_LEVEL_MEDIUM_LOW("S-1-16-6144"),
+    INTEGRITY_LEVEL_LOW("S-1-16-4096"),
+    INTEGRITY_LEVEL_BELOW_LOW("S-1-16-2048"),
+    INTEGRITY_LEVEL_UNTRUSTED("S-1-16-0"),
+    INTEGRITY_LEVEL_LAST(null);
+
+    private final String string;
+
+    IntegrityLevel(String string) {
+        this.string = string;
     }
 
-    public static String fromNative(Pointer ptr) {
-        int length = LibC.INSTANCE.wcslen(ptr);
-        byte[] bytes = new byte[length << 1];
-        ptr.getBytes(0, bytes, 0, bytes.length);
-        return new String(bytes, StandardCharsets.UTF_16LE);
+    String getString() {
+        return string;
     }
 
 }

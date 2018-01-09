@@ -1,14 +1,21 @@
 package com.github.zhanhb.judge.win32;
 
+import com.github.zhanhb.judge.win32.struct.Array;
+import com.github.zhanhb.judge.win32.struct.EXPLICIT_ACCESS;
+import com.github.zhanhb.judge.win32.struct.LUID;
 import com.github.zhanhb.judge.win32.struct.LUID_AND_ATTRIBUTES;
+import com.github.zhanhb.judge.win32.struct.SECURITY_ATTRIBUTES;
+import com.github.zhanhb.judge.win32.struct.SID;
 import com.github.zhanhb.judge.win32.struct.SID_AND_ATTRIBUTES;
 import com.github.zhanhb.judge.win32.struct.SID_IDENTIFIER_AUTHORITY;
 import com.github.zhanhb.judge.win32.struct.TOKEN_INFORMATION;
 import com.github.zhanhb.judge.win32.struct.TOKEN_INFORMATION_CLASS;
 import jnc.foreign.LibraryLoader;
+import jnc.foreign.Pointer;
 import jnc.foreign.abi.Stdcall;
 import jnc.foreign.annotation.In;
 import jnc.foreign.byref.AddressByReference;
+import jnc.foreign.byref.IntByReference;
 import jnc.foreign.byref.PointerByReference;
 import jnc.foreign.typedef.int32_t;
 import jnc.foreign.typedef.uint32_t;
@@ -25,11 +32,11 @@ public interface Advapi32 {
             @uintptr_t long /*HANDLE*/ ExistingTokenHandle,
             @uint32_t int /*DWORD*/ Flags,
             @uint32_t int /*DWORD*/ DisableSidCount,
-            @In SID_AND_ATTRIBUTES[] SidsToDisable,
+            Array<SID_AND_ATTRIBUTES> SidsToDisable,
             @uint32_t int /*DWORD*/ DeletePrivilegeCount,
-            @In LUID_AND_ATTRIBUTES[] PrivilegesToDelete,
+            Array<LUID_AND_ATTRIBUTES> PrivilegesToDelete,
             @uint32_t int /*DWORD*/ RestrictedSidCount,
-            @In SID_AND_ATTRIBUTES[] SidsToRestrict,
+            Array<SID_AND_ATTRIBUTES> SidsToRestrict,
             AddressByReference /* PHANDLE */ NewTokenHandle
     );
 
@@ -89,5 +96,62 @@ public interface Advapi32 {
 
     @int32_t
     boolean ConvertSidToStringSidW(@uintptr_t long sid, PointerByReference /* LPTSTR* */ stringSid);
+
+    @int32_t
+    boolean ConvertStringSidToSidW(byte[] StringSid, AddressByReference /* PSID* */ Sid);
+
+    @int32_t
+    boolean GetTokenInformation(
+            @uintptr_t long TokenHandle,
+            @uint32_t int/*TOKEN_INFORMATION_CLASS*/ TokenInformationClass,
+            TOKEN_INFORMATION TokenInformation,
+            @uint32_t int TokenInformationLength,
+            IntByReference ReturnLength);
+
+    @int32_t
+    boolean DuplicateToken(
+            @uintptr_t long ExistingTokenHandle,
+            @uint32_t int/*SECURITY_IMPERSONATION_LEVEL*/ ImpersonationLevel,
+            AddressByReference DuplicateTokenHandle);
+
+    @int32_t
+    boolean DuplicateTokenEx(
+            @uintptr_t long /*HANDLE*/ hExistingToken,
+            @uint32_t int /*DWORD*/ dwDesiredAccess,
+            SECURITY_ATTRIBUTES lpTokenAttributes,
+            @uint32_t int /*SECURITY_IMPERSONATION_LEVEL*/ ImpersonationLevel,
+            @uint32_t int /*TOKEN_TYPE*/ TokenType,
+            AddressByReference phNewToken
+    );
+
+    @int32_t
+    boolean LookupPrivilegeValueW(byte[] lpSystemName, byte[] lpName, LUID luid);
+
+    @uint32_t
+    int SetEntriesInAclW(
+            @uint32_t int cCountOfExplicitEntries,
+            EXPLICIT_ACCESS pListOfExplicitEntries,
+            @uintptr_t long /*PACL*/ OldAcl,
+            AddressByReference /* PACL* */ new_dacl);
+
+    @uint32_t
+    boolean CreateWellKnownSid(
+            @uint32_t int WellKnownSidType,
+            @uintptr_t long /*PSID*/ DomainSid,
+            SID /*PSID*/ pSid,
+            IntByReference cbSid);
+
+    @int32_t
+    boolean EqualSid(@uintptr_t long pSid1, @uintptr_t long pSid2);
+
+    @int32_t
+    boolean CopySid(
+            @uint32_t int nDestinationSidLength,
+            SID pDestinationSid,
+            @uintptr_t long pSourceSid);
+
+    @int32_t
+    boolean LookupPrivilegeNameW(byte[] lpSystemName, LUID lpLuid,
+            char[] lpName, IntByReference cchName);
 
 }

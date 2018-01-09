@@ -22,6 +22,7 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
@@ -56,7 +57,7 @@ public class JudgeBridgeTest {
 
     private final boolean stopOnError = false;
     private final Validator validator = SimpleValidator.NORMAL;
-    private final String groovy = getGroovy(System.getProperty("java.class.path"));
+    private Path groovy;
     private Path program;
     private Path data;
     private Path input;
@@ -70,7 +71,9 @@ public class JudgeBridgeTest {
         data = program.resolve("../data").toRealPath();
         input = data.resolve("b.in");
         output = data.resolve("b.out");
-        tmp = Files.createDirectories(Paths.get("target/tmp"));
+        tmp = Files.createDirectories(Files.createDirectories(Paths.get("C:", "tmp")));
+        Path path = Paths.get(getGroovy(System.getProperty("java.class.path")));
+        groovy = Files.copy(path, tmp.resolve(path.getFileName().toString()), StandardCopyOption.REPLACE_EXISTING);
     }
 
     @Test
@@ -115,7 +118,7 @@ public class JudgeBridgeTest {
 
     @SneakyThrows
     private void test(String executable, Checker checker) {
-        Options options = Options.builder().command(build("java", "-cp", groovy, groovy.ui.GroovyMain.class.getName(), executable))
+        Options options = Options.builder().command(build("java", "-cp", groovy.toString(), groovy.ui.GroovyMain.class.getName(), executable))
                 .inputFile(input)
                 .outputFile(tmp.resolve(output.getFileName()))
                 .standardOutput(output)

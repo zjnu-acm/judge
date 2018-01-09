@@ -10,6 +10,7 @@ import jnc.foreign.LibraryLoader;
 import jnc.foreign.abi.Stdcall;
 import jnc.foreign.annotation.In;
 import jnc.foreign.annotation.Out;
+import jnc.foreign.byref.AddressByReference;
 import jnc.foreign.byref.IntByReference;
 import jnc.foreign.byref.PointerByReference;
 import jnc.foreign.typedef.int32_t;
@@ -237,5 +238,16 @@ public interface Kernel32 {
     default int GetLastError() {
         return ForeignProviders.getDefault().getLastError();
     }
+
+    @int32_t
+    boolean DuplicateHandle(
+            @uintptr_t long /*HANDLE*/ hSourceProcessHandle,
+            @uintptr_t long /*HANDLE*/ hSourceHandle,
+            @uintptr_t long /*HANDLE*/ hTargetProcessHandle,
+            AddressByReference lpTargetHandle,
+            @uint32_t int /*DWORD*/ dwDesiredAccess,
+            @int32_t boolean bInheritHandle,
+            @uint32_t int /*DWORD*/ dwOptions
+    );
 
 }

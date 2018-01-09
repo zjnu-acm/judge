@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 ZJNU ACM.
+ * Copyright 2018 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,28 +15,27 @@
  */
 package com.github.zhanhb.judge.win32.struct;
 
-import jnc.foreign.annotation.Pack;
+import jnc.foreign.Padding;
 
 /**
  *
- * @see <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa379263(v=vs.85).aspx">LUID_AND_ATTRIBUTES</a>
+ * @author zhanhb
  */
-@Pack(4)
-public class LUID_AND_ATTRIBUTES extends jnc.foreign.Struct {
+public class TOKEN_USER extends TOKEN_INFORMATION {
 
-    private final LUID Luid = inner(new LUID());
-    private final DWORD Attributes = new DWORD();
-
-    public LUID getLuid() {
-        return Luid;
+    public static TOKEN_USER withPadding(int padding) {
+        TOKEN_USER token_user = new TOKEN_USER();
+        token_user.inner(new Padding(padding, 1));
+        return token_user;
     }
 
-    public int getAttributes() {
-        return Attributes.intValue();
+    private final SID_AND_ATTRIBUTES User = inner(new SID_AND_ATTRIBUTES());
+
+    public TOKEN_USER() {
     }
 
-    public void setAttributes(int attributes) {
-        this.Attributes.set(attributes);
+    public SID_AND_ATTRIBUTES getUser() {
+        return User;
     }
 
 }

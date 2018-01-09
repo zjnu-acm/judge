@@ -24,7 +24,7 @@ public class JudgeProcess {
     public void terminate(Status errorCode) {
         if (status.compareAndSet(null, errorCode)) {
             try {
-                SafeHandle.validateHandle(hProcess);
+                Handle.validateHandle(hProcess);
             } catch (IllegalArgumentException ex) {
                 return;
             }

@@ -34,8 +34,8 @@ public class Job implements Closeable {
         Kernel32Util.setInformationJobObject(hJob, BasicLimitInformation, jobli);
 
         // Second, set some UI restrictions.
-        JOBOBJECT_BASIC_UI_RESTRICTIONS jobuir = new JOBOBJECT_BASIC_UI_RESTRICTIONS();
-        jobuir.setUIRestrictionsClass(
+        JOBOBJECT_BASIC_UI_RESTRICTIONS jbur = new JOBOBJECT_BASIC_UI_RESTRICTIONS();
+        jbur.setUIRestrictionsClass(
                 // The process can't access USER objects (such as other windows)
                 // in the system.
                 JOB_OBJECT_UILIMIT_HANDLES
@@ -49,7 +49,7 @@ public class Job implements Closeable {
                 JOB_OBJECT_UILIMIT_DESKTOP
                 | // The process can't log off the system.
                 JOB_OBJECT_UILIMIT_EXITWINDOWS);
-        Kernel32Util.setInformationJobObject(hJob, BasicUIRestrictions, jobuir);
+        Kernel32Util.setInformationJobObject(hJob, BasicUIRestrictions, jbur);
     }
 
     public void assignProcess(long /*HANDLE*/ hProcess) {
@@ -58,7 +58,7 @@ public class Job implements Closeable {
 
     @Override
     public void close() {
-        SafeHandle.close(hJob);
+        Handle.close(hJob);
     }
 
 }

@@ -15,6 +15,8 @@
  */
 package com.github.zhanhb.judge.win32.struct;
 
+import java.util.Arrays;
+
 /**
  * @see
  * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa379598(v=vs.85).aspx">SID_IDENTIFIER_AUTHORITY</a>
@@ -26,13 +28,30 @@ public class SID_IDENTIFIER_AUTHORITY extends jnc.foreign.Struct {
     public SID_IDENTIFIER_AUTHORITY() {
     }
 
-    public SID_IDENTIFIER_AUTHORITY(int a, int b, int c, int d, int e, int f) {
-        Value[0].set((short) a);
-        Value[1].set((short) b);
-        Value[2].set((short) c);
-        Value[3].set((short) d);
-        Value[4].set((short) e);
-        Value[5].set((short) f);
+    public byte[] toByteArray() {
+        byte[] bytes = new byte[6];
+        getMemory().getBytes(0, bytes, 0, 6);
+        return bytes;
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(toByteArray());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final SID_IDENTIFIER_AUTHORITY other = (SID_IDENTIFIER_AUTHORITY) obj;
+        return Arrays.equals(toByteArray(), other.toByteArray());
     }
 
 }

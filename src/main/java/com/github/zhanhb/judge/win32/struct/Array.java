@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 ZJNU ACM.
+ * Copyright 2018 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,28 +15,29 @@
  */
 package com.github.zhanhb.judge.win32.struct;
 
-import jnc.foreign.annotation.Pack;
+import java.util.function.Supplier;
+import jnc.foreign.Struct;
 
-/**
- *
- * @see <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa379263(v=vs.85).aspx">LUID_AND_ATTRIBUTES</a>
- */
-@Pack(4)
-public class LUID_AND_ATTRIBUTES extends jnc.foreign.Struct {
+@SuppressWarnings("FinalMethod")
+public class Array<T extends Struct> extends Struct {
 
-    private final LUID Luid = inner(new LUID());
-    private final DWORD Attributes = new DWORD();
+    private final T[] array;
 
-    public LUID getLuid() {
-        return Luid;
+    public Array(Class<T> clazz, Supplier<T> supplier, int length) {
+        @SuppressWarnings("unchecked")
+        T[] tmp = (T[]) java.lang.reflect.Array.newInstance(clazz, length);
+        for (int i = 0; i < length; i++) {
+            tmp[i] = clazz.cast(inner(supplier.get()));
+        }
+        array = tmp;
     }
 
-    public int getAttributes() {
-        return Attributes.intValue();
+    public final T get(int i) {
+        return array[i];
     }
 
-    public void setAttributes(int attributes) {
-        this.Attributes.set(attributes);
+    public final int length() {
+        return array.length;
     }
 
 }

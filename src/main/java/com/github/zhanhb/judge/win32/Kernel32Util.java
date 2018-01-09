@@ -13,9 +13,9 @@ import static com.github.zhanhb.judge.win32.Kernel32.HANDLE_FLAG_INHERIT;
  * @author zhanhb
  */
 @SuppressWarnings("UtilityClassWithoutPrivateConstructor")
-class Kernel32Util {
+public class Kernel32Util {
 
-    static void assertTrue(boolean test) {
+    public static void assertTrue(boolean test) {
         if (!test) {
             throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
         }
@@ -46,8 +46,7 @@ class Kernel32Util {
         }
     }
 
-    @VisibleForTesting
-    static void freeLocalMemory(Pointer ptr) {
+    public static void freeLocalMemory(Pointer ptr) {
         assertTrue(Kernel32.INSTANCE.LocalFree(ptr.address()) == 0);
     }
 

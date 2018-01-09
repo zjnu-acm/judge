@@ -210,6 +210,8 @@ public class JudgeServiceTest {
         @Autowired
         private AccountService accountService;
 
+        private Path groovyPath;
+
         long problem;
         Path dataDir;
         Path program;
@@ -230,8 +232,9 @@ public class JudgeServiceTest {
             dataDir = judgeConfiguration.getDataDirectory(problem);
             CopyHelper.copy(Paths.get(Initializer.class.getResource("/sample/data").toURI()), dataDir, StandardCopyOption.COPY_ATTRIBUTES);
             program = Paths.get(Initializer.class.getResource("/sample/program").toURI());
-            String groovy = getGroovy(System.getProperty("java.class.path"));
-            String executeCommand = build("java", "-cp", groovy, groovy.ui.GroovyMain.class.getName(), "Main.groovy");
+            Path mavenGroovyPath = Paths.get(getGroovy(System.getProperty("java.class.path")));
+            groovyPath = Files.copy(mavenGroovyPath, dataDir.resolve(mavenGroovyPath.getFileName().toString()), StandardCopyOption.REPLACE_EXISTING);
+            String executeCommand = build("java", "-cp", groovyPath.toString(), groovy.ui.GroovyMain.class.getName(), "Main.groovy");
             Language language = Language.builder().name("groovy")
                     .sourceExtension("groovy")
                     .executeCommand(executeCommand)

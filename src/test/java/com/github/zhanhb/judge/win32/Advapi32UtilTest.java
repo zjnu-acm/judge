@@ -15,15 +15,14 @@
  */
 package com.github.zhanhb.judge.win32;
 
-import com.github.zhanhb.judge.win32.struct.SID_IDENTIFIER_AUTHORITY;
 import jnc.foreign.Platform;
 import jnc.foreign.Pointer;
+import jnc.foreign.byref.AddressByReference;
 import jnc.foreign.byref.PointerByReference;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static com.github.zhanhb.judge.win32.Advapi32.SECURITY_MANDATORY_LOW_RID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assume.assumeTrue;
 
@@ -39,32 +38,36 @@ public class Advapi32UtilTest {
         assumeTrue("not windows", Platform.getNativePlatform().getOS().isWindows());
     }
 
-    private static String convertSidToStringSid(long sid) {
-        PointerByReference stringSid = new PointerByReference();
-        Kernel32Util.assertTrue(Advapi32.INSTANCE.ConvertSidToStringSidW(sid, stringSid));
-
-        Pointer ptr = stringSid.getValue();
-        try {
-            return WString.fromNative(ptr);
-        } finally {
-            Kernel32Util.freeLocalMemory(ptr);
-        }
-    }
-
     /**
      * Test of newPSID method, of class Advapi32Util.
      */
     @Test
     public void testNewPSID() {
         log.info("newPSID");
-        SID_IDENTIFIER_AUTHORITY pIdentifierAuthority = new SID_IDENTIFIER_AUTHORITY(0, 0, 0, 0, 0, 16);
+        for (IntegrityLevel integrityLevel : IntegrityLevel.values()) {
+            String integrityLevelStr = integrityLevel.getString();
+            if (integrityLevelStr == null) {
+                continue;
+            }
+            AddressByReference pSid = new AddressByReference();
+            Kernel32Util.assertTrue(Advapi32.INSTANCE.ConvertStringSidToSidW(
+                    WString.toNative(integrityLevelStr), pSid));
+            String sidString;
+            try {
+                PointerByReference stringSid = new PointerByReference();
+                Kernel32Util.assertTrue(Advapi32.INSTANCE.ConvertSidToStringSidW(
+                        pSid.getValue(), stringSid));
 
-        long pSid = Advapi32Util.newPSID(pIdentifierAuthority, SECURITY_MANDATORY_LOW_RID);
-        try {
-            String sidString = convertSidToStringSid(pSid);
-            assertEquals("S-1-16-4096", sidString);
-        } finally {
-            Kernel32Util.assertTrue(Advapi32.INSTANCE.FreeSid(pSid) == 0);
+                Pointer ptr = stringSid.getValue();
+                try {
+                    sidString = WString.fromNative(ptr);
+                } finally {
+                    Kernel32Util.freeLocalMemory(ptr);
+                }
+                assertEquals(integrityLevelStr, sidString);
+            } finally {
+                Kernel32.INSTANCE.LocalFree(pSid.getValue());
+            }
         }
     }
 
