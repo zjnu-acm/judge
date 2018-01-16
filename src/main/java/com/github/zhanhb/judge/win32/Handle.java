@@ -10,11 +10,11 @@ public class Handle implements Closeable {
     private static final long INVALID_HANDLE_VALUE;
 
     static {
-        switch (Platform.getNativePlatform().getArch()) {
-            case I386:
+        switch (Platform.getNativePlatform().getArch().pointerSize()) {
+            case 32:
                 INVALID_HANDLE_VALUE = 0xFFFFFFFFL;
                 break;
-            case X86_64:
+            case 64:
                 INVALID_HANDLE_VALUE = -1;
                 break;
             default:

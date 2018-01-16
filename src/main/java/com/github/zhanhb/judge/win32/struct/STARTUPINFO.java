@@ -48,15 +48,15 @@ public class STARTUPINFO extends jnc.foreign.Struct {
         dwFlags.set(flags);
     }
 
-    public void setStandardInput(long standardInput) {
+    public void setStdInput(long standardInput) {
         hStdInput.set(standardInput);
     }
 
-    public void setStandardOutput(long standardOutput) {
+    public void setStdOutput(long standardOutput) {
         hStdOutput.set(standardOutput);
     }
 
-    public void setStandardError(long standardError) {
+    public void setStdError(long standardError) {
         hStdError.set(standardError);
     }
 

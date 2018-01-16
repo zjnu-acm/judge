@@ -15,8 +15,8 @@ import static com.github.zhanhb.judge.win32.WinNT.JOB_OBJECT_UILIMIT_HANDLES;
 import static com.github.zhanhb.judge.win32.WinNT.JOB_OBJECT_UILIMIT_READCLIPBOARD;
 import static com.github.zhanhb.judge.win32.WinNT.JOB_OBJECT_UILIMIT_SYSTEMPARAMETERS;
 import static com.github.zhanhb.judge.win32.WinNT.JOB_OBJECT_UILIMIT_WRITECLIPBOARD;
-import static com.github.zhanhb.judge.win32.struct.JOBOBJECTINFOCLASS.BasicLimitInformation;
-import static com.github.zhanhb.judge.win32.struct.JOBOBJECTINFOCLASS.BasicUIRestrictions;
+import static com.github.zhanhb.judge.win32.struct.JOBOBJECTINFOCLASS.JobObjectBasicLimitInformation;
+import static com.github.zhanhb.judge.win32.struct.JOBOBJECTINFOCLASS.JobObjectBasicUIRestrictions;
 
 public class Job implements Closeable {
 
@@ -28,7 +28,7 @@ public class Job implements Closeable {
         this.hJob = handle;
     }
 
-    private void setInformationJobObject(long hJob, JOBOBJECTINFOCLASS jobobjectinfoclass, JOBOBJECT_INFORMATION jobj) {
+    private void setInformationJobObject(JOBOBJECTINFOCLASS jobobjectinfoclass, JOBOBJECT_INFORMATION jobj) {
         Kernel32Util.assertTrue(Kernel32.INSTANCE.SetInformationJobObject(hJob, jobobjectinfoclass.value(), jobj, jobj.size()));
     }
 
@@ -37,7 +37,7 @@ public class Job implements Closeable {
         jobli.setActiveProcessLimit(1);
         // These are the only 1 restrictions I want placed on the job (process).
         jobli.setLimitFlags(JOB_OBJECT_LIMIT_ACTIVE_PROCESS);
-        setInformationJobObject(hJob, BasicLimitInformation, jobli);
+        setInformationJobObject(JobObjectBasicLimitInformation, jobli);
 
         // Second, set some UI restrictions.
         JOBOBJECT_BASIC_UI_RESTRICTIONS jbur = new JOBOBJECT_BASIC_UI_RESTRICTIONS();
@@ -55,7 +55,7 @@ public class Job implements Closeable {
                 JOB_OBJECT_UILIMIT_DESKTOP
                 | // The process can't log off the system.
                 JOB_OBJECT_UILIMIT_EXITWINDOWS);
-        setInformationJobObject(hJob, BasicUIRestrictions, jbur);
+        setInformationJobObject(JobObjectBasicUIRestrictions, jbur);
     }
 
     public void assignProcess(long /*HANDLE*/ hProcess) {

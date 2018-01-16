@@ -17,7 +17,7 @@ package com.github.zhanhb.judge.win32.struct;
 
 /**
  *
- * @see JOBOBJECTINFOCLASS#BasicLimitInformation
+ * @see JOBOBJECTINFOCLASS#JobObjectBasicLimitInformation
  * @see
  * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms684147(v=vs.85).aspx">JOBOBJECT_BASIC_LIMIT_INFORMATION
  * </a>
@@ -35,11 +35,11 @@ public class JOBOBJECT_BASIC_LIMIT_INFORMATION extends JOBOBJECT_INFORMATION {
     private final DWORD SchedulingClass = new DWORD();
 
     public void setActiveProcessLimit(int activeProcessLimit) {
-        ActiveProcessLimit.set(activeProcessLimit);
+        this.ActiveProcessLimit.set(activeProcessLimit);
     }
 
     public void setLimitFlags(int limitFlags) {
-        LimitFlags.set(limitFlags);
+        this.LimitFlags.set(limitFlags);
     }
 
 }

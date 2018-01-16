@@ -30,11 +30,16 @@ public class Win32Exception extends RuntimeException {
     private final int errorCode;
 
     public Win32Exception(int code) {
-        super(Kernel32Util.formatMessage(hresultFromWin32(code)));
         this.errorCode = code;
     }
 
     public int getErrorCode() {
         return errorCode;
     }
+
+    @Override
+    public String getMessage() {
+        return Kernel32Util.formatMessage(hresultFromWin32(errorCode));
+    }
+
 }

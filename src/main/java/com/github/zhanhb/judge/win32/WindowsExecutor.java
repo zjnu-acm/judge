@@ -214,9 +214,9 @@ public enum WindowsExecutor implements Executor {
 
         // without cursor feed back
         lpStartupInfo.setFlags(STARTF_USESTDHANDLES | STARTF_FORCEOFFFEEDBACK);
-        lpStartupInfo.setStandardInput(hIn);
-        lpStartupInfo.setStandardOutput(hOut);
-        lpStartupInfo.setStandardError(hErr);
+        lpStartupInfo.setStdInput(hIn);
+        lpStartupInfo.setStdOutput(hOut);
+        lpStartupInfo.setStdError(hErr);
 
         setInheritable(hIn);
         setInheritable(hOut);

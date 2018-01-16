@@ -18,7 +18,6 @@ extern "C" {
 #define WINAPI __stdcall
 
 #define CHAR char
-#define SHORT short SHORT
 #define LONG long
 
     typedef int WINBOOL, *PWINBOOL, *LPWINBOOL;

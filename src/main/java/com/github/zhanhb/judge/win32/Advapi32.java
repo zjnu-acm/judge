@@ -10,7 +10,6 @@ import com.github.zhanhb.judge.win32.struct.SID_AND_ATTRIBUTES;
 import com.github.zhanhb.judge.win32.struct.TOKEN_INFORMATION;
 import com.github.zhanhb.judge.win32.struct.TOKEN_INFORMATION_CLASS;
 import jnc.foreign.LibraryLoader;
-import jnc.foreign.Pointer;
 import jnc.foreign.abi.Stdcall;
 import jnc.foreign.annotation.In;
 import jnc.foreign.byref.AddressByReference;
@@ -25,6 +24,21 @@ public interface Advapi32 {
 
     Advapi32 INSTANCE = LibraryLoader.create(Advapi32.class).load("Advapi32");
 
+    /**
+     *
+     * @param ExistingTokenHandle
+     * @param Flags
+     * @param DisableSidCount
+     * @param SidsToDisable
+     * @param DeletePrivilegeCount
+     * @param PrivilegesToDelete
+     * @param RestrictedSidCount
+     * @param SidsToRestrict
+     * @param NewTokenHandle
+     * @return
+     * @see
+     * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa446583(v=vs.85).aspx">CreateRestrictedToken</a>
+     */
     @int32_t
     boolean CreateRestrictedToken(
             @uintptr_t long /*HANDLE*/ ExistingTokenHandle,

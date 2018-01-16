@@ -21,27 +21,27 @@ package com.github.zhanhb.judge.win32.struct;
  */
 public enum JOBOBJECTINFOCLASS {
 
-    BasicAccountingInformation,
+    JobObjectBasicAccountingInformation,
     /**
      * @see JOBOBJECT_BASIC_LIMIT_INFORMATION
      */
-    BasicLimitInformation,
-    BasicProcessIdList,
+    JobObjectBasicLimitInformation,
+    JobObjectBasicProcessIdList,
     /**
      * @see JOBOBJECT_BASIC_UI_RESTRICTIONS
      */
-    BasicUIRestrictions,
-    SecurityLimitInformation,
-    EndOfJobTimeInformation,
-    AssociateCompletionPortInformation,
-    BasicAndIoAccountingInformation,
-    ExtendedLimitInformation,
-    JobSetInformation,
-    GroupInformation,
-    NotificationLimitInformation,
-    LimitViolationInformation,
-    GroupInformationEx,
-    CpuRateControlInformation;
+    JobObjectBasicUIRestrictions,
+    JobObjectSecurityLimitInformation,
+    JobObjectEndOfJobTimeInformation,
+    JobObjectAssociateCompletionPortInformation,
+    JobObjectBasicAndIoAccountingInformation,
+    JobObjectExtendedLimitInformation,
+    JobObjectJobSetInformation,
+    JobObjectGroupInformation,
+    JobObjectNotificationLimitInformation,
+    JobObjectLimitViolationInformation,
+    JobObjectGroupInformationEx,
+    JobObjectCpuRateControlInformation;
 
     public int value() {
         return ordinal() + 1;

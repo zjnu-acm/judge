@@ -17,7 +17,7 @@ package com.github.zhanhb.judge.win32.struct;
 
 /**
  *
- * @see JOBOBJECTINFOCLASS#BasicUIRestrictions
+ * @see JOBOBJECTINFOCLASS#JobObjectBasicUIRestrictions
  * @see
  * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms684152(v=vs.85).aspx">JOBOBJECT_BASIC_UI_RESTRICTIONS</a>
  */
@@ -26,7 +26,7 @@ public class JOBOBJECT_BASIC_UI_RESTRICTIONS extends JOBOBJECT_INFORMATION {
     private final DWORD UIRestrictionsClass = new DWORD();
 
     public void setUIRestrictionsClass(int uiRestrictionsClass) {
-        UIRestrictionsClass.set(uiRestrictionsClass);
+        this.UIRestrictionsClass.set(uiRestrictionsClass);
     }
 
 }

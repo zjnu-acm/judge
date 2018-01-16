@@ -15,10 +15,9 @@
  */
 package com.github.zhanhb.judge.win32;
 
+import com.github.zhanhb.judge.win32.struct.SID;
 import jnc.foreign.Platform;
-import jnc.foreign.Pointer;
 import jnc.foreign.byref.AddressByReference;
-import jnc.foreign.byref.PointerByReference;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -52,22 +51,9 @@ public class Advapi32UtilTest {
             AddressByReference pSid = new AddressByReference();
             Kernel32Util.assertTrue(Advapi32.INSTANCE.ConvertStringSidToSidW(
                     WString.toNative(integrityLevelStr), pSid));
-            String sidString;
-            try {
-                PointerByReference stringSid = new PointerByReference();
-                Kernel32Util.assertTrue(Advapi32.INSTANCE.ConvertSidToStringSidW(
-                        pSid.getValue(), stringSid));
-
-                Pointer ptr = stringSid.getValue();
-                try {
-                    sidString = WString.fromNative(ptr);
-                } finally {
-                    Kernel32Util.freeLocalMemory(ptr);
-                }
-                assertEquals(integrityLevelStr, sidString);
-            } finally {
-                Kernel32.INSTANCE.LocalFree(pSid.getValue());
-            }
+            SID sid = SID.copyOf(pSid.getValue());
+            String sidString = sid.toString();
+            assertEquals(integrityLevelStr, sidString);
         }
     }
 
