@@ -10,7 +10,7 @@ import jnc.foreign.byref.IntByReference;
 
 import static com.github.zhanhb.judge.win32.WinBase.WAIT_ABANDONED;
 import static com.github.zhanhb.judge.win32.WinBase.WAIT_FAILED;
-import static com.github.zhanhb.judge.win32.WinBase.WAIT_TIMEOUT;
+import static com.github.zhanhb.judge.win32.WinError.WAIT_TIMEOUT;
 
 public class JudgeProcess {
 

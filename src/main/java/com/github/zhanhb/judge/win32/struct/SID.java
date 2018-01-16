@@ -24,8 +24,8 @@ import jnc.foreign.Struct;
 import jnc.foreign.byref.IntByReference;
 import jnc.foreign.byref.PointerByReference;
 
-import static com.github.zhanhb.judge.win32.Winnt.ANYSIZE_ARRAY;
-import static com.github.zhanhb.judge.win32.Winnt.SID_MAX_SUB_AUTHORITIES;
+import static com.github.zhanhb.judge.win32.WinNT.ANYSIZE_ARRAY;
+import static com.github.zhanhb.judge.win32.WinNT.SID_MAX_SUB_AUTHORITIES;
 
 /**
  *

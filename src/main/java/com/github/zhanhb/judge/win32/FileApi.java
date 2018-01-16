@@ -13,20 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.zhanhb.judge.win32.struct;
+package com.github.zhanhb.judge.win32;
 
 /**
  *
  * @author zhanhb
  */
-public interface AccCtrl {
+public interface FileApi {
 
-    int NO_INHERITANCE = 0x0;
-    int SUB_OBJECTS_ONLY_INHERIT = 0x1;
-    int SUB_CONTAINERS_ONLY_INHERIT = 0x2;
-    int SUB_CONTAINERS_AND_OBJECTS_INHERIT = 0x3;
-    int INHERIT_NO_PROPAGATE = 0x4;
-    int INHERIT_ONLY = 0x8;
-    int INHERITED_ACCESS_ENTRY = 0x10;
+    int CREATE_NEW = 1;
+    int CREATE_ALWAYS = 2;
+    int OPEN_EXISTING = 3;
+    int OPEN_ALWAYS = 4;
+    int TRUNCATE_EXISTING = 5;
 
 }

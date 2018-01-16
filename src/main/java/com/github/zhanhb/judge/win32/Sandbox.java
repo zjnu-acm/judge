@@ -19,14 +19,14 @@ import com.github.zhanhb.judge.win32.struct.LUID;
 import com.github.zhanhb.judge.win32.struct.SID;
 import com.google.common.collect.ImmutableList;
 
-import static com.github.zhanhb.judge.win32.Winnt.SE_CHANGE_NOTIFY_NAME;
+import static com.github.zhanhb.judge.win32.WinError.ERROR_BAD_ARGUMENTS;
+import static com.github.zhanhb.judge.win32.WinNT.SE_CHANGE_NOTIFY_NAME;
 import static com.github.zhanhb.judge.win32.struct.WELL_KNOWN_SID_TYPE.WinAuthenticatedUserSid;
 import static com.github.zhanhb.judge.win32.struct.WELL_KNOWN_SID_TYPE.WinBuiltinUsersSid;
 import static com.github.zhanhb.judge.win32.struct.WELL_KNOWN_SID_TYPE.WinInteractiveSid;
 import static com.github.zhanhb.judge.win32.struct.WELL_KNOWN_SID_TYPE.WinNullSid;
 import static com.github.zhanhb.judge.win32.struct.WELL_KNOWN_SID_TYPE.WinRestrictedCodeSid;
 import static com.github.zhanhb.judge.win32.struct.WELL_KNOWN_SID_TYPE.WinWorldSid;
-import static com.github.zhanhb.judge.win32.struct.WinError.*;
 
 /**
  *

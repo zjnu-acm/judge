@@ -17,24 +17,20 @@ package com.github.zhanhb.judge.win32;
 
 import java.util.Objects;
 
-import static com.github.zhanhb.judge.win32.Kernel32.SEM_FAILCRITICALERRORS;
-import static com.github.zhanhb.judge.win32.Kernel32.SEM_NOGPFAULTERRORBOX;
-import static com.github.zhanhb.judge.win32.Kernel32.SEM_NOOPENFILEERRORBOX;
+import static com.github.zhanhb.judge.win32.WinBase.SEM_FAILCRITICALERRORS;
+import static com.github.zhanhb.judge.win32.WinBase.SEM_NOGPFAULTERRORBOX;
+import static com.github.zhanhb.judge.win32.WinBase.SEM_NOOPENFILEERRORBOX;
 
 /**
  *
  * @author zhanhb
  */
 @SuppressWarnings("PublicInnerClass")
-public class ProcessCreationHelper {
+public interface ProcessCreationHelper {
 
-    private static Object getLock() {
-        return Runtime.getRuntime();
-    }
-
-    public static <V, E extends Throwable> V execute(ExceptionCallable<V, E> supplier) throws E {
+    static <V, E extends Throwable> V execute(ExceptionCallable<V, E> supplier) throws E {
         Objects.requireNonNull(supplier);
-        synchronized (getLock()) {
+        synchronized (java.lang.Runtime.getRuntime()) {
             int oldErrorMode = Kernel32.INSTANCE.SetErrorMode(SEM_FAILCRITICALERRORS | SEM_NOGPFAULTERRORBOX | SEM_NOOPENFILEERRORBOX);
             try {
                 return supplier.call();
@@ -44,15 +40,11 @@ public class ProcessCreationHelper {
         }
     }
 
-    public static <E extends Throwable> void execute(ExceptionRunnable<E> supplier) throws E {
+    static <E extends Throwable> void execute(ExceptionRunnable<E> supplier) throws E {
         execute(ExceptionCallable.wrapper(supplier));
     }
 
-    private ProcessCreationHelper() {
-        throw new AssertionError();
-    }
-
-    public static interface ExceptionCallable<V, E extends Throwable> {
+    interface ExceptionCallable<V, E extends Throwable> {
 
         V call() throws E;
 
@@ -67,7 +59,7 @@ public class ProcessCreationHelper {
 
     }
 
-    public static interface ExceptionRunnable<E extends Throwable> {
+    interface ExceptionRunnable<E extends Throwable> {
 
         void run() throws E;
 

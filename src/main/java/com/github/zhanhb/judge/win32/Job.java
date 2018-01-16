@@ -1,18 +1,20 @@
 package com.github.zhanhb.judge.win32;
 
+import com.github.zhanhb.judge.win32.struct.JOBOBJECTINFOCLASS;
 import com.github.zhanhb.judge.win32.struct.JOBOBJECT_BASIC_LIMIT_INFORMATION;
 import com.github.zhanhb.judge.win32.struct.JOBOBJECT_BASIC_UI_RESTRICTIONS;
+import com.github.zhanhb.judge.win32.struct.JOBOBJECT_INFORMATION;
 import java.io.Closeable;
 
-import static com.github.zhanhb.judge.win32.Kernel32.JOB_OBJECT_LIMIT_ACTIVE_PROCESS;
-import static com.github.zhanhb.judge.win32.Kernel32.JOB_OBJECT_UILIMIT_DESKTOP;
-import static com.github.zhanhb.judge.win32.Kernel32.JOB_OBJECT_UILIMIT_DISPLAYSETTINGS;
-import static com.github.zhanhb.judge.win32.Kernel32.JOB_OBJECT_UILIMIT_EXITWINDOWS;
-import static com.github.zhanhb.judge.win32.Kernel32.JOB_OBJECT_UILIMIT_GLOBALATOMS;
-import static com.github.zhanhb.judge.win32.Kernel32.JOB_OBJECT_UILIMIT_HANDLES;
-import static com.github.zhanhb.judge.win32.Kernel32.JOB_OBJECT_UILIMIT_READCLIPBOARD;
-import static com.github.zhanhb.judge.win32.Kernel32.JOB_OBJECT_UILIMIT_SYSTEMPARAMETERS;
-import static com.github.zhanhb.judge.win32.Kernel32.JOB_OBJECT_UILIMIT_WRITECLIPBOARD;
+import static com.github.zhanhb.judge.win32.WinNT.JOB_OBJECT_LIMIT_ACTIVE_PROCESS;
+import static com.github.zhanhb.judge.win32.WinNT.JOB_OBJECT_UILIMIT_DESKTOP;
+import static com.github.zhanhb.judge.win32.WinNT.JOB_OBJECT_UILIMIT_DISPLAYSETTINGS;
+import static com.github.zhanhb.judge.win32.WinNT.JOB_OBJECT_UILIMIT_EXITWINDOWS;
+import static com.github.zhanhb.judge.win32.WinNT.JOB_OBJECT_UILIMIT_GLOBALATOMS;
+import static com.github.zhanhb.judge.win32.WinNT.JOB_OBJECT_UILIMIT_HANDLES;
+import static com.github.zhanhb.judge.win32.WinNT.JOB_OBJECT_UILIMIT_READCLIPBOARD;
+import static com.github.zhanhb.judge.win32.WinNT.JOB_OBJECT_UILIMIT_SYSTEMPARAMETERS;
+import static com.github.zhanhb.judge.win32.WinNT.JOB_OBJECT_UILIMIT_WRITECLIPBOARD;
 import static com.github.zhanhb.judge.win32.struct.JOBOBJECTINFOCLASS.BasicLimitInformation;
 import static com.github.zhanhb.judge.win32.struct.JOBOBJECTINFOCLASS.BasicUIRestrictions;
 
@@ -26,12 +28,16 @@ public class Job implements Closeable {
         this.hJob = handle;
     }
 
+    private void setInformationJobObject(long hJob, JOBOBJECTINFOCLASS jobobjectinfoclass, JOBOBJECT_INFORMATION jobj) {
+        Kernel32Util.assertTrue(Kernel32.INSTANCE.SetInformationJobObject(hJob, jobobjectinfoclass.value(), jobj, jobj.size()));
+    }
+
     public void init() {
         JOBOBJECT_BASIC_LIMIT_INFORMATION jobli = new JOBOBJECT_BASIC_LIMIT_INFORMATION();
         jobli.setActiveProcessLimit(1);
         // These are the only 1 restrictions I want placed on the job (process).
         jobli.setLimitFlags(JOB_OBJECT_LIMIT_ACTIVE_PROCESS);
-        Kernel32Util.setInformationJobObject(hJob, BasicLimitInformation, jobli);
+        setInformationJobObject(hJob, BasicLimitInformation, jobli);
 
         // Second, set some UI restrictions.
         JOBOBJECT_BASIC_UI_RESTRICTIONS jbur = new JOBOBJECT_BASIC_UI_RESTRICTIONS();
@@ -49,7 +55,7 @@ public class Job implements Closeable {
                 JOB_OBJECT_UILIMIT_DESKTOP
                 | // The process can't log off the system.
                 JOB_OBJECT_UILIMIT_EXITWINDOWS);
-        Kernel32Util.setInformationJobObject(hJob, BasicUIRestrictions, jbur);
+        setInformationJobObject(hJob, BasicUIRestrictions, jbur);
     }
 
     public void assignProcess(long /*HANDLE*/ hProcess) {

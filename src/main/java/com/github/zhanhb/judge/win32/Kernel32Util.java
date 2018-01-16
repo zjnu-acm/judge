@@ -1,12 +1,7 @@
 package com.github.zhanhb.judge.win32;
 
-import com.github.zhanhb.judge.win32.struct.JOBOBJECTINFOCLASS;
-import com.github.zhanhb.judge.win32.struct.JOBOBJECT_INFORMATION;
-import com.google.common.annotations.VisibleForTesting;
 import jnc.foreign.Pointer;
 import jnc.foreign.byref.PointerByReference;
-
-import static com.github.zhanhb.judge.win32.Kernel32.HANDLE_FLAG_INHERIT;
 
 /**
  *
@@ -19,10 +14,6 @@ public class Kernel32Util {
         if (!test) {
             throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
         }
-    }
-
-    static void setInheritable(long handle) {
-        assertTrue(Kernel32.INSTANCE.SetHandleInformation(handle, HANDLE_FLAG_INHERIT, HANDLE_FLAG_INHERIT));
     }
 
     static String formatMessage(int code) {
@@ -48,10 +39,6 @@ public class Kernel32Util {
 
     public static void freeLocalMemory(Pointer ptr) {
         assertTrue(Kernel32.INSTANCE.LocalFree(ptr.address()) == 0);
-    }
-
-    static void setInformationJobObject(long hJob, JOBOBJECTINFOCLASS jobobjectinfoclass, JOBOBJECT_INFORMATION jobj) {
-        assertTrue(Kernel32.INSTANCE.SetInformationJobObject(hJob, jobobjectinfoclass.value(), jobj, jobj.size()));
     }
 
 }

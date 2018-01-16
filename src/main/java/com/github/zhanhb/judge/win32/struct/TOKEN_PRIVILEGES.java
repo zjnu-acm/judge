@@ -15,7 +15,7 @@
  */
 package com.github.zhanhb.judge.win32.struct;
 
-import static com.github.zhanhb.judge.win32.Winnt.ANYSIZE_ARRAY;
+import static com.github.zhanhb.judge.win32.WinNT.ANYSIZE_ARRAY;
 
 /**
  *

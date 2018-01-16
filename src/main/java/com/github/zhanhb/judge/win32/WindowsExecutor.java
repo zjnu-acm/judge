@@ -39,25 +39,26 @@ import static com.github.zhanhb.judge.common.Executor.O_SYNC;
 import static com.github.zhanhb.judge.common.Executor.O_TEMPORARY;
 import static com.github.zhanhb.judge.common.Executor.O_TRUNC;
 import static com.github.zhanhb.judge.common.Executor.O_WRONLY;
+import static com.github.zhanhb.judge.win32.FileApi.CREATE_ALWAYS;
+import static com.github.zhanhb.judge.win32.FileApi.OPEN_ALWAYS;
+import static com.github.zhanhb.judge.win32.FileApi.OPEN_EXISTING;
 import static com.github.zhanhb.judge.win32.WinBase.CREATE_BREAKAWAY_FROM_JOB;
 import static com.github.zhanhb.judge.win32.WinBase.CREATE_NEW_PROCESS_GROUP;
 import static com.github.zhanhb.judge.win32.WinBase.CREATE_NO_WINDOW;
 import static com.github.zhanhb.judge.win32.WinBase.CREATE_SUSPENDED;
 import static com.github.zhanhb.judge.win32.WinBase.CREATE_UNICODE_ENVIRONMENT;
 import static com.github.zhanhb.judge.win32.WinBase.DETACHED_PROCESS;
+import static com.github.zhanhb.judge.win32.WinBase.FILE_FLAG_DELETE_ON_CLOSE;
+import static com.github.zhanhb.judge.win32.WinBase.FILE_FLAG_WRITE_THROUGH;
+import static com.github.zhanhb.judge.win32.WinBase.HANDLE_FLAG_INHERIT;
 import static com.github.zhanhb.judge.win32.WinBase.HIGH_PRIORITY_CLASS;
 import static com.github.zhanhb.judge.win32.WinBase.STARTF_FORCEOFFFEEDBACK;
 import static com.github.zhanhb.judge.win32.WinBase.STARTF_USESTDHANDLES;
-import static com.github.zhanhb.judge.win32.Winnt.CREATE_ALWAYS;
-import static com.github.zhanhb.judge.win32.Winnt.FILE_ATTRIBUTE_NORMAL;
-import static com.github.zhanhb.judge.win32.Winnt.FILE_FLAG_DELETE_ON_CLOSE;
-import static com.github.zhanhb.judge.win32.Winnt.FILE_FLAG_WRITE_THROUGH;
-import static com.github.zhanhb.judge.win32.Winnt.FILE_SHARE_READ;
-import static com.github.zhanhb.judge.win32.Winnt.FILE_SHARE_WRITE;
-import static com.github.zhanhb.judge.win32.Winnt.GENERIC_READ;
-import static com.github.zhanhb.judge.win32.Winnt.GENERIC_WRITE;
-import static com.github.zhanhb.judge.win32.Winnt.OPEN_ALWAYS;
-import static com.github.zhanhb.judge.win32.Winnt.OPEN_EXISTING;
+import static com.github.zhanhb.judge.win32.WinNT.FILE_ATTRIBUTE_NORMAL;
+import static com.github.zhanhb.judge.win32.WinNT.FILE_SHARE_READ;
+import static com.github.zhanhb.judge.win32.WinNT.FILE_SHARE_WRITE;
+import static com.github.zhanhb.judge.win32.WinNT.GENERIC_READ;
+import static com.github.zhanhb.judge.win32.WinNT.GENERIC_WRITE;
 
 /**
  *
@@ -188,6 +189,10 @@ public enum WindowsExecutor implements Executor {
         }
     }
 
+    private void setInheritable(long handle) {
+        Kernel32Util.assertTrue(Kernel32.INSTANCE.SetHandleInformation(handle, HANDLE_FLAG_INHERIT, HANDLE_FLAG_INHERIT));
+    }
+
     private PROCESS_INFORMATION createProcess(String lpCommandLine, long /*HANDLE*/ hIn, long /*HANDLE*/ hOut, long /*HANDLE*/ hErr,
             boolean redirectErrorStream, Path lpCurrentDirectory) {
         SECURITY_ATTRIBUTES sa = new SECURITY_ATTRIBUTES();
@@ -213,10 +218,10 @@ public enum WindowsExecutor implements Executor {
         lpStartupInfo.setStandardOutput(hOut);
         lpStartupInfo.setStandardError(hErr);
 
-        Kernel32Util.setInheritable(hIn);
-        Kernel32Util.setInheritable(hOut);
+        setInheritable(hIn);
+        setInheritable(hOut);
         if (!redirectErrorStream) {
-            Kernel32Util.setInheritable(hErr);
+            setInheritable(hErr);
         }
 
         try (Handle hToken = new Handle(sandbox.createRestrictedToken(

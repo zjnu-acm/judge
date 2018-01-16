@@ -38,18 +38,21 @@ import java.util.function.IntFunction;
 import jnc.foreign.byref.AddressByReference;
 import jnc.foreign.byref.IntByReference;
 
-import static com.github.zhanhb.judge.win32.Advapi32.SANDBOX_INERT;
-import static com.github.zhanhb.judge.win32.Advapi32.SE_GROUP_INTEGRITY;
+import static com.github.zhanhb.judge.win32.AccCtrl.NO_INHERITANCE;
 import static com.github.zhanhb.judge.win32.IntegrityLevel.INTEGRITY_LEVEL_LAST;
-import static com.github.zhanhb.judge.win32.SeGroup.SE_GROUP_LOGON_ID;
-import static com.github.zhanhb.judge.win32.SeGroup.SE_GROUP_USE_FOR_DENY_ONLY;
-import static com.github.zhanhb.judge.win32.Winnt.DUPLICATE_SAME_ACCESS;
-import static com.github.zhanhb.judge.win32.Winnt.GENERIC_ALL;
-import static com.github.zhanhb.judge.win32.Winnt.SECURITY_MAX_SID_SIZE;
-import static com.github.zhanhb.judge.win32.Winnt.TOKEN_ALL_ACCESS;
+import static com.github.zhanhb.judge.win32.WinError.ERROR_INVALID_TOKEN;
+import static com.github.zhanhb.judge.win32.WinError.ERROR_NOT_FOUND;
+import static com.github.zhanhb.judge.win32.WinError.ERROR_SUCCESS;
+import static com.github.zhanhb.judge.win32.WinNT.DUPLICATE_SAME_ACCESS;
+import static com.github.zhanhb.judge.win32.WinNT.GENERIC_ALL;
+import static com.github.zhanhb.judge.win32.WinNT.SANDBOX_INERT;
+import static com.github.zhanhb.judge.win32.WinNT.SECURITY_MAX_SID_SIZE;
+import static com.github.zhanhb.judge.win32.WinNT.SE_GROUP_INTEGRITY;
+import static com.github.zhanhb.judge.win32.WinNT.SE_GROUP_LOGON_ID;
+import static com.github.zhanhb.judge.win32.WinNT.SE_GROUP_USE_FOR_DENY_ONLY;
+import static com.github.zhanhb.judge.win32.WinNT.TOKEN_ALL_ACCESS;
 import static com.github.zhanhb.judge.win32.struct.ACCESS_MODE.GRANT_ACCESS;
 import static com.github.zhanhb.judge.win32.struct.ACCESS_MODE.REVOKE_ACCESS;
-import static com.github.zhanhb.judge.win32.struct.AccCtrl.NO_INHERITANCE;
 import static com.github.zhanhb.judge.win32.struct.MULTIPLE_TRUSTEE_OPERATION.NO_MULTIPLE_TRUSTEE;
 import static com.github.zhanhb.judge.win32.struct.SECURITY_IMPERSONATION_LEVEL.SecurityIdentification;
 import static com.github.zhanhb.judge.win32.struct.SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation;
@@ -62,9 +65,6 @@ import static com.github.zhanhb.judge.win32.struct.TOKEN_INFORMATION_CLASS.Token
 import static com.github.zhanhb.judge.win32.struct.TOKEN_TYPE.TokenPrimary;
 import static com.github.zhanhb.judge.win32.struct.TRUSTEE_FORM.TRUSTEE_IS_SID;
 import static com.github.zhanhb.judge.win32.struct.WELL_KNOWN_SID_TYPE.WinRestrictedCodeSid;
-import static com.github.zhanhb.judge.win32.struct.WinError.ERROR_INVALID_TOKEN;
-import static com.github.zhanhb.judge.win32.struct.WinError.ERROR_NOT_FOUND;
-import static com.github.zhanhb.judge.win32.struct.WinError.ERROR_SUCCESS;
 
 /**
  *

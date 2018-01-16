@@ -26,28 +26,6 @@ public interface Kernel32 {
     boolean AssignProcessToJobObject(@uintptr_t long /*HANDLE*/ hJob, @uintptr_t long /*HANDLE*/ hProcess);
 
     /**
-     * The system does not display the critical-error-handler message box.
-     * Instead, the system sends the error to the calling process.
-     */
-    int SEM_FAILCRITICALERRORS = 0x0001;
-    /**
-     * The system automatically fixes memory alignment faults and makes them
-     * invisible to the application. It does this for the calling process and
-     * any descendant processes. This feature is only supported by certain
-     * processor architectures. For more information, see the Remarks section.
-     */
-    int SEM_NOALIGNMENTFAULTEXCEPT = 0x0004;
-    /**
-     * The system does not display the Windows Error Reporting dialog.
-     */
-    int SEM_NOGPFAULTERRORBOX = 0x0002;
-    /**
-     * The system does not display a message box when it fails to find a file.
-     * Instead, the error is returned to the calling process.
-     */
-    int SEM_NOOPENFILEERRORBOX = 0x8000;
-
-    /**
      *
      * @param hThread A handle to the thread to be restarted.
      * @return If the function succeeds, the return value is the thread's
@@ -101,55 +79,6 @@ public interface Kernel32 {
     @int32_t
     boolean GetExitCodeProcess(@uintptr_t long /*HANDLE*/ hProcess, IntByReference/*LPDWORD*/ dwExitCode);
 
-    int JOB_OBJECT_LIMIT_WORKINGSET = 0x0001;
-    int JOB_OBJECT_LIMIT_PROCESS_TIME = 0x0002;
-    int JOB_OBJECT_LIMIT_JOB_TIME = 0x0004;
-    int JOB_OBJECT_LIMIT_ACTIVE_PROCESS = 0x0008;
-    int JOB_OBJECT_LIMIT_AFFINITY = 0x0010;
-    int JOB_OBJECT_LIMIT_PRIORITY_CLASS = 0x0020;
-    int JOB_OBJECT_LIMIT_PRESERVE_JOB_TIME = 0x0040;
-    int JOB_OBJECT_LIMIT_SCHEDULING_CLASS = 0x0080;
-    int JOB_OBJECT_LIMIT_PROCESS_MEMORY = 0x0100;
-    int JOB_OBJECT_LIMIT_JOB_MEMORY = 0x0200;
-    int JOB_OBJECT_LIMIT_DIE_ON_UNHANDLED_EXCEPTION = 0x0400;
-    int JOB_OBJECT_BREAKAWAY_OK = 0x0800;
-    int JOB_OBJECT_SILENT_BREAKAWAY = 0x1000;
-
-    int JOB_OBJECT_LIMIT_BREAKAWAY_OK = 0x00000800;
-    int JOB_OBJECT_LIMIT_SILENT_BREAKAWAY_OK = 0x00001000;
-    int JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE = 0x00002000;
-    int JOB_OBJECT_LIMIT_SUBSET_AFFINITY = 0x00004000;
-
-    /* JOBOBJECT_BASIC_UI_RESTRICTIONS.UIRestrictionsClass constants */
-    int JOB_OBJECT_UILIMIT_HANDLES = 0x0001;
-    int JOB_OBJECT_UILIMIT_READCLIPBOARD = 0x0002;
-    int JOB_OBJECT_UILIMIT_WRITECLIPBOARD = 0x0004;
-    int JOB_OBJECT_UILIMIT_SYSTEMPARAMETERS = 0x0008;
-    int JOB_OBJECT_UILIMIT_DISPLAYSETTINGS = 0x0010;
-    int JOB_OBJECT_UILIMIT_GLOBALATOMS = 0x0020;
-    int JOB_OBJECT_UILIMIT_DESKTOP = 0x0040;
-    int JOB_OBJECT_UILIMIT_EXITWINDOWS = 0x0080;
-
-    /* JOBOBJECT_SECURITY_LIMIT_INFORMATION.SecurityLimitFlags constants */
-    int JOB_OBJECT_SECURITY_NO_ADMIN = 0x0001;
-    int JOB_OBJECT_SECURITY_RESTRICTED_TOKEN = 0x0002;
-    int JOB_OBJECT_SECURITY_ONLY_TOKEN = 0x0004;
-    int JOB_OBJECT_SECURITY_FILTER_TOKENS = 0x0008;
-
-    /* JOBOBJECT_END_OF_JOB_TIME_INFORMATION.EndOfJobTimeAction constants */
-    int JOB_OBJECT_TERMINATE_AT_END_OF_JOB = 0;
-    int JOB_OBJECT_POST_AT_END_OF_JOB = 1;
-
-    int JOB_OBJECT_MSG_END_OF_JOB_TIME = 1;
-    int JOB_OBJECT_MSG_END_OF_PROCESS_TIME = 2;
-    int JOB_OBJECT_MSG_ACTIVE_PROCESS_LIMIT = 3;
-    int JOB_OBJECT_MSG_ACTIVE_PROCESS_ZERO = 4;
-    int JOB_OBJECT_MSG_NEW_PROCESS = 6;
-    int JOB_OBJECT_MSG_EXIT_PROCESS = 7;
-    int JOB_OBJECT_MSG_ABNORMAL_EXIT_PROCESS = 8;
-    int JOB_OBJECT_MSG_PROCESS_MEMORY_LIMIT = 9;
-    int JOB_OBJECT_MSG_JOB_MEMORY_LIMIT = 10;
-
     @int32_t
     boolean SetHandleInformation(
             @uintptr_t long /*HANDLE*/ handle,
@@ -177,8 +106,6 @@ public interface Kernel32 {
             @uint32_t int JobObjectInfoClass,
             @In JOBOBJECT_INFORMATION lpJobObjectInfo,
             @uint32_t int cbJobObjectInfoLength);
-
-    int HANDLE_FLAG_INHERIT = 0x00000001;
 
     @int32_t
     boolean CreateProcessAsUserW(
