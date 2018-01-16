@@ -1,5 +1,7 @@
 package com.github.zhanhb.judge.win32;
 
+import com.github.zhanhb.jnc.platform.win32.Kernel32;
+import com.github.zhanhb.jnc.platform.win32.Kernel32Util;
 import com.google.common.base.Preconditions;
 import java.io.Closeable;
 import java.util.concurrent.atomic.AtomicBoolean;

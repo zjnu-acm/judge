@@ -15,13 +15,16 @@
  */
 package com.github.zhanhb.judge.win32;
 
+import com.github.zhanhb.jnc.platform.win32.Kernel32;
+import com.github.zhanhb.jnc.platform.win32.Kernel32Util;
+import com.github.zhanhb.jnc.platform.win32.PROCESS_INFORMATION;
+import com.github.zhanhb.jnc.platform.win32.SECURITY_ATTRIBUTES;
+import com.github.zhanhb.jnc.platform.win32.STARTUPINFO;
+import com.github.zhanhb.jnc.platform.win32.WString;
 import com.github.zhanhb.judge.common.ExecuteResult;
 import com.github.zhanhb.judge.common.Executor;
 import com.github.zhanhb.judge.common.Options;
 import com.github.zhanhb.judge.common.Status;
-import com.github.zhanhb.judge.win32.struct.PROCESS_INFORMATION;
-import com.github.zhanhb.judge.win32.struct.SECURITY_ATTRIBUTES;
-import com.github.zhanhb.judge.win32.struct.STARTUPINFO;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.nio.file.Path;
@@ -29,6 +32,26 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
+import static com.github.zhanhb.jnc.platform.win32.FileApi.CREATE_ALWAYS;
+import static com.github.zhanhb.jnc.platform.win32.FileApi.OPEN_ALWAYS;
+import static com.github.zhanhb.jnc.platform.win32.FileApi.OPEN_EXISTING;
+import static com.github.zhanhb.jnc.platform.win32.WinBase.CREATE_BREAKAWAY_FROM_JOB;
+import static com.github.zhanhb.jnc.platform.win32.WinBase.CREATE_NEW_PROCESS_GROUP;
+import static com.github.zhanhb.jnc.platform.win32.WinBase.CREATE_NO_WINDOW;
+import static com.github.zhanhb.jnc.platform.win32.WinBase.CREATE_SUSPENDED;
+import static com.github.zhanhb.jnc.platform.win32.WinBase.CREATE_UNICODE_ENVIRONMENT;
+import static com.github.zhanhb.jnc.platform.win32.WinBase.DETACHED_PROCESS;
+import static com.github.zhanhb.jnc.platform.win32.WinBase.FILE_FLAG_DELETE_ON_CLOSE;
+import static com.github.zhanhb.jnc.platform.win32.WinBase.FILE_FLAG_WRITE_THROUGH;
+import static com.github.zhanhb.jnc.platform.win32.WinBase.HANDLE_FLAG_INHERIT;
+import static com.github.zhanhb.jnc.platform.win32.WinBase.HIGH_PRIORITY_CLASS;
+import static com.github.zhanhb.jnc.platform.win32.WinBase.STARTF_FORCEOFFFEEDBACK;
+import static com.github.zhanhb.jnc.platform.win32.WinBase.STARTF_USESTDHANDLES;
+import static com.github.zhanhb.jnc.platform.win32.WinNT.FILE_ATTRIBUTE_NORMAL;
+import static com.github.zhanhb.jnc.platform.win32.WinNT.FILE_SHARE_READ;
+import static com.github.zhanhb.jnc.platform.win32.WinNT.FILE_SHARE_WRITE;
+import static com.github.zhanhb.jnc.platform.win32.WinNT.GENERIC_READ;
+import static com.github.zhanhb.jnc.platform.win32.WinNT.GENERIC_WRITE;
 import static com.github.zhanhb.judge.common.Constants.TERMINATE_TIMEOUT;
 import static com.github.zhanhb.judge.common.Constants.UPDATE_TIME_THRESHOLD;
 import static com.github.zhanhb.judge.common.Executor.O_CREAT;
@@ -39,26 +62,6 @@ import static com.github.zhanhb.judge.common.Executor.O_SYNC;
 import static com.github.zhanhb.judge.common.Executor.O_TEMPORARY;
 import static com.github.zhanhb.judge.common.Executor.O_TRUNC;
 import static com.github.zhanhb.judge.common.Executor.O_WRONLY;
-import static com.github.zhanhb.judge.win32.FileApi.CREATE_ALWAYS;
-import static com.github.zhanhb.judge.win32.FileApi.OPEN_ALWAYS;
-import static com.github.zhanhb.judge.win32.FileApi.OPEN_EXISTING;
-import static com.github.zhanhb.judge.win32.WinBase.CREATE_BREAKAWAY_FROM_JOB;
-import static com.github.zhanhb.judge.win32.WinBase.CREATE_NEW_PROCESS_GROUP;
-import static com.github.zhanhb.judge.win32.WinBase.CREATE_NO_WINDOW;
-import static com.github.zhanhb.judge.win32.WinBase.CREATE_SUSPENDED;
-import static com.github.zhanhb.judge.win32.WinBase.CREATE_UNICODE_ENVIRONMENT;
-import static com.github.zhanhb.judge.win32.WinBase.DETACHED_PROCESS;
-import static com.github.zhanhb.judge.win32.WinBase.FILE_FLAG_DELETE_ON_CLOSE;
-import static com.github.zhanhb.judge.win32.WinBase.FILE_FLAG_WRITE_THROUGH;
-import static com.github.zhanhb.judge.win32.WinBase.HANDLE_FLAG_INHERIT;
-import static com.github.zhanhb.judge.win32.WinBase.HIGH_PRIORITY_CLASS;
-import static com.github.zhanhb.judge.win32.WinBase.STARTF_FORCEOFFFEEDBACK;
-import static com.github.zhanhb.judge.win32.WinBase.STARTF_USESTDHANDLES;
-import static com.github.zhanhb.judge.win32.WinNT.FILE_ATTRIBUTE_NORMAL;
-import static com.github.zhanhb.judge.win32.WinNT.FILE_SHARE_READ;
-import static com.github.zhanhb.judge.win32.WinNT.FILE_SHARE_WRITE;
-import static com.github.zhanhb.judge.win32.WinNT.GENERIC_READ;
-import static com.github.zhanhb.judge.win32.WinNT.GENERIC_WRITE;
 
 /**
  *

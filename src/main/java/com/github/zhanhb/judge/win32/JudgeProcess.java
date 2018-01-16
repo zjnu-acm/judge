@@ -1,16 +1,20 @@
 package com.github.zhanhb.judge.win32;
 
+import com.github.zhanhb.jnc.platform.win32.FILETIME;
+import com.github.zhanhb.jnc.platform.win32.Kernel32;
+import com.github.zhanhb.jnc.platform.win32.Kernel32Util;
+import com.github.zhanhb.jnc.platform.win32.PROCESS_MEMORY_COUNTERS;
+import com.github.zhanhb.jnc.platform.win32.Psapi;
+import com.github.zhanhb.jnc.platform.win32.Win32Exception;
 import com.github.zhanhb.judge.common.Status;
-import com.github.zhanhb.judge.win32.struct.FILETIME;
-import com.github.zhanhb.judge.win32.struct.PROCESS_MEMORY_COUNTERS;
 import com.google.common.base.Preconditions;
 import java.time.Instant;
 import java.util.concurrent.atomic.AtomicReference;
 import jnc.foreign.byref.IntByReference;
 
-import static com.github.zhanhb.judge.win32.WinBase.WAIT_ABANDONED;
-import static com.github.zhanhb.judge.win32.WinBase.WAIT_FAILED;
-import static com.github.zhanhb.judge.win32.WinError.WAIT_TIMEOUT;
+import static com.github.zhanhb.jnc.platform.win32.WinBase.WAIT_ABANDONED;
+import static com.github.zhanhb.jnc.platform.win32.WinBase.WAIT_FAILED;
+import static com.github.zhanhb.jnc.platform.win32.WinError.WAIT_TIMEOUT;
 
 public class JudgeProcess {
 
