@@ -16,9 +16,10 @@
 package com.github.zhanhb.judge.win32;
 
 import java.util.Objects;
-import jnc.foreign.byref.IntByReference;
 
+import static com.github.zhanhb.judge.win32.Kernel32.SEM_FAILCRITICALERRORS;
 import static com.github.zhanhb.judge.win32.Kernel32.SEM_NOGPFAULTERRORBOX;
+import static com.github.zhanhb.judge.win32.Kernel32.SEM_NOOPENFILEERRORBOX;
 
 /**
  *
@@ -27,14 +28,19 @@ import static com.github.zhanhb.judge.win32.Kernel32.SEM_NOGPFAULTERRORBOX;
 @SuppressWarnings("PublicInnerClass")
 public class ProcessCreationHelper {
 
+    private static Object getLock() {
+        return Runtime.getRuntime();
+    }
+
     public static <V, E extends Throwable> V execute(ExceptionCallable<V, E> supplier) throws E {
         Objects.requireNonNull(supplier);
-        IntByReference oldMode = new IntByReference();
-        Kernel32Util.assertTrue(Kernel32.INSTANCE.SetThreadErrorMode(SEM_NOGPFAULTERRORBOX, oldMode));
-        try {
-            return supplier.call();
-        } finally {
-            Kernel32.INSTANCE.SetThreadErrorMode(oldMode.getValue(), oldMode);
+        synchronized (getLock()) {
+            int oldErrorMode = Kernel32.INSTANCE.SetErrorMode(SEM_FAILCRITICALERRORS | SEM_NOGPFAULTERRORBOX | SEM_NOOPENFILEERRORBOX);
+            try {
+                return supplier.call();
+            } finally {
+                Kernel32.INSTANCE.SetErrorMode(oldErrorMode);
+            }
         }
     }
 
