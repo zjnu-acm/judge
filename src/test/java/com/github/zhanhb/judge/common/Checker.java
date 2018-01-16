@@ -24,7 +24,8 @@ import lombok.RequiredArgsConstructor;
  */
 @Getter
 @RequiredArgsConstructor
-enum Checker {
+public enum Checker {
+
     ac(Status.ACCEPTED),
     wa(Status.WRONG_ANSWER),
     tle(Status.TIME_LIMIT_EXCEED),

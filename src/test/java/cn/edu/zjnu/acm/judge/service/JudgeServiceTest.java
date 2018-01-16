@@ -26,7 +26,6 @@ import cn.edu.zjnu.acm.judge.util.CopyHelper;
 import cn.edu.zjnu.acm.judge.util.DeleteHelper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -38,7 +37,6 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -47,14 +45,18 @@ import java.util.stream.Stream;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Service;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit4.rules.SpringClassRule;
+import org.springframework.test.context.junit4.rules.SpringMethodRule;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import static org.junit.Assert.*;
@@ -64,12 +66,18 @@ import static org.junit.Assume.assumeTrue;
  *
  * @author zhanhb
  */
-@RunWith(SpringRunner.class)
+@RunWith(Parameterized.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
 @WebAppConfiguration
 @Import(JudgeServiceTest.Initializer.class)
 public class JudgeServiceTest {
+
+    @ClassRule
+    public static final SpringClassRule SPRING_CLASS_RULE = new SpringClassRule();
+    private static final ImmutableMap<String, String> EXTENSION_MAP
+            = ImmutableMap.of("cpp", "cc", "groovy", "groovy", "c", "c");
+    private static final String IP = "::1";
 
     private static String build(String... args) {
         return Arrays.stream(args)
@@ -82,6 +90,27 @@ public class JudgeServiceTest {
         return name.lastIndexOf('.') > 0 ? name.substring(name.lastIndexOf('.') + 1) : "";
     }
 
+    @BeforeClass
+    public static void setUpClass() {
+        assumeTrue("not windows", Platform.isWindows());
+    }
+
+    @Parameterized.Parameters(name = "{index}: {0} {1}")
+    public static List<Object[]> data() throws Exception {
+        ArrayList<Object[]> list = new ArrayList<>(20);
+        Path program = Paths.get(Initializer.class.getResource("/sample/program").toURI());
+        for (Checker c : Checker.values()) {
+            Path dir = program.resolve(c.name());
+
+            try (Stream<Path> stream = Files.list(dir)) {
+                stream.forEach(path -> list.add(new Object[]{c, path}));
+            }
+        }
+        return list;
+    }
+
+    @Rule
+    public final SpringMethodRule springMethodRule = new SpringMethodRule();
     @Autowired
     private LanguageMapper languageMapper;
     @Autowired
@@ -92,6 +121,13 @@ public class JudgeServiceTest {
     private Initializer initializer;
     private final String specialKey = "wa/less.groovy";
     private final int specialScore = 50;
+    private final Checker checker;
+    private final Path path;
+
+    public JudgeServiceTest(Checker checker, Path path) {
+        this.checker = checker;
+        this.path = path;
+    }
 
     private int findFirstLanguageByExtension(String extension) {
         return languageMapper.findAll().stream()
@@ -99,44 +135,9 @@ public class JudgeServiceTest {
                 .map(Language::getId).findFirst().orElseThrow(RuntimeException::new);
     }
 
-    @Before
-    public void setUp() {
-        assumeTrue("not windows", Platform.isWindows());
-    }
-
     @Test
-    public void testAC() throws Exception {
-        check(Checker.ac);
-    }
-
-    @Test
-    public void testMle() throws Exception {
-        check(Checker.mle);
-    }
-
-    @Test
-    public void testOle() throws Exception {
-        check(Checker.ole);
-    }
-
-    @Test
-    public void testRe() throws Exception {
-        check(Checker.re);
-    }
-
-    @Test
-    public void testTle() throws Exception {
-        check(Checker.tle);
-    }
-
-    @Test
-    public void testWa() throws Exception {
-        check(Checker.wa);
-    }
-
-    @Test
-    public void testPE() throws Exception {
-        check(Checker.pe);
+    public void test() throws Exception {
+        check(checker);
     }
 
     private Submission findOneByUserId(String userId) {
@@ -144,54 +145,41 @@ public class JudgeServiceTest {
     }
 
     private void check(Checker c) throws IOException {
-        String ip = "::1";
         String userId = initializer.userId;
-        ImmutableMap<String, String> map = ImmutableMap.of("cpp", "cc", "groovy", "groovy", "c", "c");
-        Path dir = initializer.program.resolve(c.name());
-
-        Map<Long, CompletableFuture<?>> submissions = Maps.newHashMap();
-        Map<Long, Path> pathMap = Maps.newHashMap();
-
-        try (Stream<Path> list = Files.list(dir)) {
-            list.forEach(path -> {
-                try {
-                    String extension = getExtension(path);
-                    int language = findFirstLanguageByExtension(map.get(extension));
-                    String source = new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
-                    submissionService.remove(userId);
-                    CompletableFuture<?> submit = submissionService.submit(language, source, userId, ip, initializer.problem);
-                    long id = findOneByUserId(userId).getId();
-                    submissions.put(id, submit);
-                    pathMap.put(id, path);
-                } catch (IOException ex) {
-                    throw new UncheckedIOException(ex);
-                }
-            });
+        CompletableFuture<?> future;
+        long id;
+        try {
+            String extension = getExtension(path);
+            int language = findFirstLanguageByExtension(EXTENSION_MAP.get(extension));
+            String source = new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
+            submissionService.remove(userId);
+            future = submissionService.submit(language, source, userId, IP, initializer.problem);
+            id = findOneByUserId(userId).getId();
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
         }
-        initializer.submissions.addAll(submissions.keySet());
-        submissions.forEach((id, future) -> {
-            Submission submission;
-            try {
-                submission = future.thenApply(__ -> submissionMapper.findOne(id)).get();
-            } catch (InterruptedException | ExecutionException ex) {
-                throw new AssertionError(ex);
-            }
-            assertNotNull(submission);
-            Path path = pathMap.get(id);
-            int expectScore = c.getScore();
-            String key = path.getParent().getFileName() + "/" + path.getFileName();
-            if (specialKey.equals(key)) {
-                expectScore = specialScore;
-            }
-            assertEquals(id + " " + path, expectScore, submission.getScore());
-            String detail = submissionMapper.getSubmissionDetail(id);
-            String[] details = detail.split(",");
-            ArrayList<String> list = Lists.newArrayList();
-            for (int i = 0; i < details.length; i += 4) {
-                list.add(details[i]);
-            }
-            assertTrue(id + " " + path + " " + Arrays.toString(details), list.contains(Integer.toString(c.getStatus())));
-        });
+        initializer.submissions.add(id);
+
+        Submission submission;
+        try {
+            submission = future.thenApply(__ -> submissionMapper.findOne(id)).get();
+        } catch (InterruptedException | ExecutionException ex) {
+            throw new AssertionError(ex);
+        }
+        assertNotNull(submission);
+        int expectScore = c.getScore();
+        String key = path.getParent().getFileName() + "/" + path.getFileName();
+        if (specialKey.equals(key)) {
+            expectScore = specialScore;
+        }
+        assertEquals(id + " " + path, expectScore, submission.getScore());
+        String detail = submissionMapper.getSubmissionDetail(id);
+        String[] details = detail.split(",");
+        ArrayList<String> list = Lists.newArrayList();
+        for (int i = 0; i < details.length; i += 4) {
+            list.add(details[i]);
+        }
+        assertTrue(id + " " + path + " " + Arrays.toString(details), list.contains(Integer.toString(c.getStatus())));
     }
 
     @Service
@@ -214,7 +202,6 @@ public class JudgeServiceTest {
 
         long problem;
         Path dataDir;
-        Path program;
         int groovyLanguage;
         List<Long> submissions = Lists.newArrayList();
         String userId;
@@ -229,21 +216,19 @@ public class JudgeServiceTest {
         public void init() throws Exception {
             userId = mockDataService.user().getId();
             problem = mockDataService.problem(builder -> builder.timeLimit(6000L).memoryLimit(256 * 1024L)).getId();
-            dataDir = judgeConfiguration.getDataDirectory(problem);
-            CopyHelper.copy(Paths.get(Initializer.class.getResource("/sample/data").toURI()), dataDir, StandardCopyOption.COPY_ATTRIBUTES);
-            program = Paths.get(Initializer.class.getResource("/sample/program").toURI());
+            dataDir = CopyHelper.copy(Paths.get(Initializer.class.getResource("/sample/data").toURI()), judgeConfiguration.getDataDirectory(problem), StandardCopyOption.COPY_ATTRIBUTES);
             Path mavenGroovyPath = Paths.get(getGroovy(System.getProperty("java.class.path")));
             groovyPath = Files.copy(mavenGroovyPath, dataDir.resolve(mavenGroovyPath.getFileName().toString()), StandardCopyOption.REPLACE_EXISTING);
             String executeCommand = build("java", "-cp", groovyPath.toString(), groovy.ui.GroovyMain.class.getName(), "Main.groovy");
-            Language language = Language.builder().name("groovy")
+            Language groovy = Language.builder().name("groovy")
                     .sourceExtension("groovy")
                     .executeCommand(executeCommand)
                     .executableExtension("groovy")
                     .description("")
                     .timeFactor(2)
                     .build();
-            languageMapper.save(language);
-            groovyLanguage = language.getId();
+            languageMapper.save(groovy);
+            groovyLanguage = groovy.getId();
         }
 
         @PreDestroy

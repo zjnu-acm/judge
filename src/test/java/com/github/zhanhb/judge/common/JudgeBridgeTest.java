@@ -17,22 +17,24 @@ package com.github.zhanhb.judge.common;
 
 import cn.edu.zjnu.acm.judge.util.DeleteHelper;
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 import jnc.foreign.Platform;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assume.assumeTrue;
@@ -41,8 +43,15 @@ import static org.junit.Assume.assumeTrue;
  *
  * @author zhanhb
  */
+@RunWith(Parameterized.class)
 @Slf4j
 public class JudgeBridgeTest {
+
+    private static Path tmp;
+    private static Path data;
+    private static Path input;
+    private static Path output;
+    private static Path groovy;
 
     @BeforeClass
     public static void setUpClass() {
@@ -55,65 +64,54 @@ public class JudgeBridgeTest {
                 .collect(Collectors.joining(" "));
     }
 
-    private final boolean stopOnError = false;
-    private final Validator validator = SimpleValidator.NORMAL;
-    private Path groovy;
-    private Path program;
-    private Path data;
-    private Path input;
-    private Path output;
-    private Path tmp;
+    private static String getGroovy(String property) {
+        return Arrays.stream(property.split(File.pathSeparator))
+                .filter(s -> s.contains("groovy-"))
+                .collect(Collectors.joining(File.pathSeparator));
+    }
 
-    @Before
-    public void setUp() throws Exception {
+    @Parameterized.Parameters(name = "{index}: {0} {1}")
+    public static List<Object[]> data() throws Exception {
         URI uri = JudgeBridgeTest.class.getResource("/sample/program").toURI();
-        program = Paths.get(uri);
+        Path program = Paths.get(uri);
         data = program.resolve("../data").toRealPath();
         input = data.resolve("b.in");
         output = data.resolve("b.out");
         tmp = Files.createDirectories(Files.createDirectories(Paths.get("C:", "tmp")));
-        Path path = Paths.get(getGroovy(System.getProperty("java.class.path")));
-        groovy = Files.copy(path, tmp.resolve(path.getFileName().toString()), StandardCopyOption.REPLACE_EXISTING);
+        Path groovyPath = Paths.get(getGroovy(System.getProperty("java.class.path")));
+        groovy = Files.copy(groovyPath, tmp.resolve(groovyPath.getFileName().toString()), StandardCopyOption.REPLACE_EXISTING);
+
+        Checker[] values = Checker.values();
+        ArrayList<Object[]> list = new ArrayList<>(values.length);
+        for (Checker checker : values) {
+            Path path = program.resolve(checker.name());
+            Files.list(path)
+                    .filter(p -> p.getFileName().toString().endsWith(".groovy"))
+                    .map(Object::toString)
+                    .forEach(executable -> list.add(new Object[]{checker, executable}));
+        }
+        return list;
     }
 
-    @Test
-    public void testAC() throws Exception {
-        checkGroovy(Checker.ac);
-    }
-
-    @Test
-    public void testMle() throws Exception {
-        checkGroovy(Checker.mle);
-    }
-
-    @Test
-    public void testOle() throws Exception {
-        checkGroovy(Checker.ole);
-    }
-
-    @Test
-    public void testRe() throws Exception {
-        checkGroovy(Checker.re);
-    }
-
-    @Test
-    public void testTle() throws Exception {
-        checkGroovy(Checker.tle);
-    }
-
-    @Test
-    public void testWa() throws Exception {
-        checkGroovy(Checker.wa);
-    }
-
-    @Test
-    public void testPE() throws Exception {
-        checkGroovy(Checker.pe);
-    }
-
-    @After
-    public void tearDown() throws IOException {
+    @AfterClass
+    public static void tearDownClass() throws Exception {
         DeleteHelper.delete(tmp);
+    }
+
+    private final boolean stopOnError = false;
+    private final Validator validator = SimpleValidator.NORMAL;
+
+    private final Checker checker;
+    private final String executable;
+
+    public JudgeBridgeTest(Checker checker, String executable) {
+        this.checker = checker;
+        this.executable = executable;
+    }
+
+    @Test
+    public void test() throws Exception {
+        test(executable, checker);
     }
 
     @SneakyThrows
@@ -131,22 +129,6 @@ public class JudgeBridgeTest {
         ExecuteResult er = JudgeBridge.INSTANCE.judge(new Options[]{options}, stopOnError, validator)[0];
         log.info("{}", er);
         assertEquals(executable, checker.getStatus(), er.getCode());
-    }
-
-    private void checkGroovy(Checker checker) throws IOException {
-        Path path = program.resolve(checker.name());
-        Files.list(path)
-                .filter(p -> p.getFileName().toString().endsWith(".groovy"))
-                .map(Object::toString)
-                .forEach(
-                        executable -> test(executable, checker)
-                );
-    }
-
-    private String getGroovy(String property) {
-        return Arrays.stream(property.split(File.pathSeparator))
-                .filter(s -> s.contains("groovy-"))
-                .collect(Collectors.joining(File.pathSeparator));
     }
 
 }
