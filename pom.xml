@@ -56,6 +56,7 @@
         <java.version>1.8</java.version>
         <javax-mail.version>1.6.0</javax-mail.version>
         <logback.version>1.2.3</logback.version>
+        <lombok.version>1.16.20</lombok.version>
         <mariadb.version>2.2.1</mariadb.version>
         <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
         <maven-dependency-plugin.version>3.0.2</maven-dependency-plugin.version>
