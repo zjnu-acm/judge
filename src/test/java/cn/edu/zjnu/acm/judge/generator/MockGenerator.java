@@ -170,7 +170,7 @@ public class MockGenerator {
             }
             value.sort(Comparator.comparing(info -> info.getHandlerMethod().getMethod(), Comparator.comparing(method -> method.getDeclaringClass().getName().replace(".", "/") + "." + method.getName() + ":" + org.springframework.asm.Type.getMethodDescriptor(method), toMethodComparator(key))));
             TestClass testClass = new TestClass(key,
-                    "@AutoConfigureMockMvc(printOnlyOnFailure = false)",
+                    "@AutoConfigureMockMvc",
                     "@RunWith(SpringRunner.class)",
                     "@Slf4j",
                     "@SpringBootTest(classes = " + mainClass.getSimpleName() + ".class)",
