@@ -216,7 +216,7 @@ public class JudgeServiceTest {
         public void init() throws Exception {
             userId = mockDataService.user().getId();
             problem = mockDataService.problem(builder -> builder.timeLimit(6000L).memoryLimit(256 * 1024L)).getId();
-            dataDir = CopyHelper.copy(Paths.get(Initializer.class.getResource("/sample/data").toURI()), judgeConfiguration.getDataDirectory(problem), StandardCopyOption.COPY_ATTRIBUTES);
+            dataDir = CopyHelper.copy(Paths.get(Initializer.class.getResource("/sample/data").toURI()), judgeConfiguration.getDataDirectory(problem), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES);
             Path mavenGroovyPath = Paths.get(getGroovy(System.getProperty("java.class.path")));
             groovyPath = Files.copy(mavenGroovyPath, dataDir.resolve(mavenGroovyPath.getFileName().toString()), StandardCopyOption.REPLACE_EXISTING);
             String executeCommand = build("java", "-cp", groovyPath.toString(), groovy.ui.GroovyMain.class.getName(), "Main.groovy");
