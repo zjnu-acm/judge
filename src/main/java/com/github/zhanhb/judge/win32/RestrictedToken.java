@@ -118,7 +118,7 @@ public class RestrictedToken implements Closeable {
             Kernel32Util.assertTrue(Advapi32.INSTANCE.SetTokenInformation(token,
                     TokenDefaultDacl.value(), newTokenDacl, newTokenDacl.size()));
         } finally {
-            Kernel32.INSTANCE.LocalFree(dacl);
+            Kernel32Util.freeLocalMemory(dacl);
         }
     }
 
@@ -163,7 +163,7 @@ public class RestrictedToken implements Closeable {
             Kernel32Util.assertTrue(Advapi32.INSTANCE.SetTokenInformation(token,
                     TokenIntegrityLevel.value(), label, size));
         } finally {
-            Kernel32.INSTANCE.LocalFree(integritySid.getValue());
+            Kernel32Util.freeLocalMemory(integritySid.getValue());
         }
     }
 

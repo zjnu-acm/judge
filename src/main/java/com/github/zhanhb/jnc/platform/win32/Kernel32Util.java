@@ -3,10 +3,6 @@ package com.github.zhanhb.jnc.platform.win32;
 import jnc.foreign.Pointer;
 import jnc.foreign.byref.PointerByReference;
 
-/**
- *
- * @author zhanhb
- */
 @SuppressWarnings("UtilityClassWithoutPrivateConstructor")
 public class Kernel32Util {
 
@@ -33,12 +29,12 @@ public class Kernel32Util {
         try {
             return WString.fromNative(ptr).trim();
         } finally {
-            freeLocalMemory(ptr);
+            freeLocalMemory(ptr.address());
         }
     }
 
-    public static void freeLocalMemory(Pointer ptr) {
-        assertTrue(Kernel32.INSTANCE.LocalFree(ptr.address()) == 0);
+    public static void freeLocalMemory(long ptr) {
+        assertTrue(Kernel32.INSTANCE.LocalFree(ptr) == 0);
     }
 
 }

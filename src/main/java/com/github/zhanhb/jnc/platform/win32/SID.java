@@ -16,18 +16,13 @@
 package com.github.zhanhb.jnc.platform.win32;
 
 import java.util.Arrays;
-import jnc.foreign.Struct;
 import jnc.foreign.byref.IntByReference;
 import jnc.foreign.byref.PointerByReference;
 
 import static com.github.zhanhb.jnc.platform.win32.WinNT.ANYSIZE_ARRAY;
 import static com.github.zhanhb.jnc.platform.win32.WinNT.SID_MAX_SUB_AUTHORITIES;
 
-/**
- *
- * @author zhanhb
- */
-public class SID extends Struct {
+public class SID extends jnc.foreign.Struct {
 
     private static SID ofMaxSubAuthorities() {
         return new SID(SID_MAX_SUB_AUTHORITIES);
@@ -54,7 +49,7 @@ public class SID extends Struct {
         try {
             return WString.fromNative(ptr);
         } finally {
-            Kernel32Util.freeLocalMemory(ptr);
+            Kernel32Util.freeLocalMemory(ptr.address());
         }
     }
 
