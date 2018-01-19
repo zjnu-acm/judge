@@ -30,6 +30,10 @@ public class LUID extends jnc.foreign.Struct {
         return luid;
     }
 
+    public static LUID lookup(String name) {
+        return lookup(null, name);
+    }
+
     private final DWORD LowPart = new DWORD();
     private final int32_t HighPart = new int32_t();
 

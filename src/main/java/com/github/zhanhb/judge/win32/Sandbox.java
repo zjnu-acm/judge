@@ -68,14 +68,14 @@ public class Sandbox {
                     sidExceptions.add(SID.ofWellKnown(WinWorldSid));
                     sidExceptions.add(SID.ofWellKnown(WinInteractiveSid));
                     sidExceptions.add(SID.ofWellKnown(WinAuthenticatedUserSid));
-                    privilegeExceptions.add(LUID.lookup(null, SE_CHANGE_NOTIFY_NAME));
+                    privilegeExceptions.add(LUID.lookup(SE_CHANGE_NOTIFY_NAME));
                     break;
                 case USER_INTERACTIVE:
                     sidExceptions.add(SID.ofWellKnown(WinBuiltinUsersSid));
                     sidExceptions.add(SID.ofWellKnown(WinWorldSid));
                     sidExceptions.add(SID.ofWellKnown(WinInteractiveSid));
                     sidExceptions.add(SID.ofWellKnown(WinAuthenticatedUserSid));
-                    privilegeExceptions.add(LUID.lookup(null, SE_CHANGE_NOTIFY_NAME));
+                    privilegeExceptions.add(LUID.lookup(SE_CHANGE_NOTIFY_NAME));
                     restrictedToken.addRestrictingSid(SID.ofWellKnown(WinBuiltinUsersSid));
                     restrictedToken.addRestrictingSid(SID.ofWellKnown(WinWorldSid));
                     restrictedToken.addRestrictingSid(SID.ofWellKnown(WinRestrictedCodeSid));
@@ -86,7 +86,7 @@ public class Sandbox {
                     sidExceptions.add(SID.ofWellKnown(WinBuiltinUsersSid));
                     sidExceptions.add(SID.ofWellKnown(WinWorldSid));
                     sidExceptions.add(SID.ofWellKnown(WinInteractiveSid));
-                    privilegeExceptions.add(LUID.lookup(null, SE_CHANGE_NOTIFY_NAME));
+                    privilegeExceptions.add(LUID.lookup(SE_CHANGE_NOTIFY_NAME));
                     restrictedToken.addRestrictingSid(SID.ofWellKnown(WinBuiltinUsersSid));
                     restrictedToken.addRestrictingSid(SID.ofWellKnown(WinWorldSid));
                     restrictedToken.addRestrictingSid(SID.ofWellKnown(WinRestrictedCodeSid));
@@ -99,7 +99,7 @@ public class Sandbox {
                     restrictedToken.addRestrictingSidLogonSession();
                     break;
                 case USER_RESTRICTED:
-                    privilegeExceptions.add(LUID.lookup(null, SE_CHANGE_NOTIFY_NAME));
+                    privilegeExceptions.add(LUID.lookup(SE_CHANGE_NOTIFY_NAME));
                     restrictedToken.addUserSidForDenyOnly();
                     restrictedToken.addRestrictingSid(SID.ofWellKnown(WinRestrictedCodeSid));
                     break;
