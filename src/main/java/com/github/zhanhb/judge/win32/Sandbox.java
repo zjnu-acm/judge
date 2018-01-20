@@ -18,7 +18,8 @@ package com.github.zhanhb.judge.win32;
 import com.github.zhanhb.jnc.platform.win32.LUID;
 import com.github.zhanhb.jnc.platform.win32.SID;
 import com.github.zhanhb.jnc.platform.win32.Win32Exception;
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
+import java.util.Set;
 
 import static com.github.zhanhb.jnc.platform.win32.WELL_KNOWN_SID_TYPE.WinAuthenticatedUserSid;
 import static com.github.zhanhb.jnc.platform.win32.WELL_KNOWN_SID_TYPE.WinBuiltinUsersSid;
@@ -35,6 +36,17 @@ import static com.github.zhanhb.jnc.platform.win32.WinNT.SE_CHANGE_NOTIFY_NAME;
  */
 public class Sandbox {
 
+    private final SID SID_NULL = SID.ofWellKnown(WinNullSid);
+    private final SID SID_WORLD = SID.ofWellKnown(WinWorldSid);
+    private final SID SID_INTERACTIVE = SID.ofWellKnown(WinInteractiveSid);
+    private final SID SID_AUTHENTICATED_USER = SID.ofWellKnown(WinAuthenticatedUserSid);
+    private final SID SID_RESTRICTED_CODE = SID.ofWellKnown(WinRestrictedCodeSid);
+    private final SID SID_BUILTIN_USERS = SID.ofWellKnown(WinBuiltinUsersSid);
+    private final Set<LUID> CHANGE_NOTIFY = ImmutableSet.of(LUID.lookup(SE_CHANGE_NOTIFY_NAME));
+    private final Set<SID> USER_NON_ADMIN_EXCEPTION = ImmutableSet.of(SID_WORLD, SID_INTERACTIVE, SID_AUTHENTICATED_USER, SID_BUILTIN_USERS);
+    private final Set<SID> USER_INTERACTIVE_EXCEPTION = USER_NON_ADMIN_EXCEPTION;
+    private final Set<SID> USER_LIMITED_EXCEPTION = ImmutableSet.of(SID_WORLD, SID_INTERACTIVE, SID_BUILTIN_USERS);
+
     public long createRestrictedToken(
             TokenLevel securityLevel,
             IntegrityLevel integrityLevel,
@@ -46,8 +58,8 @@ public class Sandbox {
                 restrictedToken.setLockdownDefaultDacl();
             }
 
-            ImmutableList.Builder<LUID> privilegeExceptions = ImmutableList.builder();
-            ImmutableList.Builder<SID> sidExceptions = ImmutableList.builder();
+            Set<LUID> privilegeExceptions = ImmutableSet.of();
+            Set<SID> sidExceptions = ImmutableSet.of();
 
             boolean denySids = true;
             boolean removePrivileges = true;
@@ -64,32 +76,24 @@ public class Sandbox {
                     restrictedToken.addRestrictingSidAllSids();
                     break;
                 case USER_NON_ADMIN:
-                    sidExceptions.add(SID.ofWellKnown(WinBuiltinUsersSid));
-                    sidExceptions.add(SID.ofWellKnown(WinWorldSid));
-                    sidExceptions.add(SID.ofWellKnown(WinInteractiveSid));
-                    sidExceptions.add(SID.ofWellKnown(WinAuthenticatedUserSid));
-                    privilegeExceptions.add(LUID.lookup(SE_CHANGE_NOTIFY_NAME));
+                    sidExceptions = USER_NON_ADMIN_EXCEPTION;
+                    privilegeExceptions = CHANGE_NOTIFY;
                     break;
                 case USER_INTERACTIVE:
-                    sidExceptions.add(SID.ofWellKnown(WinBuiltinUsersSid));
-                    sidExceptions.add(SID.ofWellKnown(WinWorldSid));
-                    sidExceptions.add(SID.ofWellKnown(WinInteractiveSid));
-                    sidExceptions.add(SID.ofWellKnown(WinAuthenticatedUserSid));
-                    privilegeExceptions.add(LUID.lookup(SE_CHANGE_NOTIFY_NAME));
-                    restrictedToken.addRestrictingSid(SID.ofWellKnown(WinBuiltinUsersSid));
-                    restrictedToken.addRestrictingSid(SID.ofWellKnown(WinWorldSid));
-                    restrictedToken.addRestrictingSid(SID.ofWellKnown(WinRestrictedCodeSid));
+                    sidExceptions = USER_INTERACTIVE_EXCEPTION;
+                    privilegeExceptions = CHANGE_NOTIFY;
+                    restrictedToken.addRestrictingSid(SID_BUILTIN_USERS);
+                    restrictedToken.addRestrictingSid(SID_WORLD);
+                    restrictedToken.addRestrictingSid(SID_RESTRICTED_CODE);
                     restrictedToken.addRestrictingSidCurrentUser();
                     restrictedToken.addRestrictingSidLogonSession();
                     break;
                 case USER_LIMITED:
-                    sidExceptions.add(SID.ofWellKnown(WinBuiltinUsersSid));
-                    sidExceptions.add(SID.ofWellKnown(WinWorldSid));
-                    sidExceptions.add(SID.ofWellKnown(WinInteractiveSid));
-                    privilegeExceptions.add(LUID.lookup(SE_CHANGE_NOTIFY_NAME));
-                    restrictedToken.addRestrictingSid(SID.ofWellKnown(WinBuiltinUsersSid));
-                    restrictedToken.addRestrictingSid(SID.ofWellKnown(WinWorldSid));
-                    restrictedToken.addRestrictingSid(SID.ofWellKnown(WinRestrictedCodeSid));
+                    sidExceptions = USER_LIMITED_EXCEPTION;
+                    privilegeExceptions = CHANGE_NOTIFY;
+                    restrictedToken.addRestrictingSid(SID_BUILTIN_USERS);
+                    restrictedToken.addRestrictingSid(SID_WORLD);
+                    restrictedToken.addRestrictingSid(SID_RESTRICTED_CODE);
 
                     // This token has to be able to create objects in BNO.
                     // Unfortunately, on Vista+, it needs the current logon sid
@@ -99,24 +103,24 @@ public class Sandbox {
                     restrictedToken.addRestrictingSidLogonSession();
                     break;
                 case USER_RESTRICTED:
-                    privilegeExceptions.add(LUID.lookup(SE_CHANGE_NOTIFY_NAME));
+                    privilegeExceptions = CHANGE_NOTIFY;
                     restrictedToken.addUserSidForDenyOnly();
-                    restrictedToken.addRestrictingSid(SID.ofWellKnown(WinRestrictedCodeSid));
+                    restrictedToken.addRestrictingSid(SID_RESTRICTED_CODE);
                     break;
                 case USER_LOCKDOWN:
                     restrictedToken.addUserSidForDenyOnly();
-                    restrictedToken.addRestrictingSid(SID.ofWellKnown(WinNullSid));
+                    restrictedToken.addRestrictingSid(SID_NULL);
                     break;
                 default:
                     throw new Win32Exception(ERROR_BAD_ARGUMENTS);
             }
 
             if (denySids) {
-                restrictedToken.addAllSidsForDenyOnly(sidExceptions.build());
+                restrictedToken.addAllSidsForDenyOnly(sidExceptions);
             }
 
             if (removePrivileges) {
-                restrictedToken.deleteAllPrivileges(privilegeExceptions.build());
+                restrictedToken.deleteAllPrivileges(privilegeExceptions);
             }
 
             restrictedToken.setIntegrityLevel(integrityLevel);

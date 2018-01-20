@@ -37,6 +37,7 @@ import com.github.zhanhb.jnc.platform.win32.WString;
 import com.github.zhanhb.jnc.platform.win32.Win32Exception;
 import java.io.Closeable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.IntFunction;
@@ -376,7 +377,7 @@ public class RestrictedToken implements Closeable {
     //    restrictedToken.addAllSidsForDenyOnly(sidExceptions);
     // Note: A SID marked for Deny Only in a token cannot be used to grant
     // access to any resource. It can only be used to deny access.
-    public void addAllSidsForDenyOnly(List<SID> exceptions) {
+    public void addAllSidsForDenyOnly(Collection<SID> exceptions) {
         Objects.requireNonNull(exceptions);
         TOKEN_GROUPS tokenGroups = getTokenGroups(effectiveToken);
 
@@ -400,7 +401,7 @@ public class RestrictedToken implements Closeable {
     // Sample Usage:
     //    restrictedToken.addSidForDenyOnly(SID.ofWellKnown(WinBuiltinAdministratorsSid));
     public void addSidForDenyOnly(SID sid) {
-        sidsForDenyOnly.add(sid);
+        sidsForDenyOnly.add(Objects.requireNonNull(sid));
     }
 
     // Adds the user sid of the token for Deny Only in the restricted token.
@@ -418,7 +419,7 @@ public class RestrictedToken implements Closeable {
     //    List<LUID> privilegeExceptions = new ArrayList<>();
     //    privilegeExceptions.add(LUID.lookup(SE_CHANGE_NOTIFY_NAME));
     //    privilegeExceptions.deleteAllPrivileges(privilegeExceptions);
-    public void deleteAllPrivileges(List<LUID> exceptions) {
+    public void deleteAllPrivileges(Collection<LUID> exceptions) {
         Objects.requireNonNull(exceptions);
         TOKEN_PRIVILEGES tokenPrivileges = getTokenPrivileges(effectiveToken);
 
@@ -440,8 +441,7 @@ public class RestrictedToken implements Closeable {
     // Sample usage:
     //    restrictedToken.deletePrivilege(LUID.lookup(SE_LOAD_DRIVER_NAME));
     public void deletePrivilege(LUID privilege) {
-        Objects.requireNonNull(privilege);
-        privilegesToDisable.add(privilege);
+        privilegesToDisable.add(Objects.requireNonNull(privilege));
     }
 
     // Adds a SID to the list of restricting sids in the restricted token.
@@ -455,8 +455,7 @@ public class RestrictedToken implements Closeable {
     // and the second time using your list of restricting sids. The access has
     // to be granted in both places to get access to the resource requested.
     public void addRestrictingSid(SID sid) {
-        Objects.requireNonNull(sid);
-        sidsToRestrict.add(sid);  // No attributes
+        sidsToRestrict.add(Objects.requireNonNull(sid));  // No attributes
     }
 
     // Adds the logon sid of the token in the list of restricting sids for the
@@ -503,7 +502,7 @@ public class RestrictedToken implements Closeable {
     // Sets the token integrity level. This is only valid on Vista. The integrity
     // level cannot be higher than your current integrity level.
     public void setIntegrityLevel(IntegrityLevel integrityLevel) {
-        this.integrityLevel = integrityLevel;
+        this.integrityLevel = Objects.requireNonNull(integrityLevel);
     }
 
     // Set a flag which indicates the created token should have a locked down
