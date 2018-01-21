@@ -23,6 +23,7 @@
 *.woff2 binary
 *.ico binary
 
+mvnw    text    diff=shell
 *.sh    text    diff=shell
 *.java  text    diff=java
 *.html  text    diff=html
