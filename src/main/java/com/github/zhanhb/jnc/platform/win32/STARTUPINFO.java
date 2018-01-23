@@ -40,8 +40,8 @@ public class STARTUPINFO extends jnc.foreign.Struct {
     private final uintptr_t /*HANDLE*/ hStdOutput = new uintptr_t();
     private final uintptr_t /*HANDLE*/ hStdError = new uintptr_t();
 
-    public STARTUPINFO() {
-        cb.set(size());
+    public void setCb(int cb) {
+        this.cb.set(cb);
     }
 
     public void setDesktop(long desktop) {

@@ -25,8 +25,8 @@ public class SECURITY_ATTRIBUTES extends jnc.foreign.Struct {
     private final uintptr_t /*LPVOID*/ lpSecurityDescriptor = new uintptr_t();
     private final WBOOL bInheritHandle = new WBOOL();
 
-    public SECURITY_ATTRIBUTES() {
-        nLength.set(size());
+    public void setLength(int length) {
+         this.nLength.set(length);
     }
 
     public void setInheritHandle(boolean inheritable) {

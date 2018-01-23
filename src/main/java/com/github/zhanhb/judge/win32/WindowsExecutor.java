@@ -209,11 +209,14 @@ public enum WindowsExecutor implements Executor {
     private PROCESS_INFORMATION createProcess(String lpCommandLine, long /*HANDLE*/ hIn, long /*HANDLE*/ hOut, long /*HANDLE*/ hErr,
             boolean redirectErrorStream, Path lpCurrentDirectory) {
         SECURITY_ATTRIBUTES sa = new SECURITY_ATTRIBUTES();
+        sa.setLength(sa.size());
         sa.setInheritHandle(true);
 
         String lpApplicationName = null;
         SECURITY_ATTRIBUTES lpProcessAttributes = new SECURITY_ATTRIBUTES();
+        lpProcessAttributes.setLength(lpProcessAttributes.size());
         SECURITY_ATTRIBUTES lpThreadAttributes = new SECURITY_ATTRIBUTES();
+        lpThreadAttributes.setLength(lpThreadAttributes.size());
         int dwCreationFlags
                 = CREATE_SUSPENDED
                 | DETACHED_PROCESS
@@ -223,6 +226,7 @@ public enum WindowsExecutor implements Executor {
                 | CREATE_BREAKAWAY_FROM_JOB
                 | CREATE_NO_WINDOW;
         STARTUPINFO lpStartupInfo = new STARTUPINFO();
+        lpStartupInfo.setCb(lpStartupInfo.size());
         lpStartupInfo.setDesktop(DESKTOP.address());
         PROCESS_INFORMATION lpProcessInformation = new PROCESS_INFORMATION();
 
