@@ -31,6 +31,8 @@ import java.nio.file.Path;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
+import jnc.foreign.ForeignProviders;
+import jnc.foreign.Pointer;
 
 import static com.github.zhanhb.jnc.platform.win32.FileApi.CREATE_ALWAYS;
 import static com.github.zhanhb.jnc.platform.win32.FileApi.OPEN_ALWAYS;
@@ -72,6 +74,14 @@ public enum WindowsExecutor implements Executor {
     INSTANCE;
 
     private final Sandbox sandbox = new Sandbox();
+    private final Pointer DESKTOP;
+
+    WindowsExecutor() {
+        byte[] toNative = WString.toNative("Winsta0\\default");
+        Pointer pointer = ForeignProviders.getDefault().getMemoryManager().allocate(toNative.length);
+        pointer.putBytes(0, toNative, 0, toNative.length);
+        DESKTOP = pointer;
+    }
 
     private Handle fileOpen(Path path, int flags) {
         int access
@@ -213,6 +223,7 @@ public enum WindowsExecutor implements Executor {
                 | CREATE_BREAKAWAY_FROM_JOB
                 | CREATE_NO_WINDOW;
         STARTUPINFO lpStartupInfo = new STARTUPINFO();
+        lpStartupInfo.setDesktop(DESKTOP.address());
         PROCESS_INFORMATION lpProcessInformation = new PROCESS_INFORMATION();
 
         // without cursor feed back

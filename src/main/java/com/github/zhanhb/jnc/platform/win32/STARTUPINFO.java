@@ -44,6 +44,10 @@ public class STARTUPINFO extends jnc.foreign.Struct {
         cb.set(size());
     }
 
+    public void setDesktop(long desktop) {
+        this.lpDesktop.set(desktop);
+    }
+
     public void setFlags(int flags) {
         dwFlags.set(flags);
     }
