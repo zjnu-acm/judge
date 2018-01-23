@@ -73,7 +73,7 @@
         <thymeleaf-extras-springsecurity4.version>3.0.2.RELEASE</thymeleaf-extras-springsecurity4.version>
         <thymeleaf-layout-dialect.version>2.2.2-1</thymeleaf-layout-dialect.version>
         <thymeleaf.version>3.0.9.RELEASE</thymeleaf.version>
-        <tomcat.version>8.5.24</tomcat.version>
+        <tomcat.version>8.5.27</tomcat.version>
         <versions-maven-plugin.version>2.5</versions-maven-plugin.version>
     </properties>
 
