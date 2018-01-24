@@ -21,7 +21,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.isEmptyString;
+import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 import static org.junit.Assume.assumeTrue;
 
 /**
@@ -49,6 +53,7 @@ public class Kernel32UtilTest {
         } catch (Win32Exception ex) {
             // invalid handle
             assertEquals(6, ex.getErrorCode());
+            assertThat(ex.getMessage(), not(isEmptyString()));
         }
     }
 

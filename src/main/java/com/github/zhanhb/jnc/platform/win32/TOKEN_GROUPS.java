@@ -24,7 +24,7 @@ import static com.github.zhanhb.jnc.platform.win32.WinNT.ANYSIZE_ARRAY;
 public class TOKEN_GROUPS extends TOKEN_INFORMATION {
 
     public static TOKEN_GROUPS ofSize(int size) {
-        return new TOKEN_GROUPS(Lazy.INFO.f(size));
+        return new TOKEN_GROUPS(Lazy.INFO.toCount(size));
     }
 
     private final DWORD GroupCount = new DWORD();

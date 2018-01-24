@@ -24,11 +24,11 @@ import jnc.foreign.Padding;
 public class TOKEN_DEFAULT_DACL extends TOKEN_INFORMATION {
 
     public static TOKEN_DEFAULT_DACL ofSize(int size) {
-        TOKEN_DEFAULT_DACL token_default_dacl = new TOKEN_DEFAULT_DACL();
+        TOKEN_DEFAULT_DACL tokenDefaultDacl = new TOKEN_DEFAULT_DACL();
         if (size > Lazy.SIZE) {
-            token_default_dacl.inner(new Padding(size - Lazy.SIZE, 1));
+            tokenDefaultDacl.inner(new Padding(size - Lazy.SIZE, 1));
         }
-        return token_default_dacl;
+        return tokenDefaultDacl;
     }
 
     private final uintptr_t DefaultDacl = new uintptr_t();

@@ -34,12 +34,12 @@ public class JOBOBJECT_BASIC_LIMIT_INFORMATION extends JOBOBJECT_INFORMATION {
     private final DWORD PriorityClass = new DWORD();
     private final DWORD SchedulingClass = new DWORD();
 
-    public void setActiveProcessLimit(int activeProcessLimit) {
-        this.ActiveProcessLimit.set(activeProcessLimit);
-    }
-
     public void setLimitFlags(int limitFlags) {
         this.LimitFlags.set(limitFlags);
+    }
+
+    public void setActiveProcessLimit(int activeProcessLimit) {
+        this.ActiveProcessLimit.set(activeProcessLimit);
     }
 
 }

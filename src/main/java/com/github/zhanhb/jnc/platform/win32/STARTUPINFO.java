@@ -49,19 +49,19 @@ public class STARTUPINFO extends jnc.foreign.Struct {
     }
 
     public void setFlags(int flags) {
-        dwFlags.set(flags);
+        this.dwFlags.set(flags);
     }
 
-    public void setStdInput(long standardInput) {
-        hStdInput.set(standardInput);
+    public void setStdInput(long stdInput) {
+        this.hStdInput.set(stdInput);
     }
 
-    public void setStdOutput(long standardOutput) {
-        hStdOutput.set(standardOutput);
+    public void setStdOutput(long stdOutput) {
+        this.hStdOutput.set(stdOutput);
     }
 
-    public void setStdError(long standardError) {
-        hStdError.set(standardError);
+    public void setStdError(long stdErr) {
+        this.hStdError.set(stdErr);
     }
 
 }

@@ -26,11 +26,11 @@ public class SECURITY_ATTRIBUTES extends jnc.foreign.Struct {
     private final WBOOL bInheritHandle = new WBOOL();
 
     public void setLength(int length) {
-         this.nLength.set(length);
+        this.nLength.set(length);
     }
 
     public void setInheritHandle(boolean inheritable) {
-        bInheritHandle.set(inheritable);
+        this.bInheritHandle.set(inheritable);
     }
 
 }

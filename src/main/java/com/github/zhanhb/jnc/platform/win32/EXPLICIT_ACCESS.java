@@ -15,13 +15,11 @@
  */
 package com.github.zhanhb.jnc.platform.win32;
 
-import jnc.foreign.Struct;
-
 /**
  *
  * @author zhanhb
  */
-public class EXPLICIT_ACCESS extends Struct {
+public class EXPLICIT_ACCESS extends jnc.foreign.Struct {
 
     private final DWORD grfAccessPermissions = new DWORD();
     private final int32_t /*ACCESS_MODE*/ grfAccessMode = new int32_t();

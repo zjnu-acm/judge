@@ -170,7 +170,6 @@ public enum WindowsExecutor implements Executor {
                     if (judgeProcess.join(dwWaitTime)) {
                         break;
                     }
-                    // TODO maybe we should not check the output limit for current process may wait for the file to be finish
                     if (checkOle(cOut, cErr, redirectErrorStream, outputLimit)) {
                         judgeProcess.terminate(Status.OUTPUT_LIMIT_EXCEED);
                         judgeProcess.join(TERMINATE_TIMEOUT);
@@ -206,7 +205,8 @@ public enum WindowsExecutor implements Executor {
         Kernel32Util.assertTrue(Kernel32.INSTANCE.SetHandleInformation(handle, HANDLE_FLAG_INHERIT, HANDLE_FLAG_INHERIT));
     }
 
-    private PROCESS_INFORMATION createProcess(String lpCommandLine, long /*HANDLE*/ hIn, long /*HANDLE*/ hOut, long /*HANDLE*/ hErr,
+    private PROCESS_INFORMATION createProcess(String lpCommandLine,
+            long /*HANDLE*/ hIn, long /*HANDLE*/ hOut, long /*HANDLE*/ hErr,
             boolean redirectErrorStream, Path lpCurrentDirectory) {
         SECURITY_ATTRIBUTES sa = new SECURITY_ATTRIBUTES();
         sa.setLength(sa.size());

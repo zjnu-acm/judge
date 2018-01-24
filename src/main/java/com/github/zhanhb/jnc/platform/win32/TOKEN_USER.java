@@ -24,9 +24,9 @@ import jnc.foreign.Padding;
 public class TOKEN_USER extends TOKEN_INFORMATION {
 
     public static TOKEN_USER withPadding(int padding) {
-        TOKEN_USER token_user = new TOKEN_USER();
-        token_user.inner(new Padding(padding, 1));
-        return token_user;
+        TOKEN_USER tokenUser = new TOKEN_USER();
+        tokenUser.inner(new Padding(padding, 1));
+        return tokenUser;
     }
 
     private final SID_AND_ATTRIBUTES User = inner(new SID_AND_ATTRIBUTES());

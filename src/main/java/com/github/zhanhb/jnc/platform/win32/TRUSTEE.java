@@ -15,13 +15,11 @@
  */
 package com.github.zhanhb.jnc.platform.win32;
 
-import jnc.foreign.Struct;
-
 /**
  *
  * @author zhanhb
  */
-public class TRUSTEE extends Struct {
+public class TRUSTEE extends jnc.foreign.Struct {
 
     private final uintptr_t /*PTRUSTEE*/ pMultipleTrustee = new uintptr_t();
     private final int32_t /*MULTIPLE_TRUSTEE_OPERATION*/ MultipleTrusteeOperation = new int32_t();

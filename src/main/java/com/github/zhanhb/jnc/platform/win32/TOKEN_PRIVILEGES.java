@@ -24,7 +24,7 @@ import static com.github.zhanhb.jnc.platform.win32.WinNT.ANYSIZE_ARRAY;
 public class TOKEN_PRIVILEGES extends TOKEN_INFORMATION {
 
     public static TOKEN_PRIVILEGES ofSize(int size) {
-        return new TOKEN_PRIVILEGES(Lazy.INFO.f(size));
+        return new TOKEN_PRIVILEGES(Lazy.INFO.toCount(size));
     }
 
     private final DWORD PrivilegeCount = new DWORD();

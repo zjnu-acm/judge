@@ -74,20 +74,20 @@ public class SID extends jnc.foreign.Struct {
         return Revision.byteValue();
     }
 
-    public byte getSubAuthorityCount() {
-        return SubAuthorityCount.byteValue();
-    }
-
-    public SID_IDENTIFIER_AUTHORITY getIdentifierAuthority() {
-        return IdentifierAuthority;
-    }
-
     public void setRevision(byte revision) {
         this.Revision.set(revision);
     }
 
+    public byte getSubAuthorityCount() {
+        return SubAuthorityCount.byteValue();
+    }
+
     public void setSubAuthorityCount(byte subAuthorityCount) {
         this.SubAuthorityCount.set(subAuthorityCount);
+    }
+
+    public SID_IDENTIFIER_AUTHORITY getIdentifierAuthority() {
+        return IdentifierAuthority;
     }
 
     public int[] getSubAuthority() {

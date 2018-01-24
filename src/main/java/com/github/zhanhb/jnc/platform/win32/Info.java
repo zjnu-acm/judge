@@ -25,7 +25,7 @@ import jnc.foreign.Struct;
  */
 class Info {
 
-    static <T extends jnc.foreign.Struct> Info of(
+    static <T extends Struct> Info of(
             Supplier<T> supplier,
             Function<T, ? extends Struct> anySizeArrayElement) {
         T struct = supplier.get();
@@ -41,8 +41,8 @@ class Info {
         this.e = e;
     }
 
-    public int f(int t) {
-        return Math.max((t - a + e - 1) / e, 0) + 1;
+    public int toCount(int size) {
+        return Math.max((size - a + e - 1) / e, 0) + 1;
     }
 
 }
