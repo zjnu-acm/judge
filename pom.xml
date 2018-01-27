@@ -51,7 +51,7 @@
         <flyway.version>5.0.6</flyway.version>
         <guava.version>23.6-jre</guava.version>
         <hikaricp.version>2.7.6</hikaricp.version>
-        <jackson.version>2.9.3</jackson.version>
+        <jackson.version>2.9.4</jackson.version>
         <jacoco.propertyName>argLine</jacoco.propertyName>
         <java.version>1.8</java.version>
         <javax-mail.version>1.6.0</javax-mail.version>
