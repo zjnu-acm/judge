@@ -102,20 +102,6 @@ public interface Kernel32 {
             @In JOBOBJECT_INFORMATION lpJobObjectInfo,
             @uint32_t int cbJobObjectInfoLength);
 
-    @int32_t
-    boolean CreateProcessAsUserW(
-            @uintptr_t long /*HANDLE*/ hToken,
-            @In byte[] lpApplicationName,
-            @In /*@Out*/ byte[] lpCommandLine,
-            @In SECURITY_ATTRIBUTES lpProcessAttributes,
-            @In SECURITY_ATTRIBUTES lpThreadAttributes,
-            @uint32_t boolean bInheritHandles,
-            @uint32_t int /*DWORD*/ dwCreationFlags,
-            @In byte[] lpEnvironment,
-            @In byte[] lpCurrentDirectory,
-            @In STARTUPINFO lpStartupInfo,
-            @Out PROCESS_INFORMATION lpProcessInformation);
-
     @uintptr_t
     long CreateFileW(
             @In byte[] lpFileName,

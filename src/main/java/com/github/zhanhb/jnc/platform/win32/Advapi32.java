@@ -3,6 +3,7 @@ package com.github.zhanhb.jnc.platform.win32;
 import jnc.foreign.LibraryLoader;
 import jnc.foreign.abi.Stdcall;
 import jnc.foreign.annotation.In;
+import jnc.foreign.annotation.Out;
 import jnc.foreign.byref.AddressByReference;
 import jnc.foreign.byref.IntByReference;
 import jnc.foreign.byref.PointerByReference;
@@ -60,6 +61,20 @@ public interface Advapi32 {
             @In TOKEN_INFORMATION tokenInformation,
             @uint32_t int /*DWORD*/ tokenInformationLength
     );
+
+    @int32_t
+    boolean CreateProcessAsUserW(
+            @uintptr_t long /*HANDLE*/ hToken,
+            @In byte[] lpApplicationName,
+            @In /*@Out*/ byte[] lpCommandLine,
+            @In SECURITY_ATTRIBUTES lpProcessAttributes,
+            @In SECURITY_ATTRIBUTES lpThreadAttributes,
+            @uint32_t boolean bInheritHandles,
+            @uint32_t int /*DWORD*/ dwCreationFlags,
+            @In byte[] lpEnvironment,
+            @In byte[] lpCurrentDirectory,
+            @In STARTUPINFO lpStartupInfo,
+            @Out PROCESS_INFORMATION lpProcessInformation);
 
     @int32_t
     boolean OpenProcessToken(

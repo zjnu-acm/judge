@@ -15,6 +15,7 @@
  */
 package com.github.zhanhb.judge.win32;
 
+import com.github.zhanhb.jnc.platform.win32.Advapi32;
 import com.github.zhanhb.jnc.platform.win32.Kernel32;
 import com.github.zhanhb.jnc.platform.win32.Kernel32Util;
 import com.github.zhanhb.jnc.platform.win32.PROCESS_INFORMATION;
@@ -247,7 +248,7 @@ public enum WindowsExecutor implements Executor {
                 IntegrityLevel.INTEGRITY_LEVEL_LOW,
                 TokenType.PRIMARY,
                 true))) {
-            ProcessCreationHelper.execute(() -> Kernel32Util.assertTrue(Kernel32.INSTANCE.CreateProcessAsUserW(
+            ProcessCreationHelper.execute(() -> Kernel32Util.assertTrue(Advapi32.INSTANCE.CreateProcessAsUserW(
                     hToken.getValue(),
                     WString.toNative(lpApplicationName), // executable name
                     WString.toNative(lpCommandLine),// command line
