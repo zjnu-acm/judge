@@ -15,6 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.controller.legacy;
 
+import java.util.Map;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +42,12 @@ public class LegacyAdminController {
             RedirectAttributes redirectAttributes) {
         redirectAttributes.addAttribute("contestId", contestId);
         return "redirect:/admin/contests/{contestId}.html";
+    }
+
+    @GetMapping("/admin.rejudge")
+    public String rejudge(RedirectAttributes attributes, @RequestParam Map<String, String> query) {
+        attributes.addAllAttributes(query);
+        return "redirect:/admin/rejudge";
     }
 
 }

@@ -23,13 +23,13 @@ public class RejudgeController {
     private Rejudger rejudger;
 
     // TODO request method
-    @GetMapping(value = "/admin.rejudge", params = "solution_id")
+    @GetMapping(value = "/admin/rejudge", params = "solution_id")
     public CompletableFuture<?> rejudgeSolution(
             @RequestParam("solution_id") long submissionId) {
         return rejudger.bySubmissionId(submissionId);
     }
 
-    @GetMapping(value = "/admin.rejudge", params = "problem_id")
+    @GetMapping(value = "/admin/rejudge", params = "problem_id")
     public ResponseEntity<?> rejudgeProblem(@RequestParam("problem_id") long problemId) {
         rejudger.byProblemId(problemId);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(Collections.singletonMap("message", "重新评测请求已经受理"));

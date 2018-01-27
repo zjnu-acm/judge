@@ -57,4 +57,17 @@ public class LegacyAdminControllerTest {
                 .andReturn();
     }
 
+    /**
+     * Test of rejudge method, of class LegacyAdminController.
+     *
+     * @see LegacyAdminController#rejudge(RedirectAttributes, java.util.Map) 
+     */
+    @Test
+    public void testRejudge() throws Exception {
+        log.info("rejudge");
+        MvcResult result = mvc.perform(get("/admin.rejudge").param("contest_id", Long.toString(1)))
+                .andExpect(redirectedUrl("/admin/rejudge?contest_id=1"))
+                .andReturn();
+    }
+
 }

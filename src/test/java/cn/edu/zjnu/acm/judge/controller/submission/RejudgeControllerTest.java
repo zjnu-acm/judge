@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 @RunWith(SpringRunner.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
@@ -86,7 +86,7 @@ public class RejudgeControllerTest {
         assumeThat(environment.getActiveProfiles(), hasItemInArray("appveyor"));
         log.info("rejudgeSolution");
         long solutionId = submission.getId();
-        MvcResult result = mvc.perform(get("/admin.rejudge")
+        MvcResult result = mvc.perform(get("/admin/rejudge")
                 .accept(MediaType.TEXT_HTML, MediaType.APPLICATION_JSON)
                 .param("solution_id", Long.toString(solutionId)))
                 .andExpect(request().asyncStarted())
@@ -106,7 +106,7 @@ public class RejudgeControllerTest {
     public void testRejudgeProblem() throws Exception {
         log.info("rejudgeProblem");
         long problem_id = 0;
-        MvcResult result = mvc.perform(get("/admin.rejudge")
+        MvcResult result = mvc.perform(get("/admin/rejudge")
                 .accept(MediaType.TEXT_HTML, MediaType.APPLICATION_JSON)
                 .param("problem_id", Long.toString(problem_id)))
                 .andExpect(status().isAccepted())
