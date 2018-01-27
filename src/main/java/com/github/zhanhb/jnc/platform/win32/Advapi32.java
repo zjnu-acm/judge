@@ -1,6 +1,7 @@
 package com.github.zhanhb.jnc.platform.win32;
 
 import jnc.foreign.LibraryLoader;
+import jnc.foreign.Pointer;
 import jnc.foreign.abi.Stdcall;
 import jnc.foreign.annotation.In;
 import jnc.foreign.annotation.Out;
@@ -65,14 +66,14 @@ public interface Advapi32 {
     @int32_t
     boolean CreateProcessAsUserW(
             @uintptr_t long /*HANDLE*/ hToken,
-            @In byte[] lpApplicationName,
-            @In /*@Out*/ byte[] lpCommandLine,
+            Pointer lpApplicationName,
+            Pointer lpCommandLine,
             @In SECURITY_ATTRIBUTES lpProcessAttributes,
             @In SECURITY_ATTRIBUTES lpThreadAttributes,
             @uint32_t boolean bInheritHandles,
             @uint32_t int /*DWORD*/ dwCreationFlags,
-            @In byte[] lpEnvironment,
-            @In byte[] lpCurrentDirectory,
+            Pointer lpEnvironment,
+            Pointer lpCurrentDirectory,
             @In STARTUPINFO lpStartupInfo,
             @Out PROCESS_INFORMATION lpProcessInformation);
 
@@ -89,7 +90,7 @@ public interface Advapi32 {
     boolean ConvertSidToStringSidW(@uintptr_t long sid, PointerByReference /* LPTSTR* */ stringSid);
 
     @int32_t
-    boolean ConvertStringSidToSidW(byte[] StringSid, AddressByReference /* PSID* */ Sid);
+    boolean ConvertStringSidToSidW(Pointer StringSid, AddressByReference /* PSID* */ Sid);
 
     @int32_t
     boolean GetTokenInformation(
@@ -116,7 +117,7 @@ public interface Advapi32 {
     );
 
     @int32_t
-    boolean LookupPrivilegeValueW(byte[] lpSystemName, byte[] lpName, LUID luid);
+    boolean LookupPrivilegeValueW(Pointer lpSystemName, Pointer lpName, LUID luid);
 
     @uint32_t
     int SetEntriesInAclW(
@@ -142,7 +143,7 @@ public interface Advapi32 {
             @uintptr_t long pSourceSid);
 
     @int32_t
-    boolean LookupPrivilegeNameW(byte[] lpSystemName, LUID lpLuid,
+    boolean LookupPrivilegeNameW(Pointer lpSystemName, LUID lpLuid,
             char[] lpName, IntByReference cchName);
 
 }

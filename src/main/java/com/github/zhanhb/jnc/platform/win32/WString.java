@@ -15,25 +15,35 @@
  */
 package com.github.zhanhb.jnc.platform.win32;
 
-import java.nio.charset.StandardCharsets;
+import jnc.foreign.ForeignProviders;
 import jnc.foreign.Pointer;
 
 /**
  *
  * @author zhanhb
  */
-@SuppressWarnings("UtilityClassWithoutPrivateConstructor")
-public class WString {
+public interface WString {
 
-    public static byte[] toNative(String string) {
-        return string == null ? null : (string + '\0').getBytes(StandardCharsets.UTF_16LE);
+    static Pointer toNative(String string) {
+        if (string == null) {
+            return null;
+        }
+        int len = string.length();
+        char[] chars = new char[len];
+        string.getChars(0, len, chars, 0);
+        Pointer pointer = ForeignProviders.getDefault().getMemoryManager().allocate(len + 1 << 1);
+        pointer.putCharArray(0, chars, 0, len);
+        return pointer;
     }
 
-    public static String fromNative(Pointer ptr) {
-        int length = LibC.INSTANCE.wcslen(ptr);
-        byte[] bytes = new byte[length << 1];
-        ptr.getBytes(0, bytes, 0, bytes.length);
-        return new String(bytes, StandardCharsets.UTF_16LE);
+    static String fromNative(Pointer ptr) {
+        if (ptr == null) {
+            return null;
+        }
+        int len = LibC.INSTANCE.wcslen(ptr);
+        char[] chars = new char[len];
+        ptr.getCharArray(0, chars, 0, len);
+        return new String(chars);
     }
 
 }

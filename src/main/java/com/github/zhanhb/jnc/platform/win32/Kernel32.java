@@ -2,6 +2,7 @@ package com.github.zhanhb.jnc.platform.win32;
 
 import jnc.foreign.ForeignProviders;
 import jnc.foreign.LibraryLoader;
+import jnc.foreign.Pointer;
 import jnc.foreign.abi.Stdcall;
 import jnc.foreign.annotation.In;
 import jnc.foreign.annotation.Out;
@@ -66,7 +67,7 @@ public interface Kernel32 {
             @Out FILETIME lpUserTime);
 
     @uintptr_t
-    long /*HANDLE*/ CreateJobObjectW(@In SECURITY_ATTRIBUTES lpJobAttributes, @In byte[] lpName);
+    long /*HANDLE*/ CreateJobObjectW(@In SECURITY_ATTRIBUTES lpJobAttributes, Pointer lpName);
 
     @uint32_t
     int SetErrorMode(@uint32_t int uMode);
@@ -104,7 +105,7 @@ public interface Kernel32 {
 
     @uintptr_t
     long CreateFileW(
-            @In byte[] lpFileName,
+            Pointer lpFileName,
             @uint32_t int dwDesiredAccess,
             @uint32_t int dwShareMode,
             @In SECURITY_ATTRIBUTES lpSecurityAttributes,
