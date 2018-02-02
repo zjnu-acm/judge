@@ -4,7 +4,7 @@
     <parent>
         <artifactId>platform-bom</artifactId>
         <groupId>io.spring.platform</groupId>
-        <version>Brussels-SR6</version>
+        <version>Brussels-SR7</version>
         <relativePath />
     </parent>
     <groupId>cn.edu.zjnu.acm</groupId>
@@ -56,7 +56,6 @@
         <java.version>1.8</java.version>
         <javax-mail.version>1.6.0</javax-mail.version>
         <logback.version>1.2.3</logback.version>
-        <lombok.version>1.16.20</lombok.version>
         <mariadb.version>2.2.1</mariadb.version>
         <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
         <maven-dependency-plugin.version>3.0.2</maven-dependency-plugin.version>
@@ -67,15 +66,12 @@
         <poi.version>3.17</poi.version>
         <prerequisites.maven>3.3.1</prerequisites.maven>
         <snakeyaml.version>1.19</snakeyaml.version>
-        <spring-data-releasetrain.version>Ingalls-SR10</spring-data-releasetrain.version>
-        <spring.version>4.3.14.RELEASE</spring.version>
         <start-class>cn.edu.zjnu.acm.judge.Application</start-class>
         <thymeleaf-extras-data-attribute.version>2.0.1</thymeleaf-extras-data-attribute.version>
         <thymeleaf-extras-java8time.version>3.0.1.RELEASE</thymeleaf-extras-java8time.version>
         <thymeleaf-extras-springsecurity4.version>3.0.2.RELEASE</thymeleaf-extras-springsecurity4.version>
         <thymeleaf-layout-dialect.version>2.2.2-1</thymeleaf-layout-dialect.version>
         <thymeleaf.version>3.0.9.RELEASE</thymeleaf.version>
-        <tomcat.version>8.5.27</tomcat.version>
         <versions-maven-plugin.version>2.5</versions-maven-plugin.version>
     </properties>
 
