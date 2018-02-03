@@ -98,7 +98,7 @@
     app.factory('currentTime', function ($http, path) {
         var timeDiff = 0;
         $http.get(path.api + 'system/time.json').then(function (resp) {
-            timeDiff = new Date - resp.data * 1000;
+            timeDiff = new Date - resp.data;
         });
         return function () {
             return new Date - timeDiff;
@@ -690,7 +690,7 @@
             });
         };
         $scope.isStarted = function (contest) {
-            return contest && (!contest.startTime || contest.startTime < currentTime() / 1000);
+            return contest && (!contest.startTime || contest.startTime < currentTime());
         };
     });
 
@@ -699,7 +699,7 @@
             return t < 10 ? '0' + t : t;
         }
         function toLength(contest) {
-            var t = (contest.endTime - contest.startTime) >> 0, s = t % 60, m = ((t /= 60) >> 0) % 60,
+            var t = (contest.endTime - contest.startTime) / 1000 >> 0, s = t % 60, m = ((t /= 60) >> 0) % 60,
                     h = ((t /= 60) >> 0) % 24, d = (t / 24) >> 0;
             return (d ? d + ' ' : '') + h + ':' + p(m) + ':' + p(s);
         }
@@ -725,7 +725,7 @@
             function reset() {
                 $.extend(form, {
                     id: contest.id,
-                    start: new Date(contest.startTime * 1000),
+                    start: new Date(contest.startTime),
                     length: toLength(contest),
                     min: new Date(+min),
                     title: contest.title,
@@ -744,8 +744,8 @@
                     id: form.id,
                     title: form.title,
                     description: form.description,
-                    startTime: +form.start / 1000,
-                    endTime: +form.end / 1000,
+                    startTime: +form.start,
+                    endTime: +form.end,
                     problems: form.problems
                 });
             };
@@ -805,11 +805,11 @@
             now.setHours(12);
             now.setMinutes(0);
             now.setSeconds(0);
-            return now.getTime() / 1000 >> 0;
+            return (now.getTime() / 1000 >> 0) * 1000;
         }();
         var contest = {
             startTime: startTime,
-            endTime: startTime + 5 * 60 * 60,
+            endTime: startTime + 5 * 60 * 60 * 1000,
             title: '',
             description: '',
             contests: []
@@ -822,7 +822,7 @@
     });
     app.controller('contest-edit', function ($scope, $state, $stateParams, contestApi, title, initContestEdit, currentTime) {
         contestApi.get({id: $stateParams.id}, function (contest) {
-            initContestEdit($scope, contest, Math.min(contest.startTime * 1000, currentTime()), function (form) {
+            initContestEdit($scope, contest, Math.min(contest.startTime, currentTime()), function (form) {
                 contestApi.update(form, function (contest) {
                     $state.go('contest-view', {id: contest.id});
                 });
@@ -1042,7 +1042,7 @@
     });
     app.run(function ($rootScope, currentTime) {
         function getStatus(contest) {
-            var now = +currentTime() / 1000;
+            var now = +currentTime();
             var disabled = contest.disabled;
             var started = !contest.startTime || contest.startTime < now;
             var ended = !contest.endTime || contest.endTime < now;
