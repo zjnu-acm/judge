@@ -15,7 +15,6 @@
  */
 package cn.edu.zjnu.acm.judge.config;
 
-import cn.edu.zjnu.acm.judge.util.excel.Type;
 import com.github.zhanhb.download.spring.PathDownloaderHandler;
 import java.util.List;
 import org.springframework.context.annotation.Configuration;
@@ -39,9 +38,6 @@ public class JudgeWebMvcConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
         configurer.defaultContentType(MediaType.TEXT_HTML);
-        for (Type value : Type.values()) {
-            configurer.mediaType(value.getExtension(), value.getMediaType());
-        }
     }
 
 }
