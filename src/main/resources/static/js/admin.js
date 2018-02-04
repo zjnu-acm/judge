@@ -928,7 +928,7 @@
     });
     app.controller('account-password', function ($scope, accountApi, user, $modalInstance) {
         var id = user.id;
-        $scope.user = {id: id, password: id};
+        $scope.user = {id: id, password: ''};
         $scope.submit = function () {
             $scope.user.password && accountApi.updatePassword($scope.user, function () {
                 alert('重置成功');
