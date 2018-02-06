@@ -71,6 +71,10 @@ public class ResetPasswordService {
         return cache.asMap();
     }
 
+    public void remove(String userId) {
+        cache.invalidate(userId);
+    }
+
     public Map<String, ?> stats() {
         CacheStats stats = cache.stats();
         return ImmutableMap.of("content", asMap(), "stats",

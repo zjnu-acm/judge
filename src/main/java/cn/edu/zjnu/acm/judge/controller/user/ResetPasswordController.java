@@ -121,7 +121,7 @@ public class ResetPasswordController {
         out.print("alert('已经将邮件发送到" + user.getEmail() + "，请点击链接重设密码');");
     }
 
-    @PostMapping(value = "/resetPassword", params = "action=changePassword", produces = "text/javascript")
+    @PostMapping(value = "/resetPassword", params = "action=changePassword")
     public void changePassword(HttpServletRequest request, HttpServletResponse response,
             @RequestParam(value = "u", required = false) String userId,
             @RequestParam(value = "vc", required = false) String vcode)
@@ -129,7 +129,7 @@ public class ResetPasswordController {
         response.setContentType("text/javascript;charset=UTF-8");
         PrintWriter out = response.getWriter();
         Optional<User> optional = resetPasswordService.checkVcode(userId, vcode);
-        if (optional.isPresent()) {
+        if (!optional.isPresent()) {
             out.print("alert(\"效链接已失效，请重新获取链接\");");
             return;
         }
@@ -139,6 +139,7 @@ public class ResetPasswordController {
         userMapper.updateSelective(user.getId(), User.builder()
                 .password(passwordEncoder.encode(newPassword))
                 .build());
+        resetPasswordService.remove(userId);
         out.print("alert(\"密码修改成功！\");");
         out.print("document.location='" + request.getContextPath() + "'");
     }

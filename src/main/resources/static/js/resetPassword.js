@@ -24,6 +24,6 @@ jQuery(function ($) {
             newp.focus();
             return false;
         }
-        $.post(window.location.href, {newPassword: p, action: 'changePassword'});
+        $.post(window.location.href.replace('.html', '.js'), {newPassword: p, action: 'changePassword'});
     });
 });
