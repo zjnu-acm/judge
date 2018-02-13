@@ -43,14 +43,11 @@ import static com.github.zhanhb.jnc.platform.win32.SECURITY_IMPERSONATION_LEVEL.
 import static com.github.zhanhb.jnc.platform.win32.TOKEN_INFORMATION_CLASS.TokenDefaultDacl;
 import static com.github.zhanhb.jnc.platform.win32.TOKEN_INFORMATION_CLASS.TokenGroups;
 import static com.github.zhanhb.jnc.platform.win32.TOKEN_INFORMATION_CLASS.TokenIntegrityLevel;
-import static com.github.zhanhb.jnc.platform.win32.TOKEN_INFORMATION_CLASS.TokenLogonSid;
 import static com.github.zhanhb.jnc.platform.win32.TOKEN_INFORMATION_CLASS.TokenPrivileges;
 import static com.github.zhanhb.jnc.platform.win32.TOKEN_INFORMATION_CLASS.TokenUser;
 import static com.github.zhanhb.jnc.platform.win32.TOKEN_TYPE.TokenPrimary;
 import static com.github.zhanhb.jnc.platform.win32.TRUSTEE_FORM.TRUSTEE_IS_SID;
 import static com.github.zhanhb.jnc.platform.win32.WELL_KNOWN_SID_TYPE.WinRestrictedCodeSid;
-import static com.github.zhanhb.jnc.platform.win32.WinError.ERROR_INVALID_TOKEN;
-import static com.github.zhanhb.jnc.platform.win32.WinError.ERROR_NOT_FOUND;
 import static com.github.zhanhb.jnc.platform.win32.WinError.ERROR_SUCCESS;
 import static com.github.zhanhb.jnc.platform.win32.WinNT.DUPLICATE_SAME_ACCESS;
 import static com.github.zhanhb.jnc.platform.win32.WinNT.GENERIC_ALL;
@@ -114,19 +111,14 @@ public class RestrictedToken implements Closeable {
     }
 
     private static void revokeLogonSidFromDefaultDacl(long token) {
-        TOKEN_GROUPS logonSid;
-        try {
-            logonSid = getTokenInfo(token, TokenLogonSid, TOKEN_GROUPS::ofSize);
-        } catch (Win32Exception ex) {
-            if (ex.getErrorCode() == ERROR_NOT_FOUND) {
-                return;
+        TOKEN_GROUPS tokenGroups = getTokenGroups(token);
+        for (int i = 0, n = tokenGroups.getGroupCount(); i < n; ++i) {
+            SID_AND_ATTRIBUTES group = tokenGroups.get(i);
+            if ((group.getAttributes() & SE_GROUP_LOGON_ID) != 0) {
+                addSidToDefaultDacl(token, group.getSid(), REVOKE_ACCESS, 0);
+                break;
             }
-            throw ex;
         }
-        if (logonSid.getGroupCount() < 1) {
-            throw new Win32Exception(ERROR_INVALID_TOKEN);
-        }
-        addSidToDefaultDacl(token, logonSid.get(0).getSid(), REVOKE_ACCESS, 0);
     }
 
     private static void addUserSidToDefaultDacl(long token, int /*ACCESS_MASK*/ access) {
