@@ -54,7 +54,7 @@
         <jackson.version>2.9.4</jackson.version>
         <jacoco.propertyName>argLine</jacoco.propertyName>
         <java.version>1.8</java.version>
-        <javax-mail.version>1.6.0</javax-mail.version>
+        <javax-mail.version>1.6.1</javax-mail.version>
         <logback.version>1.2.3</logback.version>
         <mariadb.version>2.2.1</mariadb.version>
         <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
