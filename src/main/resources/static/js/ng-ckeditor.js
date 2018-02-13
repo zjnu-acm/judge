@@ -6,7 +6,7 @@
     } else {
         return factory(global.angular, global.CKEDITOR);
     }
-}(typeof window !== "undefined" ? window : this, function (angular, CKEDITOR) {
+}(typeof window !== 'undefined' ? window : this, function (angular, CKEDITOR) {
     'use strict';
     function run($q, $timeout) {
         $defer = $q.defer();
@@ -66,12 +66,12 @@
                     instance.on('key', setModelData); // for source view
 
                     instance.on('instanceReady', function () {
-                        scope.$broadcast("ckeditor.ready");
+                        scope.$broadcast('ckeditor.ready');
                         scope.$apply(function () {
                             data.push(ngModel.$viewValue);
                             onUpdateModelData(true);
                         });
-                        instance.document.on("keyup", setModelData);
+                        instance.document.on('keyup', setModelData);
                         instance.focus();
                     });
                     instance.on('customConfigLoaded', function () {
@@ -103,5 +103,5 @@
         };
     }
     var $defer, loaded = false;
-    return angular.module('ngCkeditor', []).run(['$q', '$timeout', run]).directive('editable', ['$timeout', '$q', 'ckeditor', bind]).constant("ckeditor", {});
+    return angular.module('ngCkeditor', []).run(['$q', '$timeout', run]).directive('editable', ['$timeout', '$q', 'ckeditor', bind]).constant('ckeditor', {});
 }));

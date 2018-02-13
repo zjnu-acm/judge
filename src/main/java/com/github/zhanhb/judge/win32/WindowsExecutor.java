@@ -77,26 +77,26 @@ public enum WindowsExecutor implements Executor {
     private final Pointer DESKTOP = WString.toNative("Winsta0\\default");
 
     private Handle fileOpen(Path path, int flags) {
-        int access
+        final int access
                 = (flags & O_WRONLY) != 0 ? GENERIC_WRITE
                         : (flags & O_RDWR) != 0 ? (GENERIC_READ | GENERIC_WRITE)
                                 : GENERIC_READ;
-        int sharing = FILE_SHARE_READ | FILE_SHARE_WRITE;
+        final int sharing = FILE_SHARE_READ | FILE_SHARE_WRITE;
         /* Note: O_TRUNC overrides O_CREAT */
-        int disposition
+        final int disposition
                 = (flags & O_TRUNC) != 0 ? CREATE_ALWAYS
                         : (flags & O_CREAT) != 0 ? OPEN_ALWAYS
                                 : OPEN_EXISTING;
-        int maybeWriteThrough
+        final int maybeWriteThrough
                 = (flags & (O_SYNC | O_DSYNC)) != 0
                         ? FILE_FLAG_WRITE_THROUGH
                         : FILE_ATTRIBUTE_NORMAL;
-        int maybeDeleteOnClose
+        final int maybeDeleteOnClose
                 = (flags & O_TEMPORARY) != 0
                         ? FILE_FLAG_DELETE_ON_CLOSE
                         : FILE_ATTRIBUTE_NORMAL;
 
-        int flagsAndAttributes = maybeWriteThrough | maybeDeleteOnClose;
+        final int flagsAndAttributes = maybeWriteThrough | maybeDeleteOnClose;
         long h = Kernel32.INSTANCE.CreateFileW(
                 WString.toNative(path.toString()), /* Wide char path name */
                 access, /* Read and/or write permission */

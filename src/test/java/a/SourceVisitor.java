@@ -45,8 +45,8 @@ public class SourceVisitor {
                 .forEach(path -> {
                     try {
                         String string = new String(Files.readAllBytes(path), StandardCharsets.ISO_8859_1);
-                        string = string.replaceFirst("/\\*[\\00-\\uffff]+?org/licenses/LICENSE[\\00-\\uffff]+?\\*/\r?\n?", "");
-                        string = string.replaceFirst("\r?\n?/\\*[\\00-\\uffff]+?@author zhanhb[\\00-\\uffff]+?\\*/", "");
+                        string = string.replaceFirst("/\\*[\000-\uFFFF]+?org/licenses/LICENSE[\000-\uFFFF]+?\\*/\r?\n?", "");
+                        string = string.replaceFirst("\r?\n?/\\*[\000-\uFFFF]+?@author zhanhb[\000-\uFFFF]+?\\*/", "");
                         out.println(dashes + path.getFileName() + dashes);
                         out.println(string);
                     } catch (IOException ex) {
@@ -62,8 +62,8 @@ public class SourceVisitor {
                         if (!string.contains("@author zhanhb")) {
                             return;
                         }
-                        string = string.replaceFirst("/\\*[\\00-\\uffff]+?org/licenses/LICENSE[\\00-\\uffff]+?\\*/\r?\n?", "");
-                        string = string.replaceFirst("\r?\n?/\\*[\\00-\\uffff]+?@author zhanhb[\\00-\\uffff]+?\\*/", "");
+                        string = string.replaceFirst("/\\*[\000-\uFFFF]+?org/licenses/LICENSE[\000-\uFFFF]+?\\*/\r?\n?", "");
+                        string = string.replaceFirst("\r?\n?/\\*[\000-\uFFFF]+?@author zhanhb[\000-\uFFFF]+?\\*/", "");
                         out.println(dashes + path.getFileName() + dashes);
                         out.println(string);
                     } catch (IOException ex) {

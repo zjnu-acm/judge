@@ -21,7 +21,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.hamcrest.Matchers.isEmptyString;
+import static com.github.zhanhb.jnc.platform.win32.WinError.ERROR_INVALID_HANDLE;
+import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
@@ -52,8 +53,8 @@ public class Kernel32UtilTest {
             fail("should throw a win32 exception");
         } catch (Win32Exception ex) {
             // invalid handle
-            assertEquals(6, ex.getErrorCode());
-            assertThat(ex.getMessage(), not(isEmptyString()));
+            assertEquals(ERROR_INVALID_HANDLE, ex.getErrorCode());
+            assertThat(ex.getMessage(), not(isEmptyOrNullString()));
         }
     }
 

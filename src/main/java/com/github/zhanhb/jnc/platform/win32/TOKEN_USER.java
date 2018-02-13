@@ -25,7 +25,7 @@ public class TOKEN_USER extends TOKEN_INFORMATION {
 
     public static TOKEN_USER withPadding(int padding) {
         TOKEN_USER tokenUser = new TOKEN_USER();
-        tokenUser.inner(new Padding(padding, 1));
+        tokenUser.inner(new Padding(padding));
         return tokenUser;
     }
 

@@ -37,7 +37,7 @@ public class CustomLocaleDeserializer extends StdDeserializer<Locale> {
     }
 
     @Override
-    public Locale deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+    public Locale deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         return Locale.forLanguageTag(p.getText());
     }
 

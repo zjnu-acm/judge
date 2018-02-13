@@ -26,8 +26,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
@@ -136,14 +134,7 @@ public class MockDataService {
 
     public Submission submission(int languageId, String source, String userId, String ip, long problemId) {
         assumeTrue("not windows", Platform.isWindows());
-        CompletableFuture<?> future = submissionService.submit(languageId, source, userId, ip, problemId);
-        try {
-            future.get();
-        } catch (InterruptedException ex) {
-            throw new AssertionError(ex);
-        } catch (ExecutionException ex) {
-            throw new RuntimeException(ex.getCause());
-        }
+        submissionService.submit(languageId, source, userId, ip, problemId);
         return submissionMapper.findAllByCriteria(SubmissionQueryForm.builder().user(userId).size(1).build()).iterator().next();
     }
 

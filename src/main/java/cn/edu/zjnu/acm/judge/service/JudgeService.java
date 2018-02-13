@@ -98,21 +98,23 @@ public class JudgeService {
     }
 
     CompletableFuture<?> toCompletableFuture(Executor executor, long submissionId) {
-        Submission submission = submissionMapper.findOne(submissionId);
-        if (submission == null) {
-            throw new BusinessException(BusinessCode.SUBMISSION_NOT_FOUND);
-        }
-        Problem problem = problemService.findOneNoI18n(submission.getProblem());
-        RunRecord runRecord = RunRecord.builder()
-                .submissionId(submission.getId())
-                .language(languageService.getAvailableLanguage(submission.getLanguage()))
-                .problemId(submission.getProblem())
-                .userId(submission.getUser())
-                .source(submissionMapper.findSourceById(submissionId))
-                .memoryLimit(problem.getMemoryLimit())
-                .timeLimit(problem.getTimeLimit())
-                .build();
-        return CompletableFuture.runAsync(() -> judgeInternal(runRecord), executor);
+        return CompletableFuture.runAsync(() -> {
+            Submission submission = submissionMapper.findOne(submissionId);
+            if (submission == null) {
+                throw new BusinessException(BusinessCode.SUBMISSION_NOT_FOUND);
+            }
+            Problem problem = problemService.findOneNoI18n(submission.getProblem());
+            RunRecord runRecord = RunRecord.builder()
+                    .submissionId(submission.getId())
+                    .language(languageService.getAvailableLanguage(submission.getLanguage()))
+                    .problemId(submission.getProblem())
+                    .userId(submission.getUser())
+                    .source(submissionMapper.findSourceById(submissionId))
+                    .memoryLimit(problem.getMemoryLimit())
+                    .timeLimit(problem.getTimeLimit())
+                    .build();
+            judgeInternal(runRecord);
+        }, executor);
     }
 
     private void runProcess(RunRecord runRecord) throws IOException {

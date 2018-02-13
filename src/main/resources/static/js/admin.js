@@ -79,7 +79,7 @@
         });
     });
     app.factory('miscApi', function ($resource, path) {
-        return $resource(path.api + "misc/:action.json", null, {
+        return $resource(path.api + 'misc/:action.json', null, {
             getSystemInfo: {method: 'GET', params: {action: 'systemInfo'}},
             setSystemInfo: {method: 'PUT', params: {action: 'systemInfo'}},
             fix: {method: 'POST', params: {action: 'fix'}},
@@ -507,7 +507,7 @@
                 ['Font', 'FontSize', 'Maximize']
             ]
         };
-        ckeditor.ckfinder = path.base + "webjars/ckfinder/2.6.2.1/";
+        ckeditor.ckfinder = path.base + 'webjars/ckfinder/2.6.2.1/';
     });
     app.controller('index', function ($scope, contestApi, miscApi) {
         $scope.systemInfo = miscApi.getSystemInfo();
@@ -685,7 +685,7 @@
         $scope.fromCharCode = String.fromCharCode;
         load();
         $scope['delete'] = function (contest) {
-            confirm("确认删除这场比赛？删除后将无法恢复。") && contestApi['delete']({id: contest.id}, function () {
+            confirm('确认删除这场比赛？删除后将无法恢复。') && contestApi['delete']({id: contest.id}, function () {
                 $state.go('contest-list');
             });
         };
@@ -856,7 +856,7 @@
             return $.extend({}, params, {sort: sort.concat(EXTERN_ORDERS)});
         }
         function exportUrl() {
-            var url = path.api + "accounts.xlsx", p = $stateParams, parts = [];
+            var url = path.api + 'accounts.xlsx', p = $stateParams, parts = [];
             var kks = keys(p);
             kks.sort();
             for (var i = 0, klen = kks.length; i < klen; ++i) {
@@ -1065,7 +1065,7 @@
         var selector = '.back-to-top';
         var element = $(selector);
 
-        // element.length || (element = $("<span class='back-to-top'></span>").appendTo('body'));
+        // element.length || (element = $('<span class="back-to-top"></span>').appendTo('body'));
 
         $(window).scroll(function () {
             element[$(this).scrollTop() > offset ? 'fadeIn' : 'fadeOut'](duration);

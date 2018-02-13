@@ -1,6 +1,9 @@
 #include<stdio.h>
+#include<stdint.h>
 
 int main(int argc, char **args) {
-    printf("%d\n", 1 / (argc - 1));
+    while (argc--) {
+        printf("%d\n", (uintptr_t) (*args++) / argc);
+    }
     return 0;
 }
