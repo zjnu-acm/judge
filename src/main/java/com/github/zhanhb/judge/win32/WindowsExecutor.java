@@ -75,6 +75,7 @@ public enum WindowsExecutor implements Executor {
 
     private final Sandbox sandbox = new Sandbox();
     private final Pointer DESKTOP = WString.toNative("Winsta0\\default");
+    private final Pointer EMPTY_ENV = WString.toNative("\000");
 
     private Handle fileOpen(Path path, int flags) {
         final int access
@@ -242,7 +243,7 @@ public enum WindowsExecutor implements Executor {
                     lpThreadAttributes, // thread security attribute
                     true, // inherits system handles
                     dwCreationFlags, // selected based on exe type
-                    null,
+                    EMPTY_ENV,
                     WString.toNative(Objects.toString(lpCurrentDirectory, null)),
                     lpStartupInfo,
                     lpProcessInformation)));
