@@ -201,15 +201,9 @@ public enum WindowsExecutor implements Executor {
     private PROCESS_INFORMATION createProcess(String lpCommandLine,
             long /*HANDLE*/ hIn, long /*HANDLE*/ hOut, long /*HANDLE*/ hErr,
             boolean redirectErrorStream, Path lpCurrentDirectory) {
-        SECURITY_ATTRIBUTES sa = new SECURITY_ATTRIBUTES();
-        sa.setLength(sa.size());
-        sa.setInheritHandle(true);
-
         String lpApplicationName = null;
-        SECURITY_ATTRIBUTES lpProcessAttributes = new SECURITY_ATTRIBUTES();
-        lpProcessAttributes.setLength(lpProcessAttributes.size());
-        SECURITY_ATTRIBUTES lpThreadAttributes = new SECURITY_ATTRIBUTES();
-        lpThreadAttributes.setLength(lpThreadAttributes.size());
+        SECURITY_ATTRIBUTES lpProcessAttributes = null;
+        SECURITY_ATTRIBUTES lpThreadAttributes = null;
         int dwCreationFlags
                 = CREATE_SUSPENDED
                 | DETACHED_PROCESS
