@@ -54,7 +54,12 @@ public class IntegrityLevelTest {
             AddressByReference pSid = new AddressByReference();
             Kernel32Util.assertTrue(Advapi32.INSTANCE.ConvertStringSidToSidW(
                     WString.toNative(integrityLevelStr), pSid));
-            SID sid = SID.copyOf(pSid.getValue());
+            SID sid;
+            try {
+                sid = SID.copyOf(pSid.getValue());
+            } finally {
+                Kernel32Util.freeLocalMemory(pSid.getValue());
+            }
             String sidString = sid.toString();
             assertEquals(integrityLevelStr, sidString);
         }
