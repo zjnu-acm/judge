@@ -23,7 +23,6 @@ import cn.edu.zjnu.acm.judge.config.password.MultiPasswordSupport;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
@@ -37,9 +36,10 @@ public class PasswordConfiguration {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
+        @SuppressWarnings("deprecation")
         PasswordEncoder passwordEncoder = new LengthLimitedPasswordEncoder(
                 new CombinePasswordEncoder(1,
-                        NoOpPasswordEncoder.getInstance(),
+                        org.springframework.security.crypto.password.NoOpPasswordEncoder.getInstance(),
                         new MultiPasswordSupport(
                                 new CombinePasswordEncoder(
                                         new BCryptPasswordEncoder(6),
