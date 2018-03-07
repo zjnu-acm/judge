@@ -15,8 +15,6 @@
  */
 package com.github.zhanhb.jnc.platform.win32;
 
-import jnc.foreign.Padding;
-
 /**
  *
  * @author zhanhb
@@ -26,7 +24,7 @@ public class TOKEN_DEFAULT_DACL extends TOKEN_INFORMATION {
     public static TOKEN_DEFAULT_DACL ofSize(int size) {
         TOKEN_DEFAULT_DACL tokenDefaultDacl = new TOKEN_DEFAULT_DACL();
         if (size > Lazy.SIZE) {
-            tokenDefaultDacl.inner(new Padding(size - Lazy.SIZE));
+            tokenDefaultDacl.padding(size - Lazy.SIZE);
         }
         return tokenDefaultDacl;
     }

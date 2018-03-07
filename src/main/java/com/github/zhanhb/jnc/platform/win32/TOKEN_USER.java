@@ -15,8 +15,6 @@
  */
 package com.github.zhanhb.jnc.platform.win32;
 
-import jnc.foreign.Padding;
-
 /**
  *
  * @author zhanhb
@@ -25,7 +23,7 @@ public class TOKEN_USER extends TOKEN_INFORMATION {
 
     public static TOKEN_USER withPadding(int padding) {
         TOKEN_USER tokenUser = new TOKEN_USER();
-        tokenUser.inner(new Padding(padding));
+        tokenUser.padding(padding);
         return tokenUser;
     }
 
