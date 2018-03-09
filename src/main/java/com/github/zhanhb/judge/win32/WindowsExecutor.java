@@ -56,14 +56,6 @@ import static com.github.zhanhb.jnc.platform.win32.WinNT.GENERIC_READ;
 import static com.github.zhanhb.jnc.platform.win32.WinNT.GENERIC_WRITE;
 import static com.github.zhanhb.judge.common.Constants.TERMINATE_TIMEOUT;
 import static com.github.zhanhb.judge.common.Constants.UPDATE_TIME_THRESHOLD;
-import static com.github.zhanhb.judge.common.Executor.O_CREAT;
-import static com.github.zhanhb.judge.common.Executor.O_DSYNC;
-import static com.github.zhanhb.judge.common.Executor.O_RDONLY;
-import static com.github.zhanhb.judge.common.Executor.O_RDWR;
-import static com.github.zhanhb.judge.common.Executor.O_SYNC;
-import static com.github.zhanhb.judge.common.Executor.O_TEMPORARY;
-import static com.github.zhanhb.judge.common.Executor.O_TRUNC;
-import static com.github.zhanhb.judge.common.Executor.O_WRONLY;
 
 /**
  *

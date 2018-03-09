@@ -3,11 +3,9 @@ package cn.edu.zjnu.acm.judge.service;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Slf4j
 @Service
 public class Rejudger {
 
