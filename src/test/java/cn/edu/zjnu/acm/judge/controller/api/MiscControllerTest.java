@@ -1,8 +1,9 @@
 package cn.edu.zjnu.acm.judge.controller.api;
 
 import cn.edu.zjnu.acm.judge.Application;
-import cn.edu.zjnu.acm.judge.data.form.ContestOnlyForm;
+import cn.edu.zjnu.acm.judge.data.dto.ValueHolder;
 import cn.edu.zjnu.acm.judge.data.form.SystemInfoForm;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -83,14 +84,16 @@ public class MiscControllerTest {
     }
 
     private Long getContestOnly() throws Exception {
-        return objectMapper.readValue(mvc.perform(get("/api/misc/contestOnly.json"))
+        JavaType type = objectMapper.getTypeFactory().constructParametricType(ValueHolder.class, Long.class);
+        ValueHolder<Long> result = objectMapper.readValue(mvc.perform(get("/api/misc/contestOnly.json"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andReturn().getResponse().getContentAsString(), ContestOnlyForm.class).getValue();
+                .andReturn().getResponse().getContentAsString(), type);
+        return result.getValue();
     }
 
     private void setContestOnly(Long value) throws Exception {
-        ContestOnlyForm request = ContestOnlyForm.builder().value(value).build();
+        ValueHolder<Long> request = new ValueHolder<>(value);
         MvcResult result = mvc.perform(put("/api/misc/contestOnly.json")
                 .content(objectMapper.writeValueAsString(request)).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent())

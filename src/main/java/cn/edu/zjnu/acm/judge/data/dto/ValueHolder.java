@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 ZJNU ACM.
+ * Copyright 2018 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.data.form;
+package cn.edu.zjnu.acm.judge.data.dto;
 
 import java.io.Serializable;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -26,14 +24,13 @@ import lombok.NoArgsConstructor;
  *
  * @author zhanhb
  */
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder(builderClassName = "Builder")
+@AllArgsConstructor
 @Data
 @NoArgsConstructor
-public class ContestOnlyForm implements Serializable {
+public class ValueHolder<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long value;
+    private T value;
 
 }

@@ -17,6 +17,7 @@ package cn.edu.zjnu.acm.judge.controller;
 
 import cn.edu.zjnu.acm.judge.config.JudgeHandlerInterceptor;
 import cn.edu.zjnu.acm.judge.service.ContestOnlyService;
+import cn.edu.zjnu.acm.judge.service.SystemService;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Collections;
@@ -26,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -42,9 +44,12 @@ public class MainController {
 
     @Autowired
     private ContestOnlyService contestOnlyService;
+    @Autowired
+    private SystemService systemService;
 
     @GetMapping("/")
-    public String index() {
+    public String index(Model model) {
+        model.addAttribute("content", systemService.getIndex());
         return "index";
     }
 

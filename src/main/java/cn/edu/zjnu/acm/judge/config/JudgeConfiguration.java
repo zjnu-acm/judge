@@ -57,6 +57,14 @@ public class JudgeConfiguration {
         return getWorkingPath().resolve(String.valueOf(submissionId));
     }
 
+    public String getIndex() {
+        return systemService.getIndex();
+    }
+
+    public void setIndex(String index) {
+        systemService.setIndex(index);
+    }
+
     @SpecialCall("fragment/notice")
     public SystemInfoForm getSystemInfo() {
         return systemInfo;

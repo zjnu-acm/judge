@@ -16,7 +16,7 @@
 package cn.edu.zjnu.acm.judge.controller.api;
 
 import cn.edu.zjnu.acm.judge.config.JudgeConfiguration;
-import cn.edu.zjnu.acm.judge.data.form.ContestOnlyForm;
+import cn.edu.zjnu.acm.judge.data.dto.ValueHolder;
 import cn.edu.zjnu.acm.judge.data.form.SystemInfoForm;
 import cn.edu.zjnu.acm.judge.mapper.UserProblemMapper;
 import cn.edu.zjnu.acm.judge.service.ContestOnlyService;
@@ -90,13 +90,13 @@ public class MiscController {
     }
 
     @GetMapping("contestOnly")
-    public ContestOnlyForm contestOnly() {
-        return ContestOnlyForm.builder().value(contestOnlyService.getContestOnly()).build();
+    public ValueHolder<Long> contestOnly() {
+        return new ValueHolder<>(contestOnlyService.getContestOnly());
     }
 
     @PutMapping("contestOnly")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void setContestOnly(@RequestBody ContestOnlyForm form) {
+    public void setContestOnly(@RequestBody ValueHolder<Long> form) {
         contestOnlyService.setContestOnly(form.getValue());
     }
 

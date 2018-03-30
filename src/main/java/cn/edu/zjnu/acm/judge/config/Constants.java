@@ -28,6 +28,7 @@ public interface Constants {
         String LOCALE = "locales";
         String MAIL = "mails";
         String SYSTEM = "system";
+        String PAGE_INDEX = "page_index";
         String CONTEST_ONLY = "contest-only";
 
     }
@@ -38,6 +39,7 @@ public interface Constants {
         String DATA_FILES_PATH = "data_files_path";
         String DELETE_TEMP_FILE = "delete_temp_file";
         String RESETPASSWORD_TITLE = "resetpassword_title";
+        String PAGE_INDEX = "page_index";
         String UPLOAD_PATH = "upload_path";
         String WORKING_PATH = "working_path";
         String GA = "ga";

@@ -19,6 +19,7 @@ import javax.annotation.Nullable;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 /**
  *
@@ -30,5 +31,8 @@ public interface SystemMapper {
     @Nullable
     @Select("select value from `system` where name=#{name}")
     String getValueByName(@Param("name") String name);
+
+    @Update("update `system` set value=#{value} where name=#{name}")
+    int updateValueByName(@Param("name") String name, @Param("value") String value);
 
 }

@@ -21,6 +21,7 @@ import cn.edu.zjnu.acm.judge.util.SpecialCall;
 import javax.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationInitializer;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -77,6 +78,16 @@ public class SystemService {
     @Nullable
     public String getResetPasswordTitle() {
         return systemMapper.getValueByName(Constants.SystemKey.RESETPASSWORD_TITLE);
+    }
+
+    @Cacheable(value = Constants.Cache.SYSTEM, key = "'page-index'")
+    public String getIndex() {
+        return systemMapper.getValueByName(Constants.SystemKey.PAGE_INDEX);
+    }
+
+    @CacheEvict(value = Constants.Cache.SYSTEM, key = "'page-index'")
+    public void setIndex(String index) {
+        systemMapper.updateValueByName(Constants.SystemKey.PAGE_INDEX, index);
     }
 
 }
