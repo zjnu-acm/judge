@@ -8,7 +8,7 @@
     }
 }(typeof window !== 'undefined' ? window : this, function (angular, CKEDITOR) {
     'use strict';
-    function run($q, $timeout) {
+    function run($q, $interval) {
         $defer = $q.defer();
         if (angular.isUndefined(CKEDITOR)) {
             throw new Error('CKEDITOR not found');
@@ -17,29 +17,36 @@
         function checkLoaded() {
             if (CKEDITOR.status === 'loaded') {
                 loaded = true;
+                $interval.cancel(cancel);
                 $defer.resolve();
             }
         }
         CKEDITOR.on('loaded', checkLoaded);
-        $timeout(checkLoaded, 100);
+        var cancel = $interval(checkLoaded, 100);
     }
     function bind($timeout, $q, ckeditor) {
         var CKFinder = window.CKFinder;
-        var instance;
+        var g_instances = [];
         return {
             restrict: 'C',
+            priority: 1,
             require: ['ngModel', '^?form'],
+            scope: {ckeditor: '='},
             link: function (scope, element, attrs, ctrls) {
                 var ngModel = ctrls[0];
                 var form = ctrls[1] || null;
+                var options = angular.extend({}, ckeditor.options, scope.ckeditor);
                 var EMPTY_HTML = '',
                         isTextarea = element[0].tagName.toLowerCase() === 'textarea',
                         data = [],
                         isReady = false;
+                var instance;
+
+                if (!isTextarea) {
+                    element.attr('contenteditable', true);
+                }
 
                 function onLoad() {
-                    instance && instance.destroy();
-                    var options = angular.extend({}, ckeditor.options, attrs.ckeditor);
                     instance = isTextarea ? CKEDITOR.replace(element[0], options) : CKEDITOR.inline(element[0], options);
                     var configLoaderDef = $q.defer();
                     var setModelData = function (setPristine) {
@@ -87,21 +94,34 @@
                     ckfinder && CKFinder.setupCKEditor(instance, ckfinder);
                 }
 
-                element.on('focus', function () {
+                if (options.deferred) {
+                    element.on('focus', function () {
+                        function doOnload() {
+                            for (var i = 0; i < g_instances.length; ++i) {
+                                (g_instances[i] !== instance) && g_instances[i].destroy();
+                            }
+                            g_instances.length = 0;
+                            onLoad();
+                            g_instances.push(instance);
+                        }
+                        loaded ? doOnload() : $defer.promise.then(doOnload);
+                    });
+                    scope.$on('$destroy', function () {
+                        var index = g_instances.indexOf(instance);
+                        if (index >= 0) {
+                            g_instances.splice(index, 1);
+                        }
+                    });
+                } else {
                     if (loaded) {
                         onLoad();
                     } else {
                         $defer.promise.then(onLoad);
                     }
-                });
-                scope.$on('$destroy', function () {
-                    if (instance === element) {
-                        instance = undefined;
-                    }
-                });
+                }
             }
         };
     }
     var $defer, loaded = false;
-    return angular.module('ngCkeditor', []).run(['$q', '$timeout', run]).directive('editable', ['$timeout', '$q', 'ckeditor', bind]).constant('ckeditor', {});
+    return angular.module('ngCkeditor', []).run(['$q', '$interval', run]).directive('editable', ['$timeout', '$q', 'ckeditor', bind]).constant('ckeditor', {});
 }));

@@ -47,7 +47,8 @@ public class ManageController {
         "/contests/{id}",
         "/contests/{id}/edit",
         "/accounts",
-        "/accounts/import"
+        "/accounts/import",
+        "/system/index"
     })
     public String manage() {
         return "manage";

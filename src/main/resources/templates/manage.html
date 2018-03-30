@@ -74,6 +74,9 @@
             <a class="image3-25-23" ui-sref="account-list" ui-sref-opts="{reload: true}">See the account list</a>
         </p>
         <p style="font-size: large; color: #339">
+            <a class="image3-25-23" ui-sref="page-index-changer" ui-sref-opts="{reload: true}">Change Site Index Page</a>
+        </p>
+        <p style="font-size: large; color: #339">
             <a class="image3-25-23" ng-href="{{path.base}}logout.html">Logout</a>
             <br/>
         </p>
@@ -532,6 +535,13 @@
         </div>
         <div class="clearfix" ng-hide="1 >= page.totalPages() && page.number() === 0">
             <pagination total-items="filteredElements" ng-model="currentPage" max-size="10" items-per-page="page.pageSize()" ng-change="pageChanged(currentPage - 1)" boundary-links="true" direction-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-init="currentPage = page.number() + 1"></pagination>
+        </div>
+        <!--/*/</script>/*/-->
+
+        <!--/*/<script type="text/ng-template" id="page-index-changer.html">/*/-->
+        <div class="editable page-index-content" ng-model="pageIndex.value" ckeditor="{deferred:false,toolbar:[{name:'clipboard',items:['Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo']},{name:'editing',items:['Find','Replace','-','SelectAll']},{name:'basicstyles',items:['Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat']},'/',{name:'paragraph',items:['NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','CreateDiv','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl']},{name:'links',items:['Link','Unlink','Anchor']},{name:'insert',items:['Table','HorizontalRule','SpecialChar','PageBreak']},'/',{name:'styles',items:['Styles','Format','Font','FontSize']},{name:'colors',items:['TextColor','BGColor']},{name:'tools',items:['Maximize','ShowBlocks','-']}]}">加载中……</div>
+        <div class="col-sm-offset-5 col-sm-5">
+            <button type="button" ng-click="submit()" class="btn btn-default">提交</button>
         </div>
         <!--/*/</script>/*/-->
     </body>

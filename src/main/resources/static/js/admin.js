@@ -70,6 +70,11 @@
     app.factory('localeApi', function ($resource, path) {
         return $resource(path.api + 'locales/:id.json', {id: '@id'});
     });
+    app.factory('pageIndexApi', function ($resource, path) {
+        return $resource(path.api + 'system/index.json', {}, {
+            update: {method: 'PUT'}
+        });
+    });
     app.factory('accountApi', function ($resource, path) {
         return $resource(path.api + 'accounts/:id.json', {id: '@id'}, {
             query: {method: 'GET', isArray: false},
@@ -435,6 +440,15 @@
                     controller: 'account-import'
                 }
             }
+        }).state('page-index-changer', {
+            title: '修改首页内容',
+            url: '/system/index.html',
+            views: {
+                '': {
+                    templateUrl: 'page-index-changer.html',
+                    controller: 'page-index-changer'
+                }
+            }
         });
         isLocal || $urlRouterProvider.when(/^#?\/?$/, '/').otherwise('404.html');
     });
@@ -496,6 +510,7 @@
     });
     app.run(function (ckeditor, path) {
         ckeditor.options = {
+            deferred: true,
             toolbar: [
                 ['Source'],
                 ['TextColor', '-', 'Bold', 'Italic', 'Underline', '-', 'Subscript', 'Superscript', 'RemoveFormat'],
@@ -1039,6 +1054,16 @@
             {name: '更新密码', type: 'RESET_PASSWORD'},
             {name: '重置用户信息', type: 'RESET_USERINFO'}
         ];
+    });
+    app.controller('page-index-changer', function ($scope, pageIndexApi, $sce) {
+        $scope.pageIndex = pageIndexApi.get(function (pageIndex) {
+            $('.page-index-content').html($sce.trustAsHtml(pageIndex.value));
+            $scope.submit = function () {
+                pageIndex.$update(function () {
+                    alert('保存成功');
+                });
+            };
+        });
     });
     app.run(function ($rootScope, currentTime) {
         function getStatus(contest) {
