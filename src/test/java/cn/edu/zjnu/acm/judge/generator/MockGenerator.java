@@ -51,7 +51,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -330,8 +332,12 @@ public class MockGenerator {
             }
             out.print(")");
         } else {
-            testClass.addStaticImport("org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload");
-            out.print("\tMvcResult result = mvc.perform(fileUpload(" + url);
+            String methodName = "multipart";
+            if (!ClassUtils.hasMethod(MockMvcRequestBuilders.class, "multipart", String.class, String[].class)) {
+                methodName = "fileUpload";
+            }
+            testClass.addStaticImport("org.springframework.test.web.servlet.request.MockMvcRequestBuilders." + methodName);
+            out.print("\tMvcResult result = mvc.perform(" + methodName + "(" + url);
             for (String pathVariable : pathVariables) {
                 out.print(", " + pathVariable);
             }

@@ -40,9 +40,9 @@ public class SearchUserController {
         }
         Pageable t = pageable;
         if (t.getSort() == null) {
-            t = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), new Sort(
-                    new Sort.Order("solved").with(Sort.Direction.DESC),
-                    new Sort.Order("submit")
+            t = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(
+                    Sort.Order.desc("solved"),
+                    Sort.Order.asc("submit")
             ));
         }
         Page<User> users = accountService.findAll(AccountForm.builder().disabled(Boolean.FALSE).query(like).build(), t);

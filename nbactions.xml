@@ -73,7 +73,7 @@
             <goal>spring-boot:run</goal>
         </goals>
         <properties>
-            <run.jvmArguments>-Dfile.encoding=UTF-8 -Dspring.output.ansi.enabled=always -Dserver.tomcat.basedir=target -Dserver.port=8082 -noverify -XX:TieredStopAtLevel=1</run.jvmArguments>
+            <spring-boot.run.jvmArguments>-Dfile.encoding=UTF-8 -Dspring.output.ansi.enabled=always -Dserver.tomcat.basedir=target -Dserver.port=8082 -noverify -XX:TieredStopAtLevel=1</spring-boot.run.jvmArguments>
         </properties>
     </action>
     <action>
@@ -101,7 +101,7 @@
             <goal>spring-boot:run</goal>
         </goals>
         <properties>
-            <run.jvmArguments>-Dfile.encoding=UTF-8 -Dspring.output.ansi.enabled=always -Dserver.tomcat.basedir=target -Dserver.port=8082 -noverify -XX:TieredStopAtLevel=1 -Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address}</run.jvmArguments>
+            <spring-boot.run.jvmArguments>-Dfile.encoding=UTF-8 -Dspring.output.ansi.enabled=always -Dserver.tomcat.basedir=target -Dserver.port=8082 -noverify -XX:TieredStopAtLevel=1 -Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address}</spring-boot.run.jvmArguments>
             <jpda.listen>true</jpda.listen>
         </properties>
     </action>

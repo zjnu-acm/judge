@@ -21,8 +21,8 @@ import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.context.embedded.EmbeddedWebApplicationContext;
-import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.boot.web.context.WebServerApplicationContext;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ApplicationContext;
 
@@ -33,8 +33,8 @@ public class Application extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
         ApplicationContext context = SpringApplication.run(Application.class, args);
-        if (log.isInfoEnabled() && context instanceof EmbeddedWebApplicationContext) {
-            int port = ((EmbeddedWebApplicationContext) context).getEmbeddedServletContainer().getPort();
+        if (log.isInfoEnabled() && context instanceof WebServerApplicationContext) {
+            int port = ((WebServerApplicationContext) context).getWebServer().getPort();
             String contextPath = context.getApplicationName();
             final String dashes = Strings.repeat("-", 72);
             log.info("Access URLs:\n{}\n\tLocal:\t\thttp://localhost:{}{}\n{}", dashes, port, contextPath, dashes);

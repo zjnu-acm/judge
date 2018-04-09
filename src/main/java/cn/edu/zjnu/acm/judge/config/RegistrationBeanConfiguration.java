@@ -15,7 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.config;
 
-import javax.servlet.Servlet;
+import com.google.code.kaptcha.servlet.KaptchaServlet;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -30,18 +30,18 @@ import org.springframework.web.filter.ShallowEtagHeaderFilter;
 public class RegistrationBeanConfiguration {
 
     @Bean
-    public ServletRegistrationBean kaptcha() {
-        Servlet servlet = new KaptchaServlet();
-        ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(servlet, "/images/rand.jpg");
+    public ServletRegistrationBean<KaptchaServlet> kaptcha() {
+        KaptchaServlet servlet = new cn.edu.zjnu.acm.judge.config.KaptchaServlet();
+        ServletRegistrationBean<KaptchaServlet> servletRegistrationBean = new ServletRegistrationBean<>(servlet, "/images/rand.jpg");
         servletRegistrationBean.addInitParameter(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_CONFIG_KEY, "word");
         return servletRegistrationBean;
     }
 
     @Bean
-    public FilterRegistrationBean shallowEtagHeaderFilter() {
+    public FilterRegistrationBean<ShallowEtagHeaderFilter> shallowEtagHeaderFilter() {
         ShallowEtagHeaderFilter filter = new ShallowEtagHeaderFilter();
         filter.setWriteWeakETag(true);
-        FilterRegistrationBean bean = new FilterRegistrationBean(filter);
+        FilterRegistrationBean<ShallowEtagHeaderFilter> bean = new FilterRegistrationBean<>(filter);
         bean.addUrlPatterns("/api/*", "/admin/*");
         return bean;
     }

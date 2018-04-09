@@ -77,7 +77,7 @@ public class ProblemStatusController {
             Authentication authentication) {
         log.debug("{}", pageable);
         if (pageable.getPageSize() > 500) {
-            pageable = new PageRequest(pageable.getPageNumber(), 500, pageable.getSort());
+            pageable = PageRequest.of(pageable.getPageNumber(), 500, pageable.getSort());
         }
         Problem problem = problemService.findOneNoI18n(id);
         List<ScoreCount> list = submissionMapper.groupByScore(null, id);

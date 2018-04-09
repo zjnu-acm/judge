@@ -30,27 +30,27 @@ import org.springframework.data.domain.Sort;
 public class Pageables {
 
     public static Pageable[] bestSubmission() {
-        Sort sort = new Sort(Sort.Direction.DESC, "time", "memory", "code_length");
-        PageRequest a = new PageRequest(5, 20, sort);
-        sort = new Sort(Sort.Direction.DESC, "solution_id");
-        PageRequest b = new PageRequest(5, 20, sort);
-        PageRequest c = new PageRequest(9, 1);
-        Pageable d = new PageRequest(6, 21);
+        Sort sort = Sort.by(Sort.Direction.DESC, "time", "memory", "code_length");
+        PageRequest a = PageRequest.of(5, 20, sort);
+        sort = Sort.by(Sort.Direction.DESC, "solution_id");
+        PageRequest b = PageRequest.of(5, 20, sort);
+        PageRequest c = PageRequest.of(9, 1);
+        Pageable d = PageRequest.of(6, 21);
         return new Pageable[]{a, b, c, d, buggy()};
     }
 
     public static Pageable[] users() {
-        Pageable a = new PageRequest(0, 50);
+        Pageable a = PageRequest.of(0, 50);
 
-        Pageable b = new PageRequest(0, 50, new Sort(new Sort.Order(Sort.Direction.DESC, "solved"), new Sort.Order(Sort.Direction.ASC, "submit")));
+        Pageable b = PageRequest.of(0, 50, Sort.by(Sort.Order.desc("solved"), Sort.Order.asc("submit")));
         return new Pageable[]{a, b, buggy()};
     }
 
     private Pageable buggy() {
-        Sort.Order order = new Sort.Order(Sort.Direction.DESC, "dummy");
+        Sort.Order order = Sort.Order.desc("dummy");
         ArrayList<Sort.Order> list = new ArrayList<>(1);
         list.add(order);
-        Pageable pageable = new PageRequest(0, 50, new Sort(list));
+        Pageable pageable = PageRequest.of(0, 50, Sort.by(list));
         list.clear();
         return pageable;
     }

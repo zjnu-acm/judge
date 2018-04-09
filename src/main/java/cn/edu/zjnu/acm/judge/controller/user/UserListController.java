@@ -33,10 +33,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class UserListController {
 
-    private static final Sort DEFAULT_SORT = new Sort(
-            new Sort.Order(Sort.Direction.DESC, "solved"),
-            new Sort.Order(Sort.Direction.ASC, "submit"),
-            new Sort.Order(Sort.Direction.ASC, "user_id")
+    private static final Sort DEFAULT_SORT = Sort.by(
+            Sort.Order.desc("solved"),
+            Sort.Order.asc("submit"),
+            Sort.Order.asc("user_id")
     );
 
     @Autowired
@@ -52,7 +52,7 @@ public class UserListController {
             sort = DEFAULT_SORT;
         }
 
-        pageable = new PageRequest(pageable.getPageNumber(), pageSize, sort);
+        pageable = PageRequest.of(pageable.getPageNumber(), pageSize, sort);
 
         String query = URLBuilder.fromRequest(request)
                 .replaceQueryParam("page")

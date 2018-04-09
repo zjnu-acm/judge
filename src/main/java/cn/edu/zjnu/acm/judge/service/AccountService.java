@@ -75,7 +75,7 @@ public class AccountService {
     }
 
     public List<Account> findAllByExport(AccountForm form, Pageable pageable) {
-        return userMapper.findAllByExport(form, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort()));
+        return userMapper.findAllByExport(form, PageRequest.of(0, Integer.MAX_VALUE, pageable.getSort()));
     }
 
     public List<Account> parseExcel(InputStream inputStream, @Nullable Locale locale) throws IOException {

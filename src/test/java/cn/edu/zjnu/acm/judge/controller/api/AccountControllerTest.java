@@ -45,8 +45,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -169,7 +169,7 @@ public class AccountControllerTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsByteArray();
         MockMultipartFile file = new MockMultipartFile("file", content);
-        mvc.perform(fileUpload("/api/accounts.json").file(file))
+        mvc.perform(multipart("/api/accounts.json").file(file))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
     }

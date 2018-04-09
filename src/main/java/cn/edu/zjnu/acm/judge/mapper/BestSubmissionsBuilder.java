@@ -35,7 +35,7 @@ import org.springframework.data.domain.Sort;
 public class BestSubmissionsBuilder {
 
     private static final Set<String> ALLOW_COLUMNS = ImmutableSortedSet.orderedBy(String.CASE_INSENSITIVE_ORDER).add("memory", "time", "code_length", "in_date", "solution_id").build();
-    private static final Sort DEFAULT_SORT = new Sort(Sort.Direction.DESC, "in_date");
+    private static final Sort DEFAULT_SORT = Sort.by(Sort.Direction.DESC, "in_date");
 
     public static String bestSubmissions(@Param("form") BestSubmissionForm form, @Param("pageable") Pageable pageable) {
         Long contestId = form.getContestId();
