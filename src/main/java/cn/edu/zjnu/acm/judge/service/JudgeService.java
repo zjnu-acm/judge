@@ -68,6 +68,7 @@ import org.springframework.util.StringUtils;
 public class JudgeService {
 
     private static final File NULL_FILE = Paths.get(Platform.isWindows() ? "NUL" : "/dev/null").toFile();
+    private static final int MAX_SLEEPS = 9;
 
     private static String collectLines(Path path) throws IOException {
         Charset charset = Platform.getCharset();
@@ -291,19 +292,37 @@ public class JudgeService {
         if (!judgeConfiguration.isDeleteTempFile()) {
             return;
         }
-        // delete 5 times
-        IOException lastException = null;
-        for (int i = 0; i < 5; ++i) {
+        try {
+            DeleteHelper.delete(path);
+        } catch (IOException ex) {
+            long sleepTime = 1;
+            int cnt = 0;
+            boolean interrupted = false;
+
             try {
-                DeleteHelper.delete(path);
-                return;
-            } catch (IOException ex) {
-                System.gc();
-                Thread.yield();
-                lastException = ex;
+                while (true) {
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(sleepTime);
+                        sleepTime <<= 1;
+                        cnt++;
+                    } catch (InterruptedException e) {
+                        interrupted = true;
+                    }
+                    try {
+                        DeleteHelper.delete(path);
+                        return;
+                    } catch (IOException ex2) {
+                        if (cnt >= MAX_SLEEPS) {
+                            throw ex;
+                        }
+                    }
+                }
+            } finally {
+                if (interrupted) {
+                    Thread.currentThread().interrupt();
+                }
             }
         }
-        throw lastException;
     }
 
 }
