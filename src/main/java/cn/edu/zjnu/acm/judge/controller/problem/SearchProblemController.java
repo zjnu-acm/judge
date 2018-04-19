@@ -32,6 +32,7 @@ public class SearchProblemController {
         String currentUserId = authentication != null ? authentication.getName() : null;
         String url = URLBuilder.fromRequest(request).replaceQueryParam("page").toString();
         model.addAttribute("url", url);
+        model.addAttribute("query", form.getSstr());
         form.setDisabled(Boolean.FALSE);
         Page<Problem> page = problemService.findAll(form, currentUserId, pageable, locale);
         model.addAttribute("page", page);
