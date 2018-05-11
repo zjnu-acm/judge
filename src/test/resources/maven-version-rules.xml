@@ -30,6 +30,11 @@
                 <ignoreVersion type="regex">.+-android</ignoreVersion>
             </ignoreVersions>
         </rule>
+        <rule groupId="com.thoughtworks.xstream" artifactId="xstream" comparisonMethod="maven">
+            <ignoreVersions>
+                <ignoreVersion type="regex">.+-java7</ignoreVersion>
+            </ignoreVersions>
+        </rule>
         <rule groupId="dom4j" artifactId="dom4j" comparisonMethod="maven">
             <ignoreVersions>
                 <ignoreVersion>20040902.021138</ignoreVersion>
