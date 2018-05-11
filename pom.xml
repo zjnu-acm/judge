@@ -46,7 +46,7 @@
     <properties>
         <angular.version>1.2.32</angular.version>
         <argLine />
-        <byte-buddy.version>1.8.5</byte-buddy.version>
+        <byte-buddy.version>1.8.11</byte-buddy.version>
         <classmate.version>1.4.0</classmate.version>
         <delombok.directory>${project.build.directory}/delombok</delombok.directory>
         <guava.version>25.0-jre</guava.version>
