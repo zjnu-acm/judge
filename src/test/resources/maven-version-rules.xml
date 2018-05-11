@@ -79,6 +79,16 @@
                 <ignoreVersion>01.08.2014</ignoreVersion>
             </ignoreVersions>
         </rule>
+        <rule groupId="org.webjars.npm" artifactId="angular*" comparisonMethod="maven">
+            <ignoreVersions>
+                <ignoreVersion type="regex">(?!=1\.2).*</ignoreVersion>
+            </ignoreVersions>
+        </rule>
+        <rule groupId="org.webjars" artifactId="jquery" comparisonMethod="maven">
+            <ignoreVersions>
+                <ignoreVersion type="regex">[^1].*</ignoreVersion>
+            </ignoreVersions>
+        </rule>
         <rule groupId="xml-apis" artifactId="xml-apis" comparisonMethod="maven">
             <ignoreVersions>
                 <ignoreVersion>2.0.0</ignoreVersion>
