@@ -52,6 +52,7 @@
         <guava.version>25.0-jre</guava.version>
         <hikaricp.version>3.1.0</hikaricp.version>
         <jacoco.propertyName>argLine</jacoco.propertyName>
+        <mariadb.version>2.2.5</mariadb.version>
         <maven-surefire-plugin.version>2.18.1</maven-surefire-plugin.version>
         <mockito.version>2.18.3</mockito.version>
         <mybatis-spring-boot.version>1.3.2</mybatis-spring-boot.version>
