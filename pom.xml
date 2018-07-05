@@ -4,7 +4,7 @@
     <parent>
         <artifactId>platform-bom</artifactId>
         <groupId>io.spring.platform</groupId>
-        <version>Cairo-SR1</version>
+        <version>Cairo-SR2</version>
         <relativePath />
     </parent>
     <groupId>cn.edu.zjnu.acm</groupId>
