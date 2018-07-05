@@ -61,6 +61,7 @@
         <mybatis.version>3.4.6</mybatis.version>
         <prerequisites.maven>3.3.1</prerequisites.maven>
         <start-class>cn.edu.zjnu.acm.judge.Application</start-class>
+        <tomcat.version>8.5.32</tomcat.version>
         <unbescape.version>1.1.6.RELEASE</unbescape.version>
         <versions-maven-plugin.version>2.5</versions-maven-plugin.version>
     </properties>
