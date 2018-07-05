@@ -61,6 +61,11 @@
                 <ignoreVersion type="regex">.+-b\d+\.\d+</ignoreVersion>
             </ignoreVersions>
         </rule>
+        <rule groupId="io.spring.platform" artifactId="platform-bom" comparisonMethod="maven">
+            <ignoreVersions>
+                <ignoreVersion type="regex">^\d+\.\d+.*</ignoreVersion>
+            </ignoreVersions>
+        </rule>
         <rule groupId="org.postgresql" artifactId="postgresql" comparisonMethod="maven">
             <ignoreVersions>
                 <ignoreVersion type="regex">.+\.jre[67]</ignoreVersion>
