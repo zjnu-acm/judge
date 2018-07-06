@@ -54,6 +54,7 @@
         <guava.version>25.1-jre</guava.version>
         <hikaricp.version>3.2.0</hikaricp.version>
         <jacoco.propertyName>argLine</jacoco.propertyName>
+        <lombok.version>1.18.0</lombok.version>
         <mariadb.version>2.2.5</mariadb.version>
         <maven-surefire-plugin.version>2.18.1</maven-surefire-plugin.version>
         <mockito.version>2.18.3</mockito.version>
