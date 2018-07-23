@@ -23,7 +23,6 @@ import cn.edu.zjnu.acm.judge.exception.BusinessCode;
 import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserProblemMapper;
-import cn.edu.zjnu.acm.judge.util.DeleteHelper;
 import cn.edu.zjnu.acm.judge.util.ResultType;
 import com.github.zhanhb.judge.common.ExecuteResult;
 import com.github.zhanhb.judge.common.JudgeBridge;
@@ -91,6 +90,8 @@ public class JudgeService {
     private JudgeConfiguration judgeConfiguration;
     @Autowired
     private LanguageService languageService;
+    @Autowired
+    private DeleteService deleteService;
 
     private void updateSubmissionStatus(RunRecord runRecord) {
         userProblemMapper.update(runRecord.getUserId(), runRecord.getProblemId());
@@ -292,37 +293,7 @@ public class JudgeService {
         if (!judgeConfiguration.isDeleteTempFile()) {
             return;
         }
-        try {
-            DeleteHelper.delete(path);
-        } catch (IOException ex) {
-            long sleepTime = 1;
-            int cnt = 0;
-            boolean interrupted = false;
-
-            try {
-                while (true) {
-                    try {
-                        TimeUnit.MILLISECONDS.sleep(sleepTime);
-                        sleepTime <<= 1;
-                        cnt++;
-                    } catch (InterruptedException e) {
-                        interrupted = true;
-                    }
-                    try {
-                        DeleteHelper.delete(path);
-                        return;
-                    } catch (IOException ex2) {
-                        if (cnt >= MAX_SLEEPS) {
-                            throw ex;
-                        }
-                    }
-                }
-            } finally {
-                if (interrupted) {
-                    Thread.currentThread().interrupt();
-                }
-            }
-        }
+        deleteService.delete(path);
     }
 
 }
