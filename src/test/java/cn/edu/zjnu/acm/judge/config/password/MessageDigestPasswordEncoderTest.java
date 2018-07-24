@@ -18,18 +18,14 @@ package cn.edu.zjnu.acm.judge.config.password;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 /**
  *
@@ -38,16 +34,6 @@ import static org.junit.Assert.fail;
 @Slf4j
 @Transactional
 public class MessageDigestPasswordEncoderTest {
-
-    @Test
-    public void testGetMessageDigest() {
-        try {
-            MessageDigestPasswordEncoder.getMessageDigest("");
-            fail();
-        } catch (AssertionError ex) {
-            assertThat(ex.getCause(), instanceOf(NoSuchAlgorithmException.class));
-        }
-    }
 
     /**
      * Test of encode method, of class MessageDigestPasswordEncoder.
@@ -68,19 +54,12 @@ public class MessageDigestPasswordEncoderTest {
     @Test
     public void testMatches() {
         log.info("matches");
-        CharSequence rawPassword = null;
+        CharSequence rawPassword = "";
         String encodedPassword = "Da39a3ee5e6b4b0d3255bfef95601890afd80709";
         MessageDigestPasswordEncoder instance = MessageDigestPasswordEncoder.sha1();
         boolean expResult = true;
         boolean result = instance.matches(rawPassword, encodedPassword);
         assertEquals(expResult, result);
-    }
-
-    @Test
-    public void testNull() {
-        String a = MessageDigestPasswordEncoder.md5().encode(null);
-        String b = MessageDigestPasswordEncoder.md5().encode("");
-        assertEquals(a, b);
     }
 
     @Test

@@ -43,8 +43,11 @@ public class PasswordConfiguration {
                         new MultiPasswordSupport(
                                 new CombinePasswordEncoder(
                                         new BCryptPasswordEncoder(6),
+                                        MessageDigestPasswordEncoder.md5(),
                                         MessageDigestPasswordEncoder.sha1(),
-                                        MessageDigestPasswordEncoder.md5()
+                                        MessageDigestPasswordEncoder.sha256(),
+                                        MessageDigestPasswordEncoder.sha384(),
+                                        MessageDigestPasswordEncoder.sha512()
                                 )
                         )
                 ), MAX_PASSWORD_LENGTH);

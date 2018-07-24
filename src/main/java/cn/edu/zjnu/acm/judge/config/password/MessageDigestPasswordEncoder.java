@@ -15,11 +15,10 @@
  */
 package cn.edu.zjnu.acm.judge.config.password;
 
-import com.google.common.annotations.VisibleForTesting;
+import com.google.common.hash.HashFunction;
+import com.google.common.hash.Hashing;
 import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import org.springframework.security.crypto.codec.Hex;
+import java.util.function.Supplier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
@@ -28,10 +27,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  */
 public class MessageDigestPasswordEncoder implements PasswordEncoder {
 
+    @Deprecated
     public static MessageDigestPasswordEncoder md5() {
         return MD5Holder.INSTANCE;
     }
 
+    @Deprecated
     public static MessageDigestPasswordEncoder sha1() {
         return SHAHolder.INSTANCE;
     }
@@ -40,61 +41,60 @@ public class MessageDigestPasswordEncoder implements PasswordEncoder {
         return SHA256Holder.INSTANCE;
     }
 
+    public static MessageDigestPasswordEncoder sha384() {
+        return SHA384Holder.INSTANCE;
+    }
+
     public static MessageDigestPasswordEncoder sha512() {
         return SHA512Holder.INSTANCE;
     }
 
-    @VisibleForTesting
-    static MessageDigest getMessageDigest(String algorithmName) {
-        try {
-            return MessageDigest.getInstance(algorithmName);
-        } catch (NoSuchAlgorithmException e) {
-            throw new AssertionError(e);
-        }
-    }
+    private final Supplier<HashFunction> s;
 
-    private final String algorithm;
-    private final int length;
-
-    MessageDigestPasswordEncoder(String algorithm) {
-        this.algorithm = algorithm;
-        MessageDigest prototype = getMessageDigest(algorithm);
-        this.length = prototype.getDigestLength() << 1;
+    private MessageDigestPasswordEncoder(Supplier<HashFunction> s) {
+        this.s = s;
     }
 
     @Override
     public String encode(CharSequence password) {
-        MessageDigest digest = getMessageDigest(algorithm);
-        return new String(Hex.encode(digest.digest(password != null ? password.toString().getBytes(StandardCharsets.UTF_8) : new byte[0])));
+        return s.get().hashString(password, StandardCharsets.UTF_8).toString();
     }
 
     @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
-        return length == encodedPassword.length()
+        return s.get().bits() >>> 2 == encodedPassword.length()
                 && encode(rawPassword).equalsIgnoreCase(encodedPassword);
     }
 
-    private static interface MD5Holder {
+    @Deprecated
+    private interface MD5Holder {
 
-        MessageDigestPasswordEncoder INSTANCE = new MessageDigestPasswordEncoder("MD5");
-
-    }
-
-    private static interface SHAHolder {
-
-        MessageDigestPasswordEncoder INSTANCE = new MessageDigestPasswordEncoder("SHA1");
+        MessageDigestPasswordEncoder INSTANCE = new MessageDigestPasswordEncoder(Hashing::md5);
 
     }
 
-    private static interface SHA256Holder {
+    @Deprecated
+    private interface SHAHolder {
 
-        MessageDigestPasswordEncoder INSTANCE = new MessageDigestPasswordEncoder("SHA-256");
+        MessageDigestPasswordEncoder INSTANCE = new MessageDigestPasswordEncoder(Hashing::sha1);
 
     }
 
-    private static interface SHA512Holder {
+    private interface SHA256Holder {
 
-        MessageDigestPasswordEncoder INSTANCE = new MessageDigestPasswordEncoder("SHA-512");
+        MessageDigestPasswordEncoder INSTANCE = new MessageDigestPasswordEncoder(Hashing::sha256);
+
+    }
+
+    private interface SHA384Holder {
+
+        MessageDigestPasswordEncoder INSTANCE = new MessageDigestPasswordEncoder(Hashing::sha384);
+
+    }
+
+    private interface SHA512Holder {
+
+        MessageDigestPasswordEncoder INSTANCE = new MessageDigestPasswordEncoder(Hashing::sha512);
 
     }
 
