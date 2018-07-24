@@ -57,7 +57,7 @@
         <jacoco.propertyName>argLine</jacoco.propertyName>
         <lombok.version>1.18.0</lombok.version>
         <mariadb.version>2.2.5</mariadb.version>
-        <maven-surefire-plugin.version>2.18.1</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
         <mockito.version>2.18.3</mockito.version>
         <mybatis-spring-boot.version>1.3.2</mybatis-spring-boot.version>
         <mybatis.version>3.4.6</mybatis.version>
