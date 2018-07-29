@@ -100,6 +100,7 @@ public class AccountController {
         }
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PostMapping(value = "import", consumes = APPLICATION_JSON_VALUE)
     public void importUsers(@RequestBody AccountImportForm form) {
         accountService.importUsers(form);
