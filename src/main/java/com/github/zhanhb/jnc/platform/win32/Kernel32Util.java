@@ -3,8 +3,7 @@ package com.github.zhanhb.jnc.platform.win32;
 import jnc.foreign.Pointer;
 import jnc.foreign.byref.PointerByReference;
 
-@SuppressWarnings("UtilityClassWithoutPrivateConstructor")
-public class Kernel32Util {
+public interface Kernel32Util {
 
     public static void assertTrue(boolean test) {
         if (!test) {

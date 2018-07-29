@@ -58,7 +58,7 @@ public class Handle implements Closeable {
 
     @Override
     public String toString() {
-        return String.valueOf(getValue());
+        return Long.toHexString(getValue());
     }
 
 }

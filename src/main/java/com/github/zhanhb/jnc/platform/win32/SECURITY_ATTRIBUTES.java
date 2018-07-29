@@ -19,6 +19,7 @@ package com.github.zhanhb.jnc.platform.win32;
  * @see
  * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa379560(v=vs.85).aspx">SECURITY_ATTRIBUTES</a>
  */
+@SuppressWarnings("unused")
 public class SECURITY_ATTRIBUTES extends jnc.foreign.Struct {
 
     private final DWORD nLength = new DWORD();

@@ -21,6 +21,7 @@ package com.github.zhanhb.jnc.platform.win32;
  * @see
  * <a href="http://msdn.microsoft.com/en-us/library/ms684877(VS.85).aspx">PROCESS_MEMORY_COUNTERS</a>
  */
+@SuppressWarnings("unused")
 public class PROCESS_MEMORY_COUNTERS extends jnc.foreign.Struct {
 
     /**

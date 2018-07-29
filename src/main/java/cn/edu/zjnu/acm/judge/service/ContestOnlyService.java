@@ -78,14 +78,12 @@ public class ContestOnlyService {
     }
 
     public void checkViewSource(HttpServletRequest request, @NonNull Submission submission) {
-        Objects.requireNonNull(submission, "submission");
         if (!canViewSource(request, submission)) {
             throw new BusinessException(BusinessCode.CONTEST_ONLY_VIEW_SOURCE, submission.getId());
         }
     }
 
-    public boolean canViewSource(HttpServletRequest request, Submission submission) {
-        Objects.requireNonNull(submission, "submission");
+    public boolean canViewSource(HttpServletRequest request, @NonNull Submission submission) {
         Long contestOnly = getContestOnly();
         if (contestOnly == null) {
             return true;

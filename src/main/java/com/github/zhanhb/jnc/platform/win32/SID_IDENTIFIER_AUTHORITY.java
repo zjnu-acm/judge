@@ -23,9 +23,8 @@ import java.util.Arrays;
  */
 public class SID_IDENTIFIER_AUTHORITY extends jnc.foreign.Struct {
 
-    private final BYTE[] Value = array(new BYTE[6]); // actual type BYTE[6]
-
     public SID_IDENTIFIER_AUTHORITY() {
+        padding(6); // actual type BYTE[6]
     }
 
     public byte[] toByteArray() {

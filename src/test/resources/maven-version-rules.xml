@@ -4,17 +4,13 @@
     <ignoreVersions>
         <ignoreVersion type="regex">(?i).*[-\.](?:alpha|beta|cr|ea|edr|pre?|rc)(?:-?\d*(?:\.\d+)*)?(?:-\d)?</ignoreVersion>
         <ignoreVersion type="regex">(?i).*[\d\.-](?:b|M)0?\d*</ignoreVersion>
+        <ignoreVersion type="regex">.*preview.*</ignoreVersion>
     </ignoreVersions>
 
     <rules>
         <rule groupId="antlr" artifactId="antlr" comparisonMethod="maven">
             <ignoreVersions>
                 <ignoreVersion>20030911</ignoreVersion>
-            </ignoreVersions>
-        </rule>
-        <rule groupId="com.microsoft.sqlserver" artifactId="mssql-jdbc" comparisonMethod="maven">
-            <ignoreVersions>
-                <ignoreVersion type="regex">.+-preview</ignoreVersion>
             </ignoreVersions>
         </rule>
         <rule groupId="commons-collections" artifactId="commons-collections" comparisonMethod="maven">

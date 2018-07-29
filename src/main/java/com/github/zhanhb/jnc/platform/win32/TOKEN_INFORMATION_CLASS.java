@@ -38,6 +38,7 @@ public enum TOKEN_INFORMATION_CLASS {
     TokenSandBoxInert,
     TokenAuditPolicy,
     TokenOrigin,
+    // vista+
     TokenElevationType,
     TokenLinkedToken,
     TokenElevation,
