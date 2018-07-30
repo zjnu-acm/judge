@@ -15,6 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.controller.api;
 
+import cn.edu.zjnu.acm.judge.config.Constants;
 import cn.edu.zjnu.acm.judge.data.excel.Account;
 import cn.edu.zjnu.acm.judge.data.form.AccountForm;
 import cn.edu.zjnu.acm.judge.data.form.AccountImportForm;
@@ -81,13 +82,13 @@ public class AccountController {
         accountService.updatePassword(userId, user.getPassword());
     }
 
-    @GetMapping(produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    @GetMapping(produces = Constants.MineTypes.XLSX)
     public ResponseEntity<?> findAllXlsx(AccountForm form, Pageable pageable, Locale locale) {
         List<Account> content = accountService.findAllByExport(form, pageable);
         return ExcelUtil.toResponse(Account.class, content, locale, Type.XLSX);
     }
 
-    @GetMapping(produces = "application/vnd.ms-excel")
+    @GetMapping(produces = Constants.MineTypes.XLS)
     public ResponseEntity<?> findAllXls(AccountForm form, Pageable pageable, Locale locale) {
         List<Account> content = accountService.findAllByExport(form, pageable);
         return ExcelUtil.toResponse(Account.class, content, locale, Type.XLS);
