@@ -557,10 +557,10 @@
             reload({size: 20});
             return;
         }
-        var sort = Sort($stateParams.sort);
+        var sorted = Sort($stateParams.sort);
         $scope.push = function (order) {
-            sort.unshift(order);
-            reload({sort: sort.toArray(), page: null});
+            sorted.unshift(order);
+            reload({sort: sorted.toArray(), page: null});
         };
         $scope.page = problemListCache;
         $timeout(function () {
@@ -868,12 +868,11 @@
     app.controller('account-list', function ($scope, $stateParams, $timeout, reload, accountApi, $modal, returnIt, path, Upload, $state, Sort, uploadAccounts) {
         $scope.params = $.extend({}, $stateParams);
         function toReqParam(params) {
-            return $.extend({}, params, {sort: sort.concat(EXTERN_ORDERS)});
+            return $.extend({}, params, {sort: sorted.concat(EXTERN_ORDERS)});
         }
         function exportUrl() {
             var url = path.api + 'accounts.xlsx', p = $stateParams, parts = [];
-            var kks = keys(p);
-            kks.sort();
+            var kks = keys(p).sort();
             for (var i = 0, klen = kks.length; i < klen; ++i) {
                 var key = kks[i], v = p[key];
                 if (v === null || typeof v === 'undefined')
@@ -887,10 +886,10 @@
             return parts.length ? url + ((url.indexOf('?') === -1) ? '?' : '&') + parts.join('&') : url;
         }
         var EXTERN_ORDERS = ['solved,desc', 'submit'];
-        var sort = Sort($stateParams.sort);
+        var sorted = Sort($stateParams.sort);
         $scope.push = function (order) {
-            sort.unshift(order);
-            reload({sort: sort.toArray(), page: null});
+            sorted.unshift(order);
+            reload({sort: sorted.toArray(), page: null});
         };
         $timeout(function () {
             $scope.pageChanged = function () {
@@ -1012,14 +1011,14 @@
         var users = $scope.users = uploadAccounts();
         var params = $scope.params = getQueryParams($stateParams);
         var page = $scope.page = PaginationService(users, $stateParams.size || 50, $stateParams.page, params);
-        var sort = Sort($stateParams.sort);
+        var sorted = Sort($stateParams.sort);
         $scope.list = page.list();
         $scope.filteredElements = page.filteredElements();
         $scope.push = function (order) {
-            sort.unshift(order);
-            users.sort(sort.toComparator());
+            sorted.unshift(order);
+            users.sort(sorted.toComparator());
             page.setPage();
-            reload({page: null, sort: sort.toArray()});
+            reload({page: null, sort: sorted.toArray()});
         };
         $timeout(function () {
             $scope.pageChanged = function (page, params) {
