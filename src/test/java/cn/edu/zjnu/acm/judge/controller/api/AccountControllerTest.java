@@ -186,12 +186,12 @@ public class AccountControllerTest {
         Account account = toAccount(mockDataService.user(false));
         Account account2 = toAccount(mockDataService.user(false));
         form.setContent(Arrays.asList(account, account2));
-        expect(form, HttpStatus.OK);
+        expect(form, HttpStatus.NO_CONTENT);
         account.setExists(true);
         account2.setExists(true);
         expect(form, HttpStatus.BAD_REQUEST);
         form.setExistsPolicy(Arrays.asList(AccountImportForm.ExistPolicy.ENABLE));
-        expect(form, HttpStatus.OK);
+        expect(form, HttpStatus.NO_CONTENT);
     }
 
     private MvcResult expect(AccountImportForm form, HttpStatus status) throws Exception {
