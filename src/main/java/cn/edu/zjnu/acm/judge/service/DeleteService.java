@@ -17,7 +17,8 @@ package cn.edu.zjnu.acm.judge.service;
 
 import cn.edu.zjnu.acm.judge.util.DeleteHelper;
 import java.io.IOException;
-import java.io.UncheckedIOException;
+import java.nio.file.AccessDeniedException;
+import java.nio.file.DirectoryNotEmptyException;
 import java.nio.file.Path;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -25,6 +26,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 /**
@@ -32,6 +34,7 @@ import org.springframework.stereotype.Service;
  * @author zhanhb
  */
 @Service
+@Slf4j
 public class DeleteService {
 
     private ScheduledExecutorService pool;
@@ -46,21 +49,15 @@ public class DeleteService {
         pool.shutdown();
     }
 
-    private void delete0(Path path) {
-        try {
-            DeleteHelper.delete(path);
-        } catch (IOException ex) {
-            throw new UncheckedIOException(ex);
-        }
-    }
-
     public ScheduledFuture<?> delete(Path path) {
         ScheduledFuture<?>[] array = {null};
         Runnable r = () -> {
             try {
-                delete0(path);
-            } catch (UncheckedIOException ex) {
+                DeleteHelper.delete(path);
+            } catch (AccessDeniedException | DirectoryNotEmptyException ex) {
                 return;
+            } catch (IOException ex) {
+                log.error("", ex);
             }
             array[0].cancel(false);
         };
