@@ -5,6 +5,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import jnc.foreign.Platform;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -14,7 +15,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JudgeBridge implements Closeable {
 
-    private final Executor executor = new WindowsExecutor();
+    private final Executor executor;
+
+    public JudgeBridge() {
+        if (Platform.getNativePlatform().getOS().isWindows()) {
+            executor = new WindowsExecutor();
+        } else {
+            executor = UnsupportedExecutor.INSTANCE;
+        }
+    }
 
     public ExecuteResult[] judge(Options[] optionses, boolean stopOnError, Validator validator)
             throws IOException, JudgeException {
@@ -35,7 +44,7 @@ public class JudgeBridge implements Closeable {
                 break;
             }
         }
-        return list.toArray(new ExecuteResult[list.size()]);
+        return list.toArray(new ExecuteResult[0]);
     }
 
     @Override
