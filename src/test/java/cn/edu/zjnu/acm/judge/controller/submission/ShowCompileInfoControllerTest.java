@@ -44,7 +44,7 @@ public class ShowCompileInfoControllerTest {
     @Test
     public void testShowCompileInfo() throws Exception {
         log.info("showCompileInfo");
-        Submission submission = mockDataService.submission();
+        Submission submission = mockDataService.submission(false);
         MvcResult result = mvc.perform(get("/showcompileinfo").with(user(submission.getUser()))
                 .param("solution_id", Long.toString(submission.getId())))
                 .andExpect(status().isOk())

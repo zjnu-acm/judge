@@ -46,7 +46,7 @@ public class ShowSubmissionDetailsControllerTest {
     @Test
     public void testShowSolutionDetails() throws Exception {
         log.info("showSolutionDetails");
-        Submission submission = mockDataService.submission();
+        Submission submission = mockDataService.submission(false);
         long solutionId = submission.getId();
         MvcResult result = mvc.perform(get("/showsolutiondetails").with(user(submission.getUser()))
                 .param("solution_id", Long.toString(solutionId)))
