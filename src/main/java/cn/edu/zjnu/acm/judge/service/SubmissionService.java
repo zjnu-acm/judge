@@ -110,12 +110,13 @@ public class SubmissionService {
         }
     }
 
-    public CompletableFuture<?> submit(int languageId, String source, String userId, String ip, long problemId) {
+    public CompletableFuture<?> submit(int languageId, String source, String userId,
+            String ip, long problemId, boolean addToPool) {
         check(languageId, source, userId);
         problemService.findOneNoI18n(problemId); //检查该题是否存在
         return submit0(Submission.builder()
                 .problem(problemId)
-                .ip(ip), source, userId, languageId);
+                .ip(ip), source, userId, languageId, addToPool);
     }
 
     public CompletableFuture<?> contestSubmit(int languageId, String source, String userId, String ip, long contestId, long problemNum) {
@@ -130,10 +131,11 @@ public class SubmissionService {
                 // submit problem as normal when contest is ended.
                 .contest(contest.isEnded() ? null : contestId)
                 .problem(problem.getOrigin())
-                .ip(ip), source, userId, languageId);
+                .ip(ip), source, userId, languageId, true);
     }
 
-    private CompletableFuture<?> submit0(Submission.Builder builder, String source, String userId, int languageId) {
+    private CompletableFuture<?> submit0(Submission.Builder builder, String source,
+            String userId, int languageId, boolean addToPool) {
         Instant now = Instant.now();
         Submission submission = builder
                 .user(userId)
@@ -150,7 +152,10 @@ public class SubmissionService {
         // 插入source_code表
         submissionMapper.saveSource(submissionId, source);
         userPerferenceMapper.setLanguage(userId, languageId);
-        return judgePool.add(submissionId);
+        if (addToPool) {
+            return judgePool.add(submissionId);
+        }
+        return CompletableFuture.completedFuture(null);
     }
 
     public String findCompileInfo(long submissionId) {

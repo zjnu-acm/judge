@@ -74,7 +74,7 @@ public class SubmitController {
         //提交是否在竞赛中
         redirectAttributes.addAttribute("user_id", userId);
         if (contestId == null) {
-            submissionService.submit(languageId, source, userId, ip, problemId);
+            submissionService.submit(languageId, source, userId, ip, problemId, true);
         } else {
             redirectAttributes.addAttribute("contest_id", contestId);
             submissionService.contestSubmit(languageId, source, userId, ip, contestId, problemId);

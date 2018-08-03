@@ -153,7 +153,7 @@ public class JudgeServiceTest {
             int language = findFirstLanguageByExtension(EXTENSION_MAP.get(extension));
             String source = new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
             submissionService.remove(userId);
-            future = submissionService.submit(language, source, userId, IP, initializer.problem);
+            future = submissionService.submit(language, source, userId, IP, initializer.problem, true);
             id = findOneByUserId(userId).getId();
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);

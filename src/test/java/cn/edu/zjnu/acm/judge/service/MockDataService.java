@@ -139,28 +139,17 @@ public class MockDataService {
 
     private Submission submission(int languageId, String source, String userId, String ip,
             long problemId, boolean runTestCase) throws Throwable {
-        CompletableFuture<Submission> future = new CompletableFuture<>();
-        BiConsumer<Object, Throwable> consumer = (__, throwable) -> {
-            if (throwable != null) {
-                future.complete(submissionMapper.findAllByCriteria(SubmissionQueryForm.builder().user(userId).size(1).build()).iterator().next());
-            } else {
-                future.completeExceptionally(throwable);
-            }
-        };
         if (runTestCase) {
             assumeTrue("not windows", Platform.isWindows());
-            submissionService.submit(languageId, source, userId, ip, problemId)
-                    .whenComplete(consumer);
-        } else {
-            CompletableFuture.completedFuture(null).whenComplete(consumer);
         }
         try {
-            return future.get();
+            submissionService.submit(languageId, source, userId, ip, problemId, runTestCase).get();
         } catch (InterruptedException ex) {
             throw new InterruptedIOException().initCause(ex);
         } catch (ExecutionException ex) {
             throw ex.getCause();
         }
+        return submissionMapper.findAllByCriteria(SubmissionQueryForm.builder().user(userId).size(1).build()).iterator().next();
     }
 
     public Submission submission(boolean runTestCase) throws IOException {
