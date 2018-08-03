@@ -605,6 +605,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <argLine>-Dfile.encoding=${file.encoding} -ea @{argLine}</argLine>
+                    <forkCount>1C</forkCount>
                     <systemPropertyVariables>
                         <slf4j.detectLoggerNameMismatch>true</slf4j.detectLoggerNameMismatch>
                     </systemPropertyVariables>
