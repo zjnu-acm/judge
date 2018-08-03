@@ -21,12 +21,17 @@ import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
+import com.google.common.base.Throwables;
 import java.io.IOException;
+import java.io.InterruptedIOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
 import org.apache.poi.util.IOUtils;
@@ -132,17 +137,46 @@ public class MockDataService {
         return contest;
     }
 
-    public Submission submission(int languageId, String source, String userId, String ip, long problemId) {
-        assumeTrue("not windows", Platform.isWindows());
-        submissionService.submit(languageId, source, userId, ip, problemId);
-        return submissionMapper.findAllByCriteria(SubmissionQueryForm.builder().user(userId).size(1).build()).iterator().next();
+    private Submission submission(int languageId, String source, String userId, String ip,
+            long problemId, boolean runTestCase) throws Throwable {
+        CompletableFuture<Submission> future = new CompletableFuture<>();
+        BiConsumer<Object, Throwable> consumer = (__, throwable) -> {
+            if (throwable != null) {
+                future.complete(submissionMapper.findAllByCriteria(SubmissionQueryForm.builder().user(userId).size(1).build()).iterator().next());
+            } else {
+                future.completeExceptionally(throwable);
+            }
+        };
+        if (runTestCase) {
+            assumeTrue("not windows", Platform.isWindows());
+            submissionService.submit(languageId, source, userId, ip, problemId)
+                    .whenComplete(consumer);
+        } else {
+            CompletableFuture.completedFuture(null).whenComplete(consumer);
+        }
+        try {
+            return future.get();
+        } catch (InterruptedException ex) {
+            throw new InterruptedIOException().initCause(ex);
+        } catch (ExecutionException ex) {
+            throw ex.getCause();
+        }
     }
 
-    public Submission submission() throws IOException {
+    public Submission submission(boolean runTestCase) throws IOException {
         String userId = user().getId();
         long problemId = problem().getId();
         String source = Lazy.SAMPLE_SOURCE;
-        return submission(0, source, userId, "::1", problemId);
+        try {
+            return submission(0, source, userId, "::1", problemId, runTestCase);
+        } catch (Throwable ex) {
+            Throwables.propagateIfPossible(ex, IOException.class);
+            throw new IOException(ex);
+        }
+    }
+
+    public Submission submission() throws IOException {
+        return submission(true);
     }
 
     @SuppressWarnings("UtilityClassWithoutPrivateConstructor")

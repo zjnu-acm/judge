@@ -45,7 +45,7 @@ public class ShowSourceControllerTest {
     @Test
     public void testShowSource() throws Exception {
         log.info("showSource");
-        Submission submission = mockDataService.submission();
+        Submission submission = mockDataService.submission(false);
         long solutionId = submission.getId();
         Integer style = null;
         MvcResult result = mvc.perform(get("/showsource").with(user(submission.getUser()))

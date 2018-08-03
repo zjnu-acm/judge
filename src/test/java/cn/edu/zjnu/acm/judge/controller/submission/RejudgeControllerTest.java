@@ -64,7 +64,7 @@ public class RejudgeControllerTest {
 
     @Before
     public void setUp() throws IOException, URISyntaxException {
-        submission = mockDataService.submission();
+        submission = mockDataService.submission(false);
         Path dataDir = judgeConfiguration.getDataDirectory(submission.getProblem());
         CopyHelper.copy(Paths.get(RejudgeControllerTest.class.getResource("/sample/data").toURI()), dataDir, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES);
     }
