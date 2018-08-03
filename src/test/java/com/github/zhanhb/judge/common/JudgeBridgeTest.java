@@ -30,7 +30,9 @@ import java.util.stream.Collectors;
 import jnc.foreign.Platform;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -103,10 +105,21 @@ public class JudgeBridgeTest {
 
     private final Checker checker;
     private final String executable;
+    private JudgeBridge judgeBridge;
 
     public JudgeBridgeTest(Checker checker, String executable) {
         this.checker = checker;
         this.executable = executable;
+    }
+
+    @Before
+    public void setUp() {
+        judgeBridge = new JudgeBridge();
+    }
+
+    @After
+    public void tearDown() {
+        judgeBridge.close();
     }
 
     @Test
@@ -126,7 +139,7 @@ public class JudgeBridgeTest {
                 .workDirectory(tmp)
                 .timeLimit(6000)
                 .build();
-        ExecuteResult er = JudgeBridge.INSTANCE.judge(new Options[]{options}, stopOnError, validator)[0];
+        ExecuteResult er = judgeBridge.judge(new Options[]{options}, stopOnError, validator)[0];
         log.info("{}", er);
         assertEquals(executable, checker.getStatus(), er.getCode());
     }

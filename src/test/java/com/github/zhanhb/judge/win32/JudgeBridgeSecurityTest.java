@@ -27,6 +27,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import jnc.foreign.Platform;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -46,6 +48,17 @@ public class JudgeBridgeSecurityTest {
     }
 
     private final Validator validator = SimpleValidator.NORMAL;
+    private JudgeBridge judgeBridge;
+
+    @Before
+    public void setUp() {
+        judgeBridge = new JudgeBridge();
+    }
+
+    @After
+    public void tearDown() {
+        judgeBridge.close();
+    }
 
     @Test
     public void testExecute() throws IOException, JudgeException {
@@ -60,7 +73,7 @@ public class JudgeBridgeSecurityTest {
                 .errFile(nullPath)
                 .build();
         try {
-            ExecuteResult er = JudgeBridge.INSTANCE.judge(new Options[]{options}, true, validator)[0];
+            ExecuteResult er = judgeBridge.judge(new Options[]{options}, true, validator)[0];
             log.info("{}", er);
             assertEquals(Status.RUNTIME_ERROR, er.getCode());
         } finally {

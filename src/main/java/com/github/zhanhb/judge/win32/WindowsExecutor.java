@@ -61,13 +61,20 @@ import static com.github.zhanhb.judge.common.Constants.UPDATE_TIME_THRESHOLD;
  *
  * @author zhanhb
  */
-public enum WindowsExecutor implements Executor {
+public class WindowsExecutor implements Executor {
 
-    INSTANCE;
-
-    private final Sandbox sandbox = new Sandbox();
     private final Pointer DESKTOP = WString.toNative("Winsta0\\default");
     private final Pointer EMPTY_ENV = WString.toNative("\000");
+    private final Handle hToken;
+
+    public WindowsExecutor() {
+        Sandbox sandbox = new Sandbox();
+        hToken = new Handle(sandbox.createRestrictedToken(
+                TokenLevel.USER_LIMITED,
+                IntegrityLevel.INTEGRITY_LEVEL_LOW,
+                TokenType.PRIMARY,
+                true));
+    }
 
     private Handle fileOpen(Path path, int flags) {
         final int access
@@ -222,24 +229,18 @@ public enum WindowsExecutor implements Executor {
             setInheritable(hErr);
         }
 
-        try (Handle hToken = new Handle(sandbox.createRestrictedToken(
-                TokenLevel.USER_LIMITED,
-                IntegrityLevel.INTEGRITY_LEVEL_LOW,
-                TokenType.PRIMARY,
-                true))) {
-            ProcessCreationHelper.execute(() -> Kernel32Util.assertTrue(Advapi32.INSTANCE.CreateProcessAsUserW(
-                    hToken.getValue(),
-                    WString.toNative(lpApplicationName), // executable name
-                    WString.toNative(lpCommandLine),// command line
-                    lpProcessAttributes, // process security attribute
-                    lpThreadAttributes, // thread security attribute
-                    true, // inherits system handles
-                    dwCreationFlags, // selected based on exe type
-                    EMPTY_ENV,
-                    WString.toNative(Objects.toString(lpCurrentDirectory, null)),
-                    lpStartupInfo,
-                    lpProcessInformation)));
-        }
+        ProcessCreationHelper.execute(() -> Kernel32Util.assertTrue(Advapi32.INSTANCE.CreateProcessAsUserW(
+                hToken.getValue(),
+                WString.toNative(lpApplicationName), // executable name
+                WString.toNative(lpCommandLine),// command line
+                lpProcessAttributes, // process security attribute
+                lpThreadAttributes, // thread security attribute
+                true, // inherits system handles
+                dwCreationFlags, // selected based on exe type
+                EMPTY_ENV,
+                WString.toNative(Objects.toString(lpCurrentDirectory, null)),
+                lpStartupInfo,
+                lpProcessInformation)));
         return lpProcessInformation;
     }
 
@@ -247,6 +248,11 @@ public enum WindowsExecutor implements Executor {
             boolean redirectErrorStream, long outputLimit) throws IOException {
         return outputPath.size() > outputLimit
                 || !redirectErrorStream && errorPath.size() > outputLimit;
+    }
+
+    @Override
+    public void close() {
+        hToken.close();
     }
 
 }

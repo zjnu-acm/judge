@@ -53,6 +53,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,7 +69,6 @@ import org.springframework.util.StringUtils;
 public class JudgeService {
 
     private static final File NULL_FILE = Paths.get(Platform.isWindows() ? "NUL" : "/dev/null").toFile();
-    private static final int MAX_SLEEPS = 9;
 
     private static String collectLines(Path path) throws IOException {
         Charset charset = Platform.getCharset();
@@ -92,6 +93,17 @@ public class JudgeService {
     private LanguageService languageService;
     @Autowired
     private DeleteService deleteService;
+    private JudgeBridge judgeBridge;
+
+    @PostConstruct
+    public void init() {
+        judgeBridge = new JudgeBridge();
+    }
+
+    @PreDestroy
+    public void shutdown() {
+        judgeBridge.close();
+    }
 
     private void updateSubmissionStatus(RunRecord runRecord) {
         userProblemMapper.update(runRecord.getUserId(), runRecord.getProblemId());
@@ -185,7 +197,7 @@ public class JudgeService {
         long time = 0; //时间
         long memory = 0; //内存
         try {
-            ExecuteResult[] ers = JudgeBridge.INSTANCE.judge(optionses, false, validator);
+            ExecuteResult[] ers = judgeBridge.judge(optionses, false, validator);
             for (ExecuteResult er : ers) {
                 long tim1 = Math.max(0, er.getTime() - extTime);
                 long mem1 = Math.max(0, er.getMemory() / 1024 - extraMemory);

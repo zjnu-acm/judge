@@ -1,6 +1,7 @@
 package com.github.zhanhb.judge.common;
 
 import com.github.zhanhb.judge.win32.WindowsExecutor;
+import java.io.Closeable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,14 +12,13 @@ import lombok.extern.slf4j.Slf4j;
  * @author zhanhb
  */
 @Slf4j
-public enum JudgeBridge {
+public class JudgeBridge implements Closeable {
 
-    INSTANCE;
+    private final Executor executor = new WindowsExecutor();
 
     public ExecuteResult[] judge(Options[] optionses, boolean stopOnError, Validator validator)
             throws IOException, JudgeException {
         // the first case takes much more time than other cases.
-        Executor executor = WindowsExecutor.INSTANCE;
         executor.execute(optionses[0]);
         List<ExecuteResult> list = new ArrayList<>(optionses.length);
         for (Options options : optionses) {
@@ -36,6 +36,11 @@ public enum JudgeBridge {
             }
         }
         return list.toArray(new ExecuteResult[list.size()]);
+    }
+
+    @Override
+    public void close() {
+        executor.close();
     }
 
 }

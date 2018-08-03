@@ -1,8 +1,9 @@
 package com.github.zhanhb.judge.common;
 
+import java.io.Closeable;
 import java.io.IOException;
 
-public interface Executor {
+public interface Executor extends Closeable {
 
     int _O_RDONLY = 0;
     int _O_WRONLY = 1;
@@ -60,5 +61,8 @@ public interface Executor {
     int O_DSYNC = 0x2000;
 
     ExecuteResult execute(Options options) throws IOException;
+
+    @Override
+    void close();
 
 }
