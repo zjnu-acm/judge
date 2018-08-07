@@ -46,7 +46,7 @@
     <properties>
         <angular.version>1.2.32</angular.version>
         <argLine />
-        <byte-buddy.version>1.8.15</byte-buddy.version>
+        <byte-buddy.version>1.8.16</byte-buddy.version>
         <classmate.version>1.4.0</classmate.version>
         <delombok.directory>${project.build.directory}/delombok</delombok.directory>
         <findbugs-jsr305.version>3.0.2</findbugs-jsr305.version>
