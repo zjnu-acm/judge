@@ -56,6 +56,7 @@
         <guava.version>26.0-jre</guava.version>
         <hikaricp.version>3.2.0</hikaricp.version>
         <jacoco.propertyName>argLine</jacoco.propertyName>
+        <javax-mail.version>1.6.2</javax-mail.version>
         <lombok.version>1.18.2</lombok.version>
         <mariadb.version>2.3.0</mariadb.version>
         <maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
@@ -69,6 +70,7 @@
         <poi.version>3.17</poi.version>
         <prerequisites.maven>3.3.1</prerequisites.maven>
         <start-class>cn.edu.zjnu.acm.judge.Application</start-class>
+        <sun-mail.version>1.6.2</sun-mail.version>
         <tomcat.version>8.5.33</tomcat.version>
         <unbescape.version>1.1.6.RELEASE</unbescape.version>
         <versions-maven-plugin.version>2.5</versions-maven-plugin.version>
