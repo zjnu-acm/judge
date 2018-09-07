@@ -57,6 +57,7 @@
         <hikaricp.version>3.2.0</hikaricp.version>
         <jacoco.propertyName>argLine</jacoco.propertyName>
         <lombok.version>1.18.2</lombok.version>
+        <mariadb.version>2.3.0</mariadb.version>
         <maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
         <maven-enforcer-plugin.version>3.0.0-M2</maven-enforcer-plugin.version>
         <maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
