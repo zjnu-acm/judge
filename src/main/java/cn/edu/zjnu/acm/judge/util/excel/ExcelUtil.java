@@ -76,7 +76,7 @@ public class ExcelUtil {
     }
 
     private static <T> void buildExcelDocument(Class<T> elementType, Stream<T> content, Locale locale, Workbook workbook) {
-        Metainfo<T> meta = Metainfo.forType(elementType, locale);
+        MetaInfo<T> meta = MetaInfo.forType(elementType, locale);
         Sheet sheet = workbook.createSheet(elementType.getSimpleName());
         create(meta.getHeaderAsStream(), sheet.createRow(0));
         AtomicInteger counter = new AtomicInteger();
@@ -123,7 +123,7 @@ public class ExcelUtil {
     }
 
     private static <T> List<T> parse(Workbook workbook, FormulaEvaluator evaluator, Class<T> type, @Nullable Locale locale) {
-        Metainfo<T> metainfo = Metainfo.forType(type, locale);
+        MetaInfo<T> metainfo = MetaInfo.forType(type, locale);
         Sheet sheet = workbook.getSheetAt(workbook.getActiveSheetIndex());
         Iterator<Row> rows = sheet.rowIterator();
         if (!rows.hasNext()) {
@@ -203,15 +203,15 @@ public class ExcelUtil {
         return GsonHolder.GSON.fromJson(jsonObject, type);
     }
 
-    private static interface GsonHolder {
+    private interface GsonHolder {
 
-        static Gson GSON = new GsonBuilder().setDateFormat("yyyy-M-d H:mm:ss").create();
+        Gson GSON = new GsonBuilder().setDateFormat("yyyy-M-d H:mm:ss").create();
 
     }
 
-    private static interface DateFormatterHolder {
+    private interface DateFormatterHolder {
 
-        static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d H:mm:ss", Locale.US)
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d H:mm:ss", Locale.US)
                 .withZone(ZoneId.systemDefault());
 
     }

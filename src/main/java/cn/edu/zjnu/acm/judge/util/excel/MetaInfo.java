@@ -34,15 +34,15 @@ import lombok.Value;
  *
  * @author zhanhb
  */
-class Metainfo<T> {
+class MetaInfo<T> {
 
-    private static final ConcurrentMap<Locale, ConcurrentMap<Class<?>, Metainfo<?>>> MAP = new ConcurrentHashMap<>(1);
+    private static final ConcurrentMap<Locale, ConcurrentMap<Class<?>, MetaInfo<?>>> MAP = new ConcurrentHashMap<>(1);
 
     @SuppressWarnings("unchecked")
-    static <T> Metainfo<T> forType(Class<T> elementType, @Nullable Locale paramLocale) {
+    static <T> MetaInfo<T> forType(Class<T> elementType, @Nullable Locale paramLocale) {
         Locale locale = paramLocale == null ? Locale.ROOT : paramLocale;
-        ConcurrentMap<Class<?>, Metainfo<?>> metainfos = MAP.computeIfAbsent(locale, __ -> new ConcurrentHashMap<>(1));
-        return (Metainfo<T>) metainfos.computeIfAbsent(elementType, type -> {
+        ConcurrentMap<Class<?>, MetaInfo<?>> metainfos = MAP.computeIfAbsent(locale, __ -> new ConcurrentHashMap<>(1));
+        return (MetaInfo<T>) metainfos.computeIfAbsent(elementType, type -> {
             ResourceBundle bundle = null;
             String bundleName = type.getName().replace('.', '/');
             try {
@@ -68,26 +68,26 @@ class Metainfo<T> {
                 }
             }
             // entries in ImmutableMap are sorted in the order as the input
-            return new Metainfo<>(list.stream().sorted(Comparator.comparingInt(Member::getOrder))
+            return new MetaInfo<>(list.stream().sorted(Comparator.comparingInt(Member::getOrder))
                     .collect(ImmutableMap.toImmutableMap(Member::getName, Member::getField)));
         });
     }
 
     private final Map<String, Field> fieldMap;
 
-    Metainfo(Map<String, Field> fieldMap) {
+    private MetaInfo(Map<String, Field> fieldMap) {
         this.fieldMap = fieldMap;
     }
 
-    public Stream<String> getHeaderAsStream() {
+    Stream<String> getHeaderAsStream() {
         return fieldMap.keySet().stream();
     }
 
-    public Stream<Field> getFieldsAsStream() {
+    Stream<Field> getFieldsAsStream() {
         return fieldMap.values().stream();
     }
 
-    public Field getField(String name) {
+    Field getField(String name) {
         return fieldMap.get(name);
     }
 
