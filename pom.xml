@@ -59,7 +59,7 @@
         <jackson.version>2.9.7</jackson.version>
         <jacoco.propertyName>argLine</jacoco.propertyName>
         <javax-mail.version>1.6.2</javax-mail.version>
-        <lombok.version>1.18.2</lombok.version>
+        <lombok.version>1.18.4</lombok.version>
         <mariadb.version>2.3.0</mariadb.version>
         <maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
         <maven-enforcer-plugin.version>3.0.0-M2</maven-enforcer-plugin.version>
