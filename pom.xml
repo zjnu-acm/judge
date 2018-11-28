@@ -62,6 +62,7 @@
         <poi.version>3.17</poi.version>
         <prerequisites.maven>3.3.1</prerequisites.maven>
         <start-class>cn.edu.zjnu.acm.judge.Application</start-class>
+        <tomcat.version>9.0.13</tomcat.version>
         <unbescape.version>1.1.6.RELEASE</unbescape.version>
     </properties>
 
