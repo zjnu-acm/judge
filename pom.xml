@@ -51,6 +51,7 @@
         <delombok.directory>${project.build.directory}/delombok</delombok.directory>
         <findbugs-jsr305.version>3.0.2</findbugs-jsr305.version>
         <flyway.version>5.2.3</flyway.version>
+        <groovy.version>2.5.4</groovy.version>
         <guava.version>27.0.1-jre</guava.version>
         <jacoco.propertyName>argLine</jacoco.propertyName>
         <lombok.version>1.18.4</lombok.version>
