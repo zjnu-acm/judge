@@ -629,6 +629,7 @@
                         </goals>
                         <configuration>
                             <ignoredClassPatterns>
+                                <ignoredClassPattern>META-INF\..*</ignoredClassPattern>
                                 <ignoredClassPattern>module-info</ignoredClassPattern>
                             </ignoredClassPatterns>
                             <ignoredResourcePatterns>
