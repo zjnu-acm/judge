@@ -20,17 +20,17 @@ public class ContestListController {
 
     @GetMapping("/contests")
     public String contests(Model model, RedirectAttributes redirectAttributes) {
-        return execute(model, "Contests", "onlinejudge.contests.nocontest", redirectAttributes, ContestStatus.PENDING, ContestStatus.RUNNING, ContestStatus.ENDED);
+        return execute(model, "Contests", "onlinejudge.contest.nocontest", redirectAttributes, ContestStatus.PENDING, ContestStatus.RUNNING, ContestStatus.ENDED);
     }
 
     @GetMapping("/scheduledcontests")
     public String scheduledContests(Model model, RedirectAttributes redirectAttributes) {
-        return execute(model, "Scheduled Contests", "onlinejudge.contests.noschedule", redirectAttributes, ContestStatus.PENDING);
+        return execute(model, "Scheduled Contests", "onlinejudge.contest.noschedule", redirectAttributes, ContestStatus.PENDING);
     }
 
     @GetMapping("/pastcontests")
     public String pastContests(Model model, RedirectAttributes redirectAttributes) {
-        return execute(model, "Contests", "onlinejudge.contests.nopast", redirectAttributes, ContestStatus.ENDED);
+        return execute(model, "Contests", "onlinejudge.contest.nopast", redirectAttributes, ContestStatus.ENDED);
     }
 
     @GetMapping("/currentcontests")

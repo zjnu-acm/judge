@@ -23,11 +23,11 @@ import org.springframework.http.HttpStatus;
  */
 public enum BusinessCode {
 
-    NOT_FOUND("未找到", HttpStatus.NOT_FOUND),
-    CONTEST_STARTED("比赛已经开始"),
+    NOT_FOUND("onlinejudge.notfound", HttpStatus.NOT_FOUND),
+    CONTEST_STARTED("onlinejudge.contest.started"),
     CONTEST_NOT_STARTED("onlinejudge.contest.not.started"),
-    CONTEST_ENDED("比赛已经结束"),
-    SUBMISSION_NOT_FOUND("No such solution", HttpStatus.NOT_FOUND),
+    CONTEST_ENDED("onlinejudge.contest.ended"),
+    SUBMISSION_NOT_FOUND("onlinejudge.submission.notfound", HttpStatus.NOT_FOUND),
     USER_SEARCH_KEYWORD_SHORT("onlinejudge.user.search.short"),
     USER_NOT_FOUND("onlinejudge.user.notfound", HttpStatus.NOT_FOUND),
     CONTEST_NOT_FOUND("onlinejudge.contest.nosuchcontest", HttpStatus.NOT_FOUND),
@@ -37,8 +37,8 @@ public enum BusinessCode {
     PROBLEM_NOT_FOUND("onlinejudge.problem.notfound", HttpStatus.NOT_FOUND),
     CONTEST_PROBLEM_NOT_FOUND("onlinejudge.contest.problem.notfound", HttpStatus.NOT_FOUND),
     LANGUAGE_NOT_FOUND("onlinejudge.language.notfound"),
-    IMPORT_USER_EMPTY("导入用户为空"),
-    EMPTY_USER_ID("用户名为空"),
+    IMPORT_USER_EMPTY("onlinejudge.import.user.empty"),
+    EMPTY_USER_ID("onlinejudge.import.user.id.empty"),
     EMPTY_PASSWORD("onlinejudge.password.empty"),
     PASSWORD_TOO_LONG("onlinejudge.password.long"),
     PASSWORD_TOO_SHORT("onlinejudge.password.short"),

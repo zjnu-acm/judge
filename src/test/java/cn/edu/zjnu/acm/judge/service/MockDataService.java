@@ -175,7 +175,7 @@ public class MockDataService {
 
         static {
             try {
-                SAMPLE_SOURCE = new String(IOUtils.toByteArray(MockDataService.class.getResourceAsStream("/sample/program/ac/accept.cpp")), StandardCharsets.UTF_8);
+                SAMPLE_SOURCE = new String(IOUtils.toByteArray(Lazy.class.getResourceAsStream("/sample/program/ac/accept.cpp")), StandardCharsets.UTF_8);
             } catch (IOException ex) {
                 throw new ExceptionInInitializerError(ex);
             }
