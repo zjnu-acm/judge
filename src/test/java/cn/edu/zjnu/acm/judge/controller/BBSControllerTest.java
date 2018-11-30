@@ -69,16 +69,16 @@ public class BBSControllerTest {
     /**
      * Test of bbs method, of class BBSController.
      *
-     * @see BBSController#bbs(Long, int, long)
+     * @see BBSController#bbs(HttpServletRequest, Long, int, long, Model)
      */
     @Test
     public void testBbs() throws Exception {
         log.info("bbs");
-        Long problem_id = null;
+        Long problemId = null;
         int size = 50;
         long top = 99999999;
         MvcResult result = mvc.perform(get("/bbs")
-                .param("problem_id", Objects.toString(problem_id, ""))
+                .param("problem_id", Objects.toString(problemId, ""))
                 .param("size", Integer.toString(size))
                 .param("top", Long.toString(top)))
                 .andExpect(status().isOk())
@@ -88,9 +88,9 @@ public class BBSControllerTest {
 
     private ResultActions testPostpage0(RequestPostProcessor postProcessor) throws Exception {
         log.info("postpage");
-        Long problem_id = null;
+        Long problemId = null;
         return mvc.perform(get("/postpage").with(postProcessor)
-                .param("problem_id", Objects.toString(problem_id, "")));
+                .param("problem_id", Objects.toString(problemId, "")));
     }
 
     /**
@@ -129,13 +129,13 @@ public class BBSControllerTest {
     @Test
     public void testPost() throws Exception {
         log.info("post");
-        Long problem_id = null;
-        Long parent_id = null;
+        Long problemId = null;
+        Long parentId = null;
         String content = "test";
         String title = "title";
         MvcResult result = mvc.perform(post("/post").with(user(createUser()))
-                .param("problem_id", Objects.toString(problem_id, ""))
-                .param("parent_id", Objects.toString(parent_id, ""))
+                .param("problem_id", Objects.toString(problemId, ""))
+                .param("parent_id", Objects.toString(parentId, ""))
                 .param("content", content)
                 .param("title", title))
                 .andExpect(status().isFound())
@@ -146,16 +146,16 @@ public class BBSControllerTest {
     /**
      * Test of showMessage method, of class BBSController.
      *
-     * @see BBSController#showMessage(long)
+     * @see BBSController#showMessage(long, Model)
      */
     @Test
     public void testShowMessage() throws Exception {
         log.info("showMessage");
         String userId = createUser();
-        long message_id = messageMapper.nextId();
+        long messageId = messageMapper.nextId();
         messageService.save(null, null, userId, "title", "content");
         mvc.perform(get("/showmessage").with(user(userId))
-                .param("message_id", Long.toString(message_id)))
+                .param("message_id", Long.toString(messageId)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andReturn();

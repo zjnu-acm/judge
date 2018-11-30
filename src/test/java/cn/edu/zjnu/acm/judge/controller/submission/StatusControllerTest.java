@@ -39,22 +39,22 @@ public class StatusControllerTest {
     @Test
     public void testStatus() throws Exception {
         log.info("status");
-        String problem_id = "";
-        Long contest_id = null;
+        String problemId = "";
+        Long contestId = null;
         int language = 0;
         int size = 20;
         Long bottom = null;
         Integer score = null;
-        String user_id = "";
+        String userId = "";
         Long top = null;
         MvcResult result = mvc.perform(get("/status")
-                .param("problem_id", problem_id)
-                .param("contest_id", Objects.toString(contest_id, ""))
+                .param("problem_id", problemId)
+                .param("contest_id", Objects.toString(contestId, ""))
                 .param("language", Integer.toString(language))
                 .param("size", Integer.toString(size))
                 .param("bottom", Objects.toString(bottom, ""))
                 .param("score", Objects.toString(score, ""))
-                .param("user_id", user_id)
+                .param("user_id", userId)
                 .param("top", Objects.toString(top, "")))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))

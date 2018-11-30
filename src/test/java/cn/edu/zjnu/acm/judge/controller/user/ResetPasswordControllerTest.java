@@ -34,7 +34,7 @@ public class ResetPasswordControllerTest {
     /**
      * Test of doGet method, of class ResetPasswordController.
      *
-     * @see ResetPasswordController#doGet(HttpServletRequest)
+     * @see ResetPasswordController#doGet(String, String)
      */
     @Test
     public void testDoGet() throws Exception {

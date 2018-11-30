@@ -13,6 +13,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
@@ -37,9 +38,9 @@ public class LegacyAdminControllerTest {
     @Test
     public void testShowProblem() throws Exception {
         log.info("showProblem");
-        long problem_id = 0;
-        MvcResult result = mvc.perform(get("/admin.showproblem").param("problem_id", Long.toString(problem_id)))
-                .andExpect(redirectedUrl("/admin/problems/" + problem_id + ".html"))
+        long problemId = 0;
+        MvcResult result = mvc.perform(get("/admin.showproblem").param("problem_id", Long.toString(problemId)))
+                .andExpect(redirectedUrl("/admin/problems/" + problemId + ".html"))
                 .andReturn();
     }
 
@@ -51,16 +52,16 @@ public class LegacyAdminControllerTest {
     @Test
     public void testShowContest() throws Exception {
         log.info("showContest");
-        long contest_id = 0;
-        MvcResult result = mvc.perform(get("/admin.showcontest").param("contest_id", Long.toString(contest_id)))
-                .andExpect(redirectedUrl("/admin/contests/" + contest_id + ".html"))
+        long contestId = 0;
+        MvcResult result = mvc.perform(get("/admin.showcontest").param("contest_id", Long.toString(contestId)))
+                .andExpect(redirectedUrl("/admin/contests/" + contestId + ".html"))
                 .andReturn();
     }
 
     /**
      * Test of rejudge method, of class LegacyAdminController.
      *
-     * @see LegacyAdminController#rejudge(RedirectAttributes, java.util.Map) 
+     * @see LegacyAdminController#rejudge(RedirectAttributes, java.util.Map)
      */
     @Test
     public void testRejudge() throws Exception {

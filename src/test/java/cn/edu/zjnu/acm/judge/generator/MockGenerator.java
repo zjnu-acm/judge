@@ -1,8 +1,10 @@
 package cn.edu.zjnu.acm.judge.generator;
 
 import cn.edu.zjnu.acm.judge.Application;
+import cn.edu.zjnu.acm.judge.util.MatcherWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.InputStream;
@@ -52,6 +54,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
@@ -82,15 +85,15 @@ public class MockGenerator {
             .put(double.class, "0")
             .put(String.class, "\"\"")
             .build();
-    private static final Class<?> mainClass = Application.class;
-    private static final Path outputDir = Paths.get("target/mock");
+    private static final Class<?> MAIN_CLASS = Application.class;
+    private static final Path OUTPUT_DIR = Paths.get("target/mock");
 
     private static String f(String x) {
         return Character.toUpperCase(x.charAt(0)) + x.substring(1);
     }
 
     private static boolean accept(Class<?> key, List<?> list) {
-        return key.getPackage().getName().startsWith(mainClass.getPackage().getName()) && key.getEnclosingClass() == null && !list.isEmpty();
+        return key.getPackage().getName().startsWith(MAIN_CLASS.getPackage().getName()) && key.getEnclosingClass() == null && !list.isEmpty();
     }
 
     private static String getDefaultValue(Class<?> type) {
@@ -175,11 +178,11 @@ public class MockGenerator {
                     "@AutoConfigureMockMvc",
                     "@RunWith(SpringRunner.class)",
                     "@Slf4j",
-                    "@SpringBootTest(classes = " + mainClass.getSimpleName() + ".class)",
+                    "@SpringBootTest(classes = " + MAIN_CLASS.getSimpleName() + ".class)",
                     "@Transactional",
                     "@WebAppConfiguration");
 
-            testClass.addImport(mainClass);
+            testClass.addImport(MAIN_CLASS);
             testClass.addImport(AutoConfigureMockMvc.class);
             testClass.addImport(RunWith.class);
             testClass.addImport(SpringRunner.class);
@@ -200,7 +203,7 @@ public class MockGenerator {
                 generate(key, requestMappingInfo, handlerMethod, url, testClass, requestMethod);
             }
             testClass.write(out);
-            Path to = outputDir.resolve(key.getName().replace(".", "/") + "Test.java");
+            Path to = OUTPUT_DIR.resolve(key.getName().replace(".", "/") + "Test.java");
             Files.createDirectories(to.getParent());
             Files.write(to, sw.toString().replace("\t", "    ").getBytes(StandardCharsets.UTF_8));
             sw.getBuffer().setLength(0);
@@ -256,7 +259,7 @@ public class MockGenerator {
         Parameter[] parameters = method.getParameters();
         List<String> files = new ArrayList<>(4);
         List<String> pathVariables = new ArrayList<>(4);
-        List<String> headers = new ArrayList<>(4);
+        Map<String, String> headers = Maps.newTreeMap();
         String locale = null;
         for (MethodParameter methodParameter : methodParameters) {
             Class<?> type = methodParameter.getParameterType();
@@ -264,14 +267,15 @@ public class MockGenerator {
             String name = "";
             testClass.addImport(type);
             boolean unknown = false;
-            if (methodParameter.hasParameterAnnotation(RequestParam.class)) {
-                RequestParam requestParam = methodParameter.getParameterAnnotation(RequestParam.class);
+            RequestParam requestParam = methodParameter.getParameterAnnotation(RequestParam.class);
+            PathVariable pathVariable = methodParameter.getParameterAnnotation(PathVariable.class);
+            RequestHeader requestHeader = methodParameter.getParameterAnnotation(RequestHeader.class);
+            if (requestParam != null) {
                 name = requestParam.value();
                 if (name.isEmpty()) {
                     name = requestParam.name();
                 }
-            } else if (methodParameter.hasParameterAnnotation(PathVariable.class)) {
-                PathVariable pathVariable = methodParameter.getParameterAnnotation(PathVariable.class);
+            } else if (pathVariable != null) {
                 name = pathVariable.value();
                 if (name.isEmpty()) {
                     name = pathVariable.name();
@@ -287,8 +291,7 @@ public class MockGenerator {
                 bodyType = type;
                 variableDeclares.add("\t" + typeName + " request = " + getDefaultValue(type) + ";");
                 continue;
-            } else if (methodParameter.hasParameterAnnotation(RequestHeader.class)) {
-                RequestHeader requestHeader = methodParameter.getParameterAnnotation(RequestHeader.class);
+            } else if (requestHeader != null) {
                 name = requestHeader.value();
                 if (name.isEmpty()) {
                     name = requestHeader.name();
@@ -296,8 +299,9 @@ public class MockGenerator {
                 if (name.isEmpty()) {
                     name = parameters[methodParameter.getParameterIndex()].getName();
                 }
-                headers.add(name);
-                variableDeclares.add("\t" + typeName + " " + name + " = " + getDefaultValue(type) + ";");
+                String camelCase = camelCase(name);
+                headers.put(name, camelCase);
+                variableDeclares.add("\t" + typeName + " " + camelCase + " = " + getDefaultValue(type) + ";");
                 continue;
             } else if (HttpServletResponse.class == type || HttpServletRequest.class == type) {
                 continue;
@@ -312,20 +316,20 @@ public class MockGenerator {
                 name = parameters[methodParameter.getParameterIndex()].getName();
             }
             if (unknown && type.getClassLoader() != null && type != MultipartFile.class) {
-                ReflectionUtils.doWithFields(type, field -> process(field.getName(), field.getType(), params, files, variableDeclares, testClass, method, lowerMethod),
+                ReflectionUtils.doWithFields(type, field -> process(field.getName(), camelCase(field.getName()), field.getType(), params, files, variableDeclares, testClass, method, lowerMethod),
                         field -> !Modifier.isStatic(field.getModifiers()));
                 continue;
             } else if (unknown) {
                 System.err.println("param " + methodParameter.getParameterIndex() + " with type " + typeName + " in " + method + " has no annotation");
             }
-            process(name, type, params, files, variableDeclares, testClass, method, lowerMethod);
+            process(name, camelCase(name), type, params, files, variableDeclares, testClass, method, lowerMethod);
         }
         for (String variableDeclare : variableDeclares) {
             out.println(variableDeclare);
         }
         testClass.addImport(MvcResult.class);
         if (files.isEmpty()) {
-            testClass.addStaticImport("org.springframework.test.web.servlet.request.MockMvcRequestBuilders." + lowerMethod);
+            testClass.addStaticImport(MockMvcRequestBuilders.class, lowerMethod);
             out.print("\tMvcResult result = mvc.perform(" + lowerMethod + "(" + url);
             for (String pathVariable : pathVariables) {
                 out.print(", " + pathVariable);
@@ -336,7 +340,7 @@ public class MockGenerator {
             if (!ClassUtils.hasMethod(MockMvcRequestBuilders.class, "multipart", String.class, String[].class)) {
                 methodName = "fileUpload";
             }
-            testClass.addStaticImport("org.springframework.test.web.servlet.request.MockMvcRequestBuilders." + methodName);
+            testClass.addStaticImport(MockMvcRequestBuilders.class, methodName);
             out.print("\tMvcResult result = mvc.perform(" + methodName + "(" + url);
             for (String pathVariable : pathVariables) {
                 out.print(", " + pathVariable);
@@ -349,27 +353,28 @@ public class MockGenerator {
 
         boolean newLine = params.size() >= 2;
         for (Map.Entry<String, Class<?>> entry : params.entrySet()) {
-            String param = entry.getKey();
+            String paramName = entry.getKey();
+            String variableName = camelCase(paramName);
             Class<? extends Object> paramType = entry.getValue();
             String value;
             if (paramType.isPrimitive()) {
-                value = com.google.common.primitives.Primitives.wrap(paramType).getSimpleName() + ".toString(" + param + ")";
+                value = com.google.common.primitives.Primitives.wrap(paramType).getSimpleName() + ".toString(" + variableName + ")";
             } else if (paramType == String.class) {
-                value = param;
+                value = variableName;
             } else {
                 testClass.addImport(Objects.class);
-                value = "Objects.toString(" + param + ", \"\")";
+                value = "Objects.toString(" + variableName + ", \"\")";
             }
             if (newLine) {
                 out.println();
                 out.print("\t\t\t");
             }
-            out.print(".param(\"" + param + "\", " + value + ")");
+            out.print(".param(\"" + paramName + "\", " + value + ")");
         }
 
-        for (String header : headers) {
+        for (Map.Entry<String, String> entry : headers.entrySet()) {
             out.println();
-            out.print("\t\t\t.header(\"" + header + "\", " + header + ")");
+            out.print("\t\t\t.header(\"" + entry.getKey() + "\", " + entry.getValue() + ")");
         }
 
         if (locale != null) {
@@ -398,7 +403,7 @@ public class MockGenerator {
             testClass.addImport(MediaType.class);
             out.print(".contentType(MediaType.APPLICATION_JSON)");
         }
-        testClass.addStaticImport("org.springframework.test.web.servlet.result.MockMvcResultMatchers.status");
+        testClass.addStaticImport(MockMvcResultMatchers.class, "status");
         out.println(")");
         out.println("\t\t\t.andExpect(status().isOk())");
         out.println("\t\t\t.andReturn();");
@@ -406,17 +411,23 @@ public class MockGenerator {
         testClass.addMethod(sw.toString());
     }
 
-    private void process(String name, Class<?> type, Map<String, Class<?>> requestParams, List<String> files, List<String> variableDeclares, TestClass testClass, Method method, String lowerMethod) {
+    private String camelCase(String name) {
+        String tmp = MatcherWrapper.matcher("[^a-zA-Z]+([a-zA-Z])", name).replaceAll(x -> x.group(1).toUpperCase());
+        tmp = tmp.isEmpty() ? "" : Character.toLowerCase(tmp.charAt(0)) + tmp.substring(1);
+        return "referer".equals(tmp) ? "referrer" : tmp;
+    }
+
+    private void process(String paramName, String variableName, Class<?> type, Map<String, Class<?>> requestParams, List<String> files, List<String> variableDeclares, TestClass testClass, Method method, String lowerMethod) {
         if (type == MultipartFile.class) {
             assertEquals("upload a multipart file, but request method is " + lowerMethod + ", " + method, "post", lowerMethod);
             testClass.addImport(MockMultipartFile.class);
-            variableDeclares.add("\tbyte[] " + name + "Content = null;");
-            variableDeclares.add("\tMockMultipartFile " + name + " = new MockMultipartFile(\"" + name + "\", " + name + "Content);");
-            files.add(name);
+            variableDeclares.add("\tbyte[] " + variableName + "Content = null;");
+            variableDeclares.add("\tMockMultipartFile " + variableName + " = new MockMultipartFile(\"" + paramName + "\", " + variableName + "Content);");
+            files.add(variableName);
         } else {
-            requestParams.put(name, type);
+            requestParams.put(paramName, type);
             testClass.addImport(type);
-            variableDeclares.add("\t" + type.getSimpleName() + " " + name + " = " + getDefaultValue(type) + ";");
+            variableDeclares.add("\t" + type.getSimpleName() + " " + variableName + " = " + getDefaultValue(type) + ";");
         }
     }
 

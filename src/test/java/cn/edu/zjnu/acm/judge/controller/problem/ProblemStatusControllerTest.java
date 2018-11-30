@@ -3,18 +3,22 @@ package cn.edu.zjnu.acm.judge.controller.problem;
 import cn.edu.zjnu.acm.judge.Application;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.service.ProblemService;
+import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -63,8 +67,8 @@ public class ProblemStatusControllerTest {
         log.info("status");
         Problem problem = Problem.builder().contests(new long[]{0}).timeLimit(1000L).memoryLimit(65536L).build();
         problemService.save(problem);
-        long problem_id = problem.getId();
-        MvcResult result = mvc.perform(get("/problemstatus").param("problem_id", Long.toString(problem_id)))
+        long problemId = problem.getId();
+        MvcResult result = mvc.perform(get("/problemstatus").param("problem_id", Long.toString(problemId)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andReturn();

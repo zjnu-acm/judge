@@ -23,12 +23,14 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -59,10 +61,10 @@ public class SearchUserControllerTest {
     @Test
     public void testSearchuser() throws Exception {
         log.info("searchuser");
-        String user_id = mockDataService.user().getId();
+        String userId = mockDataService.user().getId();
         String position = "";
         MvcResult result = mvc.perform(get("/searchuser")
-                .param("user_id", user_id)
+                .param("user_id", userId)
                 .param("position", position))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))

@@ -1,11 +1,11 @@
 package cn.edu.zjnu.acm.judge.generator;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +31,7 @@ public class TestClass {
         this.className = _for.getSimpleName() + "Test";
         this.superclass = getSuperclass(superclass);
         this._package = _for.getPackage().getName();
-        this.classAnnotations = new ArrayList<>(Arrays.asList(annotations));
+        this.classAnnotations = ImmutableList.copyOf(annotations);
     }
 
     private String getSuperclass(Class<?> superclass) {
@@ -53,12 +53,8 @@ public class TestClass {
         imports.add("import " + _import.getCanonicalName() + ";");
     }
 
-    public void addImport(String _import) {
-        imports.add("import " + _import + ";");
-    }
-
-    public void addStaticImport(String _import) {
-        imports.add("import static " + _import + ";");
+    public void addStaticImport(Class<?> targetClass, String field) {
+        imports.add("import static " + targetClass.getCanonicalName() + "." + field + ";");
     }
 
     public void write(PrintWriter out) {
@@ -90,7 +86,7 @@ public class TestClass {
 
     public void addField(Class<?> type, String name, String... annotations) {
         addImport(type);
-        fields.put(name, new Field(type.getSimpleName(), name, Arrays.asList(annotations)));
+        fields.put(name, new Field(type.getSimpleName(), name, ImmutableList.copyOf(annotations)));
     }
 
     public void addMethod(String methodContent) {

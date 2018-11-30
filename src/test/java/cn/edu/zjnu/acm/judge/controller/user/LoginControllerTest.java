@@ -39,10 +39,10 @@ public class LoginControllerTest {
         log.info("login");
         String url = "";
         String referrer = "";
-        String contest_id = "";
+        String contestId = "";
         MvcResult result = mvc.perform(get("/loginpage")
                 .param("url", url)
-                .param("contest_id", contest_id)
+                .param("contest_id", contestId)
                 .header("Referer", referrer))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
