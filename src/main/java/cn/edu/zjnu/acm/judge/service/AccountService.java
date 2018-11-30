@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.Instant;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -128,12 +129,12 @@ public class AccountService {
                 .filter(account -> Boolean.TRUE.equals(account.getExists()))
                 .collect(Collectors.toList());
         if (!exists.isEmpty()) {
-            int mask = EnumUtils.toMask(form.getExistsPolicy());
-            if (mask == 0) {
+            EnumSet<AccountImportForm.ExistPolicy> set = EnumSet.copyOf(form.getExistsPolicy());
+            if (set.isEmpty()) {
                 throw new BusinessException(BusinessCode.IMPORT_USER_EXISTS);
             }
             boolean hasAdmin = userRoleMapper.countAdmin(exists.stream().map(Account::getId).toArray(String[]::new)) != 0;
-            if (hasAdmin && (mask & (1 << AccountImportForm.ExistPolicy.RESET_PASSWORD.ordinal())) != 0) {
+            if (hasAdmin && set.contains(AccountImportForm.ExistPolicy.RESET_PASSWORD)) {
                 throw new BusinessException(BusinessCode.IMPORT_USER_RESET_PASSWORD_FORBIDDEN);
             }
             long current = userMapper.countAllByUserIds(exists.stream().map(Account::getId).collect(Collectors.toList()));
@@ -141,7 +142,7 @@ public class AccountService {
                 throw new BusinessException(BusinessCode.IMPORT_USER_EXISTS_CHANGE);
             }
             prepare(exists);
-            userMapper.batchUpdate(exists, mask);
+            userMapper.batchUpdate(exists, EnumUtils.toMask(set));
         }
         List<Account> notExists = accounts.stream()
                 .filter(account -> !Boolean.TRUE.equals(account.getExists()))
