@@ -129,7 +129,8 @@ public class AccountService {
                 .filter(account -> Boolean.TRUE.equals(account.getExists()))
                 .collect(Collectors.toList());
         if (!exists.isEmpty()) {
-            EnumSet<AccountImportForm.ExistPolicy> set = EnumSet.copyOf(form.getExistsPolicy());
+            EnumSet<AccountImportForm.ExistPolicy> set = EnumSet.noneOf(AccountImportForm.ExistPolicy.class);
+            set.addAll(form.getExistsPolicy());
             if (set.isEmpty()) {
                 throw new BusinessException(BusinessCode.IMPORT_USER_EXISTS);
             }
