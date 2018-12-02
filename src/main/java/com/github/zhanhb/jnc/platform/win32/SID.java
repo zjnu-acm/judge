@@ -98,6 +98,10 @@ public class SID extends jnc.foreign.Struct {
         return subAuthority;
     }
 
+    public boolean isValid() {
+        return Advapi32.INSTANCE.IsValidSid(this);
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

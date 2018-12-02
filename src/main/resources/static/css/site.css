@@ -131,6 +131,9 @@ tr.top {
     display: inline;
     margin: 8px;
 }
+.problem-list .status {
+    width: 5%;
+}
 .problem-list .ac .status {
     background: url(data:image/gif;base64,R0lGODlhFAAUAMQAAAAAAP////wFBfUGBvQMDPUUFNcYGOQgILkbG/ElJdomJuo6Otg7O740NMY9PZ81Nd5aWt9iYqFKSrBVVW84ONxxcclqarZjY6teXtV+foVbW6l8fGxgYP///wAAAAAAACH5BAEAAB0ALAAAAAAUABQAAAVTYCeOZGmeaIau3ZKoLJklhRWTkVBc95jvPRFEhwl2hgKHsVNIsioLyCghOGhYTYFtISBIYsgDQyBocG4KMvkQnAzUD6OBbFg6BgjKcvNd+v+AIyEAOw==) center no-repeat;
     *background: url(../images/accepted.gif) center no-repeat;

@@ -33,6 +33,7 @@ import java.util.Objects;
 import java.util.function.IntFunction;
 import jnc.foreign.byref.AddressByReference;
 import jnc.foreign.byref.IntByReference;
+import lombok.extern.slf4j.Slf4j;
 
 import static com.github.zhanhb.jnc.platform.win32.ACCESS_MODE.GRANT_ACCESS;
 import static com.github.zhanhb.jnc.platform.win32.ACCESS_MODE.REVOKE_ACCESS;
@@ -47,6 +48,7 @@ import static com.github.zhanhb.jnc.platform.win32.TOKEN_INFORMATION_CLASS.Token
 import static com.github.zhanhb.jnc.platform.win32.TOKEN_INFORMATION_CLASS.TokenUser;
 import static com.github.zhanhb.jnc.platform.win32.TOKEN_TYPE.TokenPrimary;
 import static com.github.zhanhb.jnc.platform.win32.TRUSTEE_FORM.TRUSTEE_IS_SID;
+import static com.github.zhanhb.jnc.platform.win32.TRUSTEE_TYPE.TRUSTEE_IS_UNKNOWN;
 import static com.github.zhanhb.jnc.platform.win32.WELL_KNOWN_SID_TYPE.WinRestrictedCodeSid;
 import static com.github.zhanhb.jnc.platform.win32.WinError.ERROR_SUCCESS;
 import static com.github.zhanhb.jnc.platform.win32.WinNT.DUPLICATE_SAME_ACCESS;
@@ -63,6 +65,7 @@ import static com.github.zhanhb.judge.win32.IntegrityLevel.INTEGRITY_LEVEL_LAST;
  *
  * @author zhanhb
  */
+@Slf4j
 public class RestrictedToken implements Closeable {
 
     private static void addSidToDacl(long pSid,
@@ -79,7 +82,12 @@ public class RestrictedToken implements Closeable {
         trustee.setMultipleTrustee(0/*nullptr*/);
         trustee.setMultipleTrusteeOperation(NO_MULTIPLE_TRUSTEE);
         trustee.setTrusteeForm(TRUSTEE_IS_SID);
+        trustee.setTrusteeType(TRUSTEE_IS_UNKNOWN);
         trustee.setName(pSid);
+
+        if (log.isDebugEnabled()) {
+            log.debug("addSidToDacl: {} {}", accessMode, SID.toString(pSid));
+        }
 
         int error = Advapi32.INSTANCE.SetEntriesInAclW(1, newAccess, oldDacl,
                 newDacl);
@@ -234,6 +242,8 @@ public class RestrictedToken implements Closeable {
         int restrictSize = sidsToRestrict.size();
         int privilegesSize = privilegesToDisable.size();
 
+        log.debug("createRestrictedToken: {} {} {}", sidsForDenyOnly, privilegesToDisable, sidsToRestrict);
+
         Array<SID_AND_ATTRIBUTES> denyOnlyArray = null;
         if (denySize != 0) {
             denyOnlyArray = new Array<>(SID_AND_ATTRIBUTES.class, SID_AND_ATTRIBUTES::new, denySize);
@@ -315,7 +325,7 @@ public class RestrictedToken implements Closeable {
                     0));
             return tokenHandle.getValue();
         } finally {
-            Kernel32.INSTANCE.CloseHandle(newToken);
+            Handle.close(newToken);
         }
     }
 
@@ -340,10 +350,10 @@ public class RestrictedToken implements Closeable {
                         0));
                 return tokenHandle.getValue();
             } finally {
-                Kernel32.INSTANCE.CloseHandle(impersonationToken);
+                Handle.close(impersonationToken);
             }
         } finally {
-            Kernel32.INSTANCE.CloseHandle(restrictedToken);
+            Handle.close(restrictedToken);
         }
     }
 
@@ -404,7 +414,7 @@ public class RestrictedToken implements Closeable {
     public void deleteAllPrivileges(Collection<LUID> exceptions) {
         Objects.requireNonNull(exceptions);
         TOKEN_PRIVILEGES tokenPrivileges = getTokenPrivileges(effectiveToken);
-
+        log.debug("deleteAllPrivileges: delete all except '{}' from {}", exceptions, tokenPrivileges);
         // Build the list of privileges to disable
         for (int i = 0, n = tokenPrivileges.getPrivilegeCount(); i < n; ++i) {
             LUID luid = tokenPrivileges.get(i).getLuid();
@@ -495,7 +505,7 @@ public class RestrictedToken implements Closeable {
 
     @Override
     public void close() {
-        Kernel32.INSTANCE.CloseHandle(effectiveToken);
+        Handle.close(effectiveToken);
     }
 
 }

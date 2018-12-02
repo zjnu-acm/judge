@@ -95,6 +95,7 @@ public class LocaleService {
     public List<DomainLocale> support(boolean all) {
         Locale[] locales = Locale.getAvailableLocales();
         Stream<Locale> stream = Arrays.stream(locales);
+        // if not all, only languages available
         if (!all) {
             stream = stream.map(locale -> Locale.forLanguageTag(locale.getLanguage()));
         }
@@ -104,9 +105,9 @@ public class LocaleService {
                 .sorted(DEFAULT_DOMAIN_LOCALE_COMPARATOR).distinct().collect(Collectors.toList());
     }
 
-    private static interface ControlHolder {
+    private interface ControlHolder {
 
-        static final ResourceBundle.Control CONTROL = ResourceBundle.Control.getNoFallbackControl(ResourceBundle.Control.FORMAT_PROPERTIES);
+        ResourceBundle.Control CONTROL = ResourceBundle.Control.getNoFallbackControl(ResourceBundle.Control.FORMAT_PROPERTIES);
 
     }
 

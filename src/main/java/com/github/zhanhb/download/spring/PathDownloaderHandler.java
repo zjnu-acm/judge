@@ -55,7 +55,7 @@ public class PathDownloaderHandler implements HandlerMethodReturnValueHandler {
         ToDownload toDownload = returnType.getMethodAnnotation(ToDownload.class);
 
         PathPartial d = toDownload.attachment() ? downloader : viewer;
-        d.service(request, response, Path.class.cast(returnValue));
+        d.service(request, response, (Path) returnValue);
         mavContainer.setRequestHandled(true);
     }
 

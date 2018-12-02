@@ -21,27 +21,75 @@ package com.github.zhanhb.jnc.platform.win32;
  */
 public enum JOBOBJECTINFOCLASS {
 
+    /**
+     * @see JOBOBJECT_BASIC_ACCOUNTING_INFORMATION
+     * @see Kernel32#QueryInformationJobObject
+     */
     JobObjectBasicAccountingInformation,
     /**
      * @see JOBOBJECT_BASIC_LIMIT_INFORMATION
+     * @see Kernel32#QueryInformationJobObject
+     * @see Kernel32#SetInformationJobObject
      */
     JobObjectBasicLimitInformation,
+    /**
+     * @see JOBOBJECT_BASIC_PROCESS_ID_LIST
+     * @see Kernel32#QueryInformationJobObject
+     */
     JobObjectBasicProcessIdList,
     /**
      * @see JOBOBJECT_BASIC_UI_RESTRICTIONS
+     * @see Kernel32#QueryInformationJobObject
+     * @see Kernel32#SetInformationJobObject
      */
     JobObjectBasicUIRestrictions,
+    /**
+     * @deprecated Only support on windows XP
+     * @see JOBOBJECT_SECURITY_LIMIT_INFORMATION
+     * @see Kernel32#QueryInformationJobObject
+     * @see Kernel32#SetInformationJobObject
+     */
     JobObjectSecurityLimitInformation,
+    /**
+     * @see Kernel32#QueryInformationJobObject
+     * @see Kernel32#SetInformationJobObject
+     */
     JobObjectEndOfJobTimeInformation,
+    /**
+     * @see Kernel32#SetInformationJobObject
+     */
     JobObjectAssociateCompletionPortInformation,
+    /**
+     * @see JOBOBJECT_BASIC_AND_IO_ACCOUNTING_INFORMATION
+     * @see Kernel32#QueryInformationJobObject
+     */
     JobObjectBasicAndIoAccountingInformation,
+    /**
+     * @see JOBOBJECT_EXTENDED_LIMIT_INFORMATION
+     * @see Kernel32#QueryInformationJobObject
+     * @see Kernel32#SetInformationJobObject
+     */
     JobObjectExtendedLimitInformation,
     JobObjectJobSetInformation,
+    /**
+     * @see Kernel32#QueryInformationJobObject
+     * @see Kernel32#SetInformationJobObject
+     */
     JobObjectGroupInformation,
+    /**
+     * @see Kernel32#QueryInformationJobObject
+     * @see Kernel32#SetInformationJobObject
+     */
     JobObjectNotificationLimitInformation,
+    /**
+     * @see JOBOBJECT_LIMIT_VIOLATION_INFORMATION
+     * @see Kernel32#QueryInformationJobObject
+     */
     JobObjectLimitViolationInformation,
     JobObjectGroupInformationEx,
-    JobObjectCpuRateControlInformation;
+    JobObjectCpuRateControlInformation,
+    JobObjectCompletionFilter,
+    JobObjectCompletionCounter;
 
     public int value() {
         return ordinal() + 1;

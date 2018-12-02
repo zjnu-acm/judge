@@ -28,6 +28,7 @@ public interface Kernel32 {
      * previous suspend count. If the function fails, the return value is
      * (DWORD) -1. To get extended error information, call GetLastError.
      */
+    /*Kernel32.dll; KernelBase.dll on Windows Phone 8.1*/
     @uint32_t
     int ResumeThread(@uintptr_t long /*HANDLE*/ hThread);
 

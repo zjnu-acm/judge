@@ -42,7 +42,7 @@ public class ExtensionsViewer {
                 .filter(pp -> !getExtension(pp).isEmpty())
                 .collect(Collectors.groupingBy(ExtensionsViewer::getExtension));
         map.keySet().removeIf(Files.lines(path.resolve(".gitattributes"))
-                .map(str -> str.trim())
+                .map(String::trim)
                 .filter(str -> str.startsWith("*."))
                 .map(str -> str.replaceAll("\\*\\.|\\s.+", ""))
                 .collect(Collectors.toSet())::contains);

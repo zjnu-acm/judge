@@ -299,7 +299,6 @@ public class JudgeService {
         }
     }
 
-    @SuppressWarnings("CallToThreadYield")
     private void delete(Path path) throws IOException {
         Objects.requireNonNull(path, "path");
         if (!judgeConfiguration.isDeleteTempFile()) {

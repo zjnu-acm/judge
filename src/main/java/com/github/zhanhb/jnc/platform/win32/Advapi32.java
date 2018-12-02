@@ -146,4 +146,7 @@ public interface Advapi32 {
     boolean LookupPrivilegeNameW(Pointer lpSystemName, LUID lpLuid,
             char[] lpName, IntByReference cchName);
 
+    @int32_t
+    boolean IsValidSid(SID pSid);
+
 }

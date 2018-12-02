@@ -74,7 +74,7 @@ public class JudgeProcess {
         FILETIME ftKernelTime = new FILETIME();
         FILETIME ftUserTime = new FILETIME();
         Kernel32Util.assertTrue(Kernel32.INSTANCE.GetProcessTimes(hProcess, tmp, tmp, ftKernelTime, ftUserTime));
-        return (ftUserTime.longValue() + ftKernelTime.longValue()) / 10000;
+        return Long.divideUnsigned(ftUserTime.longValue() + ftKernelTime.longValue(), 10000);
     }
 
     public Status getStatus() {

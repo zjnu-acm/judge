@@ -26,6 +26,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeTrue;
 
 /**
@@ -60,6 +61,7 @@ public class IntegrityLevelTest {
             } finally {
                 Kernel32Util.freeLocalMemory(pSid.getValue());
             }
+            assertTrue(sid.isValid());
             String sidString = sid.toString();
             assertEquals(integrityLevelStr, sidString);
         }

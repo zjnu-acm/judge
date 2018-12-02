@@ -71,6 +71,10 @@ public class TRUSTEE extends jnc.foreign.Struct {
         this.TrusteeType.set(trusteeType);
     }
 
+    public void setTrusteeType(TRUSTEE_TYPE trusteeType) {
+        setTrusteeType(trusteeType.value());
+    }
+
     public void setName(long name) {
         this.ptstrName.set(name);
     }
