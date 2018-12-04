@@ -82,8 +82,7 @@ public class SandboxTest {
     @Test
     public void testCreateRestrictedToken() {
         log.info("CreateRestrictedToken");
-        Sandbox instance = new Sandbox();
-        Handle.close(instance.createRestrictedToken(securityLevel, integrityLevel, tokenType, lockdownDefaultDacl));
+        Handle.close(Sandbox.INSTANCE.createRestrictedToken(securityLevel, integrityLevel, tokenType, lockdownDefaultDacl));
     }
 
 }

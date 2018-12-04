@@ -20,7 +20,9 @@ import static com.github.zhanhb.jnc.platform.win32.WELL_KNOWN_SID_TYPE.WinWorldS
 import static com.github.zhanhb.jnc.platform.win32.WinError.ERROR_BAD_ARGUMENTS;
 import static com.github.zhanhb.jnc.platform.win32.WinNT.SE_CHANGE_NOTIFY_NAME;
 
-public class Sandbox {
+public enum Sandbox {
+
+    INSTANCE;
 
     private final SID SID_NULL = SID.ofWellKnown(WinNullSid);
     private final SID SID_WORLD = SID.ofWellKnown(WinWorldSid);

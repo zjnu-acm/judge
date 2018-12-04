@@ -68,8 +68,7 @@ public class WindowsExecutor implements Executor {
     private final Handle hToken;
 
     public WindowsExecutor() {
-        Sandbox sandbox = new Sandbox();
-        hToken = new Handle(sandbox.createRestrictedToken(
+        hToken = new Handle(Sandbox.INSTANCE.createRestrictedToken(
                 TokenLevel.USER_LIMITED,
                 IntegrityLevel.INTEGRITY_LEVEL_LOW,
                 TokenType.PRIMARY,
