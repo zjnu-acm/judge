@@ -43,7 +43,6 @@ import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import lombok.SneakyThrows;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.CellValue;
@@ -115,7 +114,7 @@ public class ExcelUtil {
         Workbook workbook;
         try {
             workbook = WorkbookFactory.create(inputStream);
-        } catch (InvalidFormatException ex) {
+        } catch (IOException ex) {
             throw new BusinessException(BusinessCode.INVALID_EXCEL);
         }
         FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
@@ -154,10 +153,10 @@ public class ExcelUtil {
     }
 
     private static JsonElement parseAsJsonElement(Cell cell, FormulaEvaluator evaluator) {
-        switch (cell.getCellTypeEnum()) {
+        switch (cell.getCellType()) {
             case NUMERIC:
                 if (HSSFDateUtil.isCellDateFormatted(cell)) {
-                    return new JsonPrimitive(DateFormatterHolder.formatter.format(cell.getDateCellValue().toInstant()));
+                    return new JsonPrimitive(DateFormatterHolder.FORMATTER.format(cell.getDateCellValue().toInstant()));
                 } else {
                     return new JsonPrimitive(cell.getNumericCellValue());
                 }
@@ -165,7 +164,7 @@ public class ExcelUtil {
                 return new JsonPrimitive(cell.getStringCellValue());
             case FORMULA:
                 CellValue cellValue = evaluator.evaluate(cell);
-                switch (cellValue.getCellTypeEnum()) {
+                switch (cellValue.getCellType()) {
                     case NUMERIC:
                         return new JsonPrimitive(cellValue.getNumberValue());
                     case STRING:
@@ -211,7 +210,7 @@ public class ExcelUtil {
 
     private interface DateFormatterHolder {
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d H:mm:ss", Locale.US)
+        DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-M-d H:mm:ss", Locale.US)
                 .withZone(ZoneId.systemDefault());
 
     }
