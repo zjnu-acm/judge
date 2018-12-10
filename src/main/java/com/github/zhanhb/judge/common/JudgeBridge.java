@@ -44,7 +44,7 @@ public class JudgeBridge implements Closeable {
                 break;
             }
         }
-        return list.toArray(new ExecuteResult[0]);
+        return list.toArray(new ExecuteResult[list.size()]);
     }
 
     @Override

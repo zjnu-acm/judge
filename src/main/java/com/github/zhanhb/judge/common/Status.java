@@ -26,7 +26,7 @@ public enum Status {
         this.toString = MatcherWrapper.matcher("(^|_)(?i)([A-Z]+)", name()).replaceAll(matcher -> {
             String prefix = matcher.group(1);
             String partial = matcher.group(2);
-            return (prefix.isEmpty() ? "" : " ") + partial.substring(0, 1) + partial.substring(1).toLowerCase();
+            return (prefix.isEmpty() ? "" : " ") + Character.toUpperCase(partial.charAt(0)) + partial.substring(1).toLowerCase();
         });
     }
 
