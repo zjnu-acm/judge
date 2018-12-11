@@ -150,8 +150,16 @@
         <actionName>CUSTOM-sortpom:sort</actionName>
         <displayName>sortpom:sort</displayName>
         <goals>
-            <goal>sortpom:sort</goal>
+            <goal>com.github.ekryd.sortpom:sortpom-maven-plugin:sort</goal>
         </goals>
+        <properties>
+            <sort.sortProperties>true</sort.sortProperties>
+            <sort.nrOfIndentSpace>4</sort.nrOfIndentSpace>
+            <sort.sortDependencies>groupId,artifactId</sort.sortDependencies>
+            <sort.sortPlugins>groupId,artifactId</sort.sortPlugins>
+            <sort.keepBlankLines>true</sort.keepBlankLines>
+            <sort.expandEmptyElements>false</sort.expandEmptyElements>
+        </properties>
     </action>
     <action>
         <actionName>CUSTOM-build skip test</actionName>
