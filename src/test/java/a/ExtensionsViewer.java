@@ -15,7 +15,13 @@
  */
 package a;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -35,13 +41,32 @@ public class ExtensionsViewer {
      */
     @SuppressWarnings("UseOfSystemOutOrSystemErr")
     public static void main(String[] args) throws IOException {
-        Path path = Paths.get(".");
-        Map<String, List<Path>> map = Files.walk(path).filter(p -> p.getNameCount() == 1 || !p.getName(1).toString()
-                .matches("target|\\.(?:git|idea|svn|settings)"))
-                .filter(Files::isRegularFile)
-                .filter(pp -> !getExtension(pp).isEmpty())
-                .collect(Collectors.groupingBy(ExtensionsViewer::getExtension));
-        map.keySet().removeIf(Files.lines(path.resolve(".gitattributes"))
+        Process process = new ProcessBuilder()
+                .command("git", "ls-files", "-z", "--", ":(glob,top,exclude).gitattributes")
+                .redirectErrorStream(true).start();
+        Map<String, List<Path>> map = Maps.newLinkedHashMap();
+        try (InputStream is = process.getInputStream();
+                InputStreamReader ir = new InputStreamReader(is, StandardCharsets.UTF_8);
+                BufferedReader br = new BufferedReader(ir)) {
+            for (StringBuilder sb = new StringBuilder(20);;) {
+                int x = br.read();
+                if (x == -1) {
+                    break;
+                }
+                if (x != 0) {
+                    sb.append((char) x);
+                    continue;
+                }
+                Path path = Paths.get(sb.toString());
+                String extension = getExtension(path);
+                if (extension.isEmpty()) {
+                    continue;
+                }
+                map.computeIfAbsent(extension, __ -> Lists.newArrayList()).add(path);
+                sb.setLength(0);
+            }
+        }
+        map.keySet().removeIf(Files.lines(Paths.get(".gitattributes"))
                 .map(String::trim)
                 .filter(str -> str.startsWith("*."))
                 .map(str -> str.replaceAll("\\*\\.|\\s.+", ""))
@@ -51,7 +76,8 @@ public class ExtensionsViewer {
 
     private static String getExtension(Path path) {
         String name = path.getFileName().toString();
-        return name.lastIndexOf('.') > 0 ? name.substring(name.lastIndexOf('.') + 1) : "";
+        int lastIndexOf = name.lastIndexOf('.');
+        return lastIndexOf > 0 ? name.substring(lastIndexOf + 1) : "";
     }
 
 }
