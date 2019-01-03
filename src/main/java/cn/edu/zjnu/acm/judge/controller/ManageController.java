@@ -15,13 +15,12 @@
  */
 package cn.edu.zjnu.acm.judge.controller;
 
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 
@@ -55,9 +54,13 @@ public class ManageController {
     }
 
     @GetMapping
-    public String index(RedirectAttributes attributes, @RequestParam Map<String, String> query) {
-        attributes.addAllAttributes(query);
-        return "redirect:/admin/";
+    public String index(HttpServletRequest request) {
+        String query = request.getQueryString();
+        if (StringUtils.isEmpty(query)) {
+            return "redirect:/admin/";
+        } else {
+            return "redirect:/admin/?" + query;
+        }
     }
 
 }
