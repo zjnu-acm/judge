@@ -54,7 +54,7 @@ public class ManageControllerTest {
     @Test
     public void testIndex() throws Exception {
         log.info("index");
-        MvcResult result = mvc.perform(get("/admin").param("testKey", "testValue"))
+        mvc.perform(get("/admin?testKey=testValue"))
                 .andExpect(redirectedUrl("/admin/?testKey=testValue"))
                 .andReturn();
     }

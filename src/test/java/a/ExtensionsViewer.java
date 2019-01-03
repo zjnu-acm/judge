@@ -69,7 +69,7 @@ public class ExtensionsViewer {
         map.keySet().removeIf(Files.lines(Paths.get(".gitattributes"))
                 .map(String::trim)
                 .filter(str -> str.startsWith("*."))
-                .map(str -> str.replaceAll("\\*\\.|\\s.+", ""))
+                .map(str -> str.replaceAll("^\\*\\.|\\s.+$", ""))
                 .collect(Collectors.toSet())::contains);
         System.out.println(map);
     }

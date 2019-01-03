@@ -42,6 +42,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import lombok.SneakyThrows;
+import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -110,11 +111,11 @@ public class ExcelUtil {
         });
     }
 
-    public static <T> List<T> parse(InputStream inputStream, Class<T> type, @Nullable Locale locale) throws IOException {
+    public static <T> List<T> parse(InputStream inputStream, Class<T> type, @Nullable Locale locale) {
         Workbook workbook;
         try {
             workbook = WorkbookFactory.create(inputStream);
-        } catch (IOException ex) {
+        } catch (IOException | IllegalStateException ex) {
             throw new BusinessException(BusinessCode.INVALID_EXCEL);
         }
         FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
@@ -122,19 +123,19 @@ public class ExcelUtil {
     }
 
     private static <T> List<T> parse(Workbook workbook, FormulaEvaluator evaluator, Class<T> type, @Nullable Locale locale) {
-        MetaInfo<T> metainfo = MetaInfo.forType(type, locale);
+        MetaInfo<T> metaInfo = MetaInfo.forType(type, locale);
         Sheet sheet = workbook.getSheetAt(workbook.getActiveSheetIndex());
         Iterator<Row> rows = sheet.rowIterator();
         if (!rows.hasNext()) {
             return Collections.emptyList();
         }
         Row firstRow = rows.next();
-        Map<Integer, String> columnIndexToFieldName = Maps.newHashMapWithExpectedSize(metainfo.size());
+        Map<Integer, String> columnIndexToFieldName = Maps.newHashMapWithExpectedSize(metaInfo.size());
         for (Iterator<Cell> it = firstRow.cellIterator(); it.hasNext();) {
             Cell cell = it.next();
             JsonElement jsonElement = parseAsJsonElement(cell, evaluator);
             if (jsonElement != null) {
-                Field field = metainfo.getField(jsonElement.getAsString());
+                Field field = metaInfo.getField(jsonElement.getAsString());
                 if (field != null) {
                     String name = field.getName();
                     int index = cell.getColumnIndex();

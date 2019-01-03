@@ -19,12 +19,15 @@ import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 import java.nio.charset.StandardCharsets;
 import java.util.function.Supplier;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  *
  * @author zhanhb
  */
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class MessageDigestPasswordEncoder implements PasswordEncoder {
 
     @Deprecated
@@ -50,10 +53,6 @@ public class MessageDigestPasswordEncoder implements PasswordEncoder {
     }
 
     private final Supplier<HashFunction> s;
-
-    private MessageDigestPasswordEncoder(Supplier<HashFunction> s) {
-        this.s = s;
-    }
 
     @Override
     public String encode(CharSequence password) {

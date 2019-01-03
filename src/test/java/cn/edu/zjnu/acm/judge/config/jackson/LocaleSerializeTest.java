@@ -17,8 +17,10 @@ package cn.edu.zjnu.acm.judge.config.jackson;
 
 import cn.edu.zjnu.acm.judge.Application;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.Locale;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,19 +48,23 @@ public class LocaleSerializeTest {
     public void testToJson() throws IOException {
         for (Locale expect : new Locale[]{
             Locale.US,
+            Locale.forLanguageTag("zh-TW-x-lvariant-Hant"),
+            Locale.TAIWAN,
             new Locale("zh", "TW", "Hant"),
             Locale.ENGLISH,
             Locale.ROOT,
             null
         }) {
             String str = objectMapper.writeValueAsString(expect);
-            assertEquals(expect == null ? "null" : '"' + expect.toLanguageTag() + '"', str);
+            String tag = Optional.ofNullable(expect).map(Locale::toLanguageTag).orElse(null);
+            String expectStr = new Gson().toJson(tag);
+            assertEquals(expectStr, str);
             Locale result = objectMapper.readValue(str, Locale.class);
             log.info("str={}, expect={}, result={}", str, expect, result);
             assertEquals(expect, result);
 
             str = objectMapper.writeValueAsString(LocaleHolder.builder().locale(expect).build());
-            log.info("str={}, expect={}, result={}", str, expect, result);
+            log.info("str={}", str);
 
             result = objectMapper.readValue(str, LocaleHolder.class).getLocale();
             assertEquals(expect, result);

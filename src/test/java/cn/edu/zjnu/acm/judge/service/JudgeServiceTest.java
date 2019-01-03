@@ -232,7 +232,7 @@ public class JudgeServiceTest {
         }
 
         @PreDestroy
-        public void destory() throws IOException {
+        public void destroy() throws IOException {
             languageMapper.deleteById(groovyLanguage);
             submissions.forEach(submissionService::delete);
             DeleteHelper.delete(dataDir);

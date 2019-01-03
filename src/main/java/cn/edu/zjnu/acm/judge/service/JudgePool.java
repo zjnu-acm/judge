@@ -63,7 +63,7 @@ public class JudgePool {
     }
 
     @PreDestroy
-    public void destory() {
+    public void destroy() {
         executorService.shutdownNow();
     }
 

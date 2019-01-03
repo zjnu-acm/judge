@@ -270,7 +270,7 @@
                             <a ui-sref="problem-view-current({id:p.id})" ui-sref-opts="{reload: true}">{{p.title||'无标题'}}</a>
                         </td>
                         <td>{{p.disabled?'已禁用':'可用'}}</td>
-                        <td>{{p.inDate | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                        <td>{{p.inDate| date:'yyyy-MM-dd HH:mm:ss'}}</td>
                         <td>
                             <a class="btn btn-default" ui-sref="problem-edit-current({id:p.id})" ui-sref-opts="{reload: true}">编辑</a>
                             <button class="btn btn-default" type="button" ng-show="p.disabled" ng-click="enable(p)">启用</button>
@@ -349,7 +349,7 @@
                             <a ui-sref="contest-view({id:item.id})" ui-sref-opts="{reload: true}">{{item.title}}</a>
                         </td>
                         <td width="25%">
-                            <span ng-show="contestStatus(item) === 'ERROR'" style="color: red">ERROR<br/>start at {{item.startTime | date:'yyyy-MM-dd HH:mm'}}<br/>end at {{item.endTime | date:'yyyy-MM-dd HH:mm'}}</span>
+                            <span ng-show="contestStatus(item) === 'ERROR'" style="color: red">ERROR<br/>start at {{item.startTime| date:'yyyy-MM-dd HH:mm'}}<br/>end at {{item.endTime| date:'yyyy-MM-dd HH:mm'}}</span>
                             <span ng-hide="contestStatus(item) === 'ERROR'" ng-style="statusColor(item)">{{contestStatus(item)}}</span>
                         </td>
                         <td>
@@ -366,8 +366,8 @@
         <h2 class="text-center">Contest - {{contest.title}}</h2>
         <div class="text-center">
             <div>
-                <label>Start time: </label><span style="color: #939">{{contest.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</span>
-                <label>End time: </label><span style="color: #939">{{contest.endTime | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+                <label>Start time: </label><span style="color: #939">{{contest.startTime| date:'yyyy-MM-dd HH:mm:ss'}}</span>
+                <label>End time: </label><span style="color: #939">{{contest.endTime| date:'yyyy-MM-dd HH:mm:ss'}}</span>
             </div>
             <div>
                 <label>Current System Time: </label><span style="color: #939" current-time="yyyy-MM-dd HH:mm:ss" interval="1000">2016-03-28 16:17:18</span>
@@ -490,7 +490,7 @@
 
         <!--/*/<script type="text/ng-template" id="account-import.html">/*/-->
         <h3>导入用户</h3>
-        <form ng-submit="pageChanged(0,params)">
+        <form ng-submit="pageChanged(0, params)">
             <label th:for="${#ids.next('userId')}">用户名：</label>
             <input th:id="${#ids.seq('userId')}" name="userId" ng-model="params.id"/>
             <label th:for="${#ids.next('nick')}">昵称</label>

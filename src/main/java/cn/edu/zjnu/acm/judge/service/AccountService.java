@@ -79,7 +79,7 @@ public class AccountService {
         return userMapper.findAllByExport(form, PageRequest.of(0, Integer.MAX_VALUE, pageable.getSort()));
     }
 
-    public List<Account> parseExcel(InputStream inputStream, @Nullable Locale locale) throws IOException {
+    public List<Account> parseExcel(InputStream inputStream, @Nullable Locale locale) {
         List<Account> accounts = ExcelUtil.parse(inputStream, Account.class, locale).stream()
                 .filter(account -> StringUtils.hasText(account.getId()))
                 .collect(Collectors.toList());
