@@ -59,6 +59,7 @@
         <prerequisites.maven>3.3.1</prerequisites.maven>
         <slf4j.version>1.7.26</slf4j.version>
         <start-class>cn.edu.zjnu.acm.judge.Application</start-class>
+        <thymeleaf-layout-dialect.version>2.4.1</thymeleaf-layout-dialect.version>
         <unbescape.version>1.1.6.RELEASE</unbescape.version>
     </properties>
 
