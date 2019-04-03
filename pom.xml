@@ -48,7 +48,7 @@
         <argLine />
         <delombok.directory>${project.build.directory}/delombok</delombok.directory>
         <findbugs-jsr305.version>3.0.2</findbugs-jsr305.version>
-        <guava.version>27.0.1-jre</guava.version>
+        <guava.version>27.1-jre</guava.version>
         <hibernate-validator.version>6.0.15.Final</hibernate-validator.version>
         <hikaricp.version>3.3.1</hikaricp.version>
         <jacoco.propertyName>argLine</jacoco.propertyName>
