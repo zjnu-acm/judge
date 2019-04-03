@@ -15,6 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.config.thymeleaf;
 
+import nz.net.ultraq.thymeleaf.LayoutDialect;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
@@ -25,6 +26,11 @@ public class ThymeleafConfiguration {
     @Bean
     public AbstractProcessorDialect whiteSpaceNormalizedDialect() {
         return new SpacesDialect();
+    }
+
+    @Bean
+    public LayoutDialect layoutDialect() {
+        return new LayoutDialect(new nz.net.ultraq.thymeleaf.decorators.strategies.GroupingRespectLayoutTitleStrategy());
     }
 
 }
