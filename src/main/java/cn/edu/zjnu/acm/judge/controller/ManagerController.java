@@ -31,7 +31,7 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 @Controller
 @RequestMapping(value = "/admin", produces = TEXT_HTML_VALUE)
 @Secured("ROLE_ADMIN")
-public class ManageController {
+public class ManagerController {
 
     @GetMapping({
         "/",
@@ -49,8 +49,8 @@ public class ManageController {
         "/accounts/import",
         "/system/index"
     })
-    public String manage() {
-        return "manage";
+    public String manager() {
+        return "manager";
     }
 
     @GetMapping

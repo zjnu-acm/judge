@@ -27,19 +27,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @WebAppConfiguration
 @WithMockUser(roles = "ADMIN")
-public class ManageControllerTest {
+public class ManagerControllerTest {
 
     @Autowired
     private MockMvc mvc;
 
     /**
-     * Test of manage method, of class ManageController.
+     * Test of manager method, of class ManageController.
      *
-     * @see ManageController#manage()
+     * @see ManagerController#manager()
      */
     @Test
-    public void testManage() throws Exception {
-        log.info("manage");
+    public void testManager() throws Exception {
+        log.info("manager");
         MvcResult result = mvc.perform(get("/admin/"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
@@ -49,7 +49,7 @@ public class ManageControllerTest {
     /**
      * Test of index method, of class ManageController.
      *
-     * @see ManageController#index(RedirectAttributes, Map)
+     * @see ManagerController#index(RedirectAttributes, Map)
      */
     @Test
     public void testIndex() throws Exception {
