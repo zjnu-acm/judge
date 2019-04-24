@@ -105,10 +105,6 @@
                         <groupId>org.checkerframework</groupId>
                     </exclusion>
                     <exclusion>
-                        <artifactId>failureaccess</artifactId>
-                        <groupId>com.google.guava</groupId>
-                    </exclusion>
-                    <exclusion>
                         <artifactId>listenablefuture</artifactId>
                         <groupId>com.google.guava</groupId>
                     </exclusion>
