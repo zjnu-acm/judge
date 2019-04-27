@@ -47,15 +47,15 @@ public interface UserMapper {
             + "</where>";
 
     @Nullable
-    @Select("select user_id id,nick,email,password,school,ip,solved,submit,accesstime,created_time createdTime,modified_time modifiedTime from users where user_id=#{id}")
+    @Select("select user_id id,nick,email,password,school,ip,solved,submit,accesstime,created_time createdTime,modified_time modifiedTime from `user` where user_id=#{id}")
     User findOne(@Param("id") String id);
 
-    @Insert("insert into users(USER_ID,PASSWORD,EMAIL,REG_TIME,NICK,SCHOOL,ip) values"
+    @Insert("insert into `user`(USER_ID,PASSWORD,EMAIL,REG_TIME,NICK,SCHOOL,ip) values"
             + "(#{id},#{password},#{email},now(),#{nick},#{school},ip=#{ip})")
     long save(User user);
 
     @Select("<script>"
-            + "SELECT COUNT(*) total FROM users"
+            + "SELECT COUNT(*) total FROM `user`"
             + FORM_CONDITION
             + "</script>")
     long count(@Param("form") AccountForm form);
@@ -63,29 +63,29 @@ public interface UserMapper {
     String ON = " on (u1.solved>u2.solved or u1.solved=u2.solved and u1.submit<u2.submit or u1.solved=u2.solved and u1.submit=u2.submit and u1.user_id<u2.user_id) ";
 
     @Select("select count(u1.user_id) "
-            + "from users u1 join users u2 "
+            + "from `user` u1 join `user` u2 "
             + ON + "and not u1.disabled where u2.user_id=#{id}")
     long rank(@Param("id") String userId);
 
     @Select("select user_id id,nick,solved,submit from (( "
-            + "select u1.* from users u1 join users u2 "
+            + "select u1.* from `user` u1 join `user` u2 "
             + ON + "and not u1.disabled "
             + "where u2.user_id=#{id} order by u1.solved,u1.submit desc,u1.user_id desc limit #{c} "
             + ") union ("
-            + "select * from users where user_id=#{id} "
+            + "select * from `user` where user_id=#{id} "
             + ") union ( "
-            + "select u2.* from users u1 join users u2 "
+            + "select u2.* from `user` u1 join `user` u2 "
             + ON + " and not u2.disabled "
             + "where u1.user_id=#{id} order by u2.solved desc,u2.submit,u2.user_id limit #{c} "
             + ") order by solved desc,submit,user_id) z")
     List<User> neighbours(@Nonnull @Param("id") String userId, @Param("c") int count);
 
-    @Select("select temp.user_id id,sol solved,sub submit,nick from ( select user_id,sum(if(score=100,1,0)) sol,count(*) sub from ( select * from solution order by solution_id desc limit #{count} ) s group by user_id order by sol desc,sub asc limit 50 ) temp,users where temp.user_id=users.user_id")
+    @Select("select temp.user_id id,sol solved,sub submit,nick from ( select user_id,sum(if(score=100,1,0)) sol,count(*) sub from ( select * from solution order by solution_id desc limit #{count} ) s group by user_id order by sol desc,sub asc limit 50 ) temp,`user` where temp.user_id=`user`.user_id")
     List<User> recentrank(@Param("count") int count);
 
     String FIND_ALL_CONDITION
             = "<if test='form.disabled==null or form.disabled==true'>,disabled</if>"
-            + "from users"
+            + "from `user`"
             + FORM_CONDITION
             + "<if test='pageable.sort!=null'>"
             + "<foreach item='item' collection='pageable.sort' open='order by' separator=','>"
@@ -107,7 +107,7 @@ public interface UserMapper {
     List<Account> findAllByExport(@Param("form") AccountForm form, @Param("pageable") Pageable pageable);
 
     @Update("<script>"
-            + "update users"
+            + "update `user`"
             + "<set>"
             + "<if test='user.email!=null'>email=nullif(#{user.email},''),</if>"
             + "<if test='user.nick!=null'>nick=#{user.nick},</if>"
@@ -122,14 +122,14 @@ public interface UserMapper {
             + "</script>")
     int updateSelective(@Nonnull @Param("userId") String userId, @Param("user") User user);
 
-    @Select("<script>select user_id id from users where user_id in"
+    @Select("<script>select user_id id from `user` where user_id in"
             + "<foreach item='item' collection='userIds' open='(' separator=',' close=')'>"
             + "#{item}"
             + "</foreach>"
             + "</script>")
     List<String> findAllByUserIds(@Param("userIds") Collection<String> userIds);
 
-    @Select("<script>select count(user_id) cnt from users where user_id in"
+    @Select("<script>select count(user_id) cnt from `user` where user_id in"
             + "<foreach item='item' collection='userIds' open='(' separator=',' close=')'>"
             + "#{item}"
             + "</foreach>"
@@ -140,7 +140,7 @@ public interface UserMapper {
      * {@link AccountImportForm.ExistPolicy}
      */
     @Update("<script>"
-            + "update users u join"
+            + "update `user` u join"
             + "<foreach item='item' index='index' collection='accounts' open='(' separator='union' close=')'>"
             + "<if test='index==0'>(select #{item.id} id,#{item.password} password,#{item.nick} nick,#{item.school} school,#{item.email} email)</if>"
             + "<if test='index!=0'>(select #{item.id},#{item.password},#{item.nick},#{item.school},#{item.email})</if>"
@@ -158,14 +158,14 @@ public interface UserMapper {
     int batchUpdate(@Param("accounts") List<Account> accounts, @Param("mask") int mask);
 
     @Insert("<script>"
-            + "insert into users(user_id,nick,password,school,email)values"
+            + "insert into `user`(user_id,nick,password,school,email)values"
             + "<foreach item='item' collection='accounts' separator=','>"
             + "(#{item.id},#{item.nick},#{item.password},#{item.school},nullif(#{item.email},''))"
             + "</foreach>"
             + "</script>")
     void insert(@Param("accounts") List<Account> accounts);
 
-    @Delete("delete from users where user_id=#{param1}")
+    @Delete("delete from `user` where user_id=#{param1}")
     int delete(String userId);
 
 }

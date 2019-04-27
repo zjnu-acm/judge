@@ -52,7 +52,7 @@ public interface UserProblemMapper {
             + "from solution where user_id=#{userId} and problem_id=#{problem} and score!=" + ResultType.QUEUING + " group by user_id,problem_id")
     long update(@Param("userId") String userId, @Param("problem") long problemId);
 
-    @Update("update users u left join ("
+    @Update("update `user` u left join ("
             + "select sum(up.submit) submit,sum(if(up.accepted!=0,1,0)) solved "
             + "from user_problem up where user_id=#{userId}"
             + ") t on 1=1 " + SET_USER
@@ -66,7 +66,7 @@ public interface UserProblemMapper {
             + ") t on 1=1 " + SET_PROBLEM + " where p.problem_id=#{problemId}")
     long updateProblem(@Param("problemId") long problemId);
 
-    @Update("update users u left join ("
+    @Update("update `user` u left join ("
             + "select user_id,sum(submit) submit,sum(if(accepted!=0,1,0)) solved from user_problem group by user_id"
             + ") t on u.user_id=t.user_id "
             + SET_USER)

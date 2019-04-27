@@ -133,7 +133,7 @@ public interface ContestMapper {
     @Select("select" + COLUMNS + "from contest where contest_id=#{id} and not disabled")
     Contest findOneByIdAndNotDisabled(@Param("id") long contestId);
 
-    @Select("select s.user_id id,u.nick from solution s left join users u "
+    @Select("select s.user_id id,u.nick from solution s left join `user` u "
             + "on s.user_id=u.user_id where s.contest_id=#{id} group by s.user_id")
     List<User> attenders(@Param("id") long contestId);
 
