@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 ZJNU ACM.
+ * Copyright 2019 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,79 +15,40 @@
  */
 package cn.edu.zjnu.acm.judge.service;
 
-import cn.edu.zjnu.acm.judge.config.Constants;
-import cn.edu.zjnu.acm.judge.mapper.SystemMapper;
 import cn.edu.zjnu.acm.judge.util.SpecialCall;
 import javax.annotation.Nullable;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.flyway.FlywayMigrationInitializer;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
 
 /**
  *
  * @author zhanhb
  */
-@Service
-@SpecialCall({"index", "manager", "layout/main", "fragment/ga"})
-public class SystemService {
-
-    @Autowired
-    private SystemMapper systemMapper;
-
-    @Autowired // ensure flyway initialize before this service
-    public void setFlywayMigrationInitializer(FlywayMigrationInitializer flywayMigrationInitializer) {
-    }
+public interface SystemService {
 
     @Nullable
-    public String getUploadPath() {
-        return systemMapper.getValueByName(Constants.SystemKey.UPLOAD_PATH);
-    }
+    @SpecialCall(value = {"index", "manager", "layout/main"})
+    String getAdminMail();
 
     @Nullable
-    @Cacheable(value = Constants.Cache.SYSTEM, key = "'admin-mail'")
-    @SpecialCall({"index", "manager", "layout/main"})
-    public String getAdminMail() {
-        return systemMapper.getValueByName(Constants.SystemKey.ADMIN_MAIL);
-    }
+    String getDataFilesPath();
 
     @Nullable
-    @Cacheable(value = Constants.Cache.SYSTEM, key = "'ga'")
-    @SpecialCall("fragment/ga")
-    public String getGa() {
-        return systemMapper.getValueByName(Constants.SystemKey.GA);
-    }
+    String getDeleteTempFile();
 
     @Nullable
-    @Cacheable(value = Constants.Cache.SYSTEM, key = "'data-path'")
-    public String getDataFilesPath() {
-        return systemMapper.getValueByName(Constants.SystemKey.DATA_FILES_PATH);
-    }
+    String getGa();
 
     @Nullable
-    public String getDeleteTempFile() {
-        return systemMapper.getValueByName(Constants.SystemKey.DELETE_TEMP_FILE);
-    }
+    String getIndex();
 
     @Nullable
-    public String getWorkingPath() {
-        return systemMapper.getValueByName(Constants.SystemKey.WORKING_PATH);
-    }
+    String getResetPasswordTitle();
 
     @Nullable
-    public String getResetPasswordTitle() {
-        return systemMapper.getValueByName(Constants.SystemKey.RESETPASSWORD_TITLE);
-    }
+    String getUploadPath();
 
-    @Cacheable(value = Constants.Cache.SYSTEM, key = "'page-index'")
-    public String getIndex() {
-        return systemMapper.getValueByName(Constants.SystemKey.PAGE_INDEX);
-    }
+    @Nullable
+    String getWorkingPath();
 
-    @CacheEvict(value = Constants.Cache.SYSTEM, key = "'page-index'")
-    public void setIndex(String index) {
-        systemMapper.updateValueByName(Constants.SystemKey.PAGE_INDEX, index);
-    }
+    void setIndex(@Nullable String index);
 
 }

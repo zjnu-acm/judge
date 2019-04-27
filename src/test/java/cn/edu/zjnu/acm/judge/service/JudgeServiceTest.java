@@ -24,6 +24,7 @@ import cn.edu.zjnu.acm.judge.mapper.LanguageMapper;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.util.CopyHelper;
 import cn.edu.zjnu.acm.judge.util.DeleteHelper;
+import cn.edu.zjnu.acm.judge.util.Platform;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import java.io.File;

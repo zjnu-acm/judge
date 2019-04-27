@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 zhanhb.
+ * Copyright 2019 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,47 +16,22 @@
 package cn.edu.zjnu.acm.judge.service;
 
 import cn.edu.zjnu.acm.judge.domain.Language;
-import cn.edu.zjnu.acm.judge.exception.BusinessCode;
-import cn.edu.zjnu.acm.judge.exception.BusinessException;
-import cn.edu.zjnu.acm.judge.mapper.LanguageMapper;
 import cn.edu.zjnu.acm.judge.util.SpecialCall;
-import com.google.common.collect.ImmutableMap;
 import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
 import javax.annotation.Nonnull;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  *
  * @author zhanhb
  */
-@Service
-@SpecialCall({"contests/problems-status", "problems/status"})
-public class LanguageService {
-
-    @Autowired
-    private LanguageMapper languageMapper;
-
-    public Map<Integer, Language> getAvailableLanguages() {
-        return languageMapper.findAll().stream()
-                .collect(ImmutableMap.toImmutableMap(Language::getId, Function.identity()));
-    }
+public interface LanguageService {
 
     @Nonnull
-    public Language getAvailableLanguage(int languageId) {
-        Language language = languageMapper.findOne(languageId);
-        if (language == null) {
-            throw new BusinessException(BusinessCode.LANGUAGE_NOT_FOUND, languageId);
-        }
-        return language;
-    }
+    Language getAvailableLanguage(int languageId);
 
-    @SpecialCall({"contests/problems-status", "problems/status"})
-    public String getLanguageName(int languageId) {
-        return Optional.ofNullable(languageMapper.findOne(languageId))
-                .map(Language::getName).orElse("unknown language " + languageId);
-    }
+    Map<Integer, Language> getAvailableLanguages();
+
+    @SpecialCall(value = {"contests/problems-status", "problems/status"})
+    String getLanguageName(int languageId);
 
 }

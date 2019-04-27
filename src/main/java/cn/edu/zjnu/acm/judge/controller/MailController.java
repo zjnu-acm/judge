@@ -19,7 +19,7 @@ import cn.edu.zjnu.acm.judge.domain.Mail;
 import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.MailMapper;
 import cn.edu.zjnu.acm.judge.service.AccountService;
-import cn.edu.zjnu.acm.judge.service.UserDetailsServiceImpl;
+import cn.edu.zjnu.acm.judge.service.impl.UserDetailsServiceImpl;
 import cn.edu.zjnu.acm.judge.util.JudgeUtils;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,26 +1,30 @@
-package cn.edu.zjnu.acm.judge.service;
+package cn.edu.zjnu.acm.judge.service.impl;
 
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
+import cn.edu.zjnu.acm.judge.service.JudgePoolService;
+import cn.edu.zjnu.acm.judge.service.RejudgeService;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service
-public class Rejudger {
+@Service("rejudgeService")
+public class RejudgeServiceImpl implements RejudgeService {
 
     @Autowired
-    private JudgePool judgePool;
+    private JudgePoolService judgePoolService;
     @Autowired
     private SubmissionMapper submissionMapper;
 
+    @Override
     public CompletableFuture<?> byProblemId(long problemId) {
         List<Long> submissions = submissionMapper.findAllByProblemIdAndResultNotAccept(problemId);
-        return judgePool.addAll(submissions.stream().mapToLong(Long::longValue).toArray());
+        return judgePoolService.addAll(submissions.stream().mapToLong(Long::longValue).toArray());
     }
 
+    @Override
     public CompletableFuture<?> bySubmissionId(long submissionId) {
-        return judgePool.add(submissionId).thenApply(__ -> submissionMapper.findOne(submissionId));
+        return judgePoolService.add(submissionId).thenApply(__ -> submissionMapper.findOne(submissionId));
     }
 
 }

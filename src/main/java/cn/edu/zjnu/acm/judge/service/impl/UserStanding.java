@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.service;
+package cn.edu.zjnu.acm.judge.service.impl;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;

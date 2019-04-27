@@ -1,6 +1,6 @@
 package cn.edu.zjnu.acm.judge.controller.submission;
 
-import cn.edu.zjnu.acm.judge.service.Rejudger;
+import cn.edu.zjnu.acm.judge.service.RejudgeService;
 import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,18 +20,18 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class RejudgeController {
 
     @Autowired
-    private Rejudger rejudger;
+    private RejudgeService rejudgeService;
 
     // TODO request method
     @GetMapping(value = "/admin/rejudge", params = "solution_id")
     public CompletableFuture<?> rejudgeSolution(
             @RequestParam("solution_id") long submissionId) {
-        return rejudger.bySubmissionId(submissionId);
+        return rejudgeService.bySubmissionId(submissionId);
     }
 
     @GetMapping(value = "/admin/rejudge", params = "problem_id")
     public ResponseEntity<?> rejudgeProblem(@RequestParam("problem_id") long problemId) {
-        rejudger.byProblemId(problemId);
+        rejudgeService.byProblemId(problemId);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(Collections.singletonMap("message", "重新评测请求已经受理"));
     }
 

@@ -21,6 +21,7 @@ import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
+import cn.edu.zjnu.acm.judge.util.Platform;
 import com.google.common.base.Throwables;
 import java.io.IOException;
 import java.io.InterruptedIOException;

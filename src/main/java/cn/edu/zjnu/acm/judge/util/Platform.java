@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.service;
+package cn.edu.zjnu.acm.judge.util;
 
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
@@ -25,14 +25,14 @@ import java.security.PrivilegedAction;
  * @author zhanhb
  */
 @SuppressWarnings("UtilityClassWithoutPrivateConstructor")
-class Platform {
+public class Platform {
 
     private static String getProperty(String name) {
         PrivilegedAction<String> action = () -> System.getProperty(name);
         return AccessController.doPrivileged(action);
     }
 
-    static Charset getCharset() {
+    public static Charset getCharset() {
         try {
             return Charset.forName(getProperty("sun.jnu.encoding"));
         } catch (UnsupportedCharsetException | SecurityException ignored) {
@@ -40,7 +40,7 @@ class Platform {
         return Charset.defaultCharset();
     }
 
-    static boolean isWindows() {
+    public static boolean isWindows() {
         return jnc.foreign.Platform.getNativePlatform().getOS().isWindows();
     }
 

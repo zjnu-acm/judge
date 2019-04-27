@@ -15,21 +15,16 @@
  */
 package cn.edu.zjnu.acm.judge.service;
 
-import cn.edu.zjnu.acm.judge.domain.LoginLog;
-import com.google.common.annotations.VisibleForTesting;
+import java.util.concurrent.CompletableFuture;
 
 /**
  *
  * @author zhanhb
  */
-public interface LoginlogService {
+public interface JudgePoolService {
 
-    void save(LoginLog loginlog);
+    CompletableFuture<?> add(long id);
 
-    @VisibleForTesting
-    void destroy();
-
-    @VisibleForTesting
-    void await() throws InterruptedException;
+    CompletableFuture<?> addAll(long... id);
 
 }

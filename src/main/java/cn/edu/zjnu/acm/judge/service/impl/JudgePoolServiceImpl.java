@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.service;
+package cn.edu.zjnu.acm.judge.service.impl;
 
+import cn.edu.zjnu.acm.judge.service.JudgePoolService;
+import cn.edu.zjnu.acm.judge.service.JudgeService;
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -33,13 +35,13 @@ import org.springframework.stereotype.Service;
  *
  * @author zhanhb
  */
-@Service
+@Service("judgePoolService")
 @Slf4j
-public class JudgePool {
+public class JudgePoolServiceImpl implements JudgePoolService {
 
     private ExecutorService executorService;
     @Autowired
-    private JudgeService judger;
+    private JudgeService judgeService;
 
     @PostConstruct
     public void init() {
@@ -67,10 +69,12 @@ public class JudgePool {
         executorService.shutdownNow();
     }
 
+    @Override
     public CompletableFuture<?> add(long id) {
-        return judger.toCompletableFuture(executorService, id);
+        return judgeService.toCompletableFuture(executorService, id);
     }
 
+    @Override
     public CompletableFuture<?> addAll(long... id) {
         return CompletableFuture.allOf(Arrays.stream(id).mapToObj(this::add).toArray(CompletableFuture[]::new));
     }

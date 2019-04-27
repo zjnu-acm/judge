@@ -15,7 +15,7 @@
  */
 package com.github.zhanhb.judge.win32;
 
-import cn.edu.zjnu.acm.judge.service.MyPrintWriter;
+import cn.edu.zjnu.acm.judge.util.UnixLineEndingPrintWriter;
 import com.github.zhanhb.judge.common.JudgeException;
 import com.github.zhanhb.judge.common.Status;
 import com.github.zhanhb.judge.common.Validator;
@@ -47,7 +47,7 @@ public class SpecialValidator implements Validator {
             throws IOException, JudgeException {
         log.debug("use special judge '{}'", command);
         Process specialJudge = ProcessCreationHelper.execute(() -> Runtime.getRuntime().exec(command, null, dir));
-        try (PrintWriter specialOut = new MyPrintWriter(specialJudge.getOutputStream())) {
+        try (PrintWriter specialOut = new UnixLineEndingPrintWriter(specialJudge.getOutputStream())) {
             log.debug("{}", inputFile);
             specialOut.println(inputFile);
             log.debug("{}", standardOutput);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 ZJNU ACM.
+ * Copyright 2019 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,37 +15,14 @@
  */
 package cn.edu.zjnu.acm.judge.service;
 
-import cn.edu.zjnu.acm.judge.mapper.EmailMapper;
 import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Service;
 
 /**
  *
  * @author zhanhb
  */
-@Service
-public class EmailService {
+public interface EmailService {
 
-    @Autowired
-    private EmailMapper emailMapper;
-    @Autowired
-    private JavaMailSenderImpl javaMailSender;
-
-    public void send(String to, String subject, String content) throws MessagingException {
-        emailMapper.save(to, subject, content);
-        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-
-        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-        helper.setTo(to);
-        helper.setSubject(subject);
-        helper.setText(content, true);
-        helper.setFrom(javaMailSender.getUsername());
-
-        javaMailSender.send(mimeMessage);
-    }
+    void send(String to, String subject, String content) throws MessagingException;
 
 }

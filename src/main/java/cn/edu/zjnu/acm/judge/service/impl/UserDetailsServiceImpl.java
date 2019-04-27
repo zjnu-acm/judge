@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.service;
+package cn.edu.zjnu.acm.judge.service.impl;
 
 import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
@@ -37,7 +37,7 @@ import org.springframework.stereotype.Service;
  *
  * @author zhanhb
  */
-@Service
+@Service("userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private static final List<GrantedAuthority> ROLE_ADMIN = ImmutableList.copyOf(AuthorityUtils.createAuthorityList("ROLE_ADMIN", "ROLE_SOURCE_BROWSER", "ROLE_USER"));

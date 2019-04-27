@@ -18,7 +18,7 @@ package cn.edu.zjnu.acm.judge.controller.api;
 import cn.edu.zjnu.acm.judge.data.form.ContestForm;
 import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.service.ContestService;
-import cn.edu.zjnu.acm.judge.service.UserStanding;
+import cn.edu.zjnu.acm.judge.service.impl.UserStanding;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
