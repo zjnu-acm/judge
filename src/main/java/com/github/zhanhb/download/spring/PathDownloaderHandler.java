@@ -17,6 +17,7 @@ package com.github.zhanhb.download.spring;
 
 import com.github.zhanhb.ckfinder.download.ContentDisposition;
 import com.github.zhanhb.ckfinder.download.PathPartial;
+import java.lang.reflect.Method;
 import java.nio.file.Path;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,9 +41,13 @@ public class PathDownloaderHandler implements HandlerMethodReturnValueHandler {
 
     @Override
     public boolean supportsReturnType(MethodParameter returnType) {
-        return returnType.getMethodAnnotation(ToDownload.class) != null
-                && Path.class.isAssignableFrom(
-                        returnType.getMethod().getReturnType());
+        if (returnType.getMethodAnnotation(ToDownload.class) != null) {
+            Method method = returnType.getMethod();
+            if (method != null) {
+                return Path.class.isAssignableFrom(method.getReturnType());
+            }
+        }
+        return false;
     }
 
     @Override
@@ -54,6 +59,7 @@ public class PathDownloaderHandler implements HandlerMethodReturnValueHandler {
         HttpServletResponse response = webRequest.getNativeResponse(HttpServletResponse.class);
         ToDownload toDownload = returnType.getMethodAnnotation(ToDownload.class);
 
+        @SuppressWarnings("null")
         PathPartial d = toDownload.attachment() ? downloader : viewer;
         d.service(request, response, (Path) returnValue);
         mavContainer.setRequestHandled(true);
