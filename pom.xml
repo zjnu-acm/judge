@@ -475,7 +475,7 @@
         <dependency>
             <groupId>org.webjars.npm</groupId>
             <artifactId>bootstrap</artifactId>
-            <version>3.3.7</version>
+            <version>3.4.1</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
