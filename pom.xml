@@ -240,6 +240,12 @@
                 <groupId>org.webjars.npm</groupId>
                 <artifactId>custom-input</artifactId>
                 <version>0.3.1</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>event-lite</artifactId>
+                        <groupId>org.webjars.npm</groupId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.webjars.npm</groupId>
