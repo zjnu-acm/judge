@@ -15,14 +15,9 @@
  */
 package cn.edu.zjnu.acm.judge.config;
 
-import java.util.Locale;
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -41,26 +36,15 @@ public class LocaleConfiguration implements WebMvcConfigurer {
         LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
         localeChangeInterceptor.setParamName("lang");
         localeChangeInterceptor.setIgnoreInvalidLocale(true);
-        localeChangeInterceptor.setLanguageTagCompliant(true);
         registry.addInterceptor(localeChangeInterceptor);
     }
 
     /* Store preferred language configuration in a cookie */
     @Bean(name = "localeResolver")
     public LocaleResolver localeResolver(ServletContext container) {
-        CookieLocaleResolver localeResolver = new CookieLocaleResolver() {
-
-            @Override
-            protected Locale determineDefaultLocale(HttpServletRequest request) {
-                Locale locale = super.determineDefaultLocale(request);
-                HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getResponse();
-                addCookie(response, (locale != null ? toLocaleValue(locale) : "-"));
-                return locale;
-            }
-
-        };
+        CookieLocaleResolver localeResolver = new CookieLocaleResolver();
         localeResolver.setCookieName("locale");
-        localeResolver.setCookieMaxAge(15 * 24 * 60 * 60);
+        localeResolver.setCookieMaxAge(15 * 24 * 60 * 60); // 15 day
         localeResolver.setCookiePath(getCookiePath(container));
         localeResolver.setLanguageTagCompliant(true);
         return localeResolver;
