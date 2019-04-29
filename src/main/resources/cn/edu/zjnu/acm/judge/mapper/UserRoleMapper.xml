@@ -7,10 +7,8 @@
         select rightstr from privilege where user_id=#{userId} and not disabled
     </select>
     <select id="countAdmin" resultType="long">
-        select count(*) from privilege
-        where rightstr='administrator' and
-        user_id in
-        <foreach item='item' collection='array' open='(' separator=',' close=')'>
+        select count(*) from privilege where rightstr='administrator'
+        <foreach item='item' collection='array' open=' and user_id in (' separator=',' close=')'>
             #{item}
         </foreach>
     </select>

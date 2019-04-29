@@ -28,6 +28,15 @@
         thread_id,
         orderNum
     </sql>
+    <sql id="listColumns">
+        message_id,
+        in_date,
+        user_id,
+        title,
+        problem_id,
+        depth,
+        thread_id
+    </sql>
     <select id="nextId" resultType="long">
         select COALESCE(max(message_id)+1,1000) maxp from message
     </select>
@@ -52,14 +61,7 @@
         values(#{id},#{id},#{parentId},#{orderNum},#{problemId},#{depth},#{userId},#{title},#{content},now())
     </insert>
     <select id="findAllByThreadIdBetween" resultMap="baseResultMap">
-        select
-            message_id,
-            title,
-            depth,
-            user_id,
-            in_date,
-            thread_id,
-            problem_id
+        select <include refid="listColumns"/>
         from message
         <where>
             <if test='min!=null'>and thread_id&gt;=#{min} </if>

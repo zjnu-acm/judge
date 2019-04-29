@@ -32,19 +32,20 @@
         INSERT INTO solution (solution_id,problem_id,user_id,in_date,code_length,score,language,ip,contest_id)
         VALUES (#{id},#{problem},#{user},#{inDate},#{sourceLength},#{score},#{language},#{ip},#{contest})
     </insert>
+    <sql id="baseColumns">
+        s.solution_id,
+        s.problem_id,
+        s.user_id,
+        s.contest_id,
+        s.time,
+        s.memory,
+        s.score,
+        s.language,
+        s.code_length,
+        s.in_date
+    </sql>
     <select id="findOne" resultMap="baseResultMap">
-        SELECT
-            s.solution_id,
-            s.problem_id,
-            s.user_id,
-            s.contest_id,
-            s.time,
-            s.memory,
-            s.score,
-            s.language,
-            s.ip,
-            s.code_length,
-            s.in_date
+        SELECT <include refid="baseColumns"/>,s.ip
         FROM solution s
         WHERE solution_id=#{id}
     </select>
@@ -67,16 +68,7 @@
         <if test='bottom!=null'>
             select * from (
         </if>
-        select
-            s.solution_id,
-            s.problem_id,
-            s.user_id,s.contest_id,
-            s.time,
-            s.memory,
-            s.score,
-            s.language,
-            s.code_length,
-            s.in_date
+        select <include refid="baseColumns"/>
         from solution s
         <where>
             <if test='contest!=null'> and contest_id=#{contest}</if>
@@ -92,7 +84,9 @@
         <if test='bottom!=null'>) tmp order by id desc</if>
     </select>
     <select id="findAllByProblemIdAndResultNotAccept" resultType="long">
-        select solution_id from solution s where problem_id=#{problemId} and score&lt;&gt; 100 order by solution_id desc
+        select solution_id from solution s
+        where problem_id=#{problemId} and score&lt;&gt; 100
+        order by solution_id desc
     </select>
     <sql id='propertySelector'>
         <choose>
@@ -105,31 +99,21 @@
         </choose>
     </sql>
     <select id="bestSubmission" resultMap="baseResultMap">
-        SELECT
-            s1.solution_id,
-            s1.problem_id,
-            s1.user_id,
-            s1.contest_id,
-            s1.time,
-            s1.memory,
-            s1.score,
-            s1.language,
-            s1.code_length,
-            s1.in_date
-        FROM solution s1
-        <if test='pageable.sort !=null and pageable.sort.iterator().hasNext()'>
+        select <include refid="baseColumns"/>
+        FROM solution s
+        <if test='pageable.sort!=null and pageable.sort.iterator().hasNext()'>
             LEFT JOIN solution s2 ON
             <if test='form.contestId != null'>
-                s1.contest_id = s2.contest_id AND
+                s.contest_id = s2.contest_id AND
             </if>
-            s1.problem_id = s2.problem_id AND s1.score=s2.score AND s1.user_id = s2.user_id
+            s.problem_id=s2.problem_id AND s.score=s2.score AND s.user_id=s2.user_id
             <foreach index='i' collection='pageable.sort' separator='OR' open='AND (' close=')'>
                 <foreach index='j' item='item' collection='pageable.sort' separator='AND'>
                     <if test="i &gt; j">
-                        s1.<include refid="propertySelector"/>=s2.<include refid="propertySelector"/>
+                        s.<include refid="propertySelector"/>=s2.<include refid="propertySelector"/>
                     </if>
                     <if test="i == j">
-                        s1.<include refid="propertySelector"/>
+                        s.<include refid="propertySelector"/>
                         <if test="item.ascending"> &gt;</if>
                         <if test="item.descending"> &lt;</if>
                         s2.<include refid="propertySelector"/>
@@ -139,10 +123,10 @@
         </if>
         <where>
             <if test='form.contestId != null'>
-                s1.contest_id = #{form.contestId}
+                s.contest_id=#{form.contestId}
             </if>
-            AND s1.problem_id = #{form.problemId} AND s1.score=100
-            <if test='pageable.sort !=null and pageable.sort.iterator().hasNext()'>
+            AND s.problem_id=#{form.problemId} AND s.score=100
+            <if test='pageable.sort!=null and pageable.sort.iterator().hasNext()'>
                 AND s2.solution_id IS NULL
             </if>
         </where>
@@ -153,8 +137,7 @@
         LIMIT #{pageable.offset}, #{pageable.pageSize}
     </select>
     <select id="groupByScore" resultMap="scoreCountResultMap">
-        select score,count(*) count
-        from solution
+        select score,count(*) count from solution
         where problem_id=#{problemId}
         <if test='contestId!=null'> and contest_id = #{contestId}</if>
         group by score

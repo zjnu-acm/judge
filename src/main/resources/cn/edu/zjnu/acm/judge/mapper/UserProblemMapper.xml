@@ -9,6 +9,12 @@
         <result property="submit" column="submit"/>
         <result property="accepted" column="accepted"/>
     </resultMap>
+    <sql id="columns">
+        user_id,
+        problem_id,
+        accepted,
+        submit
+    </sql>
     <insert id="init">
         replace into user_problem(user_id,problem_id,accepted,submit)
         select
@@ -20,11 +26,7 @@
         where score!=-10000 group by user_id,problem_id
     </insert>
     <select id="findOne" resultMap="baseResultMap">
-        select
-            user_id,
-            problem_id,
-            accepted,
-            submit
+        select <include refid="columns"/>
         from user_problem
         where user_id=#{userId} and problem_id=#{problemId}
     </select>
@@ -45,9 +47,10 @@
             from user_problem up
             where user_id=#{userId}
         ) t on 1=1
-        set
+        <set>
             u.solved=COALESCE(t.solved,0),
             u.submit=COALESCE(t.submit,0)
+        </set>
         where u.user_id=#{userId}
     </update>
     <update id="updateProblem">
@@ -59,11 +62,12 @@
                 sum(if(up.accepted!=0,1,0)) solved
             from user_problem up where problem_id=#{problemId}
         ) t on 1=1
-        set
+        <set>
             p.submit=COALESCE(t.submit,0),
             p.accepted=COALESCE(t.accepted,0),
             p.submit_user=COALESCE(t.submit_user,0),
             p.solved=COALESCE(t.solved,0)
+        </set>
         where p.problem_id=#{problemId}
     </update>
     <update id="updateUsers">
@@ -74,9 +78,10 @@
             from user_problem
             group by user_id
         ) t on u.user_id=t.user_id
-        set
+        <set>
             u.solved=COALESCE(t.solved,0),
             u.submit=COALESCE(t.submit,0)
+        </set>
     </update>
     <update id="updateProblems">
         update problem p left join (
@@ -89,21 +94,20 @@
             from user_problem
             group by problem_id
         ) t on p.problem_id=t.problem_id
-        set
+        <set>
             p.submit=COALESCE(t.submit,0),
             p.accepted=COALESCE(t.accepted,0),
             p.submit_user=COALESCE(t.submit_user,0),
             p.solved=COALESCE(t.solved,0)
+        </set>
     </update>
     <select id="findAllSolvedByUserId" resultType="long">
-        select problem_id from user_problem where user_id=#{userId} and accepted!=0 order by problem_id
+        select problem_id from user_problem
+        where user_id=#{userId} and accepted!=0
+        order by problem_id
     </select>
     <select id="findAllByUserId" resultMap="baseResultMap">
-        select
-            user_id,
-            problem_id,
-            accepted,
-            submit
+        select <include refid="columns"/>
         from user_problem
         where user_id=#{userId}
         order by problem_id

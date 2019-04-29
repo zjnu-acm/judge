@@ -85,8 +85,8 @@
                     or u1.solved=u2.solved and u1.submit=u2.submit and u1.user_id&lt;u2.user_id
                 )  and not u2.disabled
                 where u1.user_id=#{id} order by u2.solved desc,u2.submit,u2.user_id limit #{c}
-            ) order by solved desc,submit,user_id
-        ) z
+            )
+        ) z order by solved desc,submit,user_id
     </select>
     <select id="recentrank" resultMap="baseResultMap">
         select
@@ -95,14 +95,14 @@
             sub submit,
             nick
         from (
-                select
-                    user_id,
-                    sum(if(score=100,1,0)) sol,
-                    count(*) sub
-                from (
-                    select * from solution order by solution_id desc limit #{count}
-                ) s group by user_id
-                order by sol desc,sub asc limit 50
+            select
+                user_id,
+                sum(if(score=100,1,0)) sol,
+                count(*) sub
+            from (
+                select * from solution order by solution_id desc limit #{count}
+            ) s group by user_id
+            order by sol desc,sub asc limit 50
         ) temp,`user`
         where temp.user_id=`user`.user_id
     </select>
@@ -120,7 +120,7 @@
             <if test='form.query!=null and form.query!=""'> and (user_id like #{form.query} or nick like #{form.query})</if>
             <if test='form.disabled!=null'> and <if test='!form.disabled'> not </if> disabled</if>
         </where>
-        <if test='pageable.sort!=null'>
+        <if test='pageable.sort!=null and pageable.sort.iterator().hasNext()'>
             <foreach item='item' collection='pageable.sort' open='order by' separator=','>
                 <choose>
                     <when test='item.property==&quot;user_id&quot;'>user_id</when>
@@ -136,8 +136,6 @@
     <select id="findAllByExport" resultMap="accountResultMap">
         select
             user_id,
-            solved,
-            submit,
             nick,
             password,
             email,

@@ -27,6 +27,13 @@
         <result property="origin" column="origin"/>
         <result property="status" column="status"/>
     </resultMap>
+    <sql id="joinI18n">
+        left join problem_i18n pi on p.problem_id=pi.id
+        and pi.locale <choose>
+            <when test='lang==null'> is null</when>
+            <otherwise>=#{lang}</otherwise>
+        </choose>
+    </sql>
     <insert id="save">
         <selectKey keyProperty="id" resultType="long" order="BEFORE">
             select COALESCE(max(problem_id)+1,1000) maxp from problem
@@ -56,12 +63,7 @@
             p.solved,
             p.submit_user
         from problem p
-        left join problem_i18n pi on p.problem_id=pi.id
-        and pi.locale
-        <choose>
-            <when test='lang==null'> is null</when>
-            <otherwise>=#{lang}</otherwise>
-        </choose>
+        <include refid="joinI18n"/>
         where problem_id=#{id}
     </select>
     <select id="findOneNoI18n" resultMap="baseResultMap">
@@ -84,12 +86,7 @@
     <update id="updateSelective">
         UPDATE problem p
         <if test='lang!=null and lang!=""'>
-            left join problem_i18n pi on p.problem_id = pi.id
-            and pi.locale
-            <choose>
-                <when test='lang==null'> is null</when>
-                <otherwise>=#{lang}</otherwise>
-            </choose>
+            <include refid="joinI18n"/>
         </if>
         <set>
             <if test='lang==null or lang==""'>
@@ -130,11 +127,7 @@
             COALESCE(pi.source,p.source) source
         <if test='userId!=null'>,if(up.submit is null or up.submit=0,0,if(up.accepted!=0,1,2)) status </if>
         from problem p
-        left join problem_i18n pi on p.problem_id=pi.id
-        and pi.locale<choose>
-            <when test='lang==null'> is null</when>
-            <otherwise>=#{lang}</otherwise>
-        </choose>
+        <include refid="joinI18n"/>
         <if test='userId!=null'>
             left join user_problem up on up.problem_id=p.problem_id and up.user_id=#{userId}
         </if>
@@ -144,7 +137,7 @@
         </where>
         <if test='userId!=null'>group by p.problem_id</if>
         order by
-        <if test='pageable.sort!=null'>
+        <if test='pageable.sort!=null and pageable.sort.iterator().hasNext()'>
             <foreach item='item' collection='pageable.sort' separator=',' close=','>
                 <choose>
                     <when test='"inDate".equalsIgnoreCase(item.property)'>in_date</when>
@@ -171,12 +164,7 @@
         SELECT COUNT(*) total
         from problem p
         <if test='form.sstr!=null'>
-            left join problem_i18n pi on p.problem_id = pi.id
-            and pi.locale
-            <choose>
-                <when test='lang==null'> is null</when>
-                <otherwise>=#{lang}</otherwise>
-            </choose>
+            <include refid="joinI18n"/>
         </if>
         <where>
             <if test='form.sstr!=null and form.sstr!=""'>
@@ -196,6 +184,6 @@
         delete from problem where problem_id=#{id}
     </delete>
     <delete id="deleteI18n">
-        delete from `problem_i18n` where id=#{id}
+        delete from problem_i18n where id=#{id}
     </delete>
 </mapper>

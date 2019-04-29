@@ -36,39 +36,35 @@
     </insert>
     <select id="getProblems" resultMap="cn.edu.zjnu.acm.judge.mapper.ProblemMapper.baseResultMap">
         select
-        cp.problem_id origin,
-        cp.num problem_id,
-        COALESCE(nullif(cp.title,''),nullif(pi.title,''),p.title) title
+            cp.problem_id origin,
+            cp.num problem_id,
+            COALESCE(nullif(cp.title,''),nullif(pi.title,''),p.title) title
         <if test='userId!=null'>,temp.status</if>
         from contest_problem cp
         <if test='userId!=null'>left join (
-            select
-                problem_id,
-                if(count(solution_id)=0,0,if(sum(if(score=100,1,0)) !=0,1,2)) status
-            from solution
-            where user_id=#{userId} and contest_id=#{contest}
-            group by problem_id
+                select
+                    problem_id,
+                    if(count(solution_id)=0,0,if(sum(if(score=100,1,0)) !=0,1,2)) status
+                from solution
+                where user_id=#{userId} and contest_id=#{contest}
+                group by problem_id
             ) temp on cp.problem_id=temp.problem_id
         </if>
         left join problem p on cp.problem_id=p.problem_id
-        left join problem_i18n pi on p.problem_id=pi.id and pi.locale
-        <choose>
-            <when test='lang==null'>is null</when>
-            <otherwise>=#{lang}</otherwise>
-        </choose>
+        <include refid="cn.edu.zjnu.acm.judge.mapper.ProblemMapper.joinI18n"/>
         where cp.contest_id=#{contest} order by cp.num
     </select>
     <select id="standing" resultMap="standingResultMap">
         select
-        ac.user_id,
-        cp.num,
-        UNIX_TIMESTAMP(ac.ac_time) - UNIX_TIMESTAMP((select start_time from contest where contest_id=#{id})) `time`,
-        sum(if(wa.in_date &lt; ac.ac_time,1,0)) penalty
+            ac.user_id,
+            cp.num,
+            UNIX_TIMESTAMP(ac.ac_time) - UNIX_TIMESTAMP((select start_time from contest where contest_id=#{id})) `time`,
+            sum(if(wa.in_date &lt; ac.ac_time,1,0)) penalty
         from (
             select
-            user_id,
-            problem_id,
-            min(in_date) ac_time
+                user_id,
+                problem_id,
+                min(in_date) ac_time
             from solution
             where contest_id=#{id} and score=100
             group by user_id,problem_id
@@ -88,15 +84,13 @@
         where s.contest_id=#{id} group by s.user_id,s.problem_id having sum(if(score=100,1,0))=0
     </select>
     <select id="findOne" resultMap="baseResultMap">
-        select
-        <include refid="columns"/>
-        from contest
-        where contest_id=#{id}
+        select <include refid="columns"/>
+        from contest where contest_id=#{id}
     </select>
     <select id="getProblem" resultMap="cn.edu.zjnu.acm.judge.mapper.ProblemMapper.baseResultMap">
         select
             cp.num problem_id,
-            if(cp.title is null or trim(cp.title)='',p.title,cp.title) title,
+            COALESCE(nullif(trim(cp.title),''),p.title) title,
             p.problem_id origin,
             COALESCE(pi.description,p.description) description,
             COALESCE(pi.input,p.input) input,
@@ -111,48 +105,43 @@
             p.disabled,
             p.created_time,
             p.modified_time,
-            count(distinct sa.solution_id)accepted,
+            count(distinct sa.solution_id) accepted,
             count(distinct s.solution_id) submit,
             count(distinct sa.user_id)solved,
             count(distinct s.user_id)submit_user
         from contest_problem cp
         join problem p on cp.problem_id=p.problem_id
-        left join problem_i18n pi on p.problem_id=pi.id
-        and pi.locale
-        <choose>
-            <when test='lang==null'> is null</when>
-            <otherwise>=#{lang}</otherwise>
-        </choose>
+        <include refid="cn.edu.zjnu.acm.judge.mapper.ProblemMapper.joinI18n"/>
         left join solution s on s.problem_id=p.problem_id and s.contest_id=#{contest}
         left join solution sa on sa.problem_id=p.problem_id and sa.contest_id=#{contest} and sa.score=100
         where cp.contest_id=#{contest} and cp.num=#{problem}
         group by p.problem_id
     </select>
     <select id="findOneByIdAndNotDisabled" resultMap="baseResultMap">
-        select
-        <include refid="columns"/>
+        select <include refid="columns"/>
         from contest
         where contest_id=#{id} and not disabled
     </select>
     <select id="attenders" resultMap="cn.edu.zjnu.acm.judge.mapper.UserMapper.baseResultMap">
-        select s.user_id,u.nick from solution s left join `user` u on s.user_id=u.user_id where s.contest_id=#{id} group by s.user_id
+        select s.user_id,u.nick from solution s
+        join `user` u on s.user_id=u.user_id
+        where s.contest_id=#{id} group by s.user_id
     </select>
     <insert id="addProblem">
-        insert ignore into contest_problem (contest_id,problem_id,title,num)
+        insert ignore into contest_problem(contest_id,problem_id,title,num)
         select #{id},#{problem},nullif(#{title},''),COALESCE(max(num)+1,1000) num
-        from contest_problem cp
-        where contest_id=#{id}
+        from contest_problem cp where contest_id=#{id}
     </insert>
     <insert id="addProblems">
         insert into contest_problem (contest_id,problem_id,title,num)
-        select #{contest_id} AS contest_id,origin,null title,num from
+        select #{contestId} AS contest_id,problem_id,null,num from
         <foreach item='item' index='index' collection='problems' open='(' separator='union' close=')'>
-            select problem_id origin,${base}+#{index} as num from problem where problem_id=#{item}
-        </foreach> as t
+            select problem_id,${base+index} num
+            from problem where problem_id=#{item}
+        </foreach> t
     </insert>
     <select id="findAllByQuery" resultMap="baseResultMap">
-        select
-        <include refid="columns"/>
+        select <include refid="columns"/>
         from contest
         <where>
             <choose>

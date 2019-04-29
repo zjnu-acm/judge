@@ -58,7 +58,7 @@ public interface ContestMapper {
     long addProblem(@Param("id") long contestId, @Param("problem") long problem,
             @Nullable @Param("title") String title);
 
-    long addProblems(@Param("contest_id") long contestId, @Param("base") int base, @Nonnull @Param("problems") long[] problems);
+    long addProblems(@Param("contestId") long contestId, @Param("base") int base, @Nonnull @Param("problems") long[] problems);
 
     List<Contest> findAllByQuery(@Param("includeDisabled") boolean includeDisabled, @Param("mask") int mask);
 
