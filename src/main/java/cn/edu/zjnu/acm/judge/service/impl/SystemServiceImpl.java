@@ -31,7 +31,6 @@ import org.springframework.stereotype.Service;
  * @author zhanhb
  */
 @Service("systemService")
-@SpecialCall({"index", "manager", "layout/main", "fragment/ga"})
 public class SystemServiceImpl implements SystemService {
 
     @Autowired
@@ -49,7 +48,6 @@ public class SystemServiceImpl implements SystemService {
 
     @Nullable
     @Cacheable(value = Constants.Cache.SYSTEM, key = "'admin-mail'")
-    @SpecialCall({"index", "manager", "layout/main"})
     @Override
     public String getAdminMail() {
         return systemMapper.getValueByName(Constants.SystemKey.ADMIN_MAIL);
@@ -57,7 +55,6 @@ public class SystemServiceImpl implements SystemService {
 
     @Nullable
     @Cacheable(value = Constants.Cache.SYSTEM, key = "'ga'")
-    @SpecialCall("fragment/ga")
     @Override
     public String getGa() {
         return systemMapper.getValueByName(Constants.SystemKey.GA);

@@ -71,7 +71,7 @@ public class ContestServiceImpl implements ContestService {
     private ObjectMapper objectMapper;
 
     @Override
-    public String getStatus(Contest contest) {
+    public String getStatus(@Nonnull Contest contest) {
         Boolean disabled = contest.getDisabled();
         if (disabled != null && disabled) {
             return "Disabled";

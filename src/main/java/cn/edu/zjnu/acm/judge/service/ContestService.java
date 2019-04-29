@@ -63,7 +63,7 @@ public interface ContestService {
     Map<Long, long[]> getProblemsMap(long id);
 
     @SpecialCall(value = "contests/problems")
-    String getStatus(Contest contest);
+    String getStatus(@Nonnull Contest contest);
 
     void addProblem(long contestId, long problemId);
 

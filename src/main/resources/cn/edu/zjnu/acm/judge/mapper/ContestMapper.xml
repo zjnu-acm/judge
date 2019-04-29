@@ -134,7 +134,7 @@
     </insert>
     <insert id="addProblems">
         insert into contest_problem (contest_id,problem_id,title,num)
-        select #{contestId} AS contest_id,problem_id,null,num from
+        select #{contestId},problem_id,null,num from
         <foreach item='item' index='index' collection='problems' open='(' separator='union' close=')'>
             select problem_id,${base+index} num
             from problem where problem_id=#{item}

@@ -37,6 +37,7 @@ public interface LocaleService {
 
     List<DomainLocale> support(boolean all);
 
+    @Nonnull
     DomainLocale toDomainLocale(Locale locale, Locale inLocale);
 
     DomainLocale toDomainLocale(String localeName, boolean supportOnly);

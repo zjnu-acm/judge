@@ -15,6 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.service.impl;
 
+import cn.edu.zjnu.acm.judge.util.SpecialCall;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import java.util.Comparator;
@@ -86,6 +87,7 @@ public class UserStanding {
      * @param problem the id of the problem
      * @return the penalty
      */
+    @SpecialCall("fragment/standing")
     public long getPenalty(long problem) {
         ProblemTimePenalty timePenalty = map.get(problem);
         return timePenalty == null ? 0 : timePenalty.penalty;

@@ -18,9 +18,10 @@ package cn.edu.zjnu.acm.judge.controller.api;
 import cn.edu.zjnu.acm.judge.data.form.ProblemForm;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.service.ProblemService;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableMap;
 import java.io.IOException;
 import java.util.Locale;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -53,8 +54,6 @@ public class ProblemController {
 
     @Autowired
     private ProblemService problemService;
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @PostMapping
     public Problem save(@RequestBody Problem problem) {
@@ -68,8 +67,9 @@ public class ProblemController {
     }
 
     @GetMapping("{id}/dataDir")
-    public String dataDir(@PathVariable("id") long id) throws IOException {
-        return objectMapper.writeValueAsString(problemService.getDataDirectory(id).toString());
+    public Map<String, String> dataDir(@PathVariable("id") long id) throws IOException {
+        String dataDir = problemService.getDataDirectory(id).toString();
+        return ImmutableMap.of("dataDir", dataDir);
     }
 
     @GetMapping("{id}")

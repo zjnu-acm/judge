@@ -22,7 +22,6 @@ import javax.annotation.Nullable;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 
 /**
  *
@@ -31,14 +30,12 @@ import org.springframework.cache.annotation.Cacheable;
 @Mapper
 public interface LocaleMapper {
 
-    @Cacheable(Constants.Cache.LOCALE)
     List<DomainLocale> findAll();
 
     @CacheEvict(value = Constants.Cache.LOCALE, allEntries = true)
     int save(DomainLocale locale);
 
-    @Cacheable(Constants.Cache.LOCALE)
     @Nullable
-    public DomainLocale findOne(@Param("id") String id);
+    DomainLocale findOne(@Param("id") String id);
 
 }

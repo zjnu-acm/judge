@@ -22,10 +22,11 @@ import javax.annotation.Nullable;
  *
  * @author zhanhb
  */
+@SpecialCall({"index", "manager", "layout/main", "fragment/ga"})
 public interface SystemService {
 
     @Nullable
-    @SpecialCall(value = {"index", "manager", "layout/main"})
+    @SpecialCall({"index", "manager", "layout/main"})
     String getAdminMail();
 
     @Nullable
@@ -35,6 +36,7 @@ public interface SystemService {
     String getDeleteTempFile();
 
     @Nullable
+    @SpecialCall("fragment/ga")
     String getGa();
 
     @Nullable

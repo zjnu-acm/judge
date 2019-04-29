@@ -18,7 +18,6 @@ package cn.edu.zjnu.acm.judge.service.impl;
 import cn.edu.zjnu.acm.judge.domain.LoginLog;
 import cn.edu.zjnu.acm.judge.mapper.LoginlogMapper;
 import cn.edu.zjnu.acm.judge.service.LoginlogService;
-import com.google.common.annotations.VisibleForTesting;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -50,7 +49,6 @@ public class LoginlogServiceImpl implements LoginlogService {
 
     @Override
     @PreDestroy
-    @VisibleForTesting
     public void destroy() {
         executorService.shutdown();
     }
@@ -73,7 +71,7 @@ public class LoginlogServiceImpl implements LoginlogService {
         }
     }
 
-    @VisibleForTesting
+    @Override
     public void await() throws InterruptedException {
         executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
     }

@@ -15,6 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.service.impl;
 
+import cn.edu.zjnu.acm.judge.config.Constants;
 import cn.edu.zjnu.acm.judge.domain.DomainLocale;
 import cn.edu.zjnu.acm.judge.mapper.LocaleMapper;
 import cn.edu.zjnu.acm.judge.service.LocaleService;
@@ -30,6 +31,7 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -69,6 +71,7 @@ public class LocaleServiceImpl implements LocaleService {
         return Locale.ROOT;
     }
 
+    @Nonnull
     @Override
     public DomainLocale toDomainLocale(Locale locale, Locale inLocale) {
         DomainLocale domainLocale = localeMapper.findOne(locale.toLanguageTag());
@@ -86,12 +89,14 @@ public class LocaleServiceImpl implements LocaleService {
     }
 
     @Override
+    @Cacheable(Constants.Cache.LOCALE)
     public List<DomainLocale> findAll() {
         return localeMapper.findAll();
     }
 
     @Nullable
     @Override
+    @Cacheable(Constants.Cache.LOCALE)
     public DomainLocale findOne(String id) {
         if (Locale.ROOT.toLanguageTag().equalsIgnoreCase(id)) {
             return null;
