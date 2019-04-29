@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.zjnu.acm.judge.mapper.LocaleMapper">
+    <resultMap id="baseResultMap" type="cn.edu.zjnu.acm.judge.domain.DomainLocale">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="disabled" column="disabled"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="modifiedTime" column="modified_time"/>
+    </resultMap>
+    <select id="findAll" resultMap="baseResultMap">
+        select id,name from locale where not disabled
+    </select>
+    <insert id="save">
+        insert into locale(id,name,created_time,modified_time)values(#{id},#{name},now(),now())
+    </insert>
+    <select id="findOne" resultMap="baseResultMap">
+        select id,name from locale where id=#{id} and not disabled
+    </select>
+</mapper>

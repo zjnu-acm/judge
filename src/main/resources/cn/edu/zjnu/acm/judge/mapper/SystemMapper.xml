@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.zjnu.acm.judge.mapper.SystemMapper">
+    <select id="getValueByName" resultType="string">
+        select value from `system` where name=#{name}
+    </select>
+    <update id="updateValueByName">
+        update `system` set value=#{value} where name=#{name}
+    </update>
+</mapper>

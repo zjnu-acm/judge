@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.zjnu.acm.judge.mapper.MailMapper">
+    <resultMap id="baseResultMap" type="cn.edu.zjnu.acm.judge.domain.Mail">
+        <id property="id" column="mail_id"/>
+        <result property="from" column="from_user"/>
+        <result property="to" column="to_user"/>
+        <result property="inDate" column="in_date"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="newMail" column="new_mail"/>
+    </resultMap>
+    <resultMap id="mailInfoResultMap" type="cn.edu.zjnu.acm.judge.data.dto.MailInfo">
+        <result property="total" column="total"/>
+        <result property="newMail" column="new_mail"/>
+    </resultMap>
+    <sql id="columns">
+        mail_id,
+        title,
+        new_mail,
+        from_user,
+        to_user,
+        in_date,
+        content
+    </sql>
+    <select id="findOne" resultMap="baseResultMap">
+        select <include refid="columns"/>
+        from mail where mail_id=#{id} and not disabled
+    </select>
+    <select id="findAllByTo" resultMap="baseResultMap">
+        select <include refid="columns"/>
+        from mail where to_user=#{user} and not disabled
+        order by in_date desc limit #{start},#{size}
+    </select>
+    <update id="readed">
+        update mail set new_mail=0 where mail_id=#{id}
+    </update>
+    <delete id="delete">
+        update mail set disabled=1 where mail_id=#{id}
+    </delete>
+    <insert id="save">
+        <selectKey keyProperty="id" resultType="long" order="BEFORE">
+            select COALESCE(max(mail_id)+1,1000) maxp from mail
+        </selectKey>
+        insert into mail (mail_id,from_user,to_user,title,content,in_date)
+        values(#{id},#{from},#{to},#{title},#{content},now())
+    </insert>
+    <select id="getMailInfo" resultMap="mailInfoResultMap">
+        select count(*) total,sum(if(new_mail!=0,1,0)) new_mail
+        from mail where to_user=#{user} and not disabled
+    </select>
+    <update id="setReply">
+        update mail set reply=1 where mail_id=#{id}
+    </update>
+</mapper>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.zjnu.acm.judge.mapper.SubmissionMapper">
+    <resultMap id="baseResultMap" type="cn.edu.zjnu.acm.judge.domain.Submission">
+        <id property="id" column="solution_id"/>
+        <result property="problem" column="problem_id"/>
+        <result property="user" column="user_id"/>
+        <result property="time" column="time"/>
+        <result property="memory" column="memory"/>
+        <result property="inDate" column="in_date"/>
+        <result property="language" column="language"/>
+        <result property="ip" column="ip"/>
+        <result property="contest" column="contest_id"/>
+        <result property="sourceLength" column="code_length"/>
+    </resultMap>
+    <resultMap id="scoreCountResultMap" type="cn.edu.zjnu.acm.judge.data.dto.ScoreCount">
+        <result property="score" column="score"/>
+        <result property="count" column="count"/>
+    </resultMap>
+    <select id="findSourceById" resultType="string">
+        select source from submission_source where solution_id=#{id}
+    </select>
+    <select id="findCompileInfoById" resultType="string">
+        SELECT error FROM compileinfo WHERE solution_id=#{id}
+    </select>
+    <insert id="save">
+        <selectKey keyProperty="id" resultType="long" order="BEFORE">
+            select COALESCE(max(solution_id)+1,1000) maxp from solution
+        </selectKey>
+        INSERT INTO solution (solution_id,problem_id,user_id,in_date,code_length,score,language,ip,contest_id)
+        VALUES (#{id},#{problem},#{user},#{inDate},#{sourceLength},#{score},#{language},#{ip},#{contest})
+    </insert>
+    <select id="findOne" resultMap="baseResultMap">
+        SELECT
+            s.solution_id,
+            s.problem_id,
+            s.user_id,
+            s.contest_id,
+            s.time,
+            s.memory,
+            s.score,
+            s.language,
+            s.ip,
+            s.code_length,
+            s.in_date
+        FROM solution s
+        WHERE solution_id=#{id}
+    </select>
+    <insert id="saveSource">
+        insert into submission_source(solution_id,source) values(#{id},#{source})
+    </insert>
+    <update id="updateResult">
+        update solution set score=#{score},time=#{time},memory=#{memory} where solution_id=#{id}
+    </update>
+    <insert id="saveDetail">
+        replace into solution_details (solution_id,details) values(#{id},#{detail})
+    </insert>
+    <insert id="saveCompileInfo">
+        replace into compileinfo (solution_id,error) values(#{id},#{errorInfo})
+    </insert>
+    <select id="getSubmissionDetail" resultType="string">
+        SELECT details FROM solution_details WHERE solution_id=#{id}
+    </select>
+    <select id="findAllByCriteria" resultMap="baseResultMap">
+        <if test='bottom!=null'>
+            select * from (
+        </if>
+        select
+            s.solution_id,
+            s.problem_id,
+            s.user_id,s.contest_id,
+            s.time,
+            s.memory,
+            s.score,
+            s.language,
+            s.code_length,
+            s.in_date
+        from solution s
+        <where>
+            <if test='contest!=null'> and contest_id=#{contest}</if>
+            <if test='problem!=null'> and problem_id=#{problem}</if>
+            <if test='user!=null'> and user_id=#{user}</if>
+            <if test='language!=null'> and language=#{language}</if>
+            <if test='score!=null'> and score=#{score}</if>
+            <if test='bottom!=null'> and solution_id&gt;#{bottom}</if>
+            <if test='top!=null'> and solution_id&lt;#{top}</if>
+        </where>
+        order by solution_id
+        <if test='bottom==null'>desc</if>limit #{size}
+        <if test='bottom!=null'>) tmp order by id desc</if>
+    </select>
+    <select id="findAllByProblemIdAndResultNotAccept" resultType="long">
+        select solution_id from solution s where problem_id=#{problemId} and score&lt;&gt; 100 order by solution_id desc
+    </select>
+    <select id="groupByScore" resultMap="scoreCountResultMap">
+        select score,count(*) count
+        from solution
+        where problem_id=#{problemId}
+        <if test='contestId!=null'> and contest_id = #{contestId}</if>
+        group by score
+    </select>
+    <update id="clearByContestId">
+        update solution set contest_id=null where contest_id=#{contest}
+    </update>
+    <select id="findAllByContestId" resultType="long">
+        select solution_id from solution where contest_id=#{contest}
+    </select>
+    <delete id="deleteSource">
+        delete from submission_source where solution_id=#{id}
+    </delete>
+    <delete id="deleteCompileinfo">
+        delete from compileinfo WHERE solution_id=#{id}
+    </delete>
+    <delete id="deleteSolution">
+        delete from solution WHERE solution_id=#{id}
+    </delete>
+    <delete id="deleteDetail">
+        delete from solution_details WHERE solution_id=#{id}
+    </delete>
+</mapper>

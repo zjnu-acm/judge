@@ -17,8 +17,6 @@ package cn.edu.zjnu.acm.judge.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
 
 /**
  *
@@ -27,16 +25,12 @@ import org.apache.ibatis.annotations.Update;
 @Mapper
 public interface UserPreferenceMapper {
 
-    @Select("select style from `user` where user_id=#{userId}")
     int getStyle(@Param("userId") String userId);
 
-    @Update("update `user` set style=#{style} where user_id=#{userId}")
     long setStyle(@Param("userId") String userId, @Param("style") int style);
 
-    @Select("select language from `user` where user_id=#{id}")
     int getLanguage(@Param("id") String str);
 
-    @Update("update `user` set language=#{language} where user_id=#{id}")
     long setLanguage(@Param("id") String userId, @Param("language") int language);
 
 }

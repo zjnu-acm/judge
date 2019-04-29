@@ -38,7 +38,7 @@ public class DomainLocale implements Serializable {
     private String id;
     private String name;
     private Boolean disabled;
-    private Instant createTime;
+    private Instant createdTime;
     private Instant modifiedTime;
 
 }

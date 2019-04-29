@@ -17,7 +17,6 @@ package cn.edu.zjnu.acm.judge.mapper;
 
 import cn.edu.zjnu.acm.judge.domain.LoginLog;
 import java.util.List;
-import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -28,11 +27,6 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface LoginlogMapper {
 
-    @Insert("<script>insert into loginlog (user_id,password,type,ip,time,success) values"
-            + "<foreach item='item' collection='list' separator=','>"
-            + "(#{item.user},'',#{item.type},#{item.ip},now(),#{item.success})"
-            + "</foreach>"
-            + "</script>")
     long save(@Param("list") List<LoginLog> loginLogs);
 
 }

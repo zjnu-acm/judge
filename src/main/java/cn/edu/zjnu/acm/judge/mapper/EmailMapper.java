@@ -15,7 +15,6 @@
  */
 package cn.edu.zjnu.acm.judge.mapper;
 
-import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -25,7 +24,6 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface EmailMapper {
 
-    @Insert("insert into email_history(`to`,subject,content,created_time)values(#{param1},#{param2},#{param3},now())")
     long save(String to, String subject, String content);
 
 }

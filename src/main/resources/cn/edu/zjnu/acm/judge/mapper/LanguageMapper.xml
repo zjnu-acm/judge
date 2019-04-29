@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.zjnu.acm.judge.mapper.LanguageMapper">
+    <resultMap id="baseResultMap" type="cn.edu.zjnu.acm.judge.domain.Language">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="sourceExtension" column="source_extension"/>
+        <result property="compileCommand" column="compile_command"/>
+        <result property="executeCommand" column="execute_command"/>
+        <result property="executableExtension" column="executable_extension"/>
+        <result property="timeFactor" column="time_factor"/>
+        <result property="extMemory" column="ext_memory"/>
+        <result property="description" column="description"/>
+    </resultMap>
+    <sql id="columns">
+        id,
+        name,
+        source_extension,
+        compile_command,
+        execute_command,
+        executable_extension,
+        time_factor,
+        ext_memory,
+        description
+    </sql>
+    <insert id="save" parameterType="cn.edu.zjnu.acm.judge.domain.Language">
+        <selectKey keyProperty="id" resultType="int" order="BEFORE">
+            select COALESCE(max(id)+1,1) maxp from language
+        </selectKey>
+        insert into language(id,name,source_extension,compile_command,execute_command,executable_extension,time_factor,ext_memory,description)
+        values(#{id},#{name},#{sourceExtension},#{compileCommand},#{executeCommand},#{executableExtension},#{timeFactor},#{extMemory},#{description})
+    </insert>
+    <delete id="delete">
+        delete from language
+        <where>
+            <if test='id!=null'> and id=#{id}</if>
+            <if test='id==null'> and id is null</if>
+            <if test='name!=null'> and name=#{name}</if>
+            <if test='name==null'> and name is null</if>
+            <if test='sourceExtension!=null'> and source_extension=#{sourceExtension}</if>
+            <if test='sourceExtension==null'> and source_extension is null</if>
+            <if test='compileCommand!=null'> and compile_command=#{compileCommand}</if>
+            <if test='compileCommand==null'> and compile_command is null</if>
+            <if test='executeCommand!=null'> and execute_command=#{executeCommand}</if>
+            <if test='executeCommand==null'> and execute_command is null</if>
+            <if test='executableExtension!=null'> and executable_extension=#{executableExtension}</if>
+            <if test='executableExtension==null'> and executable_extension is null</if>
+            <if test='timeFactor!=null'> and time_factor=#{timeFactor}</if>
+            <if test='timeFactor==null'> and time_factor is null</if>
+            <if test='extMemory!=null'> and ext_memory=#{extMemory}</if>
+            <if test='extMemory==null'> and ext_memory is null</if>
+            <if test='description!=null'> and description=#{description}</if>
+            <if test='description==null'> and description is null</if>
+        </where>
+    </delete>
+    <delete id="deleteById">
+        delete from language where id=#{id}
+    </delete>
+    <update id="disable">
+        update language set disabled=1 where id=#{id}
+    </update>
+    <select id="findAll" resultMap="baseResultMap">
+        select <include refid="columns"/>
+        from language where not disabled
+    </select>
+    <select id="findOne" resultMap="baseResultMap">
+        select <include refid="columns"/>
+        from language where id=#{id}
+    </select>
+    <update id="update">
+        update language
+        <set>
+            <if test='param2.id!=null'>id=#{param2.id},</if>
+            <if test='param2.name!=null'>name=#{param2.name},</if>
+            <if test='param2.sourceExtension!=null'>source_extension=#{param2.sourceExtension},</if>
+            <if test='param2.compileCommand!=null'>compile_command=#{param2.compileCommand},</if>
+            <if test='param2.executeCommand!=null'>execute_command=#{param2.executeCommand},</if>
+            <if test='param2.executableExtension!=null'>executable_extension=#{param2.executableExtension},</if>
+            <if test='param2.timeFactor!=null'>time_factor=#{param2.timeFactor},</if>
+            <if test='param2.extMemory!=null'>ext_memory=#{param2.extMemory},</if>
+            <if test='param2.description!=null'>description=#{param2.description},</if>
+            <if test='param2.disabled!=null'>disabled=#{param2.disabled},</if>
+        </set>
+        where id=#{param1}
+    </update>
+</mapper>

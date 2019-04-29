@@ -18,7 +18,6 @@ package cn.edu.zjnu.acm.judge.mapper;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 
 /**
  *
@@ -27,14 +26,8 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface UserRoleMapper {
 
-    @Select("select rightstr from privilege where user_id=#{userId} and not disabled")
     List<String> findAllByUserId(@Param("userId") String userId);
 
-    @Select("<script>select count(*) from privilege where user_id in"
-            + "<foreach item='item' collection='array' open='(' separator=',' close=')'>"
-            + "#{item}"
-            + "</foreach>"
-            + " and rightstr='administrator'</script>")
-    int countAdmin(@Param("array") String... toArray);
+    long countAdmin(@Param("array") String... toArray);
 
 }

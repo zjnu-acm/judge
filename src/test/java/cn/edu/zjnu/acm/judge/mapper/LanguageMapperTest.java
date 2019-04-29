@@ -51,6 +51,8 @@ public class LanguageMapperTest {
         languages.forEach(instance::delete);
         log.debug("save");
         languages.forEach(instance::save);
+        log.debug("disable");
+        languages.forEach(language -> instance.disable(language.getId()));
     }
 
 }
