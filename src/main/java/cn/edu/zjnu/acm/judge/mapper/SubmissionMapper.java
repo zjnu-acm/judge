@@ -23,7 +23,6 @@ import java.util.List;
 import javax.annotation.Nullable;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.SelectProvider;
 import org.springframework.data.domain.Pageable;
 
 /**
@@ -65,7 +64,6 @@ public interface SubmissionMapper {
 
     List<Long> findAllByProblemIdAndResultNotAccept(@Param("problemId") long problemId);
 
-    @SelectProvider(type = BestSubmissionsBuilder.class, method = "bestSubmissions")
     List<Submission> bestSubmission(@Param("form") BestSubmissionForm form, @Param("pageable") Pageable pageable);
 
     List<ScoreCount> groupByScore(
