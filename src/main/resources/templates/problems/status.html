@@ -43,7 +43,7 @@
                         <tbody>
                             <tr align="center" th:each="item,it:${page}" th:object="${item}">
                                 <td>[[${page.number*page.size+it.count}]]</td>
-                                <td>[[*{id}]]</td>
+                                <td>[[*{id}]]<a th:if="${item.count!=1}" th:href="@{/status(user_id=*{user},problem_id=*{problem},score=100)}">([[${item.count}]])</a></td>
                                 <td>
                                     <a th:href="@{/userstatus(user_id=*{user})}">[[*{user}]]</a>
                                 </td>

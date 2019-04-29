@@ -48,6 +48,9 @@ public class Submission implements Serializable {
     private String ip;
     private int sourceLength;
     private Instant inDate;
+    // TODO it seem on is of no use
     private Integer on;
 
+    // for best submission
+    private Long count;
 }

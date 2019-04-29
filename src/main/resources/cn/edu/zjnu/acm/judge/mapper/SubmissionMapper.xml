@@ -14,6 +14,8 @@
         <result property="ip" column="ip"/>
         <result property="contest" column="contest_id"/>
         <result property="sourceLength" column="code_length"/>
+
+        <result property="count" column="count"/> <!-- for best submission -->
     </resultMap>
     <resultMap id="scoreCountResultMap" type="cn.edu.zjnu.acm.judge.data.dto.ScoreCount">
         <result property="score" column="score"/>
@@ -99,7 +101,7 @@
         </choose>
     </sql>
     <select id="bestSubmission" resultMap="baseResultMap">
-        select <include refid="baseColumns"/>
+        select <include refid="baseColumns"/>, count(s3.solution_id) count
         FROM solution s
         <if test='pageable.sort!=null and pageable.sort.iterator().hasNext()'>
             LEFT JOIN solution s2 ON
@@ -109,7 +111,7 @@
             s.problem_id=s2.problem_id AND s.score=s2.score AND s.user_id=s2.user_id
             <foreach index='i' collection='pageable.sort' separator='OR' open='AND (' close=')'>
                 <foreach index='j' item='item' collection='pageable.sort' separator='AND'>
-                    <if test="i &gt; j">
+                    <if test="i gt j">
                         s.<include refid="propertySelector"/>=s2.<include refid="propertySelector"/>
                     </if>
                     <if test="i == j">
@@ -121,6 +123,11 @@
                 </foreach>
             </foreach>
         </if>
+        LEFT JOIN solution s3 ON
+        <if test='form.contestId != null'>
+            s.contest_id = s3.contest_id AND
+        </if>
+        s.problem_id=s3.problem_id AND s.score=s3.score AND s.user_id=s3.user_id
         <where>
             <if test='form.contestId != null'>
                 s.contest_id=#{form.contestId}
@@ -130,6 +137,7 @@
                 AND s2.solution_id IS NULL
             </if>
         </where>
+        group by s.user_id
         <foreach item='item' collection='pageable.sort' open=' ORDER BY ' separator=','>
             <include refid="propertySelector"/>
             <if test='item.descending'> DESC</if>
