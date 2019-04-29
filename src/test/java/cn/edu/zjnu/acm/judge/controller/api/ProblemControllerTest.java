@@ -36,6 +36,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.Assert.assertEquals;
@@ -134,6 +135,21 @@ public class ProblemControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse().getContentAsString(), Problem.class);
+    }
+
+    /**
+     * Test of dataDir method, of class ProblemController.
+     *
+     * @see ProblemController#dataDir(long)
+     */
+    @Test
+    public void testDataDir() throws Exception {
+        log.info("dataDir");
+        Problem problem = mockDataService.problem();
+        MvcResult result = mvc.perform(get("/api/problems/{id}/dataDir", problem.getId()).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+        objectMapper.readTree(result.getResponse().getContentAsString()).hasNonNull("dataDir");
     }
 
 }
