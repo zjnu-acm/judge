@@ -13,17 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.service;
+package cn.edu.zjnu.acm.judge.config;
 
-import java.nio.file.Path;
-import java.util.concurrent.Future;
+import cn.edu.zjnu.acm.judge.service.DeleteService;
+import cn.edu.zjnu.acm.judge.service.impl.UnixDeleteService;
+import cn.edu.zjnu.acm.judge.service.impl.WindowsDeleteService;
+import cn.edu.zjnu.acm.judge.util.Platform;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
  *
  * @author zhanhb
  */
-public interface DeleteService {
+@Configuration
+public class DeleteServiceConfiguration {
 
-    Future<?> delete(Path path);
+    @Bean
+    public DeleteService deleteService() {
+        if (Platform.isWindows()) {
+            return new WindowsDeleteService();
+        }
+        return new UnixDeleteService();
+    }
 
 }

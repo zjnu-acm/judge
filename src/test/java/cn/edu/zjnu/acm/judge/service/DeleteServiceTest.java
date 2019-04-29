@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
@@ -55,8 +56,8 @@ public class DeleteServiceTest {
         log.info("delete");
         Path path = Files.createTempDirectory(Paths.get("target"), "tmp");
         Path txt = Files.createFile(path.resolve("a.txt"));
-        ScheduledFuture<?> future = instance.delete(path);
-        while (!future.isCancelled()) {
+        Future<?> future = instance.delete(path);
+        while (!future.isDone()) {
             TimeUnit.MILLISECONDS.sleep(200);
         }
         assertTrue(!Files.exists(txt));

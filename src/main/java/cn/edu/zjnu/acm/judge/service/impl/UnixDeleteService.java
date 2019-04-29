@@ -13,17 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.service;
+package cn.edu.zjnu.acm.judge.service.impl;
 
+import cn.edu.zjnu.acm.judge.service.DeleteService;
+import cn.edu.zjnu.acm.judge.util.DeleteHelper;
+import java.io.IOException;
 import java.nio.file.Path;
-import java.util.concurrent.Future;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 
 /**
  *
  * @author zhanhb
  */
-public interface DeleteService {
+public class UnixDeleteService implements DeleteService {
 
-    Future<?> delete(Path path);
+    @Override
+    public CompletableFuture<?> delete(Path path) {
+        return CompletableFuture.runAsync(()->{
+            try {
+                DeleteHelper.delete(path);
+            } catch (IOException ex) {
+                throw new CompletionException(ex);
+            }
+        });
+    }
 
 }

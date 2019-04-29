@@ -25,18 +25,17 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 /**
  *
  * @author zhanhb
  */
-@Service("deleteService")
 @Slf4j
-public class DeleteServiceImpl implements DeleteService {
+public class WindowsDeleteService implements DeleteService {
 
     private ScheduledExecutorService pool;
 
@@ -53,17 +52,16 @@ public class DeleteServiceImpl implements DeleteService {
     @Override
     public ScheduledFuture<?> delete(Path path) {
         ScheduledFuture<?>[] array = {null};
-        Runnable r = () -> {
+        array[0] = pool.scheduleAtFixedRate(() -> {
             try {
                 DeleteHelper.delete(path);
             } catch (AccessDeniedException | DirectoryNotEmptyException ex) {
                 return;
-            } catch (IOException ex) {
+            } catch (IOException | Error ex) {
                 log.error("", ex);
             }
             array[0].cancel(false);
-        };
-        array[0] = pool.scheduleAtFixedRate(r, 0, 5, TimeUnit.SECONDS);
+        }, 0, 5, TimeUnit.SECONDS);
         return array[0];
     }
 
