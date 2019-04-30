@@ -29,6 +29,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -133,18 +134,24 @@ public class BBSControllerTest {
     @Test
     public void testPost() throws Exception {
         log.info("post");
-        Long problemId = null;
+        Long[] problemIds = {null, mockDataService.problem().getId()};
         Long parentId = null;
         String content = "test";
         String title = "title";
-        MvcResult result = mvc.perform(post("/post").with(user(createUser()))
-                .param("problem_id", Objects.toString(problemId, ""))
-                .param("parent_id", Objects.toString(parentId, ""))
-                .param("content", content)
-                .param("title", title))
-                .andExpect(status().isFound())
-                .andExpect(redirectedUrl("/bbs"))
-                .andReturn();
+        SecurityMockMvcRequestPostProcessors.UserRequestPostProcessor user = user(createUser());
+        for (Long problemId : problemIds) {
+            String redirectedUrl = "/bbs" + (problemId != null ? "?problem_id=" + problemId : "");
+            MvcResult result = mvc.perform(post("/post").with(user)
+                    .param("problem_id", Objects.toString(problemId, ""))
+                    .param("parent_id", Objects.toString(parentId, ""))
+                    .param("content", content)
+                    .param("title", title))
+                    .andExpect(status().isFound())
+                    .andExpect(redirectedUrl(redirectedUrl))
+                    .andReturn();
+        }
+        mvc.perform(get("/bbs").with(user))
+                .andExpect(status().is2xxSuccessful());
     }
 
     /**

@@ -54,6 +54,12 @@ public class ManagerControllerTest {
     @Test
     public void testIndex() throws Exception {
         log.info("index");
+        mvc.perform(get("/admin"))
+                .andExpect(redirectedUrl("/admin/"))
+                .andReturn();
+        mvc.perform(get("/admin?"))
+                .andExpect(redirectedUrl("/admin/"))
+                .andReturn();
         mvc.perform(get("/admin?testKey=testValue"))
                 .andExpect(redirectedUrl("/admin/?testKey=testValue"))
                 .andReturn();
