@@ -1,7 +1,8 @@
 package cn.edu.zjnu.acm.judge.controller.user;
 
 import cn.edu.zjnu.acm.judge.domain.User;
-import cn.edu.zjnu.acm.judge.exception.MessageException;
+import cn.edu.zjnu.acm.judge.exception.BusinessCode;
+import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.service.AccountService;
 import cn.edu.zjnu.acm.judge.util.ValueCheck;
 import java.util.Objects;
@@ -44,13 +45,13 @@ public class ModifyUserController {
             @RequestParam("school") String school,
             Authentication authentication) {
         if (!Objects.equals(newPassword, rptPassword)) {
-            throw new MessageException("Passwords are not match");
+            throw new BusinessException(BusinessCode.PASSWORD_NOT_MATCH);
         }
         String userId = authentication.getName();
         User user = accountService.findOne(userId);
         String password = user.getPassword();
         if (!passwordEncoder.matches(oldPassword, password)) {
-            throw new MessageException("password is not correct");
+            throw new BusinessException(BusinessCode.PASSWORD_NOT_CORRECT);
         }
         if (StringUtils.isEmpty(nick)) {
             nick = userId;

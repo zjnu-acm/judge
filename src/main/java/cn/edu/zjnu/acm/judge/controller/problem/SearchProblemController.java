@@ -2,7 +2,8 @@ package cn.edu.zjnu.acm.judge.controller.problem;
 
 import cn.edu.zjnu.acm.judge.data.form.ProblemForm;
 import cn.edu.zjnu.acm.judge.domain.Problem;
-import cn.edu.zjnu.acm.judge.exception.MessageException;
+import cn.edu.zjnu.acm.judge.exception.BusinessCode;
+import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.service.ProblemService;
 import cn.edu.zjnu.acm.judge.util.URLBuilder;
 import java.util.Locale;
@@ -27,7 +28,7 @@ public class SearchProblemController {
     public String searchProblem(ProblemForm form, Model model, Locale locale, Authentication authentication,
             @PageableDefault(1000) Pageable pageable, HttpServletRequest request) {
         if (!StringUtils.hasText(form.getSstr())) {
-            throw new MessageException("Please input the keyword to the problem.");
+            throw new BusinessException(BusinessCode.PROBLEM_SEARCH_KEY_EMPTY);
         }
         String currentUserId = authentication != null ? authentication.getName() : null;
         String url = URLBuilder.fromRequest(request).replaceQueryParam("page").toString();

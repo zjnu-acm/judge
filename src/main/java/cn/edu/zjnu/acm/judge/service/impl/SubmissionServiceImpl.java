@@ -21,7 +21,6 @@ import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.exception.BusinessCode;
 import cn.edu.zjnu.acm.judge.exception.BusinessException;
-import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
@@ -56,6 +55,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service("submissionService")
 public class SubmissionServiceImpl implements SubmissionService {
 
+    private static final int SUBMIT_INTERVAL = 10;
+
     @Autowired
     private ContestMapper contestMapper;
     @Autowired
@@ -73,7 +74,7 @@ public class SubmissionServiceImpl implements SubmissionService {
     @Autowired
     private ContestService contestService;
 
-    private final Set<String> cache = Collections.newSetFromMap(CacheBuilder.newBuilder().expireAfterWrite(10, TimeUnit.SECONDS).<String, Boolean>build().asMap());
+    private final Set<String> cache = Collections.newSetFromMap(CacheBuilder.newBuilder().expireAfterWrite(SUBMIT_INTERVAL, TimeUnit.SECONDS).<String, Boolean>build().asMap());
 
     @Override
     public boolean canView(HttpServletRequest request, Submission submission) {
@@ -106,14 +107,14 @@ public class SubmissionServiceImpl implements SubmissionService {
     private void check(int languageId, String source, String userId) {
         languageService.getAvailableLanguage(languageId);
         if (source.length() > 32768) {
-            throw new MessageException("Source code too long, submit FAILED;if you really need submit this source please contact administrator");
+            throw new BusinessException(BusinessCode.SOURCE_CODE_LONG);
         }
         if (source.length() < 10) {
-            throw new MessageException("Source code too short, submit FAILED;if you really need submit this source please contact administrator");
+            throw new BusinessException(BusinessCode.SOURCE_CODE_SHORT);
         }
         // 10秒交一次。。。
         if (cache.contains(userId) || !cache.add(userId)) {
-            throw new MessageException("Sorry, please don't submit again within 10 seconds.");
+            throw new BusinessException(BusinessCode.SUBMISSION_FREQUENTLY, SUBMIT_INTERVAL);
         }
     }
 

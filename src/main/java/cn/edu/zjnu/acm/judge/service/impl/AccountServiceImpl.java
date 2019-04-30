@@ -168,7 +168,7 @@ public class AccountServiceImpl implements AccountService {
     private void prepare(Collection<Account> accounts) {
         for (Account account : accounts) {
             if (!StringUtils.hasText(account.getId())) {
-                throw new BusinessException(BusinessCode.EMPTY_USER_ID);
+                throw new BusinessException(BusinessCode.IMPORT_USER_ID_EMPTY);
             }
             String password = account.getPassword();
             if (StringUtils.isEmpty(password)) {

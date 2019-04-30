@@ -1,7 +1,8 @@
 package cn.edu.zjnu.acm.judge.controller.user;
 
 import cn.edu.zjnu.acm.judge.domain.User;
-import cn.edu.zjnu.acm.judge.exception.MessageException;
+import cn.edu.zjnu.acm.judge.exception.BusinessCode;
+import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
 import cn.edu.zjnu.acm.judge.service.ContestOnlyService;
 import cn.edu.zjnu.acm.judge.util.ValueCheck;
@@ -41,7 +42,7 @@ public class RegisterController {
         ValueCheck.checkPassword(password);
         ValueCheck.checkEmail(email);
         if (!Objects.equals(password, rptPassword)) {
-            throw new MessageException("Passwords are not match");
+            throw new BusinessException(BusinessCode.PASSWORD_NOT_MATCH);
         }
         if (StringUtils.hasText(nick)) {
             nick = nick.trim();
@@ -50,7 +51,7 @@ public class RegisterController {
         }
         ValueCheck.checkNick(nick);
         if (userMapper.findOne(userId) != null) {
-            throw new MessageException("The ID( " + userId + ") existed");
+            throw new BusinessException(BusinessCode.IMPORT_USER_EXISTS, userId);
         }
         User user = User.builder().id(userId)
                 .password(passwordEncoder.encode(password))

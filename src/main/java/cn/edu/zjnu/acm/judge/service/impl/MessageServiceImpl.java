@@ -16,13 +16,12 @@
 package cn.edu.zjnu.acm.judge.service.impl;
 
 import cn.edu.zjnu.acm.judge.domain.Message;
-import cn.edu.zjnu.acm.judge.exception.MessageException;
+import cn.edu.zjnu.acm.judge.exception.BusinessCode;
+import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.MessageMapper;
 import cn.edu.zjnu.acm.judge.service.MessageService;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,11 +42,12 @@ public class MessageServiceImpl implements MessageService {
         long orderNum = 0;
 
         final long nextId = messageMapper.nextId();
-        final Message parent = parentId != null
-                ? Optional.ofNullable(messageMapper.findOne(parentId))
-                        .orElseThrow(() -> new MessageException("No such parent message", HttpStatus.NOT_FOUND))
-                : null;
-        if (parent != null) {
+        Message parent = null;
+        if (parentId != null) {
+            parent = messageMapper.findOne(parentId);
+            if (parent == null) {
+                throw new BusinessException(BusinessCode.MESSAGE_NO_SUCH_PARENT, parentId);
+            }
             orderNum = parent.getOrder();
             final long depth1 = parent.getDepth();
 
