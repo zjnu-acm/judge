@@ -13,26 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.service;
+package cn.edu.zjnu.acm.judge.config;
 
-import cn.edu.zjnu.acm.judge.domain.User;
-import java.util.Map;
-import java.util.Optional;
+import com.google.code.kaptcha.servlet.KaptchaExtend;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
  *
  * @author zhanhb
  */
-public interface ResetPasswordService {
+@Configuration
+public class KaptchaConfiguration {
 
-    Optional<User> checkVcode(String userId, String vcode);
+    @Bean
+    public KaptchaExtend kaptchaExtend() {
+        return new KaptchaExtend();
+    }
 
-    Optional<String> get(String id);
-
-    String getOrCreate(String id);
-
-    void remove(String userId);
-
-    Map<String, ?> stats();
-    
 }

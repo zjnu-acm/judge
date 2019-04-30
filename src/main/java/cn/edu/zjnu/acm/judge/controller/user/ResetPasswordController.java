@@ -34,7 +34,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -86,8 +85,8 @@ public class ResetPasswordController {
         HttpSession session = request.getSession(false);
         String word = null;
         if (session != null) {
-            word = (String) session.getAttribute("word");
-            session.removeAttribute("word");
+            word = (String) session.getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
+            session.removeAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
         }
         if (word == null || !word.equalsIgnoreCase(verify)) {
             out.print("alert('验证码错误');");
@@ -113,7 +112,7 @@ public class ResetPasswordController {
             String content = templateEngine.process("users/password", new Context(locale, map));
 
             emailService.send(email, title, content);
-        } catch (MailException | MessagingException ex) {
+        } catch (MessagingException | RuntimeException | Error ex) {
             log.error("fail to send email", ex);
             out.print("alert('邮件发送失败，请稍后再试')");
             return;

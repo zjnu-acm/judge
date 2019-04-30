@@ -67,12 +67,11 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
 
     @Nullable
     @Override
-    public String getIfPresent(String id) {
-        return asMap().get(id);
+    public Optional<String> get(String id) {
+        return Optional.ofNullable(asMap().get(id));
     }
 
-    @Override
-    public ConcurrentMap<String, String> asMap() {
+    private ConcurrentMap<String, String> asMap() {
         return cache.asMap();
     }
 

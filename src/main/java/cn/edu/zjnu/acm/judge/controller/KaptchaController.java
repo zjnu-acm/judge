@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 ZJNU ACM.
+ * Copyright 2019 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,26 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.config;
+package cn.edu.zjnu.acm.judge.controller;
 
+import com.google.code.kaptcha.servlet.KaptchaExtend;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  *
  * @author zhanhb
  */
-class KaptchaServlet extends com.google.code.kaptcha.servlet.KaptchaServlet {
+@Controller
+public class KaptchaController {
 
-    private static final long serialVersionUID = 1L;
+    @Autowired
+    private KaptchaExtend kaptchaExtend;
 
-    @Override
-    public void doGet(HttpServletRequest req, HttpServletResponse resp)
+    @GetMapping("images/rand.jpg")
+    public void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        req.getSession(); // create session for kaptcha servlet
-        super.doGet(req, resp);
+        request.getSession(); // create session if not created.
+        kaptchaExtend.captcha(request, response);
     }
 
 }

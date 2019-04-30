@@ -15,9 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.config;
 
-import com.google.code.kaptcha.servlet.KaptchaServlet;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.ShallowEtagHeaderFilter;
@@ -28,14 +26,6 @@ import org.springframework.web.filter.ShallowEtagHeaderFilter;
  */
 @Configuration
 public class RegistrationBeanConfiguration {
-
-    @Bean
-    public ServletRegistrationBean<KaptchaServlet> kaptcha() {
-        KaptchaServlet servlet = new cn.edu.zjnu.acm.judge.config.KaptchaServlet();
-        ServletRegistrationBean<KaptchaServlet> servletRegistrationBean = new ServletRegistrationBean<>(servlet, "/images/rand.jpg");
-        servletRegistrationBean.addInitParameter(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_CONFIG_KEY, "word");
-        return servletRegistrationBean;
-    }
 
     @Bean
     public FilterRegistrationBean<ShallowEtagHeaderFilter> shallowEtagHeaderFilter() {
