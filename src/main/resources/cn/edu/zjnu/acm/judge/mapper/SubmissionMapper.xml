@@ -105,7 +105,7 @@
         FROM solution s
         <if test='pageable.sort!=null and pageable.sort.iterator().hasNext()'>
             LEFT JOIN solution s2 ON
-            <if test='form.contestId != null'>
+            <if test='form.contestId!=null'>
                 s.contest_id = s2.contest_id AND
             </if>
             s.problem_id=s2.problem_id AND s.score=s2.score AND s.user_id=s2.user_id
@@ -124,12 +124,12 @@
             </foreach>
         </if>
         LEFT JOIN solution s3 ON
-        <if test='form.contestId != null'>
+        <if test='form.contestId!=null'>
             s.contest_id = s3.contest_id AND
         </if>
         s.problem_id=s3.problem_id AND s.score=s3.score AND s.user_id=s3.user_id
         <where>
-            <if test='form.contestId != null'>
+            <if test='form.contestId!=null'>
                 s.contest_id=#{form.contestId}
             </if>
             AND s.problem_id=#{form.problemId} AND s.score=100

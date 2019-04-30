@@ -34,7 +34,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
  * @author zhanhb
  */
 @Configuration
-@SuppressWarnings("PublicInnerClass")
+@SuppressWarnings({"PublicInnerClass", "UtilityClassWithoutPrivateConstructor"})
 public class LoginListener {
 
     private static String saveEvent(LoginlogService loginlogService, Authentication authentication) {
@@ -52,9 +52,6 @@ public class LoginListener {
         }
         loginlogService.save(LoginLog.builder().ip(remoteAddress).success(success).type(type).user(authentication.getName()).build());
         return remoteAddress;
-    }
-
-    public LoginListener() {
     }
 
     @Configuration
@@ -80,7 +77,8 @@ public class LoginListener {
     }
 
     @Configuration
-    public static class LoginFailureListener implements ApplicationListener<AuthenticationFailureBadCredentialsEvent> {
+    public static class LoginFailureListener implements
+            ApplicationListener<AuthenticationFailureBadCredentialsEvent> {
 
         @Autowired
         private LoginlogService loginlogService;
