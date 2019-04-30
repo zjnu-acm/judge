@@ -4,33 +4,39 @@
 * text eol=lf
 
 # Custom for Visual Studio
-*.cs   text    diff=csharp
+*.cs text diff=csharp
 
 # binary files.
-*.doc binary  diff=word
-*.DOC binary  diff=word
 *.docx binary diff=word
 *.DOCX binary diff=word
+*.doc binary diff=word
+*.DOC binary diff=word
+*.gif binary diff=image
+*.jpg binary diff=image
+*.png binary diff=image
 *.dot binary
 *.DOT binary
+*.gz  binary
+*.ico binary
+*.jar binary
 *.pdf binary
 *.PDF binary
 *.rtf binary
 *.RTF binary
+*.tgz binary
 *.ttf binary
+*.zip binary
 *.eot binary
 *.woff binary
 *.woff2 binary
-*.ico binary
 
 mvnw    text    diff=shell
 *.sh    text    diff=shell
 *.java  text    diff=java
 *.html  text    diff=html
-*.xml   text    diff=xml
-*.jspx  text    diff=xml
-*.tagx  text    diff=xml
 *.svg   text    diff=xml
+*.tld   text    diff=xml
+*.xml   text    diff=xml
 *.css   text
 *.js    text
 *.jsp   text
@@ -38,20 +44,14 @@ mvnw    text    diff=shell
 *.yaml  text
 *.yml   text
 *.sql   text
-*.properties text
 *.txt   text
-*.groovy text
-*.cpp text
-*.c   text
-*.tld text diff=xml
-*.in  text
-*.out text
-*.md text
-*.MD text
-*.gif binary diff=image
-*.jpg binary diff=image
-*.png binary diff=image
+*.cpp   text
+*.c     text
+*.in    text
+*.out   text
+*.md    text
+*.MD    text
 *.cmd text eol=crlf
 *.bat text eol=crlf
-*.jar binary
-*.zip binary
+*.groovy text
+*.properties text
