@@ -18,7 +18,6 @@ package cn.edu.zjnu.acm.judge.service.impl;
 import cn.edu.zjnu.acm.judge.config.Constants;
 import cn.edu.zjnu.acm.judge.mapper.SystemMapper;
 import cn.edu.zjnu.acm.judge.service.SystemService;
-import cn.edu.zjnu.acm.judge.util.SpecialCall;
 import javax.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationInitializer;

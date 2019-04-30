@@ -30,10 +30,10 @@ public class TokenRepositoryConfiguration {
 
     @Bean
     public PersistentTokenRepository persistentTokenRepository(JdbcTemplate jdbcTemplate) {
-        JdbcTokenRepositoryImpl jdbcTokenRepositoryImpl = new JdbcTokenRepositoryImpl();
-        jdbcTokenRepositoryImpl.setJdbcTemplate(jdbcTemplate);
-        jdbcTokenRepositoryImpl.setCreateTableOnStartup(false);
-        return jdbcTokenRepositoryImpl;
+        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
+        tokenRepository.setJdbcTemplate(jdbcTemplate);
+        tokenRepository.setCreateTableOnStartup(false);
+        return tokenRepository;
     }
 
 }
