@@ -140,20 +140,19 @@
         <if test='pageable.sort!=null and pageable.sort.iterator().hasNext()'>
             <foreach item='item' collection='pageable.sort' separator=',' close=','>
                 <choose>
-                    <when test='"inDate".equalsIgnoreCase(item.property)'>in_date</when>
-                    <when test='"date".equalsIgnoreCase(item.property)'>in_date</when>
+                    <when test='"inDate".equalsIgnoreCase(item.property)'>p.in_date</when>
+                    <when test='"date".equalsIgnoreCase(item.property)'>p.in_date</when>
                     <when test='"title".equalsIgnoreCase(item.property)'>title</when>
-                    <when test='"id".equalsIgnoreCase(item.property)'>id</when>
+                    <when test='"id".equalsIgnoreCase(item.property)'>p.problem_id</when>
                     <when test='"timeLimit".equalsIgnoreCase(item.property)'>time_limit</when>
                     <when test='"memoryLimit".equalsIgnoreCase(item.property)'>memory_limit</when>
                     <when test='"defunct".equalsIgnoreCase(item.property)'>p.disabled</when>
                     <when test='"disabled".equalsIgnoreCase(item.property)'>p.disabled</when>
                     <when test='"accepted".equalsIgnoreCase(item.property)'>p.accepted</when>
                     <when test='"submit".equalsIgnoreCase(item.property)'>p.submit</when>
-                    <when test='"submit".equalsIgnoreCase(item.property)'>p.submit</when>
                     <when test='"ratio".equalsIgnoreCase(item.property)'>p.accepted/p.submit</when>
                     <when test='"difficulty".equalsIgnoreCase(item.property)'>(p.submit-p.accepted)/p.submit</when>
-                    <otherwise>id</otherwise>
+                    <otherwise>p.problem_id</otherwise>
                 </choose>
                 <if test='item.descending'> DESC</if>
             </foreach>
