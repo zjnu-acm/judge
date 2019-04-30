@@ -42,7 +42,7 @@ public class PasswordConfiguration {
                         org.springframework.security.crypto.password.NoOpPasswordEncoder.getInstance(),
                         new MultiPasswordSupport(
                                 new CombinePasswordEncoder(
-                                        new BCryptPasswordEncoder(6),
+                                        new BCryptPasswordEncoder(8),
                                         MessageDigestPasswordEncoder.md5(),
                                         MessageDigestPasswordEncoder.sha1(),
                                         MessageDigestPasswordEncoder.sha256(),
