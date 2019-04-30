@@ -31,7 +31,7 @@
                             <span style="color: blue" th:text="*{title}">No Topic</span>
                         </a>
                     </td>
-                    <td th:text="*{#calendars.format(T(java.util.Date).from(inDate),'yyyy-MM-dd H:mm:ss')}">2016-01-04</td>
+                    <td th:text="*{#temporals.format(inDate,'yyyy-MM-dd H:mm:ss')}">2016-01-04</td>
                 </tr>
             </tbody>
         </table>

@@ -13,7 +13,7 @@
                 <a th:href="@{/sendpage(to=${user.id})}">[[${user.id}]]--[[${user.nick}]]</a>
             </font>
             <br/>
-            <span th:if="${user.accesstime!=null}">Last Loginned Time:[[${#calendars.format(T(java.util.Date).from(user.accesstime),"yyyy-MM-dd HH:mm:ss")}]]</span>
+            <span th:if="${user.accesstime!=null}">Last Loginned Time:[[${#temporals.format(user.accesstime,"yyyy-MM-dd HH:mm:ss")}]]</span>
             <span th:if="${#request.isUserInRole('ADMIN')} and ${user.ip!=null}"><br/>Last Loginned IP:[[${user.ip}]]</span>
             <table align="center" width="700" class="table-default table-back">
                 <tr valign="bottom">

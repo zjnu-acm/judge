@@ -15,9 +15,9 @@
         </p>
         <p align="center">
             <span>Start time:&nbsp;&nbsp;</span>
-            <span style="color: #939" th:text="${#calendars.format(T(java.util.Date).from(contest.startTime),'yyyy-MM-dd HH:mm:ss')}">2016-04-09 12:00:00</span>
+            <span style="color: #939" th:text="${#temporals.format(contest.startTime,'yyyy-MM-dd HH:mm:ss')}">2016-04-09 12:00:00</span>
             <span>&nbsp;&nbsp;End time:&nbsp;&nbsp;</span>
-            <span style="color: #939" th:text="${#calendars.format(T(java.util.Date).from(contest.endTime),'yyyy-MM-dd HH:mm:ss')}">2016-04-09 17:00:00</span><br/>
+            <span style="color: #939" th:text="${#temporals.format(contest.endTime,'yyyy-MM-dd HH:mm:ss')}">2016-04-09 17:00:00</span><br/>
             <span>Current System Time:&nbsp;&nbsp;</span>
             <span style="color: #939" th:text="${#calendars.format(#execInfo.now,'yyyy-MM-dd HH:mm:ss')}">2016-05-06 17:15:15</span>
             <span>&nbsp;&nbsp;Contest Status:&nbsp;&nbsp;</span>

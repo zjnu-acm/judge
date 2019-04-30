@@ -65,7 +65,7 @@
                                 </td>
                                 <td th:if="${canView || contestId==null}">[[*{new java.text.DecimalFormat("0.00").format(sourceLength/1024.0)}]]K</td>
                                 <!--/*/<td th:unless="${canView || contestId==null}">&nbsp;</td>/*/-->
-                                <td>[[*{#calendars.format(T(java.util.Date).from(inDate),'yyyy-MM-dd HH:mm:ss')}]]</td>
+                                <td>[[*{#temporals.format(inDate,'yyyy-MM-dd HH:mm:ss')}]]</td>
                             </tr>
                         </tbody>
                     </table>

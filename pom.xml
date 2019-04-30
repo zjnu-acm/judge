@@ -388,6 +388,11 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-java8time</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>angular-multi-select</artifactId>
             <scope>runtime</scope>

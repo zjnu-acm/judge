@@ -41,3 +41,6 @@ getParameter\(request,\s*"([^)]+)\)
 request.getParameter($1)
 
 <th:block th:inline="text">[[${T(org.thymeleaf.spring4.context.SpringContextUtils).getApplicationContext(#ctx)==T(org.springframework.web.context.support.WebApplicationContextUtils).getRequiredWebApplicationContext(#servletContext)}]]</th:block>
+
+#calendars\.format\(T\(java\.util\.Date\)\.from\(([^()]+)\)
+#temporals.format($1

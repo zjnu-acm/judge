@@ -23,7 +23,7 @@
                     <td>
                         <a th:href="@{/showcontest(contest_id=${contest.id})}">[[*{title}]]</a>
                     </td>
-                    <td>[[*{#calendars.format(T(java.util.Date).from(startTime),"yyyy-MM-dd HH:mm:ss")}]]</td>
+                    <td>[[*{#temporals.format(startTime,"yyyy-MM-dd HH:mm:ss")}]]</td>
                     <td th:switch="*{(started?1:0)+(ended?1:0)}">
                         <span th:case="0" style="color: blue">Pending</span>
                         <span th:case="1" style="color: red">Running</span>
