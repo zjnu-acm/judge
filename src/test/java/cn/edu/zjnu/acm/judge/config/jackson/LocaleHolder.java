@@ -16,22 +16,24 @@
 package cn.edu.zjnu.acm.judge.config.jackson;
 
 import java.util.Locale;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  *
  * @author zhanhb
  */
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder
-@Data
-@NoArgsConstructor
 public class LocaleHolder {
 
     private Locale locale;
+
+    public LocaleHolder() {
+    }
+
+    public LocaleHolder(Locale locale) {
+        this.locale = locale;
+    }
+
+    public Locale getLocale() {
+        return locale;
+    }
 
 }

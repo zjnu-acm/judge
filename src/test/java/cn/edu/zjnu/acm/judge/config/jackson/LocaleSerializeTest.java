@@ -63,7 +63,7 @@ public class LocaleSerializeTest {
             log.info("str={}, expect={}, result={}", str, expect, result);
             assertEquals(expect, result);
 
-            str = objectMapper.writeValueAsString(LocaleHolder.builder().locale(expect).build());
+            str = objectMapper.writeValueAsString(new LocaleHolder(expect));
             log.info("str={}", str);
 
             result = objectMapper.readValue(str, LocaleHolder.class).getLocale();
