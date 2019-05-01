@@ -24,21 +24,28 @@
         <result property="nick" column="nick"/>
         <result property="school" column="school"/>
     </resultMap>
+    <sql id="columns">
+        user_id,
+        nick,
+        email,
+        password,
+        school,
+        ip,
+        solved,
+        submit,
+        accesstime,
+        created_time,
+        modified_time
+    </sql>
+    <sql id="listColumns">
+        user_id,
+        solved,
+        submit,
+        nick
+    </sql>
     <select id="findOne" resultMap="baseResultMap">
-        select
-            user_id,
-            nick,
-            email,
-            password,
-            school,
-            ip,
-            solved,
-            submit,
-            accesstime,
-            created_time,
-            modified_time
-        from `user`
-        where user_id=#{id}
+        select <include refid="columns"/>
+        from `user` where user_id=#{id}
     </select>
     <insert id="save">
         insert into `user`(USER_ID,PASSWORD,EMAIL,REG_TIME,NICK,SCHOOL,ip)
@@ -60,14 +67,14 @@
         </where>
     </select>
     <select id="rank" resultType="long">
-        select count(u1.user_id)
+        select count(u1.user_id) cnt
         from `user` u1 join `user` u2  on (
             u1.solved&gt;u2.solved or u1.solved=u2.solved and u1.submit&lt;u2.submit or
             u1.solved=u2.solved and u1.submit=u2.submit and u1.user_id&lt;u2.user_id
         ) and not u1.disabled where u2.user_id=#{id}
     </select>
     <select id="neighbours" resultMap="baseResultMap">
-        select user_id,nick,solved,submit from (
+        select <include refid="listColumns"/> from (
             (
                 select u1.* from `user` u1 join `user` u2  on (
                     u1.solved&gt;u2.solved 
@@ -107,11 +114,7 @@
         where temp.user_id=`user`.user_id
     </select>
     <select id="findAll" resultMap="baseResultMap">
-        select
-            user_id,
-            solved,
-            submit,
-            nick
+        select <include refid="listColumns"/>
         <if test='form.disabled==null or form.disabled==true'>,disabled</if>
         from `user`
         <where>
@@ -133,7 +136,7 @@
             </foreach>
         </if>limit #{pageable.offset},#{pageable.size}
     </select>
-    <select id="findAllByExport" resultMap="accountResultMap">
+    <select id="findAllForExport" resultMap="accountResultMap">
         select
             user_id,
             nick,

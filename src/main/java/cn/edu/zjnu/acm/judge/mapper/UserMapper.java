@@ -49,7 +49,7 @@ public interface UserMapper {
 
     List<User> findAll(@Param("form") AccountForm form, @Param("pageable") Pageable pageable);
 
-    List<Account> findAllByExport(@Param("form") AccountForm form, @Param("pageable") Pageable pageable);
+    List<Account> findAllForExport(@Param("form") AccountForm form, @Param("pageable") Pageable pageable);
 
     int updateSelective(@Nonnull @Param("userId") String userId, @Param("user") User user);
 

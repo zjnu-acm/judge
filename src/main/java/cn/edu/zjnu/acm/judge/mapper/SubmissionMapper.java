@@ -80,6 +80,6 @@ public interface SubmissionMapper {
 
     int deleteSolution(@Param("id") long id);
 
-    int deleteDetail(long id);
+    int deleteDetail(@Param("id") long id);
 
 }

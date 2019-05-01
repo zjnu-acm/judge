@@ -78,7 +78,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public List<Account> findAllForExport(AccountForm form, Pageable pageable) {
-        return userMapper.findAllByExport(form, PageRequest.of(0, Integer.MAX_VALUE, pageable.getSort()));
+        return userMapper.findAllForExport(form, PageRequest.of(0, Integer.MAX_VALUE, pageable.getSort()));
     }
 
     @Override
