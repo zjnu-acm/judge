@@ -13,7 +13,7 @@
         <result property="problem" column="problem_id"/>
         <result property="depth" column="depth"/>
         <result property="thread" column="thread_id"/>
-        <result property="order" column="orderNum"/>
+        <result property="order" column="order_num"/>
         <!--<result property="disabled" column="disabled"/>-->
     </resultMap>
     <sql id="columns">
@@ -26,7 +26,7 @@
         problem_id,
         depth,
         thread_id,
-        orderNum
+        order_num
     </sql>
     <sql id="listColumns">
         message_id,
@@ -47,18 +47,18 @@
     <select id="findAllByThreadIdAndOrderNumGreaterThanOrderByOrderNum" resultMap="baseResultMap">
         select <include refid="columns"/>
         from message
-        where thread_id=#{thread} and orderNum>#{orderNum}
-        order by orderNum
+        where thread_id=#{thread} and order_num>#{order}
+        order by order_num
     </select>
     <update id="updateOrderNumByThreadIdAndOrderNumGreaterThan">
-        update message set orderNum=orderNum+1 where thread_id=#{threadId} and orderNum>#{orderNum}
+        update message set order_num=order_num+1 where thread_id=#{threadId} and order_num>#{order}
     </update>
     <update id="updateThreadIdByThreadId">
         update message set thread_id=#{threadId} where thread_id=#{original}
     </update>
     <insert id="save">
-        insert into message (thread_id,message_id,parent_id,orderNum,problem_id,depth,user_id,title,content,in_date)
-        values(#{id},#{id},#{parentId},#{orderNum},#{problemId},#{depth},#{userId},#{title},#{content},now())
+        insert into message (thread_id,message_id,parent_id,order_num,problem_id,depth,user_id,title,content,in_date)
+        values(#{id},#{id},#{parentId},#{order},#{problemId},#{depth},#{userId},#{title},#{content},now())
     </insert>
     <select id="findAllByThreadIdBetween" resultMap="baseResultMap">
         select <include refid="listColumns"/>
@@ -68,7 +68,7 @@
             <if test='max!=null'>and thread_id&lt;#{max} </if>
             <if test='problemId!=null'>and problem_id=#{problemId} </if>
         </where>
-        order by thread_id desc,orderNum
+        order by thread_id desc,order_num
         <if test='limit!=null'> limit #{limit}</if>
     </select>
     <select id="mint" resultType="long">

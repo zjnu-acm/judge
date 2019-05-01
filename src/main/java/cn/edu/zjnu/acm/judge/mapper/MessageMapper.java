@@ -35,15 +35,15 @@ public interface MessageMapper {
     Message findOne(@Param("id") long id);
 
     List<Message> findAllByThreadIdAndOrderNumGreaterThanOrderByOrderNum(
-            @Param("thread") long thread, @Param("orderNum") long orderNum);
+            @Param("thread") long thread, @Param("order") long order);
 
-    long updateOrderNumByThreadIdAndOrderNumGreaterThan(@Param("threadId") long thread, @Param("orderNum") long orderNum);
+    long updateOrderNumByThreadIdAndOrderNumGreaterThan(@Param("threadId") long thread, @Param("order") long order);
 
     long updateThreadIdByThreadId(@Param("threadId") long nextId, @Param("original") long original);
 
     long save(@Param("id") long id,
             @Param("parentId") Long parentId,
-            @Param("orderNum") long orderNum,
+            @Param("order") long order,
             @Param("problemId") Long problemId,
             @Param("depth") long depth,
             @Param("userId") String userId,

@@ -39,7 +39,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public void save(Long parentId, Long problemId, String userId, String title, String content) {
         long depth = 0;
-        long orderNum = 0;
+        long order = 0;
 
         final long nextId = messageMapper.nextId();
         Message parent = null;
@@ -48,7 +48,7 @@ public class MessageServiceImpl implements MessageService {
             if (parent == null) {
                 throw new BusinessException(BusinessCode.MESSAGE_NO_SUCH_PARENT, parentId);
             }
-            orderNum = parent.getOrder();
+            order = parent.getOrder();
             final long depth1 = parent.getDepth();
 
             List<Message> messages = messageMapper.findAllByThreadIdAndOrderNumGreaterThanOrderByOrderNum(parent.getThread(), parent.getOrder());
@@ -57,13 +57,13 @@ public class MessageServiceImpl implements MessageService {
                 if (depth <= depth1) {
                     break;
                 }
-                orderNum = m.getOrder();
+                order = m.getOrder();
             }
             depth = depth1 + 1;
-            messageMapper.updateOrderNumByThreadIdAndOrderNumGreaterThan(parent.getThread(), orderNum);
-            ++orderNum;
+            messageMapper.updateOrderNumByThreadIdAndOrderNumGreaterThan(parent.getThread(), order);
+            ++order;
         }
-        messageMapper.save(nextId, parentId, orderNum, problemId, depth, userId, title, content);
+        messageMapper.save(nextId, parentId, order, problemId, depth, userId, title, content);
         if (parent != null) {
             messageMapper.updateThreadIdByThreadId(nextId, parent.getThread());
         }
