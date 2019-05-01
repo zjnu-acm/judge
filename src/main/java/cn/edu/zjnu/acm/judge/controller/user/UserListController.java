@@ -16,7 +16,7 @@
 package cn.edu.zjnu.acm.judge.controller.user;
 
 import cn.edu.zjnu.acm.judge.service.AccountService;
-import cn.edu.zjnu.acm.judge.util.URLBuilder;
+import cn.edu.zjnu.acm.judge.util.URIBuilder;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -54,7 +54,7 @@ public class UserListController {
 
         pageable = PageRequest.of(pageable.getPageNumber(), pageSize, sort);
 
-        String query = URLBuilder.fromRequest(request)
+        String query = URIBuilder.fromRequest(request)
                 .replaceQueryParam("page")
                 .toString();
 

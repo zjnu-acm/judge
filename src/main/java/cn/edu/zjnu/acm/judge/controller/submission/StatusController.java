@@ -10,7 +10,7 @@ import cn.edu.zjnu.acm.judge.service.LanguageService;
 import cn.edu.zjnu.acm.judge.service.SubmissionService;
 import cn.edu.zjnu.acm.judge.service.impl.UserDetailsServiceImpl;
 import cn.edu.zjnu.acm.judge.util.ResultType;
-import cn.edu.zjnu.acm.judge.util.URLBuilder;
+import cn.edu.zjnu.acm.judge.util.URIBuilder;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -61,7 +61,7 @@ public class StatusController {
             Authentication authentication,
             Model model) {
         long problemId = 0;
-        String query = URLBuilder.fromRequest(request)
+        String query = URIBuilder.fromRequest(request)
                 .replaceQueryParam("top")
                 .replaceQueryParam("bottom")
                 .toString();

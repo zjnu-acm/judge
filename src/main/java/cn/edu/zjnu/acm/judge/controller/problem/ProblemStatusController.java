@@ -23,7 +23,7 @@ import cn.edu.zjnu.acm.judge.service.ProblemService;
 import cn.edu.zjnu.acm.judge.service.SubmissionService;
 import cn.edu.zjnu.acm.judge.service.impl.UserDetailsServiceImpl;
 import cn.edu.zjnu.acm.judge.util.ResultType;
-import cn.edu.zjnu.acm.judge.util.URLBuilder;
+import cn.edu.zjnu.acm.judge.util.URIBuilder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -98,7 +98,7 @@ public class ProblemStatusController {
         request.setAttribute("page", page);
         request.setAttribute("sa", Arrays.asList(counts, scores, urls));
         request.setAttribute("problem", problem);
-        request.setAttribute("url", URLBuilder.fromRequest(request).replaceQueryParam("page").toString());
+        request.setAttribute("url", URIBuilder.fromRequest(request).replaceQueryParam("page").toString());
         request.setAttribute("canView", canView);
         request.setAttribute("authentication", authentication);
 

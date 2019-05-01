@@ -27,7 +27,7 @@ import cn.edu.zjnu.acm.judge.service.ContestService;
 import cn.edu.zjnu.acm.judge.service.SubmissionService;
 import cn.edu.zjnu.acm.judge.service.impl.UserDetailsServiceImpl;
 import cn.edu.zjnu.acm.judge.util.ResultType;
-import cn.edu.zjnu.acm.judge.util.URLBuilder;
+import cn.edu.zjnu.acm.judge.util.URIBuilder;
 import com.google.common.collect.ImmutableList;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -128,7 +128,7 @@ public class ContestProblemController {
         request.setAttribute("page", page);
         request.setAttribute("sa", Arrays.asList(counts, scores, urls));
         request.setAttribute("problem", problem);
-        request.setAttribute("url", URLBuilder.fromRequest(request).replaceQueryParam("page").toString());
+        request.setAttribute("url", URIBuilder.fromRequest(request).replaceQueryParam("page").toString());
         request.setAttribute("contestId", contestId);
         request.setAttribute("canView", canView);
         request.setAttribute("authentication", authentication);

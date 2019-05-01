@@ -5,7 +5,7 @@ import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.exception.BusinessCode;
 import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.service.ProblemService;
-import cn.edu.zjnu.acm.judge.util.URLBuilder;
+import cn.edu.zjnu.acm.judge.util.URIBuilder;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class SearchProblemController {
             throw new BusinessException(BusinessCode.PROBLEM_SEARCH_KEY_EMPTY);
         }
         String currentUserId = authentication != null ? authentication.getName() : null;
-        String url = URLBuilder.fromRequest(request).replaceQueryParam("page").toString();
+        String url = URIBuilder.fromRequest(request).replaceQueryParam("page").toString();
         model.addAttribute("url", url);
         model.addAttribute("query", form.getSstr());
         form.setDisabled(Boolean.FALSE);

@@ -5,7 +5,7 @@ import cn.edu.zjnu.acm.judge.exception.MessageException;
 import cn.edu.zjnu.acm.judge.mapper.MessageMapper;
 import cn.edu.zjnu.acm.judge.service.MessageService;
 import cn.edu.zjnu.acm.judge.util.JudgeUtils;
-import cn.edu.zjnu.acm.judge.util.URLBuilder;
+import cn.edu.zjnu.acm.judge.util.URIBuilder;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -93,7 +93,7 @@ public class BBSController {
             sb.append("</ul>");
         }
         sb.append("</ul></td></tr></table><center>");
-        URLBuilder query = URLBuilder.fromRequest(request)
+        URIBuilder query = URIBuilder.fromRequest(request)
                 .replacePath("bbs")
                 .replaceQueryParam("top");
         sb.append("<hr/>[<a href=\"").append(query).append("\">Top</a>]");

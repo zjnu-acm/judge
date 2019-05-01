@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author zhanhb
  */
-public class URLBuilder {
+public class URIBuilder {
 
     /**
      * https://tools.ietf.org/html/rfc3986#section-3.4
@@ -33,28 +33,32 @@ public class URLBuilder {
     private static final URLEncoder QUERY_ENCODER = new URLEncoder("-._~!$'()*,;:@/?");
     private static final URLEncoder PATH_ENCODER = new URLEncoder("-._~!$'()*,;:@/");
 
-    public static URLBuilder fromRequest(HttpServletRequest request) {
-        return new URLBuilder(request.getServletPath(), request.getParameterMap());
+    public static URIBuilder fromRequest(HttpServletRequest request) {
+        return new URIBuilder(request.getServletPath(), request.getParameterMap());
     }
 
     private String path;
     private final Map<String, String[]> query;
 
-    private URLBuilder(String path, Map<String, String[]> query) {
+    private URIBuilder(String path, Map<String, String[]> query) {
         this.path = path;
         this.query = new LinkedHashMap<>(query);
     }
 
-    public URLBuilder replaceQueryParam(String name, String... values) {
+    public URIBuilder replaceQueryParam(String name, String... values) {
         if (values == null || values.length == 0) {
             query.remove(name);
         } else {
-            query.put(name, checkNotNull(values.clone()));
+            String[] clone = values.clone();
+            for (String string : clone) {
+                Objects.requireNonNull(string);
+            }
+            query.put(name, clone);
         }
         return this;
     }
 
-    public URLBuilder replacePath(String path) {
+    public URIBuilder replacePath(String path) {
         this.path = path != null ? path : "";
         return this;
     }
@@ -65,22 +69,15 @@ public class URLBuilder {
         boolean first = true;
         for (Map.Entry<String, String[]> entry : query.entrySet()) {
             String key = QUERY_ENCODER.encode(entry.getKey());
-            String[] value = entry.getValue();
-            if (value != null) {
-                for (String string : value) {
-                    sb.append(first ? '?' : '&').append(QUERY_ENCODER.encode(key)).append("=").append(QUERY_ENCODER.encode(string));
-                    first = false;
-                }
+            for (String string : entry.getValue()) {
+                sb.append(first ? '?' : '&');
+                sb.append(QUERY_ENCODER.encode(key));
+                sb.append("=");
+                sb.append(QUERY_ENCODER.encode(string));
+                first = false;
             }
         }
         return sb.toString();
-    }
-
-    private String[] checkNotNull(String[] arr) {
-        for (String string : arr) {
-            Objects.requireNonNull(string);
-        }
-        return arr;
     }
 
 }
