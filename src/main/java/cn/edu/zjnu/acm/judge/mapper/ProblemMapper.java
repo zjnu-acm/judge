@@ -50,7 +50,7 @@ public interface ProblemMapper {
             @Nullable @Param(value = "lang") String lang,
             @Param(value = "pageable") Pageable pageable);
 
-    long count(@Param("form") ProblemForm form, @Param("lang") String lang);
+    long count(@Param("form") ProblemForm form, @Nullable @Param("lang") String lang);
 
     long touchI18n(
             @Param("problemId") long problemId,

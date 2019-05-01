@@ -27,15 +27,11 @@ jQuery(function ($) {
             alert('请输入验证码');
             imgv.focus();
         } else {
-            try {
-                disable();
-                $.post('resetPassword.js', {username: uid, verify: vcode}).always(click, enable).fail(function (result) {
-                    alert(result.responseText || 'Error Occur');
-                });
-            } catch (e) {
-                enable();
-                alert('无法连接到服务器，请稍后再试！');
-            }
+            disable();
+            $.post('resetPassword.js', {username: uid, verify: vcode})
+                    .always(click, enable).fail(function (result) {
+                alert(result.responseText || 'Error Occur');
+            });
         }
     });
 });

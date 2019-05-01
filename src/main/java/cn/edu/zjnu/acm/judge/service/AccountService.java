@@ -37,9 +37,12 @@ public interface AccountService {
 
     Page<User> findAll(AccountForm form, Pageable pageable);
 
+    /**
+     * find all users not disabled
+     */
     Page<User> findAll(Pageable pageable);
 
-    List<Account> findAllByExport(AccountForm form, Pageable pageable);
+    List<Account> findAllForExport(AccountForm form, Pageable pageable);
 
     @Nonnull
     User findOne(String id);

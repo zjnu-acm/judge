@@ -84,13 +84,13 @@ public class AccountController {
 
     @GetMapping(produces = Constants.MineTypes.XLSX)
     public ResponseEntity<?> findAllXlsx(AccountForm form, Pageable pageable, Locale locale) {
-        List<Account> content = accountService.findAllByExport(form, pageable);
+        List<Account> content = accountService.findAllForExport(form, pageable);
         return ExcelUtil.toResponse(Account.class, content, locale, Type.XLSX);
     }
 
     @GetMapping(produces = Constants.MineTypes.XLS)
     public ResponseEntity<?> findAllXls(AccountForm form, Pageable pageable, Locale locale) {
-        List<Account> content = accountService.findAllByExport(form, pageable);
+        List<Account> content = accountService.findAllForExport(form, pageable);
         return ExcelUtil.toResponse(Account.class, content, locale, Type.XLS);
     }
 

@@ -43,22 +43,4 @@ public class LegacyController {
         return "redirect:/contests/{contestId}/problems.html";
     }
 
-    @Deprecated
-    @GetMapping("/ga")
-    public String ga() {
-        return "fragment/ga";
-    }
-
-    @Deprecated
-    @GetMapping("/nav")
-    public String nav() {
-        return "layout/main :: #nav";
-    }
-
-    @Deprecated
-    @GetMapping("/footer")
-    public String footer() {
-        return "layout/main :: #footer";
-    }
-
 }

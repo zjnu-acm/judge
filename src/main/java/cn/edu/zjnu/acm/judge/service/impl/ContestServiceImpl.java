@@ -86,6 +86,7 @@ public class ContestServiceImpl implements ContestService {
         }
     }
 
+    @Override
     public void addProblem(long contestId, long problemId) {
         contestMapper.addProblem(contestId, problemId, null);
     }
