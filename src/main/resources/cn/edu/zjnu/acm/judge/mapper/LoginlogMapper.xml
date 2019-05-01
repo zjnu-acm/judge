@@ -4,9 +4,9 @@
         "https://mybatis.github.io/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.zjnu.acm.judge.mapper.LoginlogMapper">
     <insert id="save">
-        insert into loginlog (user_id,password,type,ip,time,success) values
+        insert into loginlog (user_id,type,ip,time,success) values
         <foreach item='item' collection='list' separator=','>
-            (#{item.user},'',#{item.type},#{item.ip},now(),#{item.success})
+            (#{item.user},#{item.type},#{item.ip},now(),#{item.success})
         </foreach>
     </insert>
 </mapper>
