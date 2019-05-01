@@ -61,7 +61,10 @@
                                        target="_blank">GNU C++</a>
                                     <th:block th:unless="${canView||authentication?.name==item.user}">[[*{@languageService.getLanguageName(language)}]]</th:block>
                                 </td>
-                                <td th:if="${canView || contestId==null}">[[*{new java.text.DecimalFormat("0.00").format(sourceLength/1024.0)}]]K</td>
+                                <td th:if="${canView || contestId==null}">
+                                    <th:block th:if="*{sourceLength gt 2048}">[[*{new java.text.DecimalFormat("0.00").format(sourceLength/1024.0)}]] KB</th:block>
+                                    <th:block th:if="*{sourceLength le 2048}">[[*{sourceLength}]] B</th:block>
+                                </td>
                                 <!--/*/<td th:unless="${canView || contestId==null}">&nbsp;</td>/*/-->
                                 <td>[[*{#temporals.format(inDate,'yyyy-MM-dd HH:mm:ss')}]]</td>
                             </tr>
