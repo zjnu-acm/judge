@@ -80,7 +80,7 @@
                 <if test='problemId!=null'> and problem_id=#{problemId} </if>
             </where>
             order by thread_id desc limit #{limit}
-        ) as temp
+        ) t
     </select>
     <select id="maxt" resultType="long">
         select COALESCE(max(thread_id),#{coalesce}) as maxt
@@ -91,6 +91,6 @@
                 <if test='problemId!=null'>and problem_id=#{problemId}</if>
             </where>
             order by thread_id limit #{limit}
-        ) temp
+        ) t
     </select>
 </mapper>

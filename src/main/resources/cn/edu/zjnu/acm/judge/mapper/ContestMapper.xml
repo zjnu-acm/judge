@@ -105,10 +105,10 @@
             p.disabled,
             p.created_time,
             p.modified_time,
-            count(distinct sa.solution_id) accepted,
-            count(distinct s.solution_id) submit,
-            count(distinct sa.user_id)solved,
-            count(distinct s.user_id)submit_user
+            count(sa.solution_id) accepted,
+            count(s.solution_id) submit,
+            count(distinct sa.user_id) solved,
+            count(distinct s.user_id) submit_user
         from contest_problem cp
         join problem p on cp.problem_id=p.problem_id
         <include refid="cn.edu.zjnu.acm.judge.mapper.ProblemMapper.joinI18n"/>

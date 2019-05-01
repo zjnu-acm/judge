@@ -15,6 +15,20 @@
         accepted,
         submit
     </sql>
+    <sql id="setUser">
+        <set>
+            u.solved=COALESCE(t.solved,0),
+            u.submit=COALESCE(t.submit,0)
+        </set>
+    </sql>
+    <sql id="setProblem">
+        <set>
+            p.submit=COALESCE(t.submit,0),
+            p.accepted=COALESCE(t.accepted,0),
+            p.submit_user=COALESCE(t.submit_user,0),
+            p.solved=COALESCE(t.solved,0)
+        </set>
+    </sql>
     <insert id="init">
         replace into user_problem(user_id,problem_id,accepted,submit)
         select
@@ -47,10 +61,7 @@
             from user_problem up
             where user_id=#{userId}
         ) t on 1=1
-        <set>
-            u.solved=COALESCE(t.solved,0),
-            u.submit=COALESCE(t.submit,0)
-        </set>
+        <include refid="setUser"/>
         where u.user_id=#{userId}
     </update>
     <update id="updateProblem">
@@ -62,12 +73,7 @@
                 sum(if(up.accepted!=0,1,0)) solved
             from user_problem up where problem_id=#{problemId}
         ) t on 1=1
-        <set>
-            p.submit=COALESCE(t.submit,0),
-            p.accepted=COALESCE(t.accepted,0),
-            p.submit_user=COALESCE(t.submit_user,0),
-            p.solved=COALESCE(t.solved,0)
-        </set>
+        <include refid="setProblem"/>
         where p.problem_id=#{problemId}
     </update>
     <update id="updateUsers">
@@ -78,10 +84,7 @@
             from user_problem
             group by user_id
         ) t on u.user_id=t.user_id
-        <set>
-            u.solved=COALESCE(t.solved,0),
-            u.submit=COALESCE(t.submit,0)
-        </set>
+        <include refid="setUser"/>
     </update>
     <update id="updateProblems">
         update problem p left join (
@@ -94,12 +97,7 @@
             from user_problem
             group by problem_id
         ) t on p.problem_id=t.problem_id
-        <set>
-            p.submit=COALESCE(t.submit,0),
-            p.accepted=COALESCE(t.accepted,0),
-            p.submit_user=COALESCE(t.submit_user,0),
-            p.solved=COALESCE(t.solved,0)
-        </set>
+        <include refid="setProblem"/>
     </update>
     <select id="findAllSolvedByUserId" resultType="long">
         select problem_id from user_problem
