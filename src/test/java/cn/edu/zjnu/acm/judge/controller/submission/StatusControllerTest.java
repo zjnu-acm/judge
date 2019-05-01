@@ -43,22 +43,25 @@ public class StatusControllerTest {
         Long contestId = null;
         int language = 0;
         int size = 20;
-        Long bottom = null;
+        Long[] bottoms = {null, 2000L};
         Integer score = null;
         String userId = "";
         Long top = null;
-        MvcResult result = mvc.perform(get("/status")
-                .param("problem_id", problemId)
-                .param("contest_id", Objects.toString(contestId, ""))
-                .param("language", Integer.toString(language))
-                .param("size", Integer.toString(size))
-                .param("bottom", Objects.toString(bottom, ""))
-                .param("score", Objects.toString(score, ""))
-                .param("user_id", userId)
-                .param("top", Objects.toString(top, "")))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-                .andReturn();
+        for (Long bottom : bottoms) {
+            MvcResult result = mvc.perform(get("/status")
+                    .param("problem_id", problemId)
+                    .param("contest_id", Objects.toString(contestId, ""))
+                    .param("language", Integer.toString(language))
+                    .param("size", Integer.toString(size))
+                    .param("bottom", Objects.toString(bottom, ""))
+                    .param("score", Objects.toString(score, ""))
+                    .param("user_id", userId)
+                    .param("top", Objects.toString(top, "")))
+                    .andExpect(status().isOk())
+                    .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+                    .andReturn();
+        }
+
     }
 
 }

@@ -83,7 +83,7 @@
         </where>
         order by solution_id
         <if test='bottom==null'>desc</if>limit #{size}
-        <if test='bottom!=null'>) tmp order by id desc</if>
+        <if test='bottom!=null'>) tmp order by solution_id desc</if>
     </select>
     <select id="findAllByProblemIdAndResultNotAccept" resultType="long">
         select solution_id from solution s
