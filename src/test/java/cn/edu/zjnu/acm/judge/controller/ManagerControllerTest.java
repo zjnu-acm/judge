@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
@@ -43,25 +42,6 @@ public class ManagerControllerTest {
         MvcResult result = mvc.perform(get("/admin/"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-                .andReturn();
-    }
-
-    /**
-     * Test of index method, of class ManageController.
-     *
-     * @see ManagerController#index(RedirectAttributes, Map)
-     */
-    @Test
-    public void testIndex() throws Exception {
-        log.info("index");
-        mvc.perform(get("/admin"))
-                .andExpect(redirectedUrl("/admin/"))
-                .andReturn();
-        mvc.perform(get("/admin?"))
-                .andExpect(redirectedUrl("/admin/"))
-                .andReturn();
-        mvc.perform(get("/admin?testKey=testValue"))
-                .andExpect(redirectedUrl("/admin/?testKey=testValue"))
                 .andReturn();
     }
 
