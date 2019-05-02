@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -37,6 +37,7 @@ import org.springframework.stereotype.Service;
  *
  * @author zhanhb
  */
+@RequiredArgsConstructor
 @Service("userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -60,12 +61,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRoleMapper userRoleMapper;
     private final UserMapper userMapper;
-
-    @Autowired
-    public UserDetailsServiceImpl(UserRoleMapper userRoleMapper, UserMapper userMapper) {
-        this.userRoleMapper = userRoleMapper;
-        this.userMapper = userMapper;
-    }
 
     @Nonnull
     @Override

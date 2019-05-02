@@ -18,7 +18,7 @@ package cn.edu.zjnu.acm.judge.controller.api;
 import cn.edu.zjnu.acm.judge.domain.Language;
 import cn.edu.zjnu.acm.judge.mapper.LanguageMapper;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,16 +38,12 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  * @author zhanhb
  */
 @RequestMapping(value = "/api/languages", produces = APPLICATION_JSON_VALUE)
+@RequiredArgsConstructor
 @RestController
 @Secured("ROLE_ADMIN")
 public class LanguageController {
 
     private final LanguageMapper languageMapper;
-
-    @Autowired
-    public LanguageController(LanguageMapper languageMapper) {
-        this.languageMapper = languageMapper;
-    }
 
     @GetMapping
     public List<Language> findAll() {

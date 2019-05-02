@@ -26,23 +26,19 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 /**
  *
  * @author zhanhb
  */
+@RequiredArgsConstructor
 @Service("languageService")
 @SpecialCall({"contests/problems-status", "problems/status"})
 public class LanguageServiceImpl implements LanguageService {
 
     private final LanguageMapper languageMapper;
-
-    @Autowired
-    public LanguageServiceImpl(LanguageMapper languageMapper) {
-        this.languageMapper = languageMapper;
-    }
 
     @Override
     public Map<Integer, Language> getAvailableLanguages() {

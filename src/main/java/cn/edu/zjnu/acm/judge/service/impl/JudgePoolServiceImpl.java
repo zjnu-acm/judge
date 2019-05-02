@@ -27,25 +27,21 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
  *
  * @author zhanhb
  */
+@RequiredArgsConstructor
 @Service("judgePoolService")
 @Slf4j
 public class JudgePoolServiceImpl implements JudgePoolService {
 
     private ExecutorService executorService;
     private final JudgeService judgeService;
-
-    @Autowired
-    public JudgePoolServiceImpl(JudgeService judgeService) {
-        this.judgeService = judgeService;
-    }
 
     @PostConstruct
     public void init() {

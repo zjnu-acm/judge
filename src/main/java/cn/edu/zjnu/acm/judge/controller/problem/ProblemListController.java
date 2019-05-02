@@ -6,7 +6,7 @@ import cn.edu.zjnu.acm.judge.service.ProblemService;
 import cn.edu.zjnu.acm.judge.util.URIBuilder;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -16,10 +16,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
+@RequiredArgsConstructor
 public class ProblemListController {
 
-    @Autowired
-    private ProblemService problemService;
+    private final ProblemService problemService;
 
     @GetMapping({"/problemlist", "/problems"})
     public String problemList(ProblemForm form, Model model, Locale locale, Authentication authentication,

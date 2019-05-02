@@ -5,20 +5,15 @@ import cn.edu.zjnu.acm.judge.service.JudgePoolService;
 import cn.edu.zjnu.acm.judge.service.RejudgeService;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+@RequiredArgsConstructor
 @Service("rejudgeService")
 public class RejudgeServiceImpl implements RejudgeService {
 
     private final JudgePoolService judgePoolService;
     private final SubmissionMapper submissionMapper;
-
-    @Autowired
-    public RejudgeServiceImpl(JudgePoolService judgePoolService, SubmissionMapper submissionMapper) {
-        this.judgePoolService = judgePoolService;
-        this.submissionMapper = submissionMapper;
-    }
 
     @Override
     public CompletableFuture<?> byProblemId(long problemId) {

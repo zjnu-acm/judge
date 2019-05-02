@@ -19,7 +19,7 @@ import cn.edu.zjnu.acm.judge.domain.DomainLocale;
 import cn.edu.zjnu.acm.judge.service.LocaleService;
 import java.util.List;
 import java.util.Locale;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,16 +34,12 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  * @author zhanhb
  */
 @RequestMapping(value = "/api/locales", produces = APPLICATION_JSON_VALUE)
+@RequiredArgsConstructor
 @RestController
 @Secured("ROLE_ADMIN")
 public class LocaleController {
 
     private final LocaleService localeService;
-
-    @Autowired
-    public LocaleController(LocaleService localeService) {
-        this.localeService = localeService;
-    }
 
     @GetMapping("current")
     public DomainLocale current(Locale locale) {

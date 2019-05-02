@@ -17,7 +17,7 @@ package cn.edu.zjnu.acm.judge.exception;
 
 import java.util.Collections;
 import java.util.Locale;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -29,14 +29,10 @@ import org.springframework.web.bind.annotation.RestController;
  * @author zhanhb
  */
 @ControllerAdvice(annotations = RestController.class)
+@RequiredArgsConstructor
 public class BusinessExceptionHandler {
 
     private final MessageSource messageSource;
-
-    @Autowired
-    public BusinessExceptionHandler(MessageSource messageSource) {
-        this.messageSource = messageSource;
-    }
 
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<?> handler(BusinessException businessException, Locale locale) {

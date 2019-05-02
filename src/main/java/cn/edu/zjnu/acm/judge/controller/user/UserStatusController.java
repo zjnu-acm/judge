@@ -5,8 +5,8 @@ import cn.edu.zjnu.acm.judge.mapper.UserMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserProblemMapper;
 import cn.edu.zjnu.acm.judge.service.AccountService;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,18 +14,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Slf4j
 @Controller
+@RequiredArgsConstructor
 public class UserStatusController {
 
     private final UserMapper userMapper;
     private final UserProblemMapper userProblemMapper;
     private final AccountService accountService;
-
-    @Autowired
-    public UserStatusController(UserMapper userMapper, UserProblemMapper userProblemMapper, AccountService accountService) {
-        this.userMapper = userMapper;
-        this.userProblemMapper = userProblemMapper;
-        this.accountService = accountService;
-    }
 
     @GetMapping("/userstatus")
     @SuppressWarnings("AssignmentToMethodParameter")

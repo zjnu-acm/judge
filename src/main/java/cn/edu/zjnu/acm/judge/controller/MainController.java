@@ -23,7 +23,7 @@ import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -40,16 +40,11 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
  * @author zhanhb
  */
 @Controller
+@RequiredArgsConstructor
 public class MainController {
 
     private final ContestOnlyService contestOnlyService;
     private final SystemService systemService;
-
-    @Autowired
-    public MainController(ContestOnlyService contestOnlyService, SystemService systemService) {
-        this.contestOnlyService = contestOnlyService;
-        this.systemService = systemService;
-    }
 
     @GetMapping("/")
     public String index(Model model) {

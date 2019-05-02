@@ -32,8 +32,8 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,6 +45,7 @@ import org.thymeleaf.context.Context;
 import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 
 @Controller
+@RequiredArgsConstructor
 @Slf4j
 public class ResetPasswordController {
 
@@ -55,16 +56,6 @@ public class ResetPasswordController {
     private final PasswordEncoder passwordEncoder;
     private final SystemService systemService;
     private final ResetPasswordService resetPasswordService;
-
-    @Autowired
-    public ResetPasswordController(EmailService emailService, TemplateEngine templateEngine, UserMapper userMapper, PasswordEncoder passwordEncoder, SystemService systemService, ResetPasswordService resetPasswordService) {
-        this.emailService = emailService;
-        this.templateEngine = templateEngine;
-        this.userMapper = userMapper;
-        this.passwordEncoder = passwordEncoder;
-        this.systemService = systemService;
-        this.resetPasswordService = resetPasswordService;
-    }
 
     @GetMapping(value = "/resetPassword", produces = TEXT_HTML_VALUE)
     public String doGet(

@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -58,16 +58,11 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 @RequestMapping(value = "/api/accounts", produces = APPLICATION_JSON_VALUE)
 @RestController
 @Secured("ROLE_ADMIN")
+@RequiredArgsConstructor
 public class AccountController {
 
     private final AccountService accountService;
     private final ResetPasswordService resetPasswordService;
-
-    @Autowired
-    public AccountController(AccountService accountService, ResetPasswordService resetPasswordService) {
-        this.accountService = accountService;
-        this.resetPasswordService = resetPasswordService;
-    }
 
     @GetMapping
     public Page<User> findAll(AccountForm form, @PageableDefault(50) Pageable pageable) {

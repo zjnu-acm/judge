@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -48,6 +48,7 @@ import org.springframework.util.StringUtils;
  */
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -55,14 +56,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final PasswordEncoder passwordEncoder;
     private final PersistentTokenRepository persistentTokenRepository;
     private final CKFinderProperties ckfinderProperties;
-
-    @Autowired
-    public SecurityConfiguration(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder, PersistentTokenRepository persistentTokenRepository, CKFinderProperties ckfinderProperties) {
-        this.userDetailsService = userDetailsService;
-        this.passwordEncoder = passwordEncoder;
-        this.persistentTokenRepository = persistentTokenRepository;
-        this.ckfinderProperties = ckfinderProperties;
-    }
 
     @Bean(name = "authenticationManager")
     @Primary

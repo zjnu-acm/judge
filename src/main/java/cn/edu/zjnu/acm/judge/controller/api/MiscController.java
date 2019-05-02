@@ -21,7 +21,7 @@ import cn.edu.zjnu.acm.judge.data.form.SystemInfoForm;
 import cn.edu.zjnu.acm.judge.mapper.UserProblemMapper;
 import cn.edu.zjnu.acm.judge.service.ContestOnlyService;
 import java.util.concurrent.CompletableFuture;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.StringUtils;
@@ -40,6 +40,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  * @author zhanhb
  */
 @RequestMapping(value = "/api/misc", produces = APPLICATION_JSON_VALUE)
+@RequiredArgsConstructor
 @RestController
 @Secured("ROLE_ADMIN")
 public class MiscController {
@@ -47,13 +48,6 @@ public class MiscController {
     private final UserProblemMapper userProblemMapper;
     private final JudgeConfiguration judgeConfiguration;
     private final ContestOnlyService contestOnlyService;
-
-    @Autowired
-    public MiscController(UserProblemMapper userProblemMapper, JudgeConfiguration judgeConfiguration, ContestOnlyService contestOnlyService) {
-        this.userProblemMapper = userProblemMapper;
-        this.judgeConfiguration = judgeConfiguration;
-        this.contestOnlyService = contestOnlyService;
-    }
 
     @PostMapping("fix")
     @ResponseStatus(HttpStatus.NO_CONTENT)

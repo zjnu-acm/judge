@@ -8,8 +8,8 @@ import cn.edu.zjnu.acm.judge.service.ContestOnlyService;
 import cn.edu.zjnu.acm.judge.util.ValueCheck;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -17,19 +17,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+@RequiredArgsConstructor
 @Slf4j
 public class RegisterController {
 
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
     private final ContestOnlyService contestOnlyService;
-
-    @Autowired
-    public RegisterController(PasswordEncoder passwordEncoder, UserMapper userMapper, ContestOnlyService contestOnlyService) {
-        this.passwordEncoder = passwordEncoder;
-        this.userMapper = userMapper;
-        this.contestOnlyService = contestOnlyService;
-    }
 
     @PostMapping("/register")
     @SuppressWarnings("AssignmentToMethodParameter")

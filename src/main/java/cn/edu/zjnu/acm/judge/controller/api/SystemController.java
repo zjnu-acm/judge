@@ -18,7 +18,7 @@ package cn.edu.zjnu.acm.judge.controller.api;
 import cn.edu.zjnu.acm.judge.data.dto.ValueHolder;
 import cn.edu.zjnu.acm.judge.service.SystemService;
 import java.time.Instant;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,15 +35,11 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  * @author zhanhb
  */
 @RequestMapping(value = "/api/system", produces = APPLICATION_JSON_VALUE)
+@RequiredArgsConstructor
 @RestController
 public class SystemController {
 
     private final SystemService systemService;
-
-    @Autowired
-    public SystemController(SystemService systemService) {
-        this.systemService = systemService;
-    }
 
     @GetMapping("time")
     public Instant time() {

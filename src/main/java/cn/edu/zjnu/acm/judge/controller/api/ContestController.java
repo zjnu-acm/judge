@@ -23,8 +23,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Future;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,17 +44,13 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  * @author zhanhb
  */
 @RequestMapping(value = "/api/contests", produces = APPLICATION_JSON_VALUE)
+@RequiredArgsConstructor
 @RestController
 @Secured("ROLE_ADMIN")
 @Slf4j
 public class ContestController {
 
     private final ContestService contestService;
-
-    @Autowired
-    public ContestController(ContestService contestService) {
-        this.contestService = contestService;
-    }
 
     @PostMapping
     public Contest save(@RequestBody Contest contest) {

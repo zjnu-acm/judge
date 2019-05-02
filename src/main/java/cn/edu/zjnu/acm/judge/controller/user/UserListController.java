@@ -18,7 +18,7 @@ package cn.edu.zjnu.acm.judge.controller.user;
 import cn.edu.zjnu.acm.judge.service.AccountService;
 import cn.edu.zjnu.acm.judge.util.URIBuilder;
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @author zhanhb
  */
 @Controller
+@RequiredArgsConstructor
 public class UserListController {
 
     private static final Sort DEFAULT_SORT = Sort.by(
@@ -40,11 +41,6 @@ public class UserListController {
     );
 
     private final AccountService accountService;
-
-    @Autowired
-    public UserListController(AccountService accountService) {
-        this.accountService = accountService;
-    }
 
     @GetMapping({"/userlist", "/users"})
     @SuppressWarnings("AssignmentToMethodParameter")

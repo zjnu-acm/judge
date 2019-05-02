@@ -22,7 +22,7 @@ import cn.edu.zjnu.acm.judge.service.LoginlogService;
 import java.time.Instant;
 import java.util.Optional;
 import javax.annotation.Nonnull;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
@@ -56,16 +56,11 @@ public class LoginListener {
     }
 
     @Configuration
+    @RequiredArgsConstructor
     public static class LoginSuccessListener implements ApplicationListener<InteractiveAuthenticationSuccessEvent> {
 
         private final LoginlogService loginlogService;
         private final UserMapper userMapper;
-
-        @Autowired
-        public LoginSuccessListener(LoginlogService loginlogService, UserMapper userMapper) {
-            this.loginlogService = loginlogService;
-            this.userMapper = userMapper;
-        }
 
         @Override
         public void onApplicationEvent(@Nonnull InteractiveAuthenticationSuccessEvent event) {
@@ -82,15 +77,11 @@ public class LoginListener {
     }
 
     @Configuration
+    @RequiredArgsConstructor
     public static class LoginFailureListener implements
             ApplicationListener<AuthenticationFailureBadCredentialsEvent> {
 
         private final LoginlogService loginlogService;
-
-        @Autowired
-        public LoginFailureListener(LoginlogService loginlogService) {
-            this.loginlogService = loginlogService;
-        }
 
         @Override
         public void onApplicationEvent(AuthenticationFailureBadCredentialsEvent event) {

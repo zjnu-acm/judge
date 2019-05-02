@@ -28,23 +28,19 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 /**
  * @author zhanhb
  */
+@RequiredArgsConstructor
 @Service("loginlogService")
 public class LoginlogServiceImpl implements LoginlogService {
 
     private final LoginlogMapper loginlogMapper;
     private ExecutorService executorService;
     private final BlockingQueue<LoginLog> list = new ArrayBlockingQueue<>(200);
-
-    @Autowired
-    public LoginlogServiceImpl(LoginlogMapper loginlogMapper) {
-        this.loginlogMapper = loginlogMapper;
-    }
 
     @PostConstruct
     public void init() {

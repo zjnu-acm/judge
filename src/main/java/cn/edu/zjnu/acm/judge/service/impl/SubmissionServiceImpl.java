@@ -40,7 +40,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -52,6 +52,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author zhanhb
  */
+@RequiredArgsConstructor
 @Service("submissionService")
 public class SubmissionServiceImpl implements SubmissionService {
 
@@ -67,18 +68,6 @@ public class SubmissionServiceImpl implements SubmissionService {
     private final ContestService contestService;
 
     private final Set<String> cache = Collections.newSetFromMap(CacheBuilder.newBuilder().expireAfterWrite(SUBMIT_INTERVAL, TimeUnit.SECONDS).<String, Boolean>build().asMap());
-
-    @Autowired
-    public SubmissionServiceImpl(ContestMapper contestMapper, SubmissionMapper submissionMapper, JudgePoolService judgePoolService, ProblemMapper problemMapper, ProblemService problemService, UserPreferenceMapper userPerferenceMapper, LanguageService languageService, ContestService contestService) {
-        this.contestMapper = contestMapper;
-        this.submissionMapper = submissionMapper;
-        this.judgePoolService = judgePoolService;
-        this.problemMapper = problemMapper;
-        this.problemService = problemService;
-        this.userPerferenceMapper = userPerferenceMapper;
-        this.languageService = languageService;
-        this.contestService = contestService;
-    }
 
     @Override
     public boolean canView(HttpServletRequest request, Submission submission) {

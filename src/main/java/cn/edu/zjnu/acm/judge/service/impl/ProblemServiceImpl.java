@@ -33,7 +33,7 @@ import java.time.Instant;
 import java.util.Locale;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -44,6 +44,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author zhanhb
  */
+@RequiredArgsConstructor
 @Service("problemService")
 public class ProblemServiceImpl implements ProblemService {
 
@@ -52,15 +53,6 @@ public class ProblemServiceImpl implements ProblemService {
     private final ContestService contestService;
     private final JudgeConfiguration judgeConfiguration;
     private final UserProblemMapper userProblemMapper;
-
-    @Autowired
-    public ProblemServiceImpl(ProblemMapper problemMapper, LocaleService localeService, ContestService contestService, JudgeConfiguration judgeConfiguration, UserProblemMapper userProblemMapper) {
-        this.problemMapper = problemMapper;
-        this.localeService = localeService;
-        this.contestService = contestService;
-        this.judgeConfiguration = judgeConfiguration;
-        this.userProblemMapper = userProblemMapper;
-    }
 
     @Override
     public Page<Problem> findAll(ProblemForm problemForm, String userId, Pageable pageable, Locale locale) {

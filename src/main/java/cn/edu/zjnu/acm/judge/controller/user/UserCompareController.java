@@ -6,13 +6,14 @@ import cn.edu.zjnu.acm.judge.service.AccountService;
 import java.util.BitSet;
 import java.util.List;
 import java.util.function.BiConsumer;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+@RequiredArgsConstructor
 public class UserCompareController {
 
     private static int[] calc(BitSet a, BiConsumer<BitSet, BitSet> op, BitSet b) {
@@ -23,12 +24,6 @@ public class UserCompareController {
 
     private final UserProblemMapper userProblemMapper;
     private final AccountService accountService;
-
-    @Autowired
-    public UserCompareController(UserProblemMapper userProblemMapper, AccountService accountService) {
-        this.userProblemMapper = userProblemMapper;
-        this.accountService = accountService;
-    }
 
     @GetMapping("/usercmp")
     @SuppressWarnings("CollectionWithoutInitialCapacity")

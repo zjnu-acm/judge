@@ -29,24 +29,20 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.Nullable;
 import javax.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 /**
  *
  * @author zhanhb
  */
+@RequiredArgsConstructor
 @Service("resetPasswordService")
 public class ResetPasswordServiceImpl implements ResetPasswordService {
 
     private final UserMapper userMapper;
 
     private Cache<String, String> cache;
-
-    @Autowired
-    public ResetPasswordServiceImpl(UserMapper userMapper) {
-        this.userMapper = userMapper;
-    }
 
     @PostConstruct
     public void init() {

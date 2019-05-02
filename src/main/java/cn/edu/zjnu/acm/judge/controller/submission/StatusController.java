@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.OptionalLong;
 import javax.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,6 +34,7 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 
 @Slf4j
 @Controller
+@RequiredArgsConstructor
 public class StatusController {
 
     private final SubmissionMapper submissionMapper;
@@ -41,15 +42,6 @@ public class StatusController {
     private final ContestService contestService;
     private final SubmissionService submissionService;
     private final LanguageService languageService;
-
-    @Autowired
-    public StatusController(SubmissionMapper submissionMapper, ContestMapper contestMapper, ContestService contestService, SubmissionService submissionService, LanguageService languageService) {
-        this.submissionMapper = submissionMapper;
-        this.contestMapper = contestMapper;
-        this.contestService = contestService;
-        this.submissionService = submissionService;
-        this.languageService = languageService;
-    }
 
     @GetMapping(value = {"/status", "/submissions"}, produces = TEXT_HTML_VALUE)
     @SuppressWarnings("AssignmentToMethodParameter")

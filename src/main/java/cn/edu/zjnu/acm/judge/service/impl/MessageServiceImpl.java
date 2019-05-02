@@ -21,7 +21,7 @@ import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.MessageMapper;
 import cn.edu.zjnu.acm.judge.service.MessageService;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,15 +29,11 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author zhanhb
  */
+@RequiredArgsConstructor
 @Service("messageService")
 public class MessageServiceImpl implements MessageService {
 
     private final MessageMapper messageMapper;
-
-    @Autowired
-    public MessageServiceImpl(MessageMapper messageMapper) {
-        this.messageMapper = messageMapper;
-    }
 
     @Transactional
     @Override

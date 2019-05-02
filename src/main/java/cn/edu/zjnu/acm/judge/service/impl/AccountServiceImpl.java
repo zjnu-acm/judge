@@ -44,7 +44,7 @@ import java.util.TreeMap;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -60,6 +60,7 @@ import org.springframework.util.StringUtils;
  *
  * @author zhanhb
  */
+@RequiredArgsConstructor
 @Service("accountService")
 public class AccountServiceImpl implements AccountService {
 
@@ -70,15 +71,6 @@ public class AccountServiceImpl implements AccountService {
     private final UserRoleMapper userRoleMapper;
     private final UserProblemMapper userProblemMapper;
     private final MessageSource messageSource;
-
-    @Autowired
-    public AccountServiceImpl(UserMapper userMapper, PasswordEncoder passwordEncoder, UserRoleMapper userRoleMapper, UserProblemMapper userProblemMapper, MessageSource messageSource) {
-        this.userMapper = userMapper;
-        this.passwordEncoder = passwordEncoder;
-        this.userRoleMapper = userRoleMapper;
-        this.userProblemMapper = userProblemMapper;
-        this.messageSource = messageSource;
-    }
 
     @Override
     public Page<User> findAll(AccountForm form, Pageable pageable) {

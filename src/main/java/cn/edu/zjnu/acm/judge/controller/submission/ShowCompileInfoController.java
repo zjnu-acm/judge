@@ -1,7 +1,7 @@
 package cn.edu.zjnu.acm.judge.controller.submission;
 
 import cn.edu.zjnu.acm.judge.service.SubmissionService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -10,14 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+@RequiredArgsConstructor
 public class ShowCompileInfoController {
 
     private final SubmissionService submissionService;
-
-    @Autowired
-    public ShowCompileInfoController(SubmissionService submissionService) {
-        this.submissionService = submissionService;
-    }
 
     @GetMapping("/showcompileinfo")
     @Secured("ROLE_USER")

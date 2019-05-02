@@ -21,10 +21,11 @@ import cn.edu.zjnu.acm.judge.util.SpecialCall;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 @SpecialCall("fragment/notice")
 public class JudgeConfiguration {
 
@@ -32,11 +33,6 @@ public class JudgeConfiguration {
 
     private final SystemService systemService;
     private volatile SystemInfoForm systemInfo;
-
-    @Autowired
-    public JudgeConfiguration(SystemService systemService) {
-        this.systemService = systemService;
-    }
 
     public Path getUploadDirectory() {
         return Paths.get(Objects.requireNonNull(systemService.getUploadPath()));

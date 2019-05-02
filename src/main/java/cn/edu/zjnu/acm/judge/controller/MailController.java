@@ -22,7 +22,7 @@ import cn.edu.zjnu.acm.judge.service.AccountService;
 import cn.edu.zjnu.acm.judge.service.impl.UserDetailsServiceImpl;
 import cn.edu.zjnu.acm.judge.util.JudgeUtils;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
@@ -39,16 +39,11 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller
 @Secured("ROLE_USER")
+@RequiredArgsConstructor
 public class MailController {
 
     private final AccountService accountService;
     private final MailMapper mailMapper;
-
-    @Autowired
-    public MailController(AccountService accountService, MailMapper mailMapper) {
-        this.accountService = accountService;
-        this.mailMapper = mailMapper;
-    }
 
     private Mail access(long mailId, Authentication authentication) {
         Mail mail = mailMapper.findOne(mailId);

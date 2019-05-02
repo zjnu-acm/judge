@@ -20,7 +20,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -29,14 +29,10 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @author zhanhb
  */
 @Controller
+@RequiredArgsConstructor
 public class KaptchaController {
 
     private final KaptchaExtend kaptchaExtend;
-
-    @Autowired
-    public KaptchaController(KaptchaExtend kaptchaExtend) {
-        this.kaptchaExtend = kaptchaExtend;
-    }
 
     @GetMapping("images/rand.jpg")
     public void service(HttpServletRequest request, HttpServletResponse response)

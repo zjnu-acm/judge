@@ -36,7 +36,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -55,20 +55,13 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
  */
 @Controller
 @RequestMapping("/contests/{contestId}/problems")
+@RequiredArgsConstructor
 public class ContestProblemController {
 
     private final JudgeConfiguration judgeConfiguration;
     private final ContestService contestService;
     private final SubmissionMapper submissionMapper;
     private final SubmissionService submissionService;
-
-    @Autowired
-    public ContestProblemController(JudgeConfiguration judgeConfiguration, ContestService contestService, SubmissionMapper submissionMapper, SubmissionService submissionService) {
-        this.judgeConfiguration = judgeConfiguration;
-        this.contestService = contestService;
-        this.submissionMapper = submissionMapper;
-        this.submissionService = submissionService;
-    }
 
     @GetMapping
     public String problems(Model model, Locale locale,

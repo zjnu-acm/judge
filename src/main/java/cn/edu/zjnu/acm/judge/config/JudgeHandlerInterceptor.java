@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author zhanhb
  */
 @ControllerAdvice
+@RequiredArgsConstructor
 public class JudgeHandlerInterceptor {
 
     private static final String APPLIED_ONCE_KEY = JudgeHandlerInterceptor.class.getName().concat(".APPLIED_ONCE");
@@ -42,11 +43,6 @@ public class JudgeHandlerInterceptor {
     }
 
     private final MailMapper mailMapper;
-
-    @Autowired
-    public JudgeHandlerInterceptor(MailMapper mailMapper) {
-        this.mailMapper = mailMapper;
-    }
 
     @ModelAttribute
     public void addAttributes(HttpServletRequest request,

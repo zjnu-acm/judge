@@ -22,8 +22,8 @@ import com.google.common.collect.ImmutableMap;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -47,17 +47,13 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  * @author zhanhb
  */
 @RequestMapping(value = "/api/problems", produces = APPLICATION_JSON_VALUE)
+@RequiredArgsConstructor
 @RestController
 @Secured("ROLE_ADMIN")
 @Slf4j
 public class ProblemController {
 
     private final ProblemService problemService;
-
-    @Autowired
-    public ProblemController(ProblemService problemService) {
-        this.problemService = problemService;
-    }
 
     @PostMapping
     public Problem save(@RequestBody Problem problem) {

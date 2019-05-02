@@ -22,7 +22,7 @@ import cn.edu.zjnu.acm.judge.service.ContestService;
 import com.google.common.collect.ImmutableMap;
 import java.util.Locale;
 import java.util.concurrent.Future;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,14 +38,10 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
  */
 @Controller("contest")
 @RequestMapping("/contests/{contestId}")
+@RequiredArgsConstructor
 public class ContestController {
 
     private final ContestService contestService;
-
-    @Autowired
-    public ContestController(ContestService contestService) {
-        this.contestService = contestService;
-    }
 
     @GetMapping(value = "standing", produces = {TEXT_HTML_VALUE, ALL_VALUE})
     public Future<ModelAndView> standingHtml(@PathVariable("contestId") long contestId, Locale locale) {

@@ -10,7 +10,7 @@ import cn.edu.zjnu.acm.judge.service.LanguageService;
 import cn.edu.zjnu.acm.judge.service.SubmissionService;
 import cn.edu.zjnu.acm.judge.util.ResultType;
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+@RequiredArgsConstructor
 public class ShowSourceController {
 
     private final SubmissionMapper submissionMapper;
@@ -25,15 +26,6 @@ public class ShowSourceController {
     private final SubmissionService submissionService;
     private final LanguageService languageService;
     private final ContestOnlyService contestOnlyService;
-
-    @Autowired
-    public ShowSourceController(SubmissionMapper submissionMapper, UserPreferenceMapper userPerferenceMapper, SubmissionService submissionService, LanguageService languageService, ContestOnlyService contestOnlyService) {
-        this.submissionMapper = submissionMapper;
-        this.userPerferenceMapper = userPerferenceMapper;
-        this.submissionService = submissionService;
-        this.languageService = languageService;
-        this.contestOnlyService = contestOnlyService;
-    }
 
     @Secured("ROLE_USER")
     @GetMapping("/showsource")

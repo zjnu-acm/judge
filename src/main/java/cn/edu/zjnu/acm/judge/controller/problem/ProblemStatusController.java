@@ -28,8 +28,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -45,19 +45,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * @author zhanhb
  */
 @Controller
+@RequiredArgsConstructor
 @Slf4j
 public class ProblemStatusController {
 
     private final ProblemService problemService;
     private final SubmissionService submissionService;
     private final SubmissionMapper submissionMapper;
-
-    @Autowired
-    public ProblemStatusController(ProblemService problemService, SubmissionService submissionService, SubmissionMapper submissionMapper) {
-        this.problemService = problemService;
-        this.submissionService = submissionService;
-        this.submissionMapper = submissionMapper;
-    }
 
     @GetMapping("/gotoproblem")
     public String gotoProblem(@RequestParam(value = "pid", required = false) String pid,

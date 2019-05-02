@@ -10,25 +10,19 @@ import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.service.SubmissionService;
 import cn.edu.zjnu.acm.judge.util.ResultType;
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+@RequiredArgsConstructor
 public class ShowSubmissionDetailsController {
 
     private final SubmissionMapper submissionMapper;
     private final ContestMapper contestMapper;
     private final SubmissionService submissionService;
-
-    @Autowired
-    public ShowSubmissionDetailsController(SubmissionMapper submissionMapper, ContestMapper contestMapper, SubmissionService submissionService) {
-        this.submissionMapper = submissionMapper;
-        this.contestMapper = contestMapper;
-        this.submissionService = submissionService;
-    }
 
     @GetMapping("/showsolutiondetails")
     public String showSolutionDetails(

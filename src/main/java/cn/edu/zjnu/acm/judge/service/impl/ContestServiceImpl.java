@@ -45,8 +45,8 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.ObjIntConsumer;
 import javax.annotation.Nonnull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,6 +54,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author zhanhb
  */
+@RequiredArgsConstructor
 @Service("contestService")
 @Slf4j
 @SpecialCall("contests/problems")
@@ -65,14 +66,6 @@ public class ContestServiceImpl implements ContestService {
     private final SubmissionMapper submissionMapper;
     private final LocaleServiceImpl localeService;
     private final ObjectMapper objectMapper;
-
-    @Autowired
-    public ContestServiceImpl(ContestMapper contestMapper, SubmissionMapper submissionMapper, LocaleServiceImpl localeService, ObjectMapper objectMapper) {
-        this.contestMapper = contestMapper;
-        this.submissionMapper = submissionMapper;
-        this.localeService = localeService;
-        this.objectMapper = objectMapper;
-    }
 
     @Override
     public String getStatus(@Nonnull Contest contest) {

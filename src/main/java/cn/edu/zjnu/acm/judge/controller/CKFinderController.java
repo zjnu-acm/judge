@@ -22,8 +22,8 @@ import com.github.zhanhb.download.spring.ToDownload;
 import java.nio.file.Path;
 import javax.annotation.Nullable;
 import javax.servlet.ServletContext;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
@@ -32,20 +32,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Slf4j
 @Controller
+@RequiredArgsConstructor
 public class CKFinderController {
 
     private final JudgeConfiguration judgeConfiguration;
-    private final ApplicationContext context;
-
-    @Autowired
-    public CKFinderController(JudgeConfiguration judgeConfiguration, ApplicationContext context) {
-        this.judgeConfiguration = judgeConfiguration;
-        this.context = context;
-    }
+    private final ApplicationContext applicationContext;
 
     @Bean
     public BasePathBuilder pathBuilder() {
-        String url = context.getBean(ServletContext.class).getContextPath().concat("/support/ckfinder.action?path=");
+        String url = applicationContext.getBean(ServletContext.class).getContextPath().concat("/support/ckfinder.action?path=");
         Path path = judgeConfiguration.getUploadDirectory();
         return DefaultPathBuilder.builder().baseUrl(url)
                 .basePath(path).build();

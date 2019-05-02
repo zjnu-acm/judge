@@ -12,7 +12,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
@@ -29,18 +29,13 @@ import org.unbescape.html.HtmlEscape;
 import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 
 @Controller
+@RequiredArgsConstructor
 public class BBSController {
 
     private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     private final MessageMapper messageMapper;
     private final MessageService messageService;
-
-    @Autowired
-    public BBSController(MessageMapper messageMapper, MessageService messageService) {
-        this.messageMapper = messageMapper;
-        this.messageService = messageService;
-    }
 
     @GetMapping(value = "/bbs", produces = TEXT_HTML_VALUE)
     public String bbs(HttpServletRequest request,

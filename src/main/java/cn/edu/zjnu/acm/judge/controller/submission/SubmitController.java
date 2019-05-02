@@ -5,7 +5,7 @@ import cn.edu.zjnu.acm.judge.service.ContestOnlyService;
 import cn.edu.zjnu.acm.judge.service.LanguageService;
 import cn.edu.zjnu.acm.judge.service.SubmissionService;
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
+@RequiredArgsConstructor
 @Secured("ROLE_USER")
 public class SubmitController {
 
@@ -24,14 +25,6 @@ public class SubmitController {
     private final SubmissionService submissionService;
     private final UserPreferenceMapper userPerferenceMapper;
     private final LanguageService languageService;
-
-    @Autowired
-    public SubmitController(ContestOnlyService contestOnlyService, SubmissionService submissionService, UserPreferenceMapper userPerferenceMapper, LanguageService languageService) {
-        this.contestOnlyService = contestOnlyService;
-        this.submissionService = submissionService;
-        this.userPerferenceMapper = userPerferenceMapper;
-        this.languageService = languageService;
-    }
 
     @GetMapping({"/submitpage", "/submit"})
     public String submitPage(Model model,

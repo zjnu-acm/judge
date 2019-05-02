@@ -5,7 +5,7 @@ import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.exception.BusinessCode;
 import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.service.AccountService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,14 +17,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+@RequiredArgsConstructor
 public class SearchUserController {
 
     private final AccountService accountService;
-
-    @Autowired
-    public SearchUserController(AccountService accountService) {
-        this.accountService = accountService;
-    }
 
     @GetMapping("/searchuser")
     public String searchuser(Model model,

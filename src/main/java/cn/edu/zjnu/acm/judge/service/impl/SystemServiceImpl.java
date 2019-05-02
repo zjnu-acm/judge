@@ -19,6 +19,7 @@ import cn.edu.zjnu.acm.judge.config.Constants;
 import cn.edu.zjnu.acm.judge.mapper.SystemMapper;
 import cn.edu.zjnu.acm.judge.service.SystemService;
 import javax.annotation.Nullable;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationInitializer;
 import org.springframework.cache.annotation.CacheEvict;
@@ -29,15 +30,11 @@ import org.springframework.stereotype.Service;
  *
  * @author zhanhb
  */
+@RequiredArgsConstructor
 @Service("systemService")
 public class SystemServiceImpl implements SystemService {
 
     private final SystemMapper systemMapper;
-
-    @Autowired
-    public SystemServiceImpl(SystemMapper systemMapper) {
-        this.systemMapper = systemMapper;
-    }
 
     @Autowired // ensure flyway initialize before this service
     public void setFlywayMigrationInitializer(FlywayMigrationInitializer flywayMigrationInitializer) {

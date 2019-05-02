@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +38,7 @@ import org.springframework.stereotype.Service;
  *
  * @author zhanhb
  */
+@RequiredArgsConstructor
 @Service("localeService")
 public class LocaleServiceImpl implements LocaleService {
 
@@ -45,11 +46,6 @@ public class LocaleServiceImpl implements LocaleService {
     private static final Comparator<DomainLocale> DEFAULT_DOMAIN_LOCALE_COMPARATOR = Comparator.comparing(DomainLocale::getName);
 
     private final LocaleMapper localeMapper;
-
-    @Autowired
-    public LocaleServiceImpl(LocaleMapper localeMapper) {
-        this.localeMapper = localeMapper;
-    }
 
     @Nullable
     @Override

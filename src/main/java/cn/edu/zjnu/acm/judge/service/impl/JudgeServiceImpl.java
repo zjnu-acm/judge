@@ -60,8 +60,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -69,6 +69,7 @@ import org.springframework.util.StringUtils;
  *
  * @author zhanhb
  */
+@RequiredArgsConstructor
 @Service("judgeService")
 @Slf4j
 public class JudgeServiceImpl implements JudgeService {
@@ -93,16 +94,6 @@ public class JudgeServiceImpl implements JudgeService {
     private final LanguageService languageService;
     private final DeleteService deleteService;
     private JudgeBridge judgeBridge;
-
-    @Autowired
-    public JudgeServiceImpl(SubmissionMapper submissionMapper, UserProblemMapper userProblemMapper, ProblemService problemService, JudgeConfiguration judgeConfiguration, LanguageService languageService, DeleteService deleteService) {
-        this.submissionMapper = submissionMapper;
-        this.userProblemMapper = userProblemMapper;
-        this.problemService = problemService;
-        this.judgeConfiguration = judgeConfiguration;
-        this.languageService = languageService;
-        this.deleteService = deleteService;
-    }
 
     @PostConstruct
     public void init() {

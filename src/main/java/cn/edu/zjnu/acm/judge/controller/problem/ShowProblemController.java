@@ -9,7 +9,7 @@ import cn.edu.zjnu.acm.judge.service.LocaleService;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Locale;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,18 +18,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 
 @Controller
+@RequiredArgsConstructor
 public class ShowProblemController {
 
     private final ProblemMapper problemMapper;
     private final JudgeConfiguration judgeConfiguration;
     private final LocaleService localeService;
-
-    @Autowired
-    public ShowProblemController(ProblemMapper problemMapper, JudgeConfiguration judgeConfiguration, LocaleService localeService) {
-        this.problemMapper = problemMapper;
-        this.judgeConfiguration = judgeConfiguration;
-        this.localeService = localeService;
-    }
 
     private Problem getProblem(long problemId, Locale locale) {
         Problem problem = problemMapper.findOne(problemId, localeService.resolve(locale));

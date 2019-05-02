@@ -13,8 +13,8 @@ import java.time.Instant;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,19 +24,13 @@ import org.unbescape.html.HtmlEscape;
 import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 
 @Controller
+@RequiredArgsConstructor
 @Slf4j
 public class ContestStatisticsController {
 
     private final DataSource dataSource;
     private final ContestService contestService;
     private final LanguageService languageService;
-
-    @Autowired
-    public ContestStatisticsController(DataSource dataSource, ContestService contestService, LanguageService languageService) {
-        this.dataSource = dataSource;
-        this.contestService = contestService;
-        this.languageService = languageService;
-    }
 
     @GetMapping(value = "/conteststatistics", produces = TEXT_HTML_VALUE)
     public String contestStatistics(

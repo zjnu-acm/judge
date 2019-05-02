@@ -19,7 +19,7 @@ import cn.edu.zjnu.acm.judge.mapper.EmailMapper;
 import cn.edu.zjnu.acm.judge.service.EmailService;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -28,17 +28,12 @@ import org.springframework.stereotype.Service;
  *
  * @author zhanhb
  */
+@RequiredArgsConstructor
 @Service("emailService")
 public class EmailServiceImpl implements EmailService {
 
     private final EmailMapper emailMapper;
     private final JavaMailSenderImpl javaMailSender;
-
-    @Autowired
-    public EmailServiceImpl(EmailMapper emailMapper, JavaMailSenderImpl javaMailSender) {
-        this.emailMapper = emailMapper;
-        this.javaMailSender = javaMailSender;
-    }
 
     @Override
     public void send(String to, String subject, String content) throws MessagingException {

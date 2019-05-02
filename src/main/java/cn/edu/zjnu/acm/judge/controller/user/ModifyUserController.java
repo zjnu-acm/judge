@@ -6,7 +6,7 @@ import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.service.AccountService;
 import cn.edu.zjnu.acm.judge.util.ValueCheck;
 import java.util.Objects;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,17 +18,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+@RequiredArgsConstructor
 @Secured("ROLE_USER")
 public class ModifyUserController {
 
     private final AccountService accountService;
     private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public ModifyUserController(AccountService accountService, PasswordEncoder passwordEncoder) {
-        this.accountService = accountService;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @GetMapping({"/modifyuserpage", "/modifyuser"})
     public String updatePage(Model model, Authentication authentication) {
