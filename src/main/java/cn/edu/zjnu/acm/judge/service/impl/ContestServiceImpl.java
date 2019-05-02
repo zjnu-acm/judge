@@ -200,12 +200,6 @@ public class ContestServiceImpl implements ContestService {
         ));
     }
 
-    @Override
-    public List<Long> submittedProblems(long id) {
-        checkedGet(id);
-        return contestMapper.submittedProblems(id);
-    }
-
     private void add(long contestId, List<Problem> problems) {
         assert problems != null;
         if (!problems.isEmpty()) {

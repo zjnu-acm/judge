@@ -68,6 +68,4 @@ public interface ContestMapper {
 
     long updateSelective(@Param("id") long id, @Nonnull @Param("c") Contest contest);
 
-    List<Long> submittedProblems(@Param("id") long id);
-
 }

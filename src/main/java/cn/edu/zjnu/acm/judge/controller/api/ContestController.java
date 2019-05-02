@@ -81,11 +81,6 @@ public class ContestController {
         contestService.updateSelective(id, contest);
     }
 
-    @GetMapping("{id}/problems/submitted")
-    public List<Long> submittedProblems(@PathVariable("id") long id) {
-        return contestService.submittedProblems(id);
-    }
-
     @GetMapping("{id}/standing")
     public Future<List<UserStanding>> standing(@PathVariable("id") long id) {
         return contestService.standingAsync(id);

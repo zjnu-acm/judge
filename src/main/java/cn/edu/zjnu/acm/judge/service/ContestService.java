@@ -73,8 +73,6 @@ public interface ContestService {
 
     CompletableFuture<List<UserStanding>> standingAsync(long id);
 
-    List<Long> submittedProblems(long id);
-
     String toProblemIndex(long num);
 
     void updateSelective(long id, Contest contest);

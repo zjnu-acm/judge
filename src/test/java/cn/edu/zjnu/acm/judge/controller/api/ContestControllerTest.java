@@ -129,21 +129,6 @@ public class ContestControllerTest {
     }
 
     /**
-     * Test of submittedProblems method, of class ContestController.
-     *
-     * @see ContestController#submittedProblems(long)
-     */
-    @Test
-    public void testSubmittedProblems() throws Exception {
-        log.info("submittedProblems");
-        long id = mockDataService.contest().getId();
-        MvcResult result = mvc.perform(get("/api/contests/{id}/problems/submitted.json", id))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andReturn();
-    }
-
-    /**
      * Test of standing method, of class ContestController.
      *
      * @see ContestController#standing(long)
