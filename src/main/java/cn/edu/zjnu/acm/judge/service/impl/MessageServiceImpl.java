@@ -32,8 +32,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service("messageService")
 public class MessageServiceImpl implements MessageService {
 
+    private final MessageMapper messageMapper;
+
     @Autowired
-    private MessageMapper messageMapper;
+    public MessageServiceImpl(MessageMapper messageMapper) {
+        this.messageMapper = messageMapper;
+    }
 
     @Transactional
     @Override

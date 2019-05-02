@@ -42,10 +42,14 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 @Controller
 public class MainController {
 
+    private final ContestOnlyService contestOnlyService;
+    private final SystemService systemService;
+
     @Autowired
-    private ContestOnlyService contestOnlyService;
-    @Autowired
-    private SystemService systemService;
+    public MainController(ContestOnlyService contestOnlyService, SystemService systemService) {
+        this.contestOnlyService = contestOnlyService;
+        this.systemService = systemService;
+    }
 
     @GetMapping("/")
     public String index(Model model) {

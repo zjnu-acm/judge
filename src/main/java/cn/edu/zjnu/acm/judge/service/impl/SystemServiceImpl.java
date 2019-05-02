@@ -32,8 +32,12 @@ import org.springframework.stereotype.Service;
 @Service("systemService")
 public class SystemServiceImpl implements SystemService {
 
+    private final SystemMapper systemMapper;
+
     @Autowired
-    private SystemMapper systemMapper;
+    public SystemServiceImpl(SystemMapper systemMapper) {
+        this.systemMapper = systemMapper;
+    }
 
     @Autowired // ensure flyway initialize before this service
     public void setFlywayMigrationInitializer(FlywayMigrationInitializer flywayMigrationInitializer) {

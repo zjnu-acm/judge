@@ -42,8 +42,12 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Secured("ROLE_ADMIN")
 public class LanguageController {
 
+    private final LanguageMapper languageMapper;
+
     @Autowired
-    private LanguageMapper languageMapper;
+    public LanguageController(LanguageMapper languageMapper) {
+        this.languageMapper = languageMapper;
+    }
 
     @GetMapping
     public List<Language> findAll() {

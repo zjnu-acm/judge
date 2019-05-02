@@ -31,10 +31,14 @@ import org.springframework.stereotype.Service;
 @Service("emailService")
 public class EmailServiceImpl implements EmailService {
 
+    private final EmailMapper emailMapper;
+    private final JavaMailSenderImpl javaMailSender;
+
     @Autowired
-    private EmailMapper emailMapper;
-    @Autowired
-    private JavaMailSenderImpl javaMailSender;
+    public EmailServiceImpl(EmailMapper emailMapper, JavaMailSenderImpl javaMailSender) {
+        this.emailMapper = emailMapper;
+        this.javaMailSender = javaMailSender;
+    }
 
     @Override
     public void send(String to, String subject, String content) throws MessagingException {

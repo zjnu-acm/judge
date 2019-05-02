@@ -41,13 +41,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Secured("ROLE_USER")
 public class MailController {
 
-    @Autowired
-    private AccountService accountService;
-    @Autowired
-    private MailMapper mailMapper;
+    private final AccountService accountService;
+    private final MailMapper mailMapper;
 
-    @GetMapping("/deletemail")
-    public String delete(@RequestParam("mail_id") long mailId, Authentication authentication) {
+    @Autowired
+    public MailController(AccountService accountService, MailMapper mailMapper) {
+        this.accountService = accountService;
+        this.mailMapper = mailMapper;
+    }
+
+    private Mail access(long mailId, Authentication authentication) {
         Mail mail = mailMapper.findOne(mailId);
         if (mail == null) {
             throw new MessageException("No such mail", HttpStatus.NOT_FOUND);
@@ -55,6 +58,12 @@ public class MailController {
         if (!UserDetailsServiceImpl.isUser(authentication, mail.getTo())) {
             throw new MessageException("Sorry, invalid access", HttpStatus.FORBIDDEN);
         }
+        return mail;
+    }
+
+    @GetMapping("/deletemail")
+    public String delete(@RequestParam("mail_id") long mailId, Authentication authentication) {
+        access(mailId, authentication);
         mailMapper.delete(mailId);
         return "redirect:/mail";
     }
@@ -139,13 +148,7 @@ public class MailController {
     public String showMail(Model model,
             @RequestParam("mail_id") long mailId,
             Authentication authentication) {
-        Mail mail = mailMapper.findOne(mailId);
-        if (mail == null) {
-            throw new MessageException("No such mail", HttpStatus.NOT_FOUND);
-        }
-        if (!UserDetailsServiceImpl.isUser(authentication, mail.getTo())) {
-            throw new MessageException("Sorry, invalid access", HttpStatus.FORBIDDEN);
-        }
+        Mail mail = access(mailId, authentication);
         mailMapper.readed(mailId);
         model.addAttribute("mail", mail);
         return "mails/view";

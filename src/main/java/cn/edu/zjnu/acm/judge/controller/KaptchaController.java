@@ -31,8 +31,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class KaptchaController {
 
+    private final KaptchaExtend kaptchaExtend;
+
     @Autowired
-    private KaptchaExtend kaptchaExtend;
+    public KaptchaController(KaptchaExtend kaptchaExtend) {
+        this.kaptchaExtend = kaptchaExtend;
+    }
 
     @GetMapping("images/rand.jpg")
     public void service(HttpServletRequest request, HttpServletResponse response)

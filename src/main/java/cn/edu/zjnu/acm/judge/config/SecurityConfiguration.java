@@ -51,14 +51,18 @@ import org.springframework.util.StringUtils;
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    private final UserDetailsService userDetailsService;
+    private final PasswordEncoder passwordEncoder;
+    private final PersistentTokenRepository persistentTokenRepository;
+    private final CKFinderProperties ckfinderProperties;
+
     @Autowired
-    private UserDetailsService userDetailsService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private PersistentTokenRepository persistentTokenRepository;
-    @Autowired
-    private CKFinderProperties ckfinder;
+    public SecurityConfiguration(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder, PersistentTokenRepository persistentTokenRepository, CKFinderProperties ckfinderProperties) {
+        this.userDetailsService = userDetailsService;
+        this.passwordEncoder = passwordEncoder;
+        this.persistentTokenRepository = persistentTokenRepository;
+        this.ckfinderProperties = ckfinderProperties;
+    }
 
     @Bean(name = "authenticationManager")
     @Primary
@@ -82,7 +86,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         // @formatter:off
         http
             .authorizeRequests()
-                .antMatchers(ckfinder.getServlet().getPath()).hasAnyRole("ADMIN")
+                .antMatchers(ckfinderProperties.getServlet().getPath()).hasAnyRole("ADMIN")
                 .and()
             .csrf()
                 .disable()

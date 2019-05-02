@@ -65,16 +65,20 @@ public class AccountServiceImpl implements AccountService {
 
     private static final DateTimeFormatter dtf = DateTimeFormatter.ISO_DATE;
 
+    private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final UserRoleMapper userRoleMapper;
+    private final UserProblemMapper userProblemMapper;
+    private final MessageSource messageSource;
+
     @Autowired
-    private UserMapper userMapper;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private UserRoleMapper userRoleMapper;
-    @Autowired
-    private UserProblemMapper userProblemMapper;
-    @Autowired
-    private MessageSource messageSource;
+    public AccountServiceImpl(UserMapper userMapper, PasswordEncoder passwordEncoder, UserRoleMapper userRoleMapper, UserProblemMapper userProblemMapper, MessageSource messageSource) {
+        this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
+        this.userRoleMapper = userRoleMapper;
+        this.userProblemMapper = userProblemMapper;
+        this.messageSource = messageSource;
+    }
 
     @Override
     public Page<User> findAll(AccountForm form, Pageable pageable) {

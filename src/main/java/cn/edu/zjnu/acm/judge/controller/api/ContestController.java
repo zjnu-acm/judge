@@ -49,8 +49,12 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Slf4j
 public class ContestController {
 
+    private final ContestService contestService;
+
     @Autowired
-    private ContestService contestService;
+    public ContestController(ContestService contestService) {
+        this.contestService = contestService;
+    }
 
     @PostMapping
     public Contest save(@RequestBody Contest contest) {

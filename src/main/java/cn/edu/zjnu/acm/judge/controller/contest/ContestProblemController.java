@@ -57,14 +57,18 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 @RequestMapping("/contests/{contestId}/problems")
 public class ContestProblemController {
 
+    private final JudgeConfiguration judgeConfiguration;
+    private final ContestService contestService;
+    private final SubmissionMapper submissionMapper;
+    private final SubmissionService submissionService;
+
     @Autowired
-    private JudgeConfiguration judgeConfiguration;
-    @Autowired
-    private ContestService contestService;
-    @Autowired
-    private SubmissionMapper submissionMapper;
-    @Autowired
-    private SubmissionService submissionService;
+    public ContestProblemController(JudgeConfiguration judgeConfiguration, ContestService contestService, SubmissionMapper submissionMapper, SubmissionService submissionService) {
+        this.judgeConfiguration = judgeConfiguration;
+        this.contestService = contestService;
+        this.submissionMapper = submissionMapper;
+        this.submissionService = submissionService;
+    }
 
     @GetMapping
     public String problems(Model model, Locale locale,

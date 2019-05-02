@@ -21,10 +21,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Secured("ROLE_USER")
 public class ModifyUserController {
 
+    private final AccountService accountService;
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    private AccountService accountService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public ModifyUserController(AccountService accountService, PasswordEncoder passwordEncoder) {
+        this.accountService = accountService;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @GetMapping({"/modifyuserpage", "/modifyuser"})
     public String updatePage(Model model, Authentication authentication) {

@@ -29,6 +29,7 @@ public abstract class PasswordEncoderWrapper implements PasswordEncoder {
 
     private final PasswordEncoder encoder;
 
+    @SuppressWarnings("WeakerAccess")
     public PasswordEncoderWrapper(PasswordEncoder encoder) {
         this.encoder = Objects.requireNonNull(encoder);
     }

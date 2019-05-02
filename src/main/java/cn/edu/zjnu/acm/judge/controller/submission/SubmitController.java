@@ -20,14 +20,18 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Secured("ROLE_USER")
 public class SubmitController {
 
+    private final ContestOnlyService contestOnlyService;
+    private final SubmissionService submissionService;
+    private final UserPreferenceMapper userPerferenceMapper;
+    private final LanguageService languageService;
+
     @Autowired
-    private ContestOnlyService contestOnlyService;
-    @Autowired
-    private SubmissionService submissionService;
-    @Autowired
-    private UserPreferenceMapper userPerferenceMapper;
-    @Autowired
-    private LanguageService languageService;
+    public SubmitController(ContestOnlyService contestOnlyService, SubmissionService submissionService, UserPreferenceMapper userPerferenceMapper, LanguageService languageService) {
+        this.contestOnlyService = contestOnlyService;
+        this.submissionService = submissionService;
+        this.userPerferenceMapper = userPerferenceMapper;
+        this.languageService = languageService;
+    }
 
     @GetMapping({"/submitpage", "/submit"})
     public String submitPage(Model model,

@@ -52,8 +52,12 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Slf4j
 public class ProblemController {
 
+    private final ProblemService problemService;
+
     @Autowired
-    private ProblemService problemService;
+    public ProblemController(ProblemService problemService) {
+        this.problemService = problemService;
+    }
 
     @PostMapping
     public Problem save(@RequestBody Problem problem) {

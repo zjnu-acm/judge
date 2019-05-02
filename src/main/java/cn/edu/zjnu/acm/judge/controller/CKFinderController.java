@@ -34,10 +34,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class CKFinderController {
 
+    private final JudgeConfiguration judgeConfiguration;
+    private final ApplicationContext context;
+
     @Autowired
-    private JudgeConfiguration judgeConfiguration;
-    @Autowired
-    private ApplicationContext context;
+    public CKFinderController(JudgeConfiguration judgeConfiguration, ApplicationContext context) {
+        this.judgeConfiguration = judgeConfiguration;
+        this.context = context;
+    }
 
     @Bean
     public BasePathBuilder pathBuilder() {

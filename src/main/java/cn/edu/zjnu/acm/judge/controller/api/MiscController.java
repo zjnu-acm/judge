@@ -44,12 +44,16 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Secured("ROLE_ADMIN")
 public class MiscController {
 
+    private final UserProblemMapper userProblemMapper;
+    private final JudgeConfiguration judgeConfiguration;
+    private final ContestOnlyService contestOnlyService;
+
     @Autowired
-    private UserProblemMapper userProblemMapper;
-    @Autowired
-    private JudgeConfiguration judgeConfiguration;
-    @Autowired
-    private ContestOnlyService contestOnlyService;
+    public MiscController(UserProblemMapper userProblemMapper, JudgeConfiguration judgeConfiguration, ContestOnlyService contestOnlyService) {
+        this.userProblemMapper = userProblemMapper;
+        this.judgeConfiguration = judgeConfiguration;
+        this.contestOnlyService = contestOnlyService;
+    }
 
     @PostMapping("fix")
     @ResponseStatus(HttpStatus.NO_CONTENT)

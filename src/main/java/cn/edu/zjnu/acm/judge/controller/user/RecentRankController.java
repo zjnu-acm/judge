@@ -12,8 +12,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class RecentRankController {
 
+    private final UserMapper userMapper;
+
     @Autowired
-    private UserMapper userMapper;
+    public RecentRankController(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
 
     @GetMapping("/recentrank")
     @SuppressWarnings("AssignmentToMethodParameter")

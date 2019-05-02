@@ -38,8 +38,12 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Secured("ROLE_ADMIN")
 public class LocaleController {
 
+    private final LocaleService localeService;
+
     @Autowired
-    private LocaleService localeService;
+    public LocaleController(LocaleService localeService) {
+        this.localeService = localeService;
+    }
 
     @GetMapping("current")
     public DomainLocale current(Locale locale) {

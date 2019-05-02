@@ -32,8 +32,12 @@ import org.springframework.web.servlet.ModelAndView;
 @ControllerAdvice(annotations = Controller.class)
 public class GlobalExceptionHandler {
 
+    private final MessageSource messageSource;
+
     @Autowired
-    private MessageSource messageSource;
+    public GlobalExceptionHandler(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
 
     @ExceptionHandler(BusinessException.class)
     public ModelAndView handler(BusinessException businessException, Locale locale) {

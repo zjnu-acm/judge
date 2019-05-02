@@ -20,6 +20,7 @@ import cn.edu.zjnu.acm.judge.service.SystemService;
 import cn.edu.zjnu.acm.judge.util.SpecialCall;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,12 +30,16 @@ public class JudgeConfiguration {
 
     public static final String VALIDATE_FILE_NAME = "compare.exe";
 
-    @Autowired
-    private SystemService systemService;
+    private final SystemService systemService;
     private volatile SystemInfoForm systemInfo;
 
+    @Autowired
+    public JudgeConfiguration(SystemService systemService) {
+        this.systemService = systemService;
+    }
+
     public Path getUploadDirectory() {
-        return Paths.get(systemService.getUploadPath());
+        return Paths.get(Objects.requireNonNull(systemService.getUploadPath()));
     }
 
     public boolean isDeleteTempFile() {
@@ -42,7 +47,7 @@ public class JudgeConfiguration {
     }
 
     private Path getDataFilesPath() {
-        return Paths.get(systemService.getDataFilesPath());
+        return Paths.get(Objects.requireNonNull(systemService.getDataFilesPath()));
     }
 
     public Path getDataDirectory(long problemId) {
@@ -50,7 +55,7 @@ public class JudgeConfiguration {
     }
 
     private Path getWorkingPath() {
-        return Paths.get(systemService.getWorkingPath());
+        return Paths.get(Objects.requireNonNull(systemService.getWorkingPath()));
     }
 
     public Path getWorkDirectory(long submissionId) {

@@ -38,8 +38,12 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 public class SystemController {
 
+    private final SystemService systemService;
+
     @Autowired
-    private SystemService systemService;
+    public SystemController(SystemService systemService) {
+        this.systemService = systemService;
+    }
 
     @GetMapping("time")
     public Instant time() {

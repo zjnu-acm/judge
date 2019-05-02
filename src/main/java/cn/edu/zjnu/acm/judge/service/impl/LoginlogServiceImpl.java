@@ -37,10 +37,14 @@ import org.springframework.stereotype.Service;
 @Service("loginlogService")
 public class LoginlogServiceImpl implements LoginlogService {
 
-    @Autowired
-    private LoginlogMapper loginlogMapper;
+    private final LoginlogMapper loginlogMapper;
     private ExecutorService executorService;
     private final BlockingQueue<LoginLog> list = new ArrayBlockingQueue<>(200);
+
+    @Autowired
+    public LoginlogServiceImpl(LoginlogMapper loginlogMapper) {
+        this.loginlogMapper = loginlogMapper;
+    }
 
     @PostConstruct
     public void init() {

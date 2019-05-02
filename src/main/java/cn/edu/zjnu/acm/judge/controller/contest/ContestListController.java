@@ -15,8 +15,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class ContestListController {
 
+    private final ContestService contestService;
+
     @Autowired
-    private ContestService contestService;
+    public ContestListController(ContestService contestService) {
+        this.contestService = contestService;
+    }
 
     @GetMapping("/contests")
     public String contests(Model model, RedirectAttributes redirectAttributes) {

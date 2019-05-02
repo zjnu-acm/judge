@@ -20,12 +20,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Slf4j
 public class RegisterController {
 
+    private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
+    private final ContestOnlyService contestOnlyService;
+
     @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private UserMapper userMapper;
-    @Autowired
-    private ContestOnlyService contestOnlyService;
+    public RegisterController(PasswordEncoder passwordEncoder, UserMapper userMapper, ContestOnlyService contestOnlyService) {
+        this.passwordEncoder = passwordEncoder;
+        this.userMapper = userMapper;
+        this.contestOnlyService = contestOnlyService;
+    }
 
     @PostMapping("/register")
     @SuppressWarnings("AssignmentToMethodParameter")

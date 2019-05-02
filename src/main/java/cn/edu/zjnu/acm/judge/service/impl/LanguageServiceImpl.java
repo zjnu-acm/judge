@@ -37,8 +37,12 @@ import org.springframework.stereotype.Service;
 @SpecialCall({"contests/problems-status", "problems/status"})
 public class LanguageServiceImpl implements LanguageService {
 
+    private final LanguageMapper languageMapper;
+
     @Autowired
-    private LanguageMapper languageMapper;
+    public LanguageServiceImpl(LanguageMapper languageMapper) {
+        this.languageMapper = languageMapper;
+    }
 
     @Override
     public Map<Integer, Language> getAvailableLanguages() {

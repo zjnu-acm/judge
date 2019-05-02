@@ -11,10 +11,14 @@ import org.springframework.stereotype.Service;
 @Service("rejudgeService")
 public class RejudgeServiceImpl implements RejudgeService {
 
+    private final JudgePoolService judgePoolService;
+    private final SubmissionMapper submissionMapper;
+
     @Autowired
-    private JudgePoolService judgePoolService;
-    @Autowired
-    private SubmissionMapper submissionMapper;
+    public RejudgeServiceImpl(JudgePoolService judgePoolService, SubmissionMapper submissionMapper) {
+        this.judgePoolService = judgePoolService;
+        this.submissionMapper = submissionMapper;
+    }
 
     @Override
     public CompletableFuture<?> byProblemId(long problemId) {

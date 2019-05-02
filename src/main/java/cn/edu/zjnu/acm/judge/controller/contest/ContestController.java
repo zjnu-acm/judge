@@ -40,8 +40,12 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 @RequestMapping("/contests/{contestId}")
 public class ContestController {
 
+    private final ContestService contestService;
+
     @Autowired
-    private ContestService contestService;
+    public ContestController(ContestService contestService) {
+        this.contestService = contestService;
+    }
 
     @GetMapping(value = "standing", produces = {TEXT_HTML_VALUE, ALL_VALUE})
     public Future<ModelAndView> standingHtml(@PathVariable("contestId") long contestId, Locale locale) {

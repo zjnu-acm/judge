@@ -40,8 +40,12 @@ import org.springframework.stereotype.Service;
 public class JudgePoolServiceImpl implements JudgePoolService {
 
     private ExecutorService executorService;
+    private final JudgeService judgeService;
+
     @Autowired
-    private JudgeService judgeService;
+    public JudgePoolServiceImpl(JudgeService judgeService) {
+        this.judgeService = judgeService;
+    }
 
     @PostConstruct
     public void init() {

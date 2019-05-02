@@ -21,10 +21,14 @@ public class UserCompareController {
         return bitset.stream().toArray();
     }
 
+    private final UserProblemMapper userProblemMapper;
+    private final AccountService accountService;
+
     @Autowired
-    private UserProblemMapper userProblemMapper;
-    @Autowired
-    private AccountService accountService;
+    public UserCompareController(UserProblemMapper userProblemMapper, AccountService accountService) {
+        this.userProblemMapper = userProblemMapper;
+        this.accountService = accountService;
+    }
 
     @GetMapping("/usercmp")
     @SuppressWarnings("CollectionWithoutInitialCapacity")

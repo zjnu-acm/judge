@@ -21,8 +21,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class SearchProblemController {
 
+    private final ProblemService problemService;
+
     @Autowired
-    private ProblemService problemService;
+    public SearchProblemController(ProblemService problemService) {
+        this.problemService = problemService;
+    }
 
     @GetMapping("/searchproblem")
     public String searchProblem(ProblemForm form, Model model, Locale locale, Authentication authentication,

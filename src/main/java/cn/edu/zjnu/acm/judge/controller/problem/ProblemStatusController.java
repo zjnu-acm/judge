@@ -48,12 +48,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Slf4j
 public class ProblemStatusController {
 
+    private final ProblemService problemService;
+    private final SubmissionService submissionService;
+    private final SubmissionMapper submissionMapper;
+
     @Autowired
-    private ProblemService problemService;
-    @Autowired
-    private SubmissionService submissionService;
-    @Autowired
-    private SubmissionMapper submissionMapper;
+    public ProblemStatusController(ProblemService problemService, SubmissionService submissionService, SubmissionMapper submissionMapper) {
+        this.problemService = problemService;
+        this.submissionService = submissionService;
+        this.submissionMapper = submissionMapper;
+    }
 
     @GetMapping("/gotoproblem")
     public String gotoProblem(@RequestParam(value = "pid", required = false) String pid,

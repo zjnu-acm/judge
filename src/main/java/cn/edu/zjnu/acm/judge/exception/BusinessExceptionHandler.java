@@ -31,16 +31,20 @@ import org.springframework.web.bind.annotation.RestController;
 @ControllerAdvice(annotations = RestController.class)
 public class BusinessExceptionHandler {
 
+    private final MessageSource messageSource;
+
     @Autowired
-    private MessageSource messageSource;
+    public BusinessExceptionHandler(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
 
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<?> handler(BusinessException businessException, Locale locale) {
         BusinessCode code = businessException.getCode();
         ResponseEntity.BodyBuilder builder = ResponseEntity.status(code.getStatus());
         String message = code.getMessage();
-        message = messageSource.getMessage(message, businessException.getParams(), message, locale);
-        return builder.body(Collections.singletonMap("message", message));
+        String formatted = messageSource.getMessage(message, businessException.getParams(), message, locale);
+        return builder.body(Collections.singletonMap("message", formatted));
     }
 
 }

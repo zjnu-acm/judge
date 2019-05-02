@@ -47,16 +47,20 @@ import org.springframework.transaction.annotation.Transactional;
 @Service("problemService")
 public class ProblemServiceImpl implements ProblemService {
 
+    private final ProblemMapper problemMapper;
+    private final LocaleService localeService;
+    private final ContestService contestService;
+    private final JudgeConfiguration judgeConfiguration;
+    private final UserProblemMapper userProblemMapper;
+
     @Autowired
-    private ProblemMapper problemMapper;
-    @Autowired
-    private LocaleService localeService;
-    @Autowired
-    private ContestService contestService;
-    @Autowired
-    private JudgeConfiguration judgeConfiguration;
-    @Autowired
-    private UserProblemMapper userProblemMapper;
+    public ProblemServiceImpl(ProblemMapper problemMapper, LocaleService localeService, ContestService contestService, JudgeConfiguration judgeConfiguration, UserProblemMapper userProblemMapper) {
+        this.problemMapper = problemMapper;
+        this.localeService = localeService;
+        this.contestService = contestService;
+        this.judgeConfiguration = judgeConfiguration;
+        this.userProblemMapper = userProblemMapper;
+    }
 
     @Override
     public Page<Problem> findAll(ProblemForm problemForm, String userId, Pageable pageable, Locale locale) {

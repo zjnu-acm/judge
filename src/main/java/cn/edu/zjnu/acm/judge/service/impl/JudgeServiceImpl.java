@@ -86,19 +86,23 @@ public class JudgeServiceImpl implements JudgeService {
         return compileInfo.length() > 1000 ? compileInfo.substring(0, 997) + "..." : compileInfo;
     }
 
-    @Autowired
-    private SubmissionMapper submissionMapper;
-    @Autowired
-    private UserProblemMapper userProblemMapper;
-    @Autowired
-    private ProblemService problemService;
-    @Autowired
-    private JudgeConfiguration judgeConfiguration;
-    @Autowired
-    private LanguageService languageService;
-    @Autowired
-    private DeleteService deleteService;
+    private final SubmissionMapper submissionMapper;
+    private final UserProblemMapper userProblemMapper;
+    private final ProblemService problemService;
+    private final JudgeConfiguration judgeConfiguration;
+    private final LanguageService languageService;
+    private final DeleteService deleteService;
     private JudgeBridge judgeBridge;
+
+    @Autowired
+    public JudgeServiceImpl(SubmissionMapper submissionMapper, UserProblemMapper userProblemMapper, ProblemService problemService, JudgeConfiguration judgeConfiguration, LanguageService languageService, DeleteService deleteService) {
+        this.submissionMapper = submissionMapper;
+        this.userProblemMapper = userProblemMapper;
+        this.problemService = problemService;
+        this.judgeConfiguration = judgeConfiguration;
+        this.languageService = languageService;
+        this.deleteService = deleteService;
+    }
 
     @PostConstruct
     public void init() {

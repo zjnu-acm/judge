@@ -58,10 +58,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .map(userId::equals).orElse(false);
     }
 
+    private final UserRoleMapper userRoleMapper;
+    private final UserMapper userMapper;
+
     @Autowired
-    private UserRoleMapper userRoleMapper;
-    @Autowired
-    private UserMapper userMapper;
+    public UserDetailsServiceImpl(UserRoleMapper userRoleMapper, UserMapper userMapper) {
+        this.userRoleMapper = userRoleMapper;
+        this.userMapper = userMapper;
+    }
 
     @Nonnull
     @Override

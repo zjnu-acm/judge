@@ -19,12 +19,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class ShowSubmissionDetailsController {
 
+    private final SubmissionMapper submissionMapper;
+    private final ContestMapper contestMapper;
+    private final SubmissionService submissionService;
+
     @Autowired
-    private SubmissionMapper submissionMapper;
-    @Autowired
-    private ContestMapper contestMapper;
-    @Autowired
-    private SubmissionService submissionService;
+    public ShowSubmissionDetailsController(SubmissionMapper submissionMapper, ContestMapper contestMapper, SubmissionService submissionService) {
+        this.submissionMapper = submissionMapper;
+        this.contestMapper = contestMapper;
+        this.submissionService = submissionService;
+    }
 
     @GetMapping("/showsolutiondetails")
     public String showSolutionDetails(

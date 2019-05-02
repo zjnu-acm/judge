@@ -12,8 +12,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class ShowCompileInfoController {
 
+    private final SubmissionService submissionService;
+
     @Autowired
-    private SubmissionService submissionService;
+    public ShowCompileInfoController(SubmissionService submissionService) {
+        this.submissionService = submissionService;
+    }
 
     @GetMapping("/showcompileinfo")
     @Secured("ROLE_USER")

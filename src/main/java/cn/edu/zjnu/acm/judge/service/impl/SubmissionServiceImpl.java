@@ -57,24 +57,28 @@ public class SubmissionServiceImpl implements SubmissionService {
 
     private static final int SUBMIT_INTERVAL = 10;
 
-    @Autowired
-    private ContestMapper contestMapper;
-    @Autowired
-    private SubmissionMapper submissionMapper;
-    @Autowired
-    private JudgePoolService judgePoolService;
-    @Autowired
-    private ProblemMapper problemMapper;
-    @Autowired
-    private ProblemService problemService;
-    @Autowired
-    private UserPreferenceMapper userPerferenceMapper;
-    @Autowired
-    private LanguageService languageService;
-    @Autowired
-    private ContestService contestService;
+    private final ContestMapper contestMapper;
+    private final SubmissionMapper submissionMapper;
+    private final JudgePoolService judgePoolService;
+    private final ProblemMapper problemMapper;
+    private final ProblemService problemService;
+    private final UserPreferenceMapper userPerferenceMapper;
+    private final LanguageService languageService;
+    private final ContestService contestService;
 
     private final Set<String> cache = Collections.newSetFromMap(CacheBuilder.newBuilder().expireAfterWrite(SUBMIT_INTERVAL, TimeUnit.SECONDS).<String, Boolean>build().asMap());
+
+    @Autowired
+    public SubmissionServiceImpl(ContestMapper contestMapper, SubmissionMapper submissionMapper, JudgePoolService judgePoolService, ProblemMapper problemMapper, ProblemService problemService, UserPreferenceMapper userPerferenceMapper, LanguageService languageService, ContestService contestService) {
+        this.contestMapper = contestMapper;
+        this.submissionMapper = submissionMapper;
+        this.judgePoolService = judgePoolService;
+        this.problemMapper = problemMapper;
+        this.problemService = problemService;
+        this.userPerferenceMapper = userPerferenceMapper;
+        this.languageService = languageService;
+        this.contestService = contestService;
+    }
 
     @Override
     public boolean canView(HttpServletRequest request, Submission submission) {

@@ -21,6 +21,7 @@ import cn.edu.zjnu.acm.judge.mapper.UserMapper;
 import cn.edu.zjnu.acm.judge.service.LoginlogService;
 import java.time.Instant;
 import java.util.Optional;
+import javax.annotation.Nonnull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
@@ -57,13 +58,17 @@ public class LoginListener {
     @Configuration
     public static class LoginSuccessListener implements ApplicationListener<InteractiveAuthenticationSuccessEvent> {
 
+        private final LoginlogService loginlogService;
+        private final UserMapper userMapper;
+
         @Autowired
-        private LoginlogService loginlogService;
-        @Autowired
-        private UserMapper userMapper;
+        public LoginSuccessListener(LoginlogService loginlogService, UserMapper userMapper) {
+            this.loginlogService = loginlogService;
+            this.userMapper = userMapper;
+        }
 
         @Override
-        public void onApplicationEvent(InteractiveAuthenticationSuccessEvent event) {
+        public void onApplicationEvent(@Nonnull InteractiveAuthenticationSuccessEvent event) {
             Authentication authentication = event.getAuthentication();
             String ip = saveEvent(loginlogService, authentication);
             Optional.ofNullable(userMapper.findOne(authentication.getName())).ifPresent(user -> {
@@ -80,8 +85,12 @@ public class LoginListener {
     public static class LoginFailureListener implements
             ApplicationListener<AuthenticationFailureBadCredentialsEvent> {
 
+        private final LoginlogService loginlogService;
+
         @Autowired
-        private LoginlogService loginlogService;
+        public LoginFailureListener(LoginlogService loginlogService) {
+            this.loginlogService = loginlogService;
+        }
 
         @Override
         public void onApplicationEvent(AuthenticationFailureBadCredentialsEvent event) {

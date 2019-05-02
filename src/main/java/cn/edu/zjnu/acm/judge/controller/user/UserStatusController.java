@@ -16,12 +16,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class UserStatusController {
 
+    private final UserMapper userMapper;
+    private final UserProblemMapper userProblemMapper;
+    private final AccountService accountService;
+
     @Autowired
-    private UserMapper userMapper;
-    @Autowired
-    private UserProblemMapper userProblemMapper;
-    @Autowired
-    private AccountService accountService;
+    public UserStatusController(UserMapper userMapper, UserProblemMapper userProblemMapper, AccountService accountService) {
+        this.userMapper = userMapper;
+        this.userProblemMapper = userProblemMapper;
+        this.accountService = accountService;
+    }
 
     @GetMapping("/userstatus")
     @SuppressWarnings("AssignmentToMethodParameter")

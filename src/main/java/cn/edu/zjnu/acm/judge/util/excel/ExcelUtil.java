@@ -84,7 +84,7 @@ public class ExcelUtil {
     }
 
     private static <T> void buildExcelDocument(Class<T> elementType, Stream<T> content, Locale locale, Workbook workbook) {
-        MetaInfo<T> meta = MetaInfo.forType(elementType, locale);
+        MetaInfo meta = MetaInfo.forType(elementType, locale);
         Sheet sheet = workbook.createSheet(elementType.getSimpleName());
         create(meta.getHeaderAsStream(), sheet.createRow(0));
         AtomicInteger counter = new AtomicInteger();
@@ -131,7 +131,7 @@ public class ExcelUtil {
     }
 
     private static <T> List<T> parse(Workbook workbook, FormulaEvaluator evaluator, Class<T> type, @Nullable Locale locale) {
-        MetaInfo<T> metaInfo = MetaInfo.forType(type, locale);
+        MetaInfo metaInfo = MetaInfo.forType(type, locale);
         Sheet sheet = workbook.getSheetAt(workbook.getActiveSheetIndex());
         Iterator<Row> rows = sheet.rowIterator();
         if (!rows.hasNext()) {

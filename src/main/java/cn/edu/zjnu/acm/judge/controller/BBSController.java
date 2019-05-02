@@ -33,10 +33,14 @@ public class BBSController {
 
     private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
+    private final MessageMapper messageMapper;
+    private final MessageService messageService;
+
     @Autowired
-    private MessageMapper messageMapper;
-    @Autowired
-    private MessageService messageService;
+    public BBSController(MessageMapper messageMapper, MessageService messageService) {
+        this.messageMapper = messageMapper;
+        this.messageService = messageService;
+    }
 
     @GetMapping(value = "/bbs", produces = TEXT_HTML_VALUE)
     public String bbs(HttpServletRequest request,

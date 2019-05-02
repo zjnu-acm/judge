@@ -60,10 +60,14 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 @Secured("ROLE_ADMIN")
 public class AccountController {
 
+    private final AccountService accountService;
+    private final ResetPasswordService resetPasswordService;
+
     @Autowired
-    private AccountService accountService;
-    @Autowired
-    private ResetPasswordService resetPasswordService;
+    public AccountController(AccountService accountService, ResetPasswordService resetPasswordService) {
+        this.accountService = accountService;
+        this.resetPasswordService = resetPasswordService;
+    }
 
     @GetMapping
     public Page<User> findAll(AccountForm form, @PageableDefault(50) Pageable pageable) {

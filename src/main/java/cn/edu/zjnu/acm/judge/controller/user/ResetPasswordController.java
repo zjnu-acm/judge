@@ -48,19 +48,23 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 @Slf4j
 public class ResetPasswordController {
 
-    @Autowired
-    private EmailService emailService;
-    @Autowired
-    private TemplateEngine templateEngine;
+    private final EmailService emailService;
+    private final TemplateEngine templateEngine;
+
+    private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final SystemService systemService;
+    private final ResetPasswordService resetPasswordService;
 
     @Autowired
-    private UserMapper userMapper;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private SystemService systemService;
-    @Autowired
-    private ResetPasswordService resetPasswordService;
+    public ResetPasswordController(EmailService emailService, TemplateEngine templateEngine, UserMapper userMapper, PasswordEncoder passwordEncoder, SystemService systemService, ResetPasswordService resetPasswordService) {
+        this.emailService = emailService;
+        this.templateEngine = templateEngine;
+        this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
+        this.systemService = systemService;
+        this.resetPasswordService = resetPasswordService;
+    }
 
     @GetMapping(value = "/resetPassword", produces = TEXT_HTML_VALUE)
     public String doGet(

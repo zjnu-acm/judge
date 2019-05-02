@@ -41,8 +41,12 @@ public class JudgeHandlerInterceptor {
         return Optional.ofNullable((String) request.getAttribute(attributeName)).orElseGet(() -> supplier.apply(request));
     }
 
+    private final MailMapper mailMapper;
+
     @Autowired
-    private MailMapper mailMapper;
+    public JudgeHandlerInterceptor(MailMapper mailMapper) {
+        this.mailMapper = mailMapper;
+    }
 
     @ModelAttribute
     public void addAttributes(HttpServletRequest request,

@@ -20,16 +20,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class ShowSourceController {
 
+    private final SubmissionMapper submissionMapper;
+    private final UserPreferenceMapper userPerferenceMapper;
+    private final SubmissionService submissionService;
+    private final LanguageService languageService;
+    private final ContestOnlyService contestOnlyService;
+
     @Autowired
-    private SubmissionMapper submissionMapper;
-    @Autowired
-    private UserPreferenceMapper userPerferenceMapper;
-    @Autowired
-    private SubmissionService submissionService;
-    @Autowired
-    private LanguageService languageService;
-    @Autowired
-    private ContestOnlyService contestOnlyService;
+    public ShowSourceController(SubmissionMapper submissionMapper, UserPreferenceMapper userPerferenceMapper, SubmissionService submissionService, LanguageService languageService, ContestOnlyService contestOnlyService) {
+        this.submissionMapper = submissionMapper;
+        this.userPerferenceMapper = userPerferenceMapper;
+        this.submissionService = submissionService;
+        this.languageService = languageService;
+        this.contestOnlyService = contestOnlyService;
+    }
 
     @Secured("ROLE_USER")
     @GetMapping("/showsource")

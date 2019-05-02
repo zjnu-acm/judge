@@ -27,12 +27,16 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 @Slf4j
 public class ContestStatisticsController {
 
+    private final DataSource dataSource;
+    private final ContestService contestService;
+    private final LanguageService languageService;
+
     @Autowired
-    private DataSource dataSource;
-    @Autowired
-    private ContestService contestService;
-    @Autowired
-    private LanguageService languageService;
+    public ContestStatisticsController(DataSource dataSource, ContestService contestService, LanguageService languageService) {
+        this.dataSource = dataSource;
+        this.contestService = contestService;
+        this.languageService = languageService;
+    }
 
     @GetMapping(value = "/conteststatistics", produces = TEXT_HTML_VALUE)
     public String contestStatistics(

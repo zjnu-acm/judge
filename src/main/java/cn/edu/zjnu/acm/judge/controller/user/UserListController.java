@@ -39,8 +39,12 @@ public class UserListController {
             Sort.Order.asc("user_id")
     );
 
+    private final AccountService accountService;
+
     @Autowired
-    private AccountService accountService;
+    public UserListController(AccountService accountService) {
+        this.accountService = accountService;
+    }
 
     @GetMapping({"/userlist", "/users"})
     @SuppressWarnings("AssignmentToMethodParameter")

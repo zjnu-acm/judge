@@ -36,16 +36,20 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 @Controller
 public class StatusController {
 
+    private final SubmissionMapper submissionMapper;
+    private final ContestMapper contestMapper;
+    private final ContestService contestService;
+    private final SubmissionService submissionService;
+    private final LanguageService languageService;
+
     @Autowired
-    private SubmissionMapper submissionMapper;
-    @Autowired
-    private ContestMapper contestMapper;
-    @Autowired
-    private ContestService contestService;
-    @Autowired
-    private SubmissionService submissionService;
-    @Autowired
-    private LanguageService languageService;
+    public StatusController(SubmissionMapper submissionMapper, ContestMapper contestMapper, ContestService contestService, SubmissionService submissionService, LanguageService languageService) {
+        this.submissionMapper = submissionMapper;
+        this.contestMapper = contestMapper;
+        this.contestService = contestService;
+        this.submissionService = submissionService;
+        this.languageService = languageService;
+    }
 
     @GetMapping(value = {"/status", "/submissions"}, produces = TEXT_HTML_VALUE)
     @SuppressWarnings("AssignmentToMethodParameter")

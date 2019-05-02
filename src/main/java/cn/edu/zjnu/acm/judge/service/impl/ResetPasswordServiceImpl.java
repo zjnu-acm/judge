@@ -39,10 +39,14 @@ import org.springframework.stereotype.Service;
 @Service("resetPasswordService")
 public class ResetPasswordServiceImpl implements ResetPasswordService {
 
-    @Autowired
-    private UserMapper userMapper;
+    private final UserMapper userMapper;
 
     private Cache<String, String> cache;
+
+    @Autowired
+    public ResetPasswordServiceImpl(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
 
     @PostConstruct
     public void init() {

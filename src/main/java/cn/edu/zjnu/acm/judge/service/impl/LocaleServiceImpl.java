@@ -44,8 +44,12 @@ public class LocaleServiceImpl implements LocaleService {
     private static final Comparator<Locale> DEFAULT_LOCALE_COMPARATOR = Comparator.comparing(Locale::toLanguageTag);
     private static final Comparator<DomainLocale> DEFAULT_DOMAIN_LOCALE_COMPARATOR = Comparator.comparing(DomainLocale::getName);
 
+    private final LocaleMapper localeMapper;
+
     @Autowired
-    private LocaleMapper localeMapper;
+    public LocaleServiceImpl(LocaleMapper localeMapper) {
+        this.localeMapper = localeMapper;
+    }
 
     @Nullable
     @Override

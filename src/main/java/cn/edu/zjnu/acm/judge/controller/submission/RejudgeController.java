@@ -19,8 +19,12 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Secured("ROLE_ADMIN")
 public class RejudgeController {
 
+    private final RejudgeService rejudgeService;
+
     @Autowired
-    private RejudgeService rejudgeService;
+    public RejudgeController(RejudgeService rejudgeService) {
+        this.rejudgeService = rejudgeService;
+    }
 
     // TODO request method
     @GetMapping(value = "/admin/rejudge", params = "solution_id")

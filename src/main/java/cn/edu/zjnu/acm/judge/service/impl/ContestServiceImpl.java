@@ -61,14 +61,18 @@ public class ContestServiceImpl implements ContestService {
 
     private static final ConcurrentMap<Long, CompletableFuture<List<UserStanding>>> STANDINGS = new ConcurrentHashMap<>(20);
 
+    private final ContestMapper contestMapper;
+    private final SubmissionMapper submissionMapper;
+    private final LocaleServiceImpl localeService;
+    private final ObjectMapper objectMapper;
+
     @Autowired
-    private ContestMapper contestMapper;
-    @Autowired
-    private SubmissionMapper submissionMapper;
-    @Autowired
-    private LocaleServiceImpl localeService;
-    @Autowired
-    private ObjectMapper objectMapper;
+    public ContestServiceImpl(ContestMapper contestMapper, SubmissionMapper submissionMapper, LocaleServiceImpl localeService, ObjectMapper objectMapper) {
+        this.contestMapper = contestMapper;
+        this.submissionMapper = submissionMapper;
+        this.localeService = localeService;
+        this.objectMapper = objectMapper;
+    }
 
     @Override
     public String getStatus(@Nonnull Contest contest) {

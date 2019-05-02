@@ -19,8 +19,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class SearchUserController {
 
+    private final AccountService accountService;
+
     @Autowired
-    private AccountService accountService;
+    public SearchUserController(AccountService accountService) {
+        this.accountService = accountService;
+    }
 
     @GetMapping("/searchuser")
     public String searchuser(Model model,

@@ -20,12 +20,16 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 @Controller
 public class ShowProblemController {
 
+    private final ProblemMapper problemMapper;
+    private final JudgeConfiguration judgeConfiguration;
+    private final LocaleService localeService;
+
     @Autowired
-    private ProblemMapper problemMapper;
-    @Autowired
-    private JudgeConfiguration judgeConfiguration;
-    @Autowired
-    private LocaleService localeService;
+    public ShowProblemController(ProblemMapper problemMapper, JudgeConfiguration judgeConfiguration, LocaleService localeService) {
+        this.problemMapper = problemMapper;
+        this.judgeConfiguration = judgeConfiguration;
+        this.localeService = localeService;
+    }
 
     private Problem getProblem(long problemId, Locale locale) {
         Problem problem = problemMapper.findOne(problemId, localeService.resolve(locale));

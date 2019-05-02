@@ -29,6 +29,7 @@ class SpacesDialect extends AbstractProcessorDialect {
 
     private final TemplateMode templateMode;
 
+    @SuppressWarnings("WeakerAccess")
     SpacesDialect(String name, String prefix, int precedence, TemplateMode templateMode) {
         super(name, prefix, precedence);
         this.templateMode = templateMode;
