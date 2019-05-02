@@ -42,7 +42,8 @@ public class URIBuilder {
 
     private URIBuilder(String path, Map<String, String[]> query) {
         this.path = path;
-        this.query = new LinkedHashMap<>(query);
+        this.query = new LinkedHashMap<>(query.size());
+        query.forEach(this::replaceQueryParam);
     }
 
     public URIBuilder replaceQueryParam(String name, String... values) {
@@ -59,7 +60,7 @@ public class URIBuilder {
     }
 
     public URIBuilder replacePath(String path) {
-        this.path = path != null ? path : "";
+        this.path = Objects.toString(path, "");
         return this;
     }
 

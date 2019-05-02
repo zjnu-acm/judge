@@ -44,7 +44,8 @@ public class MatcherWrapperTest {
      */
     @Test
     public void testReplaceAll_Function() {
-        test("((?:he))", "(hezzhe)", matcher -> matcher.group(1) + "$1zhb", "(he$1zhbzzhe$1zhb)");
+        test("(he)", "(hezzhe)", matcher -> matcher.group(1) + "$1fuk", "(he$1fukzzhe$1fuk)");
+        test("no", "some", matcher -> matcher.group(1) + "$1fuk", "some");
     }
 
     /**
@@ -52,6 +53,16 @@ public class MatcherWrapperTest {
      */
     @Test
     public void testReplaceFirst_Function() {
-        test2("((?:he))", "(hezzhe)", matcher -> matcher.group(1) + "$1zhb", "(he$1zhbzzhe)");
+        test2("(he)", "(hezzhe)", matcher -> matcher.group(1) + "$1fuk", "(he$1fukzzhe)");
+        test2("no", "some", matcher -> matcher.group(1) + "$1fuk", "some");
     }
+
+    @Test(expected = IllegalStateException.class)
+    public void testIse() {
+        MatcherWrapper.matcher("(he)", "he").replaceAll(matcher -> {
+            matcher.reset();
+            return "";
+        });
+    }
+
 }
