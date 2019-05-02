@@ -36,7 +36,7 @@
                 <tbody>
                     <tr th:each="problem,it:${problems}" th:object="${problem}" th:class="*{status==1?'ac':status==2?'wa':''}">
                         <td class="status"></td>
-                        <td align="center"><b>[[*{origin}]] Problem [[${T(java.lang.Character).toString(65+it.index)}]]</b></td>
+                        <td align="center"><b>[[*{origin}]] Problem [[${@contestService.toProblemIndex(it.index)}]]</b></td>
                         <td align="left"><a href="../problems/view.html" th:href="@{/contests/{contestId}/problems/{problemId}.html(contestId=${contest.id},problemId=*{id})}" th:text="*{title}">title</a></td>
                     </tr>
                 </tbody>
