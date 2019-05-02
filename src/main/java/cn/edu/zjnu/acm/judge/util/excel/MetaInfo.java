@@ -68,8 +68,9 @@ class MetaInfo<T> {
                 }
             }
             // entries in ImmutableMap are sorted in the order as the input
-            return new MetaInfo<>(list.stream().sorted(Comparator.comparingInt(Member::getOrder))
-                    .collect(ImmutableMap.toImmutableMap(Member::getName, Member::getField)));
+            return new MetaInfo<>(list.stream().sorted(
+                    Comparator.comparingInt(Member::getOrder).thenComparing(Member::getName)
+            ).collect(ImmutableMap.toImmutableMap(Member::getName, Member::getField)));
         });
     }
 

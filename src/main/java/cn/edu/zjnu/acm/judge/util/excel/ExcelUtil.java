@@ -23,10 +23,12 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import java.io.ByteArrayOutputStream;
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -41,6 +43,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
+import javax.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.Cell;
@@ -51,8 +54,9 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 
 /**
  *
@@ -61,15 +65,20 @@ import org.springframework.http.ResponseEntity;
 @SuppressWarnings("UtilityClassWithoutPrivateConstructor")
 public class ExcelUtil {
 
-    @SneakyThrows(IOException.class)
-    public static <T> ResponseEntity<?> toResponse(Class<T> type, Collection<T> content, Locale locale, Type resultType) {
+    public static <T> void toResponse(Class<T> type, Collection<T> content,
+            Locale locale, Type resultType, String name,
+            HttpServletResponse response) throws IOException {
         try (Workbook workbook = resultType.createWorkBook()) {
             buildExcelDocument(type, content.stream(), locale, workbook);
-            try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            if (StringUtils.hasText(name)) {
+                String actual = name + "." + resultType.getExtension();
+                response.setHeader(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.builder("attachment").filename(actual, StandardCharsets.UTF_8).build().toString());
+            } else {
+                response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment");
+            }
+            response.setContentType(resultType.getMediaType().toString());
+            try (OutputStream out = response.getOutputStream()) {
                 workbook.write(out);
-                return ResponseEntity.ok().contentType(resultType.getMediaType())
-                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment")
-                        .body(out.toByteArray());
             }
         }
     }
@@ -111,14 +120,14 @@ public class ExcelUtil {
     }
 
     public static <T> List<T> parse(InputStream inputStream, Class<T> type, @Nullable Locale locale) {
-        Workbook workbook;
-        try {
-            workbook = WorkbookFactory.create(inputStream);
+        boolean support = inputStream.markSupported();
+        InputStream is = support ? inputStream : new BufferedInputStream(inputStream);
+        try (Workbook workbook = WorkbookFactory.create(is)) {
+            FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
+            return parse(workbook, evaluator, type, locale);
         } catch (IOException | IllegalStateException ex) {
             throw new BusinessException(BusinessCode.INVALID_EXCEL);
         }
-        FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
-        return parse(workbook, evaluator, type, locale);
     }
 
     private static <T> List<T> parse(Workbook workbook, FormulaEvaluator evaluator, Class<T> type, @Nullable Locale locale) {

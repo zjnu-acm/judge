@@ -32,6 +32,8 @@ import cn.edu.zjnu.acm.judge.util.excel.ExcelUtil;
 import com.google.common.annotations.VisibleForTesting;
 import java.io.InputStream;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
@@ -43,6 +45,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -60,6 +63,8 @@ import org.springframework.util.StringUtils;
 @Service("accountService")
 public class AccountServiceImpl implements AccountService {
 
+    private static final DateTimeFormatter dtf = DateTimeFormatter.ISO_DATE;
+
     @Autowired
     private UserMapper userMapper;
     @Autowired
@@ -68,6 +73,8 @@ public class AccountServiceImpl implements AccountService {
     private UserRoleMapper userRoleMapper;
     @Autowired
     private UserProblemMapper userProblemMapper;
+    @Autowired
+    private MessageSource messageSource;
 
     @Override
     public Page<User> findAll(AccountForm form, Pageable pageable) {
@@ -213,6 +220,12 @@ public class AccountServiceImpl implements AccountService {
         if (result == 0) {
             throw new BusinessException(BusinessCode.USER_NOT_FOUND, id);
         }
+    }
+
+    @Override
+    public String getExcelName(Locale locale) {
+        String name = messageSource.getMessage("onlinejudge.export.excel.name", new Object[0], locale);
+        return name + " - " + dtf.format(LocalDateTime.now());
     }
 
 }

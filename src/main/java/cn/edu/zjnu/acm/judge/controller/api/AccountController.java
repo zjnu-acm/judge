@@ -30,12 +30,12 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -83,15 +83,17 @@ public class AccountController {
     }
 
     @GetMapping(produces = Constants.MineTypes.XLSX)
-    public ResponseEntity<?> findAllXlsx(AccountForm form, Pageable pageable, Locale locale) {
+    public void findAllXlsx(AccountForm form, Pageable pageable, Locale locale,
+            HttpServletResponse response) throws IOException {
         List<Account> content = accountService.findAllForExport(form, pageable);
-        return ExcelUtil.toResponse(Account.class, content, locale, Type.XLSX);
+        ExcelUtil.toResponse(Account.class, content, locale, Type.XLSX, accountService.getExcelName(locale), response);
     }
 
     @GetMapping(produces = Constants.MineTypes.XLS)
-    public ResponseEntity<?> findAllXls(AccountForm form, Pageable pageable, Locale locale) {
+    public void findAllXls(AccountForm form, Pageable pageable, Locale locale,
+            HttpServletResponse response) throws IOException {
         List<Account> content = accountService.findAllForExport(form, pageable);
-        return ExcelUtil.toResponse(Account.class, content, locale, Type.XLS);
+        ExcelUtil.toResponse(Account.class, content, locale, Type.XLS, accountService.getExcelName(locale), response);
     }
 
     @PostMapping(consumes = MULTIPART_FORM_DATA_VALUE)
