@@ -1,6 +1,7 @@
 package cn.edu.zjnu.acm.judge.controller.api;
 
 import cn.edu.zjnu.acm.judge.Application;
+import cn.edu.zjnu.acm.judge.data.form.ContestForm;
 import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.service.MockDataService;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,7 +1,5 @@
-package cn.edu.zjnu.acm.judge.config;
-
 /*
- * Copyright 2017 ZJNU ACM.
+ * Copyright 2017-2019 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +13,8 @@ package cn.edu.zjnu.acm.judge.config;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package cn.edu.zjnu.acm.judge.config;
+
 import cn.edu.zjnu.acm.judge.domain.LoginLog;
 import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
