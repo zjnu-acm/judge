@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.config;
+package cn.edu.zjnu.acm.judge.service;
 
 import cn.edu.zjnu.acm.judge.Application;
+import cn.edu.zjnu.acm.judge.service.SystemService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,38 +35,38 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest(classes = Application.class)
 @Transactional
 @WebAppConfiguration
-public class JudgeConfigurationTest {
+public class SystemServiceTest {
 
     @Autowired
-    private JudgeConfiguration judgeConfiguration;
+    private SystemService systemService;
 
     /**
-     * Test of getDataDirectory method, of class JudgeConfiguration.
+     * Test of getDataDirectory method, of class SystemService.
      */
     @Test
     public void testGetDataDirectory() {
         log.info("getDataDirectory");
         long problemId = 0L;
-        judgeConfiguration.getDataDirectory(problemId);
+        systemService.getDataDirectory(problemId);
     }
 
     /**
-     * Test of getWorkDirectory method, of class JudgeConfiguration.
+     * Test of getWorkDirectory method, of class SystemService.
      */
     @Test
     public void testGetWorkDirectory() {
         log.info("getWorkDirectory");
         long solutionId = 0L;
-        judgeConfiguration.getWorkDirectory(solutionId);
+        systemService.getWorkDirectory(solutionId);
     }
 
     /**
-     * Test of getUploadDirectory method, of class JudgeConfiguration.
+     * Test of getUploadDirectory method, of class SystemService.
      */
     @Test
     public void testGetUploadDirectory() {
         log.info("getUploadDirectory");
-        judgeConfiguration.getUploadDirectory();
+        systemService.getUploadDirectory();
     }
 
 }

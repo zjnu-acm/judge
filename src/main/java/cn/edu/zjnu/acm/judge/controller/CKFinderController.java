@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 zhanhb.
+ * Copyright 2014-2019 zhanhb.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.controller;
 
-import cn.edu.zjnu.acm.judge.config.JudgeConfiguration;
+import cn.edu.zjnu.acm.judge.service.SystemService;
 import com.github.zhanhb.ckfinder.connector.api.BasePathBuilder;
 import com.github.zhanhb.ckfinder.connector.support.DefaultPathBuilder;
 import com.github.zhanhb.download.spring.ToDownload;
@@ -35,13 +35,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor
 public class CKFinderController {
 
-    private final JudgeConfiguration judgeConfiguration;
+    private final SystemService systemService;
     private final ApplicationContext applicationContext;
 
     @Bean
     public BasePathBuilder pathBuilder() {
         String url = applicationContext.getBean(ServletContext.class).getContextPath().concat("/support/ckfinder.action?path=");
-        Path path = judgeConfiguration.getUploadDirectory();
+        Path path = systemService.getUploadDirectory();
         return DefaultPathBuilder.builder().baseUrl(url)
                 .basePath(path).build();
     }
@@ -53,7 +53,7 @@ public class CKFinderController {
         log.info(path);
         try {
             int indexOf = path.indexOf('?');
-            Path parent = judgeConfiguration.getUploadDirectory();
+            Path parent = systemService.getUploadDirectory();
             Path imagePath = parent.getFileSystem().getPath(parent.toString(), indexOf > 0 ? path.substring(0, indexOf) : path).normalize();
             if (!imagePath.startsWith(parent)) {
                 log.debug("absolute path parent='{}' path='{}'", parent, imagePath);

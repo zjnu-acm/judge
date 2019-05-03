@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 ZJNU ACM.
+ * Copyright 2015-2019 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 package cn.edu.zjnu.acm.judge.service.impl;
 
-import cn.edu.zjnu.acm.judge.config.JudgeConfiguration;
 import cn.edu.zjnu.acm.judge.data.dto.RunRecord;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.domain.Submission;
@@ -27,6 +26,7 @@ import cn.edu.zjnu.acm.judge.service.DeleteService;
 import cn.edu.zjnu.acm.judge.service.JudgeService;
 import cn.edu.zjnu.acm.judge.service.LanguageService;
 import cn.edu.zjnu.acm.judge.service.ProblemService;
+import cn.edu.zjnu.acm.judge.service.SystemService;
 import cn.edu.zjnu.acm.judge.util.Platform;
 import cn.edu.zjnu.acm.judge.util.ResultType;
 import com.github.zhanhb.judge.common.ExecuteResult;
@@ -90,7 +90,7 @@ public class JudgeServiceImpl implements JudgeService {
     private final SubmissionMapper submissionMapper;
     private final UserProblemMapper userProblemMapper;
     private final ProblemService problemService;
-    private final JudgeConfiguration judgeConfiguration;
+    private final SystemService systemService;
     private final LanguageService languageService;
     private final DeleteService deleteService;
     private JudgeBridge judgeBridge;
@@ -133,10 +133,10 @@ public class JudgeServiceImpl implements JudgeService {
     }
 
     private void runProcess(RunRecord runRecord) throws IOException {
-        Path dataPath = judgeConfiguration.getDataDirectory(runRecord.getProblemId());
-        Objects.requireNonNull(dataPath, "dataPath");
-        Path specialFile = dataPath.resolve(JudgeConfiguration.VALIDATE_FILE_NAME);
-        boolean isSpecial = Files.exists(specialFile);
+        long problemId = runRecord.getProblemId();
+        Path dataPath = systemService.getDataDirectory(problemId);
+        Path specialFile = systemService.getSpecialJudgeExecutable(problemId);
+        boolean isSpecial = systemService.isSpecialJudge(problemId);
         if (!Files.isDirectory(dataPath)) {
             log.error("{} not exists", dataPath);
             return;
@@ -165,7 +165,7 @@ public class JudgeServiceImpl implements JudgeService {
         int accept = 0; //最后通过的个数
         ArrayList<String> details = new ArrayList<>(caseNum << 2);
         String command = runRecord.getLanguage().getExecuteCommand();
-        Path work = judgeConfiguration.getWorkDirectory(runRecord.getSubmissionId()); //建立临时文件
+        Path work = systemService.getWorkDirectory(runRecord.getSubmissionId()); //建立临时文件
         command = StringUtils.hasText(command) ? command : work.resolve("Main." + runRecord.getLanguage().getExecutableExtension()).toString();
         long extTime = runRecord.getLanguage().getExtTime();
         long castTimeLimit = runRecord.getTimeLimit() * runRecord.getLanguage().getTimeFactor() + extTime;
@@ -238,7 +238,7 @@ public class JudgeServiceImpl implements JudgeService {
         if (StringUtils.isEmpty(source)) {
             return false;
         }
-        Path work = judgeConfiguration.getWorkDirectory(runRecord.getSubmissionId());
+        Path work = systemService.getWorkDirectory(runRecord.getSubmissionId());
         final String main = "Main";
         Files.createDirectories(work);
         Path sourceFile = work.resolve(main + "." + runRecord.getLanguage().getSourceExtension()); //源码码文件
@@ -291,7 +291,7 @@ public class JudgeServiceImpl implements JudgeService {
     }
 
     private void judgeInternal(RunRecord runRecord) {
-        try (Closeable c = () -> delete(judgeConfiguration.getWorkDirectory(runRecord.getSubmissionId()))) {
+        try (Closeable c = () -> delete(systemService.getWorkDirectory(runRecord.getSubmissionId()))) {
             if (compile(runRecord)) {
                 runProcess(runRecord);
             }
@@ -302,7 +302,7 @@ public class JudgeServiceImpl implements JudgeService {
 
     private void delete(Path path) throws IOException {
         Objects.requireNonNull(path, "path");
-        if (!judgeConfiguration.isDeleteTempFile()) {
+        if (!systemService.isDeleteTempFile()) {
             return;
         }
         deleteService.delete(path);

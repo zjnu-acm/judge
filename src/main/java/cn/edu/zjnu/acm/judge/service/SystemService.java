@@ -15,7 +15,9 @@
  */
 package cn.edu.zjnu.acm.judge.service;
 
+import cn.edu.zjnu.acm.judge.data.form.SystemInfoForm;
 import cn.edu.zjnu.acm.judge.util.SpecialCall;
+import java.nio.file.Path;
 import javax.annotation.Nullable;
 
 /**
@@ -26,31 +28,35 @@ import javax.annotation.Nullable;
 public interface SystemService {
 
     @Nullable
+    String getIndex();
+
+    void setIndex(@Nullable String index);
+
+    @Nullable
     @SpecialCall({"index", "manager", "layout/main"})
     String getAdminMail();
 
-    @Nullable
-    String getDataFilesPath();
-
-    @Nullable
-    String getDeleteTempFile();
+    boolean isDeleteTempFile();
 
     @Nullable
     @SpecialCall("fragment/ga")
     String getGa();
 
     @Nullable
-    String getIndex();
-
-    @Nullable
     String getResetPasswordTitle();
 
-    @Nullable
-    String getUploadPath();
+    Path getDataDirectory(long problem);
 
-    @Nullable
-    String getWorkingPath();
+    Path getUploadDirectory();
 
-    void setIndex(@Nullable String index);
+    Path getWorkDirectory(long submissionId);
 
+    @SpecialCall("fragment/notice")
+    SystemInfoForm getSystemInfo();
+
+    void setSystemInfo(SystemInfoForm systemInfoForm);
+
+    boolean isSpecialJudge(long problemId);
+
+    Path getSpecialJudgeExecutable(long problemId);
 }

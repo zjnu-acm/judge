@@ -1,13 +1,26 @@
+/*
+ * Copyright 2019 ZJNU ACM.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package cn.edu.zjnu.acm.judge.controller.problem;
 
-import cn.edu.zjnu.acm.judge.config.JudgeConfiguration;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.exception.BusinessCode;
 import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.service.LocaleService;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import cn.edu.zjnu.acm.judge.service.SystemService;
 import java.util.Locale;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -22,8 +35,8 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 public class ShowProblemController {
 
     private final ProblemMapper problemMapper;
-    private final JudgeConfiguration judgeConfiguration;
     private final LocaleService localeService;
+    private final SystemService systemService;
 
     private Problem getProblem(long problemId, Locale locale) {
         Problem problem = problemMapper.findOne(problemId, localeService.resolve(locale));
@@ -39,9 +52,8 @@ public class ShowProblemController {
     @GetMapping(value = "/showproblem", produces = TEXT_HTML_VALUE)
     public String showProblem(Model model, @RequestParam("problem_id") long problemId, Locale locale) {
         Problem problem = getProblem(problemId, locale);
-        Path dataPath = judgeConfiguration.getDataDirectory(problemId);
         model.addAttribute("problem", problem);
-        model.addAttribute("isSpecial", Files.exists(dataPath.resolve(JudgeConfiguration.VALIDATE_FILE_NAME)));
+        model.addAttribute("isSpecial", systemService.isSpecialJudge(problemId));
         String title1 = problemId + " -- " + problem.getTitle();
         String title2 = problem.getTitle();
         model.addAttribute("title1", title1);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 ZJNU ACM.
+ * Copyright 2017-2019 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 package cn.edu.zjnu.acm.judge.service;
 
 import cn.edu.zjnu.acm.judge.Application;
-import cn.edu.zjnu.acm.judge.config.JudgeConfiguration;
 import cn.edu.zjnu.acm.judge.data.form.SubmissionQueryForm;
 import cn.edu.zjnu.acm.judge.domain.Language;
 import cn.edu.zjnu.acm.judge.domain.Submission;
@@ -191,7 +190,7 @@ public class JudgeServiceTest {
         @Autowired
         private MockDataService mockDataService;
         @Autowired
-        private JudgeConfiguration judgeConfiguration;
+        private SystemService systemService;
         @Autowired
         private SubmissionService submissionService;
         @Autowired
@@ -217,7 +216,7 @@ public class JudgeServiceTest {
         public void init() throws Exception {
             userId = mockDataService.user().getId();
             problem = mockDataService.problem(builder -> builder.timeLimit(6000L).memoryLimit(256 * 1024L)).getId();
-            dataDir = CopyHelper.copy(Paths.get(Initializer.class.getResource("/sample/data").toURI()), judgeConfiguration.getDataDirectory(problem), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES);
+            dataDir = CopyHelper.copy(Paths.get(Initializer.class.getResource("/sample/data").toURI()), systemService.getDataDirectory(problem), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES);
             Path mavenGroovyPath = Paths.get(getGroovy(System.getProperty("java.class.path")));
             groovyPath = Files.copy(mavenGroovyPath, dataDir.resolve(mavenGroovyPath.getFileName().toString()), StandardCopyOption.REPLACE_EXISTING);
             String executeCommand = build("java", "-cp", groovyPath.toString(), groovy.ui.GroovyMain.class.getName(), "Main.groovy");

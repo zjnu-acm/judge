@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 ZJNU ACM.
+ * Copyright 2017-2019 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 package cn.edu.zjnu.acm.judge.controller.contest;
 
-import cn.edu.zjnu.acm.judge.config.JudgeConfiguration;
 import cn.edu.zjnu.acm.judge.data.dto.ScoreCount;
 import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.domain.Problem;
@@ -25,12 +24,11 @@ import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.service.ContestService;
 import cn.edu.zjnu.acm.judge.service.SubmissionService;
+import cn.edu.zjnu.acm.judge.service.SystemService;
 import cn.edu.zjnu.acm.judge.service.impl.UserDetailsServiceImpl;
 import cn.edu.zjnu.acm.judge.util.ResultType;
 import cn.edu.zjnu.acm.judge.util.URIBuilder;
 import com.google.common.collect.ImmutableList;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -58,7 +56,7 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 @RequiredArgsConstructor
 public class ContestProblemController {
 
-    private final JudgeConfiguration judgeConfiguration;
+    private final SystemService systemService;
     private final ContestService contestService;
     private final SubmissionMapper submissionMapper;
     private final SubmissionService submissionService;
@@ -87,8 +85,7 @@ public class ContestProblemController {
         Problem problem = contestService.getProblem(contestId, problemNum, locale);
         model.addAttribute("problem", problem);
         model.addAttribute("problems", contest.getProblems());
-        Path dataPath = judgeConfiguration.getDataDirectory(problem.getOrigin());
-        model.addAttribute("isSpecial", Files.exists(dataPath.resolve(JudgeConfiguration.VALIDATE_FILE_NAME)));
+        model.addAttribute("isSpecial", systemService.isSpecialJudge(problem.getOrigin()));
         List<Long> problemsId = contest.getProblems().stream().map(Problem::getOrigin).collect(ImmutableList.toImmutableList());
         String index = contestService.toProblemIndex(problemsId.indexOf(problem.getOrigin()));
         String title1 = index + ":" + problem.getOrigin() + " -- " + problem.getTitle();

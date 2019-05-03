@@ -1,13 +1,13 @@
 package cn.edu.zjnu.acm.judge.controller.submission;
 
 import cn.edu.zjnu.acm.judge.Application;
-import cn.edu.zjnu.acm.judge.config.JudgeConfiguration;
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.service.AccountService;
 import cn.edu.zjnu.acm.judge.service.AccountServiceTest;
 import cn.edu.zjnu.acm.judge.service.DeleteService;
 import cn.edu.zjnu.acm.judge.service.MockDataService;
 import cn.edu.zjnu.acm.judge.service.SubmissionService;
+import cn.edu.zjnu.acm.judge.service.SystemService;
 import cn.edu.zjnu.acm.judge.util.CopyHelper;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -55,7 +55,7 @@ public class RejudgeControllerTest {
     @Autowired
     private SubmissionService submissionService;
     @Autowired
-    private JudgeConfiguration judgeConfiguration;
+    private SystemService systemService;
     private Submission submission;
     @Autowired
     private AccountService accountService;
@@ -65,14 +65,14 @@ public class RejudgeControllerTest {
     @Before
     public void setUp() throws IOException, URISyntaxException {
         submission = mockDataService.submission(false);
-        Path dataDir = judgeConfiguration.getDataDirectory(submission.getProblem());
+        Path dataDir = systemService.getDataDirectory(submission.getProblem());
         CopyHelper.copy(Paths.get(RejudgeControllerTest.class.getResource("/sample/data").toURI()), dataDir, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES);
     }
 
     @After
     public void tearDown() throws IOException {
         if (submission != null) {
-            deleteService.delete(judgeConfiguration.getDataDirectory(submission.getProblem()));
+            deleteService.delete(systemService.getDataDirectory(submission.getProblem()));
             submissionService.delete(submission.getId());
             AccountServiceTest.delete(accountService, submission.getUser());
         }

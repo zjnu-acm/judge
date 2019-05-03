@@ -16,8 +16,14 @@
 package cn.edu.zjnu.acm.judge.service.impl;
 
 import cn.edu.zjnu.acm.judge.config.Constants;
+import cn.edu.zjnu.acm.judge.data.form.SystemInfoForm;
 import cn.edu.zjnu.acm.judge.mapper.SystemMapper;
 import cn.edu.zjnu.acm.judge.service.SystemService;
+import cn.edu.zjnu.acm.judge.util.SpecialCall;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Objects;
 import javax.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,16 +38,13 @@ import org.springframework.stereotype.Service;
 @Service("systemService")
 public class SystemServiceImpl implements SystemService {
 
+    private static final String VALIDATE_FILE_NAME = "compare.exe";
+
     private final SystemMapper systemMapper;
+    private volatile SystemInfoForm systemInfo;
 
     @Autowired // ensure flyway initialize before this service
     public void setFlywayMigrationInitializer(FlywayMigrationInitializer flywayMigrationInitializer) {
-    }
-
-    @Nullable
-    @Override
-    public String getUploadPath() {
-        return systemMapper.getValueByName(Constants.SystemKey.UPLOAD_PATH);
     }
 
     @Nullable
@@ -54,24 +57,6 @@ public class SystemServiceImpl implements SystemService {
     @Override
     public String getGa() {
         return systemMapper.getValueByName(Constants.SystemKey.GA);
-    }
-
-    @Nullable
-    @Override
-    public String getDataFilesPath() {
-        return systemMapper.getValueByName(Constants.SystemKey.DATA_FILES_PATH);
-    }
-
-    @Nullable
-    @Override
-    public String getDeleteTempFile() {
-        return systemMapper.getValueByName(Constants.SystemKey.DELETE_TEMP_FILE);
-    }
-
-    @Nullable
-    @Override
-    public String getWorkingPath() {
-        return systemMapper.getValueByName(Constants.SystemKey.WORKING_PATH);
     }
 
     @Nullable
@@ -89,6 +74,50 @@ public class SystemServiceImpl implements SystemService {
     @Override
     public void setIndex(@Nullable String index) {
         systemMapper.updateValueByName(Constants.SystemKey.PAGE_INDEX, index);
+    }
+
+    @Override
+    public Path getUploadDirectory() {
+        String path = systemMapper.getValueByName(Constants.SystemKey.UPLOAD_PATH);
+        return Paths.get(Objects.requireNonNull(path, "upload directory absent"));
+    }
+
+    @Override
+    public boolean isDeleteTempFile() {
+        return Boolean.parseBoolean(systemMapper.getValueByName(Constants.SystemKey.DELETE_TEMP_FILE));
+    }
+
+    @Override
+    public Path getDataDirectory(long problemId) {
+        String path = systemMapper.getValueByName(Constants.SystemKey.DATA_FILES_PATH);
+        return Paths.get(Objects.requireNonNull(path, "data directory absent"), String.valueOf(problemId));
+    }
+
+    @Override
+    public Path getWorkDirectory(long submissionId) {
+        String path = systemMapper.getValueByName(Constants.SystemKey.WORKING_PATH);
+        return Paths.get(Objects.requireNonNull(path, "working path absent"), String.valueOf(submissionId));
+    }
+
+    @SpecialCall("fragment/notice")
+    @Override
+    public SystemInfoForm getSystemInfo() {
+        return systemInfo;
+    }
+
+    @Override
+    public void setSystemInfo(SystemInfoForm systemInfoForm) {
+        systemInfo = systemInfoForm;
+    }
+
+    @Override
+    public Path getSpecialJudgeExecutable(long problemId) {
+        return getDataDirectory(problemId).resolve(VALIDATE_FILE_NAME);
+    }
+
+    @Override
+    public boolean isSpecialJudge(long problemId) {
+        return Files.isExecutable(getSpecialJudgeExecutable(problemId));
     }
 
 }

@@ -1,7 +1,7 @@
 package cn.edu.zjnu.acm.judge.controller;
 
 import cn.edu.zjnu.acm.judge.Application;
-import cn.edu.zjnu.acm.judge.config.JudgeConfiguration;
+import cn.edu.zjnu.acm.judge.service.SystemService;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,7 +33,7 @@ public class CKFinderControllerTest {
     @Autowired
     private MockMvc mvc;
     @Autowired
-    private JudgeConfiguration judgeConfiguration;
+    private SystemService systemService;
 
     /**
      * Test of ckfinder method, of class CKFinderController.
@@ -43,7 +43,7 @@ public class CKFinderControllerTest {
     @Test
     public void testCkfinder() throws Exception {
         log.info("ckfinder");
-        Path dir = Files.createDirectories(judgeConfiguration.getUploadDirectory());
+        Path dir = Files.createDirectories(systemService.getUploadDirectory());
         String pathName = "test.jpg";
         Path path = dir.resolve(pathName);
         byte[] content = "test content".getBytes(StandardCharsets.UTF_8);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 ZJNU ACM.
+ * Copyright 2017-2019 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,11 @@
  */
 package cn.edu.zjnu.acm.judge.controller.api;
 
-import cn.edu.zjnu.acm.judge.config.JudgeConfiguration;
 import cn.edu.zjnu.acm.judge.data.dto.ValueHolder;
 import cn.edu.zjnu.acm.judge.data.form.SystemInfoForm;
 import cn.edu.zjnu.acm.judge.mapper.UserProblemMapper;
 import cn.edu.zjnu.acm.judge.service.ContestOnlyService;
+import cn.edu.zjnu.acm.judge.service.SystemService;
 import java.util.concurrent.CompletableFuture;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -46,7 +46,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class MiscController {
 
     private final UserProblemMapper userProblemMapper;
-    private final JudgeConfiguration judgeConfiguration;
+    private final SystemService systemService;
     private final ContestOnlyService contestOnlyService;
 
     @PostMapping("fix")
@@ -70,12 +70,12 @@ public class MiscController {
         } else {
             systemInfo.setPureText(true);
         }
-        judgeConfiguration.setSystemInfo(systemInfo);
+        systemService.setSystemInfo(systemInfo);
     }
 
     @GetMapping("systemInfo")
     public SystemInfoForm systemInfo() {
-        SystemInfoForm systemInfo = judgeConfiguration.getSystemInfo();
+        SystemInfoForm systemInfo = systemService.getSystemInfo();
         if (systemInfo == null) {
             systemInfo = new SystemInfoForm();
             systemInfo.setPureText(true);

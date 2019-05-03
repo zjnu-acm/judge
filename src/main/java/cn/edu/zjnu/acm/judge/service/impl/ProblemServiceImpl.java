@@ -15,7 +15,6 @@
  */
 package cn.edu.zjnu.acm.judge.service.impl;
 
-import cn.edu.zjnu.acm.judge.config.JudgeConfiguration;
 import cn.edu.zjnu.acm.judge.data.form.ProblemForm;
 import cn.edu.zjnu.acm.judge.domain.DomainLocale;
 import cn.edu.zjnu.acm.judge.domain.Problem;
@@ -26,6 +25,7 @@ import cn.edu.zjnu.acm.judge.mapper.UserProblemMapper;
 import cn.edu.zjnu.acm.judge.service.ContestService;
 import cn.edu.zjnu.acm.judge.service.LocaleService;
 import cn.edu.zjnu.acm.judge.service.ProblemService;
+import cn.edu.zjnu.acm.judge.service.SystemService;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -51,7 +51,7 @@ public class ProblemServiceImpl implements ProblemService {
     private final ProblemMapper problemMapper;
     private final LocaleService localeService;
     private final ContestService contestService;
-    private final JudgeConfiguration judgeConfiguration;
+    private final SystemService systemService;
     private final UserProblemMapper userProblemMapper;
 
     @Override
@@ -145,7 +145,7 @@ public class ProblemServiceImpl implements ProblemService {
 
     @Override
     public Path getDataDirectory(long id) {
-        return judgeConfiguration.getDataDirectory(id);
+        return systemService.getDataDirectory(id);
     }
 
     @Transactional
