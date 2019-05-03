@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 ZJNU ACM.
+ * Copyright 2017-2019 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,6 @@ import javax.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationInitializer;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -47,21 +45,18 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Nullable
-    @Cacheable(value = Constants.Cache.SYSTEM, key = "'admin-mail'")
     @Override
     public String getAdminMail() {
         return systemMapper.getValueByName(Constants.SystemKey.ADMIN_MAIL);
     }
 
     @Nullable
-    @Cacheable(value = Constants.Cache.SYSTEM, key = "'ga'")
     @Override
     public String getGa() {
         return systemMapper.getValueByName(Constants.SystemKey.GA);
     }
 
     @Nullable
-    @Cacheable(value = Constants.Cache.SYSTEM, key = "'data-path'")
     @Override
     public String getDataFilesPath() {
         return systemMapper.getValueByName(Constants.SystemKey.DATA_FILES_PATH);
@@ -86,13 +81,11 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Nullable
-    @Cacheable(value = Constants.Cache.SYSTEM, key = "'page-index'")
     @Override
     public String getIndex() {
         return systemMapper.getValueByName(Constants.SystemKey.PAGE_INDEX);
     }
 
-    @CacheEvict(value = Constants.Cache.SYSTEM, key = "'page-index'")
     @Override
     public void setIndex(@Nullable String index) {
         systemMapper.updateValueByName(Constants.SystemKey.PAGE_INDEX, index);

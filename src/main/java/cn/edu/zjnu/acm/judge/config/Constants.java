@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 ZJNU ACM.
+ * Copyright 2017-2019 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,10 +24,6 @@ public interface Constants {
 
     interface Cache {
 
-        String LANGUAGE = "languages";
-        String LOCALE = "locales";
-        String MAIL = "mails";
-        String SYSTEM = "system";
         String CONTEST_ONLY = "contest-only";
 
     }

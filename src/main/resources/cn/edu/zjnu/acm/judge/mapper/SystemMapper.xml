@@ -3,6 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.github.io/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.zjnu.acm.judge.mapper.SystemMapper">
+    <cache size="32" flushInterval="300000"/>
     <select id="getValueByName" resultType="string">
         select value from `system` where name=#{name}
     </select>

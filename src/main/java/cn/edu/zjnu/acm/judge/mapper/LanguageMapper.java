@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 ZJNU ACM.
+ * Copyright 2016-2019 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,11 @@
  */
 package cn.edu.zjnu.acm.judge.mapper;
 
-import cn.edu.zjnu.acm.judge.config.Constants;
 import cn.edu.zjnu.acm.judge.domain.Language;
 import java.util.List;
 import javax.annotation.Nullable;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 
 /**
  *
@@ -31,26 +28,19 @@ import org.springframework.cache.annotation.Cacheable;
 @Mapper
 public interface LanguageMapper {
 
-    @CacheEvict(value = Constants.Cache.LANGUAGE, allEntries = true)
     long save(Language language);
 
-    @CacheEvict(value = Constants.Cache.LANGUAGE, allEntries = true)
     long delete(Language language);
 
-    @CacheEvict(value = Constants.Cache.LANGUAGE, allEntries = true)
     long deleteById(@Param("id") long id);
 
-    @CacheEvict(value = Constants.Cache.LANGUAGE, allEntries = true)
     long disable(@Param("id") long id);
 
-    @Cacheable(Constants.Cache.LANGUAGE)
     List<Language> findAll();
 
-    @Cacheable(Constants.Cache.LANGUAGE)
     @Nullable
     Language findOne(@Param("id")long id);
 
-    @CacheEvict(value = Constants.Cache.LANGUAGE, allEntries = true)
     long update(long id, Language language);
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 ZJNU ACM.
+ * Copyright 2017-2019 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,11 @@
  */
 package cn.edu.zjnu.acm.judge.mapper;
 
-import cn.edu.zjnu.acm.judge.config.Constants;
 import cn.edu.zjnu.acm.judge.domain.DomainLocale;
 import java.util.List;
 import javax.annotation.Nullable;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.cache.annotation.CacheEvict;
 
 /**
  *
@@ -32,7 +30,6 @@ public interface LocaleMapper {
 
     List<DomainLocale> findAll();
 
-    @CacheEvict(value = Constants.Cache.LOCALE, allEntries = true)
     int save(DomainLocale locale);
 
     @Nullable

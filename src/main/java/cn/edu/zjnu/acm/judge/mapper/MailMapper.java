@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 ZJNU ACM.
+ * Copyright 2016-2019 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,12 @@
  */
 package cn.edu.zjnu.acm.judge.mapper;
 
-import cn.edu.zjnu.acm.judge.config.Constants;
 import cn.edu.zjnu.acm.judge.data.dto.MailInfo;
 import cn.edu.zjnu.acm.judge.domain.Mail;
 import java.util.List;
 import javax.annotation.Nullable;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 
 /**
  *
@@ -40,19 +37,15 @@ public interface MailMapper {
             @Param("start") long start,
             @Param("size") int size);
 
-    @CacheEvict(value = Constants.Cache.MAIL, allEntries = true)
     long readed(@Param("id") long id);
 
-    @CacheEvict(value = Constants.Cache.MAIL, allEntries = true)
     long delete(long id);
 
-    @CacheEvict(value = Constants.Cache.MAIL, allEntries = true)
     long save(Mail mail);
 
-    @Cacheable(Constants.Cache.MAIL)
+    @Nullable
     MailInfo getMailInfo(@Param("user") String user);
 
-    @CacheEvict(value = Constants.Cache.MAIL, allEntries = true)
     long setReply(@Param("id") long id);
 
 }

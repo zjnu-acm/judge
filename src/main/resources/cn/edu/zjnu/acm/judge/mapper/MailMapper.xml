@@ -12,6 +12,8 @@
         <result property="content" column="content"/>
         <result property="newMail" column="new_mail"/>
     </resultMap>
+    <!-- default size 1024 -->
+    <cache/>
     <resultMap id="mailInfoResultMap" type="cn.edu.zjnu.acm.judge.data.dto.MailInfo">
         <result property="total" column="total"/>
         <result property="newMail" column="new_mail"/>

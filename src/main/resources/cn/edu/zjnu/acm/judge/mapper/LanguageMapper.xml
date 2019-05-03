@@ -14,6 +14,7 @@
         <result property="extMemory" column="ext_memory"/>
         <result property="description" column="description"/>
     </resultMap>
+    <cache size="16" flushInterval="180000"/>
     <sql id="columns">
         id,
         name,

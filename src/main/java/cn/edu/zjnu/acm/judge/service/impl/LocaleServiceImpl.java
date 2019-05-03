@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 ZJNU ACM.
+ * Copyright 2017-2019 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 package cn.edu.zjnu.acm.judge.service.impl;
 
-import cn.edu.zjnu.acm.judge.config.Constants;
 import cn.edu.zjnu.acm.judge.domain.DomainLocale;
 import cn.edu.zjnu.acm.judge.mapper.LocaleMapper;
 import cn.edu.zjnu.acm.judge.service.LocaleService;
@@ -31,7 +30,6 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -89,14 +87,12 @@ public class LocaleServiceImpl implements LocaleService {
     }
 
     @Override
-    @Cacheable(Constants.Cache.LOCALE)
     public List<DomainLocale> findAll() {
         return localeMapper.findAll();
     }
 
     @Nullable
     @Override
-    @Cacheable(Constants.Cache.LOCALE)
     public DomainLocale findOne(String id) {
         if (Locale.ROOT.toLanguageTag().equalsIgnoreCase(id)) {
             return null;

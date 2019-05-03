@@ -10,6 +10,7 @@
         <result property="createdTime" column="created_time"/>
         <result property="modifiedTime" column="modified_time"/>
     </resultMap>
+    <cache flushInterval="120000" size="32"/>
     <select id="findAll" resultMap="baseResultMap">
         select id,name from locale where not disabled
     </select>
