@@ -99,7 +99,6 @@ public class SystemServiceImpl implements SystemService {
         return Paths.get(Objects.requireNonNull(path, "working path absent"), String.valueOf(submissionId));
     }
 
-    @SpecialCall("fragment/notice")
     @Override
     public SystemInfoForm getSystemInfo() {
         return systemInfo;
