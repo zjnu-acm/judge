@@ -22,8 +22,8 @@ import cn.edu.zjnu.acm.judge.data.form.UserPasswordForm;
 import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.service.AccountService;
 import cn.edu.zjnu.acm.judge.service.ResetPasswordService;
+import cn.edu.zjnu.acm.judge.util.excel.ExcelType;
 import cn.edu.zjnu.acm.judge.util.excel.ExcelUtil;
-import cn.edu.zjnu.acm.judge.util.excel.Type;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -88,7 +88,7 @@ public class AccountController {
             HttpServletResponse response) throws IOException {
         Locale locale = requestLocale.orElse(Locale.ROOT);
         List<Account> content = accountService.findAllForExport(form, pageable);
-        ExcelUtil.toResponse(Account.class, content, locale, Type.XLSX,
+        ExcelUtil.toResponse(Account.class, content, locale, ExcelType.XLSX,
                 accountService.getExcelName(locale), response);
     }
 
@@ -97,7 +97,7 @@ public class AccountController {
             HttpServletResponse response) throws IOException {
         Locale locale = requestLocale.orElse(Locale.ROOT);
         List<Account> content = accountService.findAllForExport(form, pageable);
-        ExcelUtil.toResponse(Account.class, content, locale, Type.XLS,
+        ExcelUtil.toResponse(Account.class, content, locale, ExcelType.XLS,
                 accountService.getExcelName(locale), response);
     }
 

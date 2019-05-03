@@ -67,7 +67,7 @@ import org.springframework.util.StringUtils;
 public class ExcelUtil {
 
     public static <T> void toResponse(Class<T> type, Collection<T> content,
-            @Nonnull Locale locale, Type resultType, String name,
+            @Nonnull Locale locale, ExcelType resultType, String name,
             HttpServletResponse response) throws IOException {
         Objects.requireNonNull(type, "type");
         Objects.requireNonNull(locale, "locale");
