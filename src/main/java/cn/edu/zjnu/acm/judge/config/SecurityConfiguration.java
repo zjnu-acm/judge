@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 ZJNU ACM.
+ * Copyright 2016-2019 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,9 @@
  */
 package cn.edu.zjnu.acm.judge.config;
 
+import cn.edu.zjnu.acm.judge.util.URLEncoder;
 import com.github.zhanhb.ckfinder.connector.autoconfigure.CKFinderProperties;
 import java.io.IOException;
-import java.net.URLEncoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -139,7 +139,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         public void sendRedirect(HttpServletRequest request, HttpServletResponse response, String url) throws IOException {
             String url1 = request.getParameter("url");
             if (StringUtils.hasText(url1)) {
-                redirectStrategy.sendRedirect(request, response, url + (url.contains("?") ? '&' : '?') + "url=" + URLEncoder.encode(url1, "UTF-8"));
+                redirectStrategy.sendRedirect(request, response, url + (url.contains("?") ? '&' : '?') + "url=" + URLEncoder.QUERY.encode(url1));
             } else {
                 redirectStrategy.sendRedirect(request, response, url);
             }

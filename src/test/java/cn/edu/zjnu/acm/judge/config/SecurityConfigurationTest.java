@@ -75,7 +75,7 @@ public class SecurityConfigurationTest {
     public void testLoginError() throws Exception {
         log.info("login");
         String url = "/test?k=1&v=2";
-        String redirectedUrl = "/login?error&url=%2Ftest%3Fk%3D1%26v%3D2";
+        String redirectedUrl = "/login?error&url=/test?k%3D1%26v%3D2";
         User user = mockDataService.user();
         MvcResult result = mvc.perform(post("/login")
                 .param("user_id1", user.getId())

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 ZJNU ACM.
+ * Copyright 2016-2019 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +18,8 @@ package cn.edu.zjnu.acm.judge.controller;
 import cn.edu.zjnu.acm.judge.config.JudgeHandlerInterceptor;
 import cn.edu.zjnu.acm.judge.service.ContestOnlyService;
 import cn.edu.zjnu.acm.judge.service.SystemService;
+import cn.edu.zjnu.acm.judge.util.URLEncoder;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -71,7 +71,7 @@ public class MainController {
     @GetMapping(value = "/unauthorized", produces = {TEXT_HTML_VALUE, ALL_VALUE})
     public String unauthorizedHtml(HttpServletRequest request) throws UnsupportedEncodingException {
         String url = (String) request.getAttribute(JudgeHandlerInterceptor.BACK_URL_ATTRIBUTE_NAME);
-        return StringUtils.hasText(url) ? "redirect:/login?url=" + URLEncoder.encode(url, "UTF-8") : "redirect:/login";
+        return StringUtils.hasText(url) ? "redirect:/login?url=" + URLEncoder.QUERY.encode(url) : "redirect:/login";
     }
 
     @GetMapping(value = "/unauthorized", produces = APPLICATION_JSON_VALUE)
