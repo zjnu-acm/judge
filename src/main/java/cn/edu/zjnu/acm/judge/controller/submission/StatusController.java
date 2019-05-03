@@ -11,10 +11,10 @@ import cn.edu.zjnu.acm.judge.service.SubmissionService;
 import cn.edu.zjnu.acm.judge.service.impl.UserDetailsServiceImpl;
 import cn.edu.zjnu.acm.judge.util.ResultType;
 import cn.edu.zjnu.acm.judge.util.URIBuilder;
-import java.sql.Timestamp;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +36,8 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 @Controller
 @RequiredArgsConstructor
 public class StatusController {
+
+    private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     private final SubmissionMapper submissionMapper;
     private final ContestMapper contestMapper;
@@ -129,7 +131,6 @@ public class StatusController {
         boolean admin = UserDetailsServiceImpl.isAdminLoginned(request);
         boolean sourceBrowser = UserDetailsServiceImpl.isSourceBrowser(request);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         for (Submission submission : submissions) {
             long id = submission.getId();
             String user_id1 = submission.getUser();
@@ -193,7 +194,7 @@ public class StatusController {
             } else {
                 sb.append("<td>&nbsp;</td>");
             }
-            sb.append("<td>").append(sdf.format(Timestamp.from(inDate))).append("</td></tr>");
+            sb.append("<td>").append(dtf.format(inDate.atZone(ZoneId.systemDefault()).toLocalDateTime())).append("</td></tr>");
         }
         query = request.getContextPath() + query;
         sb.append("</table><p align=center>[<a href=\"").append(query).append("\">Top</a>]&nbsp;&nbsp;");
