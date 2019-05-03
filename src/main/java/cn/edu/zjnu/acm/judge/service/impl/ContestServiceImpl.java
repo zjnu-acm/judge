@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 ZJNU ACM.
+ * Copyright 2016-2019 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -176,6 +176,7 @@ public class ContestServiceImpl implements ContestService {
     @Transactional
     @Override
     public void updateSelective(long id, Contest contest) {
+        contest.setCreatedTime(null);
         contest.setModifiedTime(Instant.now());
         long result = contestMapper.updateSelective(id, contest);
         if (result == 0) {

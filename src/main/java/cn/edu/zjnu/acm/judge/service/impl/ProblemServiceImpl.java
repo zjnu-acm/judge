@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 ZJNU ACM.
+ * Copyright 2017-2019 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,6 +62,7 @@ public class ProblemServiceImpl implements ProblemService {
     }
 
     @Override
+    @Transactional
     public void updateSelective(long problemId, Problem p, String requestLocale) {
         Problem problem = problemMapper.findOne(problemId, requestLocale);
         if (problem == null) {
@@ -71,6 +72,7 @@ public class ProblemServiceImpl implements ProblemService {
         if (locale != null) {
             problemMapper.touchI18n(problemId, locale);
         }
+        p.setCreatedTime(null);
         p.setModifiedTime(Instant.now());
         problemMapper.updateSelective(problemId, p, locale);
     }

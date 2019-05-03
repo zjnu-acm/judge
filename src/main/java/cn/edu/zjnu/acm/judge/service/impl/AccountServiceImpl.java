@@ -111,7 +111,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void updateSelective(String userId, User user) {
-        if (userMapper.updateSelective(userId, user.toBuilder().modifiedTime(Instant.now())
+        if (userMapper.updateSelective(userId, user.toBuilder()
+                .createdTime(null)
+                .modifiedTime(Instant.now())
                 .password(Optional.ofNullable(user.getPassword()).map(passwordEncoder::encode).orElse(null))
                 .build()) == 0) {
             throw new BusinessException(BusinessCode.USER_NOT_FOUND, userId);
