@@ -41,11 +41,4 @@ public interface Constants {
 
     }
 
-    interface MineTypes {
-
-        String XLS = "application/vnd.ms-excel";
-        String XLSX = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-
-    }
-
 }

@@ -15,7 +15,6 @@
  */
 package cn.edu.zjnu.acm.judge.controller.api;
 
-import cn.edu.zjnu.acm.judge.config.Constants;
 import cn.edu.zjnu.acm.judge.data.excel.Account;
 import cn.edu.zjnu.acm.judge.data.form.AccountForm;
 import cn.edu.zjnu.acm.judge.data.form.AccountImportForm;
@@ -49,6 +48,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import static cn.edu.zjnu.acm.judge.util.CustomMediaType.XLSX_VALUE;
+import static cn.edu.zjnu.acm.judge.util.CustomMediaType.XLS_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
@@ -82,7 +83,7 @@ public class AccountController {
         accountService.updatePassword(userId, user.getPassword());
     }
 
-    @GetMapping(produces = Constants.MineTypes.XLSX)
+    @GetMapping(produces = XLSX_VALUE)
     public void findAllXlsx(AccountForm form, Pageable pageable, Optional<Locale> requestLocale,
             HttpServletResponse response) throws IOException {
         Locale locale = requestLocale.orElse(Locale.ROOT);
@@ -91,7 +92,7 @@ public class AccountController {
                 accountService.getExcelName(locale), response);
     }
 
-    @GetMapping(produces = Constants.MineTypes.XLS)
+    @GetMapping(produces = XLS_VALUE)
     public void findAllXls(AccountForm form, Pageable pageable, Optional<Locale> requestLocale,
             HttpServletResponse response) throws IOException {
         Locale locale = requestLocale.orElse(Locale.ROOT);
