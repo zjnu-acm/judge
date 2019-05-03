@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 ZJNU ACM.
+ * Copyright 2017-2019 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,11 +39,11 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
@@ -85,7 +85,8 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<Account> parseExcel(InputStream inputStream, @Nullable Locale locale) {
+    public List<Account> parseExcel(InputStream inputStream, @Nonnull Locale locale) {
+        Objects.requireNonNull(locale, "locale");
         List<Account> accounts = ExcelUtil.parse(inputStream, Account.class, locale).stream()
                 .filter(account -> StringUtils.hasText(account.getId()))
                 .collect(Collectors.toList());
@@ -219,7 +220,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public String getExcelName(Locale locale) {
+    public String getExcelName(@Nonnull Locale locale) {
         String name = messageSource.getMessage("onlinejudge.export.excel.name", new Object[0], locale);
         return name + " - " + dtf.format(LocalDateTime.now());
     }

@@ -23,7 +23,6 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Locale;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -49,7 +48,7 @@ public interface AccountService {
 
     void importUsers(AccountImportForm form);
 
-    List<Account> parseExcel(InputStream inputStream, @Nullable Locale locale);
+    List<Account> parseExcel(InputStream inputStream, @Nonnull Locale locale);
 
     void save(@Nonnull User user);
 
@@ -57,6 +56,6 @@ public interface AccountService {
 
     void updateSelective(String userId, User user);
 
-    String getExcelName(@Nullable Locale locale);
+    String getExcelName(@Nonnull Locale locale);
 
 }

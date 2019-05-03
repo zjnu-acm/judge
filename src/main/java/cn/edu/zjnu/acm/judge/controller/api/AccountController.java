@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 ZJNU ACM.
+ * Copyright 2017-2019 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -82,23 +83,28 @@ public class AccountController {
     }
 
     @GetMapping(produces = Constants.MineTypes.XLSX)
-    public void findAllXlsx(AccountForm form, Pageable pageable, Locale locale,
+    public void findAllXlsx(AccountForm form, Pageable pageable, Optional<Locale> requestLocale,
             HttpServletResponse response) throws IOException {
+        Locale locale = requestLocale.orElse(Locale.ROOT);
         List<Account> content = accountService.findAllForExport(form, pageable);
-        ExcelUtil.toResponse(Account.class, content, locale, Type.XLSX, accountService.getExcelName(locale), response);
+        ExcelUtil.toResponse(Account.class, content, locale, Type.XLSX,
+                accountService.getExcelName(locale), response);
     }
 
     @GetMapping(produces = Constants.MineTypes.XLS)
-    public void findAllXls(AccountForm form, Pageable pageable, Locale locale,
+    public void findAllXls(AccountForm form, Pageable pageable, Optional<Locale> requestLocale,
             HttpServletResponse response) throws IOException {
+        Locale locale = requestLocale.orElse(Locale.ROOT);
         List<Account> content = accountService.findAllForExport(form, pageable);
-        ExcelUtil.toResponse(Account.class, content, locale, Type.XLS, accountService.getExcelName(locale), response);
+        ExcelUtil.toResponse(Account.class, content, locale, Type.XLS,
+                accountService.getExcelName(locale), response);
     }
 
     @PostMapping(consumes = MULTIPART_FORM_DATA_VALUE)
-    public List<Account> parseExcel(@RequestParam("file") MultipartFile multipartFile, Locale locale) throws IOException {
+    public List<Account> parseExcel(@RequestParam("file") MultipartFile multipartFile,
+            Optional<Locale> locale) throws IOException {
         try (InputStream inputStream = multipartFile.getInputStream()) {
-            return accountService.parseExcel(inputStream, locale);
+            return accountService.parseExcel(inputStream, locale.orElse(Locale.ROOT));
         }
     }
 

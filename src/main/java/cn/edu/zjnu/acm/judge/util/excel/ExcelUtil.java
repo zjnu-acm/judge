@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 ZJNU ACM.
+ * Copyright 2017-2019 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,9 +40,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
@@ -66,8 +67,10 @@ import org.springframework.util.StringUtils;
 public class ExcelUtil {
 
     public static <T> void toResponse(Class<T> type, Collection<T> content,
-            Locale locale, Type resultType, String name,
+            @Nonnull Locale locale, Type resultType, String name,
             HttpServletResponse response) throws IOException {
+        Objects.requireNonNull(type, "type");
+        Objects.requireNonNull(locale, "locale");
         try (Workbook workbook = resultType.createWorkBook()) {
             buildExcelDocument(type, content.stream(), locale, workbook);
             if (StringUtils.hasText(name)) {
@@ -83,7 +86,7 @@ public class ExcelUtil {
         }
     }
 
-    private static <T> void buildExcelDocument(Class<T> elementType, Stream<T> content, Locale locale, Workbook workbook) {
+    private static <T> void buildExcelDocument(Class<T> elementType, Stream<T> content, @Nonnull Locale locale, Workbook workbook) {
         MetaInfo meta = MetaInfo.forType(elementType, locale);
         Sheet sheet = workbook.createSheet(elementType.getSimpleName());
         create(meta.getHeaderAsStream(), sheet.createRow(0));
@@ -119,7 +122,8 @@ public class ExcelUtil {
         });
     }
 
-    public static <T> List<T> parse(InputStream inputStream, Class<T> type, @Nullable Locale locale) {
+    public static <T> List<T> parse(InputStream inputStream, Class<T> type, @Nonnull Locale locale) {
+        Objects.requireNonNull(locale, "locale");
         boolean support = inputStream.markSupported();
         InputStream is = support ? inputStream : new BufferedInputStream(inputStream);
         try (Workbook workbook = WorkbookFactory.create(is)) {
@@ -130,7 +134,7 @@ public class ExcelUtil {
         }
     }
 
-    private static <T> List<T> parse(Workbook workbook, FormulaEvaluator evaluator, Class<T> type, @Nullable Locale locale) {
+    private static <T> List<T> parse(Workbook workbook, FormulaEvaluator evaluator, Class<T> type, Locale locale) {
         MetaInfo metaInfo = MetaInfo.forType(type, locale);
         Sheet sheet = workbook.getSheetAt(workbook.getActiveSheetIndex());
         Iterator<Row> rows = sheet.rowIterator();

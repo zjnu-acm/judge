@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 ZJNU ACM.
+ * Copyright 2017-2019 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,11 +23,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Stream;
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import lombok.Value;
 
 /**
@@ -38,8 +39,9 @@ class MetaInfo {
 
     private static final ConcurrentMap<Locale, ConcurrentMap<Class<?>, MetaInfo>> MAP = new ConcurrentHashMap<>(1);
 
-    static <T> MetaInfo forType(Class<T> elementType, @Nullable Locale paramLocale) {
-        Locale locale = paramLocale == null ? Locale.ROOT : paramLocale;
+    static <T> MetaInfo forType(Class<T> elementType, @Nonnull Locale locale) {
+        Objects.requireNonNull(elementType, "elementType");
+        Objects.requireNonNull(locale, "locale");
         ConcurrentMap<Class<?>, MetaInfo> metainfos = MAP.computeIfAbsent(locale, __ -> new ConcurrentHashMap<>(1));
         return metainfos.computeIfAbsent(elementType, type -> {
             ResourceBundle bundle = null;
