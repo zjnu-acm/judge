@@ -30,7 +30,6 @@ public class RegistrationBeanConfiguration {
     @Bean
     public FilterRegistrationBean<ShallowEtagHeaderFilter> shallowEtagHeaderFilter() {
         ShallowEtagHeaderFilter filter = new ShallowEtagHeaderFilter();
-        filter.setWriteWeakETag(true);
         FilterRegistrationBean<ShallowEtagHeaderFilter> bean = new FilterRegistrationBean<>(filter);
         bean.addUrlPatterns("/api/*", "/admin/*");
         return bean;

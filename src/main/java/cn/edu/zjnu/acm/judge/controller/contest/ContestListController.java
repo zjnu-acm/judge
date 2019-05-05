@@ -34,7 +34,7 @@ public class ContestListController {
     }
 
     @GetMapping("/currentcontests")
-    protected String currentContests(Model model, RedirectAttributes redirectAttributes) {
+    public String currentContests(Model model, RedirectAttributes redirectAttributes) {
         return execute(model, "Current Contests", "onlinejudge.contest.nocurrent", redirectAttributes, ContestStatus.RUNNING);
     }
 

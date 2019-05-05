@@ -117,7 +117,7 @@ public class BBSController {
         return "bbs/postpage";
     }
 
-    @PostMapping("/post")
+    @PostMapping("post")
     @Secured("ROLE_USER")
     @Transactional
     public String post(@RequestParam(value = "problem_id", required = false) Long problemId,

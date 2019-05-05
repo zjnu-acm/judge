@@ -58,6 +58,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -87,10 +88,6 @@ public class MockGenerator {
             .build();
     private static final Class<?> MAIN_CLASS = Application.class;
     private static final Path OUTPUT_DIR = Paths.get("target/mock");
-
-    private static String f(String x) {
-        return Character.toUpperCase(x.charAt(0)) + x.substring(1);
-    }
 
     private static boolean accept(Class<?> key, List<?> list) {
         return key.getPackage().getName().startsWith(MAIN_CLASS.getPackage().getName()) && key.getEnclosingClass() == null && !list.isEmpty();
@@ -248,7 +245,7 @@ public class MockGenerator {
         out.println(" */");
         testClass.addImport(Test.class);
         out.println("@Test");
-        out.println("public void test" + f(method.getName()) + "() throws Exception {");
+        out.println("public void test" + StringUtils.capitalize(method.getName()) + "() throws Exception {");
         out.println("\tlog.info(\"" + method.getName() + "\");");
 
         List<String> variableDeclares = new ArrayList<>(4);

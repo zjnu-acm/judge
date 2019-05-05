@@ -19,7 +19,6 @@ import cn.edu.zjnu.acm.judge.config.Constants;
 import cn.edu.zjnu.acm.judge.data.form.SystemInfoForm;
 import cn.edu.zjnu.acm.judge.mapper.SystemMapper;
 import cn.edu.zjnu.acm.judge.service.SystemService;
-import cn.edu.zjnu.acm.judge.util.SpecialCall;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
