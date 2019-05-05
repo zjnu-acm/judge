@@ -22,7 +22,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.annotation.PostConstruct;
@@ -40,8 +39,8 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class JudgePoolServiceImpl implements JudgePoolService {
 
-    private ExecutorService executorService;
     private final JudgeService judgeService;
+    private ExecutorService executorService;
 
     @PostConstruct
     public void init() {
@@ -49,19 +48,10 @@ public class JudgePoolServiceImpl implements JudgePoolService {
         final AtomicInteger counter = new AtomicInteger();
         final ThreadFactory threadFactory = runnable -> new Thread(group, runnable, "judge thread " + counter.incrementAndGet());
         int nThreads = Runtime.getRuntime().availableProcessors();
-        executorService = new ThreadPoolExecutor(nThreads, nThreads,
+        executorService = new LogThreadPoolExecutor(nThreads, nThreads,
                 0L, TimeUnit.MILLISECONDS,
                 new LinkedBlockingQueue<>(),
-                threadFactory) {
-
-            @Override
-            protected void afterExecute(Runnable r, Throwable t) {
-                if (t != null) {
-                    log.error("{}", r, t);
-                }
-            }
-
-        };
+                threadFactory);
     }
 
     @PreDestroy
