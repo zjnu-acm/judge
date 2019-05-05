@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package a;
+package main;
 
 import com.google.common.base.Strings;
 import java.io.BufferedReader;
