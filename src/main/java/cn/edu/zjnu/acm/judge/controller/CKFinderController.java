@@ -18,10 +18,12 @@ package cn.edu.zjnu.acm.judge.controller;
 import cn.edu.zjnu.acm.judge.service.SystemService;
 import com.github.zhanhb.ckfinder.connector.api.BasePathBuilder;
 import com.github.zhanhb.ckfinder.connector.support.DefaultPathBuilder;
+import com.github.zhanhb.ckfinder.connector.utils.FileUtils;
 import com.github.zhanhb.ckfinder.download.ContentDisposition;
 import com.github.zhanhb.ckfinder.download.PathPartial;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.StringTokenizer;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -61,15 +63,15 @@ public class CKFinderController {
 
     private Path toPath(String path) {
         log.info(path);
-        try {
-            int indexOf = path.indexOf('?');
-            Path parent = systemService.getUploadDirectory();
-            Path imagePath = parent.getFileSystem().getPath(parent.toString(), indexOf > 0 ? path.substring(0, indexOf) : path).normalize();
-            if (!imagePath.startsWith(parent)) {
-                log.debug("absolute path parent='{}' path='{}'", parent, imagePath);
+        // ignore all dot directories, such as a/./a, a/../b, .git/info
+        StringTokenizer st = new StringTokenizer(path, "/\\");
+        while (st.hasMoreTokens()) {
+            if (st.nextToken().startsWith(".")) {
                 return null;
             }
-            return imagePath;
+        }
+        try {
+            return FileUtils.resolve(systemService.getUploadDirectory(), path);
         } catch (IllegalArgumentException ex) {
             return null;
         }
@@ -79,7 +81,8 @@ public class CKFinderController {
     @GetMapping("/support/ckfinder.action")
     public void legacySupport(HttpServletRequest request, HttpServletResponse response,
             @RequestParam("path") String path) throws IOException, ServletException {
-        viewer.service(request, response, toPath(path));
+        int indexOf = path.indexOf('?');
+        viewer.service(request, response, toPath(indexOf > 0 ? path.substring(0, indexOf) : path));
     }
 
     @GetMapping("/userfiles/{first}/**")
