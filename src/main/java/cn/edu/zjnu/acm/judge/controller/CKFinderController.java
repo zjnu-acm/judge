@@ -18,17 +18,25 @@ package cn.edu.zjnu.acm.judge.controller;
 import cn.edu.zjnu.acm.judge.service.SystemService;
 import com.github.zhanhb.ckfinder.connector.api.BasePathBuilder;
 import com.github.zhanhb.ckfinder.connector.support.DefaultPathBuilder;
-import com.github.zhanhb.download.spring.ToDownload;
+import com.github.zhanhb.ckfinder.download.ContentDisposition;
+import com.github.zhanhb.ckfinder.download.PathPartial;
+import java.io.IOException;
 import java.nio.file.Path;
-import javax.annotation.Nullable;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.HandlerMapping;
 
 @Slf4j
 @Controller
@@ -37,19 +45,21 @@ public class CKFinderController {
 
     private final SystemService systemService;
     private final ApplicationContext applicationContext;
+    private final AntPathMatcher matcher = new AntPathMatcher();
+    private final PathPartial viewer = PathPartial.builder()
+            .contentDisposition(ContentDisposition.inline())
+            .build();
+    private final PathPartial pathPartial = PathPartial.builder().build();
 
     @Bean
     public BasePathBuilder pathBuilder() {
-        String url = applicationContext.getBean(ServletContext.class).getContextPath().concat("/support/ckfinder.action?path=");
+        String url = applicationContext.getBean(ServletContext.class).getContextPath().concat("/userfiles/");
         Path path = systemService.getUploadDirectory();
         return DefaultPathBuilder.builder().baseUrl(url)
                 .basePath(path).build();
     }
 
-    @Nullable
-    @ToDownload
-    @GetMapping("/support/ckfinder")
-    public Path ckfinder(@RequestParam("path") String path) {
+    private Path toPath(String path) {
         log.info(path);
         try {
             int indexOf = path.indexOf('?');
@@ -63,6 +73,23 @@ public class CKFinderController {
         } catch (IllegalArgumentException ex) {
             return null;
         }
+    }
+
+    @Deprecated
+    @GetMapping("/support/ckfinder.action")
+    public void legacySupport(HttpServletRequest request, HttpServletResponse response,
+            @RequestParam("path") String path) throws IOException, ServletException {
+        viewer.service(request, response, toPath(path));
+    }
+
+    @GetMapping("/userfiles/{first}/**")
+    public void attachment(HttpServletRequest request, HttpServletResponse response,
+            @PathVariable("first") String first) throws IOException, ServletException {
+        final String uri = request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE).toString();
+        final String pattern = request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE).toString();
+        String rest = matcher.extractPathWithinPattern(pattern, uri);
+        String path = StringUtils.isEmpty(rest) ? first : first + "/" + rest;
+        pathPartial.service(request, response, toPath(path));
     }
 
 }

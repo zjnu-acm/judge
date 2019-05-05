@@ -21,7 +21,7 @@ ckfinder:
     file-rename: true
     file-delete: true
   thumbs.direct-access: true
-  check-double-extension: false
+  allow-double-extension: true
   check-size-after-scaling: true
   force-ascii: true
   secure-image-uploads: true
