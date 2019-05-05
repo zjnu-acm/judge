@@ -16,7 +16,6 @@
 package cn.edu.zjnu.acm.judge.service;
 
 import cn.edu.zjnu.acm.judge.domain.LoginLog;
-import com.google.common.annotations.VisibleForTesting;
 
 /**
  *
@@ -25,11 +24,5 @@ import com.google.common.annotations.VisibleForTesting;
 public interface LoginlogService {
 
     void save(LoginLog loginlog);
-
-    @VisibleForTesting
-    void destroy();
-
-    @VisibleForTesting
-    void await() throws InterruptedException;
 
 }

@@ -17,7 +17,9 @@ package cn.edu.zjnu.acm.judge.service;
 
 import cn.edu.zjnu.acm.judge.Application;
 import cn.edu.zjnu.acm.judge.domain.LoginLog;
+import cn.edu.zjnu.acm.judge.service.impl.LoginlogServiceImpl;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Test;
@@ -27,6 +29,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  *
@@ -44,8 +48,9 @@ public class LoginlogServiceTest {
 
     @After
     public void tearDown() throws InterruptedException {
-        loginlogService.destroy();
-        loginlogService.await();
+        LoginlogServiceImpl impl = (LoginlogServiceImpl) loginlogService;
+        impl.destroy();
+        assertTrue(impl.await(120, TimeUnit.SECONDS));
     }
 
     /**
