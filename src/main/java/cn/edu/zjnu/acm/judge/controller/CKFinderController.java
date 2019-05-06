@@ -15,23 +15,18 @@
  */
 package cn.edu.zjnu.acm.judge.controller;
 
-import cn.edu.zjnu.acm.judge.service.SystemService;
 import com.github.zhanhb.ckfinder.connector.api.BasePathBuilder;
-import com.github.zhanhb.ckfinder.connector.support.DefaultPathBuilder;
 import com.github.zhanhb.ckfinder.connector.utils.FileUtils;
 import com.github.zhanhb.ckfinder.download.ContentDisposition;
 import com.github.zhanhb.ckfinder.download.PathPartial;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.StringTokenizer;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
@@ -45,21 +40,13 @@ import org.springframework.web.servlet.HandlerMapping;
 @RequiredArgsConstructor
 public class CKFinderController {
 
-    private final SystemService systemService;
-    private final ApplicationContext applicationContext;
     private final AntPathMatcher matcher = new AntPathMatcher();
     private final PathPartial viewer = PathPartial.builder()
             .contentDisposition(ContentDisposition.inline())
             .build();
     private final PathPartial pathPartial = PathPartial.builder().build();
 
-    @Bean
-    public BasePathBuilder pathBuilder() {
-        String url = applicationContext.getBean(ServletContext.class).getContextPath().concat("/userfiles/");
-        Path path = systemService.getUploadDirectory();
-        return DefaultPathBuilder.builder().baseUrl(url)
-                .basePath(path).build();
-    }
+    private final BasePathBuilder basePathBuilder;
 
     private Path toPath(String path) {
         log.info(path);
@@ -71,7 +58,7 @@ public class CKFinderController {
             }
         }
         try {
-            return FileUtils.resolve(systemService.getUploadDirectory(), path);
+            return FileUtils.resolve(basePathBuilder.getBasePath(), path);
         } catch (IllegalArgumentException ex) {
             return null;
         }
