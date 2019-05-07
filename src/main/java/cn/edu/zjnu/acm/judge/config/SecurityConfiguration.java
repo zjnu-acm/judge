@@ -36,6 +36,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
@@ -126,9 +127,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     private AuthenticationFailureHandler failureHandler() {
-        final String defaultFailureUrl = "/login?error";
-        RedirectStrategy redirectStrategy = new FailureRedirectStrategy();
-        return (request, response, exception) -> redirectStrategy.sendRedirect(request, response, defaultFailureUrl);
+        SimpleUrlAuthenticationFailureHandler handler = new SimpleUrlAuthenticationFailureHandler();
+        handler.setAllowSessionCreation(false);
+        handler.setDefaultFailureUrl("/login?error");
+        handler.setRedirectStrategy(new FailureRedirectStrategy());
+        return handler;
     }
 
     private static class FailureRedirectStrategy implements RedirectStrategy {
