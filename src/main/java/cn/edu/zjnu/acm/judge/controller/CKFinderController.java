@@ -17,7 +17,7 @@ package cn.edu.zjnu.acm.judge.controller;
 
 import com.github.zhanhb.ckfinder.connector.api.BasePathBuilder;
 import com.github.zhanhb.ckfinder.connector.utils.FileUtils;
-import com.github.zhanhb.ckfinder.download.ContentDisposition;
+import com.github.zhanhb.ckfinder.download.ContentDispositionStrategy;
 import com.github.zhanhb.ckfinder.download.PathPartial;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -42,7 +42,7 @@ public class CKFinderController {
 
     private final AntPathMatcher matcher = new AntPathMatcher();
     private final PathPartial viewer = PathPartial.builder()
-            .contentDisposition(ContentDisposition.inline())
+            .contentDisposition(ContentDispositionStrategy.inline())
             .build();
     private final PathPartial pathPartial = PathPartial.builder().build();
 
