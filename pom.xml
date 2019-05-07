@@ -400,7 +400,7 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>ckeditor</artifactId>
-            <version>4.11.3</version>
+            <version>4.11.4</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
