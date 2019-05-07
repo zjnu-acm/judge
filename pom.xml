@@ -47,6 +47,7 @@
         <angular.version>1.2.32</angular.version>
         <argLine />
         <attoparser.version>2.0.5.RELEASE</attoparser.version>
+        <classmate.version>1.5.0</classmate.version>
         <delombok.directory>${project.build.directory}/delombok</delombok.directory>
         <findbugs-jsr305.version>3.0.2</findbugs-jsr305.version>
         <guava.version>27.1-jre</guava.version>
