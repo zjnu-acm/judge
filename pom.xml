@@ -52,6 +52,7 @@
         <guava.version>27.1-jre</guava.version>
         <hikaricp.version>3.3.1</hikaricp.version>
         <jacoco.propertyName>argLine</jacoco.propertyName>
+        <lombok.version>1.18.8</lombok.version>
         <mybatis-spring-boot.version>2.0.1</mybatis-spring-boot.version>
         <mybatis.version>3.5.1</mybatis.version>
         <objenesis.version>3.0.1</objenesis.version>
