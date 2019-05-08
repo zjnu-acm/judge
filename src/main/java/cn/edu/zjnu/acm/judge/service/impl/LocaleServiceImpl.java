@@ -93,7 +93,7 @@ public class LocaleServiceImpl implements LocaleService {
 
     @Nullable
     @Override
-    public DomainLocale findOne(String id) {
+    public DomainLocale findOne(@Nullable String id) {
         if (Locale.ROOT.toLanguageTag().equalsIgnoreCase(id)) {
             return null;
         }

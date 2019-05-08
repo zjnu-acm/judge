@@ -23,6 +23,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -54,7 +55,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return request.isUserInRole("SOURCE_BROWSER");
     }
 
-    public static boolean isUser(Authentication authentication, String userId) {
+    public static boolean isUser(@Nullable Authentication authentication, @Nullable String userId) {
         return userId != null && Optional.ofNullable(authentication).map(Principal::getName)
                 .map(userId::equals).orElse(false);
     }

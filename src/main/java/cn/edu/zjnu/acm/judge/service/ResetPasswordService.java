@@ -18,6 +18,7 @@ package cn.edu.zjnu.acm.judge.service;
 import cn.edu.zjnu.acm.judge.domain.User;
 import java.util.Map;
 import java.util.Optional;
+import javax.annotation.Nullable;
 
 /**
  *
@@ -25,7 +26,7 @@ import java.util.Optional;
  */
 public interface ResetPasswordService {
 
-    Optional<User> checkVcode(String userId, String vcode);
+    Optional<User> checkVcode(@Nullable String userId, @Nullable String vcode);
 
     Optional<String> get(String id);
 

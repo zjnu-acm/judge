@@ -44,6 +44,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
@@ -67,7 +68,7 @@ import org.springframework.util.StringUtils;
 public class ExcelUtil {
 
     public static <T> void toResponse(Class<T> type, Collection<T> content,
-            @Nonnull Locale locale, ExcelType resultType, String name,
+            @Nonnull Locale locale, ExcelType resultType, @Nullable String name,
             HttpServletResponse response) throws IOException {
         Objects.requireNonNull(type, "type");
         Objects.requireNonNull(locale, "locale");

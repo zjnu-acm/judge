@@ -98,6 +98,7 @@ public class SystemServiceImpl implements SystemService {
         return Paths.get(Objects.requireNonNull(path, "working path absent"), String.valueOf(submissionId));
     }
 
+    @Nullable
     @Override
     public SystemInfoForm getSystemInfo() {
         return systemInfo;

@@ -22,6 +22,7 @@ import cn.edu.zjnu.acm.judge.service.LoginlogService;
 import java.time.Instant;
 import java.util.Optional;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
@@ -38,6 +39,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
 @SuppressWarnings({"PublicInnerClass", "UtilityClassWithoutPrivateConstructor"})
 public class LoginListener {
 
+    @Nullable
     private static String saveEvent(LoginlogService loginlogService, Authentication authentication) {
         Object details = authentication.getDetails();
         String remoteAddress = "";

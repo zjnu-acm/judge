@@ -24,6 +24,7 @@ import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.service.ContestService;
+import cn.edu.zjnu.acm.judge.service.LocaleService;
 import cn.edu.zjnu.acm.judge.util.EnumUtils;
 import cn.edu.zjnu.acm.judge.util.SpecialCall;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -64,7 +65,7 @@ public class ContestServiceImpl implements ContestService {
 
     private final ContestMapper contestMapper;
     private final SubmissionMapper submissionMapper;
-    private final LocaleServiceImpl localeService;
+    private final LocaleService localeService;
     private final ObjectMapper objectMapper;
 
     @Override

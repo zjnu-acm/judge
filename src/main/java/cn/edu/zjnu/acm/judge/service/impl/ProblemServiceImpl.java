@@ -63,7 +63,7 @@ public class ProblemServiceImpl implements ProblemService {
 
     @Override
     @Transactional
-    public void updateSelective(long problemId, Problem p, String requestLocale) {
+    public void updateSelective(long problemId, Problem p, @Nullable String requestLocale) {
         Problem problem = problemMapper.findOne(problemId, requestLocale);
         if (problem == null) {
             throw new BusinessException(BusinessCode.PROBLEM_NOT_FOUND, problemId);

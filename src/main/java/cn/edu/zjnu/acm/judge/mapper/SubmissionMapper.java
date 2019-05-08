@@ -32,8 +32,6 @@ import org.springframework.data.domain.Pageable;
 @Mapper
 public interface SubmissionMapper {
 
-    String LIST_COLUMNS = " s.solution_id id,s.problem_id problem,s.user_id user,s.contest_id contest,s.time,s.memory,s.score,s.language,s.code_length sourceLength,s.in_date inDate ";
-
     @Nullable
     String findSourceById(@Param("id") long id);
 

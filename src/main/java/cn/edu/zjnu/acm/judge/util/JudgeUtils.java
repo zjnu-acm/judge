@@ -6,6 +6,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
+import javax.annotation.Nullable;
 import org.springframework.util.StringUtils;
 import org.unbescape.html.HtmlEscape;
 
@@ -49,7 +50,7 @@ public interface JudgeUtils {
         return buf.append(s).toString();
     }
 
-    static String getReplyString(String string) {
+    static String getReplyString(@Nullable String string) {
         if (!StringUtils.hasText(string)) {
             return "";
         }

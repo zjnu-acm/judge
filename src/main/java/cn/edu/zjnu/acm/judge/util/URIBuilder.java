@@ -19,6 +19,7 @@ import com.google.common.collect.Maps;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
+import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -53,7 +54,7 @@ public class URIBuilder {
         return this;
     }
 
-    public URIBuilder replacePath(String path) {
+    public URIBuilder replacePath(@Nullable String path) {
         this.path = Objects.toString(path, "");
         return this;
     }

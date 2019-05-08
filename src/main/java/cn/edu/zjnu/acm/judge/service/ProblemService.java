@@ -20,6 +20,7 @@ import cn.edu.zjnu.acm.judge.domain.Problem;
 import java.nio.file.Path;
 import java.util.Locale;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -31,10 +32,10 @@ public interface ProblemService {
 
     void delete(long id);
 
-    Page<Problem> findAll(ProblemForm problemForm, String userId, Pageable pageable, Locale locale);
+    Page<Problem> findAll(ProblemForm problemForm, @Nullable String userId, Pageable pageable, @Nullable Locale locale);
 
     @Nonnull
-    Problem findOne(long id, String lang);
+    Problem findOne(long id, @Nullable String lang);
 
     @Nonnull
     Problem findOne(long id);
@@ -47,6 +48,6 @@ public interface ProblemService {
     @Nonnull
     Problem save(@Nonnull Problem problem);
 
-    void updateSelective(long problemId, Problem p, String requestLocale);
+    void updateSelective(long problemId, Problem p, @Nullable String requestLocale);
 
 }

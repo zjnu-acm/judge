@@ -51,6 +51,7 @@ public interface SystemService {
 
     Path getWorkDirectory(long submissionId);
 
+    @Nullable
     @SpecialCall("fragment/notice")
     SystemInfoForm getSystemInfo();
 

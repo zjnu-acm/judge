@@ -1,5 +1,6 @@
 package com.github.zhanhb.jnc.platform.win32;
 
+import javax.annotation.Nullable;
 import jnc.foreign.ForeignProviders;
 import jnc.foreign.LibraryLoader;
 import jnc.foreign.Pointer;
@@ -68,7 +69,7 @@ public interface Kernel32 {
             @Out FILETIME lpUserTime);
 
     @uintptr_t
-    long /*HANDLE*/ CreateJobObjectW(@In SECURITY_ATTRIBUTES lpJobAttributes, Pointer lpName);
+    long /*HANDLE*/ CreateJobObjectW(@In @Nullable SECURITY_ATTRIBUTES lpJobAttributes, @Nullable Pointer lpName);
 
     @uint32_t
     int SetErrorMode(@uint32_t int uMode);
@@ -109,7 +110,7 @@ public interface Kernel32 {
             Pointer lpFileName,
             @uint32_t int dwDesiredAccess,
             @uint32_t int dwShareMode,
-            @In SECURITY_ATTRIBUTES lpSecurityAttributes,
+            @In @Nullable SECURITY_ATTRIBUTES lpSecurityAttributes,
             @uint32_t int dwCreationDisposition,
             @uint32_t int dwFlagsAndAttributes,
             @uintptr_t long /*HANDLE*/ hTemplateFile);

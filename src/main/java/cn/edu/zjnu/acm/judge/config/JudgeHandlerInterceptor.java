@@ -18,6 +18,7 @@ package cn.edu.zjnu.acm.judge.config;
 import cn.edu.zjnu.acm.judge.mapper.MailMapper;
 import java.util.Optional;
 import java.util.function.Function;
+import javax.annotation.Nullable;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +48,7 @@ public class JudgeHandlerInterceptor {
     @ModelAttribute
     public void addAttributes(HttpServletRequest request,
             @RequestParam(value = "url", required = false) String url,
-            Authentication authentication) {
+            @Nullable Authentication authentication) {
         if (Boolean.TRUE.equals(request.getAttribute(APPLIED_ONCE_KEY))) {
             return;
         }

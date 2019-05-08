@@ -1,5 +1,6 @@
 package com.github.zhanhb.jnc.platform.win32;
 
+import javax.annotation.Nullable;
 import jnc.foreign.LibraryLoader;
 import jnc.foreign.Pointer;
 import jnc.foreign.abi.Stdcall;
@@ -37,11 +38,11 @@ public interface Advapi32 {
             @uintptr_t long /*HANDLE*/ ExistingTokenHandle,
             @uint32_t int /*DWORD*/ Flags,
             @uint32_t int /*DWORD*/ DisableSidCount,
-            NativeArray<SID_AND_ATTRIBUTES> SidsToDisable,
+            @Nullable NativeArray<SID_AND_ATTRIBUTES> SidsToDisable,
             @uint32_t int /*DWORD*/ DeletePrivilegeCount,
-            NativeArray<LUID_AND_ATTRIBUTES> PrivilegesToDelete,
+            @Nullable NativeArray<LUID_AND_ATTRIBUTES> PrivilegesToDelete,
             @uint32_t int /*DWORD*/ RestrictedSidCount,
-            NativeArray<SID_AND_ATTRIBUTES> SidsToRestrict,
+            @Nullable NativeArray<SID_AND_ATTRIBUTES> SidsToRestrict,
             AddressByReference /* PHANDLE */ NewTokenHandle
     );
 
@@ -68,12 +69,12 @@ public interface Advapi32 {
             @uintptr_t long /*HANDLE*/ hToken,
             Pointer lpApplicationName,
             Pointer lpCommandLine,
-            @In SECURITY_ATTRIBUTES lpProcessAttributes,
-            @In SECURITY_ATTRIBUTES lpThreadAttributes,
+            @In @Nullable SECURITY_ATTRIBUTES lpProcessAttributes,
+            @In @Nullable SECURITY_ATTRIBUTES lpThreadAttributes,
             @uint32_t boolean bInheritHandles,
             @uint32_t int /*DWORD*/ dwCreationFlags,
-            Pointer lpEnvironment,
-            Pointer lpCurrentDirectory,
+            @Nullable Pointer lpEnvironment,
+            @Nullable Pointer lpCurrentDirectory,
             @In STARTUPINFO lpStartupInfo,
             @Out PROCESS_INFORMATION lpProcessInformation);
 
@@ -96,7 +97,7 @@ public interface Advapi32 {
     boolean GetTokenInformation(
             @uintptr_t long TokenHandle,
             @uint32_t int/*TOKEN_INFORMATION_CLASS*/ TokenInformationClass,
-            TOKEN_INFORMATION TokenInformation,
+            @Nullable TOKEN_INFORMATION TokenInformation,
             @uint32_t int TokenInformationLength,
             IntByReference ReturnLength);
 
@@ -110,14 +111,14 @@ public interface Advapi32 {
     boolean DuplicateTokenEx(
             @uintptr_t long /*HANDLE*/ hExistingToken,
             @uint32_t int /*DWORD*/ dwDesiredAccess,
-            SECURITY_ATTRIBUTES lpTokenAttributes,
+            @Nullable SECURITY_ATTRIBUTES lpTokenAttributes,
             @uint32_t int /*SECURITY_IMPERSONATION_LEVEL*/ ImpersonationLevel,
             @uint32_t int /*TOKEN_TYPE*/ TokenType,
             AddressByReference phNewToken
     );
 
     @int32_t
-    boolean LookupPrivilegeValueW(Pointer lpSystemName, Pointer lpName, LUID luid);
+    boolean LookupPrivilegeValueW(@Nullable Pointer lpSystemName, Pointer lpName, LUID luid);
 
     @uint32_t
     int SetEntriesInAclW(
@@ -143,7 +144,7 @@ public interface Advapi32 {
             @uintptr_t long pSourceSid);
 
     @int32_t
-    boolean LookupPrivilegeNameW(Pointer lpSystemName, LUID lpLuid,
+    boolean LookupPrivilegeNameW(@Nullable Pointer lpSystemName, LUID lpLuid,
             char[] lpName, IntByReference cchName);
 
     @int32_t

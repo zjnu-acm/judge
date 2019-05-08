@@ -30,10 +30,10 @@ public interface LocaleService {
     List<DomainLocale> findAll();
 
     @Nullable
-    DomainLocale findOne(String id);
+    DomainLocale findOne(@Nullable String id);
 
     @Nullable
-    String resolve(Locale locale);
+    String resolve(@Nullable Locale locale);
 
     List<DomainLocale> support(boolean all);
 
@@ -43,6 +43,6 @@ public interface LocaleService {
     DomainLocale toDomainLocale(String localeName, boolean supportOnly);
 
     @Nonnull
-    Locale toSupported(Locale locale);
+    Locale toSupported(@Nullable Locale locale);
 
 }

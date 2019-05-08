@@ -21,15 +21,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  *
  * @author zhanhb
  */
-public class AcceptNullPasswordEncoder extends PasswordEncoderWrapper {
+public class AcceptNullPasswordEncoder implements PasswordEncoder {
 
-    public AcceptNullPasswordEncoder(PasswordEncoder parent) {
-        super(parent);
+    private final PasswordEncoder encoder;
+
+    public AcceptNullPasswordEncoder(PasswordEncoder encoder) {
+        this.encoder = encoder;
     }
 
     @Override
     public String encode(CharSequence rawPassword) {
-        return rawPassword == null ? null : super.encode(rawPassword);
+        return rawPassword == null ? null : encoder.encode(rawPassword);
     }
 
     @Override
@@ -37,7 +39,7 @@ public class AcceptNullPasswordEncoder extends PasswordEncoderWrapper {
         if (rawPassword == null || encodedPassword == null) {
             return rawPassword == encodedPassword;
         }
-        return super.matches(rawPassword, encodedPassword);
+        return encoder.matches(rawPassword, encodedPassword);
     }
 
 }

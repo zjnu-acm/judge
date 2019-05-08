@@ -17,9 +17,9 @@ package cn.edu.zjnu.acm.judge.service;
 
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.exception.BusinessException;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
-import lombok.NonNull;
 
 /**
  *
@@ -27,7 +27,7 @@ import lombok.NonNull;
  */
 public interface ContestOnlyService {
 
-    boolean canViewSource(HttpServletRequest request, @NonNull Submission submission);
+    boolean canViewSource(HttpServletRequest request, @Nonnull Submission submission);
 
     /**
      * check if register is enabled.
@@ -38,7 +38,7 @@ public interface ContestOnlyService {
 
     void checkSubmit(HttpServletRequest request, Long contest, long problemId);
 
-    void checkViewSource(HttpServletRequest request, @NonNull Submission submission);
+    void checkViewSource(HttpServletRequest request, @Nonnull Submission submission);
 
     @Nullable
     Long getContestOnly();

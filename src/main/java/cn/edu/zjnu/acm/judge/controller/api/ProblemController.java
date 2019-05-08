@@ -22,6 +22,7 @@ import com.google.common.collect.ImmutableMap;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.Map;
+import javax.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -87,7 +88,7 @@ public class ProblemController {
     @PatchMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@PathVariable("id") long problemId, @RequestBody Problem p,
-            @RequestParam(value = "locale", required = false) String requestLocale) {
+            @RequestParam(value = "locale", required = false) @Nullable String requestLocale) {
         problemService.updateSelective(problemId, p, requestLocale);
     }
 
