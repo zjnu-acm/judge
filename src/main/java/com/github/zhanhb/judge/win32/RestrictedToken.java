@@ -53,7 +53,6 @@ import static com.github.zhanhb.jnc.platform.win32.WELL_KNOWN_SID_TYPE.WinRestri
 import static com.github.zhanhb.jnc.platform.win32.WinError.ERROR_SUCCESS;
 import static com.github.zhanhb.jnc.platform.win32.WinNT.DUPLICATE_SAME_ACCESS;
 import static com.github.zhanhb.jnc.platform.win32.WinNT.GENERIC_ALL;
-import static com.github.zhanhb.jnc.platform.win32.WinNT.SANDBOX_INERT;
 import static com.github.zhanhb.jnc.platform.win32.WinNT.SECURITY_MAX_SID_SIZE;
 import static com.github.zhanhb.jnc.platform.win32.WinNT.SE_GROUP_INTEGRITY;
 import static com.github.zhanhb.jnc.platform.win32.WinNT.SE_GROUP_LOGON_ID;
@@ -279,13 +278,9 @@ public class RestrictedToken implements Closeable {
 
         boolean result;
         AddressByReference newTokenHandle = new AddressByReference();
-        // The SANDBOX_INERT flag did nothing in XP and it was just a way to tell
-        // if a token has ben restricted given the limiations of IsTokenRestricted()
-        // but it appears that in Windows 7 it hints the AppLocker subsystem to
-        // leave us alone.
         if (denySize != 0 || restrictSize != 0 || privilegesSize != 0) {
             result = Advapi32.INSTANCE.CreateRestrictedToken(
-                    effectiveToken, SANDBOX_INERT,
+                    effectiveToken, 0,
                     denySize, denyOnlyArray,
                     privilegesSize, privilegesToDisableArray,
                     restrictSize, sidsToRestrictArray,
