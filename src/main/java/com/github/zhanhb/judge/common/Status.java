@@ -1,7 +1,6 @@
 package com.github.zhanhb.judge.common;
 
 import cn.edu.zjnu.acm.judge.util.MatcherWrapper;
-import lombok.Getter;
 
 public enum Status {
 
@@ -14,10 +13,8 @@ public enum Status {
     QUEUING(1000), PROCESSING(1001), COMPILING(1002), RUNNING(1003), VALIDATING(1004),
     JUDGING(1005), PENDING_REJUDGE(1006);
 
-    @Getter
     private final boolean finalResult;
     private final String toString;
-    @Getter
     private final int result;
 
     Status(int result) {
@@ -34,6 +31,14 @@ public enum Status {
         this.result = result;
         this.finalResult = result < 1000;
         this.toString = toString;
+    }
+
+    public boolean isFinalResult() {
+        return finalResult;
+    }
+
+    public int getResult() {
+        return result;
     }
 
     @Override

@@ -37,11 +37,11 @@ public interface Advapi32 {
             @uintptr_t long /*HANDLE*/ ExistingTokenHandle,
             @uint32_t int /*DWORD*/ Flags,
             @uint32_t int /*DWORD*/ DisableSidCount,
-            Array<SID_AND_ATTRIBUTES> SidsToDisable,
+            NativeArray<SID_AND_ATTRIBUTES> SidsToDisable,
             @uint32_t int /*DWORD*/ DeletePrivilegeCount,
-            Array<LUID_AND_ATTRIBUTES> PrivilegesToDelete,
+            NativeArray<LUID_AND_ATTRIBUTES> PrivilegesToDelete,
             @uint32_t int /*DWORD*/ RestrictedSidCount,
-            Array<SID_AND_ATTRIBUTES> SidsToRestrict,
+            NativeArray<SID_AND_ATTRIBUTES> SidsToRestrict,
             AddressByReference /* PHANDLE */ NewTokenHandle
     );
 

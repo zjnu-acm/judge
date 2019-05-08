@@ -19,11 +19,11 @@ import java.util.function.Supplier;
 import jnc.foreign.Struct;
 
 @SuppressWarnings("FinalMethod")
-public class Array<T extends Struct> extends Struct {
+public class NativeArray<T extends Struct> extends Struct {
 
     private final T[] array;
 
-    public Array(Class<T> clazz, Supplier<T> supplier, int length) {
+    public NativeArray(Class<T> clazz, Supplier<T> supplier, int length) {
         @SuppressWarnings("unchecked")
         T[] tmp = (T[]) java.lang.reflect.Array.newInstance(clazz, length);
         for (int i = 0; i < length; i++) {

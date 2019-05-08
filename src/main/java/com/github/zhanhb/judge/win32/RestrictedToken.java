@@ -7,12 +7,12 @@ package com.github.zhanhb.judge.win32;
 
 import com.github.zhanhb.jnc.platform.win32.ACCESS_MODE;
 import com.github.zhanhb.jnc.platform.win32.Advapi32;
-import com.github.zhanhb.jnc.platform.win32.Array;
 import com.github.zhanhb.jnc.platform.win32.EXPLICIT_ACCESS;
 import com.github.zhanhb.jnc.platform.win32.Kernel32;
 import com.github.zhanhb.jnc.platform.win32.Kernel32Util;
 import com.github.zhanhb.jnc.platform.win32.LUID;
 import com.github.zhanhb.jnc.platform.win32.LUID_AND_ATTRIBUTES;
+import com.github.zhanhb.jnc.platform.win32.NativeArray;
 import com.github.zhanhb.jnc.platform.win32.SID;
 import com.github.zhanhb.jnc.platform.win32.SID_AND_ATTRIBUTES;
 import com.github.zhanhb.jnc.platform.win32.TOKEN_DEFAULT_DACL;
@@ -244,9 +244,9 @@ public class RestrictedToken implements Closeable {
 
         log.debug("createRestrictedToken: {} {} {}", sidsForDenyOnly, privilegesToDisable, sidsToRestrict);
 
-        Array<SID_AND_ATTRIBUTES> denyOnlyArray = null;
+        NativeArray<SID_AND_ATTRIBUTES> denyOnlyArray = null;
         if (denySize != 0) {
-            denyOnlyArray = new Array<>(SID_AND_ATTRIBUTES.class, SID_AND_ATTRIBUTES::new, denySize);
+            denyOnlyArray = new NativeArray<>(SID_AND_ATTRIBUTES.class, SID_AND_ATTRIBUTES::new, denySize);
 
             for (int i = 0; i < denySize; ++i) {
                 SID_AND_ATTRIBUTES sidAndAttributes = denyOnlyArray.get(i);
@@ -255,9 +255,9 @@ public class RestrictedToken implements Closeable {
             }
         }
 
-        Array<SID_AND_ATTRIBUTES> sidsToRestrictArray = null;
+        NativeArray<SID_AND_ATTRIBUTES> sidsToRestrictArray = null;
         if (restrictSize != 0) {
-            sidsToRestrictArray = new Array<>(SID_AND_ATTRIBUTES.class, SID_AND_ATTRIBUTES::new, restrictSize);
+            sidsToRestrictArray = new NativeArray<>(SID_AND_ATTRIBUTES.class, SID_AND_ATTRIBUTES::new, restrictSize);
 
             for (int i = 0; i < restrictSize; ++i) {
                 SID_AND_ATTRIBUTES sidAndAttributes = sidsToRestrictArray.get(i);
@@ -266,9 +266,9 @@ public class RestrictedToken implements Closeable {
             }
         }
 
-        Array<LUID_AND_ATTRIBUTES> privilegesToDisableArray = null;
+        NativeArray<LUID_AND_ATTRIBUTES> privilegesToDisableArray = null;
         if (privilegesSize != 0) {
-            privilegesToDisableArray = new Array<>(LUID_AND_ATTRIBUTES.class, LUID_AND_ATTRIBUTES::new, privilegesSize);
+            privilegesToDisableArray = new NativeArray<>(LUID_AND_ATTRIBUTES.class, LUID_AND_ATTRIBUTES::new, privilegesSize);
 
             for (int i = 0; i < privilegesSize; ++i) {
                 LUID_AND_ATTRIBUTES luidAndAttributes = privilegesToDisableArray.get(i);
