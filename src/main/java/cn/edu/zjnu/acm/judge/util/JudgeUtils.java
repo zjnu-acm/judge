@@ -11,7 +11,8 @@ import org.springframework.util.StringUtils;
 import org.unbescape.html.HtmlEscape;
 
 @SpecialCall({"fragment/standing", "users/list"})
-public interface JudgeUtils {
+public enum JudgeUtils {
+    INSTANCE;
 
     /**
      * required in fragment/standing
@@ -21,7 +22,7 @@ public interface JudgeUtils {
      */
     @SuppressWarnings("AssignmentToMethodParameter")
     @SpecialCall("fragment/standing")
-    static String formatTime(long seconds) {
+    public String formatTime(long seconds) {
         boolean neg = false;
         if (seconds < 0) {
             neg = true;
@@ -50,7 +51,7 @@ public interface JudgeUtils {
         return buf.append(s).toString();
     }
 
-    static String getReplyString(@Nullable String string) {
+    public String getReplyString(@Nullable String string) {
         if (!StringUtils.hasText(string)) {
             return "";
         }
@@ -59,12 +60,12 @@ public interface JudgeUtils {
                 .collect(Collectors.joining("\n> ", "> ", "\n")));
     }
 
-    static String formatTime(Instant a, Instant b) {
+    public String formatTime(Instant a, Instant b) {
         return formatTime(ChronoUnit.SECONDS.between(a, b));
     }
 
     @SpecialCall("users/list")
-    static long[] sequence(long total, long current) {
+    public long[] sequence(long total, long current) {
         if (total <= 0) {
             if (total == 0) {
                 return new long[0];

@@ -53,7 +53,7 @@
             </tbody>
         </table>
         <ul class="text-center pagination" th:if="${page.totalPages&gt;1}">
-            <li th:each="i:${T(cn.edu.zjnu.acm.judge.util.JudgeUtils).sequence(page.totalPages, page.number)}">
+            <li th:each="i:${T(cn.edu.zjnu.acm.judge.util.JudgeUtils).INSTANCE.sequence(page.totalPages, page.number)}">
                 <a th:href="@{${url}(page=${i})}" th:text="${i+1}" th:style="${i==page.number?'color:red':_}">1</a>
             </li>
         </ul>

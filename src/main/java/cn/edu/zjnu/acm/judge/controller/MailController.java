@@ -135,7 +135,7 @@ public class MailController {
         }
         model.addAttribute("to", userId);
         model.addAttribute("title", title);
-        model.addAttribute("content", JudgeUtils.getReplyString(content));
+        model.addAttribute("content", JudgeUtils.INSTANCE.getReplyString(content));
         return "mails/sendpage";
     }
 

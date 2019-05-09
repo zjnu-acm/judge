@@ -48,7 +48,7 @@ public class ContestStatisticsController {
         sb.append(HtmlEscape.escapeHtml4Xml(title));
         if (!contest.isEnded()) {
             if (endTime != null) {
-                sb.append("<br/>Time to go:").append(JudgeUtils.formatTime(now, endTime));
+                sb.append("<br/>Time to go:").append(JudgeUtils.INSTANCE.formatTime(now, endTime));
             } else {
                 sb.append("<br/>Time to go Infinity");
             }

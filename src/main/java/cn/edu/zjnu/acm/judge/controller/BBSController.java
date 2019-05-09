@@ -222,7 +222,7 @@ public class BBSController {
         sb.append("Title:<br/><input type=\"text\" name=\"title\" value=\"")
                 .append(HtmlEscape.escapeHtml4Xml(!title.regionMatches(true, 0, "re:", 0, 3) ? "Reply:" + title : title))
                 .append("\" size=75><br/>" + "Content:<br/><textarea rows=\"15\" name=\"content\" cols=\"75\">")
-                .append(JudgeUtils.getReplyString(message.getContent()))
+                .append(JudgeUtils.INSTANCE.getReplyString(message.getContent()))
                 .append("</textarea><br/><button type=\"submit\">reply</button></td></tr></table>");
         model.addAttribute("content", sb.toString());
         return "legacy";
