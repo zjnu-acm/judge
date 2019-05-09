@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.OptionalLong;
+import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,14 +50,14 @@ public class StatusController {
     @SuppressWarnings("AssignmentToMethodParameter")
     public String status(HttpServletRequest request,
             @RequestParam(value = "problem_id", defaultValue = "") String pid,
-            @RequestParam(value = "contest_id", required = false) Long contestId,
+            @RequestParam(value = "contest_id", required = false) @Nullable Long contestId,
             @RequestParam(value = "language", defaultValue = "-1") int language,
             @RequestParam(value = "size", defaultValue = "20") int size,
             @RequestParam(value = "bottom", required = false) final Long bottom,
-            @RequestParam(value = "score", required = false) Integer sc,
+            @RequestParam(value = "score", required = false) @Nullable Integer sc,
             @RequestParam(value = "user_id", defaultValue = "") String userId,
             @RequestParam(value = "top", required = false) final Long top,
-            Authentication authentication,
+            @Nullable Authentication authentication,
             Model model) {
         long problemId = 0;
         String query = URIBuilder.fromRequest(request)

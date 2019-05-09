@@ -77,13 +77,7 @@ public class JudgeServiceImpl implements JudgeService {
     private static final File NULL_FILE = Paths.get(Platform.isWindows() ? "NUL" : "/dev/null").toFile();
 
     private static String collectLines(Path path) throws IOException {
-        Charset charset = Platform.getCharset();
-        String compileInfo;
-        try (InputStream is = Files.newInputStream(path);
-                InputStreamReader isr = new InputStreamReader(is, charset);
-                BufferedReader br = new BufferedReader(isr)) {
-            compileInfo = br.lines().collect(Collectors.joining("\n"));
-        }
+        String compileInfo = Files.lines(path, Platform.getCharset()).collect(Collectors.joining("\n"));
         return compileInfo.length() > 1000 ? compileInfo.substring(0, 997) + "..." : compileInfo;
     }
 
@@ -300,7 +294,7 @@ public class JudgeServiceImpl implements JudgeService {
         }
     }
 
-    private void delete(Path path) throws IOException {
+    private void delete(Path path) {
         Objects.requireNonNull(path, "path");
         if (!systemService.isDeleteTempFile()) {
             return;

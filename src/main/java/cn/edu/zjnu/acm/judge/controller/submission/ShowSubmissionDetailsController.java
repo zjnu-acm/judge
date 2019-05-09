@@ -11,7 +11,6 @@ import cn.edu.zjnu.acm.judge.service.SubmissionService;
 import cn.edu.zjnu.acm.judge.util.ResultType;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,8 +26,7 @@ public class ShowSubmissionDetailsController {
     @GetMapping("/showsolutiondetails")
     public String showSolutionDetails(
             HttpServletRequest request,
-            @RequestParam("solution_id") long submissionId,
-            Authentication authentication) {
+            @RequestParam("solution_id") long submissionId) {
         Submission submission = submissionMapper.findOne(submissionId);
         if (submission == null) {
             throw new BusinessException(BusinessCode.SUBMISSION_NOT_FOUND, submissionId);

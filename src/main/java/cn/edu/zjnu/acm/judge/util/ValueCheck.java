@@ -17,16 +17,18 @@ package cn.edu.zjnu.acm.judge.util;
 
 import cn.edu.zjnu.acm.judge.exception.BusinessCode;
 import cn.edu.zjnu.acm.judge.exception.BusinessException;
+import javax.annotation.Nullable;
 import org.springframework.util.StringUtils;
 
 public interface ValueCheck {
 
     String EMAIL_PATTERN = "[a-z0-9!#$%&'*+/=?^_`{|}~-]++(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]++)*+@[a-z0-9](?:[a-z0-9-]*[a-z0-9])?+(?:\\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?+)++";
 
-    static void checkUserId(String userId) {
+    static void checkUserId(@Nullable String userId) {
         if (StringUtils.isEmpty(userId)) {
             throw new BusinessException(BusinessCode.REGIST_USER_ID_EMPTY);
         }
+        assert userId != null;
         if (userId.length() < 6) {
             throw new BusinessException(BusinessCode.REGIST_USER_ID_SHORT);
         }
@@ -38,10 +40,11 @@ public interface ValueCheck {
         }
     }
 
-    static void checkPassword(String password) {
+    static void checkPassword(@Nullable String password) {
         if (StringUtils.isEmpty(password)) {
             throw new BusinessException(BusinessCode.EMPTY_PASSWORD);
         }
+        assert password != null;
         if (password.length() > 20) {
             throw new BusinessException(BusinessCode.PASSWORD_TOO_LONG);
         }
@@ -61,17 +64,18 @@ public interface ValueCheck {
         }
     }
 
-    static void checkNick(String nick) {
+    static void checkNick(@Nullable String nick) {
         if (StringUtils.isEmpty(nick)) {
             throw new BusinessException(BusinessCode.NICK_EMPTY);
         }
+        assert nick != null;
         if (nick.length() > 64) {
             throw new BusinessException(BusinessCode.NICK_LONG);
         }
     }
 
-    static void checkEmail(String email) {
-        if (StringUtils.hasText(email) && !email.matches(EMAIL_PATTERN)) {
+    static void checkEmail(@Nullable String email) {
+        if (email != null && !email.isEmpty() && !email.matches(EMAIL_PATTERN)) {
             throw new BusinessException(BusinessCode.EMAIL_FORMAT_INCORRECT);
         }
     }

@@ -22,6 +22,7 @@ import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
 import cn.edu.zjnu.acm.judge.service.LocaleService;
 import cn.edu.zjnu.acm.judge.service.SystemService;
 import java.util.Locale;
+import javax.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,7 +39,7 @@ public class ShowProblemController {
     private final LocaleService localeService;
     private final SystemService systemService;
 
-    private Problem getProblem(long problemId, Locale locale) {
+    private Problem getProblem(long problemId, @Nullable Locale locale) {
         Problem problem = problemMapper.findOne(problemId, localeService.resolve(locale));
         if (problem != null) {
             Boolean disabled = problem.getDisabled();
@@ -50,7 +51,7 @@ public class ShowProblemController {
     }
 
     @GetMapping(value = "/showproblem", produces = TEXT_HTML_VALUE)
-    public String showProblem(Model model, @RequestParam("problem_id") long problemId, Locale locale) {
+    public String showProblem(Model model, @RequestParam("problem_id") long problemId, @Nullable Locale locale) {
         Problem problem = getProblem(problemId, locale);
         model.addAttribute("problem", problem);
         model.addAttribute("isSpecial", systemService.isSpecialJudge(problemId));

@@ -19,6 +19,8 @@ import cn.edu.zjnu.acm.judge.domain.DomainLocale;
 import cn.edu.zjnu.acm.judge.service.LocaleService;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
+import javax.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,7 +44,8 @@ public class LocaleController {
     private final LocaleService localeService;
 
     @GetMapping("current")
-    public DomainLocale current(Locale locale) {
+    public DomainLocale current(@Nullable Locale requestLocale) {
+        Locale locale = Optional.ofNullable(requestLocale).orElse(Locale.ROOT);
         return localeService.toDomainLocale(localeService.toSupported(locale), locale);
     }
 

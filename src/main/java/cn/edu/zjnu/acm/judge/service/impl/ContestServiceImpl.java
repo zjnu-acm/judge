@@ -46,6 +46,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.ObjIntConsumer;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -133,7 +134,7 @@ public class ContestServiceImpl implements ContestService {
 
     @Nonnull
     @Override
-    public Contest getContestAndProblemsNotDisabled(long contestId, String userId, Locale locale) {
+    public Contest getContestAndProblemsNotDisabled(long contestId, @Nullable String userId, Locale locale) {
         Contest contest = getEnabledContest(contestId);
         List<Problem> problems = contestMapper.getProblems(contestId, userId, localeService.resolve(locale));
         contest.setProblems(problems);
@@ -256,7 +257,7 @@ public class ContestServiceImpl implements ContestService {
 
     @Nonnull
     @Override
-    public Problem getProblem(long contestId, long problemNum, Locale locale) {
+    public Problem getProblem(long contestId, long problemNum, @Nullable Locale locale) {
         Problem problem = contestMapper.getProblem(contestId, problemNum, localeService.resolve(locale));
         if (problem == null) {
             throw new BusinessException(BusinessCode.CONTEST_PROBLEM_NOT_FOUND, contestId, problemNum);

@@ -28,6 +28,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  *
@@ -55,10 +56,10 @@ public interface ContestService {
     Contest getContestAndProblems(long contestId, Locale locale);
 
     @Nonnull
-    Contest getContestAndProblemsNotDisabled(long contestId, String userId, Locale locale);
+    Contest getContestAndProblemsNotDisabled(long contestId, @Nullable String userId, @Nullable Locale locale);
 
     @Nonnull
-    Problem getProblem(long contestId, long problemNum, Locale locale);
+    Problem getProblem(long contestId, long problemNum, @Nullable Locale locale);
 
     Map<Long, long[]> getProblemsMap(long id);
 

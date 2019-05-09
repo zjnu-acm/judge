@@ -75,7 +75,7 @@ public class ProblemController {
 
     @GetMapping("{id}")
     public Problem findOne(@PathVariable("id") long id,
-            @RequestParam(value = "locale", required = false) String lang) {
+            @RequestParam(value = "locale", required = false) @Nullable String lang) {
         return problemService.findOne(id, lang);
     }
 

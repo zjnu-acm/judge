@@ -18,6 +18,7 @@ package cn.edu.zjnu.acm.judge.service;
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import com.google.common.annotations.VisibleForTesting;
 import java.util.concurrent.CompletableFuture;
+import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +37,7 @@ public interface SubmissionService {
 
     void delete(long id);
 
+    @Nullable
     String findCompileInfo(long submissionId);
 
     CompletableFuture<?> submit(int languageId, String source, String userId, String ip, long problemId, boolean addToPool);

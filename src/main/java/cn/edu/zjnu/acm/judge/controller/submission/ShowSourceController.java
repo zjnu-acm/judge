@@ -9,6 +9,7 @@ import cn.edu.zjnu.acm.judge.service.ContestOnlyService;
 import cn.edu.zjnu.acm.judge.service.LanguageService;
 import cn.edu.zjnu.acm.judge.service.SubmissionService;
 import cn.edu.zjnu.acm.judge.util.ResultType;
+import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
@@ -33,7 +34,7 @@ public class ShowSourceController {
     public String showSource(HttpServletRequest request,
             @RequestParam("solution_id") long submissionId,
             @RequestParam(value = "style", required = false) Integer style,
-            Authentication authentication) {
+            @Nullable Authentication authentication) {
         Submission submission = submissionMapper.findOne(submissionId);
 
         if (submission == null) {

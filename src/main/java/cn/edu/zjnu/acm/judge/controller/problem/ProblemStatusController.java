@@ -27,6 +27,7 @@ import cn.edu.zjnu.acm.judge.util.URIBuilder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -72,7 +73,7 @@ public class ProblemStatusController {
     public String status(HttpServletRequest request,
             @RequestParam("problem_id") long id,
             @PageableDefault(size = 20, sort = {"time", "memory", "code_length"}) Pageable pageable,
-            Authentication authentication) {
+            @Nullable Authentication authentication) {
         log.debug("{}", pageable);
         if (pageable.getPageSize() > 500) {
             pageable = PageRequest.of(pageable.getPageNumber(), 500, pageable.getSort());

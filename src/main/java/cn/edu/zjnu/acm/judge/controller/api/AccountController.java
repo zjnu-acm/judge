@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -84,18 +85,18 @@ public class AccountController {
     }
 
     @GetMapping(produces = XLSX_VALUE)
-    public void findAllXlsx(AccountForm form, Pageable pageable, Optional<Locale> requestLocale,
+    public void findAllXlsx(AccountForm form, Pageable pageable, @Nullable Locale requestLocale,
             HttpServletResponse response) throws IOException {
-        Locale locale = requestLocale.orElse(Locale.ROOT);
+        Locale locale = Optional.ofNullable(requestLocale).orElse(Locale.ROOT);
         List<Account> content = accountService.findAllForExport(form, pageable);
         ExcelUtil.toResponse(Account.class, content, locale, ExcelType.XLSX,
                 accountService.getExcelName(locale), response);
     }
 
     @GetMapping(produces = XLS_VALUE)
-    public void findAllXls(AccountForm form, Pageable pageable, Optional<Locale> requestLocale,
+    public void findAllXls(AccountForm form, Pageable pageable, @Nullable Locale requestLocale,
             HttpServletResponse response) throws IOException {
-        Locale locale = requestLocale.orElse(Locale.ROOT);
+        Locale locale = Optional.ofNullable(requestLocale).orElse(Locale.ROOT);
         List<Account> content = accountService.findAllForExport(form, pageable);
         ExcelUtil.toResponse(Account.class, content, locale, ExcelType.XLS,
                 accountService.getExcelName(locale), response);

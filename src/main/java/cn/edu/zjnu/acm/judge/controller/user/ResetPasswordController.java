@@ -28,6 +28,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import javax.annotation.Nullable;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -59,8 +60,8 @@ public class ResetPasswordController {
 
     @GetMapping(value = "/resetPassword", produces = TEXT_HTML_VALUE)
     public String doGet(
-            @RequestParam(value = "u", required = false) String userId,
-            @RequestParam(value = "vc", required = false) String vcode) {
+            @RequestParam(value = "u", required = false) @Nullable String userId,
+            @RequestParam(value = "vc", required = false) @Nullable String vcode) {
         if (resetPasswordService.checkVcode(userId, vcode).isPresent()) {
             return "resetPassword";
         } else {
@@ -70,10 +71,10 @@ public class ResetPasswordController {
 
     @PostMapping("/resetPassword")
     public void doPost(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam(value = "action", required = false) String action,
-            @RequestParam(value = "verify", required = false) String verify,
-            @RequestParam(value = "username", required = false) String username,
-            Locale locale) throws IOException {
+            @RequestParam(value = "action", required = false) @Nullable String action,
+            @RequestParam(value = "verify", required = false) @Nullable String verify,
+            @RequestParam(value = "username", required = false) @Nullable String username,
+            @Nullable Locale locale) throws IOException {
         response.setContentType("text/javascript;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
@@ -117,8 +118,8 @@ public class ResetPasswordController {
 
     @PostMapping(value = "/resetPassword", params = "action=changePassword")
     public void changePassword(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam(value = "u", required = false) String userId,
-            @RequestParam(value = "vc", required = false) String vcode)
+            @RequestParam(value = "u", required = false) @Nullable String userId,
+            @RequestParam(value = "vc", required = false) @Nullable String vcode)
             throws IOException {
         response.setContentType("text/javascript;charset=UTF-8");
         PrintWriter out = response.getWriter();

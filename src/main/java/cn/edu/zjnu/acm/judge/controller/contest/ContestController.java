@@ -22,6 +22,7 @@ import cn.edu.zjnu.acm.judge.service.ContestService;
 import com.google.common.collect.ImmutableMap;
 import java.util.Locale;
 import java.util.concurrent.Future;
+import javax.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,7 +45,7 @@ public class ContestController {
     private final ContestService contestService;
 
     @GetMapping(value = "standing", produces = {TEXT_HTML_VALUE, ALL_VALUE})
-    public Future<ModelAndView> standingHtml(@PathVariable("contestId") long contestId, Locale locale) {
+    public Future<ModelAndView> standingHtml(@PathVariable("contestId") long contestId, @Nullable Locale locale) {
         Contest contest = contestService.getContestAndProblemsNotDisabled(contestId, null, locale);
         if (!contest.isStarted()) {
             throw new BusinessException(BusinessCode.CONTEST_NOT_STARTED, contest.getId(), contest.getStartTime());

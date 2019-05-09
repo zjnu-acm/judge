@@ -73,6 +73,7 @@ public class SubmitController {
         if (contestId == null) {
             submissionService.submit(languageId, source, userId, ip, problemId, true);
         } else {
+            // TODO if contest is ended, should redirect to stats rather than contest's status
             redirectAttributes.addAttribute("contest_id", contestId);
             submissionService.contestSubmit(languageId, source, userId, ip, contestId, problemId);
         }

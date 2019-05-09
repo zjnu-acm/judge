@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -62,7 +63,7 @@ public class ContestProblemController {
     private final SubmissionService submissionService;
 
     @GetMapping
-    public String problems(Model model, Locale locale,
+    public String problems(Model model, @Nullable Locale locale,
             @PathVariable("contestId") long contestId,
             Authentication authentication) {
         Contest contest = contestService.getContestAndProblemsNotDisabled(contestId, authentication != null ? authentication.getName() : null, locale);
@@ -77,7 +78,7 @@ public class ContestProblemController {
     }
 
     @GetMapping("{pid}")
-    public String showProblem(@PathVariable("contestId") long contestId, @PathVariable("pid") long problemNum, Model model, Locale locale) {
+    public String showProblem(@PathVariable("contestId") long contestId, @PathVariable("pid") long problemNum, Model model, @Nullable Locale locale) {
         Contest contest = contestService.getContestAndProblemsNotDisabled(contestId, null, locale);
         if (!contest.isStarted()) {
             throw new BusinessException(BusinessCode.CONTEST_NOT_STARTED, contest.getId(), contest.getStartTime());
@@ -100,7 +101,7 @@ public class ContestProblemController {
             @PathVariable("contestId") long contestId,
             @PathVariable("pid") int problemNum,
             @PageableDefault(size = 20, sort = {"time", "memory", "code_length"}) Pageable pageable,
-            Model model, Authentication authentication, HttpServletRequest request) {
+            Model model, @Nullable Authentication authentication, HttpServletRequest request) {
         contestService.findOneByIdAndNotDisabled(contestId); // check if problem exists and not disabled
         Problem problem = contestService.getProblem(contestId, problemNum, null);
         Page<Submission> page = submissionService.bestSubmission(contestId, problem.getOrigin(), pageable, problem.getSubmitUser());

@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -161,6 +162,7 @@ public class SubmissionServiceImpl implements SubmissionService {
         return CompletableFuture.completedFuture(null);
     }
 
+    @Nullable
     @Override
     public String findCompileInfo(long submissionId) {
         Submission submission = submissionMapper.findOne(submissionId);
