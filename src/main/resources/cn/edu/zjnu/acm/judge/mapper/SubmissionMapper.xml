@@ -103,13 +103,13 @@
     <select id="bestSubmission" resultMap="baseResultMap">
         select <include refid="baseColumns"/>, count(s3.solution_id) count
         FROM solution s
-        <if test='pageable.sort!=null and pageable.sort.iterator().hasNext()'>
-            LEFT JOIN solution s2 ON
-            <if test='form.contestId!=null'>
-                s.contest_id = s2.contest_id AND
-            </if>
-            s.problem_id=s2.problem_id AND s.score=s2.score AND s.user_id=s2.user_id
-            <foreach index='i' collection='pageable.sort' separator='OR' open='AND (' close=')'>
+        LEFT JOIN solution s2 ON
+        <if test='form.contestId!=null'>
+            s.contest_id = s2.contest_id AND
+        </if>
+        s.problem_id=s2.problem_id AND s.score=s2.score AND s.user_id=s2.user_id
+        AND (
+            <foreach index='i' collection='pageable.sort' separator='OR' close="OR">
                 <foreach index='j' item='item' collection='pageable.sort' separator='AND'>
                     <if test="i gt j">
                         s.<include refid="propertySelector"/>=s2.<include refid="propertySelector"/>
@@ -122,7 +122,11 @@
                     </if>
                 </foreach>
             </foreach>
-        </if>
+            <foreach index='j' item='item' collection='pageable.sort' separator='AND' close="AND">
+                s.<include refid="propertySelector"/>=s2.<include refid="propertySelector"/>
+            </foreach>
+            s.solution_id &lt; s2.solution_id
+        )
         LEFT JOIN solution s3 ON
         <if test='form.contestId!=null'>
             s.contest_id = s3.contest_id AND
@@ -133,15 +137,15 @@
                 s.contest_id=#{form.contestId}
             </if>
             AND s.problem_id=#{form.problemId} AND s.score=100
-            <if test='pageable.sort!=null and pageable.sort.iterator().hasNext()'>
-                AND s2.solution_id IS NULL
-            </if>
+            AND s2.solution_id IS NULL
         </where>
         group by s.user_id
-        <foreach item='item' collection='pageable.sort' open=' ORDER BY ' separator=','>
+        ORDER BY
+        <foreach item='item' collection='pageable.sort' separator=',' close=",">
             <include refid="propertySelector"/>
             <if test='item.descending'> DESC</if>
         </foreach>
+        s.solution_id desc
         LIMIT #{pageable.offset}, #{pageable.pageSize}
     </select>
     <select id="groupByScore" resultMap="scoreCountResultMap">
