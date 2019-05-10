@@ -110,11 +110,11 @@ public class JudgeRunnerImpl implements JudgeRunner {
     private RunResult runProcess(RunRecord runRecord, JudgeData judgeData,
             Path work, Validator validator) throws IOException {
         int caseNum = judgeData.getCaseCount();
-        int accept = 0; //最后通过的个数
         ArrayList<String> details = new ArrayList<>(caseNum << 2);
         String command = runRecord.getLanguage().getExecuteCommand();
 
-        command = StringUtils.hasText(command) ? command : work.resolve("Main." + runRecord.getLanguage().getExecutableExtension()).toString();
+        // executable command should be absolute
+        command = StringUtils.hasText(command) ? command : work.toAbsolutePath().resolve("Main." + runRecord.getLanguage().getExecutableExtension()).toString();
         long extTime = runRecord.getLanguage().getExtTime();
         long castTimeLimit = runRecord.getTimeLimit() * runRecord.getLanguage().getTimeFactor() + extTime;
         long extraMemory = runRecord.getLanguage().getExtMemory(); //内存附加
@@ -139,8 +139,9 @@ public class JudgeRunnerImpl implements JudgeRunner {
                     .build();
         }
         String scorePerCase = new DecimalFormat("0.#").format(100.0 / caseNum);
-        long time = 0; //时间
-        long memory = 0; //内存
+        long time = 0;
+        long memory = 0;
+        int accept = 0; // final case who's result is accepted.
         try {
             ExecuteResult[] ers = judgeBridge.judge(optionses, false, validator);
             for (ExecuteResult er : ers) {
@@ -191,9 +192,9 @@ public class JudgeRunnerImpl implements JudgeRunner {
             return true;
         }
         assert compileCommand != null;
-        //创建编译进程
-        // VC++信息会输出在标准输出
-        // G++编译信息输出在标准错误输出
+        // create compiling process
+        // VC++ will output compiling info to stdout
+        // G++ will output compiling info to stderr
         Path compileInfo = work.resolve("compileInfo.txt");
         Process process = ProcessCreationHelper.execute(new ProcessBuilder(compileCommand.split("\\s+"))
                 .directory(work.toFile())
@@ -205,7 +206,7 @@ public class JudgeRunnerImpl implements JudgeRunner {
         } catch (InterruptedException ex) {
             throw new InterruptedIOException();
         }
-        //编译信息导出
+        // export compiling infomation
         String errorInfo;
         if (process.isAlive()) {
             process.destroyForcibly();
@@ -220,7 +221,8 @@ public class JudgeRunnerImpl implements JudgeRunner {
         }
         message[0] = errorInfo;
         log.debug("errorInfo = {}", errorInfo);
-        Path executable = work.resolve(main + "." + runRecord.getLanguage().getExecutableExtension()); //编译后可执行文件
+        // The executable file after compiling
+        Path executable = work.resolve(main + "." + runRecord.getLanguage().getExecutableExtension());
         log.debug("executable = {}", executable);
         return Files.exists(executable);
     }

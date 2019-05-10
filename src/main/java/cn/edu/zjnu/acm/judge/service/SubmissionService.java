@@ -47,6 +47,9 @@ public interface SubmissionService {
     @VisibleForTesting
     void remove(String userId);
 
+    @VisibleForTesting
+    List<SubmissionDetail> parseSubmissionDetail(String message);
+
     List<SubmissionDetail> getSubmissionDetail(long submissionId);
 
 }

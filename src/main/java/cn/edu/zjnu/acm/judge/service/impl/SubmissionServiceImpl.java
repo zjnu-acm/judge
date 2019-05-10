@@ -38,6 +38,7 @@ import com.google.common.collect.ImmutableList;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -193,12 +194,9 @@ public class SubmissionServiceImpl implements SubmissionService {
     }
 
     @Override
-    public List<SubmissionDetail> getSubmissionDetail(long submissionId) {
-        String submissionDetail = submissionMapper.getSubmissionDetail(submissionId);
-        if (submissionDetail == null) {
-            return ImmutableList.of();
-        }
-        String[] detailsArray = submissionDetail.split(",");
+    public List<SubmissionDetail> parseSubmissionDetail(String message) {
+        Objects.requireNonNull(message, "submission detail");
+        String[] detailsArray = message.split(",");
         SubmissionDetail[] details = new SubmissionDetail[detailsArray.length / 4];
         for (int i = 0; i < detailsArray.length / 4; ++i) {
             details[i] = SubmissionDetail.builder()
@@ -209,6 +207,15 @@ public class SubmissionServiceImpl implements SubmissionService {
                     .build();
         }
         return ImmutableList.copyOf(details);
+    }
+
+    @Override
+    public List<SubmissionDetail> getSubmissionDetail(long submissionId) {
+        String submissionDetail = submissionMapper.getSubmissionDetail(submissionId);
+        if (submissionDetail == null) {
+            return ImmutableList.of();
+        }
+        return parseSubmissionDetail(submissionDetail);
     }
 
 }
