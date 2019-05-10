@@ -32,31 +32,16 @@ import org.springframework.data.domain.Pageable;
 @Mapper
 public interface SubmissionMapper {
 
-    @Nullable
-    String findSourceById(@Param("id") long id);
-
-    @Nullable
-    String findCompileInfoById(@Param("id") long id);
-
     long save(Submission submission);
 
     @Nullable
     Submission findOne(@Param("id") long id);
-
-    long saveSource(@Param("id") long id, @Param("source") String source);
 
     long updateResult(
             @Param("id") long id,
             @Param("score") int score,
             @Param("time") long time,
             @Param("memory") long memory);
-
-    long saveDetail(@Param("id") long id, @Param("detail") String detail);
-
-    long saveCompileInfo(@Param("id") long id, @Param("errorInfo") String errorInfo);
-
-    @Nullable
-    String getSubmissionDetail(@Param("id") long id);
 
     List<Submission> findAllByCriteria(SubmissionQueryForm submissionQueryForm);
 
@@ -72,12 +57,6 @@ public interface SubmissionMapper {
 
     List<Long> findAllByContestId(@Param("contest") long id);
 
-    int deleteSource(@Param("id") long id);
-
-    int deleteCompileinfo(@Param("id") long id);
-
-    int deleteSolution(@Param("id") long id);
-
-    int deleteDetail(@Param("id") long id);
+    long delete(@Param("id") long id);
 
 }

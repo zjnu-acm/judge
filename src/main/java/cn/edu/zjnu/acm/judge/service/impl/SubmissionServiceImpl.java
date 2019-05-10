@@ -24,6 +24,7 @@ import cn.edu.zjnu.acm.judge.exception.BusinessCode;
 import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.ProblemMapper;
+import cn.edu.zjnu.acm.judge.mapper.SubmissionDetailMapper;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserPreferenceMapper;
 import cn.edu.zjnu.acm.judge.service.ContestService;
@@ -64,6 +65,7 @@ public class SubmissionServiceImpl implements SubmissionService {
 
     private final ContestMapper contestMapper;
     private final SubmissionMapper submissionMapper;
+    private final SubmissionDetailMapper submissionDetailMapper;
     private final JudgePoolService judgePoolService;
     private final ProblemMapper problemMapper;
     private final ProblemService problemService;
@@ -157,7 +159,7 @@ public class SubmissionServiceImpl implements SubmissionService {
         problemMapper.setInDate(submission.getProblem(), now);
 
         // 插入source_code表
-        submissionMapper.saveSource(submissionId, source);
+        submissionDetailMapper.saveSource(submissionId, source);
         userPerferenceMapper.setLanguage(userId, languageId);
         if (addToPool) {
             return judgePoolService.add(submissionId);
@@ -172,16 +174,14 @@ public class SubmissionServiceImpl implements SubmissionService {
         if (submission == null) {
             throw new BusinessException(BusinessCode.SUBMISSION_NOT_FOUND, submissionId);
         }
-        return submissionMapper.findCompileInfoById(submissionId);
+        return submissionDetailMapper.findCompileInfoById(submissionId);
     }
 
     @Transactional
     @Override
     public void delete(long id) {
-        int result = submissionMapper.deleteSource(id)
-                + submissionMapper.deleteCompileinfo(id)
-                + submissionMapper.deleteDetail(id)
-                + submissionMapper.deleteSolution(id);
+        long result = submissionDetailMapper.delete(id)
+                + submissionMapper.delete(id);
         if (result == 0) {
             throw new BusinessException(BusinessCode.SUBMISSION_NOT_FOUND, id);
         }
@@ -211,7 +211,7 @@ public class SubmissionServiceImpl implements SubmissionService {
 
     @Override
     public List<SubmissionDetail> getSubmissionDetail(long submissionId) {
-        String submissionDetail = submissionMapper.getSubmissionDetail(submissionId);
+        String submissionDetail = submissionDetailMapper.getSubmissionDetail(submissionId);
         if (submissionDetail == null) {
             return ImmutableList.of();
         }

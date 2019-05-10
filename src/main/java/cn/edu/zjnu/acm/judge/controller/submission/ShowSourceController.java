@@ -3,6 +3,7 @@ package cn.edu.zjnu.acm.judge.controller.submission;
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.exception.BusinessCode;
 import cn.edu.zjnu.acm.judge.exception.BusinessException;
+import cn.edu.zjnu.acm.judge.mapper.SubmissionDetailMapper;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserPreferenceMapper;
 import cn.edu.zjnu.acm.judge.service.ContestOnlyService;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ShowSourceController {
 
     private final SubmissionMapper submissionMapper;
+    private final SubmissionDetailMapper submissionDetailMapper;
     private final UserPreferenceMapper userPerferenceMapper;
     private final SubmissionService submissionService;
     private final LanguageService languageService;
@@ -52,7 +54,7 @@ public class ShowSourceController {
         } else {
             userPerferenceMapper.setStyle(userId, style);
         }
-        String source = submissionMapper.findSourceById(submissionId);
+        String source = submissionDetailMapper.findSourceById(submissionId);
 
         request.setAttribute("submission", submission);
         if (submission.getContest() != null) {

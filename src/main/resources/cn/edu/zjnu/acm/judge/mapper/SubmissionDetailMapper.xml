@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.github.io/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.zjnu.acm.judge.mapper.SubmissionDetailMapper">
+    <insert id="saveSource">
+        insert into submission_detail(submission_id,source) values(#{param1},#{param2})
+    </insert>
+    <delete id="delete">
+        delete from submission_detail where submission_id=#{param1}
+    </delete>
+    <select id="findCompileInfoById" resultType="string">
+        select compile_info from submission_detail where submission_id=#{param1}
+    </select>
+    <select id="findSourceById" resultType="string">
+        select source from submission_detail where submission_id=#{param1}
+    </select>
+    <select id="getSubmissionDetail" resultType="string">
+        select detail from submission_detail where submission_id=#{param1}
+    </select>
+    <update id="update">
+        update submission_detail
+        <set>
+            detail=#{detail},
+            compile_info=#{compileInfo},
+            system_info=#{systemInfo}
+        </set>
+        <where>
+            submission_id=#{id}
+        </where>
+    </update>
+</mapper>

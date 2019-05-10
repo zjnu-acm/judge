@@ -18,8 +18,10 @@ package cn.edu.zjnu.acm.judge.service.impl;
 import cn.edu.zjnu.acm.judge.data.dto.RunRecord;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.domain.Submission;
+import cn.edu.zjnu.acm.judge.domain.SubmissionDetail;
 import cn.edu.zjnu.acm.judge.exception.BusinessCode;
 import cn.edu.zjnu.acm.judge.exception.BusinessException;
+import cn.edu.zjnu.acm.judge.mapper.SubmissionDetailMapper;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserProblemMapper;
 import cn.edu.zjnu.acm.judge.service.JudgeRunner;
@@ -55,6 +57,7 @@ import org.springframework.stereotype.Service;
 public class JudgeServiceImpl implements JudgeService {
 
     private final SubmissionMapper submissionMapper;
+    private final SubmissionDetailMapper submissionDetailMapper;
     private final UserProblemMapper userProblemMapper;
     private final ProblemService problemService;
     private final SystemService systemService;
@@ -79,7 +82,7 @@ public class JudgeServiceImpl implements JudgeService {
             try {
                 RunRecord runRecord = RunRecord.builder()
                         .language(languageService.getAvailableLanguage(submission.getLanguage()))
-                        .source(submissionMapper.findSourceById(submissionId))
+                        .source(submissionDetailMapper.findSourceById(submissionId))
                         .memoryLimit(problem.getMemoryLimit())
                         .timeLimit(problem.getTimeLimit())
                         .build();
@@ -96,13 +99,15 @@ public class JudgeServiceImpl implements JudgeService {
                 String message = runResult.getMessage();
                 if (runResult.getType() == Status.COMPILATION_ERROR) {
                     submissionMapper.updateResult(submissionId, ResultType.COMPILE_ERROR, 0, 0);
-                    submissionMapper.saveCompileInfo(submissionId, message);
+                    submissionDetailMapper.update(SubmissionDetail.builder().id(submissionId).compileInfo(message).build());
                 } else {
                     int score = runResult.getScore();
                     long time = runResult.getTime();
                     long memory = runResult.getMemory();
                     submissionMapper.updateResult(submissionId, score, time, memory);
-                    submissionMapper.saveDetail(submissionId, message);
+                    submissionDetailMapper.update(SubmissionDetail.builder()
+                            .id(submissionId)
+                            .detail(message).build());
                 }
                 updateSubmissionStatus(submission.getUser(), problemId);
             } catch (JudgeException | IOException | Error ex) {
@@ -112,7 +117,8 @@ public class JudgeServiceImpl implements JudgeService {
                 try (PrintWriter pw = new PrintWriter(sw)) {
                     ex.printStackTrace(pw);
                 }
-                submissionMapper.saveCompileInfo(submissionId, sw.toString());
+                submissionDetailMapper.update(SubmissionDetail.builder()
+                        .systemInfo(sw.toString()).build());
             }
         }, executor);
     }
