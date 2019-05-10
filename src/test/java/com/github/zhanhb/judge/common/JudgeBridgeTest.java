@@ -16,7 +16,7 @@
 package com.github.zhanhb.judge.common;
 
 import cn.edu.zjnu.acm.judge.util.DeleteHelper;
-import java.io.File;
+import com.github.zhanhb.judge.GroovyHolder;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,12 +33,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import static org.hamcrest.Matchers.arrayWithSize;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assume.assumeTrue;
 
 /**
@@ -55,32 +56,24 @@ public class JudgeBridgeTest {
     private static Path output;
     private static Path groovy;
 
-    @BeforeClass
-    public static void setUpClass() {
-        assumeTrue("not windows", Platform.getNativePlatform().getOS().isWindows());
-    }
-
     private static String build(String... args) {
         return Arrays.stream(args)
                 .map(s -> new StringTokenizer(s).countTokens() > 1 ? '"' + s + '"' : s)
                 .collect(Collectors.joining(" "));
     }
 
-    private static String getGroovy(String property) {
-        return Arrays.stream(property.split(File.pathSeparator))
-                .filter(s -> s.contains("groovy-"))
-                .collect(Collectors.joining(File.pathSeparator));
-    }
-
     @Parameterized.Parameters(name = "{index}: {0} {1}")
     public static List<Object[]> data() throws Exception {
+        assumeTrue("not windows", Platform.getNativePlatform().getOS().isWindows());
         URI uri = JudgeBridgeTest.class.getResource("/sample/program").toURI();
         Path program = Paths.get(uri);
         data = program.resolve("../data").toRealPath();
         input = data.resolve("b.in");
         output = data.resolve("b.out");
         tmp = Files.createDirectories(Files.createDirectories(Paths.get("C:", "tmp")));
-        Path groovyPath = Paths.get(getGroovy(System.getProperty("java.class.path")));
+        Path[] groovyJars = GroovyHolder.getPaths();
+        assertThat("groovyJars", groovyJars, arrayWithSize(1));
+        Path groovyPath = groovyJars[0];
         groovy = Files.copy(groovyPath, tmp.resolve(groovyPath.getFileName().toString()), StandardCopyOption.REPLACE_EXISTING);
 
         Checker[] values = Checker.values();

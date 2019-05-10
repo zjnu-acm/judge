@@ -24,6 +24,7 @@ import cn.edu.zjnu.acm.judge.support.JudgeData;
 import cn.edu.zjnu.acm.judge.support.RunResult;
 import cn.edu.zjnu.acm.judge.util.Platform;
 import cn.edu.zjnu.acm.judge.util.ResultType;
+import com.github.zhanhb.judge.GroovyHolder;
 import com.github.zhanhb.judge.common.SimpleValidator;
 import com.github.zhanhb.judge.common.Validator;
 import com.google.common.collect.ImmutableMap;
@@ -55,8 +56,13 @@ import org.springframework.test.context.junit4.rules.SpringMethodRule;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.emptyArray;
 import static org.junit.Assume.assumeTrue;
+import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  *
@@ -69,18 +75,10 @@ import static org.junit.Assume.assumeTrue;
 @WebAppConfiguration
 public class JudgeRunnerTest {
 
-    private static final Path[] groovyJars = getGroovy(System.getProperty("java.class.path"));
-
     private static final ImmutableMap<String, String> EXTENSION_MAP
             = ImmutableMap.of("cpp", "cc", "groovy", "groovy", "c", "c");
 
     private static final Map<String, Integer> SPECIAL_SCORE = ImmutableMap.of("wa/less.groovy", 50);
-
-    private static Path[] getGroovy(String property) {
-        return Arrays.stream(property.split(File.pathSeparator))
-                .filter(s -> s.contains("groovy-"))
-                .map(Paths::get).toArray(Path[]::new);
-    }
 
     private static String build(String... args) {
         return Arrays.stream(args)
@@ -98,7 +96,7 @@ public class JudgeRunnerTest {
         assumeTrue("Only platform windows is supported", Platform.isWindows());
     }
 
-    @Parameterized.Parameters(name = "{index}: {0} {1}")
+    @Parameterized.Parameters(name = "{index}: {0}")
     public static List<Object[]> data() throws Exception {
         ArrayList<Object[]> list = new ArrayList<>(20);
         Path program = Paths.get(JudgeRunnerTest.class.getResource("/sample/program").toURI());
@@ -106,7 +104,7 @@ public class JudgeRunnerTest {
             Path dir = program.resolve(c.name());
 
             try (Stream<Path> stream = Files.list(dir)) {
-                stream.forEach(path -> list.add(new Object[]{c, path, c.name() + "/" + path.getFileName()}));
+                stream.forEach(path -> list.add(new Object[]{c.name() + "/" + path.getFileName(), c, path}));
             }
         }
         return list;
@@ -132,7 +130,7 @@ public class JudgeRunnerTest {
     private final JudgeData judgeData;
     private Path work;
 
-    public JudgeRunnerTest(Checker checker, Path path, String key)
+    public JudgeRunnerTest(String key, Checker checker, Path path)
             throws URISyntaxException, IOException {
         this.checker = checker;
         this.path = path;
@@ -149,6 +147,8 @@ public class JudgeRunnerTest {
     @Before
     public void init() throws Exception {
         work = Files.createDirectories(Paths.get("target/work/judgeRunnerTest").resolve(key));
+        Path[] groovyJars = GroovyHolder.getPaths();
+        assertThat("groovyJars", groovyJars, not(emptyArray()));
         for (Path groovyJar : groovyJars) {
             Files.copy(groovyJar, work.resolve(groovyJar.getFileName().toString()));
         }
