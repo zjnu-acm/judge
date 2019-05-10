@@ -15,6 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.service.impl;
 
+import cn.edu.zjnu.acm.judge.data.dto.SubmissionDetail;
 import cn.edu.zjnu.acm.judge.data.form.BestSubmissionForm;
 import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.domain.Problem;
@@ -33,6 +34,7 @@ import cn.edu.zjnu.acm.judge.service.SubmissionService;
 import cn.edu.zjnu.acm.judge.util.ResultType;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.cache.CacheBuilder;
+import com.google.common.collect.ImmutableList;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
@@ -188,6 +190,25 @@ public class SubmissionServiceImpl implements SubmissionService {
     @VisibleForTesting
     public void remove(String userId) {
         cache.remove(userId);
+    }
+
+    @Override
+    public List<SubmissionDetail> getSubmissionDetail(long submissionId) {
+        String submissionDetail = submissionMapper.getSubmissionDetail(submissionId);
+        if (submissionDetail == null) {
+            return ImmutableList.of();
+        }
+        String[] detailsArray = submissionDetail.split(",");
+        SubmissionDetail[] details = new SubmissionDetail[detailsArray.length / 4];
+        for (int i = 0; i < detailsArray.length / 4; ++i) {
+            details[i] = SubmissionDetail.builder()
+                    .result(ResultType.getCaseScoreDescription(Integer.parseInt(detailsArray[i << 2])))
+                    .score(detailsArray[i << 2 | 1])
+                    .time(detailsArray[i << 2 | 2])
+                    .memory(detailsArray[i << 2 | 3])
+                    .build();
+        }
+        return ImmutableList.copyOf(details);
     }
 
 }

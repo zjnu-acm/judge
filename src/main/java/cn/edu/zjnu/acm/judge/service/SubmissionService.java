@@ -15,8 +15,10 @@
  */
 package cn.edu.zjnu.acm.judge.service;
 
+import cn.edu.zjnu.acm.judge.data.dto.SubmissionDetail;
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import com.google.common.annotations.VisibleForTesting;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
@@ -44,5 +46,7 @@ public interface SubmissionService {
 
     @VisibleForTesting
     void remove(String userId);
+
+    List<SubmissionDetail> getSubmissionDetail(long submissionId);
 
 }

@@ -9,6 +9,7 @@ import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.service.SubmissionService;
 import cn.edu.zjnu.acm.judge.util.ResultType;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -41,21 +42,7 @@ public class ShowSubmissionDetailsController {
         if (!submissionService.canView(request, submission)) {
             throw new BusinessException(BusinessCode.VIEW_SOURCE_PERMISSION_DENIED, submissionId);
         }
-        String submissionDetail = submissionMapper.getSubmissionDetail(submissionId);
-        if (submissionDetail == null) {
-            submissionDetail = "";
-        }
-
-        String[] detailsArray = submissionDetail.split(",");
-        SubmissionDetail[] details = new SubmissionDetail[detailsArray.length / 4];
-        for (int i = 0; i < detailsArray.length / 4; ++i) {
-            details[i] = SubmissionDetail.builder()
-                    .result(ResultType.getCaseScoreDescription(Integer.parseInt(detailsArray[i << 2])))
-                    .score(detailsArray[i << 2 | 1])
-                    .time(detailsArray[i << 2 | 2])
-                    .memory(detailsArray[i << 2 | 3])
-                    .build();
-        }
+        List<SubmissionDetail> details = submissionService.getSubmissionDetail(submissionId);
         request.setAttribute("details", details);
         request.setAttribute("user", submission.getUser());
         request.setAttribute("problem", submission.getProblem());

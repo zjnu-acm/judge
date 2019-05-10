@@ -16,6 +16,7 @@
 package cn.edu.zjnu.acm.judge.service;
 
 import cn.edu.zjnu.acm.judge.Application;
+import cn.edu.zjnu.acm.judge.data.dto.SubmissionDetail;
 import cn.edu.zjnu.acm.judge.data.form.SubmissionQueryForm;
 import cn.edu.zjnu.acm.judge.domain.Language;
 import cn.edu.zjnu.acm.judge.domain.Submission;
@@ -24,6 +25,7 @@ import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.util.CopyHelper;
 import cn.edu.zjnu.acm.judge.util.DeleteHelper;
 import cn.edu.zjnu.acm.judge.util.Platform;
+import cn.edu.zjnu.acm.judge.util.ResultType;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import java.io.File;
@@ -172,14 +174,11 @@ public class JudgeServiceTest {
         if (specialKey.equals(key)) {
             expectScore = specialScore;
         }
+        String extectedCaseResult = ResultType.getCaseScoreDescription(c.getStatus());
         assertEquals(id + " " + path, expectScore, submission.getScore());
-        String detail = submissionMapper.getSubmissionDetail(id);
-        String[] details = detail.split(",");
-        ArrayList<String> list = Lists.newArrayList();
-        for (int i = 0; i < details.length; i += 4) {
-            list.add(details[i]);
-        }
-        assertTrue(id + " " + path + " " + Arrays.toString(details), list.contains(Integer.toString(c.getStatus())));
+        List<SubmissionDetail> details = submissionService.getSubmissionDetail(id);
+        boolean predicate = details.stream().anyMatch(detail -> extectedCaseResult.equals(detail.getResult()));
+        assertTrue(id + " " + path + " " + details + " " + extectedCaseResult, predicate);
     }
 
     @Service
