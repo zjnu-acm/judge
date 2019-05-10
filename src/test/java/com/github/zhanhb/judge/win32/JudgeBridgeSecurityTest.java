@@ -17,7 +17,6 @@ package com.github.zhanhb.judge.win32;
 
 import com.github.zhanhb.judge.common.ExecuteResult;
 import com.github.zhanhb.judge.common.JudgeBridge;
-import com.github.zhanhb.judge.common.JudgeException;
 import com.github.zhanhb.judge.common.Options;
 import com.github.zhanhb.judge.common.SimpleValidator;
 import com.github.zhanhb.judge.common.Status;
@@ -61,7 +60,7 @@ public class JudgeBridgeSecurityTest {
     }
 
     @Test
-    public void testExecute() throws IOException, JudgeException {
+    public void testExecute() throws IOException {
         Path nullPath = Paths.get("nul");
         Options options = Options.builder()
                 .command("shutdown /r /t 120 /f")

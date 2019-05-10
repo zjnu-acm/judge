@@ -12,7 +12,7 @@ public enum SimpleValidator implements Validator {
     NORMAL {
         @Override
         public Status validate(Path inputFile, Path outputFile, Path answerFile)
-                throws IOException, JudgeException {
+                throws IOException {
             try {
                 if (isAccepted(outputFile, answerFile)) {
                     return Status.ACCEPTED;
@@ -28,7 +28,7 @@ public enum SimpleValidator implements Validator {
     PE_AS_ACCEPTED {
         @Override
         public Status validate(Path inputFile, Path outputFile, Path answerFile)
-                throws IOException, JudgeException {
+                throws IOException {
             try {
                 if (isPresentationError(outputFile, answerFile)) {
                     return Status.ACCEPTED;
@@ -70,6 +70,6 @@ public enum SimpleValidator implements Validator {
 
     @Override
     public abstract Status validate(Path inputFile, Path standardOutput, Path outputFile)
-            throws IOException, JudgeException;
+            throws IOException;
 
 }

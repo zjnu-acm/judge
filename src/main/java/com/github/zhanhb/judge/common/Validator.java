@@ -19,10 +19,10 @@ public interface Validator {
      * @see Status#WRONG_ANSWER
      */
     Status validate(Path inputFile, Path standardOutput, Path outputFile)
-            throws IOException, JudgeException;
+            throws IOException;
 
     default ExecuteResult validate(Options options, ExecuteResult executeResult)
-            throws IOException, JudgeException {
+            throws IOException {
         Objects.requireNonNull(executeResult);
         Status validate = validate(options.getInputFile(),
                 options.getStandardOutput(),
