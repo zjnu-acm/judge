@@ -95,7 +95,7 @@ public class JudgeServiceImpl implements JudgeService {
                         ? new SpecialValidator(specialFile.toString(), work)
                         : SimpleValidator.PE_AS_ACCEPTED;
                 boolean deleteTempFile = systemService.isDeleteTempFile();
-                RunResult runResult = judgeRunner.run(runRecord, dataDirectory, judgeData, validator, deleteTempFile);
+                RunResult runResult = judgeRunner.run(runRecord, work, judgeData, validator, deleteTempFile);
                 String message = runResult.getMessage();
                 if (runResult.getType() == Status.COMPILATION_ERROR) {
                     submissionMapper.updateResult(submissionId, ResultType.COMPILE_ERROR, 0, 0);
@@ -117,7 +117,7 @@ public class JudgeServiceImpl implements JudgeService {
                 try (PrintWriter pw = new PrintWriter(sw)) {
                     ex.printStackTrace(pw);
                 }
-                submissionDetailMapper.update(SubmissionDetail.builder()
+                submissionDetailMapper.update(SubmissionDetail.builder().id(submissionId)
                         .systemInfo(sw.toString()).build());
             }
         }, executor);

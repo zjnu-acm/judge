@@ -45,9 +45,8 @@ class MetaInfo {
         ConcurrentMap<Class<?>, MetaInfo> metainfos = MAP.computeIfAbsent(locale, __ -> new ConcurrentHashMap<>(1));
         return metainfos.computeIfAbsent(elementType, type -> {
             ResourceBundle bundle = null;
-            String bundleName = type.getName().replace('.', '/');
             try {
-                bundle = ResourceBundle.getBundle(bundleName, locale, type.getClassLoader());
+                bundle = ResourceBundle.getBundle(type.getName(), locale, type.getClassLoader());
             } catch (MissingResourceException ignore) {
             }
             Field[] fields = elementType.getDeclaredFields();

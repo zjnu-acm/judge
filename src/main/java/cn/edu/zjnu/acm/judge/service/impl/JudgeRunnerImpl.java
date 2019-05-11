@@ -21,7 +21,6 @@ import cn.edu.zjnu.acm.judge.service.JudgeRunner;
 import cn.edu.zjnu.acm.judge.support.JudgeData;
 import cn.edu.zjnu.acm.judge.support.RunResult;
 import cn.edu.zjnu.acm.judge.util.Platform;
-import cn.edu.zjnu.acm.judge.util.ResultType;
 import com.github.zhanhb.judge.common.ExecuteResult;
 import com.github.zhanhb.judge.common.JudgeBridge;
 import com.github.zhanhb.judge.common.Options;
@@ -119,14 +118,14 @@ public class JudgeRunnerImpl implements JudgeRunner {
         long castTimeLimit = runRecord.getTimeLimit() * runRecord.getLanguage().getTimeFactor() + extTime;
         long extraMemory = runRecord.getLanguage().getExtMemory(); //内存附加
         long caseMemoryLimit = (runRecord.getMemoryLimit() + extraMemory) * 1024;
-        Options[] optionses = new Options[caseNum];
+        Options[] opts = new Options[caseNum];
         for (int cas = 0; cas < caseNum; cas++) {
             Path[] entry = judgeData.get(cas);
             Path in = entry[0];
             Path standard = entry[1];
             Path progOutput = work.resolve(standard.getFileName());
 
-            optionses[cas] = Options.builder()
+            opts[cas] = Options.builder()
                     .timeLimit(castTimeLimit) // time limit
                     .memoryLimit(caseMemoryLimit) // memory in bytes
                     .outputLimit(16 * 1024 * 1024) // 16M
@@ -142,33 +141,29 @@ public class JudgeRunnerImpl implements JudgeRunner {
         long time = 0;
         long memory = 0;
         int accept = 0; // final case who's result is accepted.
-        try {
-            ExecuteResult[] ers = judgeBridge.judge(optionses, false, validator);
-            for (ExecuteResult er : ers) {
-                long tim1 = Math.max(0, er.getTime() - extTime);
-                long mem1 = Math.max(0, er.getMemory() / 1024 - extraMemory);
-                String message = er.getMessage();
-                boolean success = er.isSuccess();
-                time = Math.max(time, tim1);
-                memory = Math.max(memory, mem1);
-                log.debug("message = {}, time = {}, memory = {}", message, time, memory);
+        ExecuteResult[] ers = judgeBridge.judge(opts, false, validator);
+        for (ExecuteResult er : ers) {
+            long tim1 = Math.max(0, er.getTime() - extTime);
+            long mem1 = Math.max(0, er.getMemory() / 1024 - extraMemory);
+            String message = er.getMessage();
+            boolean success = er.isSuccess();
+            time = Math.max(time, tim1);
+            memory = Math.max(memory, mem1);
+            log.debug("message = {}, time = {}, memory = {}", message, time, memory);
 
-                details.add(String.valueOf(er.getCode().getResult()));
-                details.add(success ? scorePerCase : "0");
-                details.add(String.valueOf(tim1));
-                details.add(String.valueOf(mem1));
-                if (success) {
-                    ++accept;
-                }
+            details.add(String.valueOf(er.getCode().getResult()));
+            details.add(success ? scorePerCase : "0");
+            details.add(String.valueOf(tim1));
+            details.add(String.valueOf(mem1));
+            if (success) {
+                ++accept;
             }
-        } catch (RuntimeException | Error ex) {
-            throw ex;
         }
         log.debug("{}", details);
         int score = accept >= 0 ? (int) Math.round(accept * 100.0 / caseNum) : accept;
         if (score == 0 && accept != 0) {
             ++score;
-        } else if (score == ResultType.SCORE_ACCEPT && accept != caseNum) {
+        } else if (score == 100 && accept != caseNum) {
             --score;
         }
         String msg = details.stream().map(String::valueOf).collect(Collectors.joining(","));
@@ -191,7 +186,6 @@ public class JudgeRunnerImpl implements JudgeRunner {
         if (!StringUtils.hasText(compileCommand)) {
             return true;
         }
-        assert compileCommand != null;
         // create compiling process
         // VC++ will output compiling info to stdout
         // G++ will output compiling info to stderr

@@ -67,15 +67,14 @@ public class URIBuilder {
             return value;
         }
         URLEncoder qe = URLEncoder.QUERY;
-        StringBuilder sb = new StringBuilder(value).append('?');
+        StringBuilder sb = new StringBuilder(value);
+        char ch = '?';
         while (true) {
             Map.Entry<String, String[]> entry = it.next();
             String key = qe.encode(entry.getKey());
             for (String val : entry.getValue()) {
-                sb.append('&');
-                sb.append(key);
-                sb.append('=');
-                sb.append(qe.encode(val));
+                sb.append(ch).append(key).append('=').append(qe.encode(val));
+                ch = '&';
             }
             if (!it.hasNext()) {
                 return sb.toString();

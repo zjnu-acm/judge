@@ -17,6 +17,7 @@ package com.github.zhanhb.judge.common;
 
 import cn.edu.zjnu.acm.judge.util.DeleteHelper;
 import com.github.zhanhb.judge.GroovyHolder;
+import com.google.common.collect.ImmutableList;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -40,7 +41,6 @@ import org.junit.runners.Parameterized;
 import static org.hamcrest.Matchers.arrayWithSize;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assume.assumeTrue;
 
 /**
  *
@@ -51,7 +51,6 @@ import static org.junit.Assume.assumeTrue;
 public class JudgeBridgeTest {
 
     private static Path tmp;
-    private static Path data;
     private static Path input;
     private static Path output;
     private static Path groovy;
@@ -64,10 +63,12 @@ public class JudgeBridgeTest {
 
     @Parameterized.Parameters(name = "{index}: {0} {1}")
     public static List<Object[]> data() throws Exception {
-        assumeTrue("not windows", Platform.getNativePlatform().getOS().isWindows());
+        if (!Platform.getNativePlatform().getOS().isWindows()) {
+            return ImmutableList.of();
+        }
         URI uri = JudgeBridgeTest.class.getResource("/sample/program").toURI();
         Path program = Paths.get(uri);
-        data = program.resolve("../data").toRealPath();
+        Path data = program.resolve("../data").toRealPath();
         input = data.resolve("b.in");
         output = data.resolve("b.out");
         tmp = Files.createDirectories(Files.createDirectories(Paths.get("C:", "tmp")));
@@ -93,7 +94,6 @@ public class JudgeBridgeTest {
         DeleteHelper.delete(tmp);
     }
 
-    private final boolean stopOnError = false;
     private final Validator validator = SimpleValidator.NORMAL;
 
     private final Checker checker;
@@ -116,7 +116,7 @@ public class JudgeBridgeTest {
     }
 
     @Test
-    public void test() throws Exception {
+    public void test() {
         test(executable, checker);
     }
 
@@ -132,6 +132,7 @@ public class JudgeBridgeTest {
                 .workDirectory(tmp)
                 .timeLimit(6000)
                 .build();
+        boolean stopOnError = false;
         ExecuteResult er = judgeBridge.judge(new Options[]{options}, stopOnError, validator)[0];
         log.info("{}", er);
         assertEquals(executable, checker.getStatus(), er.getCode());
