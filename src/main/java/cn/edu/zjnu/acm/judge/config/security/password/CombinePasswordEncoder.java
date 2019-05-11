@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 ZJNU ACM.
+ * Copyright 2015 zhanhb.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,33 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.config.password;
+package cn.edu.zjnu.acm.judge.config.security.password;
 
+import java.util.Arrays;
+import java.util.Objects;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  *
  * @author zhanhb
  */
-public class AcceptNullPasswordEncoder implements PasswordEncoder {
+public class CombinePasswordEncoder extends PasswordEncoderWrapper {
 
-    private final PasswordEncoder encoder;
+    private final PasswordEncoder[] encoders;
 
-    public AcceptNullPasswordEncoder(PasswordEncoder encoder) {
-        this.encoder = encoder;
+    public CombinePasswordEncoder(PasswordEncoder... passwordEncoders) {
+        this(0, passwordEncoders);
     }
 
-    @Override
-    public String encode(CharSequence rawPassword) {
-        return rawPassword == null ? null : encoder.encode(rawPassword);
+    public CombinePasswordEncoder(int index, PasswordEncoder... passwordEncoders) {
+        super(passwordEncoders[index]);
+        PasswordEncoder[] clone = passwordEncoders.clone();
+        // null check
+        Arrays.stream(clone).forEach(Objects::requireNonNull);
+        encoders = clone;
     }
 
     @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
-        if (rawPassword == null || encodedPassword == null) {
-            return rawPassword == encodedPassword;
-        }
-        return encoder.matches(rawPassword, encodedPassword);
+        return Arrays.stream(encoders)
+                .anyMatch(encoder -> encoder.matches(rawPassword, encodedPassword));
     }
 
 }

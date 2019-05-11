@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 zhanhb.
+ * Copyright 2017 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.config.password;
+package cn.edu.zjnu.acm.judge.config.security.password;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -21,29 +21,25 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  *
  * @author zhanhb
  */
-public class LengthLimitedPasswordEncoder extends PasswordEncoderWrapper {
+public class AcceptNullPasswordEncoder implements PasswordEncoder {
 
-    private final int length;
+    private final PasswordEncoder encoder;
 
-    public LengthLimitedPasswordEncoder(PasswordEncoder parent, int length) {
-        super(parent);
-        this.length = length;
+    public AcceptNullPasswordEncoder(PasswordEncoder encoder) {
+        this.encoder = encoder;
     }
 
     @Override
     public String encode(CharSequence rawPassword) {
-        return super.encode(limit(rawPassword));
+        return rawPassword == null ? null : encoder.encode(rawPassword);
     }
 
     @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
-        return super.matches(limit(rawPassword), encodedPassword);
-    }
-
-    private CharSequence limit(CharSequence originPassword) {
-        return originPassword.length() <= length
-                ? originPassword
-                : originPassword.subSequence(0, length);
+        if (rawPassword == null || encodedPassword == null) {
+            return rawPassword == encodedPassword;
+        }
+        return encoder.matches(rawPassword, encodedPassword);
     }
 
 }

@@ -13,30 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.config.password;
+package cn.edu.zjnu.acm.judge.config.security.password;
 
-import java.util.StringTokenizer;
+import java.util.Objects;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  *
  * @author zhanhb
  */
-public class MultiPasswordSupport extends PasswordEncoderWrapper {
+/* (non-Javadoc)
+ * Class should be public for javadoc to access, link source option will generate link to source of this file.
+ */
+public abstract class PasswordEncoderWrapper implements PasswordEncoder {
 
-    public MultiPasswordSupport(PasswordEncoder encoder) {
-        super(encoder);
+    private final PasswordEncoder encoder;
+
+    @SuppressWarnings("WeakerAccess")
+    public PasswordEncoderWrapper(PasswordEncoder encoder) {
+        this.encoder = Objects.requireNonNull(encoder);
+    }
+
+    @Override
+    public String encode(CharSequence rawPassword) {
+        return encoder.encode(rawPassword);
     }
 
     @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
-        for (StringTokenizer tokenizer = new StringTokenizer(encodedPassword, ",");
-                tokenizer.hasMoreElements();) {
-            if (super.matches(rawPassword, tokenizer.nextToken())) {
-                return true;
-            }
-        }
-        return false;
+        return encoder.matches(rawPassword, encodedPassword);
     }
 
 }

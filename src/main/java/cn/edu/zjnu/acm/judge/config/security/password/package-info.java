@@ -16,6 +16,6 @@
 /**
  * Password encoders.
  *
- * @see cn.edu.zjnu.acm.judge.config.PasswordConfiguration#passwordEncoder()
+ * @see cn.edu.zjnu.acm.judge.config.security.PasswordConfiguration#passwordEncoder()
  */
-package cn.edu.zjnu.acm.judge.config.password;
+package cn.edu.zjnu.acm.judge.config.security.password;

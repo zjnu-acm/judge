@@ -13,35 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.config.password;
+package cn.edu.zjnu.acm.judge.config.security.password;
 
-import java.util.Objects;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  *
  * @author zhanhb
  */
-/* (non-Javadoc)
- * Class should be public for javadoc to access, link source option will generate link to source of this file.
- */
-public abstract class PasswordEncoderWrapper implements PasswordEncoder {
+public class LengthLimitedPasswordEncoder extends PasswordEncoderWrapper {
 
-    private final PasswordEncoder encoder;
+    private final int length;
 
-    @SuppressWarnings("WeakerAccess")
-    public PasswordEncoderWrapper(PasswordEncoder encoder) {
-        this.encoder = Objects.requireNonNull(encoder);
+    public LengthLimitedPasswordEncoder(PasswordEncoder parent, int length) {
+        super(parent);
+        this.length = length;
     }
 
     @Override
     public String encode(CharSequence rawPassword) {
-        return encoder.encode(rawPassword);
+        return super.encode(limit(rawPassword));
     }
 
     @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
-        return encoder.matches(rawPassword, encodedPassword);
+        return super.matches(limit(rawPassword), encodedPassword);
+    }
+
+    private CharSequence limit(CharSequence originPassword) {
+        return originPassword.length() <= length
+                ? originPassword
+                : originPassword.subSequence(0, length);
     }
 
 }

@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.config;
+package cn.edu.zjnu.acm.judge.config.security;
 
-import cn.edu.zjnu.acm.judge.config.password.AcceptNullPasswordEncoder;
-import cn.edu.zjnu.acm.judge.config.password.CombinePasswordEncoder;
-import cn.edu.zjnu.acm.judge.config.password.LengthLimitedPasswordEncoder;
-import cn.edu.zjnu.acm.judge.config.password.MessageDigestPasswordEncoder;
-import cn.edu.zjnu.acm.judge.config.password.MultiPasswordSupport;
+import cn.edu.zjnu.acm.judge.config.security.password.AcceptNullPasswordEncoder;
+import cn.edu.zjnu.acm.judge.config.security.password.CombinePasswordEncoder;
+import cn.edu.zjnu.acm.judge.config.security.password.LengthLimitedPasswordEncoder;
+import cn.edu.zjnu.acm.judge.config.security.password.MessageDigestPasswordEncoder;
+import cn.edu.zjnu.acm.judge.config.security.password.MultiPasswordSupport;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

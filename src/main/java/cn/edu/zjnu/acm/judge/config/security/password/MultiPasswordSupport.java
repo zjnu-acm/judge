@@ -13,36 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.config.password;
+package cn.edu.zjnu.acm.judge.config.security.password;
 
-import java.util.Arrays;
-import java.util.Objects;
+import java.util.StringTokenizer;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  *
  * @author zhanhb
  */
-public class CombinePasswordEncoder extends PasswordEncoderWrapper {
+public class MultiPasswordSupport extends PasswordEncoderWrapper {
 
-    private final PasswordEncoder[] encoders;
-
-    public CombinePasswordEncoder(PasswordEncoder... passwordEncoders) {
-        this(0, passwordEncoders);
-    }
-
-    public CombinePasswordEncoder(int index, PasswordEncoder... passwordEncoders) {
-        super(passwordEncoders[index]);
-        PasswordEncoder[] clone = passwordEncoders.clone();
-        // null check
-        Arrays.stream(clone).forEach(Objects::requireNonNull);
-        encoders = clone;
+    public MultiPasswordSupport(PasswordEncoder encoder) {
+        super(encoder);
     }
 
     @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
-        return Arrays.stream(encoders)
-                .anyMatch(encoder -> encoder.matches(rawPassword, encodedPassword));
+        for (StringTokenizer tokenizer = new StringTokenizer(encodedPassword, ",");
+                tokenizer.hasMoreElements();) {
+            if (super.matches(rawPassword, tokenizer.nextToken())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

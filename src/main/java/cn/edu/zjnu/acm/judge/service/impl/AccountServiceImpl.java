@@ -15,7 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.service.impl;
 
-import cn.edu.zjnu.acm.judge.config.PasswordConfiguration;
+import cn.edu.zjnu.acm.judge.config.security.PasswordConfiguration;
 import cn.edu.zjnu.acm.judge.data.excel.Account;
 import cn.edu.zjnu.acm.judge.data.form.AccountForm;
 import cn.edu.zjnu.acm.judge.data.form.AccountImportForm;

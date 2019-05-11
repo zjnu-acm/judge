@@ -126,7 +126,6 @@ public class JudgeRunnerTest {
     private final String key;
     private final Checker checker;
     private final Path path;
-    private int groovyLanguage;
     private final JudgeData judgeData;
     private Path work;
 
@@ -164,7 +163,6 @@ public class JudgeRunnerTest {
                 .build();
         log.warn("Language groovy: {}", groovy);
         languageMapper.save(groovy);
-        groovyLanguage = groovy.getId();
     }
 
     @Test
