@@ -55,6 +55,17 @@ public class UserListControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andReturn();
+        for (int i = 0; i < 1000; i++) {
+            mockDataService.user();
+        }
+        for (int page : new int[]{
+            0, 1, 2, 7, 8, 9, 18, 19
+        }) {
+            result = mvc.perform(get("/userlist").param("page", Integer.toString(page)))
+                    .andExpect(status().isOk())
+                    .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+                    .andReturn();
+        }
     }
 
 }

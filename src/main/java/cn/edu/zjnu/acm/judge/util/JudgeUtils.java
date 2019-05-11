@@ -73,11 +73,21 @@ public enum JudgeUtils {
             throw new IllegalArgumentException();
         }
         LongStream stream;
-        if (total < 20) {
+        int max = 15;
+        if (total <= max) {
             stream = LongStream.range(0, total);
         } else {
             LongStream a = LongStream.of(0, total - 1);
-            LongStream b = LongStream.rangeClosed(Math.max(0, current - 9), Math.min(total - 1, current + 9));
+            LongStream b;
+            long left = max / 2, right = max - left - 1;
+
+            if (current > total - right) {
+                b = LongStream.range(total - max + 1, total);
+            } else if (current < left) {
+                b = LongStream.range(0, max - 1);
+            } else {
+                b = LongStream.range(Math.max(0, current - left + 1), Math.min(total, current + right));
+            }
             stream = LongStream.concat(a, b);
         }
         return stream.sorted().distinct().toArray();
