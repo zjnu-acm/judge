@@ -42,6 +42,7 @@ public class MessageDigestPasswordEncoderTest {
     public void testEncode() {
         log.info("encode");
         CharSequence password = "123456";
+        @SuppressWarnings("deprecation")
         MessageDigestPasswordEncoder instance = MessageDigestPasswordEncoder.md5();
         String expResult = "e10adc3949ba59abbe56e057f20f883e";
         String result = instance.encode(password);
@@ -56,6 +57,7 @@ public class MessageDigestPasswordEncoderTest {
         log.info("matches");
         CharSequence rawPassword = "";
         String encodedPassword = "Da39a3ee5e6b4b0d3255bfef95601890afd80709";
+        @SuppressWarnings("deprecation")
         MessageDigestPasswordEncoder instance = MessageDigestPasswordEncoder.sha1();
         boolean expResult = true;
         boolean result = instance.matches(rawPassword, encodedPassword);
