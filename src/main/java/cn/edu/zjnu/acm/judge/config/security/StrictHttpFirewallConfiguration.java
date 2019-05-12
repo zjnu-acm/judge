@@ -10,6 +10,7 @@ public class StrictHttpFirewallConfiguration {
     @Bean
     public StrictHttpFirewall httpFirewall() {
         StrictHttpFirewall firewall = new StrictHttpFirewall();
+        firewall.setAllowSemicolon(true);
         firewall.setAllowUrlEncodedPercent(true);
         return firewall;
     }
