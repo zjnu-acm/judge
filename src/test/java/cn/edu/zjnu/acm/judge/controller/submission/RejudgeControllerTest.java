@@ -3,7 +3,6 @@ package cn.edu.zjnu.acm.judge.controller.submission;
 import cn.edu.zjnu.acm.judge.Application;
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.service.AccountService;
-import cn.edu.zjnu.acm.judge.service.AccountServiceTest;
 import cn.edu.zjnu.acm.judge.service.DeleteService;
 import cn.edu.zjnu.acm.judge.service.MockDataService;
 import cn.edu.zjnu.acm.judge.service.SubmissionService;
@@ -74,7 +73,7 @@ public class RejudgeControllerTest {
         if (submission != null) {
             deleteService.delete(systemService.getDataDirectory(submission.getProblem()));
             submissionService.delete(submission.getId());
-            AccountServiceTest.delete(accountService, submission.getUser());
+            accountService.delete(submission.getUser());
         }
     }
 
@@ -107,10 +106,10 @@ public class RejudgeControllerTest {
     @Test
     public void testRejudgeProblem() throws Exception {
         log.info("rejudgeProblem");
-        long problem_id = 0;
+        long problemId = 0;
         MvcResult result = mvc.perform(get("/admin/rejudge")
                 .accept(MediaType.TEXT_HTML, MediaType.APPLICATION_JSON)
-                .param("problem_id", Long.toString(problem_id)))
+                .param("problem_id", Long.toString(problemId)))
                 .andExpect(status().isAccepted())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn();

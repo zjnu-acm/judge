@@ -27,7 +27,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -76,16 +75,6 @@ public class PasswordConfigurationTest {
         String rawPassword = "123456";
         String result = passwordEncoder.encode(rawPassword);
         assertTrue(passwordEncoder.matches(rawPassword, result));
-
-    }
-
-    @Test
-    public void testNull() {
-        log.info("passwordEncoder");
-        assertNull(passwordEncoder.encode(null));
-        assertFalse(passwordEncoder.matches(null, ""));
-        assertFalse(passwordEncoder.matches("", null));
-        assertTrue(passwordEncoder.matches(null, null));
     }
 
 }

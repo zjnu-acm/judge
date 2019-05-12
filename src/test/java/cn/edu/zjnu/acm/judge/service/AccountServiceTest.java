@@ -39,10 +39,6 @@ import org.springframework.transaction.annotation.Transactional;
 @WebAppConfiguration
 public class AccountServiceTest {
 
-    public static void delete(AccountService accountService, String userId) {
-        accountService.delete(userId);
-    }
-
     @Autowired
     private AccountService accountService;
 

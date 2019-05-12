@@ -15,7 +15,6 @@
  */
 package cn.edu.zjnu.acm.judge.config.security;
 
-import cn.edu.zjnu.acm.judge.config.security.password.AcceptNullPasswordEncoder;
 import cn.edu.zjnu.acm.judge.config.security.password.CombinePasswordEncoder;
 import cn.edu.zjnu.acm.judge.config.security.password.LengthLimitedPasswordEncoder;
 import cn.edu.zjnu.acm.judge.config.security.password.MessageDigestPasswordEncoder;
@@ -51,7 +50,7 @@ public class PasswordConfiguration {
                                 )
                         )
                 ), MAX_PASSWORD_LENGTH);
-        return new AcceptNullPasswordEncoder(passwordEncoder);
+        return passwordEncoder;
     }
 
 }

@@ -30,7 +30,7 @@ public class ContestListController {
 
     @GetMapping("/pastcontests")
     public String pastContests(Model model, RedirectAttributes redirectAttributes) {
-        return execute(model, "Contests", BusinessCode.NO_PAST_CONTESTS, redirectAttributes, ContestStatus.ENDED);
+        return execute(model, "Past Contests", BusinessCode.NO_PAST_CONTESTS, redirectAttributes, ContestStatus.ENDED);
     }
 
     @GetMapping("/currentcontests")
