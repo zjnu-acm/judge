@@ -18,8 +18,6 @@ package cn.edu.zjnu.acm.judge.controller;
 import cn.edu.zjnu.acm.judge.config.JudgeHandlerInterceptor;
 import cn.edu.zjnu.acm.judge.service.ContestOnlyService;
 import cn.edu.zjnu.acm.judge.service.SystemService;
-import cn.edu.zjnu.acm.judge.util.URLEncoder;
-import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +28,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static org.springframework.http.MediaType.ALL_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -69,9 +68,12 @@ public class MainController {
     }
 
     @GetMapping(value = "/unauthorized", produces = {TEXT_HTML_VALUE, ALL_VALUE})
-    public String unauthorizedHtml(HttpServletRequest request) throws UnsupportedEncodingException {
+    public String unauthorizedHtml(HttpServletRequest request, RedirectAttributes redirectAttributes) {
         String url = (String) request.getAttribute(JudgeHandlerInterceptor.BACK_URL_ATTRIBUTE_NAME);
-        return StringUtils.hasText(url) ? "redirect:/login?url=" + URLEncoder.QUERY.encode(url) : "redirect:/login";
+        if (StringUtils.hasText(url)) {
+            redirectAttributes.addAttribute("url", url);
+        }
+        return "redirect:/login";
     }
 
     @GetMapping(value = "/unauthorized", produces = APPLICATION_JSON_VALUE)
