@@ -104,9 +104,9 @@ public class AccountController {
 
     @PostMapping(consumes = MULTIPART_FORM_DATA_VALUE)
     public List<Account> parseExcel(@RequestParam("file") MultipartFile multipartFile,
-            Optional<Locale> locale) throws IOException {
+            @Nullable Locale locale) throws IOException {
         try (InputStream inputStream = multipartFile.getInputStream()) {
-            return accountService.parseExcel(inputStream, locale.orElse(Locale.ROOT));
+            return accountService.parseExcel(inputStream, Optional.ofNullable(locale).orElse(Locale.ROOT));
         }
     }
 
