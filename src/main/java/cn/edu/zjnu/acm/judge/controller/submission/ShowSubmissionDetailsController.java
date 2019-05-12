@@ -1,6 +1,6 @@
 package cn.edu.zjnu.acm.judge.controller.submission;
 
-import cn.edu.zjnu.acm.judge.data.dto.SubmissionDetail;
+import cn.edu.zjnu.acm.judge.data.dto.SubmissionDetailDTO;
 import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.exception.BusinessCode;
@@ -42,7 +42,7 @@ public class ShowSubmissionDetailsController {
         if (!submissionService.canView(request, submission)) {
             throw new BusinessException(BusinessCode.VIEW_SOURCE_PERMISSION_DENIED, submissionId);
         }
-        List<SubmissionDetail> details = submissionService.getSubmissionDetail(submissionId);
+        List<SubmissionDetailDTO> details = submissionService.getSubmissionDetail(submissionId);
         request.setAttribute("details", details);
         request.setAttribute("user", submission.getUser());
         request.setAttribute("problem", submission.getProblem());

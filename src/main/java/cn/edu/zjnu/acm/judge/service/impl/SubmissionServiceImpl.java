@@ -15,7 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.service.impl;
 
-import cn.edu.zjnu.acm.judge.data.dto.SubmissionDetail;
+import cn.edu.zjnu.acm.judge.data.dto.SubmissionDetailDTO;
 import cn.edu.zjnu.acm.judge.data.form.BestSubmissionForm;
 import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.domain.Problem;
@@ -194,12 +194,12 @@ public class SubmissionServiceImpl implements SubmissionService {
     }
 
     @Override
-    public List<SubmissionDetail> parseSubmissionDetail(String message) {
+    public List<SubmissionDetailDTO> parseSubmissionDetail(String message) {
         Objects.requireNonNull(message, "submission detail");
         String[] detailsArray = message.split(",");
-        SubmissionDetail[] details = new SubmissionDetail[detailsArray.length / 4];
+        SubmissionDetailDTO[] details = new SubmissionDetailDTO[detailsArray.length / 4];
         for (int i = 0; i < detailsArray.length / 4; ++i) {
-            details[i] = SubmissionDetail.builder()
+            details[i] = SubmissionDetailDTO.builder()
                     .result(ResultType.getCaseScoreDescription(Integer.parseInt(detailsArray[i << 2])))
                     .score(detailsArray[i << 2 | 1])
                     .time(detailsArray[i << 2 | 2])
@@ -210,7 +210,7 @@ public class SubmissionServiceImpl implements SubmissionService {
     }
 
     @Override
-    public List<SubmissionDetail> getSubmissionDetail(long submissionId) {
+    public List<SubmissionDetailDTO> getSubmissionDetail(long submissionId) {
         String submissionDetail = submissionDetailMapper.getSubmissionDetail(submissionId);
         if (submissionDetail == null) {
             return ImmutableList.of();

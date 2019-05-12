@@ -16,7 +16,7 @@
 package cn.edu.zjnu.acm.judge.service;
 
 import cn.edu.zjnu.acm.judge.Application;
-import cn.edu.zjnu.acm.judge.data.dto.SubmissionDetail;
+import cn.edu.zjnu.acm.judge.data.dto.SubmissionDetailDTO;
 import cn.edu.zjnu.acm.judge.domain.Language;
 import cn.edu.zjnu.acm.judge.mapper.LanguageMapper;
 import cn.edu.zjnu.acm.judge.support.JudgeData;
@@ -187,7 +187,7 @@ public class JudgeRunnerTest {
         assertNull("type will either be null or COMPILATION_ERROR,"
                 + " if got other result, please modify this file",
                 runResult.getType());
-        List<SubmissionDetail> details = submissionService.parseSubmissionDetail(runResult.getMessage());
+        List<SubmissionDetailDTO> details = submissionService.parseSubmissionDetail(runResult.getMessage());
         String testMessage = key + " " + details + " " + extectedCaseResult;
         assertEquals(testMessage, expectScore, runResult.getScore());
         boolean matches = details.stream().anyMatch(detail -> extectedCaseResult.equals(detail.getResult()));

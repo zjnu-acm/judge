@@ -28,7 +28,7 @@ import lombok.Setter;
 @Builder(builderClassName = "Builder")
 @Data
 @Setter(AccessLevel.PRIVATE)
-public class SubmissionDetail implements Serializable {
+public class SubmissionDetailDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

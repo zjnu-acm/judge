@@ -15,7 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.service;
 
-import cn.edu.zjnu.acm.judge.data.dto.SubmissionDetail;
+import cn.edu.zjnu.acm.judge.data.dto.SubmissionDetailDTO;
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import com.google.common.annotations.VisibleForTesting;
 import java.util.List;
@@ -48,8 +48,8 @@ public interface SubmissionService {
     void remove(String userId);
 
     @VisibleForTesting
-    List<SubmissionDetail> parseSubmissionDetail(String message);
+    List<SubmissionDetailDTO> parseSubmissionDetail(String message);
 
-    List<SubmissionDetail> getSubmissionDetail(long submissionId);
+    List<SubmissionDetailDTO> getSubmissionDetail(long submissionId);
 
 }
