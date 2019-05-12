@@ -19,28 +19,29 @@ import java.util.Collections;
 import java.util.Locale;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  *
  * @author zhanhb
  */
-@ControllerAdvice(annotations = RestController.class)
+@ControllerAdvice(annotations = Controller.class)
 @RequiredArgsConstructor
-public class BusinessExceptionHandler {
+public class ControllerExceptionHandler {
 
     private final MessageSource messageSource;
 
     @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<?> handler(BusinessException businessException, Locale locale) {
+    public ModelAndView handler(BusinessException businessException, Locale locale) {
         BusinessCode code = businessException.getCode();
-        ResponseEntity.BodyBuilder builder = ResponseEntity.status(code.getStatus());
+        HttpStatus status = code.getStatus();
         String message = code.getMessage();
-        String formatted = messageSource.getMessage(message, businessException.getParams(), message, locale);
-        return builder.body(Collections.singletonMap("message", formatted));
+        message = messageSource.getMessage(message, businessException.getParams(), message, locale);
+        return new ModelAndView("message", Collections.singletonMap("message", message), status);
     }
 
 }

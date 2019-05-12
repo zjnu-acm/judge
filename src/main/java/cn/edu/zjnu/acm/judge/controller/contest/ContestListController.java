@@ -2,11 +2,11 @@ package cn.edu.zjnu.acm.judge.controller.contest;
 
 import cn.edu.zjnu.acm.judge.data.form.ContestStatus;
 import cn.edu.zjnu.acm.judge.domain.Contest;
-import cn.edu.zjnu.acm.judge.exception.MessageException;
+import cn.edu.zjnu.acm.judge.exception.BusinessCode;
+import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.service.ContestService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,29 +20,29 @@ public class ContestListController {
 
     @GetMapping("/contests")
     public String contests(Model model, RedirectAttributes redirectAttributes) {
-        return execute(model, "Contests", "onlinejudge.contest.nocontest", redirectAttributes, ContestStatus.PENDING, ContestStatus.RUNNING, ContestStatus.ENDED);
+        return execute(model, "Contests", BusinessCode.NO_CONTESTS, redirectAttributes, ContestStatus.PENDING, ContestStatus.RUNNING, ContestStatus.ENDED);
     }
 
     @GetMapping("/scheduledcontests")
     public String scheduledContests(Model model, RedirectAttributes redirectAttributes) {
-        return execute(model, "Scheduled Contests", "onlinejudge.contest.noschedule", redirectAttributes, ContestStatus.PENDING);
+        return execute(model, "Scheduled Contests", BusinessCode.NO_SCHEDULED_CONTESTS, redirectAttributes, ContestStatus.PENDING);
     }
 
     @GetMapping("/pastcontests")
     public String pastContests(Model model, RedirectAttributes redirectAttributes) {
-        return execute(model, "Contests", "onlinejudge.contest.nopast", redirectAttributes, ContestStatus.ENDED);
+        return execute(model, "Contests", BusinessCode.NO_PAST_CONTESTS, redirectAttributes, ContestStatus.ENDED);
     }
 
     @GetMapping("/currentcontests")
     public String currentContests(Model model, RedirectAttributes redirectAttributes) {
-        return execute(model, "Current Contests", "onlinejudge.contest.nocurrent", redirectAttributes, ContestStatus.RUNNING);
+        return execute(model, "Current Contests", BusinessCode.NO_CURRENT_CONTESTS, redirectAttributes, ContestStatus.RUNNING);
     }
 
-    private String execute(Model model, String title, String errorMessage, RedirectAttributes redirectAttributes,
+    private String execute(Model model, String title, BusinessCode businessCode, RedirectAttributes redirectAttributes,
             ContestStatus status, ContestStatus... rest) {
         List<Contest> contests = contestService.findAll(status, rest);
         if (contests.isEmpty()) {
-            throw new MessageException(errorMessage, HttpStatus.OK);
+            throw new BusinessException(businessCode);
         } else if (contests.size() == 1) {
             redirectAttributes.addAttribute("contest_id", contests.get(0).getId());
             return "redirect:/showcontest";

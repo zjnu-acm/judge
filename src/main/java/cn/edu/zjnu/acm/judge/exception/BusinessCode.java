@@ -63,7 +63,16 @@ public enum BusinessCode {
     RESET_PASSWORD_FORBIDDEN("由于安全原因，无法重置管理员的密码", HttpStatus.FORBIDDEN),
     IMPORT_USER_EXISTS("部分用户已经存在，请移除或选择存在策略后再导入"),
     IMPORT_USER_EXISTS_CHANGE("用户已经变化，请重新导入Excel", HttpStatus.CONFLICT),
-    IMPORT_USER_RESET_PASSWORD_FORBIDDEN("由于安全原因，无法更新管理员的密码", HttpStatus.FORBIDDEN);
+    IMPORT_USER_RESET_PASSWORD_FORBIDDEN("由于安全原因，无法更新管理员的密码", HttpStatus.FORBIDDEN),
+    NO_SUCH_MESSAGE("No such message", HttpStatus.NOT_FOUND),
+    MESSAGE_EMPTY_TITLE("Title can't be blank"),
+    NO_SUCH_MAIL("No such mail", HttpStatus.NOT_FOUND),
+    MAIL_INVALID_ACCESS("Sorry, invalid access", HttpStatus.FORBIDDEN),
+    MAIL_CONTENT_LONG("Sorry, content too long", HttpStatus.PAYLOAD_TOO_LARGE),
+    NO_CONTESTS("onlinejudge.contest.nocontest", HttpStatus.OK),
+    NO_SCHEDULED_CONTESTS("onlinejudge.contest.noschedule", HttpStatus.OK),
+    NO_PAST_CONTESTS("onlinejudge.contest.nopast", HttpStatus.OK),
+    NO_CURRENT_CONTESTS("onlinejudge.contest.nocurrent", HttpStatus.OK);
 
     private final HttpStatus status;
     private final String message;

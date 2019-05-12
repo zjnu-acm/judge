@@ -16,14 +16,14 @@
 package cn.edu.zjnu.acm.judge.controller;
 
 import cn.edu.zjnu.acm.judge.domain.Mail;
-import cn.edu.zjnu.acm.judge.exception.MessageException;
+import cn.edu.zjnu.acm.judge.exception.BusinessCode;
+import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.MailMapper;
 import cn.edu.zjnu.acm.judge.service.AccountService;
 import cn.edu.zjnu.acm.judge.service.impl.UserDetailsServiceImpl;
 import cn.edu.zjnu.acm.judge.util.JudgeUtils;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -48,10 +48,10 @@ public class MailController {
     private Mail access(long mailId, Authentication authentication) {
         Mail mail = mailMapper.findOne(mailId);
         if (mail == null) {
-            throw new MessageException("No such mail", HttpStatus.NOT_FOUND);
+            throw new BusinessException(BusinessCode.NO_SUCH_MAIL);
         }
         if (!UserDetailsServiceImpl.isUser(authentication, mail.getTo())) {
-            throw new MessageException("Sorry, invalid access", HttpStatus.FORBIDDEN);
+            throw new BusinessException(BusinessCode.MAIL_INVALID_ACCESS);
         }
         return mail;
     }
@@ -94,7 +94,7 @@ public class MailController {
             title = "No Topic";
         }
         if (content.length() > 40000) {
-            throw new MessageException("Sorry, content too long", HttpStatus.PAYLOAD_TOO_LARGE);
+            throw new BusinessException(BusinessCode.MAIL_CONTENT_LONG);
         }
         accountService.findOne(to);
 
@@ -119,11 +119,11 @@ public class MailController {
         if (reply != -1) {
             Mail parent = mailMapper.findOne(reply);
             if (parent == null) {
-                throw new MessageException("No such mail", HttpStatus.NOT_FOUND);
+                throw new BusinessException(BusinessCode.NO_SUCH_MAIL);
             }
             String toUser = parent.getTo();
             if (!UserDetailsServiceImpl.isUser(authentication, toUser)) {
-                throw new MessageException("invalid access", HttpStatus.FORBIDDEN);
+                throw new BusinessException(BusinessCode.MAIL_INVALID_ACCESS);
             }
             userId = parent.getFrom();
             title = parent.getTitle();

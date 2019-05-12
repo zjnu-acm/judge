@@ -1,7 +1,8 @@
 package cn.edu.zjnu.acm.judge.controller;
 
 import cn.edu.zjnu.acm.judge.domain.Message;
-import cn.edu.zjnu.acm.judge.exception.MessageException;
+import cn.edu.zjnu.acm.judge.exception.BusinessCode;
+import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.MessageMapper;
 import cn.edu.zjnu.acm.judge.service.MessageService;
 import cn.edu.zjnu.acm.judge.util.JudgeUtils;
@@ -13,7 +14,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -128,7 +128,7 @@ public class BBSController {
             Authentication authentication) {
         final String userId = authentication != null ? authentication.getName() : null;
         if (!StringUtils.hasText(title)) {
-            throw new MessageException("Title can't be blank");
+            throw new BusinessException(BusinessCode.MESSAGE_EMPTY_TITLE);
         }
 
         messageService.save(parentId, problemId, userId, title, content);
@@ -146,7 +146,7 @@ public class BBSController {
             Model model) {
         Message message = messageMapper.findOne(messageId);
         if (message == null) {
-            throw new MessageException("No such message", HttpStatus.NOT_FOUND);
+            throw new BusinessException(BusinessCode.NO_SUCH_MESSAGE);
         }
         final DateTimeFormatter formatter = dtf.withZone(ZoneId.systemDefault());
         final Instant inDate = message.getInDate();

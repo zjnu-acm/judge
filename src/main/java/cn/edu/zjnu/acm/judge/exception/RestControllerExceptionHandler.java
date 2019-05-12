@@ -19,37 +19,28 @@ import java.util.Collections;
 import java.util.Locale;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  *
  * @author zhanhb
  */
-@ControllerAdvice(annotations = Controller.class)
+@ControllerAdvice(annotations = RestController.class)
 @RequiredArgsConstructor
-public class GlobalExceptionHandler {
+public class RestControllerExceptionHandler {
 
     private final MessageSource messageSource;
 
     @ExceptionHandler(BusinessException.class)
-    public ModelAndView handler(BusinessException businessException, Locale locale) {
+    public ResponseEntity<?> handler(BusinessException businessException, Locale locale) {
         BusinessCode code = businessException.getCode();
-        HttpStatus status = code.getStatus();
+        ResponseEntity.BodyBuilder builder = ResponseEntity.status(code.getStatus());
         String message = code.getMessage();
-        message = messageSource.getMessage(message, businessException.getParams(), message, locale);
-        return new ModelAndView("message", Collections.singletonMap("message", message), status);
-    }
-
-    @ExceptionHandler(MessageException.class)
-    public ModelAndView messageExceptionHandler(MessageException ex, Locale locale) {
-        String message = ex.getMessage();
-        HttpStatus status = ex.getHttpStatus();
-        message = messageSource.getMessage(message, null, message, locale);
-        return new ModelAndView("message", Collections.singletonMap("message", message), status);
+        String formatted = messageSource.getMessage(message, businessException.getParams(), message, locale);
+        return builder.body(Collections.singletonMap("message", formatted));
     }
 
 }
