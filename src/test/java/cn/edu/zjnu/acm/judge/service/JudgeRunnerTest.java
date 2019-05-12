@@ -16,11 +16,11 @@
 package cn.edu.zjnu.acm.judge.service;
 
 import cn.edu.zjnu.acm.judge.Application;
-import cn.edu.zjnu.acm.judge.data.dto.RunRecord;
 import cn.edu.zjnu.acm.judge.data.dto.SubmissionDetail;
 import cn.edu.zjnu.acm.judge.domain.Language;
 import cn.edu.zjnu.acm.judge.mapper.LanguageMapper;
 import cn.edu.zjnu.acm.judge.support.JudgeData;
+import cn.edu.zjnu.acm.judge.support.RunRecord;
 import cn.edu.zjnu.acm.judge.support.RunResult;
 import cn.edu.zjnu.acm.judge.util.Platform;
 import cn.edu.zjnu.acm.judge.util.ResultType;

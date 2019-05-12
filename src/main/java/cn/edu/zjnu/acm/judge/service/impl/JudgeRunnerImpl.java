@@ -15,10 +15,10 @@
  */
 package cn.edu.zjnu.acm.judge.service.impl;
 
-import cn.edu.zjnu.acm.judge.data.dto.RunRecord;
 import cn.edu.zjnu.acm.judge.service.DeleteService;
 import cn.edu.zjnu.acm.judge.service.JudgeRunner;
 import cn.edu.zjnu.acm.judge.support.JudgeData;
+import cn.edu.zjnu.acm.judge.support.RunRecord;
 import cn.edu.zjnu.acm.judge.support.RunResult;
 import cn.edu.zjnu.acm.judge.util.Platform;
 import com.github.zhanhb.judge.common.ExecuteResult;

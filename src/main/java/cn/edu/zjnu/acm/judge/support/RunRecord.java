@@ -1,4 +1,4 @@
-package cn.edu.zjnu.acm.judge.data.dto;
+package cn.edu.zjnu.acm.judge.support;
 
 import cn.edu.zjnu.acm.judge.domain.Language;
 import java.io.Serializable;
