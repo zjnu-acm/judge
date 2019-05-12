@@ -63,12 +63,13 @@ public class MiscController {
     public void setSystemInfo(@RequestBody SystemInfoForm json) {
         String info = json.getInfo();
         boolean pureText = json.isPureText();
-        SystemInfoForm systemInfo = new SystemInfoForm();
+        SystemInfoForm systemInfo;
         if (StringUtils.hasText(info)) {
+            systemInfo = new SystemInfoForm();
             systemInfo.setPureText(pureText);
             systemInfo.setInfo(info.trim());
         } else {
-            systemInfo.setPureText(true);
+            systemInfo = null;
         }
         systemService.setSystemInfo(systemInfo);
     }

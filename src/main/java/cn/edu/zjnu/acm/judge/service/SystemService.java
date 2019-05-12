@@ -55,7 +55,7 @@ public interface SystemService {
     @SpecialCall("fragment/notice")
     SystemInfoForm getSystemInfo();
 
-    void setSystemInfo(SystemInfoForm systemInfoForm);
+    void setSystemInfo(@Nullable SystemInfoForm systemInfoForm);
 
     boolean isSpecialJudge(long problemId);
 

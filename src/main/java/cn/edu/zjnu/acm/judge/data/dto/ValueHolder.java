@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
-public class ValueHolder<T> implements Serializable {
+public class ValueHolder<T extends Serializable> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
