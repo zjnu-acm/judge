@@ -48,7 +48,7 @@ public class MailController {
     private Mail access(long mailId, Authentication authentication) {
         Mail mail = mailMapper.findOne(mailId);
         if (mail == null) {
-            throw new BusinessException(BusinessCode.NO_SUCH_MAIL);
+            throw new BusinessException(BusinessCode.MAIL_NOT_FOUND);
         }
         if (!UserDetailsServiceImpl.isUser(authentication, mail.getTo())) {
             throw new BusinessException(BusinessCode.MAIL_INVALID_ACCESS);
@@ -119,7 +119,7 @@ public class MailController {
         if (reply != -1) {
             Mail parent = mailMapper.findOne(reply);
             if (parent == null) {
-                throw new BusinessException(BusinessCode.NO_SUCH_MAIL);
+                throw new BusinessException(BusinessCode.MAIL_NOT_FOUND);
             }
             String toUser = parent.getTo();
             if (!UserDetailsServiceImpl.isUser(authentication, toUser)) {

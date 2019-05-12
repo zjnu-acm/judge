@@ -146,7 +146,7 @@ public class BBSController {
             Model model) {
         Message message = messageMapper.findOne(messageId);
         if (message == null) {
-            throw new BusinessException(BusinessCode.NO_SUCH_MESSAGE);
+            throw new BusinessException(BusinessCode.MESSAGE_NOT_FOUND);
         }
         final DateTimeFormatter formatter = dtf.withZone(ZoneId.systemDefault());
         final Instant inDate = message.getInDate();

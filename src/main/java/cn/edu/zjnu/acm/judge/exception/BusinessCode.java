@@ -18,27 +18,48 @@ package cn.edu.zjnu.acm.judge.exception;
 import org.springframework.http.HttpStatus;
 
 /**
- *
  * @author zhanhb
  */
 public enum BusinessCode {
 
-    NOT_FOUND("onlinejudge.notfound", HttpStatus.NOT_FOUND),
+    // contests
+    NO_CONTESTS("onlinejudge.contest.nocontest", HttpStatus.OK),
+    NO_SCHEDULED_CONTESTS("onlinejudge.contest.noschedule", HttpStatus.OK),
+    NO_PAST_CONTESTS("onlinejudge.contest.nopast", HttpStatus.OK),
+    NO_CURRENT_CONTESTS("onlinejudge.contest.nocurrent", HttpStatus.OK),
+    // contest
     CONTEST_STARTED("onlinejudge.contest.started"),
     CONTEST_NOT_STARTED("onlinejudge.contest.not.started"),
-    CONTEST_ENDED("onlinejudge.contest.ended"),
-    SUBMISSION_NOT_FOUND("onlinejudge.submission.notfound", HttpStatus.NOT_FOUND),
-    USER_SEARCH_KEYWORD_SHORT("onlinejudge.user.search.short"),
-    USER_NOT_FOUND("onlinejudge.user.notfound", HttpStatus.NOT_FOUND),
     CONTEST_NOT_FOUND("onlinejudge.contest.nosuchcontest", HttpStatus.NOT_FOUND),
+    CONTEST_ENDED("onlinejudge.contest.ended"),
+    CONTEST_PROBLEM_NOT_FOUND("onlinejudge.contest.problem.notfound", HttpStatus.NOT_FOUND),
     CONTEST_ONLY_SUBMIT("onlinejudge.contest.only.submit"),
     CONTEST_ONLY_REGISTER("onlinejudge.contest.only.register"),
     CONTEST_ONLY_VIEW_SOURCE("onlinejudge.contest.only.view.source"),
-    PROBLEM_NOT_FOUND("onlinejudge.problem.notfound", HttpStatus.NOT_FOUND),
-    CONTEST_PROBLEM_NOT_FOUND("onlinejudge.contest.problem.notfound", HttpStatus.NOT_FOUND),
     LANGUAGE_NOT_FOUND("onlinejudge.language.notfound"),
-    IMPORT_USER_EMPTY("onlinejudge.import.user.empty"),
-    IMPORT_USER_ID_EMPTY("onlinejudge.import.user.id.empty"),
+    // mail
+    MAIL_NOT_FOUND("No such mail", HttpStatus.NOT_FOUND),
+    MAIL_INVALID_ACCESS("Sorry, invalid access", HttpStatus.FORBIDDEN),
+    MAIL_CONTENT_LONG("Sorry, content too long", HttpStatus.PAYLOAD_TOO_LARGE),
+    // message
+    MESSAGE_NOT_FOUND("No such message", HttpStatus.NOT_FOUND),
+    MESSAGE_NO_SUCH_PARENT("onlinejudge.message.no.such.parent"),
+    MESSAGE_EMPTY_TITLE("Title can't be blank"),
+    // problem
+    PROBLEM_NOT_FOUND("onlinejudge.problem.notfound", HttpStatus.NOT_FOUND),
+    PROBLEM_SEARCH_KEY_EMPTY("onlinejudge.problem.search.empty"),
+    // submission
+    SUBMISSION_NOT_FOUND("onlinejudge.submission.notfound", HttpStatus.NOT_FOUND),
+    VIEW_SOURCE_PERMISSION_DENIED("onlinejudge.submission.view.denied", HttpStatus.FORBIDDEN),
+    SOURCE_CODE_LONG("onlinejudge.submission.sourcecode.long", HttpStatus.PAYLOAD_TOO_LARGE),
+    SOURCE_CODE_SHORT("onlinejudge.submission.sourcecode.short"),
+    SUBMISSION_FREQUENTLY("onlinejudge.submission.frequently"),
+    // user
+    USER_NOT_FOUND("onlinejudge.user.notfound", HttpStatus.NOT_FOUND),
+    USER_SEARCH_KEYWORD_SHORT("onlinejudge.user.search.short"),
+    NICK_EMPTY("onlinejudge.nick.empty"),
+    NICK_LONG("onlinejudge.nick.long"),
+    EMAIL_FORMAT_INCORRECT("onlinejudge.email.format.incorrect"),
     REGIST_USER_ID_EMPTY("onlinejudge.regist.user.id.empty"),
     REGIST_USER_ID_SHORT("onlinejudge.regist.user.id.short"),
     REGIST_USER_ID_LONG("onlinejudge.regist.user.id.long"),
@@ -50,29 +71,14 @@ public enum BusinessCode {
     PASSWORD_NOT_CORRECT("onlinejudge.password.notcorrect"),
     PASSWORD_NOT_MATCH("onlinejudge.password.notmatch"),
     PASSWORD_INVALID_CHARACTER("onlinejudge.password.invalid"),
-    NICK_EMPTY("onlinejudge.nick.empty"),
-    NICK_LONG("onlinejudge.nick.long"),
-    EMAIL_FORMAT_INCORRECT("onlinejudge.email.format.incorrect"),
-    PROBLEM_SEARCH_KEY_EMPTY("onlinejudge.problem.search.empty"),
-    VIEW_SOURCE_PERMISSION_DENIED("onlinejudge.submission.view.denied", HttpStatus.FORBIDDEN),
-    MESSAGE_NO_SUCH_PARENT("onlinejudge.message.no.such.parent"),
-    SOURCE_CODE_LONG("onlinejudge.submission.sourcecode.long", HttpStatus.PAYLOAD_TOO_LARGE),
-    SOURCE_CODE_SHORT("onlinejudge.submission.sourcecode.short"),
-    SUBMISSION_FREQUENTLY("onlinejudge.submission.frequently"),
+    // admin/user
     INVALID_EXCEL("onlinejudge.excel.invalid"),
-    RESET_PASSWORD_FORBIDDEN("由于安全原因，无法重置管理员的密码", HttpStatus.FORBIDDEN),
     IMPORT_USER_EXISTS("部分用户已经存在，请移除或选择存在策略后再导入"),
     IMPORT_USER_EXISTS_CHANGE("用户已经变化，请重新导入Excel", HttpStatus.CONFLICT),
+    IMPORT_USER_EMPTY("onlinejudge.import.user.empty"),
+    IMPORT_USER_ID_EMPTY("onlinejudge.import.user.id.empty"),
     IMPORT_USER_RESET_PASSWORD_FORBIDDEN("由于安全原因，无法更新管理员的密码", HttpStatus.FORBIDDEN),
-    NO_SUCH_MESSAGE("No such message", HttpStatus.NOT_FOUND),
-    MESSAGE_EMPTY_TITLE("Title can't be blank"),
-    NO_SUCH_MAIL("No such mail", HttpStatus.NOT_FOUND),
-    MAIL_INVALID_ACCESS("Sorry, invalid access", HttpStatus.FORBIDDEN),
-    MAIL_CONTENT_LONG("Sorry, content too long", HttpStatus.PAYLOAD_TOO_LARGE),
-    NO_CONTESTS("onlinejudge.contest.nocontest", HttpStatus.OK),
-    NO_SCHEDULED_CONTESTS("onlinejudge.contest.noschedule", HttpStatus.OK),
-    NO_PAST_CONTESTS("onlinejudge.contest.nopast", HttpStatus.OK),
-    NO_CURRENT_CONTESTS("onlinejudge.contest.nocurrent", HttpStatus.OK);
+    RESET_PASSWORD_FORBIDDEN("由于安全原因，无法重置管理员的密码", HttpStatus.FORBIDDEN);
 
     private final HttpStatus status;
     private final String message;
