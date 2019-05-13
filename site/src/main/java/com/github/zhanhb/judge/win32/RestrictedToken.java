@@ -5,6 +5,7 @@
  */
 package com.github.zhanhb.judge.win32;
 
+import com.github.zhanhb.jnc.platform.NativeArray;
 import com.github.zhanhb.jnc.platform.win32.ACCESS_MODE;
 import com.github.zhanhb.jnc.platform.win32.Advapi32;
 import com.github.zhanhb.jnc.platform.win32.EXPLICIT_ACCESS;
@@ -12,7 +13,6 @@ import com.github.zhanhb.jnc.platform.win32.Kernel32;
 import com.github.zhanhb.jnc.platform.win32.Kernel32Util;
 import com.github.zhanhb.jnc.platform.win32.LUID;
 import com.github.zhanhb.jnc.platform.win32.LUID_AND_ATTRIBUTES;
-import com.github.zhanhb.jnc.platform.win32.NativeArray;
 import com.github.zhanhb.jnc.platform.win32.SID;
 import com.github.zhanhb.jnc.platform.win32.SID_AND_ATTRIBUTES;
 import com.github.zhanhb.jnc.platform.win32.TOKEN_DEFAULT_DACL;

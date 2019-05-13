@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.zhanhb.jnc.platform.win32;
+package com.github.zhanhb.jnc.platform;
 
 import java.util.function.Supplier;
 import jnc.foreign.Struct;

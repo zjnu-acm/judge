@@ -1,5 +1,6 @@
 package com.github.zhanhb.jnc.platform.win32;
 
+import com.github.zhanhb.jnc.platform.NativeArray;
 import javax.annotation.Nullable;
 import jnc.foreign.LibraryLoader;
 import jnc.foreign.Pointer;
