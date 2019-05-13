@@ -44,4 +44,4 @@ public enum TokenLevel {
     USER_RESTRICTED_SAME_ACCESS,
     USER_UNPROTECTED,
     USER_LAST
-};
+}

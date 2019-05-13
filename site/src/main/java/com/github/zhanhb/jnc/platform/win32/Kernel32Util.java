@@ -5,7 +5,7 @@ import jnc.foreign.byref.PointerByReference;
 
 public interface Kernel32Util {
 
-    public static void assertTrue(boolean test) {
+    static void assertTrue(boolean test) {
         if (!test) {
             throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
         }
@@ -32,7 +32,7 @@ public interface Kernel32Util {
         }
     }
 
-    public static void freeLocalMemory(long ptr) {
+    static void freeLocalMemory(long ptr) {
         assertTrue(Kernel32.INSTANCE.LocalFree(ptr) == 0);
     }
 

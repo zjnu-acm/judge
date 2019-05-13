@@ -26,7 +26,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface SubmissionDetailMapper {
 
-    int saveSource(long id, String source);
+    void saveSource(long id, String source);
 
     long delete(long id);
 
