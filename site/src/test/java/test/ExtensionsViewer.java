@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package main;
+package test;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -28,6 +28,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.junit.Test;
 
 /**
  *
@@ -36,11 +37,11 @@ import java.util.stream.Collectors;
 public class ExtensionsViewer {
 
     /**
-     * @param args the command line arguments
      * @throws java.io.IOException
      */
     @SuppressWarnings("UseOfSystemOutOrSystemErr")
-    public static void main(String[] args) throws IOException {
+    @Test
+    public void test() throws IOException {
         Process process = new ProcessBuilder()
                 .command("git", "ls-files", "-z", "--", ":(glob,top,exclude).gitattributes")
                 .redirectErrorStream(true).start();

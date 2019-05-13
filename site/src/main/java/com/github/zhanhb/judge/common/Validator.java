@@ -13,7 +13,6 @@ public interface Validator {
      * @param outputFile
      * @return
      * @throws java.io.IOException
-     * @throws com.github.zhanhb.judge.common.JudgeException
      * @see Status#ACCEPTED
      * @see Status#PRESENTATION_ERROR
      * @see Status#WRONG_ANSWER
