@@ -8,6 +8,9 @@ import java.nio.file.Path;
 import java.util.Objects;
 import java.util.Scanner;
 
+/**
+ * @author zhanhb
+ */
 public enum SimpleValidator implements Validator {
     NORMAL {
         @Override

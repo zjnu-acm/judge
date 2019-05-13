@@ -16,7 +16,6 @@
 package com.github.zhanhb.jnc.platform.win32;
 
 /**
- *
  * @author zhanhb
  */
 public enum TOKEN_TYPE {

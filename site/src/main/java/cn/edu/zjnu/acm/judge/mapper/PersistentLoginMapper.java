@@ -19,6 +19,9 @@ import java.time.Instant;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+/**
+ * @author zhanhb
+ */
 @Mapper
 public interface PersistentLoginMapper {
 

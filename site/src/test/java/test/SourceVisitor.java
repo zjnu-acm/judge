@@ -30,7 +30,6 @@ import java.util.stream.Collectors;
 import org.junit.Test;
 
 /**
- *
  * @author zhanhb
  */
 public class SourceVisitor {
@@ -62,6 +61,7 @@ public class SourceVisitor {
                         try {
                             String string = new String(Files.readAllBytes(path), StandardCharsets.ISO_8859_1);
                             if (!string.contains("@author zhanhb")) {
+                                System.err.println(path);
                                 return;
                             }
                             string = string.replaceFirst("/\\*[\000-\uFFFF]+?org/licenses/LICENSE[\000-\uFFFF]+?\\*/\r?\n?", "");

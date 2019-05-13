@@ -20,6 +20,7 @@ import jnc.foreign.byref.IntByReference;
 /**
  * @see
  * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa379261(v=vs.85).aspx">LUID</a>
+ * @author zhanhb
  */
 public class LUID extends jnc.foreign.Struct {
 

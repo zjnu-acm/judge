@@ -10,6 +10,9 @@ import javax.annotation.Nullable;
 import org.springframework.util.StringUtils;
 import org.unbescape.html.HtmlEscape;
 
+/**
+ * @author zhanhb
+ */
 @SpecialCall({"fragment/standing", "users/list"})
 public enum JudgeUtils {
     INSTANCE;

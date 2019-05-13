@@ -2,6 +2,9 @@ package com.github.zhanhb.judge.common;
 
 import cn.edu.zjnu.acm.judge.util.MatcherWrapper;
 
+/**
+ * @author zhanhb
+ */
 public enum Status {
 
     ACCEPTED(0), PRESENTATION_ERROR(1), TIME_LIMIT_EXCEED(2), MEMORY_LIMIT_EXCEED(3),

@@ -18,6 +18,10 @@ package com.github.zhanhb.jnc.platform;
 import java.util.function.Supplier;
 import jnc.foreign.Struct;
 
+/**
+ * @param <T>
+ * @author zhanhb
+ */
 @SuppressWarnings("FinalMethod")
 public class NativeArray<T extends Struct> extends Struct {
 

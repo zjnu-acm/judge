@@ -20,6 +20,9 @@ import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import javax.annotation.Nullable;
 import org.springframework.util.StringUtils;
 
+/**
+ * @author zhanhb
+ */
 public interface ValueCheck {
 
     String EMAIL_PATTERN = "[a-z0-9!#$%&'*+/=?^_`{|}~-]++(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]++)*+@[a-z0-9](?:[a-z0-9-]*[a-z0-9])?+(?:\\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?+)++";

@@ -1,5 +1,8 @@
 package com.github.zhanhb.judge.common;
 
+/**
+ * @author zhanhb
+ */
 public interface Constants {
 
     int TERMINATE_TIMEOUT = 1000;

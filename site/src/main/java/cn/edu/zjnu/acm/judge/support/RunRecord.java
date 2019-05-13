@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Setter;
 
+/**
+ * @author zhanhb
+ */
 @Builder(builderClassName = "Builder", toBuilder = true)
 @Data
 @Setter(AccessLevel.PRIVATE)

@@ -20,6 +20,9 @@ import static com.github.zhanhb.jnc.platform.win32.WinNT.JOB_OBJECT_UILIMIT_READ
 import static com.github.zhanhb.jnc.platform.win32.WinNT.JOB_OBJECT_UILIMIT_SYSTEMPARAMETERS;
 import static com.github.zhanhb.jnc.platform.win32.WinNT.JOB_OBJECT_UILIMIT_WRITECLIPBOARD;
 
+/**
+ * @author zhanhb
+ */
 public class Job implements Closeable {
 
     private final long /*HANDLE*/ hJob;

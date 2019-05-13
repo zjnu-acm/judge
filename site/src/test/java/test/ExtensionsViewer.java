@@ -31,7 +31,6 @@ import java.util.stream.Collectors;
 import org.junit.Test;
 
 /**
- *
  * @author zhanhb
  */
 public class ExtensionsViewer {

@@ -26,6 +26,9 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ApplicationContext;
 
+/**
+ * @author zhanhb
+ */
 @EnableCaching
 @Slf4j
 @SpringBootApplication

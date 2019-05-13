@@ -21,6 +21,7 @@ package com.github.zhanhb.jnc.platform.win32;
  * @see
  * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms684147(v=vs.85).aspx">JOBOBJECT_BASIC_LIMIT_INFORMATION
  * </a>
+ * @author zhanhb
  */
 public class JOBOBJECT_BASIC_LIMIT_INFORMATION extends JOBOBJECT_INFORMATION {
 

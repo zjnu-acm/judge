@@ -18,9 +18,9 @@ package com.github.zhanhb.jnc.platform.win32;
 import jnc.foreign.annotation.Pack;
 
 /**
- *
  * @see
  * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa379263(v=vs.85).aspx">LUID_AND_ATTRIBUTES</a>
+ * @author zhanhb
  */
 @Pack(4)
 public class LUID_AND_ATTRIBUTES extends jnc.foreign.Struct {

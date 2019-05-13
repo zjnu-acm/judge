@@ -18,6 +18,7 @@ package com.github.zhanhb.jnc.platform.win32;
 /**
  * The TOKEN_INFORMATION_CLASS enumeration type contains values that specify the
  * type of information being assigned to or retrieved from an access token.
+ * @author zhanhb
  */
 public enum TOKEN_INFORMATION_CLASS {
 

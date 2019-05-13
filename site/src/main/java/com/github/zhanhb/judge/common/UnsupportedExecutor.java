@@ -2,6 +2,9 @@ package com.github.zhanhb.judge.common;
 
 import java.io.IOException;
 
+/**
+ * @author zhanhb
+ */
 public enum UnsupportedExecutor implements Executor {
 
     INSTANCE;

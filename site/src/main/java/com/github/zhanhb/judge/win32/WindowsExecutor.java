@@ -58,7 +58,6 @@ import static com.github.zhanhb.judge.common.Constants.TERMINATE_TIMEOUT;
 import static com.github.zhanhb.judge.common.Constants.UPDATE_TIME_THRESHOLD;
 
 /**
- *
  * @author zhanhb
  */
 public class WindowsExecutor implements Executor {

@@ -20,6 +20,7 @@ import java.time.Instant;
 /**
  * @see
  * <a href="https://msdn.microsoft.com/zh-tw/library/windows/desktop/ms724284(v=vs.85).aspx">FILETIME</a>
+ * @author zhanhb
  */
 public class FILETIME extends jnc.foreign.Struct {
 

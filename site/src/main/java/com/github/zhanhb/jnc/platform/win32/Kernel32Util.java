@@ -3,6 +3,9 @@ package com.github.zhanhb.jnc.platform.win32;
 import jnc.foreign.Pointer;
 import jnc.foreign.byref.PointerByReference;
 
+/**
+ * @author zhanhb
+ */
 public interface Kernel32Util {
 
     static void assertTrue(boolean test) {

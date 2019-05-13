@@ -18,6 +18,9 @@ package cn.edu.zjnu.acm.judge.util;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * @author zhanhb
+ */
 public interface Utility {
 
     static String getRandomString(int length) {

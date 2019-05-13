@@ -7,6 +7,9 @@ import java.io.Closeable;
 import java.util.concurrent.atomic.AtomicBoolean;
 import jnc.foreign.Platform;
 
+/**
+ * @author zhanhb
+ */
 public class Handle implements Closeable {
 
     private static final long INVALID_HANDLE_VALUE;

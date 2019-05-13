@@ -4,6 +4,9 @@ import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
 
+/**
+ * @author zhanhb
+ */
 @Builder(builderClassName = "Builder", toBuilder = true)
 @Value
 @SuppressWarnings("FinalClass")

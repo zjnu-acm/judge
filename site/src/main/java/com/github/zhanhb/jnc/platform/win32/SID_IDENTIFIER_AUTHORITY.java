@@ -20,6 +20,7 @@ import java.util.Arrays;
 /**
  * @see
  * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa379598(v=vs.85).aspx">SID_IDENTIFIER_AUTHORITY</a>
+ * @author zhanhb
  */
 public class SID_IDENTIFIER_AUTHORITY extends jnc.foreign.Struct {
 

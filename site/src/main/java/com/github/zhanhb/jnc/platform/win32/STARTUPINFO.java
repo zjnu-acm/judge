@@ -18,6 +18,7 @@ package com.github.zhanhb.jnc.platform.win32;
 /**
  * @see
  * <a href="https://msdn.microsoft.com/zh-tw/library/windows/desktop/ms686331(v=vs.85).aspx">STARTUPINFO</a>
+ * @author zhanhb
  */
 @SuppressWarnings("unused")
 public class STARTUPINFO extends jnc.foreign.Struct {

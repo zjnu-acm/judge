@@ -18,6 +18,7 @@ package com.github.zhanhb.jnc.platform.win32;
 /**
  * @see
  * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms686216(v=vs.85).aspx">SetInformationJobObject</a>
+ * @author zhanhb
  */
 public enum JOBOBJECTINFOCLASS {
 

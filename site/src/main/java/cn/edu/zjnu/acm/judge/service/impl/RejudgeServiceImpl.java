@@ -8,6 +8,9 @@ import java.util.concurrent.CompletableFuture;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+/**
+ * @author zhanhb
+ */
 @RequiredArgsConstructor
 @Service("rejudgeService")
 public class RejudgeServiceImpl implements RejudgeService {

@@ -16,6 +16,9 @@ import static com.github.zhanhb.jnc.platform.win32.WinBase.WAIT_ABANDONED;
 import static com.github.zhanhb.jnc.platform.win32.WinBase.WAIT_FAILED;
 import static com.github.zhanhb.jnc.platform.win32.WinError.WAIT_TIMEOUT;
 
+/**
+ * @author zhanhb
+ */
 public class JudgeProcess {
 
     private final long /*HANDLE*/ hProcess;

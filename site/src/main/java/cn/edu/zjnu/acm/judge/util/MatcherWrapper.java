@@ -8,6 +8,9 @@ import java.util.regex.Pattern;
 
 import static java.util.regex.Matcher.quoteReplacement;
 
+/**
+ * @author zhanhb
+ */
 @SuppressWarnings("FinalClass")
 public final class MatcherWrapper implements MatchResult {
 

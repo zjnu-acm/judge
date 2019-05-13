@@ -3,6 +3,9 @@ package com.github.zhanhb.judge.common;
 import java.io.Closeable;
 import java.io.IOException;
 
+/**
+ * @author zhanhb
+ */
 public interface Executor extends Closeable {
 
     int _O_RDONLY = 0;

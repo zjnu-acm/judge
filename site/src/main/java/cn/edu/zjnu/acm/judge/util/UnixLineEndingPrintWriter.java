@@ -4,6 +4,9 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
+/**
+ * @author zhanhb
+ */
 public class UnixLineEndingPrintWriter extends PrintWriter {
 
     public UnixLineEndingPrintWriter(OutputStream out) {

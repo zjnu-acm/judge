@@ -21,6 +21,9 @@ import cn.edu.zjnu.acm.judge.support.RunResult;
 import com.github.zhanhb.judge.common.Validator;
 import java.nio.file.Path;
 
+/**
+ * @author zhanhb
+ */
 public interface JudgeRunner {
 
     RunResult run(

@@ -20,6 +20,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
 
+/**
+ * @author zhanhb
+ */
 @Configuration
 public class ThymeleafConfiguration {
 

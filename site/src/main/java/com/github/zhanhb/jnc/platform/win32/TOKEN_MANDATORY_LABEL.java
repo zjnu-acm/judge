@@ -18,6 +18,7 @@ package com.github.zhanhb.jnc.platform.win32;
 /**
  * @see
  * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb394727(v=vs.85).aspx">TOKEN_MANDATORY_LABEL</a>
+ * @author zhanhb
  */
 public class TOKEN_MANDATORY_LABEL extends TOKEN_INFORMATION {
 

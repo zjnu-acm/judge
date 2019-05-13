@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 zhanhb.
+ * Copyright 2014 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,6 +45,9 @@ import org.thymeleaf.context.Context;
 
 import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 
+/**
+ * @author zhanhb
+ */
 @Controller
 @RequiredArgsConstructor
 @Slf4j

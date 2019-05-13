@@ -19,7 +19,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 /**
- *
  * @author zhanhb
  */
 public interface JudgeService {

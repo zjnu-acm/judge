@@ -22,6 +22,9 @@ import jnc.foreign.byref.PointerByReference;
 import static com.github.zhanhb.jnc.platform.win32.WinNT.ANYSIZE_ARRAY;
 import static com.github.zhanhb.jnc.platform.win32.WinNT.SID_MAX_SUB_AUTHORITIES;
 
+/**
+ * @author zhanhb
+ */
 public class SID extends jnc.foreign.Struct {
 
     private static SID ofMaxSubAuthorities() {
