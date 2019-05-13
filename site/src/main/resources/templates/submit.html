@@ -23,7 +23,6 @@
                         <option th:each="language:${languages}" th:object="${language}" th:value="*{id}" th:selected="*{id}==${languageId}" th:text="*{name}">GNU C++</option>
                     </select>
                     <br/>
-                    <a href="/CLanguage/showmessage?message_id=1164" class="submit hint" style="color:red">使用GCC(GNU C)或VC++提交出现Runtime Error，请确保main的返回类型为int，main最后有return 0</a>
                 </p>
                 <p align="center">
                     <label th:for="${#ids.next('source')}">Source: </label>

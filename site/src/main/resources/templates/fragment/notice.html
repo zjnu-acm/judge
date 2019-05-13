@@ -6,9 +6,6 @@
         <span>&nbsp;</span>
         <a data-lang="en">English</a>
     </div>
-    <marquee scrollamount="3" behavior="ALTERNATE" scrolldelay="150" style="color:red">
-        <a href="/CLanguage/showmessage?message_id=1164">使用GCC(GNU C)或VC++提交出现Runtime Error，请确保main的返回类型为int，main最后有return 0</a>
-    </marquee>
     <th:block th:with="message=${@systemService.systemInfo}">
         <marquee scrollamount="3" behavior="ALTERNATE" scrolldelay="150" th:if="${not #strings.isEmpty(message)}">
             <span style="color: red" th:utext="${message}"></span>
