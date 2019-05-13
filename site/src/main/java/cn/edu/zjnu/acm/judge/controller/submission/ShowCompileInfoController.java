@@ -21,7 +21,7 @@ public class ShowCompileInfoController {
             Model model, Authentication authentication) {
         String compileInfo = submissionService.findCompileInfo(submissionId);
         model.addAttribute("compileInfo", compileInfo);
-        return "showcompileinfo";
+        return "submissions/compile_info";
     }
 
 }

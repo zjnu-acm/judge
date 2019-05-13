@@ -75,7 +75,7 @@ public class ModifyUserController {
                 .build();
         accountService.updateSelective(userId, user);
         model.addAttribute("user", user);
-        return "modifyusersuccess";
+        return "users/modifySuccess";
     }
 
 }

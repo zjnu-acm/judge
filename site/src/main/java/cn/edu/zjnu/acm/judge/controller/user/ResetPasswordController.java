@@ -63,9 +63,9 @@ public class ResetPasswordController {
             @RequestParam(value = "u", required = false) @Nullable String userId,
             @RequestParam(value = "vc", required = false) @Nullable String vcode) {
         if (resetPasswordService.checkVcode(userId, vcode).isPresent()) {
-            return "resetPassword";
+            return "users/resetPassword";
         } else {
-            return "invalid";
+            return "users/resetPasswordInvalid";
         }
     }
 

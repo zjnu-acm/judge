@@ -58,13 +58,13 @@ public class MainController {
 
     @GetMapping("/findpassword")
     public String findPassword() {
-        return "findpassword";
+        return "users/findPassword";
     }
 
     @GetMapping({"/registerpage", "/register"})
     public String registerPage() {
         contestOnlyService.checkRegister();
-        return "registerpage";
+        return "users/registerPage";
     }
 
     @GetMapping(value = "/unauthorized", produces = {TEXT_HTML_VALUE, ALL_VALUE})

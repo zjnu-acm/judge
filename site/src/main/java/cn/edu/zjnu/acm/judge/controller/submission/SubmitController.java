@@ -51,7 +51,7 @@ public class SubmitController {
         String user = authentication != null ? authentication.getName() : null;
         int languageId = userPerferenceMapper.getLanguage(user);
         model.addAttribute("languageId", languageId);
-        return "submit";
+        return "submissions/index";
     }
 
     @PostMapping({

@@ -61,7 +61,7 @@ public class RegisterController {
         userMapper.save(user);
         log.info("{}", user);
         request.setAttribute("user", user);
-        return "register";
+        return "users/registerSuccess";
     }
 
 }

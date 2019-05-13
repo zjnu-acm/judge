@@ -49,7 +49,7 @@ public class ContestListController {
         } else {
             model.addAttribute("title", title);
             model.addAttribute("contests", contests);
-            return "contests";
+            return "contests/index";
         }
     }
 

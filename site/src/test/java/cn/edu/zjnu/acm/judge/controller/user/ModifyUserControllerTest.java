@@ -77,7 +77,7 @@ public class ModifyUserControllerTest {
                 .param("school", school))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-                .andExpect(view().name("modifyusersuccess"))
+                .andExpect(view().name("users/modifySuccess"))
                 .andReturn();
     }
 

@@ -50,7 +50,7 @@ public class ShowCompileInfoControllerTest {
         MvcResult result = mvc.perform(get("/showcompileinfo").with(user(submission.getUser()))
                 .param("solution_id", Long.toString(submission.getId())))
                 .andExpect(status().isOk())
-                .andExpect(view().name("showcompileinfo"))
+                .andExpect(view().name("submissions/compile_info"))
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andReturn();
     }
