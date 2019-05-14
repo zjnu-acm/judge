@@ -56,6 +56,9 @@ public class BusinessExceptionHandler {
                 ResponseEntity.BodyBuilder builder = ResponseEntity.status(code.getStatus());
                 return builder.body(Collections.singletonMap("message", formatted));
             }
+            if (mediaType.isCompatibleWith(MediaType.TEXT_HTML)) {
+                break;
+            }
         }
         return new ModelAndView("message", Collections.singletonMap("message", formatted), code.getStatus());
     }

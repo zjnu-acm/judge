@@ -1,6 +1,11 @@
 package cn.edu.zjnu.acm.judge.controller.contest;
 
 import cn.edu.zjnu.acm.judge.Application;
+import cn.edu.zjnu.acm.judge.data.form.ContestStatus;
+import cn.edu.zjnu.acm.judge.domain.Contest;
+import cn.edu.zjnu.acm.judge.service.ContestService;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +22,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static org.hamcrest.Matchers.isIn;
+import static org.springframework.http.MediaType.ALL;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.http.MediaType.TEXT_HTML;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
@@ -30,6 +39,40 @@ public class ContestListControllerTest {
 
     @Autowired
     private MockMvc mvc;
+    @Autowired
+    private ContestService contestService;
+
+    private void clearPending() throws Exception {
+        for (Contest contest : contestService.findAll(ContestStatus.PENDING)) {
+            contestService.delete(contest.getId());
+        }
+    }
+
+    @Test
+    public void testContentType() throws Exception {
+        clearPending();
+        MvcResult result;
+        result = mvc.perform(get("/scheduledcontests").accept(TEXT_HTML))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(TEXT_HTML))
+                .andReturn();
+        result = mvc.perform(get("/scheduledcontests").accept(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
+                .andReturn();
+        result = mvc.perform(get("/scheduledcontests").accept(TEXT_HTML, APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(TEXT_HTML))
+                .andReturn();
+        result = mvc.perform(get("/scheduledcontests").accept(APPLICATION_JSON, TEXT_HTML))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
+                .andReturn();
+        result = mvc.perform(get("/scheduledcontests").accept(ALL))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(TEXT_HTML))
+                .andReturn();
+    }
 
     /**
      * Test of contests method, of class ContestListController.

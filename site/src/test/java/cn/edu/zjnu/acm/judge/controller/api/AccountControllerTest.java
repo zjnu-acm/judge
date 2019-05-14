@@ -231,6 +231,7 @@ public class AccountControllerTest {
         log.info("passwordStatus");
         MvcResult result = mvc.perform(get("/api/accounts/password/status.json"))
                 .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.content").isMap())
                 .andExpect(jsonPath("$.stats").isMap())
                 .andReturn();
