@@ -8,4 +8,4 @@ CREATE TABLE `locale` (
   `modified_time` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`_id`),
   UNIQUE KEY `UQ_ID` (`id`) USING HASH
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4

@@ -1,2 +1,2 @@
 ALTER TABLE `users`
-	ADD COLUMN `expire_time` DATETIME NULL DEFAULT NULL COMMENT '密码重置超时时间' AFTER `vcode`;
+	ADD COLUMN `expire_time` DATETIME NULL DEFAULT NULL AFTER `vcode`;

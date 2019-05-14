@@ -4,4 +4,4 @@ ALTER TABLE `loginlog`
 	ADD COLUMN `type` VARCHAR(40) NULL DEFAULT 'UsernamePassword' AFTER `password`,
 	CHANGE COLUMN `ip` `ip` VARCHAR(100) NULL DEFAULT '' AFTER `type`,
 	CHANGE COLUMN `time` `time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `ip`,
-	CHANGE COLUMN `success` `success` BIT(1) NOT NULL DEFAULT b'1' COMMENT '表示登录是否成功' AFTER `time`;
+	CHANGE COLUMN `success` `success` BIT(1) NOT NULL DEFAULT b'1' AFTER `time`;

@@ -12,7 +12,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 
-
 -- Dumping structure for table compileinfo
 CREATE TABLE IF NOT EXISTS `compileinfo` (
   `solution_id` bigint(20) NOT NULL,
@@ -30,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `contest` (
   `end_time` datetime NOT NULL,
   `description` longtext NOT NULL,
   `private` int(11) DEFAULT NULL,
-  `disabled` bit(1) NOT NULL DEFAULT b'0' COMMENT 'disabled表示该比赛是否被禁用',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`contest_id`) USING HASH
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -46,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `contest_problem` (
   KEY `INDEX_problem` (`problem_id`) USING HASH,
   CONSTRAINT `FK_contest_problem_contest` FOREIGN KEY (`contest_id`) REFERENCES `contest` (`contest_id`),
   CONSTRAINT `FK_contest_problem_problem` FOREIGN KEY (`problem_id`) REFERENCES `problem` (`problem_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='比赛的题目。';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
 -- Dumping structure for table language
@@ -71,9 +70,9 @@ CREATE TABLE IF NOT EXISTS `loginlog` (
   `password` varchar(40) NOT NULL,
   `ip` varchar(100) NOT NULL,
   `time` datetime NOT NULL,
-  `success` bit(1) NOT NULL DEFAULT b'0' COMMENT '表示登录是否成功',
+  `success` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='由于历史原因2016/3/21及以前的success均为1，实际登陆是否成功未知。';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
 -- Dumping structure for table mail
@@ -92,7 +91,7 @@ CREATE TABLE IF NOT EXISTS `mail` (
   KEY `INDEX_from_user` (`from_user`),
   CONSTRAINT `FK_mail_users` FOREIGN KEY (`from_user`) REFERENCES `users` (`user_id`),
   CONSTRAINT `FK_mail_users_2` FOREIGN KEY (`to_user`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='站内信';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
 -- Dumping structure for table message
@@ -115,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `message` (
   CONSTRAINT `FK_message_message` FOREIGN KEY (`parent_id`) REFERENCES `message` (`message_id`),
   CONSTRAINT `FK_message_problem` FOREIGN KEY (`problem_id`) REFERENCES `problem` (`problem_id`),
   CONSTRAINT `FK_message_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='讨论版';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
 -- Dumping structure for table news
@@ -146,7 +145,7 @@ CREATE TABLE IF NOT EXISTS `persistent_logins` (
 -- Dumping structure for table privilege
 CREATE TABLE IF NOT EXISTS `privilege` (
   `user_id` varchar(20) NOT NULL,
-  `rightstr` enum('administrator','source_browser','news_publisher') NOT NULL DEFAULT 'news_publisher' COMMENT 'news_publisher没有用到',
+  `rightstr` enum('administrator','source_browser','news_publisher') NOT NULL DEFAULT 'news_publisher',
   `disabled` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`user_id`) USING HASH,
   CONSTRAINT `FK_privilege_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
@@ -271,7 +270,7 @@ CREATE TABLE IF NOT EXISTS `user_problem` (
   KEY `INDEX_PROBLEM` (`problem_id`) USING HASH,
   CONSTRAINT `FK_user_problem_problem` FOREIGN KEY (`problem_id`) REFERENCES `problem` (`problem_id`),
   CONSTRAINT `FK_user_problem_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='缓存表，记录用户提交题目的信息。';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
