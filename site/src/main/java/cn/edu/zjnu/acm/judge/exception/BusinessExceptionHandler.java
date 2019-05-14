@@ -52,12 +52,12 @@ public class BusinessExceptionHandler {
         log.debug("mediaTypes: {}", mediaTypes);
 
         for (MediaType mediaType : mediaTypes) {
+            if (mediaType.isCompatibleWith(MediaType.TEXT_HTML)) {
+                break;
+            }
             if (mediaType.isCompatibleWith(MediaType.APPLICATION_JSON)) {
                 ResponseEntity.BodyBuilder builder = ResponseEntity.status(code.getStatus());
                 return builder.body(Collections.singletonMap("message", formatted));
-            }
-            if (mediaType.isCompatibleWith(MediaType.TEXT_HTML)) {
-                break;
             }
         }
         return new ModelAndView("message", Collections.singletonMap("message", formatted), code.getStatus());

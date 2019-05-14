@@ -13,10 +13,12 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultMatcher;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -24,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import static org.hamcrest.Matchers.isIn;
 import static org.springframework.http.MediaType.ALL;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.http.MediaType.IMAGE_JPEG;
 import static org.springframework.http.MediaType.TEXT_HTML;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -49,30 +52,32 @@ public class ContestListControllerTest {
         }
     }
 
+    private MvcResult contestTestBase(ResultMatcher matcher, MediaType expect, MediaType... accept) throws Exception {
+        MockHttpServletRequestBuilder builder = get("/scheduledcontests");
+        if (accept.length != 0) {
+            builder = builder.accept(accept);
+        }
+        return mvc.perform(builder).andExpect(matcher)
+                .andExpect(content().contentTypeCompatibleWith(expect))
+                .andReturn();
+    }
+
     @Test
     public void testContentType() throws Exception {
         clearPending();
         MvcResult result;
-        result = mvc.perform(get("/scheduledcontests").accept(TEXT_HTML))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(TEXT_HTML))
-                .andReturn();
-        result = mvc.perform(get("/scheduledcontests").accept(APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
-                .andReturn();
-        result = mvc.perform(get("/scheduledcontests").accept(TEXT_HTML, APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(TEXT_HTML))
-                .andReturn();
-        result = mvc.perform(get("/scheduledcontests").accept(APPLICATION_JSON, TEXT_HTML))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
-                .andReturn();
-        result = mvc.perform(get("/scheduledcontests").accept(ALL))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(TEXT_HTML))
-                .andReturn();
+        // first is matched
+        result = contestTestBase(status().isOk(), TEXT_HTML, TEXT_HTML);
+        result = contestTestBase(status().isOk(), APPLICATION_JSON, APPLICATION_JSON);
+        result = contestTestBase(status().isOk(), TEXT_HTML, TEXT_HTML, APPLICATION_JSON);
+        result = contestTestBase(status().isOk(), APPLICATION_JSON, APPLICATION_JSON, TEXT_HTML);
+        // second matched
+        result = contestTestBase(status().isOk(), APPLICATION_JSON, IMAGE_JPEG, APPLICATION_JSON);
+        // non matched
+        result = contestTestBase(status().isOk(), TEXT_HTML, IMAGE_JPEG);
+        result = contestTestBase(status().isOk(), TEXT_HTML);
+        // match all
+        result = contestTestBase(status().isOk(), TEXT_HTML, ALL);
     }
 
     @Test
