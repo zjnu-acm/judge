@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 zhanhb.
+ * Copyright 2015-2019 zhanhb.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,11 +28,7 @@ public class CombinePasswordEncoder extends PasswordEncoderWrapper {
     private final PasswordEncoder[] encoders;
 
     public CombinePasswordEncoder(PasswordEncoder... passwordEncoders) {
-        this(0, passwordEncoders);
-    }
-
-    public CombinePasswordEncoder(int index, PasswordEncoder... passwordEncoders) {
-        super(passwordEncoders[index]);
+        super(passwordEncoders[0]);
         PasswordEncoder[] clone = passwordEncoders.clone();
         // null check
         Arrays.stream(clone).forEach(Objects::requireNonNull);

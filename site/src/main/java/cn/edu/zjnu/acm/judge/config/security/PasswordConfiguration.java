@@ -34,11 +34,10 @@ public class PasswordConfiguration {
     public static final int MAX_PASSWORD_LENGTH = 30;
 
     @Bean
+    @SuppressWarnings("deprecation")
     public PasswordEncoder passwordEncoder() {
-        @SuppressWarnings("deprecation")
-        PasswordEncoder passwordEncoder = new LengthLimitedPasswordEncoder(
-                new CombinePasswordEncoder(1,
-                        org.springframework.security.crypto.password.NoOpPasswordEncoder.getInstance(),
+        return new LengthLimitedPasswordEncoder(
+                new CombinePasswordEncoder(
                         new MultiPasswordSupport(
                                 new CombinePasswordEncoder(
                                         new BCryptPasswordEncoder(8),
@@ -48,9 +47,9 @@ public class PasswordConfiguration {
                                         MessageDigestPasswordEncoder.sha384(),
                                         MessageDigestPasswordEncoder.sha512()
                                 )
-                        )
+                        ),
+                        org.springframework.security.crypto.password.NoOpPasswordEncoder.getInstance()
                 ), MAX_PASSWORD_LENGTH);
-        return passwordEncoder;
     }
 
 }
