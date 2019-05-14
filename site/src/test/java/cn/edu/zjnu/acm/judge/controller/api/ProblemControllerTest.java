@@ -43,6 +43,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -115,12 +116,9 @@ public class ProblemControllerTest {
         mvc.perform(delete("/api/problems/{id}.json", id))
                 .andExpect(status().isNoContent());
 
-        try {
-            Problem p = problemService.findOne(id);
-            fail("should throw a BusinessException");
-        } catch (BusinessException ex) {
-            assertThat(ex.getCode()).isEqualTo(BusinessCode.PROBLEM_NOT_FOUND);
-        }
+        BusinessCode code = assertThrows(BusinessException.class, () -> problemService.findOne(id)).getCode();
+        assertThat(code).isEqualTo(BusinessCode.PROBLEM_NOT_FOUND);
+
         mvc.perform(get("/api/problems/{id}.json", id))
                 .andExpect(status().isNotFound());
         mvc.perform(delete("/api/problems/{id}.json", id))

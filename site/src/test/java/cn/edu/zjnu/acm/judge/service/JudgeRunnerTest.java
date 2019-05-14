@@ -22,7 +22,6 @@ import cn.edu.zjnu.acm.judge.mapper.LanguageMapper;
 import cn.edu.zjnu.acm.judge.support.JudgeData;
 import cn.edu.zjnu.acm.judge.support.RunRecord;
 import cn.edu.zjnu.acm.judge.support.RunResult;
-import cn.edu.zjnu.acm.judge.util.Platform;
 import cn.edu.zjnu.acm.judge.util.ResultType;
 import com.github.zhanhb.judge.GroovyHolder;
 import com.github.zhanhb.judge.common.SimpleValidator;
@@ -54,11 +53,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import static cn.edu.zjnu.acm.judge.util.PlatformAssuming.assumingWindows;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 /**
@@ -89,7 +88,7 @@ public class JudgeRunnerTest {
     }
 
     public static List<Arguments> data() throws Exception {
-        assumeTrue(Platform.isWindows(), "Only platform windows is supported");
+        assumingWindows();
         ArrayList<Arguments> list = new ArrayList<>(20);
         Path program = Paths.get(JudgeRunnerTest.class.getResource("/sample/program").toURI());
         for (Checker c : Checker.values()) {

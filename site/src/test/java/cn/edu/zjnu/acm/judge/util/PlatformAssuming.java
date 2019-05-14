@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 zhanhb.
+ * Copyright 2019 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,23 +15,20 @@
  */
 package cn.edu.zjnu.acm.judge.util;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
- *
  * @author zhanhb
  */
-public class TestUtils {
+public interface PlatformAssuming {
 
-    public static void testConstructor(Class<?> cl) throws Exception {
-        Constructor<?> c = cl.getDeclaredConstructor();
-        c.setAccessible(true);
-        Throwable cause = assertThrows(InvocationTargetException.class, c::newInstance).getTargetException();
-        assertThat(cause).withFailMessage("targetException").isInstanceOf(AssertionError.class);
+    static void assumingWindows() {
+        assumeTrue(Platform.isWindows(), "not windows");
+    }
+
+    static void assumingNotWindows() {
+        assumeFalse(Platform.isWindows(), "platform is windows");
     }
 
 }

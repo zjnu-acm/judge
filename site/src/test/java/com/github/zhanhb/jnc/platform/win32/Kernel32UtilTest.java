@@ -15,7 +15,6 @@
  */
 package com.github.zhanhb.jnc.platform.win32;
 
-import cn.edu.zjnu.acm.judge.util.Platform;
 import jnc.foreign.byref.IntByReference;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
@@ -23,13 +22,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 
+import static cn.edu.zjnu.acm.judge.util.PlatformAssuming.assumingWindows;
 import static com.github.zhanhb.jnc.platform.win32.WinError.ERROR_INVALID_HANDLE;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
- *
  * @author zhanhb
  */
 @RunWith(JUnitPlatform.class)
@@ -38,7 +36,7 @@ public class Kernel32UtilTest {
 
     @BeforeAll
     public static void setUpClass() {
-        assumeTrue(Platform.isWindows(), "not windows");
+        assumingWindows();
     }
 
     /**
@@ -48,15 +46,12 @@ public class Kernel32UtilTest {
     public void testAssertTrue() {
         log.info("assertTrue");
         IntByReference dwExitCode = new IntByReference();
-        try {
+        Win32Exception win32Exception = assertThrows(Win32Exception.class, () -> {
             Kernel32Util.assertTrue(Kernel32.INSTANCE.GetExitCodeProcess(0/*NULL*/, dwExitCode));
-            fail("should throw a win32 exception");
-        } catch (Win32Exception ex) {
-            // invalid handle
-            assertThat(ex.getErrorCode()).isEqualTo(ERROR_INVALID_HANDLE);
-            assertNotNull(ex.getMessage());
-            assertNotEquals("", ex.getMessage());
-        }
+        });
+        // invalid handle
+        assertThat(win32Exception.getErrorCode()).isEqualTo(ERROR_INVALID_HANDLE);
+        assertThat(win32Exception.getMessage()).isNotBlank();
     }
 
 }

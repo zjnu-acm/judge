@@ -16,7 +16,6 @@
 package com.github.zhanhb.judge.common;
 
 import cn.edu.zjnu.acm.judge.util.DeleteHelper;
-import cn.edu.zjnu.acm.judge.util.Platform;
 import com.github.zhanhb.judge.GroovyHolder;
 import java.io.IOException;
 import java.net.URI;
@@ -40,8 +39,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 
+import static cn.edu.zjnu.acm.judge.util.PlatformAssuming.assumingWindows;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 /**
@@ -64,7 +63,6 @@ public class JudgeBridgeTest {
     }
 
     public static List<Arguments> data() throws Exception {
-        assumeTrue(Platform.isWindows(), "not windows");
         Checker[] values = Checker.values();
         ArrayList<Arguments> list = new ArrayList<>(values.length);
         for (Checker checker : values) {
@@ -79,6 +77,7 @@ public class JudgeBridgeTest {
 
     @BeforeAll
     public static void setUpClass() throws Exception {
+        assumingWindows();
         work = Files.createDirectories(Paths.get("target", "work", "judgeBridgeTest"));
         URI uri = JudgeBridgeTest.class.getResource("/sample/program").toURI();
         program = Paths.get(uri);

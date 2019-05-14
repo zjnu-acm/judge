@@ -15,7 +15,6 @@
  */
 package com.github.zhanhb.judge.win32;
 
-import cn.edu.zjnu.acm.judge.util.Platform;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -26,10 +25,10 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 
+import static cn.edu.zjnu.acm.judge.util.PlatformAssuming.assumingWindows;
 import static com.github.zhanhb.judge.win32.IntegrityLevel.INTEGRITY_LEVEL_LAST;
 import static com.github.zhanhb.judge.win32.IntegrityLevel.INTEGRITY_LEVEL_LOW;
 import static com.github.zhanhb.judge.win32.TokenLevel.USER_LAST;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 /**
@@ -42,7 +41,7 @@ public class SandboxTest {
 
     @BeforeAll
     public static void setUpClass() {
-        assumeTrue(Platform.isWindows(), "not windows");
+        assumingWindows();
     }
 
     public static List<Arguments> data() {

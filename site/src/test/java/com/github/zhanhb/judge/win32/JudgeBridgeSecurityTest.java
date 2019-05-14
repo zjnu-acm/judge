@@ -15,7 +15,6 @@
  */
 package com.github.zhanhb.judge.win32;
 
-import cn.edu.zjnu.acm.judge.util.Platform;
 import com.github.zhanhb.judge.common.ExecuteResult;
 import com.github.zhanhb.judge.common.JudgeBridge;
 import com.github.zhanhb.judge.common.Options;
@@ -33,8 +32,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 
+import static cn.edu.zjnu.acm.judge.util.PlatformAssuming.assumingWindows;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  *
@@ -46,7 +45,7 @@ public class JudgeBridgeSecurityTest {
 
     @BeforeAll
     public static void setUpClass() {
-        assumeTrue(Platform.isWindows(), "not windows");
+        assumingWindows();
     }
 
     private final Validator validator = SimpleValidator.NORMAL;

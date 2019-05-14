@@ -3,7 +3,6 @@ package cn.edu.zjnu.acm.judge.controller;
 import cn.edu.zjnu.acm.judge.Application;
 import cn.edu.zjnu.acm.judge.service.SystemService;
 import cn.edu.zjnu.acm.judge.util.DeleteHelper;
-import cn.edu.zjnu.acm.judge.util.Platform;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -21,9 +20,10 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import static cn.edu.zjnu.acm.judge.util.PlatformAssuming.assumingNotWindows;
+import static cn.edu.zjnu.acm.judge.util.PlatformAssuming.assumingWindows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.handler;
@@ -159,15 +159,11 @@ public class CKFinderControllerTest {
     }
 
     @Test
-    public void testIseOnWindows() throws Exception {
-        assumeTrue(Platform.isWindows(), "not windows");
+    @SuppressWarnings("ThrowableResultIgnored")
+    public void testIaeOnWindows() throws Exception {
+        assumingWindows();
         pathName = "::::::";
-        try {
-            setUp();
-            fail("should throw IllegalArgumentException");
-        } catch (IllegalArgumentException ex) {
-            // ok
-        }
+        assertThrows(IllegalArgumentException.class, this::setUp);
         mvc.perform(get("/userfiles/" + pathName))
                 .andExpect(status().isNotFound())
                 .andExpect(handler().handlerType(CKFinderController.class))
@@ -176,7 +172,7 @@ public class CKFinderControllerTest {
 
     @Test
     public void testColonOnUnix() throws Exception {
-        assumeTrue(!Platform.isWindows(), "not windows");
+        assumingNotWindows();
         pathName = "::::::";
         setUp();
         mvc.perform(get("/userfiles/" + pathName))

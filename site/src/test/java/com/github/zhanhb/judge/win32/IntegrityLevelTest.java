@@ -15,7 +15,6 @@
  */
 package com.github.zhanhb.judge.win32;
 
-import cn.edu.zjnu.acm.judge.util.Platform;
 import com.github.zhanhb.jnc.platform.win32.Advapi32;
 import com.github.zhanhb.jnc.platform.win32.Kernel32Util;
 import com.github.zhanhb.jnc.platform.win32.SID;
@@ -27,9 +26,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 
+import static cn.edu.zjnu.acm.judge.util.PlatformAssuming.assumingWindows;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  *
@@ -41,7 +40,7 @@ public class IntegrityLevelTest {
 
     @BeforeAll
     public static void setUpClass() {
-        assumeTrue(Platform.isWindows(), "not windows");
+        assumingWindows();
     }
 
     /**

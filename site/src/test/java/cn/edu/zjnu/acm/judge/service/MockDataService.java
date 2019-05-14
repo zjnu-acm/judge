@@ -21,7 +21,6 @@ import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
-import cn.edu.zjnu.acm.judge.util.Platform;
 import com.google.common.base.Throwables;
 import java.io.IOException;
 import java.io.InterruptedIOException;
@@ -37,7 +36,7 @@ import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static cn.edu.zjnu.acm.judge.util.PlatformAssuming.assumingWindows;
 
 /**
  *
@@ -139,7 +138,7 @@ public class MockDataService {
     private Submission submission(int languageId, String source, String userId, String ip,
             long problemId, boolean runTestCase) throws Throwable {
         if (runTestCase) {
-            assumeTrue(Platform.isWindows(), "not windows");
+            assumingWindows();
         }
         try {
             submissionService.submit(languageId, source, userId, ip, problemId, runTestCase).get();
