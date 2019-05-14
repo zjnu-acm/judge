@@ -19,7 +19,9 @@ import cn.edu.zjnu.acm.judge.data.excel.Account;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
 import com.google.common.collect.Lists;
 import java.io.Serializable;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 import lombok.Data;
 
 /**
@@ -33,7 +35,7 @@ public class AccountImportForm implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private List<Account> content;
-    private List<ExistPolicy> existsPolicy = Lists.newArrayList();
+    private final Set<ExistPolicy> existsPolicy = EnumSet.noneOf(ExistPolicy.class);
 
     /**
      * {@link UserMapper#batchUpdate(java.util.List, int)}

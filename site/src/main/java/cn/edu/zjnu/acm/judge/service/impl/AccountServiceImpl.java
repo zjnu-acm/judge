@@ -35,12 +35,12 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
@@ -142,8 +142,7 @@ public class AccountServiceImpl implements AccountService {
                 .filter(account -> Boolean.TRUE.equals(account.getExists()))
                 .collect(Collectors.toList());
         if (!exists.isEmpty()) {
-            EnumSet<AccountImportForm.ExistPolicy> set = EnumSet.noneOf(AccountImportForm.ExistPolicy.class);
-            set.addAll(form.getExistsPolicy());
+            Set<AccountImportForm.ExistPolicy> set = form.getExistsPolicy();
             if (set.isEmpty()) {
                 throw new BusinessException(BusinessCode.IMPORT_USER_EXISTS);
             }

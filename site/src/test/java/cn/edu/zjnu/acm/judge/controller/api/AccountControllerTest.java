@@ -201,7 +201,7 @@ public class AccountControllerTest {
         account.setExists(true);
         account2.setExists(true);
         expect(form, HttpStatus.BAD_REQUEST);
-        form.setExistsPolicy(Arrays.asList(AccountImportForm.ExistPolicy.ENABLE));
+        form.getExistsPolicy().add(AccountImportForm.ExistPolicy.ENABLE);
         expect(form, HttpStatus.NO_CONTENT);
     }
 
