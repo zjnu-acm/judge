@@ -17,7 +17,6 @@ package cn.edu.zjnu.acm.judge.data.form;
 
 import cn.edu.zjnu.acm.judge.data.excel.Account;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
-import com.google.common.collect.Lists;
 import java.io.Serializable;
 import java.util.EnumSet;
 import java.util.List;

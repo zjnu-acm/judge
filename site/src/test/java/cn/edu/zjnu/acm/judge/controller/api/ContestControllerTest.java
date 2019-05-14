@@ -8,14 +8,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Locale;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc(addFilters = false)
-@RunWith(SpringRunner.class)
+@RunWith(JUnitPlatform.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
@@ -49,7 +49,7 @@ public class ContestControllerTest {
     /**
      * Test of save method, of class ContestController.
      *
-     * @see ContestController#save(Contest)
+     * {@link ContestController#save(Contest)}
      */
     @Test
     public void testSave() throws Exception {
@@ -65,7 +65,7 @@ public class ContestControllerTest {
     /**
      * Test of delete method, of class ContestController.
      *
-     * @see ContestController#delete(long)
+     * {@link ContestController#delete(long)}
      */
     @Test
     public void testDelete() throws Exception {
@@ -79,7 +79,7 @@ public class ContestControllerTest {
     /**
      * Test of list method, of class ContestController.
      *
-     * @see ContestController#list(ContestForm)
+     * {@link ContestController#list(ContestForm)}
      */
     @Test
     public void testList() throws Exception {
@@ -99,7 +99,7 @@ public class ContestControllerTest {
     /**
      * Test of findOne method, of class ContestController.
      *
-     * @see ContestController#findOne(long, Locale)
+     * {@link ContestController#findOne(long, Locale)}
      */
     @Test
     public void testFindOne() throws Exception {
@@ -116,7 +116,7 @@ public class ContestControllerTest {
     /**
      * Test of update method, of class ContestController.
      *
-     * @see ContestController#update(long, Contest)
+     * {@link ContestController#update(long, Contest)}
      */
     @Test
     public void testUpdate() throws Exception {
@@ -132,7 +132,7 @@ public class ContestControllerTest {
     /**
      * Test of standing method, of class ContestController.
      *
-     * @see ContestController#standing(long)
+     * {@link ContestController#standing(long)}
      */
     @Test
     public void testStanding() throws Exception {

@@ -20,21 +20,21 @@ import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.service.MockDataService;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  *
  * @author zhanhb
  */
-@RunWith(SpringRunner.class)
+@RunWith(JUnitPlatform.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
@@ -55,7 +55,7 @@ public class UserMapperTest {
         String id = mockDataService.user().getId();
         String expResult = id;
         String result = instance.findOne(id).getId();
-        assertEquals(expResult, result);
+        assertThat(result).isEqualTo(expResult);
     }
 
     @Test

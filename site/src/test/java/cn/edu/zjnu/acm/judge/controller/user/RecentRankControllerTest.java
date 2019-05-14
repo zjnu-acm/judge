@@ -2,13 +2,13 @@ package cn.edu.zjnu.acm.judge.controller.user;
 
 import cn.edu.zjnu.acm.judge.Application;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
-@RunWith(SpringRunner.class)
+@RunWith(JUnitPlatform.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
@@ -33,7 +33,7 @@ public class RecentRankControllerTest {
     /**
      * Test of recentRank method, of class RecentRankController.
      *
-     * @see RecentRankController#recentRank(Model, int)
+     * {@link RecentRankController#recentRank(Model, int)}
      */
     @Test
     public void testRecentRank() throws Exception {

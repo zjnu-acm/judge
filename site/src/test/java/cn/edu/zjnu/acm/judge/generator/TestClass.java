@@ -45,12 +45,16 @@ public class TestClass {
         }
     }
 
+    public void addImport(String _import) {
+        imports.add("import " + _import + ";");
+    }
+
     public void addImport(Class<?> _import) {
         Package aPackage = _import.getPackage();
         if (aPackage == null || aPackage.getName().equals("java.lang")) {
             return;
         }
-        imports.add("import " + _import.getCanonicalName() + ";");
+        addImport(_import.getCanonicalName());
     }
 
     public void addStaticImport(Class<?> targetClass, String field) {

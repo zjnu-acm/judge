@@ -19,24 +19,28 @@ package cn.edu.zjnu.acm.judge.util;
 
 import java.util.function.Function;
 import java.util.regex.Pattern;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.runner.RunWith;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  *
  * @author zhanhb
  */
+@RunWith(JUnitPlatform.class)
 public class MatcherWrapperTest {
 
     private void test(String pattern, String input, Function<MatcherWrapper, String> replaceFunction, String expectedResult) {
         String result = new MatcherWrapper(Pattern.compile(pattern), input).replaceAll(replaceFunction);
-        assertEquals(expectedResult, result);
+        assertThat(result).isEqualTo(expectedResult);
     }
 
     private void test2(String pattern, String input, Function<MatcherWrapper, String> replaceFunction, String expectedResult) {
         String result = new MatcherWrapper(Pattern.compile(pattern), input).replaceFirst(replaceFunction);
-        assertEquals(expectedResult, result);
+        assertThat(result).isEqualTo(expectedResult);
     }
 
     /**
@@ -57,12 +61,16 @@ public class MatcherWrapperTest {
         test2("no", "some", matcher -> matcher.group(1) + "$1fuk", "some");
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testIse() {
-        MatcherWrapper.matcher("(he)", "he").replaceAll(matcher -> {
-            matcher.reset();
-            return "";
+        MatcherWrapper matcherWrapper = MatcherWrapper.matcher("(he)", "he");
+        assertThrows(IllegalStateException.class, () -> {
+            matcherWrapper.replaceAll(matcher -> {
+                matcher.reset();
+                return "";
+            });
         });
+
     }
 
 }

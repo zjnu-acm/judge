@@ -27,11 +27,14 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Collectors;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.runner.RunWith;
 
 /**
  * @author zhanhb
  */
+@RunWith(JUnitPlatform.class)
 public class SourceVisitor {
 
     @SuppressWarnings("UseOfSystemOutOrSystemErr")

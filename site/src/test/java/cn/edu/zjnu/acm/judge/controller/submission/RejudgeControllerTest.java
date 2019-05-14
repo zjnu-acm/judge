@@ -13,10 +13,12 @@ import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Arrays;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -24,13 +26,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import static org.hamcrest.Matchers.hasItemInArray;
-import static org.junit.Assume.assumeThat;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc(addFilters = false)
-@RunWith(SpringRunner.class)
+@RunWith(JUnitPlatform.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
 @WebAppConfiguration
@@ -61,14 +61,14 @@ public class RejudgeControllerTest {
     @Autowired
     private DeleteService deleteService;
 
-    @Before
+    @BeforeEach
     public void setUp() throws IOException, URISyntaxException {
         submission = mockDataService.submission(false);
         Path dataDir = systemService.getDataDirectory(submission.getProblem());
         CopyHelper.copy(Paths.get(RejudgeControllerTest.class.getResource("/sample/data").toURI()), dataDir, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES);
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws IOException {
         if (submission != null) {
             deleteService.delete(systemService.getDataDirectory(submission.getProblem()));
@@ -80,11 +80,11 @@ public class RejudgeControllerTest {
     /**
      * Test of rejudgeSolution method, of class RejudgeController.
      *
-     * @see RejudgeController#rejudgeSolution(long)
+     * {@link RejudgeController#rejudgeSolution(long)}
      */
     @Test
     public void testRejudgeSolution() throws Exception {
-        assumeThat(environment.getActiveProfiles(), hasItemInArray("appveyor"));
+        assumeTrue(Arrays.asList(environment.getActiveProfiles()).contains("appveyor"), "not appveyor");
         log.info("rejudgeSolution");
         long solutionId = submission.getId();
         MvcResult result = mvc.perform(get("/admin/rejudge")
@@ -101,7 +101,7 @@ public class RejudgeControllerTest {
     /**
      * Test of rejudgeProblem method, of class RejudgeController.
      *
-     * @see RejudgeController#rejudgeProblem(long)
+     * {@link RejudgeController#rejudgeProblem(long)}
      */
     @Test
     public void testRejudgeProblem() throws Exception {

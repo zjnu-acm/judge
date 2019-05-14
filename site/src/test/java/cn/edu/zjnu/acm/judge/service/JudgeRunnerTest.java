@@ -44,31 +44,28 @@ import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.rules.SpringMethodRule;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.hamcrest.Matchers.emptyArray;
-import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 /**
  *
  * @author zhanhb
  */
-@RunWith(Parameterized.class)
+@RunWith(JUnitPlatform.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
@@ -91,27 +88,20 @@ public class JudgeRunnerTest {
         return name.lastIndexOf('.') > 0 ? name.substring(name.lastIndexOf('.') + 1) : "";
     }
 
-    @BeforeClass
-    public static void setUpClass() {
-        assumeTrue("Only platform windows is supported", Platform.isWindows());
-    }
-
-    @Parameterized.Parameters(name = "{index}: {0}")
-    public static List<Object[]> data() throws Exception {
-        ArrayList<Object[]> list = new ArrayList<>(20);
+    public static List<Arguments> data() throws Exception {
+        assumeTrue(Platform.isWindows(), "Only platform windows is supported");
+        ArrayList<Arguments> list = new ArrayList<>(20);
         Path program = Paths.get(JudgeRunnerTest.class.getResource("/sample/program").toURI());
         for (Checker c : Checker.values()) {
             Path dir = program.resolve(c.name());
 
             try (Stream<Path> stream = Files.list(dir)) {
-                stream.forEach(path -> list.add(new Object[]{c.name() + "/" + path.getFileName(), c, path}));
+                stream.forEach(path -> list.add(arguments(c.name() + "/" + path.getFileName(), c, path)));
             }
         }
         return list;
     }
 
-    @Rule
-    public final SpringMethodRule springMethodRule = new SpringMethodRule();
     @Autowired
     private LanguageMapper languageMapper;
     @Autowired
@@ -123,17 +113,10 @@ public class JudgeRunnerTest {
     private final long memoryLimit = 256 * 1024L;
     private final Validator validator = SimpleValidator.PE_AS_ACCEPTED;
 
-    private final String key;
-    private final Checker checker;
-    private final Path path;
     private final JudgeData judgeData;
-    private Path work;
 
-    public JudgeRunnerTest(String key, Checker checker, Path path)
+    public JudgeRunnerTest()
             throws URISyntaxException, IOException {
-        this.checker = checker;
-        this.path = path;
-        this.key = key;
         this.judgeData = new JudgeData(Paths.get(JudgeRunnerTest.class.getResource("/sample/data").toURI()));
     }
 
@@ -143,11 +126,12 @@ public class JudgeRunnerTest {
                 .map(Language::getId).findFirst().orElseThrow(RuntimeException::new);
     }
 
-    @Before
-    public void init() throws Exception {
-        work = Files.createDirectories(Paths.get("target/work/judgeRunnerTest").resolve(key));
+    @ParameterizedTest(name = "{index}: {0}")
+    @MethodSource("data")
+    public void test(String key, Checker checker, Path path) throws IOException {
+        Path work = Files.createDirectories(Paths.get("target/work/judgeRunnerTest").resolve(key));
         Path[] groovyJars = GroovyHolder.getPaths();
-        assertThat("groovyJars", groovyJars, not(emptyArray()));
+        assertThat(groovyJars).isNotEmpty();
         for (Path groovyJar : groovyJars) {
             Files.copy(groovyJar, work.resolve(groovyJar.getFileName().toString()));
         }
@@ -163,10 +147,7 @@ public class JudgeRunnerTest {
                 .build();
         log.warn("Language groovy: {}", groovy);
         languageMapper.save(groovy);
-    }
 
-    @Test
-    public void test() throws IOException {
         String extension = getExtension(path);
         int languageId = findFirstLanguageByExtension(EXTENSION_MAP.get(extension));
         Language language = languageMapper.findOne(languageId);
@@ -184,14 +165,13 @@ public class JudgeRunnerTest {
         int expectScore = SPECIAL_SCORE.getOrDefault(key, checker.getScore());
         String extectedCaseResult = ResultType.getCaseScoreDescription(checker.getStatus());
 
-        assertNull("type will either be null or COMPILATION_ERROR,"
-                + " if got other result, please modify this file",
-                runResult.getType());
+        assertNull(runResult.getType(), "type will either be null or COMPILATION_ERROR,"
+                + " if got other result, please modify this file");
         List<SubmissionDetailDTO> details = submissionService.parseSubmissionDetail(runResult.getMessage());
         String testMessage = key + " " + details + " " + extectedCaseResult;
-        assertEquals(testMessage, expectScore, runResult.getScore());
+        assertEquals(expectScore, runResult.getScore(), testMessage);
         boolean matches = details.stream().anyMatch(detail -> extectedCaseResult.equals(detail.getResult()));
-        assertTrue(testMessage, matches);
+        assertTrue(matches, testMessage);
     }
 
 }

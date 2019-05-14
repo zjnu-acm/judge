@@ -5,15 +5,14 @@ import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.service.ProblemService;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -26,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
-@RunWith(SpringRunner.class)
+@RunWith(JUnitPlatform.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
@@ -41,7 +40,7 @@ public class ProblemStatusControllerTest {
     /**
      * Test of gotoProblem method, of class ProblemStatusController.
      *
-     * @see ProblemStatusController#gotoProblem(String, RedirectAttributes)
+     * {@link ProblemStatusController#gotoProblem(String, RedirectAttributes)}
      */
     @Test
     public void testGotoProblem() throws Exception {
@@ -59,7 +58,7 @@ public class ProblemStatusControllerTest {
     /**
      * Test of status method, of class ProblemStatusController.
      *
-     * @see ProblemStatusController#status(HttpServletRequest, long, Pageable,
+     * {@link ProblemStatusController#status(HttpServletRequest, long, Pageable,}
      * Authentication)
      */
     @Test

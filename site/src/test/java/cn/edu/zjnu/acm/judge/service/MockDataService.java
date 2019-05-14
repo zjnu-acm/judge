@@ -37,7 +37,7 @@ import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static org.junit.Assume.assumeTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  *
@@ -139,7 +139,7 @@ public class MockDataService {
     private Submission submission(int languageId, String source, String userId, String ip,
             long problemId, boolean runTestCase) throws Throwable {
         if (runTestCase) {
-            assumeTrue("not windows", Platform.isWindows());
+            assumeTrue(Platform.isWindows(), "not windows");
         }
         try {
             submissionService.submit(languageId, source, userId, ip, problemId, runTestCase).get();

@@ -17,12 +17,15 @@ package com.github.zhanhb.judge.common;
 
 import java.util.Arrays;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.runner.RunWith;
 
 /**
  *
  * @author zhanhb
  */
+@RunWith(JUnitPlatform.class)
 @Slf4j
 public class StatusTest {
 

@@ -4,14 +4,14 @@ import cn.edu.zjnu.acm.judge.Application;
 import cn.edu.zjnu.acm.judge.domain.Language;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
-@RunWith(SpringRunner.class)
+@RunWith(JUnitPlatform.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
@@ -41,7 +41,7 @@ public class LanguageControllerTest {
     /**
      * Test of findAll method, of class LanguageController.
      *
-     * @see LanguageController#findAll()
+     * {@link LanguageController#findAll()}
      */
     @Test
     public void testFindAll() throws Exception {
@@ -55,7 +55,7 @@ public class LanguageControllerTest {
     /**
      * Test of save method, of class LanguageController.
      *
-     * @see LanguageController#save(Language)
+     * {@link LanguageController#save(Language)}
      */
     @Test
     public void testSave() throws Exception {
@@ -75,7 +75,7 @@ public class LanguageControllerTest {
     /**
      * Test of findOne method, of class LanguageController.
      *
-     * @see LanguageController#findOne(long)
+     * {@link LanguageController#findOne(long)}
      */
     @Test
     public void testFindOne() throws Exception {
@@ -90,7 +90,7 @@ public class LanguageControllerTest {
     /**
      * Test of update method, of class LanguageController.
      *
-     * @see LanguageController#update(long, Language)
+     * {@link LanguageController#update(long, Language)}
      */
     @Test
     public void testUpdate() throws Exception {
@@ -110,7 +110,7 @@ public class LanguageControllerTest {
     /**
      * Test of delete method, of class LanguageController.
      *
-     * @see LanguageController#delete(long)
+     * {@link LanguageController#delete(long)}
      */
     @Test
     public void testDelete() throws Exception {

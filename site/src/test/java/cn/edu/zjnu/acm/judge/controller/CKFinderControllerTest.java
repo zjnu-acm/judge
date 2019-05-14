@@ -9,29 +9,28 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.junit.Assume.assumeTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.handler;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
-@RunWith(SpringRunner.class)
+@RunWith(JUnitPlatform.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
@@ -65,7 +64,7 @@ public class CKFinderControllerTest {
     /**
      * Test of legacySupport method, of class CKFinderController.
      *
-     * @see CKFinderController#legacySupport(HttpServletRequest,
+     * {@link CKFinderController#legacySupport(HttpServletRequest,}
      * HttpServletResponse, String)
      */
     @Test
@@ -117,7 +116,7 @@ public class CKFinderControllerTest {
     /**
      * Test of attachment method, of class CKFinderController.
      *
-     * @see CKFinderController#attachment(HttpServletRequest,
+     * {@link CKFinderController#attachment(HttpServletRequest,}
      * HttpServletResponse, String)
      */
     @Test
@@ -161,7 +160,7 @@ public class CKFinderControllerTest {
 
     @Test
     public void testIseOnWindows() throws Exception {
-        assumeTrue(Platform.isWindows());
+        assumeTrue(Platform.isWindows(), "not windows");
         pathName = "::::::";
         try {
             setUp();
@@ -177,7 +176,7 @@ public class CKFinderControllerTest {
 
     @Test
     public void testColonOnUnix() throws Exception {
-        assumeTrue(!Platform.isWindows());
+        assumeTrue(!Platform.isWindows(), "not windows");
         pathName = "::::::";
         setUp();
         mvc.perform(get("/userfiles/" + pathName))

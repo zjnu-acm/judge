@@ -15,36 +15,38 @@
  */
 package com.github.zhanhb.judge.win32;
 
+import cn.edu.zjnu.acm.judge.util.Platform;
 import java.util.ArrayList;
 import java.util.List;
-import jnc.foreign.Platform;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 
 import static com.github.zhanhb.judge.win32.IntegrityLevel.INTEGRITY_LEVEL_LAST;
 import static com.github.zhanhb.judge.win32.IntegrityLevel.INTEGRITY_LEVEL_LOW;
 import static com.github.zhanhb.judge.win32.TokenLevel.USER_LAST;
-import static org.junit.Assume.assumeTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 /**
  *
  * @author zhanhb
  */
+@RunWith(JUnitPlatform.class)
 @Slf4j
-@RunWith(Parameterized.class)
 public class SandboxTest {
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpClass() {
-        assumeTrue("not windows", Platform.getNativePlatform().getOS().isWindows());
+        assumeTrue(Platform.isWindows(), "not windows");
     }
 
-    @Parameterized.Parameters(name = "{index} {0} {1} {2} {3}")
-    public static List<Object[]> data() {
-        ArrayList<Object[]> list = new ArrayList<>(56);
+    public static List<Arguments> data() {
+        ArrayList<Arguments> list = new ArrayList<>(56);
         TokenLevel[] tokenLevels = TokenLevel.values();
         IntegrityLevel[] integrityLevels = new IntegrityLevel[]{INTEGRITY_LEVEL_LOW, INTEGRITY_LEVEL_LAST};
         TokenType[] tokenTypes = TokenType.values();
@@ -56,7 +58,7 @@ public class SandboxTest {
             for (IntegrityLevel integrityLevel : integrityLevels) {
                 for (TokenType tokenType : tokenTypes) {
                     for (boolean lockdownDefaultDacl : lockDowns) {
-                        list.add(new Object[]{securityLevel, integrityLevel, tokenType, lockdownDefaultDacl});
+                        list.add(arguments(securityLevel, integrityLevel, tokenType, lockdownDefaultDacl));
                     }
                 }
             }
@@ -64,23 +66,12 @@ public class SandboxTest {
         return list;
     }
 
-    private final TokenLevel securityLevel;
-    private final IntegrityLevel integrityLevel;
-    private final TokenType tokenType;
-    private final boolean lockdownDefaultDacl;
-
-    public SandboxTest(TokenLevel securityLevel, IntegrityLevel integrityLevel, TokenType tokenType, boolean lockdownDefaultDacl) {
-        this.securityLevel = securityLevel;
-        this.integrityLevel = integrityLevel;
-        this.tokenType = tokenType;
-        this.lockdownDefaultDacl = lockdownDefaultDacl;
-    }
-
     /**
      * Test of createRestrictedToken method, of class Sandbox.
      */
-    @Test
-    public void testCreateRestrictedToken() {
+    @ParameterizedTest
+    @MethodSource("data")
+    public void testCreateRestrictedToken(TokenLevel securityLevel, IntegrityLevel integrityLevel, TokenType tokenType, boolean lockdownDefaultDacl) {
         log.info("CreateRestrictedToken");
         Handle.close(Sandbox.INSTANCE.createRestrictedToken(securityLevel, integrityLevel, tokenType, lockdownDefaultDacl));
     }

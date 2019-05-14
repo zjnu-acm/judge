@@ -17,15 +17,17 @@ package cn.edu.zjnu.acm.judge.util;
 
 import java.util.concurrent.ThreadLocalRandom;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.runner.RunWith;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  *
  * @author zhanhb
  */
+@RunWith(JUnitPlatform.class)
 @Slf4j
 public class UtilityTest {
 
@@ -37,12 +39,12 @@ public class UtilityTest {
         log.info("getRandomString");
         int length = 8;
         String result = Utility.getRandomString(length);
-        assertEquals(length, result.length());
+        assertThat(result.length()).isEqualTo(length);
         for (int i = 0; i < 100; ++i) {
             length = ThreadLocalRandom.current().nextInt(35) + 6;
             final String t = Utility.getRandomString(length);
-            assertEquals(length, t.length());
-            t.chars().forEach(ch -> Assert.assertTrue(t, Character.isLetterOrDigit(ch)));
+            assertThat(t.length()).isEqualTo(length);
+            assertThat(t.chars()).allMatch(ch -> Character.isLetterOrDigit(ch));
         }
     }
 

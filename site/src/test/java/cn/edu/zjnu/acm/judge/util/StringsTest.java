@@ -20,15 +20,18 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.runner.RunWith;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  *
  * @author zhanhb
  */
+@RunWith(JUnitPlatform.class)
 @Slf4j
 public class StringsTest {
 
@@ -59,14 +62,14 @@ public class StringsTest {
                     .collect(StringBuilder::new,
                             (sb, x) -> sb.append((char) x),
                             StringBuilder::append).toString();
-            assertEquals(length, randomString.length());
+            assertThat(randomString.length()).isEqualTo(length);
 
             for (int j = 0; j < 30; ++j) {
                 int start = random.nextInt(length * 6) - length * 3;
                 String result = Strings.slice(randomString, start);
 
                 String expResult = (String) javascript.eval("\'" + randomString + "\'.slice(" + start + ")");
-                assertEquals(expResult, result);
+                assertThat(result).isEqualTo(expResult);
             }
         }
     }
@@ -87,7 +90,7 @@ public class StringsTest {
                     .collect(StringBuilder::new,
                             (sb, x) -> sb.append((char) x),
                             StringBuilder::append).toString();
-            assertEquals(length, randomString.length());
+            assertThat(randomString.length()).isEqualTo(length);
 
             for (int j = 0; j < 30; ++j) {
                 int start = random.nextInt(length * 6) - length * 3;
@@ -95,7 +98,7 @@ public class StringsTest {
                 String result = Strings.slice(randomString, start, end);
 
                 String expResult = (String) javascript.eval("\'" + randomString + "\'.slice(" + start + "," + end + ")");
-                assertEquals(expResult, result);
+                assertThat(result).isEqualTo(expResult);
             }
         }
     }

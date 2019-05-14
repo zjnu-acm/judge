@@ -15,30 +15,33 @@
  */
 package com.github.zhanhb.judge.win32;
 
+import cn.edu.zjnu.acm.judge.util.Platform;
 import com.github.zhanhb.jnc.platform.win32.Advapi32;
 import com.github.zhanhb.jnc.platform.win32.Kernel32Util;
 import com.github.zhanhb.jnc.platform.win32.SID;
 import com.github.zhanhb.jnc.platform.win32.WString;
-import jnc.foreign.Platform;
 import jnc.foreign.byref.AddressByReference;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.runner.RunWith;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  *
  * @author zhanhb
  */
+@RunWith(JUnitPlatform.class)
 @Slf4j
 public class IntegrityLevelTest {
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpClass() {
-        assumeTrue("not windows", Platform.getNativePlatform().getOS().isWindows());
+        assumeTrue(Platform.isWindows(), "not windows");
     }
 
     /**
@@ -63,7 +66,7 @@ public class IntegrityLevelTest {
             }
             assertTrue(sid.isValid());
             String sidString = sid.toString();
-            assertEquals(integrityLevelStr, sidString);
+            assertThat(sidString).isEqualTo(integrityLevelStr);
         }
     }
 

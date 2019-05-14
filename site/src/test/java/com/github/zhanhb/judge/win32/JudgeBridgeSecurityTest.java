@@ -15,6 +15,7 @@
  */
 package com.github.zhanhb.judge.win32;
 
+import cn.edu.zjnu.acm.judge.util.Platform;
 import com.github.zhanhb.judge.common.ExecuteResult;
 import com.github.zhanhb.judge.common.JudgeBridge;
 import com.github.zhanhb.judge.common.Options;
@@ -24,37 +25,39 @@ import com.github.zhanhb.judge.common.Validator;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import jnc.foreign.Platform;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.runner.RunWith;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assume.assumeTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  *
  * @author zhanhb
  */
+@RunWith(JUnitPlatform.class)
 @Slf4j
 public class JudgeBridgeSecurityTest {
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpClass() {
-        assumeTrue("not windows", Platform.getNativePlatform().getOS().isWindows());
+        assumeTrue(Platform.isWindows(), "not windows");
     }
 
     private final Validator validator = SimpleValidator.NORMAL;
     private JudgeBridge judgeBridge;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         judgeBridge = new JudgeBridge();
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         judgeBridge.close();
     }
@@ -74,7 +77,7 @@ public class JudgeBridgeSecurityTest {
         try {
             ExecuteResult er = judgeBridge.judge(new Options[]{options}, true, validator)[0];
             log.info("{}", er);
-            assertEquals(Status.RUNTIME_ERROR, er.getCode());
+            assertThat(er.getCode()).isEqualTo(Status.RUNTIME_ERROR);
         } finally {
             try {
                 Runtime.getRuntime().exec("shutdown /a");

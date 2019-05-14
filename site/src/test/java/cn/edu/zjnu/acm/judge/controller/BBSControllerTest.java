@@ -22,15 +22,14 @@ import cn.edu.zjnu.acm.judge.service.MockDataService;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -55,7 +54,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author zhanhb
  */
 @AutoConfigureMockMvc
-@RunWith(SpringRunner.class)
+@RunWith(JUnitPlatform.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
@@ -74,7 +73,7 @@ public class BBSControllerTest {
     /**
      * Test of bbs method, of class BBSController.
      *
-     * @see BBSController#bbs(HttpServletRequest, Long, int, long, Model)
+     * {@link BBSController#bbs(HttpServletRequest, Long, int, long, Model)}
      */
     @Test
     public void testBbs() throws Exception {
@@ -101,7 +100,7 @@ public class BBSControllerTest {
     /**
      * Test of postpage method, of class BBSController.
      *
-     * @see BBSController#postpage(Model, Long)
+     * {@link BBSController#postpage(Model, Long)}
      */
     @Test
     public void testPostpage() throws Exception {
@@ -116,7 +115,7 @@ public class BBSControllerTest {
     /**
      * Test of postpage method, of class BBSController.
      *
-     * @see BBSController#postpage(Model, Long)
+     * {@link BBSController#postpage(Model, Long)}
      */
     @Test
     public void testPostpageAnonymous() throws Exception {
@@ -128,7 +127,7 @@ public class BBSControllerTest {
     /**
      * Test of post method, of class BBSController.
      *
-     * @see BBSController#post(Long, Long, String, String, RedirectAttributes,
+     * {@link BBSController#post(Long, Long, String, String, RedirectAttributes,}
      * Authentication)
      */
     @Test
@@ -157,7 +156,7 @@ public class BBSControllerTest {
     /**
      * Test of showMessage method, of class BBSController.
      *
-     * @see BBSController#showMessage(long, Model)
+     * {@link BBSController#showMessage(long, Model)}
      */
     @Test
     public void testShowMessage() throws Exception {

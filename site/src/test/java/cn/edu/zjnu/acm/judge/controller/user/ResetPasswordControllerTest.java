@@ -3,15 +3,14 @@ package cn.edu.zjnu.acm.judge.controller.user;
 import cn.edu.zjnu.acm.judge.Application;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -23,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
-@RunWith(SpringRunner.class)
+@RunWith(JUnitPlatform.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
@@ -36,7 +35,7 @@ public class ResetPasswordControllerTest {
     /**
      * Test of doGet method, of class ResetPasswordController.
      *
-     * @see ResetPasswordController#doGet(String, String)
+     * {@link ResetPasswordController#doGet(String, String)}
      */
     @Test
     public void testDoGet() throws Exception {
@@ -51,7 +50,7 @@ public class ResetPasswordControllerTest {
     /**
      * Test of doPost method, of class ResetPasswordController.
      *
-     * @see ResetPasswordController#doPost(HttpServletRequest,
+     * {@link ResetPasswordController#doPost(HttpServletRequest,}
      * HttpServletResponse, String, String, String, Locale)
      */
     @Test
@@ -74,7 +73,7 @@ public class ResetPasswordControllerTest {
     /**
      * Test of changePassword method, of class ResetPasswordController.
      *
-     * @see ResetPasswordController#changePassword(HttpServletRequest,
+     * {@link ResetPasswordController#changePassword(HttpServletRequest,}
      * HttpServletResponse, String, String)
      */
     @Test

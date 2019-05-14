@@ -24,21 +24,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  *
  * @author zhanhb
  */
-@RunWith(SpringRunner.class)
+@RunWith(JUnitPlatform.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
@@ -73,7 +73,7 @@ public class UnicodeTest {
                 try (PreparedStatement ps = connection.prepareStatement("select value from test_table1 where id in(1,2)");
                         ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
-                        assertEquals(laughCry, rs.getString(1));
+                        assertThat(rs.getString(1)).isEqualTo(laughCry);
                     }
                 }
             } finally {

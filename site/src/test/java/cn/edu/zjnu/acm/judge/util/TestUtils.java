@@ -18,9 +18,8 @@ package cn.edu.zjnu.acm.judge.util;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-import static org.hamcrest.Matchers.instanceOf;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  *
@@ -35,7 +34,7 @@ public class TestUtils {
             c.newInstance();
             fail("should throw an InvocationTargetException");
         } catch (InvocationTargetException ex) {
-            assertThat(ex.getTargetException(), instanceOf(AssertionError.class));
+            assertThat(ex.getTargetException()).isInstanceOf(AssertionError.class);
         }
     }
 

@@ -16,14 +16,18 @@
 package cn.edu.zjnu.acm.judge.util;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.runner.RunWith;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  *
  * @author zhanhb
  */
+@RunWith(JUnitPlatform.class)
 @Slf4j
 public class URLEncoderTest {
 
@@ -37,9 +41,9 @@ public class URLEncoderTest {
         URLEncoder encoder = URLEncoder.QUERY;
         String expect = "hello@%20%E4%BD%A0%E5%A5%BD";
 
-        assertEquals(expect, encoder.encode(str));
-        assertEquals(expect + expect, encoder.encode(str + str));
-        assertEquals(expect + expect + 1, encoder.encode(str + str + 1));
+        assertThat(encoder.encode(str)).isEqualTo(expect);
+        assertThat(encoder.encode(str + str)).isEqualTo(expect + expect);
+        assertThat(encoder.encode(str + str + 1)).isEqualTo(expect + expect + 1);
 
         str = com.google.common.base.Strings.repeat(str, 13);
         assertNotEquals(URLEncoder.URI_COMPONENT.encode(str), encoder.encode(str));

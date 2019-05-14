@@ -19,13 +19,13 @@ import cn.edu.zjnu.acm.judge.Application;
 import cn.edu.zjnu.acm.judge.service.MockDataService;
 import java.util.Locale;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -44,7 +44,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author zhanhb
  */
 @AutoConfigureMockMvc
-@RunWith(SpringRunner.class)
+@RunWith(JUnitPlatform.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
@@ -59,7 +59,7 @@ public class ContestControllerTest {
     /**
      * Test of standingHtml method, of class ContestController.
      *
-     * @see ContestController#standingHtml(long, Locale)
+     * {@link ContestController#standingHtml(long, Locale)}
      */
     @Test
     public void testStandingHtml() throws Exception {
@@ -79,7 +79,7 @@ public class ContestControllerTest {
     /**
      * Test of index method, of class ContestController.
      *
-     * @see ContestController#index(long, RedirectAttributes)
+     * {@link ContestController#index(long, RedirectAttributes)}
      */
     @Test
     public void testIndex() throws Exception {

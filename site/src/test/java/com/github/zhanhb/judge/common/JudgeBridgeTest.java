@@ -16,8 +16,9 @@
 package com.github.zhanhb.judge.common;
 
 import cn.edu.zjnu.acm.judge.util.DeleteHelper;
+import cn.edu.zjnu.acm.judge.util.Platform;
 import com.github.zhanhb.judge.GroovyHolder;
-import com.google.common.collect.ImmutableList;
+import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -28,32 +29,33 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
-import jnc.foreign.Platform;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 
-import static org.hamcrest.Matchers.arrayWithSize;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 /**
- *
  * @author zhanhb
  */
-@RunWith(Parameterized.class)
+@RunWith(JUnitPlatform.class)
 @Slf4j
 public class JudgeBridgeTest {
 
-    private static Path tmp;
+    private static Path work;
     private static Path input;
     private static Path output;
     private static Path groovy;
+    private static Path program;
 
     private static String build(String... args) {
         return Arrays.stream(args)
@@ -61,81 +63,74 @@ public class JudgeBridgeTest {
                 .collect(Collectors.joining(" "));
     }
 
-    @Parameterized.Parameters(name = "{index}: {0} {1}")
-    public static List<Object[]> data() throws Exception {
-        if (!Platform.getNativePlatform().getOS().isWindows()) {
-            return ImmutableList.of();
-        }
-        URI uri = JudgeBridgeTest.class.getResource("/sample/program").toURI();
-        Path program = Paths.get(uri);
-        Path data = program.resolve("../data").toRealPath();
-        input = data.resolve("b.in");
-        output = data.resolve("b.out");
-        tmp = Files.createDirectories(Files.createDirectories(Paths.get("C:", "tmp")));
-        Path[] groovyJars = GroovyHolder.getPaths();
-        assertThat("groovyJars", groovyJars, arrayWithSize(1));
-        Path groovyPath = groovyJars[0];
-        groovy = Files.copy(groovyPath, tmp.resolve(groovyPath.getFileName().toString()), StandardCopyOption.REPLACE_EXISTING);
-
+    public static List<Arguments> data() throws Exception {
+        assumeTrue(Platform.isWindows(), "not windows");
         Checker[] values = Checker.values();
-        ArrayList<Object[]> list = new ArrayList<>(values.length);
+        ArrayList<Arguments> list = new ArrayList<>(values.length);
         for (Checker checker : values) {
             Path path = program.resolve(checker.name());
             Files.list(path)
                     .filter(p -> p.getFileName().toString().endsWith(".groovy"))
                     .map(Object::toString)
-                    .forEach(executable -> list.add(new Object[]{checker, executable}));
+                    .forEach(executable -> list.add(arguments(checker, executable)));
         }
         return list;
     }
 
-    @AfterClass
+    @BeforeAll
+    public static void setUpClass() throws Exception {
+        work = Files.createDirectories(Paths.get("target", "work", "judgeBridgeTest"));
+        URI uri = JudgeBridgeTest.class.getResource("/sample/program").toURI();
+        program = Paths.get(uri);
+        Path data = program.resolve("../data").toRealPath();
+        input = data.resolve("b.in");
+        output = data.resolve("b.out");
+        Path[] groovyJars = GroovyHolder.getPaths();
+        assertThat(groovyJars).withFailMessage("groovyJars").hasSize(1);
+        Path groovyPath = groovyJars[0];
+        groovy = Files.copy(groovyPath, work.resolve(groovyPath.getFileName().toString()), StandardCopyOption.REPLACE_EXISTING);
+    }
+
+    @AfterAll
     public static void tearDownClass() throws Exception {
-        DeleteHelper.delete(tmp);
+        DeleteHelper.delete(work);
     }
 
     private final Validator validator = SimpleValidator.NORMAL;
 
-    private final Checker checker;
-    private final String executable;
     private JudgeBridge judgeBridge;
 
-    public JudgeBridgeTest(Checker checker, String executable) {
-        this.checker = checker;
-        this.executable = executable;
-    }
-
-    @Before
+    @BeforeEach
     public void setUp() {
         judgeBridge = new JudgeBridge();
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         judgeBridge.close();
     }
 
-    @Test
-    public void test() {
-        test(executable, checker);
-    }
-
-    @SneakyThrows
-    private void test(String executable, Checker checker) {
-        Options options = Options.builder().command(build("java", "-cp", groovy.toString(), groovy.ui.GroovyMain.class.getName(), executable))
+    @ParameterizedTest
+    @MethodSource("data")
+    public void test(Checker checker, String executable) throws IOException {
+        Options options = Options.builder().command(build("java", "-cp", groovy.getFileName().toString(), groovy.ui.GroovyMain.class.getName(), executable))
                 .inputFile(input)
-                .outputFile(tmp.resolve(output.getFileName()))
+                .outputFile(work.resolve(output.getFileName()))
                 .standardOutput(output)
-                .errFile(tmp.resolve("NUL"))
+                .errFile(work.resolve("NUL"))
                 .memoryLimit(256 * 1024 * 1024)
                 .outputLimit(16 * 1024 * 1024)
-                .workDirectory(tmp)
+                .workDirectory(work)
                 .timeLimit(6000)
                 .build();
         boolean stopOnError = false;
         ExecuteResult er = judgeBridge.judge(new Options[]{options}, stopOnError, validator)[0];
-        log.info("{}", er);
-        assertEquals(executable, checker.getStatus(), er.getCode());
+        Status result = er.getCode();
+        Status expect = checker.getStatus();
+        assertThat(result)
+                .withFailMessage("executable: %s, exptect %s, got %s",
+                        executable, expect, result)
+                .isEqualTo(expect);
     }
 
 }

@@ -21,22 +21,22 @@ import cn.edu.zjnu.acm.judge.service.impl.LoginlogServiceImpl;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  *
  * @author zhanhb
  */
-@RunWith(SpringRunner.class)
+@RunWith(JUnitPlatform.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
@@ -46,7 +46,7 @@ public class LoginlogServiceTest {
     @Autowired
     private LoginlogService loginlogService;
 
-    @After
+    @AfterEach
     public void tearDown() throws InterruptedException {
         LoginlogServiceImpl impl = (LoginlogServiceImpl) loginlogService;
         impl.destroy();

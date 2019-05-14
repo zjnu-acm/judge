@@ -25,21 +25,21 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  *
  * @author zhanhb
  */
-@RunWith(SpringRunner.class)
+@RunWith(JUnitPlatform.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
@@ -72,7 +72,7 @@ public class ContestMapperTest {
         long contestId = 0L;
         List<Problem> expResult = Arrays.asList();
         List<Problem> result = instance.getProblems(contestId, null, localeService.resolve(locale));
-        assertEquals(expResult, result);
+        assertThat(result).isEqualTo(expResult);
     }
 
     /**
@@ -84,7 +84,7 @@ public class ContestMapperTest {
         long contestId = 0L;
         List<Problem> expResult = Arrays.asList();
         List<Problem> result = instance.getProblems(contestId, null, null);
-        assertEquals(expResult, result);
+        assertThat(result).isEqualTo(expResult);
     }
 
     /**
@@ -97,7 +97,7 @@ public class ContestMapperTest {
         String userId = "'";
         List<Problem> expResult = Arrays.asList();
         List<Problem> result = instance.getProblems(contestId, userId, localeService.resolve(locale));
-        assertEquals(expResult, result);
+        assertThat(result).isEqualTo(expResult);
     }
 
     /**
@@ -109,7 +109,7 @@ public class ContestMapperTest {
         long contestId = 0L;
         Contest expResult = null;
         Contest result = instance.findOne(contestId);
-        assertEquals(expResult, result);
+        assertThat(result).isEqualTo(expResult);
     }
 
     /**
@@ -122,7 +122,7 @@ public class ContestMapperTest {
         long problemOrder = 0L;
         Problem expResult = null;
         Problem result = instance.getProblem(contestId, problemOrder, locale.toLanguageTag());
-        assertEquals(expResult, result);
+        assertThat(result).isEqualTo(expResult);
     }
 
     /**
@@ -134,7 +134,7 @@ public class ContestMapperTest {
         long contestId = 0L;
         Contest expResult = null;
         Contest result = instance.findOneByIdAndNotDisabled(contestId);
-        assertEquals(expResult, result);
+        assertThat(result).isEqualTo(expResult);
     }
 
     /**
@@ -146,7 +146,7 @@ public class ContestMapperTest {
         long contestId = 0L;
         List<User> expResult = Arrays.asList();
         List<User> result = instance.attenders(contestId);
-        assertEquals(expResult, result);
+        assertThat(result).isEqualTo(expResult);
     }
 
 }

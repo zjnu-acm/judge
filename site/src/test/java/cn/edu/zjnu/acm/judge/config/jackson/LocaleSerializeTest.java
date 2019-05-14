@@ -22,20 +22,20 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  *
  * @author zhanhb
  */
-@RunWith(SpringRunner.class)
+@RunWith(JUnitPlatform.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
 @WebAppConfiguration
@@ -58,16 +58,16 @@ public class LocaleSerializeTest {
             String str = objectMapper.writeValueAsString(expect);
             String tag = Optional.ofNullable(expect).map(Locale::toLanguageTag).orElse(null);
             String expectStr = new Gson().toJson(tag);
-            assertEquals(expectStr, str);
+            assertThat(str).isEqualTo(expectStr);
             Locale result = objectMapper.readValue(str, Locale.class);
             log.info("str={}, expect={}, result={}", str, expect, result);
-            assertEquals(expect, result);
+            assertThat(result).isEqualTo(expect);
 
             str = objectMapper.writeValueAsString(new LocaleHolder(expect));
             log.info("str={}", str);
 
             result = objectMapper.readValue(str, LocaleHolder.class).getLocale();
-            assertEquals(expect, result);
+            assertThat(result).isEqualTo(expect);
         }
     }
 

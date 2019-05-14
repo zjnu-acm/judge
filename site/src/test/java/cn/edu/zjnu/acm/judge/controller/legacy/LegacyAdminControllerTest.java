@@ -2,13 +2,13 @@ package cn.edu.zjnu.acm.judge.controller.legacy;
 
 import cn.edu.zjnu.acm.judge.Application;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 
 @AutoConfigureMockMvc
-@RunWith(SpringRunner.class)
+@RunWith(JUnitPlatform.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
@@ -33,7 +33,7 @@ public class LegacyAdminControllerTest {
     /**
      * Test of showProblem method, of class LegacyAdminController.
      *
-     * @see LegacyAdminController#showProblem(long, RedirectAttributes)
+     * {@link LegacyAdminController#showProblem(long, RedirectAttributes)}
      */
     @Test
     public void testShowProblem() throws Exception {
@@ -47,7 +47,7 @@ public class LegacyAdminControllerTest {
     /**
      * Test of showContest method, of class LegacyAdminController.
      *
-     * @see LegacyAdminController#showContest(long, RedirectAttributes)
+     * {@link LegacyAdminController#showContest(long, RedirectAttributes)}
      */
     @Test
     public void testShowContest() throws Exception {
@@ -61,7 +61,7 @@ public class LegacyAdminControllerTest {
     /**
      * Test of rejudge method, of class LegacyAdminController.
      *
-     * @see LegacyAdminController#rejudge(RedirectAttributes, java.util.Map)
+     * {@link LegacyAdminController#rejudge(RedirectAttributes, java.util.Map)}
      */
     @Test
     public void testRejudge() throws Exception {

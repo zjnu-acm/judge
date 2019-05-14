@@ -41,7 +41,8 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.javassist.ClassPool;
 import org.apache.ibatis.javassist.CtMethod;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -49,7 +50,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -69,9 +69,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
+@RunWith(JUnitPlatform.class)
 @SpringBootTest(classes = Application.class)
 public class MockGenerator {
 
@@ -173,7 +173,7 @@ public class MockGenerator {
             value.sort(Comparator.comparing(info -> info.getHandlerMethod().getMethod(), Comparator.comparing(method -> method.getDeclaringClass().getName().replace(".", "/") + "." + method.getName() + ":" + org.springframework.asm.Type.getMethodDescriptor(method), toMethodComparator(key))));
             TestClass testClass = new TestClass(key,
                     "@AutoConfigureMockMvc",
-                    "@RunWith(SpringRunner.class)",
+                    "@RunWith(JUnitPlatform.class)",
                     "@Slf4j",
                     "@SpringBootTest(classes = " + MAIN_CLASS.getSimpleName() + ".class)",
                     "@Transactional",
@@ -181,8 +181,8 @@ public class MockGenerator {
 
             testClass.addImport(MAIN_CLASS);
             testClass.addImport(AutoConfigureMockMvc.class);
+            testClass.addImport(JUnitPlatform.class);
             testClass.addImport(RunWith.class);
-            testClass.addImport(SpringRunner.class);
             testClass.addImport(Slf4j.class);
             testClass.addImport(SpringBootTest.class);
             testClass.addImport(Transactional.class);
@@ -240,8 +240,8 @@ public class MockGenerator {
             testClass.addImport(type);
         }
         out.println(" *");
-        out.println(" * @see " + key.getSimpleName() + "#" + method.getName()
-                + Arrays.stream(method.getParameterTypes()).map(Class::getSimpleName).collect(Collectors.joining(", ", "(", ")")));
+        out.println(" * {@link " + key.getSimpleName() + "#" + method.getName()
+                + Arrays.stream(method.getParameterTypes()).map(Class::getSimpleName).collect(Collectors.joining(", ", "(", ")}")));
         out.println(" */");
         testClass.addImport(Test.class);
         out.println("@Test");
@@ -352,7 +352,7 @@ public class MockGenerator {
         for (Map.Entry<String, Class<?>> entry : params.entrySet()) {
             String paramName = entry.getKey();
             String variableName = camelCase(paramName);
-            Class<? extends Object> paramType = entry.getValue();
+            Class<?> paramType = entry.getValue();
             String value;
             if (paramType.isPrimitive()) {
                 value = com.google.common.primitives.Primitives.wrap(paramType).getSimpleName() + ".toString(" + variableName + ")";
@@ -416,7 +416,10 @@ public class MockGenerator {
 
     private void process(String paramName, String variableName, Class<?> type, Map<String, Class<?>> requestParams, List<String> files, List<String> variableDeclares, TestClass testClass, Method method, String lowerMethod) {
         if (type == MultipartFile.class) {
-            assertEquals("upload a multipart file, but request method is " + lowerMethod + ", " + method, "post", lowerMethod);
+            String msg = "upload a multipart file, but request method is %s, %s";
+            assertThat(lowerMethod).withFailMessage(msg, lowerMethod, method)
+                    .isEqualTo("post");
+
             testClass.addImport(MockMultipartFile.class);
             variableDeclares.add("\tbyte[] " + variableName + "Content = null;");
             variableDeclares.add("\tMockMultipartFile " + variableName + " = new MockMultipartFile(\"" + paramName + "\", " + variableName + "Content);");

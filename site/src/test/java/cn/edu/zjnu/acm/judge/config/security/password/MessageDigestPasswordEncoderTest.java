@@ -21,16 +21,19 @@ import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.runner.RunWith;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  *
  * @author zhanhb
  */
+@RunWith(JUnitPlatform.class)
 @Slf4j
 @Transactional
 public class MessageDigestPasswordEncoderTest {
@@ -46,7 +49,7 @@ public class MessageDigestPasswordEncoderTest {
         MessageDigestPasswordEncoder instance = MessageDigestPasswordEncoder.md5();
         String expResult = "e10adc3949ba59abbe56e057f20f883e";
         String result = instance.encode(password);
-        assertEquals(expResult, result);
+        assertThat(result).isEqualTo(expResult);
     }
 
     /**
@@ -61,7 +64,7 @@ public class MessageDigestPasswordEncoderTest {
         MessageDigestPasswordEncoder instance = MessageDigestPasswordEncoder.sha1();
         boolean expResult = true;
         boolean result = instance.matches(rawPassword, encodedPassword);
-        assertEquals(expResult, result);
+        assertThat(result).isEqualTo(expResult);
     }
 
     @Test

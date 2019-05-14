@@ -28,12 +28,22 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import org.junit.Test;
+import org.apache.commons.compress.utils.IOUtils;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.runner.RunWith;
 
 /**
  * @author zhanhb
  */
+@RunWith(JUnitPlatform.class)
 public class ExtensionsViewer {
+
+    private static String getExtension(Path path) {
+        String name = path.getFileName().toString();
+        int lastIndexOf = name.lastIndexOf('.');
+        return lastIndexOf > 0 ? name.substring(lastIndexOf + 1) : "";
+    }
 
     /**
      * @throws java.io.IOException
@@ -66,18 +76,17 @@ public class ExtensionsViewer {
                 sb.setLength(0);
             }
         }
-        map.keySet().removeIf(Files.lines(Paths.get(".gitattributes"))
+
+        String gitRoot = new String(IOUtils.toByteArray(
+                new ProcessBuilder().command("git", "rev-parse", "--show-toplevel")
+                        .start().getInputStream()), StandardCharsets.UTF_8).trim();
+
+        map.keySet().removeIf(Files.lines(Paths.get(gitRoot, ".gitattributes"))
                 .map(String::trim)
                 .filter(str -> str.startsWith("*."))
                 .map(str -> str.replaceAll("^\\*\\.|\\s.+$", ""))
                 .collect(Collectors.toSet())::contains);
         System.out.println(map);
-    }
-
-    private static String getExtension(Path path) {
-        String name = path.getFileName().toString();
-        int lastIndexOf = name.lastIndexOf('.');
-        return lastIndexOf > 0 ? name.substring(lastIndexOf + 1) : "";
     }
 
 }

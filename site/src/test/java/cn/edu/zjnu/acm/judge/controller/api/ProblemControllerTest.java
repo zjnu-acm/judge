@@ -25,7 +25,8 @@ import cn.edu.zjnu.acm.judge.service.ProblemService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Locale;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -33,17 +34,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -56,7 +56,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author zhanhb
  */
 @AutoConfigureMockMvc
-@RunWith(SpringRunner.class)
+@RunWith(JUnitPlatform.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
@@ -76,7 +76,7 @@ public class ProblemControllerTest {
     /**
      * Test of list method, of class ProblemController.
      *
-     * @see ProblemController#list(ProblemForm, Pageable, Locale)
+     * {@link ProblemController#list(ProblemForm, Pageable, Locale)}
      */
     @Test
     public void testList() throws Exception {
@@ -86,10 +86,10 @@ public class ProblemControllerTest {
     }
 
     /**
-     * @see ProblemController#save(Problem)
-     * @see ProblemController#findOne(long, String)
-     * @see ProblemController#update(long, Problem, String)
-     * @see ProblemController#delete(long)
+     * {@link ProblemController#save(Problem)}
+     * {@link ProblemController#findOne(long, String)}
+     * {@link ProblemController#update(long, Problem, String)}
+     * {@link ProblemController#delete(long)}
      */
     @Test
     public void test() throws Exception {
@@ -119,7 +119,7 @@ public class ProblemControllerTest {
             Problem p = problemService.findOne(id);
             fail("should throw a BusinessException");
         } catch (BusinessException ex) {
-            assertEquals(BusinessCode.PROBLEM_NOT_FOUND, ex.getCode());
+            assertThat(ex.getCode()).isEqualTo(BusinessCode.PROBLEM_NOT_FOUND);
         }
         mvc.perform(get("/api/problems/{id}.json", id))
                 .andExpect(status().isNotFound());
@@ -140,7 +140,7 @@ public class ProblemControllerTest {
     /**
      * Test of dataDir method, of class ProblemController.
      *
-     * @see ProblemController#dataDir(long)
+     * {@link ProblemController#dataDir(long)}
      */
     @Test
     public void testDataDir() throws Exception {

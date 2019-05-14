@@ -44,3 +44,6 @@ request.getParameter($1)
 
 #calendars\.format\(T\(java\.util\.Date\)\.from\(([^()]+)\)
 #temporals.format($1
+
+assertEquals\(([^,]+),\s*((?:[^,\(\)]|\([^,\(\)]*\))+)\)
+assertThat($2).isEqualTo($1)

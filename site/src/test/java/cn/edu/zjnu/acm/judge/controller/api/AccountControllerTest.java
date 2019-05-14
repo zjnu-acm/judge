@@ -26,11 +26,12 @@ import cn.edu.zjnu.acm.judge.service.MockDataService;
 import cn.edu.zjnu.acm.judge.util.Utility;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Objects;
-import java.util.Optional;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -41,15 +42,14 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -63,7 +63,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author zhanhb
  */
 @AutoConfigureMockMvc
-@RunWith(SpringRunner.class)
+@RunWith(JUnitPlatform.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
 @Transactional
@@ -85,7 +85,7 @@ public class AccountControllerTest {
     /**
      * Test of findAll method, of class AccountController.
      *
-     * @see AccountController#findAll(AccountForm, Pageable)
+     * {@link AccountController#findAll(AccountForm, Pageable)}
      */
     @Test
     public void testFindAll() throws Exception {
@@ -107,28 +107,28 @@ public class AccountControllerTest {
     /**
      * Test of update method, of class AccountController.
      *
-     * @see AccountController#update(String, User)
+     * {@link AccountController#update(String, User)}
      */
     @Test
     public void testUpdate() throws Exception {
         log.info("update");
         User user = mockDataService.user();
         String userId = user.getId();
-        assertEquals(user.getSchool(), accountService.findOne(userId).getSchool());
+        assertThat(accountService.findOne(userId).getSchool()).isEqualTo(user.getSchool());
         user = user.toBuilder().school("test school").password("empty").build();
         mvc.perform(patch("/api/accounts/{userId}.json", userId)
                 .content(objectMapper.writeValueAsString(user)).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent())
                 .andReturn();
-        assertEquals("test school", accountService.findOne(userId).getSchool());
+        assertThat(accountService.findOne(userId).getSchool()).isEqualTo("test school");
         // password not changed, for annotation JsonIgnore is present on field password
-        assertTrue("password should not be changed", passwordEncoder.matches(userId, accountService.findOne(userId).getPassword()));
+        assertTrue(passwordEncoder.matches(userId, accountService.findOne(userId).getPassword()), "password should not be changed");
     }
 
     /**
      * Test of updatePassword method, of class AccountController.
      *
-     * @see AccountController#updatePassword(String, UserPasswordForm)
+     * {@link AccountController#updatePassword(String, UserPasswordForm)}
      */
     @Test
     public void testUpdatePassword() throws Exception {
@@ -148,8 +148,8 @@ public class AccountControllerTest {
     /**
      * Test of findAllXlsx method, of class AccountController.
      *
-     * @see AccountController#findAllXlsx(AccountForm, Pageable, Optional, HttpServletResponse)
-     * @see AccountController#parseExcel(MultipartFile, Optional)
+     * {@link AccountController#findAllXls(AccountForm, Pageable, Locale, HttpServletResponse)}
+     * {@link AccountController#parseExcel(MultipartFile, Locale)}
      */
     @Test
     public void testFindAllXlsx() throws Exception {
@@ -160,8 +160,8 @@ public class AccountControllerTest {
     /**
      * Test of findAllXls method, of class AccountController.
      *
-     * @see AccountController#findAllXls(AccountForm, Pageable, Optional, HttpServletResponse)
-     * @see AccountController#parseExcel(MultipartFile, Optional)
+     * {@link AccountController#findAllXls(AccountForm, Pageable, Locale, HttpServletResponse)}
+     * {@link AccountController#parseExcel(MultipartFile, Locale)}
      */
     @Test
     public void testFindAllXls() throws Exception {
@@ -188,7 +188,7 @@ public class AccountControllerTest {
     /**
      * Test of importUsers method, of class AccountController.
      *
-     * @see AccountController#importUsers(AccountImportForm)
+     * {@link AccountController#importUsers(AccountImportForm)}
      */
     @Test
     public void testImportUsers() throws Exception {
@@ -224,7 +224,7 @@ public class AccountControllerTest {
     /**
      * Test of passwordStatus method, of class AccountController.
      *
-     * @see AccountController#passwordStatus()
+     * {@link AccountController#passwordStatus()}
      */
     @Test
     public void testPasswordStatus() throws Exception {

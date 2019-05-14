@@ -20,20 +20,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.test.util.AssertionErrors.assertNotEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
@@ -42,7 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author zhanhb
  */
 @AutoConfigureMockMvc
-@RunWith(SpringRunner.class)
+@RunWith(JUnitPlatform.class)
 @Slf4j
 @SpringBootTest(classes = Application.class)
 @WebAppConfiguration
@@ -54,7 +54,7 @@ public class KaptchaControllerTest {
     /**
      * Test of service method, of class KaptchaController.
      *
-     * @see KaptchaController#service(HttpServletRequest, HttpServletResponse)
+     * {@link KaptchaController#service(HttpServletRequest, HttpServletResponse)}
      */
     @Test
     public void testService() throws Exception {
@@ -65,9 +65,9 @@ public class KaptchaControllerTest {
         HttpSession session = result.getRequest().getSession();
         MockHttpServletResponse response = result.getResponse();
         byte[] body = response.getContentAsByteArray();
-        assertNotNull("body", body);
+        assertNotNull(body, "body");
         assertNotEquals("empty body", 0, body.length);
-        assertNotNull("no session", session);
+        assertNotNull(session, "no session");
         assertNotNull(session.getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY));
     }
 
