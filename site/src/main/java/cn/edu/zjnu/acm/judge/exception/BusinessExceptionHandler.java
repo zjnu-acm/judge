@@ -16,31 +16,48 @@
 package cn.edu.zjnu.acm.judge.exception;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
+import org.springframework.web.accept.ContentNegotiationStrategy;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
- *
  * @author zhanhb
  */
-@ControllerAdvice(annotations = RestController.class)
+@ControllerAdvice
 @RequiredArgsConstructor
-public class RestControllerExceptionHandler {
+@Slf4j
+public class BusinessExceptionHandler {
 
     private final MessageSource messageSource;
+    private final ContentNegotiationStrategy contentNegotiationStrategy;
 
-    @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<?> handler(BusinessException businessException, Locale locale) {
+    @ExceptionHandler
+    public Object handler(BusinessException businessException, Locale locale, NativeWebRequest nativeWebRequest)
+            throws HttpMediaTypeNotAcceptableException {
         BusinessCode code = businessException.getCode();
-        ResponseEntity.BodyBuilder builder = ResponseEntity.status(code.getStatus());
         String message = code.getMessage();
         String formatted = messageSource.getMessage(message, businessException.getParams(), message, locale);
-        return builder.body(Collections.singletonMap("message", formatted));
+
+        List<MediaType> mediaTypes = contentNegotiationStrategy.resolveMediaTypes(nativeWebRequest);
+        log.debug("mediaTypes: {}", mediaTypes);
+
+        for (MediaType mediaType : mediaTypes) {
+            if (mediaType.isCompatibleWith(MediaType.APPLICATION_JSON)) {
+                ResponseEntity.BodyBuilder builder = ResponseEntity.status(code.getStatus());
+                return builder.body(Collections.singletonMap("message", formatted));
+            }
+        }
+        return new ModelAndView("message", Collections.singletonMap("message", formatted), code.getStatus());
     }
 
 }
