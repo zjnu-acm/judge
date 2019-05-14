@@ -78,7 +78,7 @@ public class ContestListControllerTest {
     @Test
     public void testRedirect() throws Exception {
         clearPending();
-        Instant start = Instant.now().plus(-1, ChronoUnit.HOURS);
+        Instant start = Instant.now().plus(1, ChronoUnit.HOURS);
         Instant end = Instant.now().plus(4, ChronoUnit.HOURS);
 
         contestService.save(Contest.builder().createdTime(Instant.now()).disabled(false)
