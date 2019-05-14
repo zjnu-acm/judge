@@ -63,6 +63,7 @@
         <lombok.version>1.18.8</lombok.version>
         <main.basedir>${basedir}</main.basedir>
         <mariadb.version>2.4.1</mariadb.version>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <mybatis-spring-boot.version>2.0.1</mybatis-spring-boot.version>
         <mybatis-spring.version>2.0.1</mybatis-spring.version>
         <mybatis.version>3.5.1</mybatis.version>
