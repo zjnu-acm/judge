@@ -15,11 +15,15 @@
  */
 package cn.edu.zjnu.acm.judge.exception;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 /**
  * @author zhanhb
  */
+@Getter
+@RequiredArgsConstructor
 public enum BusinessCode {
 
     // contests
@@ -80,24 +84,11 @@ public enum BusinessCode {
     IMPORT_USER_RESET_PASSWORD_FORBIDDEN("由于安全原因，无法更新管理员的密码", HttpStatus.FORBIDDEN),
     RESET_PASSWORD_FORBIDDEN("由于安全原因，无法重置管理员的密码", HttpStatus.FORBIDDEN);
 
-    private final HttpStatus status;
     private final String message;
+    private final HttpStatus status;
 
     BusinessCode(String message) {
         this(message, HttpStatus.BAD_REQUEST);
-    }
-
-    BusinessCode(String message, HttpStatus httpStatus) {
-        this.message = message;
-        this.status = httpStatus;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public HttpStatus getStatus() {
-        return status;
     }
 
 }
