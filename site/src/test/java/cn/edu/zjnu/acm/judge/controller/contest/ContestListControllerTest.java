@@ -28,6 +28,7 @@ import static org.springframework.http.MediaType.TEXT_HTML;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
@@ -86,6 +87,19 @@ public class ContestListControllerTest {
                 .title("sample contest")
                 .description("no description")
                 .build());
+        MvcResult result = mvc.perform(get("/scheduledcontests"))
+                .andExpect(status().isFound())
+                .andReturn();
+        contestService.save(Contest.builder().createdTime(Instant.now()).disabled(false)
+                .startTime(start)
+                .endTime(end)
+                .title("sample contest2")
+                .description("no description2")
+                .build());
+        result = mvc.perform(get("/scheduledcontests"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("contests/index"))
+                .andReturn();
     }
 
     /**
