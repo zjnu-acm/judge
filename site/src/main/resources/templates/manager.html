@@ -59,20 +59,14 @@
 
         <!--/*/<script type="text/ng-template" id="index.html">/*/-->
         <p align="left" style="font-size: large; color: #339">What can I do:</p>
-        <p align="left" style="font-size: large; color: #339">
-            <a class="image3-25-23" ui-sref="problem-add" ui-sref-opts="{reload: true}">Add a problem</a>
+        <p style="font-size: large; color: #339">
+            <a class="image3-25-23" ui-sref="problem-list" ui-sref-opts="{reload: true}">Problems</a>
         </p>
         <p style="font-size: large; color: #339">
-            <a class="image3-25-23" ui-sref="problem-list" ui-sref-opts="{reload: true}">See the problem list</a>
+            <a class="image3-25-23" ui-sref="contest-list" ui-sref-opts="{reload: true}">Contests</a>
         </p>
         <p style="font-size: large; color: #339">
-            <a class="image3-25-23" ui-sref="contest-add" ui-sref-opts="{reload: true}">Add a contest</a>
-        </p>
-        <p style="font-size: large; color: #339">
-            <a class="image3-25-23" ui-sref="contest-list" ui-sref-opts="{reload: true}">See the contest list</a>
-        </p>
-        <p style="font-size: large; color: #339">
-            <a class="image3-25-23" ui-sref="account-list" ui-sref-opts="{reload: true}">See the account list</a>
+            <a class="image3-25-23" ui-sref="account-list" ui-sref-opts="{reload: true}">Accounts</a>
         </p>
         <p style="font-size: large; color: #339">
             <a class="image3-25-23" ui-sref="page-index-changer" ui-sref-opts="{reload: true}">Change Site Index Page</a>
@@ -253,6 +247,9 @@
             <font size="4" color="#339">Problem List</font>
         </p>
         <div class="table-responsive">
+            <div class="pull-right">
+                <button type="button" class="btn btn-default" ui-sref="problem-add" ui-sref-opts="{reload: true}">添加</button>
+            </div>
             <table class="table table-striped table-hover table-bordered">
                 <thead>
                     <tr class="text-center">
@@ -320,7 +317,7 @@
         <!--/*/</script>/*/-->
 
         <!--/*/<script type="text/ng-template" id="contest-list.html">/*/-->
-        <div class="text-right">
+        <div>
             <input th:id="${#ids.seq('checkbox')}" type="checkbox" ng-model="query.include.PENDING" ng-change="load()"/>
             <label th:for="${#ids.prev('checkbox')}">Pending</label>
             <input th:id="${#ids.seq('checkbox')}" type="checkbox" ng-model="query.include.RUNNING" ng-change="load()"/>
@@ -333,6 +330,9 @@
             <label th:for="${#ids.prev('checkbox')}">显示已禁用的比赛</label>
         </div>
         <div class="table-responsive">
+            <div class="pull-right">
+                <a type="button" class="btn btn-default" ui-sref="contest-add" ui-sref-opts="{reload: true}">添加</a>
+            </div>
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
@@ -410,12 +410,12 @@
         <!--/*/<script type="text/ng-template" id="account-list.html">/*/-->
         <h3>User List</h3>
         <form ng-submit="submit()">
-            <label th:for="${#ids.next('userId')}">用户名：</label>
-            <input th:id="${#ids.seq('userId')}" name="userId" ng-model="params.userId"/>
-            <label th:for="${#ids.next('nick')}">昵称</label>
-            <input th:id="${#ids.seq('nick')}" name="nick" ng-model="params.nick"/>
-            <label th:for="${#ids.next('disabled')}">用户状态：</label>
-            <select th:id="${#ids.seq('disabled')}" name="disabled" ng-model="params.disabled">
+            <label for="account-list-username" th:for="${#ids.next('userId')}">用户名：</label>
+            <input id="account-list-username" th:id="${#ids.seq('userId')}" name="userId" ng-model="params.userId"/>
+            <label for="account-list-nick" th:for="${#ids.next('nick')}">昵称</label>
+            <input id="account-list-nick" th:id="${#ids.seq('nick')}" name="nick" ng-model="params.nick"/>
+            <label for="account-list-disabled" th:for="${#ids.next('disabled')}">用户状态：</label>
+            <select id="account-list-disabled" th:id="${#ids.seq('disabled')}" name="disabled" ng-model="params.disabled">
                 <option value="false">可用</option>
                 <option value="true">已隐藏</option>
                 <option value="">所有</option>

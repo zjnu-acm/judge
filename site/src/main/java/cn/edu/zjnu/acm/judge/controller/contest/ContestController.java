@@ -31,20 +31,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import static org.springframework.http.MediaType.ALL_VALUE;
 import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 
 /**
  * @author zhanhb
  */
 @Controller("contest")
-@RequestMapping("/contests/{contestId}")
+@RequestMapping(value = "/contests/{contestId}", produces = TEXT_HTML_VALUE)
 @RequiredArgsConstructor
 public class ContestController {
 
     private final ContestService contestService;
 
-    @GetMapping(value = "standing", produces = {TEXT_HTML_VALUE, ALL_VALUE})
+    @GetMapping("standing")
     public Future<ModelAndView> standingHtml(@PathVariable("contestId") long contestId, @Nullable Locale locale) {
         Contest contest = contestService.getContestAndProblemsNotDisabled(contestId, null, locale);
         if (!contest.isStarted()) {

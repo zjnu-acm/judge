@@ -62,12 +62,13 @@ public class KaptchaControllerTest {
         MvcResult result = mockMvc.perform(get("/images/rand.jpg"))
                 .andExpect(content().contentTypeCompatibleWith(MediaType.IMAGE_JPEG))
                 .andReturn();
-        HttpSession session = result.getRequest().getSession();
+        HttpSession session = result.getRequest().getSession(false);
+        assertNotNull(session, "no session");
+        assert session != null;
         MockHttpServletResponse response = result.getResponse();
         byte[] body = response.getContentAsByteArray();
         assertNotNull(body, "body");
         assertNotEquals("empty body", 0, body.length);
-        assertNotNull(session, "no session");
         assertNotNull(session.getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY));
     }
 

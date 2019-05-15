@@ -37,7 +37,6 @@ public class KaptchaController {
     @GetMapping("images/rand.jpg")
     public void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getSession(); // create session if not created.
         kaptchaExtend.captcha(request, response);
     }
 

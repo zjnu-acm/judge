@@ -45,7 +45,8 @@
     app.factory('path', function ($rootScope) {
         function normalize(url) {
             var a = $('<a>', {href: url}).appendTo('body'), href = a.prop('href');
-            return a.remove(), href;
+            a.remove();
+            return href;
         }
         var adminHref = normalize($('base').prop('href')),
                 baseHref = normalize(adminHref + '../');
@@ -237,7 +238,8 @@
             if (last === 'asc') {
                 res.pop();
             } else if (last === 'desc') {
-                return res.pop(), $.map(res, function (x) {
+                res.pop();
+                return $.map(res, function (x) {
                     return x + ',desc';
                 });
             }
@@ -1074,12 +1076,13 @@
             return disabled ? 4 : error ? 3 : started && !ended ? 1 : ended ? 2 : 0;
         }
         var text = ['Pending', 'RUNNING', 'ENDED', 'ERROR', 'DISABLED'];
-        var style = [{color: 'red'}, {color: 'blue'}, {color: 'green'}, {color: 'red'}, {color: 'darkred'}];
+        var color = ['red', 'blue', 'green', 'red', 'darkred'];
         $rootScope.contestStatus = function (contest) {
             return text[getStatus(contest)];
         };
         $rootScope.statusColor = function (contest) {
-            return style[getStatus(contest)];
+            var c = color[getStatus(contest)];
+            return c && {'color': c};
         };
     });
 
