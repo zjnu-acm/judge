@@ -37,8 +37,7 @@ public class RegisterControllerTest {
     /**
      * Test of register method, of class RegisterController.
      *
-     * {@link RegisterController#register(HttpServletRequest, String, String,}
-     * String, String, String, String)
+     * {@link RegisterController#register(HttpServletRequest, String, String, String, String, String, String)}
      */
     @Test
     public void testRegister() throws Exception {

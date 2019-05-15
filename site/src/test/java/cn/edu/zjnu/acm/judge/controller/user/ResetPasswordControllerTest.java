@@ -3,6 +3,8 @@ package cn.edu.zjnu.acm.judge.controller.user;
 import cn.edu.zjnu.acm.judge.Application;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.runner.JUnitPlatform;
@@ -50,8 +52,7 @@ public class ResetPasswordControllerTest {
     /**
      * Test of doPost method, of class ResetPasswordController.
      *
-     * {@link ResetPasswordController#doPost(HttpServletRequest,}
-     * HttpServletResponse, String, String, String, Locale)
+     * {@link ResetPasswordController#doPost(HttpServletRequest, HttpServletResponse, String, String, String, Locale)}
      */
     @Test
     public void testDoPost() throws Exception {
@@ -73,8 +74,7 @@ public class ResetPasswordControllerTest {
     /**
      * Test of changePassword method, of class ResetPasswordController.
      *
-     * {@link ResetPasswordController#changePassword(HttpServletRequest,}
-     * HttpServletResponse, String, String)
+     * {@link ResetPasswordController#changePassword(HttpServletRequest, HttpServletResponse, String, String)}
      */
     @Test
     public void testChangePassword() throws Exception {

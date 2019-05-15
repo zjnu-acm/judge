@@ -15,6 +15,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -35,9 +36,7 @@ public class ContestStatisticsControllerTest {
 
     /**
      * Test of contestStatistics method, of class ContestStatisticsController.
-     *
-     * {@link ContestStatisticsController#contestStatistics(HttpServletRequest,}
-     * Model, long)
+     * {@link ContestStatisticsController#contestStatistics(HttpServletRequest, Model, long)}
      */
     @Test
     public void testContestStatistics() throws Exception {

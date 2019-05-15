@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -40,8 +41,7 @@ public class ShowSourceControllerTest {
     /**
      * Test of showSource method, of class ShowSourceController.
      *
-     * {@link ShowSourceController#showSource(HttpServletRequest, long, Integer,}
-     * Authentication)
+     * {@link ShowSourceController#showSource(HttpServletRequest, long, Integer, Authentication)} 
      */
     @Test
     public void testShowSource() throws Exception {

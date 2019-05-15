@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -93,7 +94,7 @@ public class MainControllerTest {
     /**
      * Test of unauthorizedHtml method, of class MainController.
      *
-     * {@link MainController#unauthorizedHtml(HttpServletRequest)}
+     * {@link MainController#unauthorizedHtml(HttpServletRequest, RedirectAttributes)}
      */
     @Test
     public void testUnauthorizedHtml() throws Exception {

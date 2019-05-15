@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -39,8 +40,7 @@ public class ShowCompileInfoControllerTest {
     /**
      * Test of showCompileInfo method, of class ShowCompileInfoController.
      *
-     * {@link ShowCompileInfoController#showCompileInfo(long, Model,}
-     * Authentication)
+     * {@link ShowCompileInfoController#showCompileInfo(long, Model, Authentication)}
      */
     @Test
     public void testShowCompileInfo() throws Exception {

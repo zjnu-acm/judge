@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -62,8 +63,7 @@ public class SubmitControllerTest {
     /**
      * Test of submit method, of class SubmitController.
      *
-     * {@link SubmitController#submit(HttpServletRequest, Long, long, int, String,}
-     * RedirectAttributes, Authentication)
+     * {@link SubmitController#submit(HttpServletRequest, Long, long, int, String, RedirectAttributes, Authentication)}
      */
     @Test
     public void testSubmit() throws Exception {
