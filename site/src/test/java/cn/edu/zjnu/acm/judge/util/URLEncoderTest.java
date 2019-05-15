@@ -21,7 +21,6 @@ import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  *
@@ -46,10 +45,10 @@ public class URLEncoderTest {
         assertThat(encoder.encode(str + str + 1)).isEqualTo(expect + expect + 1);
 
         str = com.google.common.base.Strings.repeat(str, 13);
-        assertNotEquals(URLEncoder.URI_COMPONENT.encode(str), encoder.encode(str));
+        assertThat(encoder.encode(str)).isNotEqualTo(URLEncoder.URI_COMPONENT.encode(str));
 
         str = "abc@@@123456";
-        assertSame(str, encoder.encode(str));
+        assertThat(encoder.encode(str)).isSameAs(str);
     }
 
 }

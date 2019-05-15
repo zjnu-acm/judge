@@ -55,9 +55,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static cn.edu.zjnu.acm.judge.util.PlatformAssuming.assumingWindows;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 /**
@@ -164,13 +161,16 @@ public class JudgeRunnerTest {
         int expectScore = SPECIAL_SCORE.getOrDefault(key, checker.getScore());
         String extectedCaseResult = ResultType.getCaseScoreDescription(checker.getStatus());
 
-        assertNull(runResult.getType(), "type will either be null or COMPILATION_ERROR,"
-                + " if got other result, please modify this file");
+        assertThat(runResult.getType())
+                .withFailMessage("type will either be null or COMPILATION_ERROR,"
+                        + " if got other result, please modify this file")
+                .isNull();
         List<SubmissionDetailDTO> details = submissionService.parseSubmissionDetail(runResult.getMessage());
-        String testMessage = key + " " + details + " " + extectedCaseResult;
-        assertEquals(expectScore, runResult.getScore(), testMessage);
-        boolean matches = details.stream().anyMatch(detail -> extectedCaseResult.equals(detail.getResult()));
-        assertTrue(matches, testMessage);
+        String msg = "%s %s %s";
+        Object[] param = {key, details, extectedCaseResult};
+        assertThat(runResult.getScore()).withFailMessage(msg, param).isEqualTo(expectScore);
+        assertThat(details).withFailMessage(msg, param)
+                .anyMatch(detail -> extectedCaseResult.equals(detail.getResult()));
     }
 
 }

@@ -25,7 +25,7 @@ import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  *
@@ -46,9 +46,9 @@ public class DeleteHelperTest {
         log.info("delete");
         Path path = Paths.get("target/test1.txt");
         Files.createFile(path);
-        assertTrue(!Files.notExists(path));
+        assertFalse(Files.notExists(path));
         DeleteHelper.delete(path);
-        assertTrue(!Files.exists(path));
+        assertFalse(Files.exists(path));
     }
 
     /**
@@ -64,7 +64,7 @@ public class DeleteHelperTest {
         Files.createDirectories(path.getParent());
         Files.createFile(path);
         DeleteHelper.delete(d);
-        assertTrue(!Files.exists(d));
+        assertFalse(Files.exists(d));
     }
 
     @Test
@@ -78,7 +78,7 @@ public class DeleteHelperTest {
         Path d = Paths.get("target/test1.txt");
         Files.createDirectories(d);
         DeleteHelper.delete(d);
-        assertTrue(!Files.exists(d));
+        assertFalse(Files.exists(d));
     }
 
 }

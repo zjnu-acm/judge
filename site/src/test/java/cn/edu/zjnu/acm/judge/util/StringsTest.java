@@ -25,7 +25,6 @@ import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  *
@@ -106,10 +105,10 @@ public class StringsTest {
     @Test
     public void testNull() {
         log.info("slice");
-        assertNull(Strings.slice(null, 0));
-        assertNull(Strings.slice(null, 1));
-        assertNull(Strings.slice(null, -1000));
-        assertNull(Strings.slice(null, 0, 0));
+        assertThat(Strings.slice(null, 0)).isNull();
+        assertThat(Strings.slice(null, 1)).isNull();
+        assertThat(Strings.slice(null, -1000)).isNull();
+        assertThat(Strings.slice(null, 0, 0)).isNull();
     }
 
 }

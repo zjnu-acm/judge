@@ -32,7 +32,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.util.AssertionErrors.assertNotEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -63,13 +63,13 @@ public class KaptchaControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.IMAGE_JPEG))
                 .andReturn();
         HttpSession session = result.getRequest().getSession(false);
-        assertNotNull(session, "no session");
+        assertThat(session).withFailMessage("no session").isNotNull();
         assert session != null;
         MockHttpServletResponse response = result.getResponse();
         byte[] body = response.getContentAsByteArray();
-        assertNotNull(body, "body");
+        assertThat(body).withFailMessage("body").isNotNull().isNotEmpty();
         assertNotEquals("empty body", 0, body.length);
-        assertNotNull(session.getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY));
+        assertThat(session.getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY)).isNotNull();
     }
 
 }

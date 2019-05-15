@@ -112,6 +112,7 @@ public class MiscControllerTest {
         Long old = getContestOnly();
         try {
             setContestOnly(null);
+            assertThat(getContestOnly()).isNull();
             request(HttpStatus.OK);
 
             setContestOnly(Long.MIN_VALUE);
