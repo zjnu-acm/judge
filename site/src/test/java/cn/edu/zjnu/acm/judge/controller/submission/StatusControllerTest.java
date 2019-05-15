@@ -1,6 +1,7 @@
 package cn.edu.zjnu.acm.judge.controller.submission;
 
 import cn.edu.zjnu.acm.judge.Application;
+import cn.edu.zjnu.acm.judge.service.MockDataService;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +33,8 @@ public class StatusControllerTest {
 
     @Autowired
     private MockMvc mvc;
+    @Autowired
+    private MockDataService mockDataService;
 
     /**
      * Test of status method, of class StatusController.
@@ -43,7 +46,7 @@ public class StatusControllerTest {
         log.info("status");
         String problemId = "";
         Long contestId = null;
-        int language = 0;
+        int language = mockDataService.anyLanguage().getId();
         int size = 20;
         Long[] bottoms = {null, 2000L};
         Integer score = null;

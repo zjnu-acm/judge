@@ -68,7 +68,7 @@ public class SubmitControllerTest {
     @Test
     public void testSubmit() throws Exception {
         log.info("submit");
-        int language = 0;
+        int language = mockDataService.anyLanguage().getId();
         long problemId = mockDataService.problem().getId();
         String source = Strings.repeat(" ", 20);
         String userId = mockDataService.user().getId();

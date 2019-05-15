@@ -2,6 +2,7 @@ package cn.edu.zjnu.acm.judge.controller.api;
 
 import cn.edu.zjnu.acm.judge.Application;
 import cn.edu.zjnu.acm.judge.domain.Language;
+import cn.edu.zjnu.acm.judge.service.MockDataService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -37,6 +38,8 @@ public class LanguageControllerTest {
     private MockMvc mvc;
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private MockDataService mockDataService;
 
     /**
      * Test of findAll method, of class LanguageController.
@@ -72,6 +75,10 @@ public class LanguageControllerTest {
                 .andReturn();
     }
 
+    private int anyId() {
+        return mockDataService.anyLanguage().getId();
+    }
+
     /**
      * Test of findOne method, of class LanguageController.
      *
@@ -80,7 +87,7 @@ public class LanguageControllerTest {
     @Test
     public void testFindOne() throws Exception {
         log.info("findOne");
-        long id = 0;
+        long id = anyId();
         MvcResult result = mvc.perform(get("/api/languages/{id}.json", id))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -95,7 +102,7 @@ public class LanguageControllerTest {
     @Test
     public void testUpdate() throws Exception {
         log.info("update");
-        long id = 0;
+        long id = anyId();
         Language request = Language.builder()
                 .name("mock language")
                 .sourceExtension("tmp")
@@ -115,7 +122,7 @@ public class LanguageControllerTest {
     @Test
     public void testDelete() throws Exception {
         log.info("delete");
-        long id = 0;
+        long id = anyId();
         MvcResult result = mvc.perform(delete("/api/languages/{id}.json", id))
                 .andExpect(status().isNoContent())
                 .andReturn();

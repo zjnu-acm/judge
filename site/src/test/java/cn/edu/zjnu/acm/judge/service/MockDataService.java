@@ -17,6 +17,7 @@ package cn.edu.zjnu.acm.judge.service;
 
 import cn.edu.zjnu.acm.judge.data.form.SubmissionQueryForm;
 import cn.edu.zjnu.acm.judge.domain.Contest;
+import cn.edu.zjnu.acm.judge.domain.Language;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.domain.User;
@@ -27,8 +28,12 @@ import java.io.InterruptedIOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
@@ -57,6 +62,8 @@ public class MockDataService {
     private SubmissionService submissionService;
     @Autowired
     private SubmissionMapper submissionMapper;
+    @Autowired
+    private LanguageService languageService;
 
     public MockDataService() {
         final AtomicLong seed = new AtomicLong(System.currentTimeMillis());
@@ -155,7 +162,7 @@ public class MockDataService {
         long problemId = problem().getId();
         String source = Lazy.SAMPLE_SOURCE;
         try {
-            return submission(0, source, userId, "::1", problemId, runTestCase);
+            return submission(anyLanguage().getId(), source, userId, "::1", problemId, runTestCase);
         } catch (Throwable ex) {
             Throwables.propagateIfPossible(ex, IOException.class);
             throw new IOException(ex);
@@ -164,6 +171,12 @@ public class MockDataService {
 
     public Submission submission() throws IOException {
         return submission(true);
+    }
+
+    public Language anyLanguage() {
+        Collection<Language> languages = languageService.getAvailableLanguages().values();
+        List<Language> list = new ArrayList<>(languages);
+        return list.get(ThreadLocalRandom.current().nextInt(list.size()));
     }
 
     @SuppressWarnings("UtilityClassWithoutPrivateConstructor")
