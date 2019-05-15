@@ -92,7 +92,9 @@ public class JudgeBridgeTest {
 
     @AfterAll
     public static void tearDownClass() throws Exception {
-        DeleteHelper.delete(work);
+        if (work != null) {
+            DeleteHelper.delete(work);
+        }
     }
 
     private final Validator validator = SimpleValidator.NORMAL;
