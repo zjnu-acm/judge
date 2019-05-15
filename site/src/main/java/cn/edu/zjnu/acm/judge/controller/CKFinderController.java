@@ -20,19 +20,24 @@ import com.github.zhanhb.ckfinder.connector.utils.FileUtils;
 import com.github.zhanhb.ckfinder.download.ContentDispositionStrategy;
 import com.github.zhanhb.ckfinder.download.PathPartial;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.nio.file.Path;
+import java.util.Locale;
 import java.util.StringTokenizer;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.HandlerMapping;
 
 /**
@@ -50,6 +55,7 @@ public class CKFinderController {
     private final PathPartial pathPartial = PathPartial.builder().build();
 
     private final BasePathBuilder basePathBuilder;
+    private final MessageSource messageSource;
 
     private Path toPath(String path) {
         log.info(path);
@@ -83,6 +89,30 @@ public class CKFinderController {
         String rest = matcher.extractPathWithinPattern(pattern, uri);
         String path = StringUtils.isEmpty(rest) ? first : first + "/" + rest;
         pathPartial.service(request, response, toPath(path));
+    }
+
+    @ResponseBody
+    @GetMapping(value = "webjars/ckfinder/2.6.2.1/config", produces = {"application/javascript", "text/javascript"})
+    public String configJs(Locale locale) {
+        final String indent = "    ";
+        StringWriter sw = new StringWriter();
+        try (PrintWriter pw = new PrintWriter(sw)) {
+            pw.println("CKFinder.customConfig = function(config) {");
+            pw.println(indent + "// Define changes to default configuration here.");
+            pw.println(indent + "// For the list of available options, check:");
+            pw.println(indent + "// http://docs.cksource.com/ckfinder_2.x_api/symbols/CKFinder.config.html");
+            pw.println();
+            pw.println(indent + "// Sample configuration options:");
+            pw.println(indent + "// config.uiColor = '#BDE31E';");
+            if (locale != null) {
+                String fallback = locale.toLanguageTag().toLowerCase(Locale.US);
+                String lang = messageSource.getMessage("ckfinder.lang", new Object[0], fallback, locale);
+                pw.println(indent + "config.language = '" + lang + "';");
+            }
+            pw.println(indent + "config.removePlugins = 'help';");
+            pw.println("};");
+        }
+        return sw.toString();
     }
 
 }

@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.runner.JUnitPlatform;
@@ -18,10 +20,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.transaction.annotation.Transactional;
 
 import static cn.edu.zjnu.acm.judge.util.PlatformAssuming.assumingNotWindows;
 import static cn.edu.zjnu.acm.judge.util.PlatformAssuming.assumingWindows;
+import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -64,8 +69,7 @@ public class CKFinderControllerTest {
     /**
      * Test of legacySupport method, of class CKFinderController.
      *
-     * {@link CKFinderController#legacySupport(HttpServletRequest,}
-     * HttpServletResponse, String)
+     * {@link CKFinderController#legacySupport(HttpServletRequest, HttpServletResponse, String)}
      */
     @Test
     public void testLegacySupport() throws Exception {
@@ -116,8 +120,7 @@ public class CKFinderControllerTest {
     /**
      * Test of attachment method, of class CKFinderController.
      *
-     * {@link CKFinderController#attachment(HttpServletRequest,}
-     * HttpServletResponse, String)
+     * {@link CKFinderController#attachment(HttpServletRequest, HttpServletResponse, String)}
      */
     @Test
     public void testAttachment() throws Exception {
@@ -180,6 +183,33 @@ public class CKFinderControllerTest {
                 .andExpect(handler().handlerType(CKFinderController.class))
                 .andReturn();
         tearDown();
+    }
+
+    private MvcResult testConfigJsBase(String requestLang, String expect) throws Exception {
+        MockHttpServletRequestBuilder builder = get("/webjars/ckfinder/2.6.2.1/config.js");
+        if (requestLang != null) {
+            builder.param("lang", requestLang);
+        }
+        return mvc.perform(builder)
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith("application/javascript"))
+                .andExpect(content().string(containsString(expect)))
+                .andReturn();
+    }
+
+    /**
+     * Test of configJs method, of class CKFinderController.
+     *
+     * {@link CKFinderController#configJs(Locale)}
+     */
+    @Test
+    public void testConfigJs() throws Exception {
+        log.info("configJs");
+        MvcResult result = testConfigJsBase("pt-BR", "pt-br");
+        result = testConfigJsBase("zh", "zh-cn");
+        result = testConfigJsBase("zh-TW-x-lvariant-Hant", "zh-tw");
+        result = testConfigJsBase(null, "en");
+        result = testConfigJsBase("", "en");
     }
 
 }
