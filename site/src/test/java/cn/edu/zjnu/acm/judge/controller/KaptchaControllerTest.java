@@ -64,7 +64,6 @@ public class KaptchaControllerTest {
                 .andReturn();
         HttpSession session = result.getRequest().getSession(false);
         assertThat(session).withFailMessage("no session").isNotNull();
-        assert session != null;
         MockHttpServletResponse response = result.getResponse();
         byte[] body = response.getContentAsByteArray();
         assertThat(body).withFailMessage("body").isNotNull().isNotEmpty();

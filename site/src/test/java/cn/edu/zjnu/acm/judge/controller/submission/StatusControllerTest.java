@@ -38,7 +38,6 @@ public class StatusControllerTest {
 
     /**
      * Test of status method, of class StatusController.
-     *
      * {@link StatusController#status(HttpServletRequest, String, Long, int, int, Long, Integer, String, Long, Authentication, Model)}
      */
     @Test
@@ -52,21 +51,23 @@ public class StatusControllerTest {
         Integer score = null;
         String userId = "";
         Long top = null;
-        for (Long bottom : bottoms) {
-            MvcResult result = mvc.perform(get("/status")
-                    .param("problem_id", problemId)
-                    .param("contest_id", Objects.toString(contestId, ""))
-                    .param("language", Integer.toString(language))
-                    .param("size", Integer.toString(size))
-                    .param("bottom", Objects.toString(bottom, ""))
-                    .param("score", Objects.toString(score, ""))
-                    .param("user_id", userId)
-                    .param("top", Objects.toString(top, "")))
-                    .andExpect(status().isOk())
-                    .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-                    .andReturn();
+        for (int i = 0; i < 100; ++i) {
+            mockDataService.submission(false);
+            for (Long bottom : bottoms) {
+                MvcResult result = mvc.perform(get("/status")
+                        .param("problem_id", problemId)
+                        .param("contest_id", Objects.toString(contestId, ""))
+                        .param("language", Integer.toString(language))
+                        .param("size", Integer.toString(size))
+                        .param("bottom", Objects.toString(bottom, ""))
+                        .param("score", Objects.toString(score, ""))
+                        .param("user_id", userId)
+                        .param("top", Objects.toString(top, "")))
+                        .andExpect(status().isOk())
+                        .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+                        .andReturn();
+            }
         }
-
     }
 
 }

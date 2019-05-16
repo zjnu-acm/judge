@@ -77,8 +77,23 @@ public class MockDataService {
 
     @Nonnull
     public User user(boolean create) {
+        return user(Function.identity(), create);
+    }
+
+    @Nonnull
+    public User user(Function<User.Builder, User.Builder> function) {
+        return user(function, true);
+    }
+
+    @Nonnull
+    public User user(Function<User.Builder, User.Builder> function, boolean create) {
         String userId = idGenerator.apply("user");
-        User user = User.builder().id(userId).password(userId).school("").nick(userId).build();
+        User user = function.apply(
+                User.builder()
+                        .id(userId)
+                        .password(userId)
+                        .school("")
+                        .nick(userId)).build();
         if (create) {
             accountService.save(user);
         }

@@ -1,9 +1,12 @@
 package cn.edu.zjnu.acm.judge.controller.user;
 
 import cn.edu.zjnu.acm.judge.Application;
+import cn.edu.zjnu.acm.judge.service.MockDataService;
+import com.google.code.kaptcha.Constants;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.runner.JUnitPlatform;
@@ -12,11 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -32,10 +37,11 @@ public class ResetPasswordControllerTest {
 
     @Autowired
     private MockMvc mvc;
+    @Autowired
+    private MockDataService mockDataService;
 
     /**
      * Test of doGet method, of class ResetPasswordController.
-     *
      * {@link ResetPasswordController#doGet(String, String)}
      */
     @Test
@@ -47,38 +53,54 @@ public class ResetPasswordControllerTest {
                 .andReturn();
     }
 
-    // TODO
     /**
-     * Test of doPost method, of class ResetPasswordController.
+     * Test of methods doPost, changePassword, of class ResetPasswordController.
      *
-     * {@link ResetPasswordController#doPost(HttpServletRequest, HttpServletResponse, String, String, String, Locale)}
+     * {@link ResetPasswordController#doPost(HttpServletRequest, HttpServletResponse, String, String, Locale)}
+     * {@link ResetPasswordController#changePassword(HttpServletRequest, HttpServletResponse, String, String)}
      */
     @Test
-    public void testDoPost() throws Exception {
-        log.info("doPost");
-        String action = "";
-        String verify = "";
-        String username = "";
+    public void testChangePassword() throws Exception {
         Locale locale = Locale.getDefault();
-        MvcResult result = mvc.perform(post("/resetPassword")
-                .param("action", action)
+        MvcResult result = mvc.perform(get("/images/rand.jpg"))
+                .andExpect(content().contentTypeCompatibleWith(MediaType.IMAGE_JPEG))
+                .andReturn();
+        HttpSession session = result.getRequest().getSession(false);
+        assertThat(session).isNotNull();
+        String verify = (String) session.getAttribute(Constants.KAPTCHA_SESSION_KEY);
+        String username = mockDataService.user(
+                builder -> builder.email("admin@local.host")
+        ).getId();
+        mvc.perform(post("/resetPassword")
+                .param("verify", verify + "1")
+                .param("username", username)
+                .locale(locale))
+                .andExpect(status().isOk())
+                .andReturn();
+        mvc.perform(post("/resetPassword")
+                .session((MockHttpSession) session)
+                .param("verify", verify + "1")
+                .param("username", username)
+                .locale(locale))
+                .andExpect(status().isOk())
+                .andReturn();
+        assertThat(session.getAttribute(Constants.KAPTCHA_SESSION_KEY)).isNull();
+
+        mvc.perform(get("/images/rand.jpg")
+                .session((MockHttpSession) session))
+                .andExpect(content().contentTypeCompatibleWith(MediaType.IMAGE_JPEG))
+                .andReturn();
+        verify = (String) session.getAttribute(Constants.KAPTCHA_SESSION_KEY);
+        mvc.perform(post("/resetPassword")
+                .session((MockHttpSession) session)
                 .param("verify", verify)
                 .param("username", username)
                 .locale(locale))
                 .andExpect(status().isOk())
                 .andReturn();
-    }
-
-    // TODO
-    /**
-     * Test of changePassword method, of class ResetPasswordController.
-     *
-     * {@link ResetPasswordController#changePassword(HttpServletRequest, HttpServletResponse, String, String)}
-     */
-    @Test
-    public void testChangePassword() throws Exception {
-        log.info("changePassword");
-        MvcResult result = mvc.perform(post("/resetPassword"))
+        assertThat(session.getAttribute(Constants.KAPTCHA_SESSION_KEY)).isNull();
+        mvc.perform(post("/resetPassword")
+                .param("action", "changePassword"))
                 .andExpect(status().isOk())
                 .andReturn();
     }

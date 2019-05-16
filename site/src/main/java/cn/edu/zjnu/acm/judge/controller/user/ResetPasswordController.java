@@ -74,7 +74,6 @@ public class ResetPasswordController {
 
     @PostMapping("/resetPassword")
     public void doPost(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam(value = "action", required = false) @Nullable String action,
             @RequestParam(value = "verify", required = false) @Nullable String verify,
             @RequestParam(value = "username", required = false) @Nullable String username,
             @Nullable Locale locale) throws IOException {
