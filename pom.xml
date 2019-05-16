@@ -393,7 +393,7 @@
                     <configuration>
                         <sortProperties>true</sortProperties>
                         <nrOfIndentSpace>4</nrOfIndentSpace>
-                        <sortDependencies>groupId,artifactId</sortDependencies>
+                        <sortDependencies>scope,groupId,artifactId</sortDependencies>
                         <sortPlugins>groupId,artifactId</sortPlugins>
                         <keepBlankLines>true</keepBlankLines>
                         <expandEmptyElements>false</expandEmptyElements>
