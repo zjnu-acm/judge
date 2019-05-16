@@ -58,6 +58,7 @@
         <hikaricp.version>3.3.1</hikaricp.version>
         <jacoco-maven-plugin.version>0.8.3</jacoco-maven-plugin.version>
         <jnc.version>0.0.1.BUILD-SNAPSHOT</jnc.version>
+        <junit-jupiter.version>5.4.2</junit-jupiter.version>
         <kaptcha.version>0.0.9</kaptcha.version>
         <lombok-maven-plugin.version>1.18.6.0</lombok-maven-plugin.version>
         <main.basedir>${basedir}</main.basedir>
