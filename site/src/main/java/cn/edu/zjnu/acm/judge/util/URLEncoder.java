@@ -79,7 +79,7 @@ public enum URLEncoder {
         for (int i = 0; i < length; ++i) {
             if (!bs.get(s.charAt(i))) {
                 char[] buf = new char[]{'%', 0, 0};
-                StringBuilder out = new StringBuilder(s.substring(0, i));
+                StringBuilder out = new StringBuilder(length + 20).append(s, 0, i);
                 for (int k = i;;) {
                     do {
                         if (++k == length) {
