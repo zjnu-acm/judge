@@ -32,6 +32,7 @@ import lombok.NoArgsConstructor;
 @Builder(builderClassName = "Builder", toBuilder = true)
 @Data
 @NoArgsConstructor
+@SuppressWarnings({"ReturnOfCollectionOrArrayField", "AssignmentToCollectionOrArrayFieldFromParameter"})
 public class Problem implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -65,12 +66,14 @@ public class Problem implements Serializable {
 
     @JsonIgnore
     public int getRatio() {
-        return submit == null || accepted == null || submit == 0 ? 0 : (int) Math.round(accepted * 100.0 / submit);
+        Long s = submit, a = accepted;
+        return s == null || a == null || s == 0 ? 0 : (int) Math.round(a * 100.0 / s);
     }
 
     @JsonIgnore
     public int getDifficulty() {
-        return submit == null || accepted == null || submit == 0 ? 0 : (int) Math.round((submit - accepted) * 100.0 / submit);
+        Long s = submit, a = accepted;
+        return s == null || a == null || s == 0 ? 0 : (int) Math.round((s - a) * 100.0 / s);
     }
 
 }

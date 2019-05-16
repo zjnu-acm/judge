@@ -16,18 +16,18 @@
 package cn.edu.zjnu.acm.judge.service.impl;
 
 import cn.edu.zjnu.acm.judge.domain.Language;
+import cn.edu.zjnu.acm.judge.sandbox.ExecuteResult;
+import cn.edu.zjnu.acm.judge.sandbox.JudgeBridge;
+import cn.edu.zjnu.acm.judge.sandbox.Options;
+import cn.edu.zjnu.acm.judge.sandbox.Status;
+import cn.edu.zjnu.acm.judge.sandbox.Validator;
+import cn.edu.zjnu.acm.judge.sandbox.win32.ProcessCreationHelper;
 import cn.edu.zjnu.acm.judge.service.DeleteService;
 import cn.edu.zjnu.acm.judge.service.JudgeRunner;
 import cn.edu.zjnu.acm.judge.support.JudgeData;
 import cn.edu.zjnu.acm.judge.support.RunRecord;
 import cn.edu.zjnu.acm.judge.support.RunResult;
 import cn.edu.zjnu.acm.judge.util.Platform;
-import com.github.zhanhb.judge.common.ExecuteResult;
-import com.github.zhanhb.judge.common.JudgeBridge;
-import com.github.zhanhb.judge.common.Options;
-import com.github.zhanhb.judge.common.Status;
-import com.github.zhanhb.judge.common.Validator;
-import com.github.zhanhb.judge.win32.ProcessCreationHelper;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;

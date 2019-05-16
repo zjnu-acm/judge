@@ -30,10 +30,12 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
  * @author zhanhb
  */
 @Controller
+@Deprecated
 @RequestMapping(produces = TEXT_HTML_VALUE)
 @Secured("ROLE_ADMIN")
 public class LegacyAdminController {
 
+    @Deprecated
     @GetMapping("admin.showproblem")
     public String showProblem(@RequestParam("problem_id") long problemId,
             RedirectAttributes redirectAttributes) {
@@ -41,6 +43,7 @@ public class LegacyAdminController {
         return "redirect:/admin/problems/{problemId}.html";
     }
 
+    @Deprecated
     @GetMapping("admin.showcontest")
     public String showContest(@RequestParam("contest_id") long contestId,
             RedirectAttributes redirectAttributes) {
@@ -48,6 +51,7 @@ public class LegacyAdminController {
         return "redirect:/admin/contests/{contestId}.html";
     }
 
+    @Deprecated
     @GetMapping("admin.rejudge")
     public String rejudge(RedirectAttributes attributes, @RequestParam Map<String, String> query) {
         attributes.addAllAttributes(query);

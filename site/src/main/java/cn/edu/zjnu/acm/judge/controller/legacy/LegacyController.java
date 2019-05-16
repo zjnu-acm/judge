@@ -28,6 +28,7 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
  * @author zhanhb
  */
 @Controller
+@Deprecated
 @RequestMapping(produces = TEXT_HTML_VALUE)
 public class LegacyController {
 

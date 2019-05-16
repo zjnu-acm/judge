@@ -31,7 +31,6 @@ public interface ResultType {
     int OUTPUT_LIMIT_EXCEED = 6;
     int COMPILE_ERROR = -7;
     int SYSTEM_ERROR = -98;
-    int VALIDATE_ERROR = -99;
     int QUEUING = -10000;
     int SCORE_ACCEPT = 100;
 
@@ -58,8 +57,6 @@ public interface ResultType {
                 return "<font color=green>Waiting</font>";
             case SYSTEM_ERROR:
                 return "System Error";
-            case VALIDATE_ERROR:
-                return "Validate Error";
         }
         return "Other";
     }

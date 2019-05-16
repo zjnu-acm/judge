@@ -13,29 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.support;
+package cn.edu.zjnu.acm.judge.sandbox;
 
-import cn.edu.zjnu.acm.judge.sandbox.Status;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Value;
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
 
 /**
  *
  * @author zhanhb
  */
-@Builder(builderClassName = "Builder")
-@Data
-@Value
-@SuppressWarnings("FinalClass")
-public class RunResult {
+public class GroovyHolder {
 
-    private Status type;
-    private int score;
-    private String compileInfo;
-    private String detail;
-    private String systemInfo;
-    private long time;
-    private long memory;
+    private static final Path[] groovyJars = getGroovy();
+
+    private static Path[] getGroovy() {
+        return Arrays.stream(System.getProperty("java.class.path").split(File.pathSeparator))
+                .filter(s -> s.contains("groovy-"))
+                .map(Paths::get).toArray(Path[]::new);
+    }
+
+    public static Path[] getPaths() {
+        return groovyJars.clone();
+    }
 
 }

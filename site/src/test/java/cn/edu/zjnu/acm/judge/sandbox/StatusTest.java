@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 ZJNU ACM.
+ * Copyright 2016 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,29 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.support;
+package cn.edu.zjnu.acm.judge.sandbox;
 
-import cn.edu.zjnu.acm.judge.sandbox.Status;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Value;
+import java.util.Arrays;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.runner.RunWith;
 
 /**
  *
  * @author zhanhb
  */
-@Builder(builderClassName = "Builder")
-@Data
-@Value
-@SuppressWarnings("FinalClass")
-public class RunResult {
+@RunWith(JUnitPlatform.class)
+@Slf4j
+public class StatusTest {
 
-    private Status type;
-    private int score;
-    private String compileInfo;
-    private String detail;
-    private String systemInfo;
-    private long time;
-    private long memory;
+    /**
+     * Test of values method, of class Status.
+     */
+    @Test
+    public void testValues() {
+        log.info("values");
+        Status[] result = Status.values();
+        log.info(Arrays.toString(result));
+    }
 
 }

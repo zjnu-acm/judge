@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 ZJNU ACM.
+ * Copyright 2016 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,29 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.support;
+package cn.edu.zjnu.acm.judge.sandbox;
 
-import cn.edu.zjnu.acm.judge.sandbox.Status;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Value;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
  *
  * @author zhanhb
  */
-@Builder(builderClassName = "Builder")
-@Data
-@Value
-@SuppressWarnings("FinalClass")
-public class RunResult {
+@Getter
+@RequiredArgsConstructor
+public enum Checker {
 
-    private Status type;
-    private int score;
-    private String compileInfo;
-    private String detail;
-    private String systemInfo;
-    private long time;
-    private long memory;
+    ac(Status.ACCEPTED),
+    wa(Status.WRONG_ANSWER),
+    tle(Status.TIME_LIMIT_EXCEED),
+    mle(Status.MEMORY_LIMIT_EXCEED),
+    ole(Status.OUTPUT_LIMIT_EXCEED),
+    re(Status.RUNTIME_ERROR),
+    pe(Status.PRESENTATION_ERROR);
+
+    private final Status status;
 
 }
