@@ -31,13 +31,17 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 
 /**
  *
  * @author zhanhb
  */
 @Controller
+@RequestMapping(produces = TEXT_HTML_VALUE)
 @Secured("ROLE_USER")
 @RequiredArgsConstructor
 public class MailController {
@@ -56,14 +60,14 @@ public class MailController {
         return mail;
     }
 
-    @GetMapping("/deletemail")
+    @GetMapping("deletemail")
     public String delete(@RequestParam("mail_id") long mailId, Authentication authentication) {
         access(mailId, authentication);
         mailMapper.delete(mailId);
         return "redirect:/mail";
     }
 
-    @GetMapping("/mail")
+    @GetMapping("mail")
     @SuppressWarnings("AssignmentToMethodParameter")
     public String mail(Model model,
             @RequestParam(value = "size", defaultValue = "20") int size,
@@ -83,7 +87,7 @@ public class MailController {
         return "mails/list";
     }
 
-    @PostMapping("/send")
+    @PostMapping("send")
     @SuppressWarnings("AssignmentToMethodParameter")
     public String send(@RequestParam("title") String title,
             @RequestParam("to") String to,
@@ -107,7 +111,7 @@ public class MailController {
         return "mails/sendsuccess";
     }
 
-    @GetMapping({"/sendpage", "/send"})
+    @GetMapping({"sendpage", "send"})
     @SuppressWarnings("AssignmentToMethodParameter")
     public String sendPage(Model model,
             @RequestParam(value = "reply", defaultValue = "-1") long reply,
@@ -139,7 +143,7 @@ public class MailController {
         return "mails/sendpage";
     }
 
-    @GetMapping("/showmail")
+    @GetMapping("showmail")
     public String showMail(Model model,
             @RequestParam("mail_id") long mailId,
             Authentication authentication) {

@@ -53,7 +53,7 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
  * @author zhanhb
  */
 @Controller
-@RequestMapping("/contests/{contestId}/problems")
+@RequestMapping(value = "contests/{contestId}/problems", produces = TEXT_HTML_VALUE)
 @RequiredArgsConstructor
 public class ContestProblemController {
 
@@ -96,7 +96,7 @@ public class ContestProblemController {
         return "contests/problem";
     }
 
-    @GetMapping(value = "{pid}/status", produces = TEXT_HTML_VALUE)
+    @GetMapping("{pid}/status")
     public String status(
             @PathVariable("contestId") long contestId,
             @PathVariable("pid") int problemNum,

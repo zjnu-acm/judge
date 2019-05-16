@@ -16,7 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,14 +24,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static org.hamcrest.Matchers.isIn;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.http.MediaType.ALL;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.IMAGE_JPEG;
 import static org.springframework.http.MediaType.TEXT_HTML;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureMockMvc
 @RunWith(JUnitPlatform.class)
@@ -52,32 +51,35 @@ public class ContestListControllerTest {
         }
     }
 
-    private MvcResult contestTestBase(ResultMatcher matcher, MediaType expect, MediaType... accept) throws Exception {
+    private ResultActions contestTestBase(ResultMatcher matcher, MediaType expect, MediaType... accept) throws Exception {
         MockHttpServletRequestBuilder builder = get("/scheduledcontests");
         if (accept.length != 0) {
             builder = builder.accept(accept);
         }
-        return mvc.perform(builder).andExpect(matcher)
-                .andExpect(content().contentTypeCompatibleWith(expect))
-                .andReturn();
+        ResultActions resultActions = mvc.perform(builder).andExpect(matcher);
+        if (expect != null) {
+            resultActions.andExpect(content().contentTypeCompatibleWith(expect));
+        }
+        return resultActions;
     }
 
     @Test
     public void testContentType() throws Exception {
         clearPending();
-        MvcResult result;
         // first is matched
-        result = contestTestBase(status().isOk(), TEXT_HTML, TEXT_HTML);
-        result = contestTestBase(status().isOk(), APPLICATION_JSON, APPLICATION_JSON);
-        result = contestTestBase(status().isOk(), TEXT_HTML, TEXT_HTML, APPLICATION_JSON);
-        result = contestTestBase(status().isOk(), APPLICATION_JSON, APPLICATION_JSON, TEXT_HTML);
-        // second matched
-        result = contestTestBase(status().isOk(), APPLICATION_JSON, IMAGE_JPEG, APPLICATION_JSON);
+        contestTestBase(status().isOk(), TEXT_HTML, TEXT_HTML);
+        contestTestBase(status().isOk(), TEXT_HTML, TEXT_HTML, APPLICATION_JSON);
+        // the matching controller produces TEXT_HTML, but then we goto the error page, it supports produces APPLICATION_JSON,
+        // so the content type is set by the controller advice class
+        ResultActions result = contestTestBase(status().isOk(), APPLICATION_JSON, APPLICATION_JSON, TEXT_HTML);
+        result.andExpect(handler().handlerType(ContestListController.class))
+                .andExpect(jsonPath("message", notNullValue()));
         // non matched
-        result = contestTestBase(status().isOk(), TEXT_HTML, IMAGE_JPEG);
-        result = contestTestBase(status().isOk(), TEXT_HTML);
+        contestTestBase(status().isNotAcceptable(), null, IMAGE_JPEG, APPLICATION_JSON);
+        contestTestBase(status().isNotAcceptable(), null, IMAGE_JPEG);
+        contestTestBase(status().isOk(), TEXT_HTML);
         // match all
-        result = contestTestBase(status().isOk(), TEXT_HTML, ALL);
+        contestTestBase(status().isOk(), TEXT_HTML, ALL);
     }
 
     @Test
@@ -92,7 +94,7 @@ public class ContestListControllerTest {
                 .title("sample contest")
                 .description("no description")
                 .build());
-        MvcResult result = mvc.perform(get("/scheduledcontests"))
+        mvc.perform(get("/scheduledcontests"))
                 .andExpect(status().isFound())
                 .andReturn();
         contestService.save(Contest.builder().createdTime(Instant.now()).disabled(false)
@@ -101,7 +103,7 @@ public class ContestListControllerTest {
                 .title("sample contest2")
                 .description("no description2")
                 .build());
-        result = mvc.perform(get("/scheduledcontests"))
+        mvc.perform(get("/scheduledcontests"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("contests/index"))
                 .andReturn();
@@ -115,7 +117,7 @@ public class ContestListControllerTest {
     @Test
     public void testContests() throws Exception {
         log.info("contests");
-        MvcResult result = mvc.perform(get("/contests"))
+        mvc.perform(get("/contests"))
                 .andExpect(isOkOrFound())
                 .andReturn();
     }
@@ -128,7 +130,7 @@ public class ContestListControllerTest {
     @Test
     public void testScheduledContests() throws Exception {
         log.info("scheduledContests");
-        MvcResult result = mvc.perform(get("/scheduledcontests"))
+        mvc.perform(get("/scheduledcontests"))
                 .andExpect(isOkOrFound())
                 .andReturn();
     }
@@ -141,7 +143,7 @@ public class ContestListControllerTest {
     @Test
     public void testPastContests() throws Exception {
         log.info("pastContests");
-        MvcResult result = mvc.perform(get("/pastcontests"))
+        mvc.perform(get("/pastcontests"))
                 .andExpect(isOkOrFound())
                 .andReturn();
     }
@@ -154,7 +156,7 @@ public class ContestListControllerTest {
     @Test
     public void testCurrentContests() throws Exception {
         log.info("currentContests");
-        MvcResult result = mvc.perform(get("/currentcontests"))
+        mvc.perform(get("/currentcontests"))
                 .andExpect(isOkOrFound())
                 .andReturn();
     }

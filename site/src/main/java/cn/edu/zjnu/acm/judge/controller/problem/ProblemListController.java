@@ -32,11 +32,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 
 /**
  * @author zhanhb
  */
 @Controller
+@RequestMapping(produces = TEXT_HTML_VALUE)
 @RequiredArgsConstructor
 public class ProblemListController {
 
@@ -56,7 +60,7 @@ public class ProblemListController {
 
     @GetMapping("searchproblem")
     public String searchProblem(ProblemForm form, Model model, Locale locale, Authentication authentication,
-                                @PageableDefault(1000) Pageable pageable, HttpServletRequest request) {
+            @PageableDefault(1000) Pageable pageable, HttpServletRequest request) {
         if (!StringUtils.hasText(form.getSstr())) {
             throw new BusinessException(BusinessCode.PROBLEM_SEARCH_KEY_EMPTY);
         }

@@ -28,6 +28,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -38,6 +39,7 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
  * @author zhanhb
  */
 @Controller
+@RequestMapping(produces = TEXT_HTML_VALUE)
 @RequiredArgsConstructor
 public class MainController {
 
@@ -50,23 +52,23 @@ public class MainController {
         return "index";
     }
 
-    @GetMapping("/faq")
+    @GetMapping("faq")
     public String faq() {
         return "faq";
     }
 
-    @GetMapping("/findpassword")
+    @GetMapping("findpassword")
     public String findPassword() {
         return "users/findPassword";
     }
 
-    @GetMapping({"/registerpage", "/register"})
+    @GetMapping({"registerpage", "register"})
     public String registerPage() {
         contestOnlyService.checkRegister();
         return "users/registerPage";
     }
 
-    @GetMapping(value = "/unauthorized", produces = TEXT_HTML_VALUE)
+    @GetMapping(value = "unauthorized", produces = TEXT_HTML_VALUE)
     public String unauthorizedHtml(HttpServletRequest request, RedirectAttributes redirectAttributes) {
         String url = (String) request.getAttribute(JudgeHandlerInterceptor.BACK_URL_ATTRIBUTE_NAME);
         if (StringUtils.hasText(url)) {
@@ -75,7 +77,7 @@ public class MainController {
         return "redirect:/login";
     }
 
-    @GetMapping(value = "/unauthorized", produces = APPLICATION_JSON_VALUE)
+    @GetMapping(value = "unauthorized", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<?, ?>> unauthorized() {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.emptyMap());
     }

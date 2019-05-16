@@ -14,12 +14,16 @@ import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 
 /**
  * @author zhanhb
  */
 @Controller
+@RequestMapping(produces = TEXT_HTML_VALUE)
 @RequiredArgsConstructor
 public class ShowSubmissionDetailsController {
 
@@ -27,7 +31,7 @@ public class ShowSubmissionDetailsController {
     private final ContestMapper contestMapper;
     private final SubmissionService submissionService;
 
-    @GetMapping("/showsolutiondetails")
+    @GetMapping("showsolutiondetails")
     public String showSolutionDetails(
             HttpServletRequest request,
             @RequestParam("solution_id") long submissionId) {

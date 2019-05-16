@@ -13,13 +13,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 
 /**
  * @author zhanhb
  */
 @Controller
+@RequestMapping(produces = TEXT_HTML_VALUE)
 @RequiredArgsConstructor
 @Secured("ROLE_USER")
 public class SubmitController {
@@ -29,7 +33,7 @@ public class SubmitController {
     private final UserPreferenceMapper userPerferenceMapper;
     private final LanguageService languageService;
 
-    @GetMapping({"/submitpage", "/submit"})
+    @GetMapping({"submitpage", "submit"})
     public String submitPage(Model model,
             @RequestParam(value = "problem_id", required = false) Long problemId,
             Authentication authentication) {
@@ -37,8 +41,8 @@ public class SubmitController {
     }
 
     @GetMapping({
-        "/problems/{problemId}/submit",
-        "/contests/{contestId}/problems/{problemId}/submit"
+        "problems/{problemId}/submit",
+        "contests/{contestId}/problems/{problemId}/submit"
     })
     public String contestSubmitPage(Model model,
             @PathVariable(value = "contestId", required = false) Long contestId,
@@ -58,8 +62,8 @@ public class SubmitController {
     }
 
     @PostMapping({
-        "/problems/{problemId}/submit",
-        "/contests/{contestId}/problems/{problemId}/submit"
+        "problems/{problemId}/submit",
+        "contests/{contestId}/problems/{problemId}/submit"
     })
     public synchronized String submit(HttpServletRequest request,
             @PathVariable(value = "contestId", required = false) Long contestId,

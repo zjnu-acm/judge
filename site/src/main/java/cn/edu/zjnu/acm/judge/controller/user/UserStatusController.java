@@ -10,13 +10,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 
 /**
  * @author zhanhb
  */
 @Slf4j
 @Controller
+@RequestMapping(produces = TEXT_HTML_VALUE)
 @RequiredArgsConstructor
 public class UserStatusController {
 
@@ -24,7 +28,7 @@ public class UserStatusController {
     private final UserProblemMapper userProblemMapper;
     private final AccountService accountService;
 
-    @GetMapping("/userstatus")
+    @GetMapping("userstatus")
     @SuppressWarnings("AssignmentToMethodParameter")
     public String userStatus(Model model,
             @RequestParam(value = "size", defaultValue = "3") int display,

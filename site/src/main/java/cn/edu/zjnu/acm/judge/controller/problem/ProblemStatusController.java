@@ -38,14 +38,18 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 
 /**
  *
  * @author zhanhb
  */
 @Controller
+@RequestMapping(produces = TEXT_HTML_VALUE)
 @RequiredArgsConstructor
 @Slf4j
 public class ProblemStatusController {
@@ -54,7 +58,7 @@ public class ProblemStatusController {
     private final SubmissionService submissionService;
     private final SubmissionMapper submissionMapper;
 
-    @GetMapping("/gotoproblem")
+    @GetMapping("gotoproblem")
     public String gotoProblem(@RequestParam(value = "pid", required = false) String pid,
             RedirectAttributes redirectAttributes) {
         long problemId;
@@ -68,7 +72,7 @@ public class ProblemStatusController {
         return "redirect:/showproblem";
     }
 
-    @GetMapping("/problemstatus")
+    @GetMapping("problemstatus")
     @SuppressWarnings("AssignmentToMethodParameter")
     public String status(HttpServletRequest request,
             @RequestParam("problem_id") long id,

@@ -10,33 +10,37 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 
 /**
  * @author zhanhb
  */
 @Controller
+@RequestMapping(produces = TEXT_HTML_VALUE)
 @RequiredArgsConstructor
 public class ContestListController {
 
     private final ContestService contestService;
 
-    @GetMapping("/contests")
+    @GetMapping("contests")
     public String contests(Model model, RedirectAttributes redirectAttributes) {
         return execute(model, "Contests", BusinessCode.NO_CONTESTS, redirectAttributes, ContestStatus.PENDING, ContestStatus.RUNNING, ContestStatus.ENDED);
     }
 
-    @GetMapping("/scheduledcontests")
+    @GetMapping("scheduledcontests")
     public String scheduledContests(Model model, RedirectAttributes redirectAttributes) {
         return execute(model, "Scheduled Contests", BusinessCode.NO_SCHEDULED_CONTESTS, redirectAttributes, ContestStatus.PENDING);
     }
 
-    @GetMapping("/pastcontests")
+    @GetMapping("pastcontests")
     public String pastContests(Model model, RedirectAttributes redirectAttributes) {
         return execute(model, "Past Contests", BusinessCode.NO_PAST_CONTESTS, redirectAttributes, ContestStatus.ENDED);
     }
 
-    @GetMapping("/currentcontests")
+    @GetMapping("currentcontests")
     public String currentContests(Model model, RedirectAttributes redirectAttributes) {
         return execute(model, "Current Contests", BusinessCode.NO_CURRENT_CONTESTS, redirectAttributes, ContestStatus.RUNNING);
     }

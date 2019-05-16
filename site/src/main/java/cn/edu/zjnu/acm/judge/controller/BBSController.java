@@ -22,6 +22,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.unbescape.html.HtmlEscape;
@@ -32,6 +33,7 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
  * @author zhanhb
  */
 @Controller
+@RequestMapping(produces = TEXT_HTML_VALUE)
 @RequiredArgsConstructor
 public class BBSController {
 
@@ -40,7 +42,7 @@ public class BBSController {
     private final MessageMapper messageMapper;
     private final MessageService messageService;
 
-    @GetMapping(value = "/bbs", produces = TEXT_HTML_VALUE)
+    @GetMapping("bbs")
     public String bbs(HttpServletRequest request,
             @RequestParam(value = "problem_id", required = false) Long problemId,
             @RequestParam(value = "size", defaultValue = "50") final int threadLimit,
@@ -113,7 +115,7 @@ public class BBSController {
     }
 
     @Secured("ROLE_USER")
-    @GetMapping({"/postpage", "/post"})
+    @GetMapping({"postpage", "post"})
     public String postpage(Model model,
             @RequestParam(value = "problem_id", required = false) Long problemId) {
         model.addAttribute("problemId", problemId);
@@ -143,7 +145,7 @@ public class BBSController {
     }
 
     @Secured("ROLE_USER")
-    @GetMapping(value = "/showmessage", produces = TEXT_HTML_VALUE)
+    @GetMapping("showmessage")
     public String showMessage(
             @RequestParam("message_id") long messageId,
             Model model) {

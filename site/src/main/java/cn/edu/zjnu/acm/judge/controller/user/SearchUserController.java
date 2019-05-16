@@ -14,18 +14,22 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 
 /**
  * @author zhanhb
  */
 @Controller
+@RequestMapping(produces = TEXT_HTML_VALUE)
 @RequiredArgsConstructor
 public class SearchUserController {
 
     private final AccountService accountService;
 
-    @GetMapping("/searchuser")
+    @GetMapping("searchuser")
     public String searchuser(Model model,
             @RequestParam(value = "user_id", defaultValue = "") String keyword,
             @RequestParam(value = "position", required = false) String position,

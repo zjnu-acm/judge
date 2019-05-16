@@ -17,18 +17,22 @@ package cn.edu.zjnu.acm.judge.controller.legacy;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 
 /**
  *
  * @author zhanhb
  */
 @Controller
+@RequestMapping(produces = TEXT_HTML_VALUE)
 public class LegacyController {
 
     @Deprecated
-    @GetMapping("/conteststanding")
+    @GetMapping("conteststanding")
     public String contestStanding(@RequestParam("contest_id") long contestId,
             RedirectAttributes redirectAttributes) {
         redirectAttributes.addAttribute("contestId", contestId);
@@ -36,7 +40,7 @@ public class LegacyController {
     }
 
     @Deprecated
-    @GetMapping("/showcontest")
+    @GetMapping("showcontest")
     public String showContest(@RequestParam("contest_id") long contestId,
             RedirectAttributes redirectAttributes) {
         redirectAttributes.addAttribute("contestId", contestId);

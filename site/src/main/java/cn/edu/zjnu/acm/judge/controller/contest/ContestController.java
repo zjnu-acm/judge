@@ -37,7 +37,7 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
  * @author zhanhb
  */
 @Controller("contest")
-@RequestMapping(value = "/contests/{contestId}", produces = TEXT_HTML_VALUE)
+@RequestMapping(value = "contests/{contestId}", produces = TEXT_HTML_VALUE)
 @RequiredArgsConstructor
 public class ContestController {
 

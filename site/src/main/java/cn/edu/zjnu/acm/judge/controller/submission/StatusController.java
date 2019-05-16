@@ -28,6 +28,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.unbescape.html.HtmlEscape;
 
@@ -38,6 +39,7 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
  */
 @Slf4j
 @Controller
+@RequestMapping(produces = TEXT_HTML_VALUE)
 @RequiredArgsConstructor
 public class StatusController {
 
@@ -49,7 +51,7 @@ public class StatusController {
     private final SubmissionService submissionService;
     private final LanguageService languageService;
 
-    @GetMapping(value = {"/status", "/submissions"}, produces = TEXT_HTML_VALUE)
+    @GetMapping({"/status", "/submissions"})
     @SuppressWarnings("AssignmentToMethodParameter")
     public String status(HttpServletRequest request,
             @RequestParam(value = "problem_id", defaultValue = "") String pid,

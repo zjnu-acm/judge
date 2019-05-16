@@ -17,12 +17,16 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 
 /**
  * @author zhanhb
  */
 @Controller
+@RequestMapping(produces = TEXT_HTML_VALUE)
 @RequiredArgsConstructor
 public class ShowSourceController {
 
@@ -34,7 +38,7 @@ public class ShowSourceController {
     private final ContestOnlyService contestOnlyService;
 
     @Secured("ROLE_USER")
-    @GetMapping("/showsource")
+    @GetMapping("showsource")
     @SuppressWarnings("AssignmentToMethodParameter")
     public String showSource(HttpServletRequest request,
             @RequestParam("solution_id") long submissionId,

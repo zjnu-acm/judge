@@ -25,12 +25,16 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 
 /**
  *
  * @author zhanhb
  */
 @Controller
+@RequestMapping(produces = TEXT_HTML_VALUE)
 @RequiredArgsConstructor
 public class UserListController {
 
@@ -42,7 +46,7 @@ public class UserListController {
 
     private final AccountService accountService;
 
-    @GetMapping({"/userlist", "/users"})
+    @GetMapping({"userlist", "users"})
     @SuppressWarnings("AssignmentToMethodParameter")
     public String userList(HttpServletRequest request, @PageableDefault(50) Pageable pageable) {
         Sort sort = pageable.getSort();

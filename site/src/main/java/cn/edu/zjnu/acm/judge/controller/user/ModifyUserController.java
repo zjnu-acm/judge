@@ -15,12 +15,16 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 
 /**
  * @author zhanhb
  */
 @Controller
+@RequestMapping(produces = TEXT_HTML_VALUE)
 @RequiredArgsConstructor
 @Secured("ROLE_USER")
 public class ModifyUserController {
@@ -28,7 +32,7 @@ public class ModifyUserController {
     private final AccountService accountService;
     private final PasswordEncoder passwordEncoder;
 
-    @GetMapping({"/modifyuserpage", "/modifyuser"})
+    @GetMapping({"modifyuserpage", "modifyuser"})
     public String updatePage(Model model, Authentication authentication) {
         String userId = authentication != null ? authentication.getName() : null;
         User user = accountService.findOne(userId);
@@ -36,7 +40,7 @@ public class ModifyUserController {
         return "users/edit";
     }
 
-    @PostMapping("/modifyuser")
+    @PostMapping("modifyuser")
     @SuppressWarnings("AssignmentToMethodParameter")
     public String update(Model model,
             @RequestParam("oldPassword") String oldPassword,

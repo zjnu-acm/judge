@@ -14,12 +14,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 
 /**
  * @author zhanhb
  */
 @Controller
+@RequestMapping(produces = TEXT_HTML_VALUE)
 @RequiredArgsConstructor
 @Slf4j
 public class RegisterController {
@@ -28,7 +32,7 @@ public class RegisterController {
     private final UserMapper userMapper;
     private final ContestOnlyService contestOnlyService;
 
-    @PostMapping("/register")
+    @PostMapping("register")
     @SuppressWarnings("AssignmentToMethodParameter")
     public String register(
             HttpServletRequest request,

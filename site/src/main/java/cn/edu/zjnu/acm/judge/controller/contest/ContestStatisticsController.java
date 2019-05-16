@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.unbescape.html.HtmlEscape;
 
@@ -27,6 +28,7 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
  * @author zhanhb
  */
 @Controller
+@RequestMapping(produces = TEXT_HTML_VALUE)
 @RequiredArgsConstructor
 @Slf4j
 public class ContestStatisticsController {
@@ -35,7 +37,7 @@ public class ContestStatisticsController {
     private final ContestService contestService;
     private final LanguageService languageService;
 
-    @GetMapping(value = "/conteststatistics", produces = TEXT_HTML_VALUE)
+    @GetMapping("conteststatistics")
     public String contestStatistics(
             HttpServletRequest request,
             Model model,
