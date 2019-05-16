@@ -58,7 +58,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 /**
- *
  * @author zhanhb
  */
 @RunWith(JUnitPlatform.class)
@@ -159,18 +158,19 @@ public class JudgeRunnerTest {
         RunResult runResult = judgeRunner.run(runRecord, work, judgeData, validator, false);
 
         int expectScore = SPECIAL_SCORE.getOrDefault(key, checker.getScore());
-        String extectedCaseResult = ResultType.getCaseScoreDescription(checker.getStatus());
+        String expectedCaseResult = ResultType.getCaseScoreDescription(checker.getStatus());
 
         assertThat(runResult.getType())
                 .withFailMessage("type will either be null or COMPILATION_ERROR,"
                         + " if got other result, please modify this file")
                 .isNull();
-        List<SubmissionDetailDTO> details = submissionService.parseSubmissionDetail(runResult.getMessage());
+        String detail1 = runResult.getDetail();
+        List<SubmissionDetailDTO> details = detail1 != null ? submissionService.parseSubmissionDetail(detail1) : null;
         String msg = "%s %s %s";
-        Object[] param = {key, details, extectedCaseResult};
+        Object[] param = {key, details, expectedCaseResult};
         assertThat(runResult.getScore()).withFailMessage(msg, param).isEqualTo(expectScore);
         assertThat(details).withFailMessage(msg, param)
-                .anyMatch(detail -> extectedCaseResult.equals(detail.getResult()));
+                .anyMatch(detail -> expectedCaseResult.equals(detail.getResult()));
     }
 
 }

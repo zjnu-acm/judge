@@ -15,14 +15,11 @@
  */
 package cn.edu.zjnu.acm.judge.service;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
-
 /**
  * @author zhanhb
  */
 public interface JudgeService {
 
-    CompletableFuture<?> toCompletableFuture(Executor executor, long submissionId);
+    void execute(long submissionId);
 
 }

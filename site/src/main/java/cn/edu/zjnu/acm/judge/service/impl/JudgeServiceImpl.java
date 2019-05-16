@@ -41,8 +41,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.file.Path;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -71,56 +69,56 @@ public class JudgeServiceImpl implements JudgeService {
     }
 
     @Override
-    public CompletableFuture<?> toCompletableFuture(Executor executor, long submissionId) {
-        return CompletableFuture.runAsync(() -> {
-            Submission submission = submissionMapper.findOne(submissionId);
-            if (submission == null) {
-                throw new BusinessException(BusinessCode.SUBMISSION_NOT_FOUND);
+    public void execute(long submissionId) {
+        Submission submission = submissionMapper.findOne(submissionId);
+        if (submission == null) {
+            throw new BusinessException(BusinessCode.SUBMISSION_NOT_FOUND);
+        }
+        long problemId = submission.getProblem();
+        Problem problem = problemService.findOneNoI18n(problemId);
+        try {
+            RunRecord runRecord = RunRecord.builder()
+                    .language(languageService.getAvailableLanguage(submission.getLanguage()))
+                    .source(submissionDetailMapper.findSourceById(submissionId))
+                    .memoryLimit(problem.getMemoryLimit())
+                    .timeLimit(problem.getTimeLimit())
+                    .build();
+            Path dataDirectory = systemService.getDataDirectory(problemId);
+            JudgeData judgeData = new JudgeData(dataDirectory);
+            Path specialFile = systemService.getSpecialJudgeExecutable(problemId);
+            boolean isSpecial = systemService.isSpecialJudge(problemId);
+            Path work = systemService.getWorkDirectory(submissionId); //建立临时文件
+            final Validator validator = isSpecial
+                    ? new SpecialValidator(specialFile.toString(), work)
+                    : SimpleValidator.PE_AS_ACCEPTED;
+            boolean deleteTempFile = systemService.isDeleteTempFile();
+            RunResult runResult = judgeRunner.run(runRecord, work, judgeData, validator, deleteTempFile);
+            SubmissionDetail detail = SubmissionDetail.builder().id(submissionId)
+                    .compileInfo(runResult.getCompileInfo())
+                    .detail(runResult.getDetail())
+                    .systemInfo(runResult.getSystemInfo())
+                    .build();
+            if (runResult.getType() == Status.COMPILATION_ERROR) {
+                submissionMapper.updateResult(submissionId, ResultType.COMPILE_ERROR, 0, 0);
+                submissionDetailMapper.update(detail);
+            } else {
+                int score = runResult.getScore();
+                long time = runResult.getTime();
+                long memory = runResult.getMemory();
+                submissionMapper.updateResult(submissionId, score, time, memory);
+                submissionDetailMapper.update(detail);
             }
-            long problemId = submission.getProblem();
-            Problem problem = problemService.findOneNoI18n(problemId);
-            try {
-                RunRecord runRecord = RunRecord.builder()
-                        .language(languageService.getAvailableLanguage(submission.getLanguage()))
-                        .source(submissionDetailMapper.findSourceById(submissionId))
-                        .memoryLimit(problem.getMemoryLimit())
-                        .timeLimit(problem.getTimeLimit())
-                        .build();
-                Path dataDirectory = systemService.getDataDirectory(problemId);
-                JudgeData judgeData = new JudgeData(dataDirectory);
-                Path specialFile = systemService.getSpecialJudgeExecutable(problemId);
-                boolean isSpecial = systemService.isSpecialJudge(problemId);
-                Path work = systemService.getWorkDirectory(submissionId); //建立临时文件
-                final Validator validator = isSpecial
-                        ? new SpecialValidator(specialFile.toString(), work)
-                        : SimpleValidator.PE_AS_ACCEPTED;
-                boolean deleteTempFile = systemService.isDeleteTempFile();
-                RunResult runResult = judgeRunner.run(runRecord, work, judgeData, validator, deleteTempFile);
-                String message = runResult.getMessage();
-                if (runResult.getType() == Status.COMPILATION_ERROR) {
-                    submissionMapper.updateResult(submissionId, ResultType.COMPILE_ERROR, 0, 0);
-                    submissionDetailMapper.update(SubmissionDetail.builder().id(submissionId).compileInfo(message).build());
-                } else {
-                    int score = runResult.getScore();
-                    long time = runResult.getTime();
-                    long memory = runResult.getMemory();
-                    submissionMapper.updateResult(submissionId, score, time, memory);
-                    submissionDetailMapper.update(SubmissionDetail.builder()
-                            .id(submissionId)
-                            .detail(message).build());
-                }
-                updateSubmissionStatus(submission.getUser(), problemId);
-            } catch (JudgeException | IOException | Error ex) {
-                log.error("got an exception when judging submission {}", submissionId, ex);
-                submissionMapper.updateResult(submissionId, ResultType.SYSTEM_ERROR, 0, 0);
-                StringWriter sw = new StringWriter();
-                try (PrintWriter pw = new PrintWriter(sw)) {
-                    ex.printStackTrace(pw);
-                }
-                submissionDetailMapper.update(SubmissionDetail.builder().id(submissionId)
-                        .systemInfo(sw.toString()).build());
+            updateSubmissionStatus(submission.getUser(), problemId);
+        } catch (JudgeException | IOException | Error ex) {
+            log.error("got an exception when judging submission {}", submissionId, ex);
+            submissionMapper.updateResult(submissionId, ResultType.SYSTEM_ERROR, 0, 0);
+            StringWriter sw = new StringWriter();
+            try (PrintWriter pw = new PrintWriter(sw)) {
+                ex.printStackTrace(pw);
             }
-        }, executor);
+            submissionDetailMapper.update(SubmissionDetail.builder().id(submissionId)
+                    .systemInfo(sw.toString()).build());
+        }
     }
 
 }

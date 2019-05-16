@@ -61,7 +61,7 @@ public class JudgePoolServiceImpl implements JudgePoolService {
 
     @Override
     public CompletableFuture<?> add(long id) {
-        return judgeService.toCompletableFuture(executorService, id);
+        return CompletableFuture.runAsync(() -> judgeService.execute(id), executorService);
     }
 
     @Override

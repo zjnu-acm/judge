@@ -32,7 +32,9 @@ public class RunResult {
 
     private Status type;
     private int score;
-    private String message;
+    private String compileInfo;
+    private String detail;
+    private String systemInfo;
     private long time;
     private long memory;
 
