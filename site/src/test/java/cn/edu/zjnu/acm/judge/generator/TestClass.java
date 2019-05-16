@@ -13,6 +13,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
+@SuppressWarnings({"SameParameterValue", "WeakerAccess"})
 public class TestClass {
 
     private final String _package;
