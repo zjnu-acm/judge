@@ -61,12 +61,12 @@ $RECYCLE.BIN/
 *.lnk
 
 # Intellij IDEA
-/.idea/
+.idea/
 *.iml
 
 # Netbeans IDE
-/nbproject
-/src/main/webapp/META-INF
+nbproject
+src/main/webapp/META-INF/
 
 # Eclipse IDE
 .classpath
