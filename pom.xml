@@ -53,6 +53,7 @@
         <ckfinder.version>0.0.1.BUILD-SNAPSHOT</ckfinder.version>
         <classmate.version>1.5.0</classmate.version>
         <duplicate-finder-maven-plugin.version>1.3.0</duplicate-finder-maven-plugin.version>
+        <findbugs-jsr305.version>3.0.2</findbugs-jsr305.version>
         <guava.version>27.1-jre</guava.version>
         <hikaricp.version>3.3.1</hikaricp.version>
         <jacoco-maven-plugin.version>0.8.3</jacoco-maven-plugin.version>
@@ -105,6 +106,11 @@
                 <groupId>com.github.zhanhb</groupId>
                 <artifactId>thymeleaf-layout-dialect</artifactId>
                 <version>${thymeleaf-layout-dialect.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.code.findbugs</groupId>
+                <artifactId>jsr305</artifactId>
+                <version>${findbugs-jsr305.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>
