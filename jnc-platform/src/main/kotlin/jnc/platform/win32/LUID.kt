@@ -21,6 +21,7 @@ import jnc.foreign.byref.IntByReference
  * @see [LUID](https://msdn.microsoft.com/en-us/library/windows/desktop/aa379261)
  * @author zhanhb
  */
+@Suppress("SpellCheckingInspection")
 class LUID : jnc.foreign.Struct() {
 
     private val LowPart = DWORD()

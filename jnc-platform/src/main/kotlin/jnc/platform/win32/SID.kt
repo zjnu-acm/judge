@@ -22,6 +22,7 @@ import jnc.foreign.byref.PointerByReference
 /**
  * @author zhanhb
  */
+@Suppress("PrivatePropertyName", "MemberVisibilityCanBePrivate", "unused", "SpellCheckingInspection")
 class SID private constructor(subAuthorityCount: Int) : jnc.foreign.Struct() {
 
     private val Revision = BYTE()

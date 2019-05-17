@@ -18,6 +18,7 @@ package jnc.platform.win32
 /**
  * @author zhanhb
  */
+@Suppress("ClassName", "PrivatePropertyName")
 class TOKEN_GROUPS private constructor(size: Int) : TOKEN_INFORMATION() {
 
     private val GroupCount = DWORD()

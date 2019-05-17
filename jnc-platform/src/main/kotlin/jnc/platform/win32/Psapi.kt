@@ -10,6 +10,7 @@ import jnc.foreign.typedef.uintptr_t
 /**
  * @author zhanhb
  */
+@Suppress("SpellCheckingInspection", "FunctionName")
 @Stdcall
 interface Psapi {
 
@@ -30,7 +31,7 @@ interface Psapi {
      * function fails, the return value is zero. To get extended error
      * information, call GetLastError.
      * @see [GetProcessMemoryInfo](http://msdn.microsoft.com/en-us/library/ms683219)
-    ) */
+     */
     @int32_t
     fun GetProcessMemoryInfo(
             @uintptr_t /*HANDLE*/ hProcess: Long,

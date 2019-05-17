@@ -24,6 +24,7 @@ import jnc.foreign.typedef.size_t
  */
 interface LibC {
 
+    @Suppress("SpellCheckingInspection")
     @size_t
     fun wcslen(pointer: Pointer): Int
 

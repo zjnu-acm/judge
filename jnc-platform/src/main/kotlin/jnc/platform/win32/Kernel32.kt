@@ -15,6 +15,7 @@ import jnc.foreign.typedef.uintptr_t
 /**
  * @author zhanhb
  */
+@Suppress("FunctionName")
 @Stdcall
 interface Kernel32 {
 
@@ -57,7 +58,7 @@ interface Kernel32 {
      * function fails, the return value is zero. To get extended error
      * information, call GetLastError.
      * @see [GetProcessTimes](https://msdn.microsoft.com/en-us/library/windows/desktop/ms683223)
-    ) */
+     */
     @int32_t
     fun GetProcessTimes(
             @uintptr_t /*HANDLE*/ hProcess: Long,
@@ -94,7 +95,7 @@ interface Kernel32 {
      * function fails, the return value is zero. To get extended error
      * information, call GetLastError.
      * @see [SetInformationJobObject](https://msdn.microsoft.com/en-us/library/windows/desktop/ms686216)
-    ) */
+     */
     @int32_t
     fun SetInformationJobObject(
             @uintptr_t /*HANDLE*/ hJob: Long,

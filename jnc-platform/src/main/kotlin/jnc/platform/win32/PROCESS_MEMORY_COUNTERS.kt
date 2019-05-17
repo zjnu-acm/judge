@@ -21,6 +21,7 @@ package jnc.platform.win32
  * @see [PROCESS_MEMORY_COUNTERS](http://msdn.microsoft.com/en-us/library/ms684877)
  * @author zhanhb
  */
+@Suppress("ClassName", "ClassName", "unused", "SpellCheckingInspection", "PrivatePropertyName")
 class PROCESS_MEMORY_COUNTERS : jnc.foreign.Struct() {
 
     /**

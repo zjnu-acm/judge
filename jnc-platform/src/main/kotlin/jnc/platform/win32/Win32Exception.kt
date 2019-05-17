@@ -25,7 +25,7 @@ class Win32Exception(val errorCode: Int) : RuntimeException() {
 
     companion object {
 
-        private val serialVersionUID = 1L
+        private const val serialVersionUID = 1L
 
         private fun hresultFromWin32(x: Int): Int {
             return if (x <= 0) x else x and 0x0000FFFF or -0x7ff90000

@@ -18,6 +18,7 @@ package jnc.platform.win32
 /**
  * @author zhanhb
  */
+@Suppress("PrivatePropertyName")
 class TRUSTEE : jnc.foreign.Struct() {
 
     private val /*PTRUSTEE*/ pMultipleTrustee = uintptr_t()

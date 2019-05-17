@@ -19,6 +19,7 @@ package jnc.platform.win32
  * @see [TOKEN_MANDATORY_LABEL](https://msdn.microsoft.com/en-us/library/windows/desktop/bb394727)
  * @author zhanhb
  */
+@Suppress("ClassName")
 class TOKEN_MANDATORY_LABEL : TOKEN_INFORMATION() {
 
     val label: SID_AND_ATTRIBUTES = inner(SID_AND_ATTRIBUTES())

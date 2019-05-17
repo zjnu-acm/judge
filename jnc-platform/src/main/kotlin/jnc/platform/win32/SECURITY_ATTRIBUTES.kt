@@ -19,6 +19,7 @@ package jnc.platform.win32
  * @see [SECURITY_ATTRIBUTES](https://msdn.microsoft.com/en-us/library/windows/desktop/aa379560)
  * @author zhanhb
  */
+@Suppress("ClassName", "unused")
 class SECURITY_ATTRIBUTES : jnc.foreign.Struct() {
 
     private val nLength = DWORD()

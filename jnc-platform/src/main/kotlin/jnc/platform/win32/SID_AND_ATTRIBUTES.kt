@@ -19,6 +19,7 @@ package jnc.platform.win32
  * @see [SID_AND_ATTRIBUTES](https://msdn.microsoft.com/en-us/library/windows/desktop/aa379595)
  * @author zhanhb
  */
+@Suppress("ClassName", "PrivatePropertyName")
 class SID_AND_ATTRIBUTES : jnc.foreign.Struct() {
 
     /**

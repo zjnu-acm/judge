@@ -27,9 +27,7 @@ interface WString {
 
         @JvmStatic
         fun toNative(string: String?): Pointer? {
-            if (string == null) {
-                return null
-            }
+            string ?: return null
             val len = string.length
             val chars = CharArray(len)
             string.toCharArray(chars, 0, 0, len)
@@ -40,9 +38,7 @@ interface WString {
 
         @JvmStatic
         fun fromNative(ptr: Pointer?): String? {
-            if (ptr == null) {
-                return null
-            }
+            ptr ?: return null
             val len = LibC.INSTANCE.wcslen(ptr)
             val chars = CharArray(len)
             ptr.getCharArray(0, chars, 0, len)

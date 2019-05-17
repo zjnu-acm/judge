@@ -22,6 +22,7 @@ package jnc.platform.win32
  * @see [JOBOBJECT_BASIC_UI_RESTRICTIONS](https://msdn.microsoft.com/en-us/library/windows/desktop/ms684152)
  * @author zhanhb
  */
+@Suppress("ClassName", "PrivatePropertyName")
 class JOBOBJECT_BASIC_UI_RESTRICTIONS : JOBOBJECT_INFORMATION() {
 
     private val UIRestrictionsClass = DWORD()

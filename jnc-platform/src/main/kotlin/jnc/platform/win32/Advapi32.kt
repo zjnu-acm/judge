@@ -16,6 +16,7 @@ import jnc.platform.StructArray
 /**
  * @author zhanhb
  */
+@Suppress("FunctionName", "SpellCheckingInspection")
 @Stdcall
 interface Advapi32 {
 
@@ -32,7 +33,7 @@ interface Advapi32 {
      * @param NewTokenHandle
      * @return
      * @see [CreateRestrictedToken](https://msdn.microsoft.com/en-us/library/windows/desktop/aa446583)
-    ) */
+     */
     @int32_t
     fun CreateRestrictedToken(
             @uintptr_t /*HANDLE*/ ExistingTokenHandle: Long,
@@ -54,7 +55,7 @@ interface Advapi32 {
      * @return
      * @see TOKEN_INFORMATION_CLASS
      * @see [SetTokenInformation](https://msdn.microsoft.com/en-us/library/windows/desktop/aa379591)
-    ) */
+     */
     @int32_t
     fun SetTokenInformation(
             @uintptr_t /*HANDLE*/ tokenHandle: Long,

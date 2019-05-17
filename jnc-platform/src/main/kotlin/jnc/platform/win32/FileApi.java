@@ -18,6 +18,7 @@ package jnc.platform.win32;
 /**
  * @author zhanhb
  */
+@SuppressWarnings("unused")
 public interface FileApi {
 
     int CREATE_NEW = 1;

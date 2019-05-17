@@ -20,6 +20,7 @@ package jnc.platform.win32
  * type of information being assigned to or retrieved from an access token.
  * @author zhanhb
  */
+@Suppress("ClassName")
 enum class TOKEN_INFORMATION_CLASS {
 
     TokenUser,

@@ -18,6 +18,7 @@ package jnc.platform.win32;
 /**
  * @author zhanhb
  */
+@SuppressWarnings({"SpellCheckingInspection", "unused"})
 public interface WinNT {
 
     int ANYSIZE_ARRAY = 1;

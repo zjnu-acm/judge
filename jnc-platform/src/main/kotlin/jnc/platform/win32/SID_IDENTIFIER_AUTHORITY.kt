@@ -19,14 +19,16 @@ import java.util.Arrays
 
 /**
  * @see [SID_IDENTIFIER_AUTHORITY](https://msdn.microsoft.com/en-us/library/windows/desktop/aa379598)
-@author zhanhb
-) */
+ * @author zhanhb
+ */
+@Suppress("ClassName")
 class SID_IDENTIFIER_AUTHORITY : jnc.foreign.Struct() {
 
     init {
         padding(6) // actual type BYTE[6]
     }
 
+    @Suppress("MemberVisibilityCanBePrivate")
     fun toByteArray(): ByteArray {
         val bytes = ByteArray(6)
         memory.getBytes(0, bytes, 0, 6)

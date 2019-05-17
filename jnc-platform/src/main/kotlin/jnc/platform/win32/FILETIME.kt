@@ -21,6 +21,7 @@ import java.time.Instant
  * @see  [FILETIME](https://msdn.microsoft.com/zh-tw/library/windows/desktop/ms724284)
  * @author zhanhb
  */
+@Suppress("SpellCheckingInspection")
 class FILETIME : jnc.foreign.Struct() {
 
     private val dwLowDateTime = DWORD()

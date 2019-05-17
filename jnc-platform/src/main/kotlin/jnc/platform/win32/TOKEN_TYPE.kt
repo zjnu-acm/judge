@@ -18,6 +18,7 @@ package jnc.platform.win32
 /**
  * @author zhanhb
  */
+@Suppress("ClassName")
 enum class TOKEN_TYPE {
 
     TokenPrimary,

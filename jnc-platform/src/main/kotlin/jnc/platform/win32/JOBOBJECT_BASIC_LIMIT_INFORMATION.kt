@@ -22,6 +22,7 @@ package jnc.platform.win32
  * @see  [JOBOBJECT_BASIC_LIMIT_INFORMATION](https://msdn.microsoft.com/en-us/library/windows/desktop/ms684147)
  * @author zhanhb
  */
+@Suppress("ClassName", "PrivatePropertyName", "unused")
 class JOBOBJECT_BASIC_LIMIT_INFORMATION : JOBOBJECT_INFORMATION() {
 
     private val PerProcessUserTimeLimit = int64_t()

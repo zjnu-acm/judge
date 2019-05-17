@@ -18,6 +18,7 @@ package jnc.platform.win32
 /**
  * @author zhanhb
  */
+@Suppress("ClassName")
 class EXPLICIT_ACCESS : jnc.foreign.Struct() {
 
     private val grfAccessPermissions = DWORD()

@@ -21,6 +21,7 @@ import jnc.foreign.annotation.Pack
  * @see [LUID_AND_ATTRIBUTES](https://msdn.microsoft.com/en-us/library/windows/desktop/aa379263)
  * @author zhanhb
  */
+@Suppress("ClassName", "PrivatePropertyName", "SpellCheckingInspection")
 @Pack(4)
 class LUID_AND_ATTRIBUTES : jnc.foreign.Struct() {
 

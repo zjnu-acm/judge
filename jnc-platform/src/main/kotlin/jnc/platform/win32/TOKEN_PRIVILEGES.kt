@@ -20,6 +20,7 @@ import jnc.platform.win32.WinNT.ANYSIZE_ARRAY
 /**
  * @author zhanhb
  */
+@Suppress("ClassName", "PrivatePropertyName")
 class TOKEN_PRIVILEGES private constructor(count: Int) : TOKEN_INFORMATION() {
 
     private val PrivilegeCount = DWORD()

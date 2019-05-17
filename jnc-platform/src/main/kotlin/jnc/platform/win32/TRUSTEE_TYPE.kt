@@ -18,6 +18,7 @@ package jnc.platform.win32
 /**
  * @author zhanhb
  */
+@Suppress("ClassName")
 enum class TRUSTEE_TYPE {
 
     TRUSTEE_IS_UNKNOWN,

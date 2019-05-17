@@ -18,6 +18,7 @@ package jnc.platform.win32;
 /**
  * @author zhanhb
  */
+@SuppressWarnings({"unused", "SpellCheckingInspection"})
 public interface WinBase {
 
     int WAIT_FAILED = -1;

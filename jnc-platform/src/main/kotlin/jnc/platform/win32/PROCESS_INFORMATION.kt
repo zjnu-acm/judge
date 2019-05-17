@@ -19,6 +19,7 @@ package jnc.platform.win32
  * @see [PROCESS_INFORMATION](https://msdn.microsoft.com/en-us/library/windows/desktop/ms684873)
  * @author zhanhb
  */
+@Suppress("ClassName", "unused")
 class PROCESS_INFORMATION : jnc.foreign.Struct() {
 
     private val /*HANDLE*/ hProcess = uintptr_t()

@@ -19,6 +19,7 @@ package jnc.platform.win32
  * @see [STARTUPINFO](https://msdn.microsoft.com/zh-tw/library/windows/desktop/ms686331)
  * @author zhanhb
  */
+@Suppress("SpellCheckingInspection", "unused")
 class STARTUPINFO : jnc.foreign.Struct() {
 
     private val cb = DWORD()

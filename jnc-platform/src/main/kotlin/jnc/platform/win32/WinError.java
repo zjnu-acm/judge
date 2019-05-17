@@ -18,6 +18,7 @@ package jnc.platform.win32;
 /**
  * @author zhanhb
  */
+@SuppressWarnings({"SpellCheckingInspection", "unused"})
 public interface WinError {
 
     int ERROR_SUCCESS = 0;

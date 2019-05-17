@@ -18,4 +18,5 @@ package jnc.platform.win32
 /**
  * @author zhanhb
  */
+@Suppress("ClassName")
 abstract class JOBOBJECT_INFORMATION : jnc.foreign.Struct()
