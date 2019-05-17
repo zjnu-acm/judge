@@ -52,7 +52,7 @@ public class JudgeProcess {
             case WAIT_ABANDONED:
                 throw new IllegalStateException();
             case WAIT_FAILED:
-                throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
+                throw new Win32Exception(Kernel32Util.getLastError());
             case WAIT_TIMEOUT:
                 return false;
             default:

@@ -46,7 +46,7 @@ public class Job implements Closeable {
 
         // Second, set some UI restrictions.
         JOBOBJECT_BASIC_UI_RESTRICTIONS jbur = new JOBOBJECT_BASIC_UI_RESTRICTIONS();
-        jbur.setUIRestrictionsClass(
+        jbur.setUiRestrictionsClass(
                 // The process can't access USER objects (such as other windows)
                 // in the system.
                 JOB_OBJECT_UILIMIT_HANDLES

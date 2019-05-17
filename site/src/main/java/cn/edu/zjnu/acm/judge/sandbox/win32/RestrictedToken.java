@@ -13,7 +13,7 @@ import java.util.Objects;
 import java.util.function.IntFunction;
 import jnc.foreign.byref.AddressByReference;
 import jnc.foreign.byref.IntByReference;
-import jnc.platform.NativeArray;
+import jnc.platform.StructArray;
 import jnc.platform.win32.ACCESS_MODE;
 import jnc.platform.win32.Advapi32;
 import jnc.platform.win32.EXPLICIT_ACCESS;
@@ -243,9 +243,9 @@ public class RestrictedToken implements Closeable {
 
         log.debug("createRestrictedToken: {} {} {}", sidsForDenyOnly, privilegesToDisable, sidsToRestrict);
 
-        NativeArray<SID_AND_ATTRIBUTES> denyOnlyArray = null;
+        StructArray<SID_AND_ATTRIBUTES> denyOnlyArray = null;
         if (denySize != 0) {
-            denyOnlyArray = new NativeArray<>(SID_AND_ATTRIBUTES.class, SID_AND_ATTRIBUTES::new, denySize);
+            denyOnlyArray = new StructArray<>(SID_AND_ATTRIBUTES::new, denySize);
 
             for (int i = 0; i < denySize; ++i) {
                 SID_AND_ATTRIBUTES sidAndAttributes = denyOnlyArray.get(i);
@@ -254,9 +254,9 @@ public class RestrictedToken implements Closeable {
             }
         }
 
-        NativeArray<SID_AND_ATTRIBUTES> sidsToRestrictArray = null;
+        StructArray<SID_AND_ATTRIBUTES> sidsToRestrictArray = null;
         if (restrictSize != 0) {
-            sidsToRestrictArray = new NativeArray<>(SID_AND_ATTRIBUTES.class, SID_AND_ATTRIBUTES::new, restrictSize);
+            sidsToRestrictArray = new StructArray<>(SID_AND_ATTRIBUTES::new, restrictSize);
 
             for (int i = 0; i < restrictSize; ++i) {
                 SID_AND_ATTRIBUTES sidAndAttributes = sidsToRestrictArray.get(i);
@@ -265,9 +265,9 @@ public class RestrictedToken implements Closeable {
             }
         }
 
-        NativeArray<LUID_AND_ATTRIBUTES> privilegesToDisableArray = null;
+        StructArray<LUID_AND_ATTRIBUTES> privilegesToDisableArray = null;
         if (privilegesSize != 0) {
-            privilegesToDisableArray = new NativeArray<>(LUID_AND_ATTRIBUTES.class, LUID_AND_ATTRIBUTES::new, privilegesSize);
+            privilegesToDisableArray = new StructArray<>(LUID_AND_ATTRIBUTES::new, privilegesSize);
 
             for (int i = 0; i < privilegesSize; ++i) {
                 LUID_AND_ATTRIBUTES luidAndAttributes = privilegesToDisableArray.get(i);
