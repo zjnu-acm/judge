@@ -15,11 +15,11 @@
  */
 package cn.edu.zjnu.acm.judge.sandbox.win32;
 
-import com.github.zhanhb.jnc.platform.win32.Advapi32;
-import com.github.zhanhb.jnc.platform.win32.Kernel32Util;
-import com.github.zhanhb.jnc.platform.win32.SID;
-import com.github.zhanhb.jnc.platform.win32.WString;
 import jnc.foreign.byref.AddressByReference;
+import jnc.platform.win32.Advapi32;
+import jnc.platform.win32.Kernel32Util;
+import jnc.platform.win32.SID;
+import jnc.platform.win32.WString;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

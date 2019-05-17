@@ -1,24 +1,24 @@
 package cn.edu.zjnu.acm.judge.sandbox.win32;
 
-import com.github.zhanhb.jnc.platform.win32.JOBOBJECTINFOCLASS;
-import com.github.zhanhb.jnc.platform.win32.JOBOBJECT_BASIC_LIMIT_INFORMATION;
-import com.github.zhanhb.jnc.platform.win32.JOBOBJECT_BASIC_UI_RESTRICTIONS;
-import com.github.zhanhb.jnc.platform.win32.JOBOBJECT_INFORMATION;
-import com.github.zhanhb.jnc.platform.win32.Kernel32;
-import com.github.zhanhb.jnc.platform.win32.Kernel32Util;
 import java.io.Closeable;
+import jnc.platform.win32.JOBOBJECTINFOCLASS;
+import jnc.platform.win32.JOBOBJECT_BASIC_LIMIT_INFORMATION;
+import jnc.platform.win32.JOBOBJECT_BASIC_UI_RESTRICTIONS;
+import jnc.platform.win32.JOBOBJECT_INFORMATION;
+import jnc.platform.win32.Kernel32;
+import jnc.platform.win32.Kernel32Util;
 
-import static com.github.zhanhb.jnc.platform.win32.JOBOBJECTINFOCLASS.JobObjectBasicLimitInformation;
-import static com.github.zhanhb.jnc.platform.win32.JOBOBJECTINFOCLASS.JobObjectBasicUIRestrictions;
-import static com.github.zhanhb.jnc.platform.win32.WinNT.JOB_OBJECT_LIMIT_ACTIVE_PROCESS;
-import static com.github.zhanhb.jnc.platform.win32.WinNT.JOB_OBJECT_UILIMIT_DESKTOP;
-import static com.github.zhanhb.jnc.platform.win32.WinNT.JOB_OBJECT_UILIMIT_DISPLAYSETTINGS;
-import static com.github.zhanhb.jnc.platform.win32.WinNT.JOB_OBJECT_UILIMIT_EXITWINDOWS;
-import static com.github.zhanhb.jnc.platform.win32.WinNT.JOB_OBJECT_UILIMIT_GLOBALATOMS;
-import static com.github.zhanhb.jnc.platform.win32.WinNT.JOB_OBJECT_UILIMIT_HANDLES;
-import static com.github.zhanhb.jnc.platform.win32.WinNT.JOB_OBJECT_UILIMIT_READCLIPBOARD;
-import static com.github.zhanhb.jnc.platform.win32.WinNT.JOB_OBJECT_UILIMIT_SYSTEMPARAMETERS;
-import static com.github.zhanhb.jnc.platform.win32.WinNT.JOB_OBJECT_UILIMIT_WRITECLIPBOARD;
+import static jnc.platform.win32.JOBOBJECTINFOCLASS.JobObjectBasicLimitInformation;
+import static jnc.platform.win32.JOBOBJECTINFOCLASS.JobObjectBasicUIRestrictions;
+import static jnc.platform.win32.WinNT.JOB_OBJECT_LIMIT_ACTIVE_PROCESS;
+import static jnc.platform.win32.WinNT.JOB_OBJECT_UILIMIT_DESKTOP;
+import static jnc.platform.win32.WinNT.JOB_OBJECT_UILIMIT_DISPLAYSETTINGS;
+import static jnc.platform.win32.WinNT.JOB_OBJECT_UILIMIT_EXITWINDOWS;
+import static jnc.platform.win32.WinNT.JOB_OBJECT_UILIMIT_GLOBALATOMS;
+import static jnc.platform.win32.WinNT.JOB_OBJECT_UILIMIT_HANDLES;
+import static jnc.platform.win32.WinNT.JOB_OBJECT_UILIMIT_READCLIPBOARD;
+import static jnc.platform.win32.WinNT.JOB_OBJECT_UILIMIT_SYSTEMPARAMETERS;
+import static jnc.platform.win32.WinNT.JOB_OBJECT_UILIMIT_WRITECLIPBOARD;
 
 /**
  * @author zhanhb

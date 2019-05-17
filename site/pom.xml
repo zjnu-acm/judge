@@ -20,6 +20,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>jnc-platform</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-guava</artifactId>
         </dependency>
@@ -30,10 +35,6 @@
         <dependency>
             <groupId>com.github.zhanhb</groupId>
             <artifactId>ckfinder-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.zhanhb</groupId>
-            <artifactId>jnc-runtime</artifactId>
         </dependency>
         <dependency>
             <groupId>com.github.zhanhb</groupId>

@@ -38,7 +38,9 @@
             </roles>
         </developer>
     </developers>
+
     <modules>
+        <module>jnc-platform</module>
         <module>site</module>
     </modules>
 

@@ -15,12 +15,12 @@
  */
 package cn.edu.zjnu.acm.judge.sandbox.win32;
 
-import com.github.zhanhb.jnc.platform.win32.Kernel32;
 import java.util.Objects;
+import jnc.platform.win32.Kernel32;
 
-import static com.github.zhanhb.jnc.platform.win32.WinBase.SEM_FAILCRITICALERRORS;
-import static com.github.zhanhb.jnc.platform.win32.WinBase.SEM_NOGPFAULTERRORBOX;
-import static com.github.zhanhb.jnc.platform.win32.WinBase.SEM_NOOPENFILEERRORBOX;
+import static jnc.platform.win32.WinBase.SEM_FAILCRITICALERRORS;
+import static jnc.platform.win32.WinBase.SEM_NOGPFAULTERRORBOX;
+import static jnc.platform.win32.WinBase.SEM_NOOPENFILEERRORBOX;
 
 /**
  *

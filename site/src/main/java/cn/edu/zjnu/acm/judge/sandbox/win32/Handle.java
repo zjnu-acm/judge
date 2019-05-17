@@ -1,11 +1,11 @@
 package cn.edu.zjnu.acm.judge.sandbox.win32;
 
-import com.github.zhanhb.jnc.platform.win32.Kernel32;
-import com.github.zhanhb.jnc.platform.win32.Kernel32Util;
 import com.google.common.base.Preconditions;
 import java.io.Closeable;
 import java.util.concurrent.atomic.AtomicBoolean;
 import jnc.foreign.Platform;
+import jnc.platform.win32.Kernel32;
+import jnc.platform.win32.Kernel32Util;
 
 /**
  * @author zhanhb

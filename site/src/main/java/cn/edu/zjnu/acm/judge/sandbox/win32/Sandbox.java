@@ -5,20 +5,20 @@
  */
 package cn.edu.zjnu.acm.judge.sandbox.win32;
 
-import com.github.zhanhb.jnc.platform.win32.LUID;
-import com.github.zhanhb.jnc.platform.win32.SID;
-import com.github.zhanhb.jnc.platform.win32.Win32Exception;
 import com.google.common.collect.ImmutableSet;
 import java.util.Set;
+import jnc.platform.win32.LUID;
+import jnc.platform.win32.SID;
+import jnc.platform.win32.Win32Exception;
 
-import static com.github.zhanhb.jnc.platform.win32.WELL_KNOWN_SID_TYPE.WinAuthenticatedUserSid;
-import static com.github.zhanhb.jnc.platform.win32.WELL_KNOWN_SID_TYPE.WinBuiltinUsersSid;
-import static com.github.zhanhb.jnc.platform.win32.WELL_KNOWN_SID_TYPE.WinInteractiveSid;
-import static com.github.zhanhb.jnc.platform.win32.WELL_KNOWN_SID_TYPE.WinNullSid;
-import static com.github.zhanhb.jnc.platform.win32.WELL_KNOWN_SID_TYPE.WinRestrictedCodeSid;
-import static com.github.zhanhb.jnc.platform.win32.WELL_KNOWN_SID_TYPE.WinWorldSid;
-import static com.github.zhanhb.jnc.platform.win32.WinError.ERROR_BAD_ARGUMENTS;
-import static com.github.zhanhb.jnc.platform.win32.WinNT.SE_CHANGE_NOTIFY_NAME;
+import static jnc.platform.win32.WELL_KNOWN_SID_TYPE.WinAuthenticatedUserSid;
+import static jnc.platform.win32.WELL_KNOWN_SID_TYPE.WinBuiltinUsersSid;
+import static jnc.platform.win32.WELL_KNOWN_SID_TYPE.WinInteractiveSid;
+import static jnc.platform.win32.WELL_KNOWN_SID_TYPE.WinNullSid;
+import static jnc.platform.win32.WELL_KNOWN_SID_TYPE.WinRestrictedCodeSid;
+import static jnc.platform.win32.WELL_KNOWN_SID_TYPE.WinWorldSid;
+import static jnc.platform.win32.WinError.ERROR_BAD_ARGUMENTS;
+import static jnc.platform.win32.WinNT.SE_CHANGE_NOTIFY_NAME;
 
 public enum Sandbox {
 

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>cn.edu.zjnu.acm</groupId>
+        <artifactId>judge-parent</artifactId>
+        <version>${revision}</version>
+    </parent>
+    <artifactId>jnc-platform</artifactId>
+    <name>Java Native Call Platform</name>
+
+    <properties>
+        <main.basedir>${basedir}/..</main.basedir>
+        <start-class />
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.github.zhanhb</groupId>
+            <artifactId>jnc-runtime</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+</project>

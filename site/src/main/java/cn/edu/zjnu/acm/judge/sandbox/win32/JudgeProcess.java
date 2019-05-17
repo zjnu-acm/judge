@@ -1,20 +1,20 @@
 package cn.edu.zjnu.acm.judge.sandbox.win32;
 
 import cn.edu.zjnu.acm.judge.sandbox.Status;
-import com.github.zhanhb.jnc.platform.win32.FILETIME;
-import com.github.zhanhb.jnc.platform.win32.Kernel32;
-import com.github.zhanhb.jnc.platform.win32.Kernel32Util;
-import com.github.zhanhb.jnc.platform.win32.PROCESS_MEMORY_COUNTERS;
-import com.github.zhanhb.jnc.platform.win32.Psapi;
-import com.github.zhanhb.jnc.platform.win32.Win32Exception;
 import com.google.common.base.Preconditions;
 import java.time.Instant;
 import java.util.concurrent.atomic.AtomicReference;
 import jnc.foreign.byref.IntByReference;
+import jnc.platform.win32.FILETIME;
+import jnc.platform.win32.Kernel32;
+import jnc.platform.win32.Kernel32Util;
+import jnc.platform.win32.PROCESS_MEMORY_COUNTERS;
+import jnc.platform.win32.Psapi;
+import jnc.platform.win32.Win32Exception;
 
-import static com.github.zhanhb.jnc.platform.win32.WinBase.WAIT_ABANDONED;
-import static com.github.zhanhb.jnc.platform.win32.WinBase.WAIT_FAILED;
-import static com.github.zhanhb.jnc.platform.win32.WinError.WAIT_TIMEOUT;
+import static jnc.platform.win32.WinBase.WAIT_ABANDONED;
+import static jnc.platform.win32.WinBase.WAIT_FAILED;
+import static jnc.platform.win32.WinError.WAIT_TIMEOUT;
 
 /**
  * @author zhanhb
