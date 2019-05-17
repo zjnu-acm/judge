@@ -16,12 +16,12 @@
 package cn.edu.zjnu.acm.judge.service;
 
 import cn.edu.zjnu.acm.judge.Application;
+import cn.edu.zjnu.acm.judge.core.GroovyHolder;
+import cn.edu.zjnu.acm.judge.core.SimpleValidator;
+import cn.edu.zjnu.acm.judge.core.Validator;
 import cn.edu.zjnu.acm.judge.data.dto.SubmissionDetailDTO;
 import cn.edu.zjnu.acm.judge.domain.Language;
 import cn.edu.zjnu.acm.judge.mapper.LanguageMapper;
-import cn.edu.zjnu.acm.judge.sandbox.GroovyHolder;
-import cn.edu.zjnu.acm.judge.sandbox.SimpleValidator;
-import cn.edu.zjnu.acm.judge.sandbox.Validator;
 import cn.edu.zjnu.acm.judge.support.JudgeData;
 import cn.edu.zjnu.acm.judge.support.RunRecord;
 import cn.edu.zjnu.acm.judge.support.RunResult;

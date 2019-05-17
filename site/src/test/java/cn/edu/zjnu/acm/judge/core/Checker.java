@@ -13,30 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.sandbox;
+package cn.edu.zjnu.acm.judge.core;
 
-import java.util.Arrays;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Test;
-import org.junit.platform.runner.JUnitPlatform;
-import org.junit.runner.RunWith;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
  *
  * @author zhanhb
  */
-@RunWith(JUnitPlatform.class)
-@Slf4j
-public class StatusTest {
+@Getter
+@RequiredArgsConstructor
+public enum Checker {
 
-    /**
-     * Test of values method, of class Status.
-     */
-    @Test
-    public void testValues() {
-        log.info("values");
-        Status[] result = Status.values();
-        log.info(Arrays.toString(result));
-    }
+    ac(Status.ACCEPTED),
+    wa(Status.WRONG_ANSWER),
+    tle(Status.TIME_LIMIT_EXCEED),
+    mle(Status.MEMORY_LIMIT_EXCEED),
+    ole(Status.OUTPUT_LIMIT_EXCEED),
+    re(Status.RUNTIME_ERROR),
+    pe(Status.PRESENTATION_ERROR);
+
+    private final Status status;
 
 }

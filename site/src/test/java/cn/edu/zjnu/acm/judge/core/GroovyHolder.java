@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 ZJNU ACM.
+ * Copyright 2019 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,27 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.sandbox;
+package cn.edu.zjnu.acm.judge.core;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
 
 /**
  *
  * @author zhanhb
  */
-@Getter
-@RequiredArgsConstructor
-public enum Checker {
+public class GroovyHolder {
 
-    ac(Status.ACCEPTED),
-    wa(Status.WRONG_ANSWER),
-    tle(Status.TIME_LIMIT_EXCEED),
-    mle(Status.MEMORY_LIMIT_EXCEED),
-    ole(Status.OUTPUT_LIMIT_EXCEED),
-    re(Status.RUNTIME_ERROR),
-    pe(Status.PRESENTATION_ERROR);
+    private static final Path[] groovyJars = getGroovy();
 
-    private final Status status;
+    private static Path[] getGroovy() {
+        return Arrays.stream(System.getProperty("java.class.path").split(File.pathSeparator))
+                .filter(s -> s.contains("groovy-"))
+                .map(Paths::get).toArray(Path[]::new);
+    }
+
+    public static Path[] getPaths() {
+        return groovyJars.clone();
+    }
 
 }

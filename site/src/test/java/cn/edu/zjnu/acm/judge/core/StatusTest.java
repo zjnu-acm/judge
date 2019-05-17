@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 ZJNU ACM.
+ * Copyright 2016 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,29 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.sandbox;
+package cn.edu.zjnu.acm.judge.core;
 
-import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.runner.RunWith;
 
 /**
  *
  * @author zhanhb
  */
-public class GroovyHolder {
+@RunWith(JUnitPlatform.class)
+@Slf4j
+public class StatusTest {
 
-    private static final Path[] groovyJars = getGroovy();
-
-    private static Path[] getGroovy() {
-        return Arrays.stream(System.getProperty("java.class.path").split(File.pathSeparator))
-                .filter(s -> s.contains("groovy-"))
-                .map(Paths::get).toArray(Path[]::new);
-    }
-
-    public static Path[] getPaths() {
-        return groovyJars.clone();
+    /**
+     * Test of values method, of class Status.
+     */
+    @Test
+    public void testValues() {
+        log.info("values");
+        Status[] result = Status.values();
+        log.info(Arrays.toString(result));
     }
 
 }

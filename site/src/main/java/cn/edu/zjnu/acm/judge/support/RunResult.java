@@ -15,7 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.support;
 
-import cn.edu.zjnu.acm.judge.sandbox.Status;
+import cn.edu.zjnu.acm.judge.core.Status;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Value;

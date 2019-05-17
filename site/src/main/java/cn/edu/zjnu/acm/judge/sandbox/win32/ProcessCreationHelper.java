@@ -41,25 +41,22 @@ public interface ProcessCreationHelper {
         }
     }
 
-    static <E extends Throwable> void execute(ExceptionRunnable<E> supplier) throws E {
-        execute(ExceptionCallable.wrapper(supplier));
+    static <E extends Throwable> void execute(ExceptionRunnable<E> runnable) throws E {
+        Objects.requireNonNull(runnable);
+        execute(() -> {
+            runnable.run();
+            return null;
+        });
     }
 
+    @FunctionalInterface
     interface ExceptionCallable<V, E extends Throwable> {
 
         V call() throws E;
 
-        static <V, E extends Throwable> ExceptionCallable<V, E>
-                wrapper(ExceptionRunnable<E> runnable) {
-            Objects.requireNonNull(runnable);
-            return () -> {
-                runnable.run();
-                return null;
-            };
-        }
-
     }
 
+    @FunctionalInterface
     interface ExceptionRunnable<E extends Throwable> {
 
         void run() throws E;

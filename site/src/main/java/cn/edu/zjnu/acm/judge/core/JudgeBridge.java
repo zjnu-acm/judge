@@ -1,4 +1,4 @@
-package cn.edu.zjnu.acm.judge.sandbox;
+package cn.edu.zjnu.acm.judge.core;
 
 import cn.edu.zjnu.acm.judge.sandbox.win32.WindowsExecutor;
 import java.io.Closeable;

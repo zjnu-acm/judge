@@ -15,12 +15,12 @@
  */
 package cn.edu.zjnu.acm.judge.sandbox.win32;
 
-import cn.edu.zjnu.acm.judge.sandbox.ExecuteResult;
-import cn.edu.zjnu.acm.judge.sandbox.JudgeBridge;
-import cn.edu.zjnu.acm.judge.sandbox.Options;
-import cn.edu.zjnu.acm.judge.sandbox.SimpleValidator;
-import cn.edu.zjnu.acm.judge.sandbox.Status;
-import cn.edu.zjnu.acm.judge.sandbox.Validator;
+import cn.edu.zjnu.acm.judge.core.ExecuteResult;
+import cn.edu.zjnu.acm.judge.core.JudgeBridge;
+import cn.edu.zjnu.acm.judge.core.Options;
+import cn.edu.zjnu.acm.judge.core.SimpleValidator;
+import cn.edu.zjnu.acm.judge.core.Status;
+import cn.edu.zjnu.acm.judge.core.Validator;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;

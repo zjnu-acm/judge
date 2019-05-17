@@ -15,12 +15,12 @@
  */
 package cn.edu.zjnu.acm.judge.service.impl;
 
+import cn.edu.zjnu.acm.judge.core.ExecuteResult;
+import cn.edu.zjnu.acm.judge.core.JudgeBridge;
+import cn.edu.zjnu.acm.judge.core.Options;
+import cn.edu.zjnu.acm.judge.core.Status;
+import cn.edu.zjnu.acm.judge.core.Validator;
 import cn.edu.zjnu.acm.judge.domain.Language;
-import cn.edu.zjnu.acm.judge.sandbox.ExecuteResult;
-import cn.edu.zjnu.acm.judge.sandbox.JudgeBridge;
-import cn.edu.zjnu.acm.judge.sandbox.Options;
-import cn.edu.zjnu.acm.judge.sandbox.Status;
-import cn.edu.zjnu.acm.judge.sandbox.Validator;
 import cn.edu.zjnu.acm.judge.sandbox.win32.ProcessCreationHelper;
 import cn.edu.zjnu.acm.judge.service.DeleteService;
 import cn.edu.zjnu.acm.judge.service.JudgeRunner;

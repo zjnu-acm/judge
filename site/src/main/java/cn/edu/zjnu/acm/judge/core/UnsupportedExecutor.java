@@ -1,4 +1,4 @@
-package cn.edu.zjnu.acm.judge.sandbox;
+package cn.edu.zjnu.acm.judge.core;
 
 import java.io.IOException;
 

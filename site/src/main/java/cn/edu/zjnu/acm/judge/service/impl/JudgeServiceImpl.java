@@ -15,6 +15,9 @@
  */
 package cn.edu.zjnu.acm.judge.service.impl;
 
+import cn.edu.zjnu.acm.judge.core.SimpleValidator;
+import cn.edu.zjnu.acm.judge.core.Status;
+import cn.edu.zjnu.acm.judge.core.Validator;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.domain.SubmissionDetail;
@@ -23,9 +26,6 @@ import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionDetailMapper;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserProblemMapper;
-import cn.edu.zjnu.acm.judge.sandbox.SimpleValidator;
-import cn.edu.zjnu.acm.judge.sandbox.Status;
-import cn.edu.zjnu.acm.judge.sandbox.Validator;
 import cn.edu.zjnu.acm.judge.sandbox.win32.SpecialValidator;
 import cn.edu.zjnu.acm.judge.service.JudgeRunner;
 import cn.edu.zjnu.acm.judge.service.JudgeService;

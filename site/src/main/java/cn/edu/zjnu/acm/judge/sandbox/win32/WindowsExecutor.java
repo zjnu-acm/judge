@@ -15,11 +15,11 @@
  */
 package cn.edu.zjnu.acm.judge.sandbox.win32;
 
-import cn.edu.zjnu.acm.judge.sandbox.Constants;
-import cn.edu.zjnu.acm.judge.sandbox.ExecuteResult;
-import cn.edu.zjnu.acm.judge.sandbox.Executor;
-import cn.edu.zjnu.acm.judge.sandbox.Options;
-import cn.edu.zjnu.acm.judge.sandbox.Status;
+import cn.edu.zjnu.acm.judge.core.Constants;
+import cn.edu.zjnu.acm.judge.core.ExecuteResult;
+import cn.edu.zjnu.acm.judge.core.Executor;
+import cn.edu.zjnu.acm.judge.core.Options;
+import cn.edu.zjnu.acm.judge.core.Status;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.nio.file.Path;

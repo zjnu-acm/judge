@@ -15,8 +15,8 @@
  */
 package cn.edu.zjnu.acm.judge.sandbox.win32;
 
-import cn.edu.zjnu.acm.judge.sandbox.Status;
-import cn.edu.zjnu.acm.judge.sandbox.Validator;
+import cn.edu.zjnu.acm.judge.core.Status;
+import cn.edu.zjnu.acm.judge.core.Validator;
 import cn.edu.zjnu.acm.judge.util.UnixLineEndingPrintWriter;
 import java.io.File;
 import java.io.IOException;

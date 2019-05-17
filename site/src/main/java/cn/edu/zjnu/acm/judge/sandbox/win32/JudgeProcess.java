@@ -1,6 +1,6 @@
 package cn.edu.zjnu.acm.judge.sandbox.win32;
 
-import cn.edu.zjnu.acm.judge.sandbox.Status;
+import cn.edu.zjnu.acm.judge.core.Status;
 import com.google.common.base.Preconditions;
 import java.time.Instant;
 import java.util.concurrent.atomic.AtomicReference;
