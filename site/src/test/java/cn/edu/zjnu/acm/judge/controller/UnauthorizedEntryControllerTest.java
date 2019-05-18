@@ -18,6 +18,7 @@ package cn.edu.zjnu.acm.judge.controller;
 import cn.edu.zjnu.acm.judge.Application;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +56,7 @@ public class UnauthorizedEntryControllerTest {
      *
      * {@link UnauthorizedEntryController#unauthorizedHtml(HttpServletRequest, RedirectAttributes)}
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void testUnauthorizedHtml() throws Exception {
         log.info("unauthorizedHtml");
         MvcResult result = mvc.perform(get("/unauthorized").accept(MediaType.TEXT_HTML))
@@ -69,7 +70,7 @@ public class UnauthorizedEntryControllerTest {
      *
      * {@link UnauthorizedEntryController#unauthorized()}
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void testUnauthorized() throws Exception {
         log.info("unauthorized");
         MvcResult result = mvc.perform(get("/unauthorized").accept(MediaType.APPLICATION_JSON))

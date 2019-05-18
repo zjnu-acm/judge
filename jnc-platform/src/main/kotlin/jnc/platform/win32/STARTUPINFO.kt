@@ -85,7 +85,7 @@ class STARTUPINFO : jnc.foreign.Struct() {
         set(value) = dwFlags.set(value.toLong())
 
     var showWindow: Char
-        get() = wShowWindow.intValue().toChar()
+        get() = wShowWindow.get()
         set(value) = wShowWindow.set(value)
 
     var stdInput: Long

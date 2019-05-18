@@ -18,7 +18,7 @@ package jnc.platform.win32
 import java.time.Instant
 
 /**
- * @see  [FILETIME](https://msdn.microsoft.com/zh-tw/library/windows/desktop/ms724284)
+ * @see [FILETIME](https://msdn.microsoft.com/zh-tw/library/windows/desktop/ms724284)
  * @author zhanhb
  */
 @Suppress("SpellCheckingInspection")

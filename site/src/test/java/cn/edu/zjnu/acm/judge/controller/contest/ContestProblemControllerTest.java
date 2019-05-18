@@ -3,6 +3,7 @@ package cn.edu.zjnu.acm.judge.controller.contest;
 import cn.edu.zjnu.acm.judge.Application;
 import cn.edu.zjnu.acm.judge.service.MockDataService;
 import java.util.Locale;
+import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.runner.JUnitPlatform;
@@ -77,8 +78,7 @@ public class ContestProblemControllerTest {
     /**
      * Test of status method, of class ContestProblemController.
      *
-     * {@link ContestProblemController#status(long, int, Pageable, Model,}
-     * Authentication, HttpServletRequest)
+     * {@link ContestProblemController#status(long, int, Pageable, Model, Authentication, HttpServletRequest}
      */
     @Test
     public void testStatus() throws Exception {

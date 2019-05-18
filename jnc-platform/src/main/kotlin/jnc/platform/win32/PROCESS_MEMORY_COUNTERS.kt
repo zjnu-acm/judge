@@ -71,13 +71,13 @@ class PROCESS_MEMORY_COUNTERS : jnc.foreign.Struct() {
     fun getCb(): Int = cb.get().toInt()
     fun setCb(value: Int) = cb.set(value.toLong())
 
-    var pageFaultCount: Long
-        get() = PageFaultCount.get()
-        set(value) = PageFaultCount.set(value)
+    var pageFaultCount: Int
+        get() = PageFaultCount.get().toInt()
+        set(value) = PageFaultCount.set(value.toLong())
 
-    var peakWorkingSetSize: Int
-        get() = PeakWorkingSetSize.get().toInt()
-        set(value) = PeakWorkingSetSize.set(value.toLong())
+    var peakWorkingSetSize: Long
+        get() = PeakWorkingSetSize.get()
+        set(value) = PeakWorkingSetSize.set(value)
 
     var workingSetSize: Long
         get() = WorkingSetSize.get()
