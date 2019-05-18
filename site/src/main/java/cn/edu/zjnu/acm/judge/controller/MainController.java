@@ -15,23 +15,14 @@
  */
 package cn.edu.zjnu.acm.judge.controller;
 
-import cn.edu.zjnu.acm.judge.config.JudgeHandlerInterceptor;
 import cn.edu.zjnu.acm.judge.service.ContestOnlyService;
 import cn.edu.zjnu.acm.judge.service.SystemService;
-import java.util.Collections;
-import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 
 /**
@@ -66,20 +57,6 @@ public class MainController {
     public String registerPage() {
         contestOnlyService.checkRegister();
         return "users/registerPage";
-    }
-
-    @GetMapping(value = "unauthorized", produces = TEXT_HTML_VALUE)
-    public String unauthorizedHtml(HttpServletRequest request, RedirectAttributes redirectAttributes) {
-        String url = (String) request.getAttribute(JudgeHandlerInterceptor.BACK_URL_ATTRIBUTE_NAME);
-        if (StringUtils.hasText(url)) {
-            redirectAttributes.addAttribute("url", url);
-        }
-        return "redirect:/login";
-    }
-
-    @GetMapping(value = "unauthorized", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Map<?, ?>> unauthorized() {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.emptyMap());
     }
 
 }

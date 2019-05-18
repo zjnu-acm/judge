@@ -1,7 +1,6 @@
 package cn.edu.zjnu.acm.judge.controller;
 
 import cn.edu.zjnu.acm.judge.Application;
-import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.runner.JUnitPlatform;
@@ -15,11 +14,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -88,34 +85,6 @@ public class MainControllerTest {
         MvcResult result = mvc.perform(get("/registerpage"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-                .andReturn();
-    }
-
-    /**
-     * Test of unauthorizedHtml method, of class MainController.
-     *
-     * {@link MainController#unauthorizedHtml(HttpServletRequest, RedirectAttributes)}
-     */
-    @Test
-    public void testUnauthorizedHtml() throws Exception {
-        log.info("unauthorizedHtml");
-        MvcResult result = mvc.perform(get("/unauthorized").accept(MediaType.TEXT_HTML))
-                .andExpect(status().isFound())
-                .andExpect(redirectedUrl("/login"))
-                .andReturn();
-    }
-
-    /**
-     * Test of unauthorized method, of class MainController.
-     *
-     * {@link MainController#unauthorized()}
-     */
-    @Test
-    public void testUnauthorized() throws Exception {
-        log.info("unauthorized");
-        MvcResult result = mvc.perform(get("/unauthorized").accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isUnauthorized())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn();
     }
 
