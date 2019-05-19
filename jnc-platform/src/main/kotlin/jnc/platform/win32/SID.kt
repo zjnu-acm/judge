@@ -39,9 +39,7 @@ class SID private constructor(subAuthorityCount: Int) : jnc.foreign.Struct() {
         set(value) = SubAuthorityCount.set(value.toShort())
 
     val subAuthority: IntArray
-        get() = (0 until subAuthorityCount.toInt())
-                .map { SubAuthority[it].get().toInt() }
-                .toIntArray()
+        get() = IntArray(subAuthorityCount.toInt()) { SubAuthority[it].get().toInt() }
 
     val isValid: Boolean
         get() = Advapi32.INSTANCE.IsValidSid(this)

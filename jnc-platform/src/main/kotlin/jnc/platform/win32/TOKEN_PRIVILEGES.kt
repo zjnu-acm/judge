@@ -24,7 +24,7 @@ import jnc.platform.win32.WinNT.ANYSIZE_ARRAY
 class TOKEN_PRIVILEGES private constructor(count: Int) : TOKEN_INFORMATION() {
 
     private val PrivilegeCount = DWORD()
-    private val Privileges: Array<LUID_AND_ATTRIBUTES> = (0 until count).map { inner(LUID_AND_ATTRIBUTES()) }.toTypedArray()
+    private val Privileges: Array<LUID_AND_ATTRIBUTES> = Array(count) { inner(LUID_AND_ATTRIBUTES()) }
 
     var privilegeCount: Int
         get() = PrivilegeCount.get().toInt()

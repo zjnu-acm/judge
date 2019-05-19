@@ -22,7 +22,7 @@ package jnc.platform.win32
 class TOKEN_GROUPS private constructor(size: Int) : TOKEN_INFORMATION() {
 
     private val GroupCount = DWORD()
-    private val Groups: Array<SID_AND_ATTRIBUTES> = (0 until size).map { inner(SID_AND_ATTRIBUTES()) }.toTypedArray()
+    private val Groups: Array<SID_AND_ATTRIBUTES> = Array(size) { inner(SID_AND_ATTRIBUTES()) }
 
     var groupCount: Int
         get() = GroupCount.get().toInt()
