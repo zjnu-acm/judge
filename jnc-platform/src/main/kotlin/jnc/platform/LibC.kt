@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package jnc.platform.win32
+package jnc.platform
 
 import jnc.foreign.LibraryLoader
 import jnc.foreign.Pointer

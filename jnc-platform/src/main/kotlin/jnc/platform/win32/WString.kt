@@ -17,6 +17,7 @@ package jnc.platform.win32
 
 import jnc.foreign.ForeignProviders
 import jnc.foreign.Pointer
+import jnc.platform.LibC
 
 /**
  *
