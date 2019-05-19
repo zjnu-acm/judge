@@ -147,30 +147,30 @@
             <choose>
                 <when test='mask==0'>1=0</when> <!-- none -->
                 <when test='mask==1'>now()&lt;start_time and start_time&lt;end_time</when> <!-- pending -->
-                <when test='mask==2'>start_time&lt;=now() and now()&lt;end_time</when> <!-- runnging -->
-                <when test='mask==3'>now()&lt;end_time and start_time&lt;end_time</when> <!-- pending,runnging -->
+                <when test='mask==2'>start_time&lt;=now() and now()&lt;end_time</when> <!-- running -->
+                <when test='mask==3'>now()&lt;end_time and start_time&lt;end_time</when> <!-- pending,running -->
                 <when test='mask==4'>start_time&lt;end_time and end_time&lt;=now()</when> <!-- ended -->
                 <when test='mask==5'>
                     (now()&lt;start_time or end_time&lt;=now()) and start_time&lt;end_time <!-- pending,ended -->
                 </when>
-                <when test='mask==6'>start_time&lt;now() and start_time&lt;end_time</when> <!-- runnging,ended -->
-                <when test='mask==7'>start_time&lt;end_time</when> <!-- pending,runnging,ended -->
+                <when test='mask==6'>start_time&lt;now() and start_time&lt;end_time</when> <!-- running,ended -->
+                <when test='mask==7'>start_time&lt;end_time</when> <!-- pending,running,ended -->
                 <when test='mask==8'>start_time&gt;=end_time</when> <!-- error -->
                 <when test='mask==9'>(now()&lt;start_time or start_time&gt;=end_time)</when> <!-- pending,error -->
                 <when test='mask==10'>
-                    (start_time&lt;=now() and now()&lt;end_time or start_time&gt;=end_time) <!-- runnging,error -->
+                    (start_time&lt;=now() and now()&lt;end_time or start_time&gt;=end_time) <!-- running,error -->
                 </when>
                 <when test='mask==11'>
-                    (now()&lt;end_time or start_time&gt;=end_time) <!-- pending,runnging,error -->
+                    (now()&lt;end_time or start_time&gt;=end_time) <!-- pending,running,error -->
                 </when>
                 <when test='mask==12'>(start_time&gt;=end_time or end_time&lt;=now())</when> <!-- ended,error -->
                 <when test='mask==13'>
                     (now()&lt;start_time or end_time&lt;=now() or start_time&gt;=end_time) <!-- pending,ended,error -->
                 </when>
                 <when test='mask==14'>
-                    (start_time&lt;now() or start_time&gt;=end_time) <!-- runnging,ended,error -->
+                    (start_time&lt;now() or start_time&gt;=end_time) <!-- running,ended,error -->
                 </when>
-                <when test='mask==15'>1=1</when> <!-- pending,runnging,ended,error -->
+                <when test='mask==15'>1=1</when> <!-- pending,running,ended,error -->
             </choose>
             <if test='!includeDisabled'>and not disabled</if>
         </where>
