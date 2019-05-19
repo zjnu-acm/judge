@@ -22,41 +22,29 @@ package jnc.platform.win32
 class TRUSTEE : jnc.foreign.Struct() {
 
     private val /*PTRUSTEE*/ pMultipleTrustee = uintptr_t()
-    private val /*MULTIPLE_TRUSTEE_OPERATION*/ MultipleTrusteeOperation = int32_t()
-    private val /*TRUSTEE_FORM*/ TrusteeForm = int32_t()
-    private val /*TRUSTEE_TYPE*/ TrusteeType = int32_t()
+    private val MultipleTrusteeOperation = enumField(MULTIPLE_TRUSTEE_OPERATION::class.java)
+    private val TrusteeForm = enumField(TRUSTEE_FORM::class.java)
+    private val TrusteeType = enumField(TRUSTEE_TYPE::class.java)
     private val /*LPSTR*/ ptstrName = uintptr_t()
 
     var multipleTrustee: Long
         get() = pMultipleTrustee.get()
         set(value) = pMultipleTrustee.set(value)
 
-    var multipleTrusteeOperation: Int
+    var multipleTrusteeOperation: MULTIPLE_TRUSTEE_OPERATION
         get() = MultipleTrusteeOperation.get()
         set(value) = MultipleTrusteeOperation.set(value)
 
-    var trusteeForm: Int
+    var trusteeForm: TRUSTEE_FORM
         get() = TrusteeForm.get()
         set(value) = TrusteeForm.set(value)
 
-    var trusteeType: Int
+    var trusteeType: TRUSTEE_TYPE
         get() = TrusteeType.get()
         set(value) = TrusteeType.set(value)
 
     var name: Long
         get() = ptstrName.get()
         set(value) = ptstrName.set(value)
-
-    fun setMultipleTrusteeOperation(multipleTrusteeOperation: MULTIPLE_TRUSTEE_OPERATION) {
-        this.multipleTrusteeOperation = multipleTrusteeOperation.value()
-    }
-
-    fun setTrusteeForm(trusteeForm: TRUSTEE_FORM) {
-        this.trusteeForm = trusteeForm.value()
-    }
-
-    fun setTrusteeType(trusteeType: TRUSTEE_TYPE) {
-        this.trusteeType = trusteeType.value()
-    }
 
 }

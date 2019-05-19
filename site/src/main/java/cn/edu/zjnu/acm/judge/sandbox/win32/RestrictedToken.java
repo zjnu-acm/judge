@@ -111,7 +111,7 @@ public class RestrictedToken implements Closeable {
             TOKEN_DEFAULT_DACL newTokenDacl = new TOKEN_DEFAULT_DACL();
             newTokenDacl.setDefaultDacl(dacl);
             Kernel32Util.assertTrue(Advapi32.INSTANCE.SetTokenInformation(token,
-                    TokenDefaultDacl.value(), newTokenDacl, newTokenDacl.size()));
+                    TokenDefaultDacl, newTokenDacl, newTokenDacl.size()));
         } finally {
             Kernel32Util.freeLocalMemory(dacl);
         }
@@ -151,7 +151,7 @@ public class RestrictedToken implements Closeable {
 
             int size = label.size() + Advapi32.INSTANCE.GetLengthSid(integritySid.getValue());
             Kernel32Util.assertTrue(Advapi32.INSTANCE.SetTokenInformation(token,
-                    TokenIntegrityLevel.value(), label, size));
+                    TokenIntegrityLevel, label, size));
         } finally {
             Kernel32Util.freeLocalMemory(integritySid.getValue());
         }
@@ -162,13 +162,13 @@ public class RestrictedToken implements Closeable {
             IntFunction<T> bySize) {
         // get the required buffer size.
         IntByReference size = new IntByReference();
-        Advapi32.INSTANCE.GetTokenInformation(token, infoClass.value(),
+        Advapi32.INSTANCE.GetTokenInformation(token, infoClass,
                 null, 0, size);
         int value = size.getValue();
         Kernel32Util.assertTrue(value != 0);
         T buffer = bySize.apply(value);
         Kernel32Util.assertTrue(Advapi32.INSTANCE.GetTokenInformation(token,
-                infoClass.value(), buffer, buffer.size(), size));
+                infoClass, buffer, buffer.size(), size));
         return buffer;
     }
 
@@ -193,7 +193,7 @@ public class RestrictedToken implements Closeable {
 
         IntByReference size = new IntByReference();
         Kernel32Util.assertTrue(Advapi32.INSTANCE.GetTokenInformation(
-                token, TokenUser.value(), tokenUser,
+                token, TokenUser, tokenUser,
                 tokenUser.size(), size));
         return tokenUser;
     }
@@ -290,8 +290,8 @@ public class RestrictedToken implements Closeable {
             // because any subsequent changes to this token would also affect the
             // current process.
             result = Advapi32.INSTANCE.DuplicateTokenEx(effectiveToken,
-                    TOKEN_ALL_ACCESS, null, SecurityIdentification.value(),
-                    TokenPrimary.value(), newTokenHandle);
+                    TOKEN_ALL_ACCESS, null, SecurityIdentification,
+                    TokenPrimary, newTokenHandle);
         }
         Kernel32Util.assertTrue(result);
 
@@ -333,7 +333,7 @@ public class RestrictedToken implements Closeable {
         try {
             AddressByReference impersonationTokenHandle = new AddressByReference();
             Kernel32Util.assertTrue(Advapi32.INSTANCE.DuplicateToken(
-                    restrictedToken, SecurityImpersonation.value(),
+                    restrictedToken, SecurityImpersonation,
                     impersonationTokenHandle));
             long impersonationToken = impersonationTokenHandle.getValue();
             try {

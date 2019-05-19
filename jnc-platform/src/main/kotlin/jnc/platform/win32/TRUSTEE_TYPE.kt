@@ -15,9 +15,12 @@
  */
 package jnc.platform.win32
 
+import jnc.foreign.annotation.Continuously
+
 /**
  * @author zhanhb
  */
+@Continuously
 @Suppress("ClassName")
 enum class TRUSTEE_TYPE {
 
@@ -30,7 +33,5 @@ enum class TRUSTEE_TYPE {
     TRUSTEE_IS_DELETED,
     TRUSTEE_IS_INVALID,
     TRUSTEE_IS_COMPUTER;
-
-    fun value(): Int = ordinal
 
 }

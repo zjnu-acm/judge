@@ -15,10 +15,13 @@
  */
 package jnc.platform.win32
 
+import jnc.foreign.annotation.Continuously
+
 /**
  * @see [JOBOBJECTINFOCLASS](https://msdn.microsoft.com/en-us/library/windows/desktop/ms686216)
  * @author zhanhb
  */
+@Continuously(start = 1)
 enum class JOBOBJECTINFOCLASS {
 
     /**
@@ -105,7 +108,5 @@ enum class JOBOBJECTINFOCLASS {
     JobObjectCpuRateControlInformation,
     JobObjectCompletionFilter,
     JobObjectCompletionCounter;
-
-    fun value(): Int = ordinal + 1
 
 }

@@ -59,7 +59,7 @@ interface Advapi32 {
     @int32_t
     fun SetTokenInformation(
             @uintptr_t /*HANDLE*/ tokenHandle: Long,
-            @uint32_t /*TOKEN_INFORMATION_CLASS*/ tokenInformationClass: Int,
+            tokenInformationClass: TOKEN_INFORMATION_CLASS,
             @In tokenInformation: TOKEN_INFORMATION,
             @uint32_t /*DWORD*/ tokenInformationLength: Int
     ): Boolean
@@ -96,7 +96,7 @@ interface Advapi32 {
     @int32_t
     fun GetTokenInformation(
             @uintptr_t TokenHandle: Long,
-            @uint32_t /*TOKEN_INFORMATION_CLASS*/ TokenInformationClass: Int,
+            TokenInformationClass: TOKEN_INFORMATION_CLASS,
             TokenInformation: TOKEN_INFORMATION?,
             @uint32_t TokenInformationLength: Int,
             ReturnLength: IntByReference): Boolean
@@ -104,7 +104,7 @@ interface Advapi32 {
     @int32_t
     fun DuplicateToken(
             @uintptr_t ExistingTokenHandle: Long,
-            @uint32_t /*SECURITY_IMPERSONATION_LEVEL*/ ImpersonationLevel: Int,
+            ImpersonationLevel: SECURITY_IMPERSONATION_LEVEL,
             DuplicateTokenHandle: AddressByReference): Boolean
 
     @int32_t
@@ -112,8 +112,8 @@ interface Advapi32 {
             @uintptr_t /*HANDLE*/ hExistingToken: Long,
             @uint32_t /*DWORD*/ dwDesiredAccess: Int,
             lpTokenAttributes: SECURITY_ATTRIBUTES?,
-            @uint32_t /*SECURITY_IMPERSONATION_LEVEL*/ ImpersonationLevel: Int,
-            @uint32_t /*TOKEN_TYPE*/ TokenType: Int,
+            ImpersonationLevel: SECURITY_IMPERSONATION_LEVEL,
+            TokenType: TOKEN_TYPE,
             phNewToken: AddressByReference
     ): Boolean
 
@@ -129,7 +129,7 @@ interface Advapi32 {
 
     @uint32_t
     fun CreateWellKnownSid(
-            @uint32_t WellKnownSidType: Int,
+            WellKnownSidType: WELL_KNOWN_SID_TYPE,
             @uintptr_t /*PSID*/ DomainSid: Long,
             /*PSID*/ pSid: SID,
             cbSid: IntByReference): Boolean

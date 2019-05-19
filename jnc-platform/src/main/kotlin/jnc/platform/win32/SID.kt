@@ -91,7 +91,7 @@ class SID private constructor(subAuthorityCount: Int) : jnc.foreign.Struct() {
         fun ofWellKnown(type: WELL_KNOWN_SID_TYPE): SID {
             val sid = ofMaxSubAuthorities()
             val sizeSid = IntByReference(sid.size())
-            Kernel32Util.assertTrue(Advapi32.INSTANCE.CreateWellKnownSid(type.value(), 0 /*nullptr*/, sid, sizeSid))
+            Kernel32Util.assertTrue(Advapi32.INSTANCE.CreateWellKnownSid(type, 0 /*nullptr*/, sid, sizeSid))
             return sid
         }
 

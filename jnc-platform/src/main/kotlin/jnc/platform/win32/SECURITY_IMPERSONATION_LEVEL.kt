@@ -15,9 +15,12 @@
  */
 package jnc.platform.win32
 
+import jnc.foreign.annotation.Continuously
+
 /**
  * @author zhanhb
  */
+@Continuously
 @Suppress("ClassName")
 enum class SECURITY_IMPERSONATION_LEVEL {
 
@@ -25,7 +28,5 @@ enum class SECURITY_IMPERSONATION_LEVEL {
     SecurityIdentification,
     SecurityImpersonation,
     SecurityDelegation;
-
-    fun value(): Int = ordinal
 
 }

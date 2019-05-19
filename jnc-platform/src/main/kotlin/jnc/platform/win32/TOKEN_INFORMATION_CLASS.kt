@@ -15,11 +15,14 @@
  */
 package jnc.platform.win32
 
+import jnc.foreign.annotation.Continuously
+
 /**
  * The TOKEN_INFORMATION_CLASS enumeration type contains values that specify the
  * type of information being assigned to or retrieved from an access token.
  * @author zhanhb
  */
+@Continuously(start = 1)
 @Suppress("ClassName")
 enum class TOKEN_INFORMATION_CLASS {
 
@@ -52,7 +55,5 @@ enum class TOKEN_INFORMATION_CLASS {
     TokenUIAccess,
     TokenMandatoryPolicy,
     TokenLogonSid;
-
-    fun value(): Int = ordinal + 1
 
 }

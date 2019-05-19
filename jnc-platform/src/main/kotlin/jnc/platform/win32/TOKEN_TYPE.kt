@@ -15,15 +15,16 @@
  */
 package jnc.platform.win32
 
+import jnc.foreign.annotation.Continuously
+
 /**
  * @author zhanhb
  */
+@Continuously(start = 1)
 @Suppress("ClassName")
 enum class TOKEN_TYPE {
 
     TokenPrimary,
     TokenImpersonation;
-
-    fun value(): Int = ordinal + 1
 
 }

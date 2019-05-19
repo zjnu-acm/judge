@@ -15,9 +15,12 @@
  */
 package jnc.platform.win32
 
+import jnc.foreign.annotation.Continuously
+
 /**
  * @author zhanhb
  */
+@Continuously
 @Suppress("ClassName")
 enum class WELL_KNOWN_SID_TYPE {
 
@@ -116,7 +119,5 @@ enum class WELL_KNOWN_SID_TYPE {
     WinCapabilitySharedUserCertificatesSid,
     WinCapabilityEnterpriseAuthenticationSid,
     WinCapabilityRemovableStorageSid;
-
-    fun value(): Int = ordinal
 
 }

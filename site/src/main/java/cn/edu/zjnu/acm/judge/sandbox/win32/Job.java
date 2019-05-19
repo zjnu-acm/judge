@@ -34,7 +34,7 @@ public class Job implements Closeable {
     }
 
     private void setInformationJobObject(JOBOBJECTINFOCLASS jobobjectinfoclass, JOBOBJECT_INFORMATION jobj) {
-        Kernel32Util.assertTrue(Kernel32.INSTANCE.SetInformationJobObject(hJob, jobobjectinfoclass.value(), jobj, jobj.size()));
+        Kernel32Util.assertTrue(Kernel32.INSTANCE.SetInformationJobObject(hJob, jobobjectinfoclass, jobj, jobj.size()));
     }
 
     public void init() {

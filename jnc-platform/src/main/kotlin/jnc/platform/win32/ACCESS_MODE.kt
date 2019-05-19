@@ -15,9 +15,12 @@
  */
 package jnc.platform.win32
 
+import jnc.foreign.annotation.Continuously
+
 /**
  * @author zhanhb
  */
+@Continuously
 @Suppress("ClassName")
 enum class ACCESS_MODE {
 
@@ -28,7 +31,5 @@ enum class ACCESS_MODE {
     REVOKE_ACCESS,
     SET_AUDIT_SUCCESS,
     SET_AUDIT_FAILURE;
-
-    fun value(): Int = ordinal
 
 }

@@ -15,14 +15,15 @@
  */
 package jnc.platform.win32
 
+import jnc.foreign.annotation.Continuously
+
 /**
  * @author zhanhb
  */
+@Continuously
 enum class MULTIPLE_TRUSTEE_OPERATION {
 
     NO_MULTIPLE_TRUSTEE,
     TRUSTEE_IS_IMPERSONATE;
-
-    fun value(): Int = ordinal
 
 }

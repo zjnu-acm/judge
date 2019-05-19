@@ -22,7 +22,7 @@ package jnc.platform.win32
 class EXPLICIT_ACCESS : jnc.foreign.Struct() {
 
     private val grfAccessPermissions = DWORD()
-    private val /*ACCESS_MODE*/ grfAccessMode = int32_t()
+    private val grfAccessMode = enumField(ACCESS_MODE::class.java)
     private val grfInheritance = DWORD()
     val trustee: TRUSTEE = inner(TRUSTEE())
 
@@ -30,16 +30,12 @@ class EXPLICIT_ACCESS : jnc.foreign.Struct() {
         get() = grfAccessPermissions.get().toInt()
         set(value) = grfAccessPermissions.set(value.toLong())
 
-    var accessMode: Int
+    var accessMode: ACCESS_MODE
         get() = grfAccessMode.get()
         set(value) = grfAccessMode.set(value)
 
     var inheritance: Int
         get() = grfInheritance.get().toInt()
         set(value) = grfInheritance.set(value.toLong())
-
-    fun setAccessMode(value: ACCESS_MODE) {
-        this.accessMode = value.value()
-    }
 
 }
