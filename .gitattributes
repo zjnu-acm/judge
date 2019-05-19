@@ -1,55 +1,53 @@
 # Auto detect text files and perform LF normalization
 # disable auto normalization of platform line ending.
-# * text=auto
-* text eol=lf
-
-# Custom for Visual Studio
-*.cs text diff=csharp
+* text=auto eol=lf
 
 # binary files.
-*.docx binary diff=word
-*.DOCX binary diff=word
-*.doc binary diff=word
-*.DOC binary diff=word
-*.gif binary diff=image
-*.jpg binary diff=image
-*.png binary diff=image
-*.dot binary
-*.DOT binary
-*.gz  binary
-*.ico binary
-*.jar binary
-*.pdf binary
-*.PDF binary
-*.rtf binary
-*.RTF binary
-*.tgz binary
-*.ttf binary
-*.zip binary
-*.eot binary
-*.woff binary
-*.woff2 binary
+*.docx -text diff=word
+*.DOCX -text diff=word
+*.doc -text diff=word
+*.DOC -text diff=word
+*.gif -text diff=image
+*.jpg -text diff=image
+*.png -text diff=image
+*.dot -text
+*.DOT -text
+*.eot -text
+*.gz -text
+*.ico -text
+*.jar -text
+*.pdf -text
+*.PDF -text
+*.rtf -text
+*.RTF -text
+*.tgz -text
+*.ttf -text
+*.zip -text
+*.woff -text
+*.woff2 -text
 
-mvnw    text    diff=shell
-*.sh    text    diff=shell
-*.java  text    diff=java
-*.html  text    diff=html
-*.svg   text    diff=xml
-*.tld   text    diff=xml
-*.xml   text    diff=xml
+mvnw    text diff=shell
+*.cs    text diff=csharp
+*.html  text diff=html
+*.java  text diff=java
+*.sh    text diff=shell
+*.svg   text diff=xml
+*.tld   text diff=xml
+*.xml   text diff=xml
+*.c     text
+*.cpp   text
 *.css   text
+*.in    text
 *.js    text
 *.jsp   text
+*.md    text
+*.out   text
+*.kt    text
+*.sql   text
 *.tag   text
+*.txt   text
 *.yaml  text
 *.yml   text
-*.sql   text
-*.txt   text
-*.cpp   text
-*.c     text
-*.in    text
-*.out   text
-*.md    text
 *.MD    text
 *.cmd text eol=crlf
 *.bat text eol=crlf
