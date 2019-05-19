@@ -2,6 +2,7 @@ package jnc.platform.win32
 
 import jnc.foreign.LibraryLoader
 import jnc.foreign.Pointer
+import jnc.foreign.StructArray
 import jnc.foreign.abi.Stdcall
 import jnc.foreign.annotation.In
 import jnc.foreign.annotation.Out
@@ -11,7 +12,6 @@ import jnc.foreign.byref.PointerByReference
 import jnc.foreign.typedef.int32_t
 import jnc.foreign.typedef.uint32_t
 import jnc.foreign.typedef.uintptr_t
-import jnc.platform.StructArray
 
 /**
  * @author zhanhb
