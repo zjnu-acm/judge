@@ -23,7 +23,7 @@ package jnc.platform.win32
 class SECURITY_ATTRIBUTES : jnc.foreign.Struct() {
 
     private val nLength = DWORD()
-    private val /*LPVOID*/ lpSecurityDescriptor = uintptr_t()
+    private val lpSecurityDescriptor = uintptr_t() // LPVOID
     private val bInheritHandle = WBOOL()
 
     var length: Int

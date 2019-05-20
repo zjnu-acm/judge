@@ -20,7 +20,7 @@ import jnc.foreign.typedef.uintptr_t
 interface Kernel32 {
 
     @int32_t
-    fun AssignProcessToJobObject(@uintptr_t /*HANDLE*/ hJob: Long, @uintptr_t /*HANDLE*/ hProcess: Long): Boolean
+    fun AssignProcessToJobObject(@uintptr_t hJob: Long /*HANDLE*/, @uintptr_t hProcess: Long /*HANDLE*/): Boolean
 
     /**
      *
@@ -31,7 +31,7 @@ interface Kernel32 {
      */
     /*Kernel32.dll; KernelBase.dll on Windows Phone 8.1*/
     @uint32_t
-    fun ResumeThread(@uintptr_t /*HANDLE*/ hThread: Long): Int
+    fun ResumeThread(@uintptr_t hThread: Long /*HANDLE*/): Int
 
     /**
      *
@@ -61,29 +61,29 @@ interface Kernel32 {
      */
     @int32_t
     fun GetProcessTimes(
-            @uintptr_t /*HANDLE*/ hProcess: Long,
+            @uintptr_t hProcess: Long /*HANDLE*/,
             @Out lpCreationTime: FILETIME,
             @Out lpExitTime: FILETIME,
             @Out lpKernelTime: FILETIME,
             @Out lpUserTime: FILETIME): Boolean
 
     @uintptr_t
-    fun /*HANDLE*/ CreateJobObjectW(@In lpJobAttributes: SECURITY_ATTRIBUTES?, lpName: Pointer?): Long
+    fun CreateJobObjectW(@In lpJobAttributes: SECURITY_ATTRIBUTES?, lpName: Pointer?): Long // HANDLE
 
     @uint32_t
     fun SetErrorMode(@uint32_t uMode: Int): Int
 
     @int32_t
-    fun GetExitCodeProcess(@uintptr_t /*HANDLE*/ hProcess: Long, /*LPDWORD*/ dwExitCode: IntByReference): Boolean
+    fun GetExitCodeProcess(@uintptr_t hProcess: Long /*HANDLE*/, dwExitCode: IntByReference /*LPDWORD*/): Boolean
 
     @int32_t
     fun SetHandleInformation(
-            @uintptr_t /*HANDLE*/ handle: Long,
-            @uint32_t /*DWORD*/ dwMask: Int,
-            @uint32_t /*DWORD*/ dwFlags: Int): Boolean
+            @uintptr_t handle: Long /*HANDLE*/,
+            @uint32_t dwMask: Int /*DWORD*/,
+            @uint32_t dwFlags: Int /*DWORD*/): Boolean
 
     @int32_t
-    fun CloseHandle(@uintptr_t /*HANDLE*/ handle: Long): Boolean
+    fun CloseHandle(@uintptr_t handle: Long /*HANDLE*/): Boolean
 
     /**
      *
@@ -98,7 +98,7 @@ interface Kernel32 {
      */
     @int32_t
     fun SetInformationJobObject(
-            @uintptr_t /*HANDLE*/ hJob: Long,
+            @uintptr_t hJob: Long /*HANDLE*/,
             JobObjectInfoClass: JOBOBJECTINFOCLASS,
             @In lpJobObjectInfo: JOBOBJECT_INFORMATION,
             @uint32_t cbJobObjectInfoLength: Int): Boolean
@@ -111,15 +111,15 @@ interface Kernel32 {
             @In lpSecurityAttributes: SECURITY_ATTRIBUTES?,
             @uint32_t dwCreationDisposition: Int,
             @uint32_t dwFlagsAndAttributes: Int,
-            @uintptr_t /*HANDLE*/ hTemplateFile: Long): Long
+            @uintptr_t hTemplateFile: Long /*HANDLE*/): Long
 
     @uintptr_t
-    fun /*HANDLE*/ GetCurrentProcess(): Long
+    fun GetCurrentProcess(): Long //HANDLE
 
     @uint32_t
     fun WaitForSingleObject(
             @uintptr_t hHandle: Long,
-            @uint32_t /*DWORD*/ millis: Int): Int
+            @uint32_t millis: Int /*DWORD*/): Int
 
     @int32_t
     fun TerminateProcess(@uintptr_t hProcess: Long, @uint32_t uExitCode: Int): Boolean
@@ -129,23 +129,23 @@ interface Kernel32 {
 
     @uint32_t
     fun FormatMessageW(
-            @uint32_t /*DWORD*/ dwFlags: Int,
+            @uint32_t dwFlags: Int /*DWORD*/,
             @uintptr_t lpSource: Long,
-            @uint32_t /*DWORD*/ dwMessageId: Int,
-            @uint32_t /*DWORD*/ dwLanguageId: Int,
+            @uint32_t dwMessageId: Int /*DWORD*/,
+            @uint32_t dwLanguageId: Int /*DWORD*/,
             lpBuffer: PointerByReference,
-            @uint32_t /*DWORD*/ nSize: Int,
-            @uintptr_t /* va_list* */ Arguments: Long): Int
+            @uint32_t nSize: Int /*DWORD*/,
+            @uintptr_t Arguments: Long /* va_list* */): Int
 
     @int32_t
     fun DuplicateHandle(
-            @uintptr_t /*HANDLE*/ hSourceProcessHandle: Long,
-            @uintptr_t /*HANDLE*/ hSourceHandle: Long,
-            @uintptr_t /*HANDLE*/ hTargetProcessHandle: Long,
+            @uintptr_t hSourceProcessHandle: Long /*HANDLE*/,
+            @uintptr_t hSourceHandle: Long /*HANDLE*/,
+            @uintptr_t hTargetProcessHandle: Long /*HANDLE*/,
             lpTargetHandle: AddressByReference,
-            @uint32_t /*DWORD*/ dwDesiredAccess: Int,
+            @uint32_t dwDesiredAccess: Int /*DWORD*/,
             @int32_t bInheritHandle: Boolean,
-            @uint32_t /*DWORD*/ dwOptions: Int
+            @uint32_t dwOptions: Int /*DWORD*/
     ): Boolean
 
     companion object {

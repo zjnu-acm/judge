@@ -41,7 +41,7 @@ public enum Sandbox {
             TokenType tokenType,
             boolean lockdownDefaultDacl) {
         // Initialized with the current process token
-        try (RestrictedToken restrictedToken = new RestrictedToken(/*nullptr*/0)) {
+        try (RestrictedToken restrictedToken = new RestrictedToken(0 /*nullptr*/)) {
             if (lockdownDefaultDacl) {
                 restrictedToken.setLockdownDefaultDacl();
             }

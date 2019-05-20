@@ -25,7 +25,7 @@ class SID_AND_ATTRIBUTES : jnc.foreign.Struct() {
     /**
      * Pointer to a SID structure.
      */
-    private val /*PSID*/ Sid = uintptr_t()
+    private val Sid = uintptr_t() // PSID
 
     /**
      * Specifies attributes of the SID. This value contains up to 32 one-bit

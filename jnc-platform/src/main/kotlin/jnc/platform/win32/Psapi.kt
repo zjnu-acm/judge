@@ -34,7 +34,7 @@ interface Psapi {
      */
     @int32_t
     fun GetProcessMemoryInfo(
-            @uintptr_t /*HANDLE*/ hProcess: Long,
+            @uintptr_t hProcess: Long /*HANDLE*/,
             // this parameter is for out only, cb is not set until the method called
             @Out ppsmemCounters: PROCESS_MEMORY_COUNTERS,
             @uint32_t cb: Int): Boolean

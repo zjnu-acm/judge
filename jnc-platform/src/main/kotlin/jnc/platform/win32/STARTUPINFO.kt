@@ -23,9 +23,9 @@ package jnc.platform.win32
 class STARTUPINFO : jnc.foreign.Struct() {
 
     private val CB = DWORD()
-    private val /*LPTSTR*/ lpReserved = uintptr_t() //new UTF8String();
-    private val /*LPTSTR*/ lpDesktop = uintptr_t() //UTF8String();
-    private val /*LPTSTR*/ lpTitle = uintptr_t() //new UTF8String();
+    private val lpReserved = uintptr_t() // LPTSTR
+    private val lpDesktop = uintptr_t() // LPTSTR
+    private val lpTitle = uintptr_t() // LPTSTR
     private val dwX = DWORD()
     private val dwY = DWORD()
     private val dwXSize = DWORD()
@@ -36,10 +36,10 @@ class STARTUPINFO : jnc.foreign.Struct() {
     private val dwFlags = DWORD()
     private val wShowWindow = WORD()
     private val cbReserved2 = WORD()
-    private val /*LPBYTE*/ lpReserved2 = uintptr_t()
-    private val /*HANDLE*/ hStdInput = uintptr_t()
-    private val /*HANDLE*/ hStdOutput = uintptr_t()
-    private val /*HANDLE*/ hStdError = uintptr_t()
+    private val lpReserved2 = uintptr_t() // LPBYTE
+    private val hStdInput = uintptr_t() // HANDLE
+    private val hStdOutput = uintptr_t() // HANDLE
+    private val hStdError = uintptr_t() // HANDLE
 
     var cb:Int
         get() = CB.toInt()

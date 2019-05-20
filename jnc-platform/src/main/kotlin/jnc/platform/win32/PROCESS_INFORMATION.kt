@@ -22,8 +22,8 @@ package jnc.platform.win32
 @Suppress("ClassName", "unused")
 class PROCESS_INFORMATION : jnc.foreign.Struct() {
 
-    private val /*HANDLE*/ hProcess = uintptr_t()
-    private val /*HANDLE*/ hThread = uintptr_t()
+    private val hProcess = uintptr_t() // HANDLE
+    private val hThread = uintptr_t() // HANDLE
     private val dwProcessId = DWORD()
     private val dwThreadId = DWORD()
 

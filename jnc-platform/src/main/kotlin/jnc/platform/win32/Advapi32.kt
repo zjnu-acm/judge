@@ -36,13 +36,13 @@ interface Advapi32 {
      */
     @int32_t
     fun CreateRestrictedToken(
-            @uintptr_t /*HANDLE*/ ExistingTokenHandle: Long,
-            @uint32_t /*DWORD*/ Flags: Int,
-            @uint32_t /*DWORD*/ DisableSidCount: Int,
+            @uintptr_t ExistingTokenHandle: Long /*HANDLE*/,
+            @uint32_t Flags: Int /*DWORD*/,
+            @uint32_t DisableSidCount: Int /*DWORD*/,
             SidsToDisable: StructArray<SID_AND_ATTRIBUTES>?,
-            @uint32_t /*DWORD*/ DeletePrivilegeCount: Int,
+            @uint32_t DeletePrivilegeCount: Int /*DWORD*/,
             PrivilegesToDelete: StructArray<LUID_AND_ATTRIBUTES>?,
-            @uint32_t /*DWORD*/ RestrictedSidCount: Int,
+            @uint32_t RestrictedSidCount: Int /*DWORD*/,
             SidsToRestrict: StructArray<SID_AND_ATTRIBUTES>?,
             /* PHANDLE */ NewTokenHandle: AddressByReference
     ): Boolean
@@ -58,21 +58,21 @@ interface Advapi32 {
      */
     @int32_t
     fun SetTokenInformation(
-            @uintptr_t /*HANDLE*/ tokenHandle: Long,
+            @uintptr_t tokenHandle: Long /*HANDLE*/,
             tokenInformationClass: TOKEN_INFORMATION_CLASS,
             @In tokenInformation: TOKEN_INFORMATION,
-            @uint32_t /*DWORD*/ tokenInformationLength: Int
+            @uint32_t tokenInformationLength: Int /*DWORD*/
     ): Boolean
 
     @int32_t
     fun CreateProcessAsUserW(
-            @uintptr_t /*HANDLE*/ hToken: Long,
+            @uintptr_t hToken: Long /*HANDLE*/,
             lpApplicationName: Pointer?,
             lpCommandLine: Pointer?,
             @In lpProcessAttributes: SECURITY_ATTRIBUTES?,
             @In lpThreadAttributes: SECURITY_ATTRIBUTES?,
             @uint32_t bInheritHandles: Boolean,
-            @uint32_t /*DWORD*/ dwCreationFlags: Int,
+            @uint32_t dwCreationFlags: Int /*DWORD*/,
             lpEnvironment: Pointer?,
             lpCurrentDirectory: Pointer?,
             @In lpStartupInfo: STARTUPINFO,
@@ -80,9 +80,9 @@ interface Advapi32 {
 
     @int32_t
     fun OpenProcessToken(
-            @uintptr_t /*HANDLE*/ processHandle: Long,
+            @uintptr_t processHandle: Long /*HANDLE*/,
             @uint32_t desiredAccess: Int,
-            /*PHANDLE*/ tokenHandle: AddressByReference): Boolean
+            tokenHandle: AddressByReference /*PHANDLE*/): Boolean
 
     @uint32_t
     fun GetLengthSid(@uintptr_t pSid: Long): /* UINT */ Int
@@ -109,8 +109,8 @@ interface Advapi32 {
 
     @int32_t
     fun DuplicateTokenEx(
-            @uintptr_t /*HANDLE*/ hExistingToken: Long,
-            @uint32_t /*DWORD*/ dwDesiredAccess: Int,
+            @uintptr_t hExistingToken: Long /*HANDLE*/,
+            @uint32_t dwDesiredAccess: Int /*DWORD*/,
             lpTokenAttributes: SECURITY_ATTRIBUTES?,
             ImpersonationLevel: SECURITY_IMPERSONATION_LEVEL,
             TokenType: TOKEN_TYPE,
@@ -124,14 +124,14 @@ interface Advapi32 {
     fun SetEntriesInAclW(
             @uint32_t cCountOfExplicitEntries: Int,
             pListOfExplicitEntries: EXPLICIT_ACCESS?,
-            @uintptr_t /*PACL*/ OldAcl: Long,
+            @uintptr_t OldAcl: Long /*PACL*/,
             /* PACL* */ new_dacl: AddressByReference): Int
 
     @uint32_t
     fun CreateWellKnownSid(
             WellKnownSidType: WELL_KNOWN_SID_TYPE,
-            @uintptr_t /*PSID*/ DomainSid: Long,
-            /*PSID*/ pSid: SID,
+            @uintptr_t DomainSid: Long /*PSID*/,
+            pSid: SID /*PSID*/,
             cbSid: IntByReference): Boolean
 
     @int32_t

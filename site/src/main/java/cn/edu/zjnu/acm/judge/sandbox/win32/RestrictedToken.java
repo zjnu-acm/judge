@@ -128,7 +128,7 @@ public class RestrictedToken implements Closeable {
         }
     }
 
-    private static void addUserSidToDefaultDacl(long token, int /*ACCESS_MASK*/ access) {
+    private static void addUserSidToDefaultDacl(long /*HANDLE*/ token, int /*ACCESS_MASK*/ access) {
         TOKEN_USER tokenUser = getTokenUser(token);
         addSidToDefaultDacl(token, tokenUser.getUser().getSid(), GRANT_ACCESS, access);
     }
@@ -214,7 +214,7 @@ public class RestrictedToken implements Closeable {
     // Initializes the RestrictedToken object with effectiveToken.
     // If effectiveToken is nullptr, it initializes the RestrictedToken object
     // with the effective token of the current process.
-    public RestrictedToken(long/*HANDLE*/ effectiveToken) {
+    public RestrictedToken(long /*HANDLE*/ effectiveToken) {
         integrityLevel = INTEGRITY_LEVEL_LAST;
         lockdownDefaultDacl = false;
 

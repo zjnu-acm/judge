@@ -21,11 +21,11 @@ package jnc.platform.win32
 @Suppress("PrivatePropertyName")
 class TRUSTEE : jnc.foreign.Struct() {
 
-    private val /*PTRUSTEE*/ pMultipleTrustee = uintptr_t()
+    private val pMultipleTrustee = uintptr_t() // PTRUSTEE
     private val MultipleTrusteeOperation = enumField(MULTIPLE_TRUSTEE_OPERATION::class.java)
     private val TrusteeForm = enumField(TRUSTEE_FORM::class.java)
     private val TrusteeType = enumField(TRUSTEE_TYPE::class.java)
-    private val /*LPSTR*/ ptstrName = uintptr_t()
+    private val ptstrName = uintptr_t() // LPSTR
 
     var multipleTrustee: Long
         get() = pMultipleTrustee.get()

@@ -31,7 +31,7 @@ class JOBOBJECT_BASIC_LIMIT_INFORMATION : JOBOBJECT_INFORMATION() {
     private val MinimumWorkingSetSize = size_t()
     private val MaximumWorkingSetSize = size_t()
     private val ActiveProcessLimit = DWORD()
-    private val /*ULONG_PTR*/ Affinity = uintptr_t()
+    private val Affinity = uintptr_t() // ULONG_PTR
     private val PriorityClass = DWORD()
     private val SchedulingClass = DWORD()
 
