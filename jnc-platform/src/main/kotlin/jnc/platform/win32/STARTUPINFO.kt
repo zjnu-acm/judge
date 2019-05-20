@@ -19,10 +19,10 @@ package jnc.platform.win32
  * @see [STARTUPINFO](https://msdn.microsoft.com/zh-tw/library/windows/desktop/ms686331)
  * @author zhanhb
  */
-@Suppress("SpellCheckingInspection", "unused")
+@Suppress("SpellCheckingInspection", "unused", "PrivatePropertyName")
 class STARTUPINFO : jnc.foreign.Struct() {
 
-    private val cb = DWORD()
+    private val CB = DWORD()
     private val /*LPTSTR*/ lpReserved = uintptr_t() //new UTF8String();
     private val /*LPTSTR*/ lpDesktop = uintptr_t() //UTF8String();
     private val /*LPTSTR*/ lpTitle = uintptr_t() //new UTF8String();
@@ -41,8 +41,9 @@ class STARTUPINFO : jnc.foreign.Struct() {
     private val /*HANDLE*/ hStdOutput = uintptr_t()
     private val /*HANDLE*/ hStdError = uintptr_t()
 
-    fun getCb(): Int = cb.toInt()
-    fun setCb(cb: Int) = this.cb.set(cb.toLong())
+    var cb:Int
+        get() = CB.toInt()
+        set(value) = CB.set(value.toLong())
 
     var desktop: Long
         get() = lpDesktop.get()

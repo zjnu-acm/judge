@@ -27,7 +27,7 @@ class PROCESS_MEMORY_COUNTERS : jnc.foreign.Struct() {
     /**
      * The size of the structure, in bytes.
      */
-    private val cb = DWORD()
+    private val CB = DWORD()
     /**
      * The number of page faults.
      */
@@ -68,8 +68,9 @@ class PROCESS_MEMORY_COUNTERS : jnc.foreign.Struct() {
      */
     private val PeakPagefileUsage = size_t()
 
-    fun getCb(): Int = cb.toInt()
-    fun setCb(value: Int) = cb.set(value.toLong())
+    var cb:Int
+        get() = CB.toInt()
+        set(value) = CB.set(value.toLong())
 
     var pageFaultCount: Int
         get() = PageFaultCount.toInt()
