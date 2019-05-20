@@ -28,7 +28,7 @@ class JOBOBJECT_BASIC_UI_RESTRICTIONS : JOBOBJECT_INFORMATION() {
     private val UIRestrictionsClass = DWORD()
 
     var uiRestrictionsClass: Int
-        get() = UIRestrictionsClass.get().toInt()
+        get() = UIRestrictionsClass.toInt()
         set(value) = UIRestrictionsClass.set(value.toLong())
 
 }

@@ -27,7 +27,7 @@ class SECURITY_ATTRIBUTES : jnc.foreign.Struct() {
     private val bInheritHandle = WBOOL()
 
     var length: Int
-        get() = nLength.get().toInt()
+        get() = nLength.toInt()
         set(value) = nLength.set(value.toLong())
 
     var securityDescriptor: Long

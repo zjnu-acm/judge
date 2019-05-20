@@ -27,7 +27,7 @@ class EXPLICIT_ACCESS : jnc.foreign.Struct() {
     val trustee: TRUSTEE = inner(TRUSTEE())
 
     var accessPermissions: Int
-        get() = grfAccessPermissions.get().toInt()
+        get() = grfAccessPermissions.toInt()
         set(value) = grfAccessPermissions.set(value.toLong())
 
     var accessMode: ACCESS_MODE
@@ -35,7 +35,7 @@ class EXPLICIT_ACCESS : jnc.foreign.Struct() {
         set(value) = grfAccessMode.set(value)
 
     var inheritance: Int
-        get() = grfInheritance.get().toInt()
+        get() = grfInheritance.toInt()
         set(value) = grfInheritance.set(value.toLong())
 
 }

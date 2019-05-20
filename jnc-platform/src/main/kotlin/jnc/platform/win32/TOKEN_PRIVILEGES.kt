@@ -27,7 +27,7 @@ class TOKEN_PRIVILEGES private constructor(count: Int) : TOKEN_INFORMATION() {
     private val Privileges: Array<LUID_AND_ATTRIBUTES> = Array(count) { inner(LUID_AND_ATTRIBUTES()) }
 
     var privilegeCount: Int
-        get() = PrivilegeCount.get().toInt()
+        get() = PrivilegeCount.toInt()
         set(value) = PrivilegeCount.set(value.toLong())
 
     constructor() : this(ANYSIZE_ARRAY)

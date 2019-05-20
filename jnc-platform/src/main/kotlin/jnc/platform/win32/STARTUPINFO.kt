@@ -41,7 +41,7 @@ class STARTUPINFO : jnc.foreign.Struct() {
     private val /*HANDLE*/ hStdOutput = uintptr_t()
     private val /*HANDLE*/ hStdError = uintptr_t()
 
-    fun getCb(): Int = cb.get().toInt()
+    fun getCb(): Int = cb.toInt()
     fun setCb(cb: Int) = this.cb.set(cb.toLong())
 
     var desktop: Long
@@ -53,35 +53,35 @@ class STARTUPINFO : jnc.foreign.Struct() {
         set(value) = lpTitle.set(value)
 
     var x: Int
-        get() = dwX.get().toInt()
+        get() = dwX.toInt()
         set(value) = dwX.set(value.toLong())
 
     var y: Int
-        get() = dwY.get().toInt()
+        get() = dwY.toInt()
         set(value) = dwY.set(value.toLong())
 
     var xSize: Int
-        get() = dwXSize.get().toInt()
+        get() = dwXSize.toInt()
         set(value) = dwXSize.set(value.toLong())
 
     var ySize: Int
-        get() = dwYSize.get().toInt()
+        get() = dwYSize.toInt()
         set(value) = dwYSize.set(value.toLong())
 
     var xCountChars: Int
-        get() = dwXCountChars.get().toInt()
+        get() = dwXCountChars.toInt()
         set(value) = dwXCountChars.set(value.toLong())
 
     var yCountChars: Int
-        get() = dwYCountChars.get().toInt()
+        get() = dwYCountChars.toInt()
         set(value) = dwYCountChars.set(value.toLong())
 
     var fillAttribute: Int
-        get() = dwFillAttribute.get().toInt()
+        get() = dwFillAttribute.toInt()
         set(value) = dwFillAttribute.set(value.toLong())
 
     var flags: Int
-        get() = dwFlags.get().toInt()
+        get() = dwFlags.toInt()
         set(value) = dwFlags.set(value.toLong())
 
     var showWindow: Char

@@ -28,7 +28,7 @@ class LUID : jnc.foreign.Struct() {
     private val HighPart = int32_t()
 
     var lowPart: Int
-        get() = LowPart.get().toInt()
+        get() = LowPart.toInt()
         set(value) = LowPart.set(value.toLong())
 
     var highPart: Int

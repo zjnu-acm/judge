@@ -25,7 +25,7 @@ class TOKEN_GROUPS private constructor(size: Int) : TOKEN_INFORMATION() {
     private val Groups: Array<SID_AND_ATTRIBUTES> = Array(size) { inner(SID_AND_ATTRIBUTES()) }
 
     var groupCount: Int
-        get() = GroupCount.get().toInt()
+        get() = GroupCount.toInt()
         set(value) = GroupCount.set(value.toLong())
 
     constructor() : this(WinNT.ANYSIZE_ARRAY)

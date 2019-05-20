@@ -68,11 +68,11 @@ class PROCESS_MEMORY_COUNTERS : jnc.foreign.Struct() {
      */
     private val PeakPagefileUsage = size_t()
 
-    fun getCb(): Int = cb.get().toInt()
+    fun getCb(): Int = cb.toInt()
     fun setCb(value: Int) = cb.set(value.toLong())
 
     var pageFaultCount: Int
-        get() = PageFaultCount.get().toInt()
+        get() = PageFaultCount.toInt()
         set(value) = PageFaultCount.set(value.toLong())
 
     var peakWorkingSetSize: Long

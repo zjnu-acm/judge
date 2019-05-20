@@ -38,7 +38,7 @@ class SID_AND_ATTRIBUTES : jnc.foreign.Struct() {
         set(value) = Sid.set(value)
 
     var attributes: Int
-        get() = Attributes.get().toInt()
+        get() = Attributes.toInt()
         set(value) = Attributes.set(value.toLong())
 
 }

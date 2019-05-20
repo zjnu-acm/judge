@@ -36,11 +36,11 @@ class PROCESS_INFORMATION : jnc.foreign.Struct() {
         set(value) = hThread.set(value)
 
     var processId: Int
-        get() = dwProcessId.get().toInt()
+        get() = dwProcessId.toInt()
         set(value) = dwProcessId.set(value.toLong())
 
     var threadId: Int
-        get() = dwThreadId.get().toInt()
+        get() = dwThreadId.toInt()
         set(value) = dwThreadId.set(value.toLong())
 
 }

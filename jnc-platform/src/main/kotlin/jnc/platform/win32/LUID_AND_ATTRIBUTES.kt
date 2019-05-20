@@ -29,7 +29,7 @@ class LUID_AND_ATTRIBUTES : jnc.foreign.Struct() {
     private val Attributes = DWORD()
 
     var attributes: Int
-        get() = Attributes.get().toInt()
+        get() = Attributes.toInt()
         set(attributes) = Attributes.set(attributes.toLong())
 
 }

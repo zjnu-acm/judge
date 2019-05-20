@@ -44,7 +44,7 @@ class JOBOBJECT_BASIC_LIMIT_INFORMATION : JOBOBJECT_INFORMATION() {
         set(value) = PerJobUserTimeLimit.set(value)
 
     var limitFlags: Int
-        get() = LimitFlags.get().toInt()
+        get() = LimitFlags.toInt()
         set(value) = LimitFlags.set(value.toLong())
 
     var minimumWorkingSetSize: Long
@@ -56,7 +56,7 @@ class JOBOBJECT_BASIC_LIMIT_INFORMATION : JOBOBJECT_INFORMATION() {
         set(value) = MaximumWorkingSetSize.set(value)
 
     var activeProcessLimit: Int
-        get() = ActiveProcessLimit.get().toInt()
+        get() = ActiveProcessLimit.toInt()
         set(value) = ActiveProcessLimit.set(value.toLong())
 
     var affinity: Long
@@ -64,11 +64,11 @@ class JOBOBJECT_BASIC_LIMIT_INFORMATION : JOBOBJECT_INFORMATION() {
         set(value) = Affinity.set(value)
 
     var priorityClass: Int
-        get() = PriorityClass.get().toInt()
+        get() = PriorityClass.toInt()
         set(value) = PriorityClass.set(value.toLong())
 
     var schedulingClass: Int
-        get() = SchedulingClass.get().toInt()
+        get() = SchedulingClass.toInt()
         set(value) = SchedulingClass.set(value.toLong())
 
 }

@@ -28,11 +28,11 @@ class FILETIME : jnc.foreign.Struct() {
     private val dwHighDateTime = DWORD()
 
     var lowDateTime: Int
-        get() = dwLowDateTime.get().toInt()
+        get() = dwLowDateTime.toInt()
         set(value) = dwLowDateTime.set(value.toLong())
 
     var highDateTime: Int
-        get() = dwHighDateTime.get().toInt()
+        get() = dwHighDateTime.toInt()
         set(value) = dwHighDateTime.set(value.toLong())
 
     fun longValue(): Long {
