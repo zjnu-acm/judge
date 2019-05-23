@@ -44,7 +44,7 @@ class SID_IDENTIFIER_AUTHORITY : jnc.foreign.Struct() {
         if (other == null) {
             return false
         }
-        if (javaClass != other.javaClass) {
+        if (javaClass !== other.javaClass) {
             return false
         }
         val sia = other as SID_IDENTIFIER_AUTHORITY
