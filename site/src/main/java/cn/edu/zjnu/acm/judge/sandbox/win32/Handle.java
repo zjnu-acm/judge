@@ -2,8 +2,10 @@ package cn.edu.zjnu.acm.judge.sandbox.win32;
 
 import com.google.common.base.Preconditions;
 import java.io.Closeable;
+import java.math.BigInteger;
 import java.util.concurrent.atomic.AtomicBoolean;
-import jnc.foreign.Platform;
+import jnc.foreign.ForeignProviders;
+import jnc.foreign.NativeType;
 import jnc.platform.win32.Kernel32;
 import jnc.platform.win32.Kernel32Util;
 
@@ -12,20 +14,7 @@ import jnc.platform.win32.Kernel32Util;
  */
 public class Handle implements Closeable {
 
-    private static final long INVALID_HANDLE_VALUE;
-
-    static {
-        switch (Platform.getNativePlatform().getArch().pointerSize()) {
-            case 32:
-                INVALID_HANDLE_VALUE = 0xFFFFFFFFL;
-                break;
-            case 64:
-                INVALID_HANDLE_VALUE = -1;
-                break;
-            default:
-                throw new AssertionError();
-        }
-    }
+    private static final long INVALID_HANDLE_VALUE = BigInteger.ONE.shiftLeft(ForeignProviders.getDefault().findType(NativeType.ADDRESS).size() << 3).subtract(BigInteger.ONE).longValue();
 
     public static void validateHandle(long /*HANDLE*/ handle) {
         Preconditions.checkArgument(handle != 0 && handle != INVALID_HANDLE_VALUE, "invalid handle value");
