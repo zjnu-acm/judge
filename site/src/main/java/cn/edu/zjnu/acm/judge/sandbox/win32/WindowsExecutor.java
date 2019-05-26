@@ -211,7 +211,7 @@ public class WindowsExecutor implements Executor {
                 | CREATE_NO_WINDOW;
         STARTUPINFO lpStartupInfo = new STARTUPINFO();
         lpStartupInfo.setCb(lpStartupInfo.size());
-        lpStartupInfo.setDesktop(DESKTOP.address());
+        lpStartupInfo.setDesktop(DESKTOP);
         PROCESS_INFORMATION lpProcessInformation = new PROCESS_INFORMATION();
 
         // without cursor feed back

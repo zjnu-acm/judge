@@ -15,6 +15,8 @@
  */
 package jnc.platform.win32
 
+import jnc.foreign.Pointer
+
 /**
  * @see [STARTUPINFO](https://msdn.microsoft.com/zh-tw/library/windows/desktop/ms686331)
  * @author zhanhb
@@ -23,9 +25,9 @@ package jnc.platform.win32
 class STARTUPINFO : jnc.foreign.Struct() {
 
     private val CB = DWORD()
-    private val lpReserved = uintptr_t() // LPTSTR
-    private val lpDesktop = uintptr_t() // LPTSTR
-    private val lpTitle = uintptr_t() // LPTSTR
+    private val lpReserved = Pointer() // LPTSTR
+    private val lpDesktop = Pointer() // LPTSTR
+    private val lpTitle = Pointer() // LPTSTR
     private val dwX = DWORD()
     private val dwY = DWORD()
     private val dwXSize = DWORD()
@@ -45,11 +47,11 @@ class STARTUPINFO : jnc.foreign.Struct() {
         get() = CB.toInt()
         set(value) = CB.set(value.toLong())
 
-    var desktop: Long
+    var desktop: jnc.foreign.Pointer
         get() = lpDesktop.get()
         set(value) = lpDesktop.set(value)
 
-    var title: Long
+    var title: jnc.foreign.Pointer
         get() = lpTitle.get()
         set(value) = lpTitle.set(value)
 

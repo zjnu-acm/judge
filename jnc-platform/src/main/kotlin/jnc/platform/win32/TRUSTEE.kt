@@ -25,7 +25,7 @@ class TRUSTEE : jnc.foreign.Struct() {
     private val MultipleTrusteeOperation = enumField(MULTIPLE_TRUSTEE_OPERATION::class.java)
     private val TrusteeForm = enumField(TRUSTEE_FORM::class.java)
     private val TrusteeType = enumField(TRUSTEE_TYPE::class.java)
-    private val ptstrName = uintptr_t() // LPSTR
+    private val ptstrName = uintptr_t() // LPSTR|SID*|OBJECTS_AND_SID*|OBJECTS_AND_NAME*
 
     var multipleTrustee: Long
         get() = pMultipleTrustee.get()
