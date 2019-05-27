@@ -1,8 +1,8 @@
 package jnc.platform.win32
 
 import jnc.foreign.LibraryLoader
-import jnc.foreign.abi.Stdcall
 import jnc.foreign.annotation.Out
+import jnc.foreign.annotation.Stdcall
 import jnc.foreign.typedef.int32_t
 import jnc.foreign.typedef.uint32_t
 import jnc.foreign.typedef.uintptr_t
