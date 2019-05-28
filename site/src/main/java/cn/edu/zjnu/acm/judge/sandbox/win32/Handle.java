@@ -4,8 +4,7 @@ import com.google.common.base.Preconditions;
 import java.io.Closeable;
 import java.math.BigInteger;
 import java.util.concurrent.atomic.AtomicBoolean;
-import jnc.foreign.ForeignProviders;
-import jnc.foreign.NativeType;
+import jnc.foreign.Platform;
 import jnc.platform.win32.Kernel32;
 import jnc.platform.win32.Kernel32Util;
 
@@ -14,7 +13,7 @@ import jnc.platform.win32.Kernel32Util;
  */
 public class Handle implements Closeable {
 
-    private static final long INVALID_HANDLE_VALUE = BigInteger.ONE.shiftLeft(ForeignProviders.getDefault().findType(NativeType.ADDRESS).size() << 3).subtract(BigInteger.ONE).longValue();
+    private static final long INVALID_HANDLE_VALUE = BigInteger.ONE.shiftLeft(Platform.getNativePlatform().getArch().sizeOfPointer() << 3).subtract(BigInteger.ONE).longValue();
 
     public static void validateHandle(long /*HANDLE*/ handle) {
         Preconditions.checkArgument(handle != 0 && handle != INVALID_HANDLE_VALUE, "invalid handle value");

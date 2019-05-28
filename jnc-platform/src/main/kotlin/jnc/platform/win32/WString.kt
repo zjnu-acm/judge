@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 ZJNU ACM.
+ * Copyright 2017-2019 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,12 +15,11 @@
  */
 package jnc.platform.win32
 
-import jnc.foreign.ForeignProviders
+import jnc.foreign.Foreign
 import jnc.foreign.Pointer
 import jnc.platform.LibC
 
 /**
- *
  * @author zhanhb
  */
 interface WString {
@@ -32,7 +31,7 @@ interface WString {
             val len = string.length
             val chars = CharArray(len)
             string.toCharArray(chars, 0, 0, len)
-            val pointer = ForeignProviders.getDefault().memoryManager.allocate((len + 1 shl 1).toLong())
+            val pointer = Foreign.getDefault().memoryManager.allocate((len + 1 shl 1).toLong())
             pointer.putCharArray(0, chars, 0, len)
             return pointer
         }

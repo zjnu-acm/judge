@@ -1,6 +1,6 @@
 package jnc.platform.win32
 
-import jnc.foreign.ForeignProviders
+import jnc.foreign.Foreign
 import jnc.foreign.byref.PointerByReference
 
 /**
@@ -11,7 +11,7 @@ interface Kernel32Util {
     companion object {
         val lastError: Int
             @JvmStatic
-            get() = ForeignProviders.getDefault().lastError
+            get() = Foreign.getDefault().lastError
 
         @JvmStatic
         fun assertTrue(test: Boolean) {
