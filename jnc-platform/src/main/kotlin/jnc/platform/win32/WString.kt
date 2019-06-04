@@ -17,7 +17,7 @@ package jnc.platform.win32
 
 import jnc.foreign.Foreign
 import jnc.foreign.Pointer
-import jnc.platform.LibC
+import java.nio.charset.StandardCharsets
 
 /**
  * @author zhanhb
@@ -27,22 +27,12 @@ interface WString {
 
         @JvmStatic
         fun toNative(string: String?): Pointer? {
-            string ?: return null
-            val len = string.length
-            val chars = CharArray(len)
-            string.toCharArray(chars, 0, 0, len)
-            val pointer = Foreign.getDefault().memoryManager.allocate((len + 1 shl 1).toLong())
-            pointer.putCharArray(0, chars, 0, len)
-            return pointer
+            return if (string == null) null else Foreign.getDefault().memoryManager.allocateString(string, StandardCharsets.UTF_16LE)
         }
 
         @JvmStatic
         fun fromNative(ptr: Pointer?): String? {
-            ptr ?: return null
-            val len = LibC.INSTANCE.wcslen(ptr)
-            val chars = CharArray(len)
-            ptr.getCharArray(0, chars, 0, len)
-            return String(chars)
+            return ptr?.getString(0, StandardCharsets.UTF_16LE)
         }
     }
 
