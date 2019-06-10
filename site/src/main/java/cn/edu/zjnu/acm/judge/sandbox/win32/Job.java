@@ -4,7 +4,7 @@ import java.io.Closeable;
 import jnc.platform.win32.JOBOBJECTINFOCLASS;
 import jnc.platform.win32.JOBOBJECT_BASIC_LIMIT_INFORMATION;
 import jnc.platform.win32.JOBOBJECT_BASIC_UI_RESTRICTIONS;
-import jnc.platform.win32.JOBOBJECT_INFORMATION;
+import jnc.platform.win32.JobObjectInformation;
 import jnc.platform.win32.Kernel32;
 import jnc.platform.win32.Kernel32Util;
 
@@ -33,7 +33,7 @@ public class Job implements Closeable {
         this.hJob = handle;
     }
 
-    private void setInformationJobObject(JOBOBJECTINFOCLASS jobobjectinfoclass, JOBOBJECT_INFORMATION jobj) {
+    private void setInformationJobObject(JOBOBJECTINFOCLASS jobobjectinfoclass, JobObjectInformation jobj) {
         Kernel32Util.assertTrue(Kernel32.INSTANCE.SetInformationJobObject(hJob, jobobjectinfoclass, jobj, jobj.size()));
     }
 

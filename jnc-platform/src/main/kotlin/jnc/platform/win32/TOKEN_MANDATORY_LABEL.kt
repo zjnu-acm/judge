@@ -20,7 +20,7 @@ package jnc.platform.win32
  * @author zhanhb
  */
 @Suppress("ClassName")
-class TOKEN_MANDATORY_LABEL : TOKEN_INFORMATION() {
+class TOKEN_MANDATORY_LABEL : TokenInformation() {
 
     val label: SID_AND_ATTRIBUTES = inner(SID_AND_ATTRIBUTES())
 

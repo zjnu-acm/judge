@@ -19,7 +19,7 @@ package jnc.platform.win32
  * @author zhanhb
  */
 @Suppress("ClassName", "PrivatePropertyName")
-class TOKEN_DEFAULT_DACL : TOKEN_INFORMATION() {
+class TOKEN_DEFAULT_DACL : TokenInformation() {
 
     private val DefaultDacl = uintptr_t()
 

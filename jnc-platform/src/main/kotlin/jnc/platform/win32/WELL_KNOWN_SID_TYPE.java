@@ -13,16 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package jnc.platform.win32
-
-import jnc.foreign.annotation.Continuously
+package jnc.platform.win32;
 
 /**
  * @author zhanhb
  */
-@Continuously
-@Suppress("ClassName")
-enum class WELL_KNOWN_SID_TYPE {
+public enum WELL_KNOWN_SID_TYPE {
 
     WinNullSid,
     WinWorldSid,

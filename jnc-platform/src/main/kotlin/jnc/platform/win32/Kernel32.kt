@@ -100,7 +100,7 @@ interface Kernel32 {
     fun SetInformationJobObject(
             @uintptr_t hJob: Long /*HANDLE*/,
             JobObjectInfoClass: JOBOBJECTINFOCLASS,
-            @In lpJobObjectInfo: JOBOBJECT_INFORMATION,
+            @In lpJobObjectInfo: JobObjectInformation,
             @uint32_t cbJobObjectInfoLength: Int): Boolean
 
     @uintptr_t

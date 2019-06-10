@@ -1,18 +1,17 @@
-package jnc.platform.win32
+package jnc.platform.win32;
 
-import jnc.foreign.LibraryLoader
-import jnc.foreign.annotation.Out
-import jnc.foreign.annotation.Stdcall
-import jnc.foreign.typedef.int32_t
-import jnc.foreign.typedef.uint32_t
-import jnc.foreign.typedef.uintptr_t
+import javax.annotation.Nonnull;
+import jnc.foreign.LibraryLoader;
+import jnc.foreign.annotation.Out;
+import jnc.foreign.annotation.Stdcall;
+import jnc.foreign.typedef.int32_t;
+import jnc.foreign.typedef.uint32_t;
+import jnc.foreign.typedef.uintptr_t;
 
-/**
- * @author zhanhb
- */
-@Suppress("SpellCheckingInspection", "FunctionName")
 @Stdcall
-interface Psapi {
+public interface Psapi {
+
+    Psapi INSTANCE = LibraryLoader.create(Psapi.class).load("psapi");
 
     /**
      * Retrieves information about the memory usage of the specified process.
@@ -30,19 +29,13 @@ interface Psapi {
      * @return If the function succeeds, the return value is nonzero. If the
      * function fails, the return value is zero. To get extended error
      * information, call GetLastError.
-     * @see [GetProcessMemoryInfo](http://msdn.microsoft.com/en-us/library/ms683219)
+     * @see <a href="http://msdn.microsoft.com/en-us/library/ms683219">GetProcessMemoryInfo</a>
      */
     @int32_t
-    fun GetProcessMemoryInfo(
-            @uintptr_t hProcess: Long /*HANDLE*/,
+    boolean GetProcessMemoryInfo(
+            @uintptr_t long hProcess,
             // this parameter is for out only, cb is not set until the method called
-            @Out ppsmemCounters: PROCESS_MEMORY_COUNTERS,
-            @uint32_t cb: Int): Boolean
-
-    companion object {
-
-        @JvmField
-        val INSTANCE = LibraryLoader.create(Psapi::class.java).load("psapi")
-    }
+            @Out @Nonnull PROCESS_MEMORY_COUNTERS ppsmemCounters,
+            @uint32_t int cb);
 
 }

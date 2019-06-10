@@ -23,7 +23,7 @@ package jnc.platform.win32
  * @author zhanhb
  */
 @Suppress("ClassName", "PrivatePropertyName", "unused")
-class JOBOBJECT_BASIC_LIMIT_INFORMATION : JOBOBJECT_INFORMATION() {
+class JOBOBJECT_BASIC_LIMIT_INFORMATION : JobObjectInformation() {
 
     private val PerProcessUserTimeLimit = int64_t()
     private val PerJobUserTimeLimit = int64_t()

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 ZJNU ACM.
+ * Copyright 2017 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,23 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package jnc.platform.win32
+package jnc.platform.win32;
 
-import jnc.foreign.annotation.Continuously
+import jnc.foreign.Struct;
 
-/**
- * @author zhanhb
- */
-@Continuously
-@Suppress("ClassName")
-enum class ACCESS_MODE {
-
-    NOT_USED_ACCESS,
-    GRANT_ACCESS,
-    SET_ACCESS,
-    DENY_ACCESS,
-    REVOKE_ACCESS,
-    SET_AUDIT_SUCCESS,
-    SET_AUDIT_FAILURE;
-
+public abstract class JobObjectInformation extends Struct {
 }

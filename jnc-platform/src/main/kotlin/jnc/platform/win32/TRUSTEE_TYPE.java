@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 ZJNU ACM.
+ * Copyright 2018 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,10 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package jnc.platform.win32
+package jnc.platform.win32;
 
 /**
  * @author zhanhb
  */
-@Suppress("ClassName")
-abstract class JOBOBJECT_INFORMATION : jnc.foreign.Struct()
+public enum TRUSTEE_TYPE {
+
+    TRUSTEE_IS_UNKNOWN,
+    TRUSTEE_IS_USER,
+    TRUSTEE_IS_GROUP,
+    TRUSTEE_IS_DOMAIN,
+    TRUSTEE_IS_ALIAS,
+    TRUSTEE_IS_WELL_KNOWN_GROUP,
+    TRUSTEE_IS_DELETED,
+    TRUSTEE_IS_INVALID,
+    TRUSTEE_IS_COMPUTER;
+
+}

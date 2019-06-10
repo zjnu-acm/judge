@@ -25,7 +25,7 @@ import jnc.platform.win32.SID;
 import jnc.platform.win32.SID_AND_ATTRIBUTES;
 import jnc.platform.win32.TOKEN_DEFAULT_DACL;
 import jnc.platform.win32.TOKEN_GROUPS;
-import jnc.platform.win32.TOKEN_INFORMATION;
+import jnc.platform.win32.TokenInformation;
 import jnc.platform.win32.TOKEN_INFORMATION_CLASS;
 import jnc.platform.win32.TOKEN_MANDATORY_LABEL;
 import jnc.platform.win32.TOKEN_PRIVILEGES;
@@ -157,7 +157,7 @@ public class RestrictedToken implements Closeable {
         }
     }
 
-    private static <T extends TOKEN_INFORMATION> T getTokenInfo(
+    private static <T extends TokenInformation> T getTokenInfo(
             long token, TOKEN_INFORMATION_CLASS infoClass,
             IntFunction<T> bySize) {
         // get the required buffer size.

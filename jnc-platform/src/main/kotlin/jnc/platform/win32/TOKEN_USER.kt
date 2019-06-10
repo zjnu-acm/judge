@@ -19,7 +19,7 @@ package jnc.platform.win32
  * @author zhanhb
  */
 @Suppress("ClassName")
-class TOKEN_USER : TOKEN_INFORMATION() {
+class TOKEN_USER : TokenInformation() {
 
     val user: SID_AND_ATTRIBUTES = inner(SID_AND_ATTRIBUTES())
 

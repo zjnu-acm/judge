@@ -28,7 +28,8 @@ class SID private constructor(subAuthorityCount: Int) : jnc.foreign.Struct() {
     private val Revision = BYTE()
     private val SubAuthorityCount = BYTE()
     val identifierAuthority: SID_IDENTIFIER_AUTHORITY = inner(SID_IDENTIFIER_AUTHORITY())
-    private val SubAuthority = array(arrayOfNulls<DWORD>(subAuthorityCount))
+    // Note: this syntax is not availiable for union
+    private val SubAuthority = Array(subAuthorityCount) { DWORD() }
 
     var revision: Byte
         get() = Revision.toByte()

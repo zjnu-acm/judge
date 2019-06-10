@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2019 ZJNU ACM.
+ * Copyright 2018 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,27 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package jnc.platform.win32
-
-import jnc.foreign.Foreign
-import jnc.foreign.Pointer
-import java.nio.charset.StandardCharsets
+package jnc.platform.win32;
 
 /**
  * @author zhanhb
  */
-interface WString {
-    companion object {
+public enum TRUSTEE_FORM {
 
-        @JvmStatic
-        fun toNative(string: String?): Pointer? {
-            return if (string == null) null else Foreign.getDefault().memoryManager.allocateString(string, StandardCharsets.UTF_16LE)
-        }
-
-        @JvmStatic
-        fun fromNative(ptr: Pointer?): String? {
-            return ptr?.getString(0, StandardCharsets.UTF_16LE)
-        }
-    }
+    TRUSTEE_IS_SID,
+    TRUSTEE_IS_NAME,
+    TRUSTEE_BAD_FORM,
+    TRUSTEE_IS_OBJECTS_AND_SID,
+    TRUSTEE_IS_OBJECTS_AND_NAME
 
 }

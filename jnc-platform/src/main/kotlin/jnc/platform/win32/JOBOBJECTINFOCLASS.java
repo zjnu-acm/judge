@@ -13,95 +13,80 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package jnc.platform.win32
+package jnc.platform.win32;
 
-import jnc.foreign.annotation.Continuously
+import jnc.foreign.annotation.Continuously;
 
 /**
- * @see [JOBOBJECTINFOCLASS](https://msdn.microsoft.com/en-us/library/windows/desktop/ms686216)
+ * @see <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms686216">JOBOBJECTINFOCLASS</a>
  * @author zhanhb
  */
 @Continuously(start = 1)
-enum class JOBOBJECTINFOCLASS {
+public enum JOBOBJECTINFOCLASS {
 
     /**
      * @see JOBOBJECT_BASIC_ACCOUNTING_INFORMATION
-     *
-     * @see Kernel32.QueryInformationJobObject
+     * @see Kernel32#QueryInformationJobObject
      */
     JobObjectBasicAccountingInformation,
     /**
      * @see JOBOBJECT_BASIC_LIMIT_INFORMATION
-     *
-     * @see Kernel32.QueryInformationJobObject
-     *
-     * @see Kernel32.SetInformationJobObject
+     * @see Kernel32#QueryInformationJobObject
+     * @see Kernel32#SetInformationJobObject
      */
     JobObjectBasicLimitInformation,
     /**
      * @see JOBOBJECT_BASIC_PROCESS_ID_LIST
-     *
-     * @see Kernel32.QueryInformationJobObject
+     * @see Kernel32#QueryInformationJobObject
      */
     JobObjectBasicProcessIdList,
     /**
      * @see JOBOBJECT_BASIC_UI_RESTRICTIONS
-     *
-     * @see Kernel32.QueryInformationJobObject
-     *
-     * @see Kernel32.SetInformationJobObject
+     * @see Kernel32#QueryInformationJobObject
+     * @see Kernel32#SetInformationJobObject
      */
     JobObjectBasicUIRestrictions,
     /**
      * @see JOBOBJECT_SECURITY_LIMIT_INFORMATION
-     *
-     * @see Kernel32.QueryInformationJobObject
-     *
-     * @see Kernel32.SetInformationJobObject
+     * @see Kernel32#QueryInformationJobObject
+     * @see Kernel32#SetInformationJobObject
      */
-    @Deprecated("Only support on windows XP")
+    @Deprecated // Only supported on windows XP
     JobObjectSecurityLimitInformation,
     /**
-     * @see Kernel32.QueryInformationJobObject
-     *
-     * @see Kernel32.SetInformationJobObject
+     * @see Kernel32#QueryInformationJobObject
+     * @see Kernel32#SetInformationJobObject
      */
     JobObjectEndOfJobTimeInformation,
     /**
-     * @see Kernel32.SetInformationJobObject
+     * @see Kernel32#SetInformationJobObject
      */
     JobObjectAssociateCompletionPortInformation,
     /**
      * @see JOBOBJECT_BASIC_AND_IO_ACCOUNTING_INFORMATION
-     *
-     * @see Kernel32.QueryInformationJobObject
+     * @see Kernel32#QueryInformationJobObject
      */
     JobObjectBasicAndIoAccountingInformation,
     /**
      * @see JOBOBJECT_EXTENDED_LIMIT_INFORMATION
-     *
-     * @see Kernel32.QueryInformationJobObject
-     *
-     * @see Kernel32.SetInformationJobObject
+     * @see Kernel32#QueryInformationJobObject
+     * @see Kernel32#SetInformationJobObject
      */
     JobObjectExtendedLimitInformation,
     JobObjectJobSetInformation,
     /**
-     * @see Kernel32.QueryInformationJobObject
-     *
-     * @see Kernel32.SetInformationJobObject
+     * @see Kernel32#QueryInformationJobObject
+     * @see Kernel32#SetInformationJobObject
      */
     JobObjectGroupInformation,
     /**
-     * @see Kernel32.QueryInformationJobObject
-     *
-     * @see Kernel32.SetInformationJobObject
+     * @see Kernel32#QueryInformationJobObject
+     * @see Kernel32#SetInformationJobObject
      */
     JobObjectNotificationLimitInformation,
     /**
      * @see JOBOBJECT_LIMIT_VIOLATION_INFORMATION
-     *
-     * @see Kernel32.QueryInformationJobObject
+     * @see Kernel32#QueryInformationJobObject
      */
     JobObjectLimitViolationInformation,
     JobObjectGroupInformationEx,

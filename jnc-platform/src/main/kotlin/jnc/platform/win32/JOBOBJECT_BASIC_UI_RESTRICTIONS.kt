@@ -23,7 +23,7 @@ package jnc.platform.win32
  * @author zhanhb
  */
 @Suppress("ClassName", "PrivatePropertyName")
-class JOBOBJECT_BASIC_UI_RESTRICTIONS : JOBOBJECT_INFORMATION() {
+class JOBOBJECT_BASIC_UI_RESTRICTIONS : JobObjectInformation() {
 
     private val UIRestrictionsClass = DWORD()
 

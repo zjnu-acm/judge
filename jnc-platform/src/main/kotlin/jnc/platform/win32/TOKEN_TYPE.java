@@ -13,18 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package jnc.platform.win32
+package jnc.platform.win32;
 
-import jnc.foreign.annotation.Continuously
+import jnc.foreign.annotation.Continuously;
 
 /**
  * @author zhanhb
  */
 @Continuously(start = 1)
-@Suppress("ClassName")
-enum class TOKEN_TYPE {
+public enum TOKEN_TYPE {
 
     TokenPrimary,
-    TokenImpersonation;
+    TokenImpersonation
 
 }

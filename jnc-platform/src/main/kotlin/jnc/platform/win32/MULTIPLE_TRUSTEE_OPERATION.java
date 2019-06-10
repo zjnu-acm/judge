@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 ZJNU ACM.
+ * Copyright 2018 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package jnc.platform.win32
+package jnc.platform.win32;
 
-/**
- * @author zhanhb
- */
-@Suppress("ClassName")
-abstract class TOKEN_INFORMATION : jnc.foreign.Struct()
+public enum MULTIPLE_TRUSTEE_OPERATION {
+    NO_MULTIPLE_TRUSTEE,
+    TRUSTEE_IS_IMPERSONATE;
+}

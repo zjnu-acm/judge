@@ -13,18 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package jnc.platform.win32
+package jnc.platform.win32;
 
-import jnc.foreign.annotation.Continuously
+import jnc.foreign.annotation.Continuously;
 
 /**
  * The TOKEN_INFORMATION_CLASS enumeration type contains values that specify the
  * type of information being assigned to or retrieved from an access token.
+ *
  * @author zhanhb
  */
 @Continuously(start = 1)
-@Suppress("ClassName")
-enum class TOKEN_INFORMATION_CLASS {
+public enum TOKEN_INFORMATION_CLASS {
 
     TokenUser,
     TokenGroups,
@@ -54,6 +54,6 @@ enum class TOKEN_INFORMATION_CLASS {
     TokenIntegrityLevel,
     TokenUIAccess,
     TokenMandatoryPolicy,
-    TokenLogonSid;
+    TokenLogonSid
 
 }

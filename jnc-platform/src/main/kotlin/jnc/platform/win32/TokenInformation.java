@@ -13,23 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package jnc.platform.win32
+package jnc.platform.win32;
 
-/**
- * @author zhanhb
- */
-class Win32Exception(val errorCode: Int) : RuntimeException() {
+import jnc.foreign.Struct;
 
-    override val message: String?
-        get() = Kernel32Util.formatMessage(hresultFromWin32(errorCode))
-
-    companion object {
-
-        private const val serialVersionUID = 1L
-
-        private fun hresultFromWin32(x: Int): Int {
-            return if (x <= 0) x else x and 0x0000FFFF or -0x7ff90000
-        }
-    }
-
+public abstract class TokenInformation extends Struct {
 }

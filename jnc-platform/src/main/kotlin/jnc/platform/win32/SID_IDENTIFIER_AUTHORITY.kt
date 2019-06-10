@@ -28,8 +28,7 @@ class SID_IDENTIFIER_AUTHORITY : jnc.foreign.Struct() {
         padding(6) // actual type BYTE[6]
     }
 
-    @Suppress("MemberVisibilityCanBePrivate")
-    fun toByteArray(): ByteArray {
+    private fun toByteArray(): ByteArray {
         val bytes = ByteArray(6)
         memory.getBytes(0, bytes, 0, 6)
         return bytes
