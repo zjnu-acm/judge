@@ -17,7 +17,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.github.zhanhb</groupId>
+            <groupId>${jnc.group-id}</groupId>
             <artifactId>jnc-runtime</artifactId>
         </dependency>
         <dependency>
