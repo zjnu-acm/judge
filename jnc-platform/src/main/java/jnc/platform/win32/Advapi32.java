@@ -18,6 +18,7 @@ import jnc.foreign.typedef.uintptr_t;
 
 @Stdcall
 @ParametersAreNonnullByDefault
+@SuppressWarnings("SpellCheckingInspection")
 public interface Advapi32 {
     @Nonnull
     Advapi32 INSTANCE = LibraryLoader.create(Advapi32.class).load("advapi32");

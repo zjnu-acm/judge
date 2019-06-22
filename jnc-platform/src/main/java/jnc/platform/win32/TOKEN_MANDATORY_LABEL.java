@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 ZJNU ACM.
+ * Copyright 2017 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,23 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package jnc.platform.win32
+package jnc.platform.win32;
+
+import javax.annotation.Nonnull;
 
 /**
- * @author zhanhb
+ * @see <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb394727">TOKEN_MANDATORY_LABEL</a>
  */
-@Suppress("ClassName")
-class TOKEN_USER : TokenInformation() {
+public final class TOKEN_MANDATORY_LABEL extends TokenInformation {
 
-    val user: SID_AND_ATTRIBUTES = inner(SID_AND_ATTRIBUTES())
+    private final SID_AND_ATTRIBUTES label = inner(new SID_AND_ATTRIBUTES());
 
-    companion object {
-        @JvmStatic
-        fun withPadding(padding: Int): TOKEN_USER {
-            val tokenUser = TOKEN_USER()
-            tokenUser.padding(padding)
-            return tokenUser
-        }
+    @Nonnull
+    public final SID_AND_ATTRIBUTES getLabel() {
+        return this.label;
     }
-
 }

@@ -13,32 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package jnc.platform.win32
+package jnc.platform.win32;
 
 /**
- * @see [SID_AND_ATTRIBUTES](https://msdn.microsoft.com/en-us/library/windows/desktop/aa379595)
- * @author zhanhb
+ * @see <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa379595">SID_AND_ATTRIBUTES</a>
  */
-@Suppress("ClassName", "PrivatePropertyName")
-class SID_AND_ATTRIBUTES : jnc.foreign.Struct() {
+public final class SID_AND_ATTRIBUTES extends jnc.foreign.Struct {
 
     /**
      * Pointer to a SID structure.
      */
-    private val Sid = uintptr_t() // PSID
-
+    private final uintptr_t Sid = new uintptr_t();
     /**
      * Specifies attributes of the SID. This value contains up to 32 one-bit
      * flags. Its meaning depends on the definition and use of the SID.
      */
-    private val Attributes = DWORD()
+    private final DWORD Attributes = new DWORD();
 
-    var sid: Long
-        get() = Sid.get()
-        set(value) = Sid.set(value)
+    public final long getSid() {
+        return this.Sid.get();
+    }
 
-    var attributes: Int
-        get() = Attributes.toInt()
-        set(value) = Attributes.set(value.toLong())
+    public final void setSid(long value) {
+        this.Sid.set(value);
+    }
 
+    public final int getAttributes() {
+        return this.Attributes.intValue();
+    }
+
+    public final void setAttributes(int value) {
+        this.Attributes.set(value);
+    }
 }

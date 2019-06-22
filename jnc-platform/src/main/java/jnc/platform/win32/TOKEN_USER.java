@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 ZJNU ACM.
+ * Copyright 2018 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,23 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package jnc.platform.win32
+package jnc.platform.win32;
 
-import jnc.foreign.annotation.Pack
+import javax.annotation.Nonnull;
 
-/**
- * @see [LUID_AND_ATTRIBUTES](https://msdn.microsoft.com/en-us/library/windows/desktop/aa379263)
- * @author zhanhb
- */
-@Suppress("ClassName", "PrivatePropertyName", "SpellCheckingInspection")
-@Pack(4)
-class LUID_AND_ATTRIBUTES : jnc.foreign.Struct() {
+public final class TOKEN_USER extends TokenInformation {
 
-    val luid: LUID = inner(LUID())
-    private val Attributes = DWORD()
+    @Nonnull
+    public static TOKEN_USER withPadding(int padding) {
+        TOKEN_USER tokenUser = new TOKEN_USER();
+        tokenUser.padding(padding);
+        return tokenUser;
+    }
 
-    var attributes: Int
-        get() = Attributes.toInt()
-        set(attributes) = Attributes.set(attributes.toLong())
+    private final SID_AND_ATTRIBUTES user = inner(new SID_AND_ATTRIBUTES());
+
+    @Nonnull
+    public final SID_AND_ATTRIBUTES getUser() {
+        return this.user;
+    }
 
 }

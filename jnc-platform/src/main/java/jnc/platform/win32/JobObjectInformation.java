@@ -13,22 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package jnc.platform.win32
+package jnc.platform.win32;
 
-/**
- *
- * @see JOBOBJECTINFOCLASS.JobObjectBasicUIRestrictions
- *
- * @see [JOBOBJECT_BASIC_UI_RESTRICTIONS](https://msdn.microsoft.com/en-us/library/windows/desktop/ms684152)
- * @author zhanhb
- */
-@Suppress("ClassName", "PrivatePropertyName")
-class JOBOBJECT_BASIC_UI_RESTRICTIONS : JobObjectInformation() {
-
-    private val UIRestrictionsClass = DWORD()
-
-    var uiRestrictionsClass: Int
-        get() = UIRestrictionsClass.toInt()
-        set(value) = UIRestrictionsClass.set(value.toLong())
-
+public abstract class JobObjectInformation extends jnc.foreign.Struct {
 }

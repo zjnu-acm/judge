@@ -18,6 +18,7 @@ package jnc.platform.win32;
 /**
  * @author zhanhb
  */
+@SuppressWarnings("SpellCheckingInspection")
 public enum WELL_KNOWN_SID_TYPE {
 
     WinNullSid,

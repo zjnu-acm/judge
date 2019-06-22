@@ -15,7 +15,21 @@
  */
 package jnc.platform.win32;
 
-import jnc.foreign.Struct;
+/**
+ * @see JOBOBJECTINFOCLASS#JobObjectBasicUIRestrictions
+ * @see
+ * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms684152">JOBOBJECT_BASIC_UI_RESTRICTIONS</a>
+ */
+@SuppressWarnings("unused")
+public final class JOBOBJECT_BASIC_UI_RESTRICTIONS extends JobObjectInformation {
 
-public abstract class TokenInformation extends Struct {
+    private final DWORD UIRestrictionsClass = new DWORD();
+
+    public final int getUiRestrictionsClass() {
+        return this.UIRestrictionsClass.intValue();
+    }
+
+    public final void setUiRestrictionsClass(int value) {
+        this.UIRestrictionsClass.set(value);
+    }
 }

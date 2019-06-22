@@ -15,12 +15,12 @@
  */
 package jnc.platform.win32;
 
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import jnc.foreign.Struct;
-import kotlin.jvm.internal.Intrinsics;
 
 /**
  * @author zhanhb
@@ -30,11 +30,10 @@ public final class Info {
 
     @Nonnull
     public static <T extends Struct> Info of(Supplier<T> supplier, Function<T, Struct> anySizeArrayElement) {
-        Intrinsics.checkParameterIsNotNull(supplier, "supplier");
-        Intrinsics.checkParameterIsNotNull(anySizeArrayElement, "anySizeArrayElement");
+        Objects.requireNonNull(supplier, "supplier");
+        Objects.requireNonNull(anySizeArrayElement, "anySizeArrayElement");
         T struct = supplier.get();
-        Struct apply = anySizeArrayElement.apply(struct);
-        return new Info(struct.size(), apply.size());
+        return new Info(struct.size(), anySizeArrayElement.apply(struct).size());
     }
 
     private final int a;
@@ -45,6 +44,7 @@ public final class Info {
         this.e = e;
     }
 
+    @SuppressWarnings("WeakerAccess")
     public final int toCount(int size) {
         return Math.max((size - this.a + this.e - 1) / this.e, 0) + 1;
     }

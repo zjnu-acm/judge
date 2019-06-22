@@ -13,15 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package jnc.platform.win32
+package jnc.platform.win32;
 
-/**
- * @see [TOKEN_MANDATORY_LABEL](https://msdn.microsoft.com/en-us/library/windows/desktop/bb394727)
- * @author zhanhb
- */
-@Suppress("ClassName")
-class TOKEN_MANDATORY_LABEL : TokenInformation() {
-
-    val label: SID_AND_ATTRIBUTES = inner(SID_AND_ATTRIBUTES())
-
+public abstract class TokenInformation extends jnc.foreign.Struct {
 }

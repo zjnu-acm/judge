@@ -4,7 +4,6 @@ import javax.annotation.Nonnull;
 import jnc.foreign.Foreign;
 import jnc.foreign.Pointer;
 import jnc.foreign.byref.PointerByReference;
-import kotlin.text.StringsKt;
 
 public interface Kernel32Util {
 
@@ -19,6 +18,7 @@ public interface Kernel32Util {
     }
 
     @Nonnull
+    @SuppressWarnings("null")
     static String formatMessage(int code) {
         PointerByReference buffer = new PointerByReference();
         int nLen = Kernel32.INSTANCE.FormatMessageW(
@@ -34,9 +34,7 @@ public interface Kernel32Util {
         }
         Pointer ptr = buffer.getValue();
         try {
-            String fromNative = WString.fromNative(ptr);
-            assert fromNative != null;
-            return StringsKt.trim(fromNative).toString();
+            return WString.fromNative(ptr).trim();
         } finally {
             freeLocalMemory(ptr.address());
         }
