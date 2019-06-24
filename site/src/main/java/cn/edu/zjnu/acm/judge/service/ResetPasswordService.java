@@ -35,5 +35,9 @@ public interface ResetPasswordService {
     void remove(String userId);
 
     Map<String, ?> stats();
-    
+
+    Integer addEmailCache(String email);
+
+    void removeEmailCache(String email);
+
 }

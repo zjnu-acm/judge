@@ -3,8 +3,9 @@ jQuery(function ($) {
         if (event.keyCode === 13)
             button.trigger('click');
     }
-    var form = $('.fp-form'), newp = form.find('#newPassword'),
-            renp = form.find('#reNewPassword'), button = form.find('#submit');
+
+    var form = $('.fp-form'), newp = form.find('#newPassword');
+    var renp = form.find('#reNewPassword'), button = form.find('#submit');
     newp.bind('keypress', d);
     renp.bind('keypress', d);
     button.click(function () {
@@ -24,6 +25,16 @@ jQuery(function ($) {
             newp.focus();
             return false;
         }
-        $.post(window.location.href.replace('.html', '.js'), {newPassword: p, action: 'changePassword'});
+        var withoutQuery = location.protocol + '//' + location.host + location.pathname;
+        var query = location.search;
+        $.post(withoutQuery.replace(/(\.html)?$/, '.json') + (query || ''), {
+            newPassword: p,
+            action: 'changePassword'
+        }).fail(function (result) {
+            alert(result.responseJSON && result.responseJSON.message || result.responseText || 'Error Occur');
+        }).success(function (result) {
+            alert(result.message);
+            document.location = button.data('goto');
+        });
     });
 });

@@ -56,8 +56,8 @@ public class ResetPasswordControllerTest {
     /**
      * Test of methods doPost, changePassword, of class ResetPasswordController.
      *
-     * {@link ResetPasswordController#doPost(HttpServletRequest, HttpServletResponse, String, String, Locale)}
-     * {@link ResetPasswordController#changePassword(HttpServletRequest, HttpServletResponse, String, String)}
+     * {@link ResetPasswordController#doPost(HttpServletRequest, String, String, Locale)}
+     * {@link ResetPasswordController#changePassword(HttpServletRequest, String, String)}
      */
     @Test
     public void testChangePassword() throws Exception {
@@ -71,18 +71,18 @@ public class ResetPasswordControllerTest {
         String username = mockDataService.user(
                 builder -> builder.email("admin@local.host")
         ).getId();
-        mvc.perform(post("/resetPassword")
+        mvc.perform(post("/resetPassword.json")
                 .param("verify", verify + "1")
                 .param("username", username)
                 .locale(locale))
-                .andExpect(status().isOk())
+                .andExpect(status().isBadRequest())
                 .andReturn();
-        mvc.perform(post("/resetPassword")
+        mvc.perform(post("/resetPassword.json")
                 .session((MockHttpSession) session)
                 .param("verify", verify + "1")
                 .param("username", username)
                 .locale(locale))
-                .andExpect(status().isOk())
+                .andExpect(status().isBadRequest())
                 .andReturn();
         assertThat(session.getAttribute(Constants.KAPTCHA_SESSION_KEY)).isNull();
 
@@ -91,7 +91,7 @@ public class ResetPasswordControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.IMAGE_JPEG))
                 .andReturn();
         verify = (String) session.getAttribute(Constants.KAPTCHA_SESSION_KEY);
-        mvc.perform(post("/resetPassword")
+        mvc.perform(post("/resetPassword.json")
                 .session((MockHttpSession) session)
                 .param("verify", verify)
                 .param("username", username)
@@ -99,9 +99,9 @@ public class ResetPasswordControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
         assertThat(session.getAttribute(Constants.KAPTCHA_SESSION_KEY)).isNull();
-        mvc.perform(post("/resetPassword")
+        mvc.perform(post("/resetPassword.json")
                 .param("action", "changePassword"))
-                .andExpect(status().isOk())
+                .andExpect(status().isBadRequest())
                 .andReturn();
     }
 

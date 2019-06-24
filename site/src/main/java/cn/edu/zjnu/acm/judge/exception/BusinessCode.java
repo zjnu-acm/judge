@@ -75,6 +75,14 @@ public enum BusinessCode {
     PASSWORD_NOT_CORRECT("onlinejudge.password.notcorrect"),
     PASSWORD_NOT_MATCH("onlinejudge.password.notmatch"),
     PASSWORD_INVALID_CHARACTER("onlinejudge.password.invalid"),
+    // reset password
+    VERIFY_CODE_INCORRECT("onlinejudge.resetpassword.verify.code.incorrect"),
+    NO_EMAIL_PRESENT("onlinejudge.resetpassword.no.email.present"),
+    FAIL_TO_SEND_EMAIL("onlinejudge.resetpassword.send.email.failed"),
+    EMAIL_SEND_SUCCEED("onlinejudge.resetpassword.success", HttpStatus.OK),
+    LINK_EXPIRED("onlinejudge.resetpassword.link.expired"),
+    MODIFIY_PASSWORD_SUCCEED("onlinejudge.resetpassword.succeed", HttpStatus.OK),
+    RESET_PASSWORD_FREQUENCY("onlinejudge.resetpassword.frequency"),
     // admin/user
     INVALID_EXCEL("onlinejudge.excel.invalid"),
     IMPORT_USER_EXISTS("部分用户已经存在，请移除或选择存在策略后再导入"),

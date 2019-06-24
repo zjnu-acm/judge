@@ -19,12 +19,16 @@ import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
 import cn.edu.zjnu.acm.judge.service.ResetPasswordService;
 import cn.edu.zjnu.acm.judge.util.Utility;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheStats;
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
+import com.github.benmanes.caffeine.cache.Policy;
+import com.github.benmanes.caffeine.cache.stats.CacheStats;
 import com.google.common.collect.ImmutableMap;
+import java.time.Duration;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.Nullable;
@@ -33,23 +37,32 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author zhanhb
  */
 @RequiredArgsConstructor
 @Service("resetPasswordService")
 public class ResetPasswordServiceImpl implements ResetPasswordService {
 
+    private static final Duration REPEAT_EMAIL_DURATION = Duration.ofMinutes(10);
+
     private final UserMapper userMapper;
 
     private Cache<String, String> cache;
+    private Set<String> emailSet;
+    private Policy.Expiration<String, Boolean> expirations;
 
     @PostConstruct
     public void init() {
-        cache = CacheBuilder.newBuilder()
+        cache = Caffeine.newBuilder()
                 .expireAfterWrite(1, TimeUnit.HOURS)
                 .recordStats()
                 .build();
+        Cache<String, Boolean> emailCache = Caffeine.newBuilder()
+                .expireAfterWrite(REPEAT_EMAIL_DURATION)
+                .recordStats()
+                .build();
+        expirations = emailCache.policy().expireAfterWrite().orElseThrow(IllegalStateException::new);
+        emailSet = Collections.newSetFromMap(emailCache.asMap());
     }
 
     @Override
@@ -88,10 +101,27 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
                         .put("hitCount", stats.hitCount())
                         .put("missCount", stats.missCount())
                         .put("loadSuccessCount", stats.loadSuccessCount())
-                        .put("loadExceptionCount", stats.loadExceptionCount())
+                        .put("loadFailureCount", stats.loadFailureCount())
                         .put("totalLoadTime", stats.totalLoadTime())
                         .put("evictionCount", stats.evictionCount())
                         .build());
+    }
+
+    @Override
+    public Integer addEmailCache(String email) {
+        Optional<Duration> age = expirations.ageOf(email);
+        if (!age.isPresent()) {
+            boolean result = emailSet.add(email);
+            assert result;
+            return null;
+        }
+        Duration expiration = age.get();
+        return (int) (Math.ceil(REPEAT_EMAIL_DURATION.minus(expiration).getSeconds() / 60.) + 0.5);
+    }
+
+    @Override
+    public void removeEmailCache(String email) {
+        emailSet.remove(email);
     }
 
 }

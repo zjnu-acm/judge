@@ -2,18 +2,23 @@ jQuery(function ($) {
     function d(event) {
         event.keyCode === 13 && button.click();
     }
+
     function click() {
         image.attr('src', src + (src.indexOf('?') < 0 ? '?' : '&') + '_=' + +new Date());
         imgv.val('');
         (user.val() ? imgv : user).focus();
     }
+
     function enable() {
         button.removeAttr('disabled');
     }
+
     function disable() {
         button.attr('disabled', true);
     }
-    var div = $('#findpassword'), user = div.find('[name="username"]'), button = div.find('[type="button"]'), image = div.find('img'), imgv = div.find('[name="imgVerify"]');
+
+    var div = $('#findpassword'), user = div.find('[name="username"]'), button = div.find('[type="button"]'),
+        image = div.find('img'), imgv = div.find('[name="imgVerify"]');
     var src = image.attr('src');
     image.click(click);
     imgv.bind('keypress', d);
@@ -28,9 +33,12 @@ jQuery(function ($) {
             imgv.focus();
         } else {
             disable();
-            $.post('resetPassword.js', {username: uid, verify: vcode})
-                    .always(click, enable).fail(function (result) {
-                alert(result.responseText || 'Error Occur');
+            $.post('resetPassword.json', {username: uid, verify: vcode})
+                .always(click, enable).fail(function (result) {
+                console.log(arguments);
+                alert(result.responseJSON && result.responseJSON.message || result.responseText || 'Error Occur');
+            }).success(function (result) {
+                alert(result.message);
             });
         }
     });
