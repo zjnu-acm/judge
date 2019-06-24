@@ -117,10 +117,10 @@ public class MiscControllerTest {
 
             setContestOnly(Long.MIN_VALUE);
             assertThat(getContestOnly()).isEqualTo(Long.valueOf(Long.MIN_VALUE));
-            request(HttpStatus.BAD_REQUEST);
+            request(HttpStatus.FORBIDDEN);
 
             setContestOnly(Long.MIN_VALUE);
-            request(HttpStatus.BAD_REQUEST);
+            request(HttpStatus.FORBIDDEN);
             assertThat(getContestOnly()).isEqualTo(Long.valueOf(Long.MIN_VALUE));
 
             setContestOnly(null);

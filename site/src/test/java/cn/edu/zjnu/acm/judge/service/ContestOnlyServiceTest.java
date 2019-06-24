@@ -62,10 +62,10 @@ public class ContestOnlyServiceTest {
 
             contestOnlyService.setContestOnly(Long.MIN_VALUE);
             assertThat(contestOnlyService.getContestOnly()).isEqualTo(Long.MIN_VALUE);
-            request(HttpStatus.BAD_REQUEST);
+            request(HttpStatus.FORBIDDEN);
 
             contestOnlyService.setContestOnly(Long.MIN_VALUE);
-            request(HttpStatus.BAD_REQUEST);
+            request(HttpStatus.FORBIDDEN);
             assertThat(contestOnlyService.getContestOnly()).isEqualTo(Long.MIN_VALUE);
 
             contestOnlyService.setContestOnly(null);

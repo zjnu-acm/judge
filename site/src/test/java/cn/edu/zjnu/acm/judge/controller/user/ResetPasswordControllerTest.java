@@ -96,7 +96,7 @@ public class ResetPasswordControllerTest {
                 .param("verify", verify)
                 .param("username", username)
                 .locale(locale))
-                .andExpect(status().isOk())
+                .andExpect(status().isInternalServerError())
                 .andReturn();
         assertThat(session.getAttribute(Constants.KAPTCHA_SESSION_KEY)).isNull();
         mvc.perform(post("/resetPassword.json")

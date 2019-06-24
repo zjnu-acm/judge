@@ -37,9 +37,9 @@ public enum BusinessCode {
     CONTEST_NOT_FOUND("onlinejudge.contest.nosuchcontest", HttpStatus.NOT_FOUND),
     CONTEST_ENDED("onlinejudge.contest.ended"),
     CONTEST_PROBLEM_NOT_FOUND("onlinejudge.contest.problem.notfound", HttpStatus.NOT_FOUND),
-    CONTEST_ONLY_SUBMIT("onlinejudge.contest.only.submit"),
-    CONTEST_ONLY_REGISTER("onlinejudge.contest.only.register"),
-    CONTEST_ONLY_VIEW_SOURCE("onlinejudge.contest.only.view.source"),
+    CONTEST_ONLY_SUBMIT("onlinejudge.contest.only.submit", HttpStatus.FORBIDDEN),
+    CONTEST_ONLY_REGISTER("onlinejudge.contest.only.register", HttpStatus.FORBIDDEN),
+    CONTEST_ONLY_VIEW_SOURCE("onlinejudge.contest.only.view.source", HttpStatus.FORBIDDEN),
     LANGUAGE_NOT_FOUND("onlinejudge.language.notfound"),
     // mail
     MAIL_NOT_FOUND("No such mail", HttpStatus.NOT_FOUND),
@@ -57,7 +57,7 @@ public enum BusinessCode {
     VIEW_SOURCE_PERMISSION_DENIED("onlinejudge.submission.view.denied", HttpStatus.FORBIDDEN),
     SOURCE_CODE_LONG("onlinejudge.submission.sourcecode.long", HttpStatus.PAYLOAD_TOO_LARGE),
     SOURCE_CODE_SHORT("onlinejudge.submission.sourcecode.short"),
-    SUBMISSION_FREQUENTLY("onlinejudge.submission.frequently"),
+    SUBMISSION_FREQUENTLY("onlinejudge.submission.frequently", HttpStatus.TOO_MANY_REQUESTS),
     // user
     USER_NOT_FOUND("onlinejudge.user.notfound", HttpStatus.NOT_FOUND),
     USER_SEARCH_KEYWORD_SHORT("onlinejudge.user.search.short"),
@@ -78,11 +78,11 @@ public enum BusinessCode {
     // reset password
     VERIFY_CODE_INCORRECT("onlinejudge.resetpassword.verify.code.incorrect"),
     NO_EMAIL_PRESENT("onlinejudge.resetpassword.no.email.present"),
-    FAIL_TO_SEND_EMAIL("onlinejudge.resetpassword.send.email.failed"),
+    FAIL_TO_SEND_EMAIL("onlinejudge.resetpassword.send.email.failed", HttpStatus.INTERNAL_SERVER_ERROR),
     EMAIL_SEND_SUCCEED("onlinejudge.resetpassword.success", HttpStatus.OK),
     LINK_EXPIRED("onlinejudge.resetpassword.link.expired"),
     MODIFIY_PASSWORD_SUCCEED("onlinejudge.resetpassword.succeed", HttpStatus.OK),
-    RESET_PASSWORD_FREQUENCY("onlinejudge.resetpassword.frequency"),
+    RESET_PASSWORD_FREQUENCY("onlinejudge.resetpassword.frequency", HttpStatus.TOO_MANY_REQUESTS),
     // admin/user
     INVALID_EXCEL("onlinejudge.excel.invalid"),
     IMPORT_USER_EXISTS("部分用户已经存在，请移除或选择存在策略后再导入"),
