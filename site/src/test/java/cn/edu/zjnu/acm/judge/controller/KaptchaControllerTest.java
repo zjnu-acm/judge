@@ -63,10 +63,10 @@ public class KaptchaControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.IMAGE_JPEG))
                 .andReturn();
         HttpSession session = result.getRequest().getSession(false);
-        assertThat(session).withFailMessage("no session").isNotNull();
+        assertThat(session).describedAs("no session").isNotNull();
         MockHttpServletResponse response = result.getResponse();
         byte[] body = response.getContentAsByteArray();
-        assertThat(body).withFailMessage("body").isNotNull().isNotEmpty();
+        assertThat(body).describedAs("body").isNotNull().isNotEmpty();
         assertNotEquals("empty body", 0, body.length);
         assertThat(session.getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY)).isNotNull();
     }

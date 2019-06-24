@@ -84,7 +84,7 @@ public class JudgeBridgeTest {
         input = data.resolve("b.in");
         output = data.resolve("b.out");
         Path[] groovyJars = GroovyHolder.getPaths();
-        assertThat(groovyJars).withFailMessage("groovyJars").hasSize(1);
+        assertThat(groovyJars).describedAs("groovyJars").hasSize(1);
         Path groovyPath = groovyJars[0];
         groovy = Files.copy(groovyPath, work.resolve(groovyPath.getFileName().toString()), StandardCopyOption.REPLACE_EXISTING);
     }
@@ -128,7 +128,7 @@ public class JudgeBridgeTest {
         Status result = er.getCode();
         Status expect = checker.getStatus();
         assertThat(result)
-                .withFailMessage("executable: %s, exptect %s, got %s",
+                .describedAs("executable: %s, exptect %s, got %s",
                         executable, expect, result)
                 .isEqualTo(expect);
     }

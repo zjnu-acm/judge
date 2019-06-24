@@ -31,7 +31,7 @@ public class TestUtils {
         Constructor<?> c = cl.getDeclaredConstructor();
         c.setAccessible(true);
         Throwable cause = assertThrows(InvocationTargetException.class, c::newInstance).getTargetException();
-        assertThat(cause).withFailMessage("targetException").isInstanceOf(AssertionError.class);
+        assertThat(cause).describedAs("targetException").isInstanceOf(AssertionError.class);
     }
 
 }

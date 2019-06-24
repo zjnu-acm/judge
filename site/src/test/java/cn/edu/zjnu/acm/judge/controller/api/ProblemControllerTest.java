@@ -100,7 +100,7 @@ public class ProblemControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse().getContentAsString(), Problem.class).getId();
-        assertThat(id).withFailMessage("problem id").isNotNull();
+        assertThat(id).describedAs("problem id").isNotNull();
 
         assertFalse(findOne(id).getDisabled());
         mvc.perform(patch("/api/problems/{id}.json", id).content("{\"disabled\":true}").contentType(MediaType.APPLICATION_JSON))

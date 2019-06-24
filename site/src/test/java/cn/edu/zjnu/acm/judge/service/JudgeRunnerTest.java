@@ -161,15 +161,15 @@ public class JudgeRunnerTest {
         String expectedCaseResult = ResultType.getCaseScoreDescription(checker.getStatus());
 
         assertThat(runResult.getType())
-                .withFailMessage("type will either be null or COMPILATION_ERROR,"
+                .describedAs("type will either be null or COMPILATION_ERROR,"
                         + " if got other result, please modify this file")
                 .isNull();
         String detail1 = runResult.getDetail();
         List<SubmissionDetailDTO> details = detail1 != null ? submissionService.parseSubmissionDetail(detail1) : null;
         String msg = "%s %s %s";
         Object[] param = {key, details, expectedCaseResult};
-        assertThat(runResult.getScore()).withFailMessage(msg, param).isEqualTo(expectScore);
-        assertThat(details).withFailMessage(msg, param)
+        assertThat(runResult.getScore()).describedAs(msg, param).isEqualTo(expectScore);
+        assertThat(details).describedAs(msg, param)
                 .anyMatch(detail -> expectedCaseResult.equals(detail.getResult()));
     }
 

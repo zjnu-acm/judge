@@ -364,7 +364,7 @@ public class MockGenerator {
     private void process(String paramName, String variableName, Class<?> type, Map<String, Class<?>> requestParams, List<String> files, List<String> variableDeclares, TestClass testClass, Method method, String lowerMethod) {
         if (type == MultipartFile.class) {
             String msg = "upload a multipart file, but request method is %s, %s";
-            assertThat(lowerMethod).withFailMessage(msg, lowerMethod, method)
+            assertThat(lowerMethod).describedAs(msg, lowerMethod, method)
                     .isEqualTo("post");
 
             testClass.addImport(MockMultipartFile.class);
