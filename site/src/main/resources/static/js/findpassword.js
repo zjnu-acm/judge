@@ -35,7 +35,6 @@ jQuery(function ($) {
             disable();
             $.post('resetPassword.json', {username: uid, verify: vcode})
                 .always(click, enable).fail(function (result) {
-                console.log(arguments);
                 alert(result.responseJSON && result.responseJSON.message || result.responseText || 'Error Occur');
             }).success(function (result) {
                 alert(result.message);
