@@ -30,7 +30,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.TimeUnit;
 import javax.annotation.Nullable;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +42,7 @@ import org.springframework.stereotype.Service;
 @Service("resetPasswordService")
 public class ResetPasswordServiceImpl implements ResetPasswordService {
 
+    private static final int EXPIRE_HOUR = 3;
     private static final Duration REPEAT_EMAIL_DURATION = Duration.ofMinutes(10);
 
     private final UserMapper userMapper;
@@ -54,7 +54,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
     @PostConstruct
     public void init() {
         cache = Caffeine.newBuilder()
-                .expireAfterWrite(1, TimeUnit.HOURS)
+                .expireAfterWrite(Duration.ofHours(EXPIRE_HOUR))
                 .recordStats()
                 .build();
         Cache<String, Boolean> emailCache = Caffeine.newBuilder()
@@ -122,6 +122,11 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
     @Override
     public void removeEmailCache(String email) {
         emailSet.remove(email);
+    }
+
+    @Override
+    public int getExpireHour() {
+        return EXPIRE_HOUR;
     }
 
 }

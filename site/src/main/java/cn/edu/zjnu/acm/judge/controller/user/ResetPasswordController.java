@@ -24,6 +24,7 @@ import cn.edu.zjnu.acm.judge.service.ResetPasswordService;
 import cn.edu.zjnu.acm.judge.service.SystemService;
 import cn.edu.zjnu.acm.judge.util.ValueCheck;
 import com.google.common.collect.ImmutableMap;
+import java.time.Duration;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -103,9 +104,15 @@ public class ResetPasswordController {
         }
         try {
             String vc = resetPasswordService.getOrCreate(user.getId());
+            String nick = user.getNick();
             String url = getPath(request, "/resetPassword.html?vc=", vc + "&u=", user.getId());
             String title = systemService.getResetPasswordTitle();
-            Map<String, Object> map = ImmutableMap.of("url", url, "title", Objects.toString(title, ""));
+            Map<String, Object> map = ImmutableMap.of(
+                    "url", url,
+                    "title", Objects.toString(title, ""),
+                    "nick", nick,
+                    "expireHour", resetPasswordService.getExpireHour()
+            );
 
             String content = templateEngine.process("users/password", new Context(locale, map));
 

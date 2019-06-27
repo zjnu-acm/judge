@@ -16,6 +16,7 @@
 package cn.edu.zjnu.acm.judge.service;
 
 import cn.edu.zjnu.acm.judge.domain.User;
+import java.time.Duration;
 import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Nullable;
@@ -40,4 +41,5 @@ public interface ResetPasswordService {
 
     void removeEmailCache(String email);
 
+    int getExpireHour();
 }
