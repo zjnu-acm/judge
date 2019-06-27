@@ -48,11 +48,8 @@ public interface ValueCheck {
             throw new BusinessException(BusinessCode.EMPTY_PASSWORD);
         }
         assert password != null;
-        if (password.length() > 20) {
-            throw new BusinessException(BusinessCode.PASSWORD_TOO_LONG);
-        }
-        if (password.length() < 6) {
-            throw new BusinessException(BusinessCode.PASSWORD_TOO_SHORT);
+        if (password.length() > 20 || password.length() < 6) {
+            throw new BusinessException(BusinessCode.PASSWORD_INVALID_LENGTH);
         }
         for (int i = 0; i < password.length(); ++i) {
             if (password.charAt(i) == ' ') {

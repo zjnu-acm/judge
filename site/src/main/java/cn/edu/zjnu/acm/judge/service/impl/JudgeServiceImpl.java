@@ -72,7 +72,7 @@ public class JudgeServiceImpl implements JudgeService {
     public void execute(long submissionId) {
         Submission submission = submissionMapper.findOne(submissionId);
         if (submission == null) {
-            throw new BusinessException(BusinessCode.SUBMISSION_NOT_FOUND);
+            throw new BusinessException(BusinessCode.SUBMISSION_NOT_FOUND, submissionId);
         }
         long problemId = submission.getProblem();
         Problem problem = problemService.findOneNoI18n(problemId);

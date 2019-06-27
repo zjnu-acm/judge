@@ -5,23 +5,23 @@
       layout:decorate="~{layout/main}">
     <head>
         <!--/*--><meta charset="UTF-8"/><!--*/-->
-        <title>修改用户注册信息</title>
+        <title th:text="#{onlinejudge.user.modify.title}">Modify user information</title>
     </head>
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
         <form class="modify-user" method="POST" th:action="@{/modifyuser}" th:object="${user}">
             <table align="center" cellspacing="3" cellpadding="3" width="600" border="0" class="table-back">
                 <tr>
-                    <td colspan="2" width="600" height="40">
-                        <p align="center">修改用户注册信息</p>
+                    <td colspan="2" width="600">
+                        <p align="center" th:text="#{onlinejudge.user.modify.title}">Modify user information</p>
                     </td>
                 </tr>
                 <tr>
-                    <td width="25%"><label>用　户　名:</label></td>
+                    <td width="25%"><label th:text="#{onlinejudge.form.username.label}">username</label></td>
                     <td width="75%" th:text="*{id}">userId</td></tr>
                 <tr>
                     <td>
-                        <label th:for="${#ids.next('nick')}">姓　　　名:</label>
+                        <label th:for="${#ids.next('nick')}" th:text="#{onlinejudge.form.nick.label}">nick:</label>
                     </td>
                     <td>
                         <input th:id="${#ids.seq('nick')}" type="text" name="nick" size="50" th:value="*{nick}"/>
@@ -29,7 +29,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <label th:for="${#ids.next('password')}">旧　密　码:</label>
+                        <label th:for="${#ids.next('password')}" th:text="#{onlinejudge.form.oldpassword.label}">old password:</label>
                     </td>
                     <td>
                         <input th:id="${#ids.seq('password')}" type="password" name="oldPassword" size="20" autocomplete="off"/>
@@ -37,7 +37,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <label th:for="${#ids.next('password')}">新　密　码:</label>
+                        <label th:for="${#ids.next('password')}" th:text="#{onlinejudge.form.newpassword.label}">new password:</label>
                     </td>
                     <td>
                         <input th:id="${#ids.seq('password')}" type="password" name="newPassword" size="20" autocomplete="off"/>
@@ -45,7 +45,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <label th:for="${#ids.next('password')}">重复新密码:</label>
+                        <label th:for="${#ids.next('password')}" th:text="#{onlinejudge.form.repeatnewpassword.label}">repeat new password:</label>
                     </td>
                     <td>
                         <input th:id="${#ids.seq('password')}" type="password" name="rptPassword" size="20" autocomplete="off"/>
@@ -53,7 +53,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <label th:for="${#ids.next('school')}">班　　　级:</label>
+                        <label th:for="${#ids.next('school')}" th:text="#{onlinejudge.form.school.label}">school:</label>
                     </td>
                     <td>
                         <input th:id="${#ids.seq('school')}" type="text" name="school" size="30" th:value="*{school}"/>
@@ -61,7 +61,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <label th:for="${#ids.next('email')}">邮　　　箱:</label>
+                        <label th:for="${#ids.next('email')}" th:text="#{onlinejudge.form.email.label}"></label>
                     </td>
                     <td>
                         <input th:id="${#ids.seq('email')}" type="email" name="email" size="30" th:value="*{email}"/>
@@ -70,15 +70,15 @@
                 <tr>
                     <td>&nbsp;</td>
                     <td align="left">
-                        <button type="submit">确定</button>
+                        <button type="submit" th:text="#{onlinejudge.user.modify.submit.button}">Submit</button>
                         <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                        <button type="reset">重置</button>
+                        <button type="reset" th:text="#{onlinejudge.user.modify.reset.button}">Reset</button>
                     </td>
                 </tr>
             </table>
         </form>
-        <script>jQuery(function($){$("form.modify-user").submit(function(){var b=$(this).find("[name='oldPassword']");return b.val()?!0:(alert("请输入旧密码"),b.focus(),!1);});});</script>
-        <font size="4" color="red">如果您不想改变密码，请不要再新密码栏填写任何信息！</font>
+        <script th:inline="javascript">jQuery(function($){$("form.modify-user").submit(function(){var b=$(this).find("[name='oldPassword']");return b.val()?!0:(alert(/*[+[[#{onlinejudge.user.modify.prompt.nooldpassword}]]+]*//*[-*/"Please enter new password"/*-]*/),b.focus(),!1);});});</script>
+        <font size="4" color="red" th:text="#{onlinejudge.user.modify.prompt.noenteringpassword}"></font>
         <!--/*/</th:block>/*/-->
     </body>
 </html>

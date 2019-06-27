@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 
 /**
- *
  * @author zhanhb
  */
 @Controller

@@ -48,6 +48,7 @@ public class LocaleSerializeTest {
     public void testToJson() throws IOException {
         for (Locale expect : new Locale[]{
             Locale.US,
+            Locale.forLanguageTag("zh-HK-x-lvariant-Hant"),
             Locale.forLanguageTag("zh-TW-x-lvariant-Hant"),
             Locale.TAIWAN,
             new Locale("zh", "TW", "Hant"),

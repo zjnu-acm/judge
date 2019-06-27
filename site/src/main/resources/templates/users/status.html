@@ -36,26 +36,26 @@
                     <td width="60%" align="center">Solved Problems List</td>
                 </tr>
                 <tr>
-                    <td width="15%" align="left">Solved:</td>
-                    <td align="center" width="25%">
+                    <td align="left">Solved:</td>
+                    <td align="center">
                         <a th:href="@{/status(score=100,user_id=${user.id})}" th:text="${user.solved}">solved</a>
                     </td>
-                    <td width="60%" align="center" rowspan="4">
+                    <td align="center" rowspan="4">
                         <a class="solved-problems" th:each="pid:${solvedProblems}" th:href="@{/showproblem(problem_id=${pid})}" th:text="${pid}">pid</a>
                     </td>
                 </tr>
                 <tr>
-                    <td width="15%" align="left">Submissions:</td>
-                    <td align="center" width="25%">
+                    <td align="left">Submissions:</td>
+                    <td align="center">
                         <a th:href="@{/status(user_id=${user.id})}" th:text="${user.submit}">submit</a>
                     </td>
                 </tr>
                 <tr>
-                    <td width="15%" align="left">班　　级:</td>
-                    <td align="center" width="25%" th:text="${user.school}">school</td>
+                    <td align="left" th:text="#{onlinejudge.form.school.label}">school:</td>
+                    <td align="center" th:text="${user.school}">school</td>
                 </tr>
                 <tr>
-                    <td width="15%" align="left">邮　　箱:</td>
+                    <td align="left" th:text="#{onlinejudge.form.email.label}"></td>
                     <td align="center" width="25%" th:text="${user.email}">email</td>
                 </tr>
             </table>
@@ -72,12 +72,12 @@
                 <tbody>
                     <tr th:each="neighbour,it:${neighbours}" th:object="${neighbour}"
                         th:bgcolor="${neighbour.id==user.id?_:it.count%2!=0?'#C0C0C0':'#78C8FF'}">
-                        <td width="10%" th:text="${rankFirst+it.index}">1</td>
-                        <td width="40%">
+                        <td th:text="${rankFirst+it.index}">1</td>
+                        <td>
                             <a th:href="@{/userstatus(user_id=*{id})}" th:text="*{id}">userId</a>
                         </td>
-                        <td width="25%" th:text="*{solved}">solved</td>
-                        <td width="25%" th:text="*{submit}">submit</td>
+                        <td th:text="*{solved}">solved</td>
+                        <td th:text="*{submit}">submit</td>
                     </tr>
                 </tbody>
             </table>

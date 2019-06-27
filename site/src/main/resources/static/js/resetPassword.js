@@ -11,17 +11,17 @@ jQuery(function ($) {
     button.click(function () {
         var p = newp.val(), p2 = renp.val();
         if (!p) {
-            alert('请输入密码');
+            alert(newp.data('promptEmpty'));
             newp.focus();
             return false;
         }
         if (p !== p2) {
-            alert('两次密码不一致');
+            alert(renp.data('promptNotSame'));
             newp.focus();
             return false;
         }
         if (p.length < 6 || p.length > 20) {
-            alert('密码应该在6-20位之间');
+            alert(newp.data('promptLength'));
             newp.focus();
             return false;
         }
