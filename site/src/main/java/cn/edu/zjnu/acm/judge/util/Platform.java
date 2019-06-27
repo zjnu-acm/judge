@@ -17,27 +17,36 @@ package cn.edu.zjnu.acm.judge.util;
 
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
+import lombok.extern.slf4j.Slf4j;
 
 /**
- *
  * @author zhanhb
  */
+@Slf4j
 @SuppressWarnings("UtilityClassWithoutPrivateConstructor")
 public class Platform {
 
-    private static String getProperty(String name) {
-        PrivilegedAction<String> action = () -> System.getProperty(name);
-        return AccessController.doPrivileged(action);
-    }
+    private static final Charset platformCharset = determinCharset();
 
-    public static Charset getCharset() {
+    private static Charset determinCharset() {
         try {
-            return Charset.forName(getProperty("sun.jnu.encoding"));
-        } catch (UnsupportedCharsetException | SecurityException ignored) {
+            return Charset.forName(System.getProperty("sun.jnu.encoding"));
+        } catch (UnsupportedCharsetException ex) {
+            log.error("fail to got system charset, use file.encoding {} instead", Charset.defaultCharset(), ex);
         }
         return Charset.defaultCharset();
+    }
+
+    /**
+     * There are two usage of this charset now. 1. write user submitted source
+     * code to file. 2. input stream of special judge process. For these two
+     * case, we should not depends file.encoding, which might be changed to
+     * UTF-8 in the future.
+     *
+     * @return the platform charset
+     */
+    public static Charset getCharset() {
+        return platformCharset;
     }
 
     public static boolean isWindows() {
