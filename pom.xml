@@ -60,7 +60,6 @@
         <guava.version>28.0-jre</guava.version>
         <hikaricp.version>3.3.1</hikaricp.version>
         <jacoco-maven-plugin.version>0.8.3</jacoco-maven-plugin.version>
-        <javax-activation.version>1.1.1</javax-activation.version>
         <jnc.group-id>com.github.java-native-call.jnc</jnc.group-id>
         <jnc.version>e5e3721129</jnc.version>
         <junit-jupiter.version>5.4.2</junit-jupiter.version>
@@ -164,11 +163,6 @@
                         <groupId>javax.activation</groupId>
                     </exclusion>
                 </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>javax.activation</groupId>
-                <artifactId>activation</artifactId>
-                <version>${javax-activation.version}</version>
             </dependency>
             <dependency>
                 <groupId>javax.xml.bind</groupId>
