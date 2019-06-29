@@ -1,6 +1,7 @@
 package cn.edu.zjnu.acm.judge.controller.submission;
 
 import cn.edu.zjnu.acm.judge.data.form.SubmissionQueryForm;
+import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.domain.Language;
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
@@ -65,11 +66,10 @@ public class StatusController {
             @Nullable Authentication authentication,
             Model model) {
         long problemId = 0;
-        String query = URIBuilder.fromRequest(request)
+        URIBuilder uri = URIBuilder.fromRequest(request)
                 .replaceQueryParam("top")
-                .replaceQueryParam("bottom")
-                .toString();
-        log.debug("query={}", query);
+                .replaceQueryParam("bottom");
+        log.debug("uri={}", uri);
         Map<Long, long[]> problemsMap = Collections.emptyMap();
         if (contestId != null) {
             problemsMap = contestService.getProblemsMap(contestId);
@@ -181,7 +181,10 @@ public class StatusController {
             }
             boolean ended = true;
             if (!admin && contest_id1 != null) {
-                ended = contestMapper.findOne(contest_id1).isEnded();
+                Contest contest = contestMapper.findOne(contest_id1);
+                if (contest != null) {
+                    ended = contest.isEnded();
+                }
             }
             if (score == 100 && ended) {
                 sb.append("<td>").append(submission.getMemory()).append("K</td><td>").append(submission.getTime()).append("MS</td>");
@@ -202,10 +205,23 @@ public class StatusController {
             }
             sb.append("<td>").append(dtf.format(inDate.atZone(ZoneId.systemDefault()).toLocalDateTime())).append("</td></tr>");
         }
-        query = request.getContextPath() + query;
-        sb.append("</table><p align=center>[<a href=\"").append(query).append("\">Top</a>]&nbsp;&nbsp;");
-        query += query.contains("?") ? '&' : '?';
-        sb.append("[<a href=\"").append(query).append("bottom=").append(max.isPresent() ? max.getAsLong() : "").append("\"><font color=blue>Previous Page</font></a>]" + "&nbsp;&nbsp;[<a href=\"").append(query).append("top=").append(min.isPresent() ? min.getAsLong() : "").append("\"><font color=blue>Next Page</font></a>]&nbsp;&nbsp;</p>"
+        sb.append("</table><p align=center>[<a href=\"")
+                .append(request.getContextPath()).append(uri)
+                .append("\">Top</a>]&nbsp;&nbsp;");
+        sb.append("[<a href=\"").append(request.getContextPath());
+        if (max.isPresent()) {
+            uri.replaceQueryParam("bottom", Long.toString(max.getAsLong())).toString();
+            sb.append(uri);
+            uri.replaceQueryParam("bottom");
+        } else {
+            sb.append(uri);
+        }
+        sb.append("\"><font color=blue>Previous Page</font></a>]" + "&nbsp;&nbsp;[<a href=\"")
+                .append(request.getContextPath());
+        if (min.isPresent()) {
+            uri.replaceQueryParam("top", Long.toString(min.getAsLong()));
+        }
+        sb.append(uri).append("\"><font color=blue>Next Page</font></a>]&nbsp;&nbsp;</p>"
                 + "<script>!function(w){setTimeout(function(){w.location.reload()},60000)}(this)</script>");
         model.addAttribute("content", sb.toString());
         return "legacy";

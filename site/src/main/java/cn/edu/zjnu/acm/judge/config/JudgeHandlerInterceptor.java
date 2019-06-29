@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor
 public class JudgeHandlerInterceptor {
 
-    private static final String APPLIED_ONCE_KEY = JudgeHandlerInterceptor.class.getName().concat(".APPLIED_ONCE");
+    private static final String APPLIED_ONCE_KEY = JudgeHandlerInterceptor.class.getName().concat(".APPLIED_ONCE").intern();
     public static final String BACK_URL_ATTRIBUTE_NAME = "backUrl";
 
     private static String getString(String attributeName, Function<HttpServletRequest, String> supplier, HttpServletRequest request) {

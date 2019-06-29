@@ -28,6 +28,7 @@ public interface Executor extends Closeable {
     ExecuteResult execute(Options options) throws IOException;
 
     @Override
-    void close();
+    default void close() {
+    }
 
 }

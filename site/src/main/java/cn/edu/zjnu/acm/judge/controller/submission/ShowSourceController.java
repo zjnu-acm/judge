@@ -44,11 +44,7 @@ public class ShowSourceController {
             @RequestParam("solution_id") long submissionId,
             @RequestParam(value = "style", required = false) Integer style,
             @Nullable Authentication authentication) {
-        Submission submission = submissionMapper.findOne(submissionId);
-
-        if (submission == null) {
-            throw new BusinessException(BusinessCode.SUBMISSION_NOT_FOUND, submissionId);
-        }
+        Submission submission = submissionService.findById(submissionId);
         contestOnlyService.checkViewSource(request, submission);
         String userId = authentication != null ? authentication.getName() : null;
         if (!submissionService.canView(request, submission)) {

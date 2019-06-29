@@ -32,7 +32,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- *
  * @author zhanhb
  */
 @RunWith(JUnitPlatform.class)

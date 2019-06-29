@@ -198,27 +198,16 @@ public class WindowsExecutor implements Executor {
     private PROCESS_INFORMATION createProcess(String lpCommandLine,
             long /*HANDLE*/ hIn, long /*HANDLE*/ hOut, long /*HANDLE*/ hErr,
             boolean redirectErrorStream, Path lpCurrentDirectory) {
-        String lpApplicationName = null;
-        SECURITY_ATTRIBUTES lpProcessAttributes = null;
-        SECURITY_ATTRIBUTES lpThreadAttributes = null;
-        int dwCreationFlags
-                = CREATE_SUSPENDED
-                | DETACHED_PROCESS
-                | HIGH_PRIORITY_CLASS
-                | CREATE_NEW_PROCESS_GROUP
-                | CREATE_UNICODE_ENVIRONMENT
-                | CREATE_BREAKAWAY_FROM_JOB
-                | CREATE_NO_WINDOW;
-        STARTUPINFO lpStartupInfo = new STARTUPINFO();
-        lpStartupInfo.setCb(lpStartupInfo.size());
-        lpStartupInfo.setDesktop(DESKTOP);
+        STARTUPINFO startupInfo = new STARTUPINFO();
+        startupInfo.setCb(startupInfo.size());
+        startupInfo.setDesktop(DESKTOP);
         PROCESS_INFORMATION lpProcessInformation = new PROCESS_INFORMATION();
 
         // without cursor feed back
-        lpStartupInfo.setFlags(STARTF_USESTDHANDLES | STARTF_FORCEOFFFEEDBACK);
-        lpStartupInfo.setStdInput(hIn);
-        lpStartupInfo.setStdOutput(hOut);
-        lpStartupInfo.setStdError(hErr);
+        startupInfo.setFlags(STARTF_USESTDHANDLES | STARTF_FORCEOFFFEEDBACK);
+        startupInfo.setStdInput(hIn);
+        startupInfo.setStdOutput(hOut);
+        startupInfo.setStdError(hErr);
 
         setInheritable(hIn);
         setInheritable(hOut);
@@ -226,18 +215,31 @@ public class WindowsExecutor implements Executor {
             setInheritable(hErr);
         }
 
-        ProcessCreationHelper.execute(() -> Kernel32Util.assertTrue(Advapi32.INSTANCE.CreateProcessAsUserW(
-                hToken.getValue(),
-                WString.toNative(lpApplicationName), // executable name
-                WString.toNative(lpCommandLine),// command line
-                lpProcessAttributes, // process security attribute
-                lpThreadAttributes, // thread security attribute
-                true, // inherits system handles
-                dwCreationFlags, // selected based on exe type
-                EMPTY_ENV,
-                WString.toNative(Objects.toString(lpCurrentDirectory, null)),
-                lpStartupInfo,
-                lpProcessInformation)));
+        ProcessCreationHelper.execute(() -> {
+            String lpApplicationName = null;
+            SECURITY_ATTRIBUTES lpProcessAttributes = null;
+            SECURITY_ATTRIBUTES lpThreadAttributes = null;
+            int dwCreationFlags
+                    = CREATE_SUSPENDED
+                    | DETACHED_PROCESS
+                    | HIGH_PRIORITY_CLASS
+                    | CREATE_NEW_PROCESS_GROUP
+                    | CREATE_UNICODE_ENVIRONMENT
+                    | CREATE_BREAKAWAY_FROM_JOB
+                    | CREATE_NO_WINDOW;
+            Kernel32Util.assertTrue(Advapi32.INSTANCE.CreateProcessAsUserW(
+                    hToken.getValue(),
+                    WString.toNative(lpApplicationName), // executable name
+                    WString.toNative(lpCommandLine),// command line
+                    lpProcessAttributes, // process security attribute
+                    lpThreadAttributes, // thread security attribute
+                    true, // inherits system handles
+                    dwCreationFlags, // selected based on exe type
+                    EMPTY_ENV,
+                    WString.toNative(Objects.toString(lpCurrentDirectory, null)),
+                    startupInfo,
+                    lpProcessInformation));
+        });
         return lpProcessInformation;
     }
 

@@ -170,10 +170,7 @@ public class SubmissionServiceImpl implements SubmissionService {
     @Nullable
     @Override
     public String findCompileInfo(long submissionId) {
-        Submission submission = submissionMapper.findOne(submissionId);
-        if (submission == null) {
-            throw new BusinessException(BusinessCode.SUBMISSION_NOT_FOUND, submissionId);
-        }
+        findById(submissionId);
         return submissionDetailMapper.findCompileInfoById(submissionId);
     }
 
@@ -216,6 +213,15 @@ public class SubmissionServiceImpl implements SubmissionService {
             return ImmutableList.of();
         }
         return parseSubmissionDetail(submissionDetail);
+    }
+
+    @Override
+    public Submission findById(long submissionId) {
+        Submission submission = submissionMapper.findOne(submissionId);
+        if (submission == null) {
+            throw new BusinessException(BusinessCode.SUBMISSION_NOT_FOUND, submissionId);
+        }
+        return submission;
     }
 
 }

@@ -20,7 +20,6 @@ import java.util.Objects;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
- *
  * @author zhanhb
  */
 public class CombinePasswordEncoder extends PasswordEncoderWrapper {

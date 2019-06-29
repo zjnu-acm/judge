@@ -15,6 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.config;
 
+import java.time.Duration;
 import javax.servlet.ServletContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,7 +45,7 @@ public class LocaleConfiguration implements WebMvcConfigurer {
     public LocaleResolver localeResolver(ServletContext container) {
         CookieLocaleResolver localeResolver = new CookieLocaleResolver();
         localeResolver.setCookieName("locale");
-        localeResolver.setCookieMaxAge(15 * 24 * 60 * 60); // 15 day
+        localeResolver.setCookieMaxAge((int) Duration.ofDays(15).getSeconds());
         localeResolver.setCookiePath(getCookiePath(container));
         localeResolver.setLanguageTagCompliant(true);
         return localeResolver;

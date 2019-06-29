@@ -23,6 +23,8 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.UncheckedIOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -40,7 +42,8 @@ public class SourceVisitor {
     @SuppressWarnings("UseOfSystemOutOrSystemErr")
     @Test
     public void test() throws IOException {
-        try (PrintStream target = new PrintStream("target/test.txt", "ISO-8859-1")) {
+        Charset charset = StandardCharsets.UTF_8;
+        try (PrintStream target = new PrintStream("target/all-sources.txt", charset.name())) {
             String dashes = Strings.repeat("-", 45);
             StringWriter sw = new StringWriter();
             PrintWriter out = new PrintWriter(sw);
@@ -48,7 +51,9 @@ public class SourceVisitor {
                     .filter(path -> path.getFileName().toString().matches(".*\\.(html|jspx?)"))
                     .forEach(path -> {
                         try {
-                            String string = new String(Files.readAllBytes(path), StandardCharsets.ISO_8859_1);
+                            String string = charset.newDecoder()
+                                    .decode(ByteBuffer.wrap(Files.readAllBytes(path)))
+                                    .toString();
                             string = string.replaceFirst("/\\*[\000-\uFFFF]+?org/licenses/LICENSE[\000-\uFFFF]+?\\*/\r?\n?", "");
                             string = string.replaceFirst("\r?\n?/\\*[\000-\uFFFF]+?@author zhanhb[\000-\uFFFF]+?\\*/", "");
                             out.println(dashes + path.getFileName() + dashes);
@@ -62,7 +67,7 @@ public class SourceVisitor {
                     .filter(path -> !path.getFileName().toString().equals("package-info.java"))
                     .forEach(path -> {
                         try {
-                            String string = new String(Files.readAllBytes(path), StandardCharsets.ISO_8859_1);
+                            String string = new String(Files.readAllBytes(path), charset);
                             if (!string.contains("@author zhanhb")) {
                                 System.err.println(path);
                                 return;

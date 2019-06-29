@@ -20,7 +20,7 @@
                     <br/>
                     <label th:for="${#ids.next('language')}">Language:</label>
                     <select th:id="${#ids.seq('language')}" size="1" name="language" style="width:100px;" accesskey="l">
-                        <option th:each="language:${languages}" th:object="${language}" th:value="*{id}" th:selected="*{id}==${languageId}" th:text="*{name}">GNU C++</option>
+                        <option th:each="language:${languages}" th:object="${language}" th:value="*{id}" th:selected="*{id}==${languageId}" th:text="*{name}">GNU C</option>
                     </select>
                     <br/>
                 </p>

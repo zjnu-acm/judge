@@ -71,7 +71,7 @@ public enum URLEncoder {
      * @throws NullPointerException s or charset is null
      */
     @SuppressWarnings({"AssignmentToForLoopParameter", "ValueOfIncrementOrDecrementUsed"})
-    private String encode(String s, Charset charset) {
+    public String encode(String s, Charset charset) {
         final int length = s.length();
         Objects.requireNonNull(charset, "charset");
         BitSet bs = dontNeedEncoding;
@@ -83,6 +83,7 @@ public enum URLEncoder {
                 for (int k = i;;) {
                     do {
                         if (++k == length) {
+                            // no special handing needed for code pointer greater than 0xFFFF
                             return append(out, buf, s.substring(i).getBytes(charset)).toString();
                         }
                     } while (!bs.get(s.charAt(k)));

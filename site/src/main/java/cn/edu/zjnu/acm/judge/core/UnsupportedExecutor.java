@@ -5,17 +5,11 @@ import java.io.IOException;
 /**
  * @author zhanhb
  */
-public enum UnsupportedExecutor implements Executor {
-
-    INSTANCE;
+public class UnsupportedExecutor implements Executor {
 
     @Override
     public ExecuteResult execute(Options options) throws IOException {
         throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void close() {
     }
 
 }

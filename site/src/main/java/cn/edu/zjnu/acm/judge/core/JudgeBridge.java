@@ -21,7 +21,7 @@ public class JudgeBridge implements Closeable {
         if (Platform.getNativePlatform().getOS().isWindows()) {
             executor = new WindowsExecutor();
         } else {
-            executor = UnsupportedExecutor.INSTANCE;
+            executor = new UnsupportedExecutor();
         }
     }
 

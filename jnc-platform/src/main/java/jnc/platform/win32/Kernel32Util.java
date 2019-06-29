@@ -41,7 +41,7 @@ public interface Kernel32Util {
     }
 
     static void freeLocalMemory(long ptr) {
-        assertTrue((Kernel32.INSTANCE.LocalFree(ptr) == 0));
+        assertTrue(Kernel32.INSTANCE.LocalFree(ptr) == 0);
     }
 
 }

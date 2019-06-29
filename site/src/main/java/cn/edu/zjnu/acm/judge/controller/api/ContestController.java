@@ -45,7 +45,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  */
 @RequestMapping(value = "/api/contests", produces = APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
-@RestController
+@RestController("adminContestController")
 @Secured("ROLE_ADMIN")
 @Slf4j
 public class ContestController {

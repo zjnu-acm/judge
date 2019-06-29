@@ -6,7 +6,6 @@ import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.exception.BusinessCode;
 import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
-import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.service.SubmissionService;
 import cn.edu.zjnu.acm.judge.util.ResultType;
 import java.util.List;
@@ -27,7 +26,6 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 @RequiredArgsConstructor
 public class ShowSubmissionDetailsController {
 
-    private final SubmissionMapper submissionMapper;
     private final ContestMapper contestMapper;
     private final SubmissionService submissionService;
 
@@ -35,10 +33,7 @@ public class ShowSubmissionDetailsController {
     public String showSolutionDetails(
             HttpServletRequest request,
             @RequestParam("solution_id") long submissionId) {
-        Submission submission = submissionMapper.findOne(submissionId);
-        if (submission == null) {
-            throw new BusinessException(BusinessCode.SUBMISSION_NOT_FOUND, submissionId);
-        }
+        Submission submission = submissionService.findById(submissionId);
         Long contestId = submission.getContest();
         if (contestId != null) {
             Contest contest = contestMapper.findOne(contestId);

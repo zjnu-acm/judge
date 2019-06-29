@@ -52,4 +52,6 @@ public interface SubmissionService {
 
     List<SubmissionDetailDTO> getSubmissionDetail(long submissionId);
 
+    Submission findById(long submissionId);
+
 }

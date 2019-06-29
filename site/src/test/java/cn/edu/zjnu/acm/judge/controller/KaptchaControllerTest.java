@@ -54,10 +54,10 @@ public class KaptchaControllerTest {
     /**
      * Test of service method, of class KaptchaController.
      *
-     * {@link KaptchaController#service(HttpServletRequest, HttpServletResponse)}
+     * {@link KaptchaController#doGet(HttpServletRequest, HttpServletResponse)}
      */
     @Test
-    public void testService() throws Exception {
+    public void testDoGet() throws Exception {
         log.info("doGet");
         MvcResult result = mockMvc.perform(get("/images/rand.jpg"))
                 .andExpect(content().contentTypeCompatibleWith(MediaType.IMAGE_JPEG))
@@ -68,7 +68,7 @@ public class KaptchaControllerTest {
         byte[] body = response.getContentAsByteArray();
         assertThat(body).describedAs("body").isNotNull().isNotEmpty();
         assertNotEquals("empty body", 0, body.length);
-        assertThat(session.getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY)).isNotNull();
+        assertThat((String) session.getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY)).isNotEmpty();
     }
 
 }

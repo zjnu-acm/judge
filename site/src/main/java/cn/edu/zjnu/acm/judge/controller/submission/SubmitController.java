@@ -75,8 +75,8 @@ public class SubmitController {
         contestOnlyService.checkSubmit(request, contestId, problemId);
         String userId = authentication.getName();
         String ip = request.getRemoteAddr();
-        //提交是否在竞赛中
         redirectAttributes.addAttribute("user_id", userId);
+        // If the submit is not in a contest
         if (contestId == null) {
             submissionService.submit(languageId, source, userId, ip, problemId, true);
         } else {

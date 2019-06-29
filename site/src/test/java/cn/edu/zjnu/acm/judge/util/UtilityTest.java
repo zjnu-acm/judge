@@ -44,7 +44,7 @@ public class UtilityTest {
             length = ThreadLocalRandom.current().nextInt(35) + 6;
             final String t = Utility.getRandomString(length);
             assertThat(t.length()).isEqualTo(length);
-            assertThat(t.chars()).allMatch(ch -> Character.isLetterOrDigit(ch));
+            assertThat(t.chars()).allMatch(Character::isLetterOrDigit);
         }
     }
 

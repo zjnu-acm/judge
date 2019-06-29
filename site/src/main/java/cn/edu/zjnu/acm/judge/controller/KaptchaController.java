@@ -35,7 +35,7 @@ public class KaptchaController {
     private final KaptchaExtend kaptchaExtend;
 
     @GetMapping(value = "images/rand", produces = "image/jpeg")
-    public void service(HttpServletRequest request, HttpServletResponse response)
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         kaptchaExtend.captcha(request, response);
     }

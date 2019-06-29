@@ -55,7 +55,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 /**
- *
  * @author zhanhb
  */
 @RequestMapping(value = "/api/accounts", produces = APPLICATION_JSON_VALUE)

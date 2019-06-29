@@ -78,7 +78,7 @@ public class ContestProblemControllerTest {
     /**
      * Test of status method, of class ContestProblemController.
      *
-     * {@link ContestProblemController#status(long, int, Pageable, Model, Authentication, HttpServletRequest}
+     * {@link ContestProblemController#status(long, int, Pageable, Model, Authentication, HttpServletRequest)}
      */
     @Test
     public void testStatus() throws Exception {

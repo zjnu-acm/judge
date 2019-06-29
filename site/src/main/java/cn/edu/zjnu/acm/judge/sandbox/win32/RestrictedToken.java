@@ -162,6 +162,7 @@ public class RestrictedToken implements Closeable {
             IntFunction<T> bySize) {
         // get the required buffer size.
         IntByReference size = new IntByReference();
+        // always false, no sufficient space to put the TokenInformation
         Advapi32.INSTANCE.GetTokenInformation(token, infoClass,
                 null, 0, size);
         int value = size.getValue();
