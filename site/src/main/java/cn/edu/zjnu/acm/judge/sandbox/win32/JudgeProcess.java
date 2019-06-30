@@ -6,6 +6,7 @@ import java.time.Instant;
 import java.util.concurrent.atomic.AtomicReference;
 import jnc.foreign.byref.IntByReference;
 import jnc.platform.win32.FILETIME;
+import jnc.platform.win32.Handle;
 import jnc.platform.win32.Kernel32;
 import jnc.platform.win32.Kernel32Util;
 import jnc.platform.win32.PROCESS_MEMORY_COUNTERS;

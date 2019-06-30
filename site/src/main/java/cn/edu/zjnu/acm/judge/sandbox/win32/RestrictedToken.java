@@ -17,6 +17,7 @@ import jnc.foreign.byref.IntByReference;
 import jnc.platform.win32.ACCESS_MODE;
 import jnc.platform.win32.Advapi32;
 import jnc.platform.win32.EXPLICIT_ACCESS;
+import jnc.platform.win32.Handle;
 import jnc.platform.win32.Kernel32;
 import jnc.platform.win32.Kernel32Util;
 import jnc.platform.win32.LUID;
@@ -25,12 +26,12 @@ import jnc.platform.win32.SID;
 import jnc.platform.win32.SID_AND_ATTRIBUTES;
 import jnc.platform.win32.TOKEN_DEFAULT_DACL;
 import jnc.platform.win32.TOKEN_GROUPS;
-import jnc.platform.win32.TokenInformation;
 import jnc.platform.win32.TOKEN_INFORMATION_CLASS;
 import jnc.platform.win32.TOKEN_MANDATORY_LABEL;
 import jnc.platform.win32.TOKEN_PRIVILEGES;
 import jnc.platform.win32.TOKEN_USER;
 import jnc.platform.win32.TRUSTEE;
+import jnc.platform.win32.TokenInformation;
 import jnc.platform.win32.WString;
 import jnc.platform.win32.Win32Exception;
 import lombok.extern.slf4j.Slf4j;
@@ -61,7 +62,6 @@ import static jnc.platform.win32.WinNT.SE_GROUP_USE_FOR_DENY_ONLY;
 import static jnc.platform.win32.WinNT.TOKEN_ALL_ACCESS;
 
 /**
- *
  * @author zhanhb
  */
 @Slf4j

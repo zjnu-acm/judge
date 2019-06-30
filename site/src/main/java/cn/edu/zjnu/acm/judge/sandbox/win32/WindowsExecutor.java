@@ -28,6 +28,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import jnc.foreign.Pointer;
 import jnc.platform.win32.Advapi32;
+import jnc.platform.win32.Handle;
 import jnc.platform.win32.Kernel32;
 import jnc.platform.win32.Kernel32Util;
 import jnc.platform.win32.PROCESS_INFORMATION;
@@ -66,7 +67,7 @@ public class WindowsExecutor implements Executor {
     private final Handle hToken;
 
     public WindowsExecutor() {
-        hToken = new Handle(Sandbox.INSTANCE.createRestrictedToken(
+        hToken = Handle.of(Sandbox.INSTANCE.createRestrictedToken(
                 TokenLevel.USER_LIMITED,
                 IntegrityLevel.INTEGRITY_LEVEL_LOW,
                 TokenType.PRIMARY,
@@ -94,15 +95,14 @@ public class WindowsExecutor implements Executor {
                         : FILE_ATTRIBUTE_NORMAL;
 
         final int flagsAndAttributes = maybeWriteThrough | maybeDeleteOnClose;
-        long h = Kernel32.INSTANCE.CreateFileW(
+        return Handle.of(Kernel32.INSTANCE.CreateFileW(
                 WString.toNative(path.toString()), /* Wide char path name */
                 access, /* Read and/or write permission */
                 sharing, /* File sharing flags */
                 null, /* Security attributes */
                 disposition, /* creation disposition */
                 flagsAndAttributes, /* flags and attributes */
-                0 /*NULL*/);
-        return new Handle(h);
+                0 /*NULL*/));
     }
 
     @Override
@@ -127,8 +127,8 @@ public class WindowsExecutor implements Executor {
         }
 
         try (Job job = new Job();
-                Handle hProcess = new Handle(pi.getProcess());
-                Handle hThread = new Handle(pi.getThread())) {
+                Handle hProcess = Handle.of(pi.getProcess());
+                Handle hThread = Handle.of(pi.getThread())) {
             JudgeProcess judgeProcess = new JudgeProcess(hProcess.getValue());
             try (FileChannel cOut = FileChannel.open(outputPath);
                     FileChannel cErr = redirectErrorStream ? cOut : FileChannel.open(errorPath)) {

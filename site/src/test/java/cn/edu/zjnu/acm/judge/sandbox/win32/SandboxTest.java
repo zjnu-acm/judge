@@ -17,6 +17,7 @@ package cn.edu.zjnu.acm.judge.sandbox.win32;
 
 import java.util.ArrayList;
 import java.util.List;
+import jnc.platform.win32.Handle;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;

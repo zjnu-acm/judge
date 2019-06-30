@@ -1,6 +1,6 @@
 package cn.edu.zjnu.acm.judge.sandbox.win32;
 
-import java.io.Closeable;
+import jnc.platform.win32.Handle;
 import jnc.platform.win32.JOBOBJECTINFOCLASS;
 import jnc.platform.win32.JOBOBJECT_BASIC_LIMIT_INFORMATION;
 import jnc.platform.win32.JOBOBJECT_BASIC_UI_RESTRICTIONS;
@@ -23,18 +23,19 @@ import static jnc.platform.win32.WinNT.JOB_OBJECT_UILIMIT_WRITECLIPBOARD;
 /**
  * @author zhanhb
  */
-public class Job implements Closeable {
+public class Job extends Handle {
 
-    private final long /*HANDLE*/ hJob;
+    private static long assertNotZero(long value) {
+        Kernel32Util.assertTrue(value != 0);
+        return value;
+    }
 
     public Job() {
-        long handle = Kernel32.INSTANCE.CreateJobObjectW(null, null);
-        Kernel32Util.assertTrue(handle != 0);
-        this.hJob = handle;
+        super(assertNotZero(Kernel32.INSTANCE.CreateJobObjectW(null, null)));
     }
 
     private void setInformationJobObject(JOBOBJECTINFOCLASS jobobjectinfoclass, JobObjectInformation jobj) {
-        Kernel32Util.assertTrue(Kernel32.INSTANCE.SetInformationJobObject(hJob, jobobjectinfoclass, jobj, jobj.size()));
+        Kernel32Util.assertTrue(Kernel32.INSTANCE.SetInformationJobObject(getValue(), jobobjectinfoclass, jobj, jobj.size()));
     }
 
     public void init() {
@@ -64,12 +65,7 @@ public class Job implements Closeable {
     }
 
     public void assignProcess(long /*HANDLE*/ hProcess) {
-        Kernel32Util.assertTrue(Kernel32.INSTANCE.AssignProcessToJobObject(hJob, hProcess));
-    }
-
-    @Override
-    public void close() {
-        Handle.close(hJob);
+        Kernel32Util.assertTrue(Kernel32.INSTANCE.AssignProcessToJobObject(getValue(), hProcess));
     }
 
 }
