@@ -52,16 +52,16 @@
     <properties>
         <angular.version>1.2.32</angular.version>
         <attoparser.version>2.0.5.RELEASE</attoparser.version>
-        <ckfinder.group-id>com.github.zhanhb.ckfinder-spring-boot</ckfinder.group-id>
-        <ckfinder.version>f9bccecbb1</ckfinder.version>
+        <ckfinder.group-id>com.github.zhanhb</ckfinder.group-id>
+        <ckfinder.version>0.0.1.BUILD-SNAPSHOT</ckfinder.version>
         <classmate.version>1.5.0</classmate.version>
         <duplicate-finder-maven-plugin.version>1.3.0</duplicate-finder-maven-plugin.version>
         <findbugs-jsr305.version>3.0.2</findbugs-jsr305.version>
         <guava.version>28.0-jre</guava.version>
         <hikaricp.version>3.3.1</hikaricp.version>
         <jacoco-maven-plugin.version>0.8.3</jacoco-maven-plugin.version>
-        <jnc.group-id>com.github.java-native-call.jnc</jnc.group-id>
-        <jnc.version>e5e3721129</jnc.version>
+        <jnc.group-id>com.github.java-native-call</jnc.group-id>
+        <jnc.version>0.1.BUILD-SNAPSHOT</jnc.version>
         <junit-jupiter.version>5.4.2</junit-jupiter.version>
         <kaptcha.version>0.0.9</kaptcha.version>
         <kotlin.version>1.3.40</kotlin.version>
@@ -400,13 +400,11 @@
     <repositories>
         <repository>
             <releases>
-                <updatePolicy>never</updatePolicy>
-            </releases>
-            <snapshots>
                 <enabled>false</enabled>
-            </snapshots>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
+            </releases>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </repository>
     </repositories>
 
