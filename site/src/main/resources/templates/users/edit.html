@@ -32,7 +32,7 @@
                         <label th:for="${#ids.next('password')}" th:text="#{onlinejudge.form.oldpassword.label}">old password:</label>
                     </td>
                     <td>
-                        <input th:id="${#ids.seq('password')}" type="password" name="oldPassword" size="20" autocomplete="off"/>
+                        <input th:id="${#ids.seq('password')}" type="password" name="oldPassword" size="20" autocomplete="off" th:data-prompt-empty="#{onlinejudge.user.modify.oldpassword.empty}"/>
                     </td>
                 </tr>
                 <tr>
@@ -77,7 +77,7 @@
                 </tr>
             </table>
         </form>
-        <script th:inline="javascript">jQuery(function($){$("form.modify-user").submit(function(){var b=$(this).find("[name='oldPassword']");return b.val()?!0:(alert(/*[+[[#{onlinejudge.user.modify.prompt.nooldpassword}]]+]*//*[-*/"Please enter new password"/*-]*/),b.focus(),!1);});});</script>
+        <script th:inline="javascript">jQuery(function($){$("form.modify-user").submit(function(){var b=$(this).find("[name='oldPassword']");return b.val()?!0:(alert(b.data("promptEmpty")),b.focus(),!1);});});</script>
         <font size="4" color="red" th:text="#{onlinejudge.user.modify.prompt.noenteringpassword}"></font>
         <!--/*/</th:block>/*/-->
     </body>

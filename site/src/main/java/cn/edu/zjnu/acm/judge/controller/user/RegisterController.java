@@ -47,7 +47,7 @@ public class RegisterController {
         ValueCheck.checkPassword(password);
         ValueCheck.checkEmail(email);
         if (!Objects.equals(password, rptPassword)) {
-            throw new BusinessException(BusinessCode.PASSWORD_NOT_MATCH);
+            throw new BusinessException(BusinessCode.REPEAT_PASSWORD_MISMATCH);
         }
         if (StringUtils.hasText(nick)) {
             nick = nick.trim();

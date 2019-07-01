@@ -37,7 +37,8 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 @Slf4j
 public class MessageSourceTest {
 
-    private static final Locale cn = Locale.CHINESE;
+    private static final Locale zh = Locale.CHINESE;
+    private static final Locale zh_cn = Locale.CHINA;
     private static final Locale zh_hant = Locale.forLanguageTag("zh-Hant");
     private static final Locale zh_hk = Locale.forLanguageTag("zh-hk");
     private static final Locale zh_hans_hk = Locale.forLanguageTag("zh-Hans-HK");
@@ -45,8 +46,8 @@ public class MessageSourceTest {
 
     @BeforeAll
     public static void setUpClass() {
-        log.info("zh={}", zh_hant.toLanguageTag());
-        log.info("zh-cn={}", Locale.CHINA.toLanguageTag());
+        log.info("zh={}", zh.toLanguageTag());
+        log.info("zh-cn={}", zh_cn.toLanguageTag());
         log.info("zh-hk={}", zh_hk.toLanguageTag());
         log.info("zh-hans-hk={}", zh_hans_hk.toLanguageTag());
         log.info("zh-tw={}", zh_tw.toLanguageTag());
@@ -55,10 +56,10 @@ public class MessageSourceTest {
     public static Stream<Arguments> data() {
         String bundleName = "i18n.messages";
         return Stream.of(
-                arguments(getBundle(bundleName, Locale.ROOT), getBundle(bundleName, cn)),
-                arguments(getBundle(bundleName, cn), getBundle(bundleName, zh_hant)),
-                arguments(getBundle(bundleName, cn), getBundle(bundleName, zh_hk)),
-                arguments(getBundle(bundleName, cn), getBundle(bundleName, zh_tw))
+                arguments(getBundle(bundleName, Locale.ROOT), getBundle(bundleName, zh)),
+                arguments(getBundle(bundleName, zh), getBundle(bundleName, zh_hant)),
+                arguments(getBundle(bundleName, zh), getBundle(bundleName, zh_hk)),
+                arguments(getBundle(bundleName, zh), getBundle(bundleName, zh_tw))
         );
     }
 

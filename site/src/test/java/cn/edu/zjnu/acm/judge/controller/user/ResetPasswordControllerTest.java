@@ -5,7 +5,6 @@ import cn.edu.zjnu.acm.judge.service.MockDataService;
 import com.google.code.kaptcha.Constants;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;

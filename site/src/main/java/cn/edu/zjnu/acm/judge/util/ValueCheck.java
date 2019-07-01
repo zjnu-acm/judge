@@ -29,17 +29,14 @@ public interface ValueCheck {
 
     static void checkUserId(@Nullable String userId) {
         if (StringUtils.isEmpty(userId)) {
-            throw new BusinessException(BusinessCode.REGIST_USER_ID_EMPTY);
+            throw new BusinessException(BusinessCode.REGISTER_PROMPT_USER_ID_EMPTY);
         }
         assert userId != null;
-        if (userId.length() < 6) {
-            throw new BusinessException(BusinessCode.REGIST_USER_ID_SHORT);
-        }
-        if (userId.length() > 20) {
-            throw new BusinessException(BusinessCode.REGIST_USER_ID_LONG);
+        if (userId.length() < 6 || userId.length() > 20) {
+            throw new BusinessException(BusinessCode.REGISTER_PROMPT_USER_ID);
         }
         if (!userId.matches("(?i)[a-z0-9_]+")) {
-            throw new BusinessException(BusinessCode.REGIST_USER_ID_INVALID);
+            throw new BusinessException(BusinessCode.REGISTER_PROMPT_USER_ID_INVALID);
         }
     }
 

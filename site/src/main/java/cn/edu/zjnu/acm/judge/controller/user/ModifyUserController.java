@@ -51,13 +51,13 @@ public class ModifyUserController {
             @RequestParam("school") String school,
             Authentication authentication) {
         if (!Objects.equals(newPassword, rptPassword)) {
-            throw new BusinessException(BusinessCode.PASSWORD_NOT_MATCH);
+            throw new BusinessException(BusinessCode.REPEAT_PASSWORD_MISMATCH);
         }
         String userId = authentication.getName();
         User user = accountService.findOne(userId);
         String password = user.getPassword();
         if (!passwordEncoder.matches(oldPassword, password)) {
-            throw new BusinessException(BusinessCode.PASSWORD_NOT_CORRECT);
+            throw new BusinessException(BusinessCode.INCORRECT_PASSWORD);
         }
         if (StringUtils.isEmpty(nick)) {
             nick = userId;

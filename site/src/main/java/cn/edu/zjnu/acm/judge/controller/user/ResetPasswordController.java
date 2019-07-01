@@ -24,7 +24,6 @@ import cn.edu.zjnu.acm.judge.service.ResetPasswordService;
 import cn.edu.zjnu.acm.judge.service.SystemService;
 import cn.edu.zjnu.acm.judge.util.ValueCheck;
 import com.google.common.collect.ImmutableMap;
-import java.time.Duration;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -141,7 +140,7 @@ public class ResetPasswordController {
                 .password(passwordEncoder.encode(newPassword))
                 .build());
         resetPasswordService.remove(userId);
-        throw new BusinessException(BusinessCode.MODIFIY_PASSWORD_SUCCEED);
+        throw new BusinessException(BusinessCode.MODIFY_PASSWORD_SUCCEED);
     }
 
     private String getPath(HttpServletRequest request, String... params) {
