@@ -25,7 +25,7 @@ public final class TRUSTEE extends jnc.foreign.Struct {
     private final EnumField<MULTIPLE_TRUSTEE_OPERATION> MultipleTrusteeOperation = enumField(MULTIPLE_TRUSTEE_OPERATION.class);
     private final EnumField<TRUSTEE_FORM> TrusteeForm = enumField(TRUSTEE_FORM.class);
     private final EnumField<TRUSTEE_TYPE> TrusteeType = enumField(TRUSTEE_TYPE.class);
-    private final uintptr_t ptstrName = new uintptr_t();
+    private final Pointer ptstrName = new Pointer();
 
     public final long getMultipleTrustee() {
         return this.pMultipleTrustee.get();
@@ -62,11 +62,11 @@ public final class TRUSTEE extends jnc.foreign.Struct {
         this.TrusteeType.set(Objects.requireNonNull(value));
     }
 
-    public final long getName() {
+    public final jnc.foreign.Pointer getName() {
         return this.ptstrName.get();
     }
 
-    public final void setName(long value) {
+    public final void setName(jnc.foreign.Pointer value) {
         this.ptstrName.set(value);
     }
 }

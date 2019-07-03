@@ -11,9 +11,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.IntFunction;
+import jnc.foreign.Pointer;
 import jnc.foreign.StructArray;
 import jnc.foreign.byref.AddressByReference;
 import jnc.foreign.byref.IntByReference;
+import jnc.foreign.byref.PointerByReference;
 import jnc.platform.win32.ACCESS_MODE;
 import jnc.platform.win32.Advapi32;
 import jnc.platform.win32.EXPLICIT_ACCESS;
@@ -67,11 +69,11 @@ import static jnc.platform.win32.WinNT.TOKEN_ALL_ACCESS;
 @Slf4j
 public class RestrictedToken implements Closeable {
 
-    private static void addSidToDacl(long pSid,
-            long /*PACL*/ oldDacl,
+    private static void addSidToDacl(Pointer pSid,
+            Pointer /*PACL*/ oldDacl,
             ACCESS_MODE accessMode,
             int access,
-            AddressByReference newDacl) {
+            PointerByReference newDacl) {
         EXPLICIT_ACCESS newAccess = new EXPLICIT_ACCESS();
         newAccess.setAccessMode(accessMode);
         newAccess.setAccessPermissions(access);
@@ -96,7 +98,7 @@ public class RestrictedToken implements Closeable {
     }
 
     private static void addSidToDefaultDacl(long token,
-            long pSid,
+            Pointer pSid,
             ACCESS_MODE accessMode,
             int /*ACCESS_MASK*/ access) {
         if (token == 0) {
@@ -104,9 +106,9 @@ public class RestrictedToken implements Closeable {
         }
         TOKEN_DEFAULT_DACL defaultDacl = getTokenDefaultDacl(token);
 
-        AddressByReference newDacl = new AddressByReference();
+        PointerByReference newDacl = new PointerByReference();
         addSidToDacl(pSid, defaultDacl.getDefaultDacl(), accessMode, access, newDacl);
-        long dacl = newDacl.getValue();
+        Pointer dacl = newDacl.getValue();
         try {
             TOKEN_DEFAULT_DACL newTokenDacl = new TOKEN_DEFAULT_DACL();
             newTokenDacl.setDefaultDacl(dacl);
@@ -140,7 +142,7 @@ public class RestrictedToken implements Closeable {
             return;
         }
 
-        AddressByReference integritySid = new AddressByReference();
+        PointerByReference integritySid = new PointerByReference();
         Kernel32Util.assertTrue(Advapi32.INSTANCE.ConvertStringSidToSidW(
                 WString.toNative(integrityLevelStr), integritySid));
         try {
@@ -451,7 +453,7 @@ public class RestrictedToken implements Closeable {
     public void addRestrictingSidLogonSession() {
         TOKEN_GROUPS tokenGroups = getTokenGroups(effectiveToken);
 
-        long logonSid = 0;
+        Pointer logonSid = null;
         for (int i = 0, n = tokenGroups.getGroupCount(); i < n; ++i) {
             SID_AND_ATTRIBUTES group = tokenGroups.get(i);
             if ((group.getAttributes() & SE_GROUP_LOGON_ID) != 0) {
@@ -460,7 +462,7 @@ public class RestrictedToken implements Closeable {
             }
         }
 
-        if (logonSid != 0) {
+        if (logonSid != null) {
             sidsToRestrict.add(SID.copyOf(logonSid));
         }
     }

@@ -23,18 +23,18 @@ public final class SID_AND_ATTRIBUTES extends jnc.foreign.Struct {
     /**
      * Pointer to a SID structure.
      */
-    private final uintptr_t Sid = new uintptr_t();
+    private final Pointer Sid = new Pointer();
     /**
      * Specifies attributes of the SID. This value contains up to 32 one-bit
      * flags. Its meaning depends on the definition and use of the SID.
      */
     private final DWORD Attributes = new DWORD();
 
-    public final long getSid() {
+    public final jnc.foreign.Pointer getSid() {
         return this.Sid.get();
     }
 
-    public final void setSid(long value) {
+    public final void setSid(jnc.foreign.Pointer value) {
         this.Sid.set(value);
     }
 

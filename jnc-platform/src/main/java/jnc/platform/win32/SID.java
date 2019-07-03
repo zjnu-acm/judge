@@ -30,7 +30,7 @@ public final class SID extends jnc.foreign.Struct {
     }
 
     @Nonnull
-    public static SID copyOf(long pSid) {
+    public static SID copyOf(@Nonnull jnc.foreign.Pointer pSid) {
         SID sid = ofMaxSubAuthorities();
         Kernel32Util.assertTrue(Advapi32.INSTANCE.CopySid(sid.size(), sid, pSid));
         return sid;
@@ -47,7 +47,7 @@ public final class SID extends jnc.foreign.Struct {
 
     @Nonnull
     @SuppressWarnings("null")
-    public static String toString(long pSid) throws Win32Exception {
+    public static String toString(@Nonnull jnc.foreign.Pointer pSid) throws Win32Exception {
         PointerByReference stringSid = new PointerByReference();
         Kernel32Util.assertTrue(Advapi32.INSTANCE.ConvertSidToStringSidW(
                 pSid, stringSid));
@@ -55,7 +55,7 @@ public final class SID extends jnc.foreign.Struct {
         try {
             return WString.fromNative(ptr);
         } finally {
-            Kernel32Util.freeLocalMemory(ptr.address());
+            Kernel32Util.freeLocalMemory(ptr);
         }
     }
 
@@ -108,8 +108,8 @@ public final class SID extends jnc.foreign.Struct {
         return Advapi32.INSTANCE.IsValidSid(this);
     }
 
-    public final long asPSID() {
-        return getMemory().address();
+    public final jnc.foreign.Pointer asPSID() {
+        return getMemory();
     }
 
     @Override

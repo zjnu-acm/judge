@@ -15,7 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.sandbox.win32;
 
-import jnc.foreign.byref.AddressByReference;
+import jnc.foreign.byref.PointerByReference;
 import jnc.platform.win32.Advapi32;
 import jnc.platform.win32.Kernel32Util;
 import jnc.platform.win32.SID;
@@ -54,7 +54,7 @@ public class IntegrityLevelTest {
             if (integrityLevelStr == null) {
                 continue;
             }
-            AddressByReference pSid = new AddressByReference();
+            PointerByReference pSid = new PointerByReference();
             Kernel32Util.assertTrue(Advapi32.INSTANCE.ConvertStringSidToSidW(
                     WString.toNative(integrityLevelStr), pSid));
             SID sid;

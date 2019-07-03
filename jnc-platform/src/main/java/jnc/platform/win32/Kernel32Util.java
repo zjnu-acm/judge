@@ -36,11 +36,11 @@ public interface Kernel32Util {
         try {
             return WString.fromNative(ptr).trim();
         } finally {
-            freeLocalMemory(ptr.address());
+            freeLocalMemory(ptr);
         }
     }
 
-    static void freeLocalMemory(long ptr) {
+    static void freeLocalMemory(Pointer ptr) {
         assertTrue(Kernel32.INSTANCE.LocalFree(ptr) == 0);
     }
 

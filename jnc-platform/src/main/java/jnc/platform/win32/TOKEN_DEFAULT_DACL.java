@@ -26,13 +26,13 @@ public final class TOKEN_DEFAULT_DACL extends TokenInformation {
         return tokenDefaultDacl;
     }
 
-    private final uintptr_t DefaultDacl = new uintptr_t();
+    private final Pointer DefaultDacl = new Pointer();
 
-    public final long getDefaultDacl() {
+    public final jnc.foreign.Pointer getDefaultDacl() {
         return this.DefaultDacl.get();
     }
 
-    public final void setDefaultDacl(long value) {
+    public final void setDefaultDacl(jnc.foreign.Pointer value) {
         this.DefaultDacl.set(value);
     }
 

@@ -20,11 +20,12 @@ import jnc.foreign.typedef.uintptr_t;
 @ParametersAreNonnullByDefault
 @SuppressWarnings("SpellCheckingInspection")
 public interface Advapi32 {
+
     @Nonnull
     Advapi32 INSTANCE = LibraryLoader.create(Advapi32.class).load("advapi32");
 
     /**
-     * @see <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa446583">CreateRestrictedToken</a>
+     * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa446583">CreateRestrictedToken</a>
      */
     @int32_t
     boolean CreateRestrictedToken(
@@ -39,7 +40,7 @@ public interface Advapi32 {
             AddressByReference NewTokenHandle);
 
     /**
-     * @see <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa379591">SetTokenInformation</a>
+     * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa379591">SetTokenInformation</a>
      */
     @int32_t
     boolean SetTokenInformation(
@@ -69,13 +70,13 @@ public interface Advapi32 {
             AddressByReference tokenHandle);
 
     @uint32_t
-    int GetLengthSid(@uintptr_t long pSid);
+    int GetLengthSid(Pointer pSid);
 
     @int32_t
-    boolean ConvertSidToStringSidW(@uintptr_t long sid, PointerByReference /* LPTSTR* */ stringSid);
+    boolean ConvertSidToStringSidW(Pointer sid, PointerByReference /* LPTSTR* */ stringSid);
 
     @int32_t
-    boolean ConvertStringSidToSidW(Pointer StringSid, AddressByReference /* PSID* */ Sid);
+    boolean ConvertStringSidToSidW(Pointer StringSid, PointerByReference /* PSID* */ Sid);
 
     @int32_t
     boolean GetTokenInformation(
@@ -94,7 +95,7 @@ public interface Advapi32 {
     @int32_t
     boolean DuplicateTokenEx(
             @uintptr_t long /*HANDLE*/ hExistingToken,
-            @uint32_t int /*DWORD*/dwDesiredAccess,
+            @uint32_t int /*DWORD*/ dwDesiredAccess,
             @Nullable SECURITY_ATTRIBUTES lpTokenAttributes,
             SECURITY_IMPERSONATION_LEVEL ImpersonationLevel,
             TOKEN_TYPE TokenType,
@@ -107,8 +108,8 @@ public interface Advapi32 {
     int SetEntriesInAclW(
             @uint32_t int cCountOfExplicitEntries,
             @Nullable EXPLICIT_ACCESS pListOfExplicitEntries,
-            @uintptr_t long OldAcl,
-            AddressByReference new_dacl);
+            @Nullable Pointer OldAcl,
+            PointerByReference new_dacl);
 
     @uint32_t
     boolean CreateWellKnownSid(
@@ -118,10 +119,10 @@ public interface Advapi32 {
             IntByReference cbSid);
 
     @int32_t
-    boolean EqualSid(@uintptr_t long pSid1, @uintptr_t long pSid2);
+    boolean EqualSid(Pointer pSid1, Pointer pSid2);
 
     @int32_t
-    boolean CopySid(@uint32_t int nDestinationSidLength, SID pDestinationSid, @uintptr_t long pSourceSid);
+    boolean CopySid(@uint32_t int nDestinationSidLength, SID pDestinationSid, Pointer pSourceSid);
 
     @int32_t
     boolean LookupPrivilegeNameW(@Nullable Pointer lpSystemName, LUID lpLuid, char[] lpName, IntByReference cchName);

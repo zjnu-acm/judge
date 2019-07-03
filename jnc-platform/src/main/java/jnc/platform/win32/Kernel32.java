@@ -1,7 +1,7 @@
 package jnc.platform.win32;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import jnc.foreign.LibraryLoader;
 import jnc.foreign.Pointer;
 import jnc.foreign.annotation.In;
@@ -14,10 +14,10 @@ import jnc.foreign.typedef.int32_t;
 import jnc.foreign.typedef.uint32_t;
 import jnc.foreign.typedef.uintptr_t;
 
+@ParametersAreNonnullByDefault
 @Stdcall
 public interface Kernel32 {
 
-    @Nonnull
     Kernel32 INSTANCE = LibraryLoader.create(Kernel32.class).load("kernel32");
 
     @int32_t
@@ -64,10 +64,10 @@ public interface Kernel32 {
     @int32_t
     boolean GetProcessTimes(
             @uintptr_t long hProcess,
-            @Out @Nonnull FILETIME lpCreationTime,
-            @Out @Nonnull FILETIME lpExitTime,
-            @Out @Nonnull FILETIME lpKernelTime,
-            @Out @Nonnull FILETIME lpUserTime);
+            @Out FILETIME lpCreationTime,
+            @Out FILETIME lpExitTime,
+            @Out FILETIME lpKernelTime,
+            @Out FILETIME lpUserTime);
 
     @uintptr_t
     long /*HANDLE*/ CreateJobObjectW(@In @Nullable SECURITY_ATTRIBUTES lpJobAttributes, @Nullable Pointer lpName);
@@ -76,7 +76,7 @@ public interface Kernel32 {
     int SetErrorMode(@uint32_t int uMode);
 
     @int32_t
-    boolean GetExitCodeProcess(@uintptr_t long /*HANDLE*/ hProcess, @Nonnull IntByReference /*LPDWORD*/ dwExitCode);
+    boolean GetExitCodeProcess(@uintptr_t long /*HANDLE*/ hProcess, IntByReference /*LPDWORD*/ dwExitCode);
 
     @int32_t
     boolean SetHandleInformation(
@@ -97,19 +97,20 @@ public interface Kernel32 {
     @int32_t
     boolean SetInformationJobObject(
             @uintptr_t long /*HANDLE*/ hJob,
-            @Nonnull JOBOBJECTINFOCLASS JobObjectInfoClass,
-            @In @Nonnull JobObjectInformation lpJobObjectInfo,
+            JOBOBJECTINFOCLASS JobObjectInfoClass,
+            @In JobObjectInformation lpJobObjectInfo,
             @uint32_t int cbJobObjectInfoLength);
 
     @uintptr_t
-    long /*HANDLE*/ CreateFileW(
-                    @Nonnull Pointer lpFileName,
-                    @uint32_t int dwDesiredAccess,
-                    @uint32_t int dwShareMode,
-                    @In @Nullable SECURITY_ATTRIBUTES lpSecurityAttributes,
-                    @uint32_t int dwCreationDisposition,
-                    @uint32_t int dwFlagsAndAttributes,
-                    @uintptr_t long /*HANDLE*/ hTemplateFile);
+    /* HANDLE */
+    long CreateFileW(
+            Pointer lpFileName,
+            @uint32_t int dwDesiredAccess,
+            @uint32_t int dwShareMode,
+            @In @Nullable SECURITY_ATTRIBUTES lpSecurityAttributes,
+            @uint32_t int dwCreationDisposition,
+            @uint32_t int dwFlagsAndAttributes,
+            @uintptr_t long /*HANDLE*/ hTemplateFile);
 
     @uintptr_t
     long /*HANDLE*/ GetCurrentProcess();
@@ -121,7 +122,7 @@ public interface Kernel32 {
     boolean TerminateProcess(@uintptr_t long /*HANDLE*/ hProcess, @uint32_t int /*UINT*/ uExitCode);
 
     @uintptr_t
-    long LocalFree(@uintptr_t long hMem);
+    long LocalFree(Pointer hMem);
 
     @uint32_t
     int FormatMessageW(
@@ -129,7 +130,7 @@ public interface Kernel32 {
             @uintptr_t long lpSource,
             @uint32_t int /*DWORD*/ dwMessageId,
             @uint32_t int /*DWORD*/ dwLanguageId,
-            @Nonnull PointerByReference lpBuffer,
+            PointerByReference lpBuffer,
             @uint32_t int /*DWORD*/ nSize,
             @uintptr_t long /* va_list* */ Arguments);
 
@@ -138,7 +139,7 @@ public interface Kernel32 {
             @uintptr_t long /*HANDLE*/ hSourceProcessHandle,
             @uintptr_t long /*HANDLE*/ hSourceHandle,
             @uintptr_t long /*HANDLE*/ hTargetProcessHandle,
-            @Nonnull AddressByReference lpTargetHandle,
+            AddressByReference lpTargetHandle,
             @uint32_t int /*DWORD*/ dwDesiredAccess,
             @int32_t boolean bInheritHandle,
             @uint32_t int /*DWORD*/ dwOptions);
