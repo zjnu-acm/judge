@@ -38,7 +38,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 
-import static cn.edu.zjnu.acm.judge.util.PlatformAssuming.assumingWindows;
+import static cn.edu.zjnu.acm.judge.test.PlatformAssuming.assumingWindows;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 

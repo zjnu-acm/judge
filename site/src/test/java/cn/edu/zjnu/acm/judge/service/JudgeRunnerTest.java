@@ -53,7 +53,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import static cn.edu.zjnu.acm.judge.util.PlatformAssuming.assumingWindows;
+import static cn.edu.zjnu.acm.judge.test.PlatformAssuming.assumingWindows;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 

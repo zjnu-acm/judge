@@ -41,7 +41,7 @@ import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static cn.edu.zjnu.acm.judge.util.PlatformAssuming.assumingWindows;
+import static cn.edu.zjnu.acm.judge.test.PlatformAssuming.assumingWindows;
 
 /**
  *

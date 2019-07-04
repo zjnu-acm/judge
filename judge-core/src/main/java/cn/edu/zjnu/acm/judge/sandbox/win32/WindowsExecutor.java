@@ -86,11 +86,11 @@ public class WindowsExecutor implements Executor {
                         : (flags & O_CREAT) != 0 ? OPEN_ALWAYS
                                 : OPEN_EXISTING;
         final int maybeWriteThrough
-                = (flags & (O_SYNC | O_DSYNC)) != 0
+                = (flags & (Executor.O_SYNC | Executor.O_DSYNC)) != 0
                         ? FILE_FLAG_WRITE_THROUGH
                         : FILE_ATTRIBUTE_NORMAL;
         final int maybeDeleteOnClose
-                = (flags & O_TEMPORARY) != 0
+                = (flags & Executor.O_TEMPORARY) != 0
                         ? FILE_FLAG_DELETE_ON_CLOSE
                         : FILE_ATTRIBUTE_NORMAL;
 
@@ -120,9 +120,9 @@ public class WindowsExecutor implements Executor {
 
         PROCESS_INFORMATION pi;
 
-        try (Handle hIn = fileOpen(inputFile, O_RDONLY);
-                Handle hOut = fileOpen(outputPath, O_WRONLY | O_CREAT | O_TRUNC);
-                Handle hErr = redirectErrorStream ? hOut : fileOpen(errorPath, O_WRONLY | O_CREAT | O_TRUNC)) {
+        try (Handle hIn = fileOpen(inputFile, Executor.O_RDONLY);
+             Handle hOut = fileOpen(outputPath, Executor.O_WRONLY | Executor.O_CREAT | Executor.O_TRUNC);
+             Handle hErr = redirectErrorStream ? hOut : fileOpen(errorPath, Executor.O_WRONLY | Executor.O_CREAT | Executor.O_TRUNC)) {
             pi = createProcess(command, hIn.getValue(), hOut.getValue(), hErr.getValue(), redirectErrorStream, workDirectory);
         }
 

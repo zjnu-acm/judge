@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.util;
+package cn.edu.zjnu.acm.judge.test;
+
+import org.junit.jupiter.api.Assumptions;
 
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * @author zhanhb
@@ -24,11 +25,11 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 public interface PlatformAssuming {
 
     static void assumingWindows() {
-        assumeTrue(Platform.isWindows(), "not windows");
+        Assumptions.assumeTrue(jnc.foreign.Platform.getNativePlatform().getOS().isWindows(), "not windows");
     }
 
     static void assumingNotWindows() {
-        assumeFalse(Platform.isWindows(), "platform is windows");
+        assumeFalse(jnc.foreign.Platform.getNativePlatform().getOS().isWindows(), "platform is windows");
     }
 
 }

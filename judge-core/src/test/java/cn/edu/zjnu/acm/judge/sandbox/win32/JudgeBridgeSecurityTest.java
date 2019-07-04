@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 
-import static cn.edu.zjnu.acm.judge.util.PlatformAssuming.assumingWindows;
+import static cn.edu.zjnu.acm.judge.test.PlatformAssuming.assumingWindows;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**

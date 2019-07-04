@@ -29,11 +29,10 @@ import org.junit.runner.RunWith;
 import static cn.edu.zjnu.acm.judge.sandbox.win32.IntegrityLevel.INTEGRITY_LEVEL_LAST;
 import static cn.edu.zjnu.acm.judge.sandbox.win32.IntegrityLevel.INTEGRITY_LEVEL_LOW;
 import static cn.edu.zjnu.acm.judge.sandbox.win32.TokenLevel.USER_LAST;
-import static cn.edu.zjnu.acm.judge.util.PlatformAssuming.assumingWindows;
+import static cn.edu.zjnu.acm.judge.test.PlatformAssuming.assumingWindows;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 /**
- *
  * @author zhanhb
  */
 @RunWith(JUnitPlatform.class)
