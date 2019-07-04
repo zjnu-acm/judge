@@ -9,7 +9,7 @@ services:
 before_test:
   - 'IF "%OS_ARCH%"=="x86" SET JAVA_HOME=C:\Program Files (x86)\Java\jdk1.8.0'
   - 'IF "%OS_ARCH%"=="x86" SET SET PATH=%JAVA_HOME%\bin;%PATH%'
-  - 'xcopy /S /Y .appveyor\* site\src\main\'
+  - 'xcopy /S /Y .appveyor\* judge-site\src\main\'
   - 'SET MINGW_HOME=C:\MinGW'
   - 'SET PATH=%MINGW_HOME%\bin;%PATH%'
 test_script:
@@ -19,7 +19,7 @@ cache:
 after_test:
   - 'SET PATH=C:\Python34;C:\Python34\Scripts;%PATH%'
   - pip install codecov
-  - codecov -X gcov -f judge-core/target/site/jacoco/jacoco.xml -f site/target/site/jacoco/jacoco.xml
+  - codecov -X gcov -f judge-core/target/site/jacoco/jacoco.xml -f judge-site/target/site/jacoco/jacoco.xml
   - mvnw build-helper:remove-project-artifact
   - >-
     for /F "delims=" %%A in ('dir /AD /B /S %USERPROFILE%\.m2 ^| FINDSTR SNAPSHOT') DO RMDIR /Q /S %%~fA

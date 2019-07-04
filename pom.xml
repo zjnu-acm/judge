@@ -42,7 +42,7 @@
     <modules>
         <module>judge-test</module>
         <module>jnc-platform</module>
-        <module>site</module>
+        <module>judge-site</module>
         <module>judge-core</module>
     </modules>
 
