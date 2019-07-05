@@ -64,7 +64,7 @@ public class ShowSourceController {
             request.setAttribute("contestId", submission.getContest());
         }
         request.setAttribute("language", language);
-        request.setAttribute("result", ResultType.getShowsourceString(submission.getScore()));
+        request.setAttribute("result", ResultType.getShowSourceString(submission.getScore()));
         request.setAttribute("style", style);
         request.setAttribute("source", source);
         return "submissions/source";

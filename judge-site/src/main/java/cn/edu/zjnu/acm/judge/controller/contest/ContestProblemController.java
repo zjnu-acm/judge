@@ -112,7 +112,7 @@ public class ContestProblemController {
         ArrayList<String> urls = new ArrayList<>(list.size());
         for (ScoreCount scoreCount : list) {
             int score = scoreCount.getScore();
-            scores.add(ResultType.getShowsourceString(score));
+            scores.add(ResultType.getShowSourceString(score));
             counts.add(scoreCount.getCount());
             urls.add(request.getContextPath() + "/status?contest_id=" + contestId + "&problem_id=" + problem.getOrigin() + "&score=" + score);
         }

@@ -165,7 +165,9 @@ public class ContestServiceImpl implements ContestService {
         if (log.isWarnEnabled()) {
             List<Long> submissions = submissionMapper.findAllByContestId(id);
             List<Problem> problems = contestMapper.getProblems(id, null, null);
-            log.warn("delete contest id: {}, submissions: {}, problems: {}", id, objectMapper.writeValueAsString(submissions), objectMapper.writeValueAsString(problems));
+            // TODO add trash
+            log.warn("delete contest id: {}, submissions: {}, problems: {}", id,
+                    objectMapper.writeValueAsString(submissions), objectMapper.writeValueAsString(problems));
         }
         long result = submissionMapper.clearByContestId(id)
                 + contestMapper.deleteContestProblems(id)

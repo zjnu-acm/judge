@@ -61,23 +61,23 @@ public interface ResultType {
         return "Other";
     }
 
-    static String getShowsourceString(int pampd) {
-        switch (pampd) {
+    static String getShowSourceString(int score) {
+        switch (score) {
             case QUEUING:
             case COMPILE_ERROR:
-                return getCaseScoreDescription(pampd);
+                return getCaseScoreDescription(score);
             case SCORE_ACCEPT:
                 return getCaseScoreDescription(0);
             default:
-                return Integer.toString(pampd);
+                return Integer.toString(score);
         }
     }
 
-    static String getResultDescription(int i) {
-        if (0 <= i && i < 100) {
+    static String getResultDescription(int score) {
+        if (0 <= score && score < 100) {
             return "Unaccepted";
         }
-        return getCaseScoreDescription(i);
+        return getCaseScoreDescription(score);
     }
 
 }

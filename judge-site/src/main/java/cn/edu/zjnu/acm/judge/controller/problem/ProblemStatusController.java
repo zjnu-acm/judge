@@ -89,7 +89,7 @@ public class ProblemStatusController {
         ArrayList<String> urls = new ArrayList<>(list.size());
         for (ScoreCount scoreCount : list) {
             int score = scoreCount.getScore();
-            scores.add(ResultType.getShowsourceString(score));
+            scores.add(ResultType.getShowSourceString(score));
             counts.add(scoreCount.getCount());
             urls.add(request.getContextPath() + "/status?problem_id=" + id + "&score=" + score);
         }

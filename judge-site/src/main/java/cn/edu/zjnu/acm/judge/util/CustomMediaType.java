@@ -24,9 +24,11 @@ import org.springframework.http.MediaType;
 public interface CustomMediaType {
 
     String XLS_VALUE = "application/vnd.ms-excel";
+    @SuppressWarnings("SpellCheckingInspection")
     String XLSX_VALUE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
     MediaType XLS = MediaType.valueOf(XLS_VALUE);
+    @SuppressWarnings("SpellCheckingInspection")
     MediaType XLSX = MediaType.valueOf(XLSX_VALUE);
 
 }

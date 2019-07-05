@@ -26,9 +26,9 @@ import lombok.extern.slf4j.Slf4j;
 @SuppressWarnings("UtilityClassWithoutPrivateConstructor")
 public class Platform {
 
-    private static final Charset platformCharset = determinCharset();
+    private static final Charset platformCharset = determineCharset();
 
-    private static Charset determinCharset() {
+    private static Charset determineCharset() {
         try {
             return Charset.forName(System.getProperty("sun.jnu.encoding"));
         } catch (UnsupportedCharsetException ex) {
