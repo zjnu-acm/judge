@@ -5,14 +5,39 @@
       layout:decorate="~{layout/main}">
     <head>
         <title>Contest Standing</title>
+        <meta http-equiv="Refresh" content="200" />
     </head>
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
         <p align="center">
             <font size="5" color="blue">Contest Standing--[[${contest.title}]]</font>
         </p>
-        <th:block th:include="fragment/standing"/>
-        <script>!function(w){setTimeout(function(){w.location.reload();},200000);}(this);</script>
+        <table class="standing table-back">
+            <thead>
+                <tr align="center">
+                    <th width="5%">Rank</th>
+                    <th width="10%">Nick Name</th>
+                    <th width="5%">Accepts</th>
+                    <th width="10%">Penalty</th>
+                    <th th:each="problem,it : ${problems}" th:object="${problem}">
+                        <a th:href="@{/contests/{contestId}/problems/{problemId}.html(contestId=${id},problemId=*{id})}">[[${@contestService.toProblemIndex(it.index)}]]</a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr align="center" th:each="user : ${standing}" th:object="${user}">
+                    <td th:text="*{index}">1</td>
+                    <td><a th:href="@{/userstatus(user_id=*{user})}" th:text="*{nick}">userId</a></td>
+                    <td><a th:href="@{/status(user_id=*{user},contest_id=${id})}" th:text="*{solved}">4</a></td>
+                    <td th:text="*{T(cn.edu.zjnu.acm.judge.util.JudgeUtils).INSTANCE.formatTime(time)}">12:40:59</td>
+                    <td th:each="problem : ${problems}" th:object="${problem}" th:with="penalty=${user.getPenalty(problem.id)},time=${user.getTime(problem.id)}">
+                        <th:block th:if="${time != null}" th:text="${T(cn.edu.zjnu.acm.judge.util.JudgeUtils).INSTANCE.formatTime(time)}"/>
+                        <th:block th:if="${time != null and penalty gt 0}" th:utext="'&lt;br /&gt;'"/>
+                        <th:block th:if="${penalty gt 0}">(-[[${penalty}]])</th:block>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <!--/*/</th:block>/*/-->
     </body>
 </html>

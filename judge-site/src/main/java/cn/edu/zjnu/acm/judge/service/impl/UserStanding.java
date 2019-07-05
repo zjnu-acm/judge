@@ -87,7 +87,7 @@ public class UserStanding {
      * @param problem the id of the problem
      * @return the penalty
      */
-    @SpecialCall("fragment/standing")
+    @SpecialCall("contests/standing")
     public long getPenalty(long problem) {
         ProblemTimePenalty timePenalty = map.get(problem);
         return timePenalty == null ? 0 : timePenalty.penalty;

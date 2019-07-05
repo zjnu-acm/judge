@@ -74,7 +74,7 @@ public interface ContestService {
 
     CompletableFuture<List<UserStanding>> standingAsync(long id);
 
-    @SpecialCall({"contests/problem", "contests/problems", "fragment/standing"})
+    @SpecialCall({"contests/problem", "contests/problems", "contests/standing"})
     String toProblemIndex(long num);
 
     void updateSelective(long id, Contest contest);

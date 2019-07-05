@@ -13,18 +13,18 @@ import org.unbescape.html.HtmlEscape;
 /**
  * @author zhanhb
  */
-@SpecialCall({"fragment/standing", "users/list"})
+@SpecialCall({"contests/standing", "users/list"})
 public enum JudgeUtils {
     INSTANCE;
 
     /**
-     * required in fragment/standing
+     * required in contests/standing
      *
      * @param seconds the time, in seconds
      * @return A string represents the specified seconds
      */
     @SuppressWarnings("AssignmentToMethodParameter")
-    @SpecialCall("fragment/standing")
+    @SpecialCall("contests/standing")
     public String formatTime(long seconds) {
         boolean neg = false;
         if (seconds < 0) {
