@@ -23,37 +23,9 @@
     <body id="page-home">
         <div id="page" style="min-width: 980px">
             <div id="nav">
-                <th:block th:if="${contestId==null}">
-                    <div id="outer-header">
-                        <div id="branding" align="center">
-                            <a href="../index.html" th:href="@{/}">
-                                <img id="logo" border="0" src="../../static/images/CLanguagelogo.jpg" th:src="@{|/images${#request.contextPath}logo.jpg|}" width="100%" height="100"/></a>
-                        </div>
-                        <!-- end branding -->
-                    </div>
-                    <!-- end header -->
-                    <th:block th:replace="fragment/navigation"/>
-                </th:block>
-                <th:block th:unless="${contestId==null}">
-                    <table border="0" width="100%" class="table-back">
-                        <tr>
-                            <td style="width:16.7%"><a href="../index.html" th:href="@{/}" style="width:16.7%">Home Page</a></td>
-                            <td style="width:16.7%"><a th:href="@{/bbs}" target="_blank">Web Board</a></td>
-                            <td style="width:16.7%"><a href="../contests/problems.html" th:href="@{/showcontest(contest_id=${contestId})}">Problems</a></td>
-                            <td style="width:16.7%"><a href="../contests/standing.html" th:href="@{/contests/{contestId}/standing.html(contestId=${contestId})}">Standing</a></td>
-                            <td style="width:16.7%"><a th:href="@{/status(contest_id=${contestId})}">Status</a></td>
-
-                            <td th:if="${#request.userPrincipal != null}">
-                                <b>[[${#request.userPrincipal.name}]] </b>
-                                <a th:href="@{/logout.html}">Logout</a>
-                            </td>
-                            <td th:unless="${#request.userPrincipal != null}">
-                                <a th:href="@{/login(url=${backUrl})}">Login</a>
-                            </td>
-                        </tr>
-                    </table>
-                </th:block>
-                <th:block th:replace="fragment/notice"/>
+                <th:block th:if="${contestId==null}" th:include="fragment/navigation"/>
+                <th:block th:unless="${contestId==null}" th:include="fragment/contest-navigation"/>
+                <th:block th:include="fragment/notice"/>
             </div>
             <!-- end nav -->
             <div id="content" class="clearfix">

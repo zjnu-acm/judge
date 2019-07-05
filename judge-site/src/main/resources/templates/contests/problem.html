@@ -17,7 +17,7 @@
                 </td>
             </tr>
         </table>
-        <div th:replace="fragment/problem"></div>
+        <th:block th:include="fragment/problem"/>
         <p align="center" style="font-size: medium; color: #339">
             <span>[</span>
             <a th:href="@{/contests/{contestId}/problems/{problemId}/submit.html(contestId=${contestId},problemId=${problem.id})}">Submit</a>

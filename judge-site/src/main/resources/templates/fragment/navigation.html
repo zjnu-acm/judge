@@ -1,6 +1,14 @@
 <th:block
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:th="http://www.thymeleaf.org">
+    <div id="outer-header">
+        <div id="branding" align="center">
+            <a href="../index.html" th:href="@{/}">
+                <img id="logo" border="0" src="../../static/images/CLanguagelogo.jpg" th:src="@{|/images${#request.contextPath}logo.jpg|}" width="100%" height="100"/></a>
+        </div>
+        <!-- end branding -->
+    </div>
+    <!-- end header -->
     <table align="center" width="100%" class="table-default">
         <tr bgcolor="#6589D1" align="center" valign="top">
             <th class="top" th:text="#{onlinejudge.main}">Online Judge</th>

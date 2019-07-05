@@ -1,0 +1,21 @@
+<th:block
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org">
+    <table border="0" width="100%" class="table-back">
+        <tr>
+            <td style="width:16.7%"><a href="../index.html" th:href="@{/}">Home Page</a></td>
+            <td style="width:16.7%"><a th:href="@{/bbs}" target="_blank">Web Board</a></td>
+            <td style="width:16.7%"><a href="../contests/problems.html" th:href="@{/showcontest(contest_id=${contestId})}">Problems</a></td>
+            <td style="width:16.7%"><a href="../contests/standing.html" th:href="@{/contests/{contestId}/standing.html(contestId=${contestId})}">Standing</a></td>
+            <td style="width:16.7%"><a th:href="@{/status(contest_id=${contestId})}">Status</a></td>
+
+            <td th:if="${#request.userPrincipal != null}">
+                <b>[[${#request.userPrincipal.name}]] </b>
+                <a th:href="@{/logout.html}">Logout</a>
+            </td>
+            <td th:unless="${#request.userPrincipal != null}">
+                <a th:href="@{/login(url=${backUrl})}">Login</a>
+            </td>
+        </tr>
+    </table>
+</th:block>
