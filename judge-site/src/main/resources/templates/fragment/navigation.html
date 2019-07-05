@@ -60,7 +60,7 @@
                     <label th:for="${#ids.next('password')}" th:text="#{onlinejudge.profile.password.label}">password</label>
                     <input th:id="${#ids.seq('password')}" type="password" name="password1" size="10" autocomplete="off"/>
                     <br/>
-                    <input type="checkbox" name="rememberMe" value="true" th:id="${#ids.seq('rememberMe')}" checked="checked"/>
+                    <input type="checkbox" name="rememberMe" value="true" th:id="${#ids.seq('rememberMe')}"/>
                     <label th:for="${#ids.prev('rememberMe')}" th:text="#{onlinejudge.profile.remember.label}">Remember me</label>
                     <input name="url" type="hidden" th:value="${backUrl}"/>
                     <button type="Submit" th:text="#{onlinejudge.profile.button}">login</button><br/>
