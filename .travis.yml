@@ -1,5 +1,8 @@
 language: java
 before_cache:
+- ./mvnw versions:display-dependency-updates
+- ./mvnw versions:display-plugin-updates
+- ./mvn versions:display-property-updates
 - ./mvnw build-helper:remove-project-artifact
 - find $HOME/.m2 -type d -name '*-SNAPSHOT' -print0 | xargs -0 rm -rvf
 cache:

@@ -9,6 +9,10 @@
     <artifactId>judge-core</artifactId>
     <name>Online Judge Core</name>
 
+    <properties>
+        <main.basedir>${basedir}/..</main.basedir>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
