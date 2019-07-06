@@ -19,11 +19,14 @@ import cn.edu.zjnu.acm.judge.config.Constants;
 import cn.edu.zjnu.acm.judge.data.form.SystemInfoForm;
 import cn.edu.zjnu.acm.judge.mapper.SystemMapper;
 import cn.edu.zjnu.acm.judge.service.SystemService;
+import cn.edu.zjnu.acm.judge.util.JsonResource;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Locale;
 import java.util.Objects;
 import javax.annotation.Nullable;
+import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationInitializer;
@@ -41,9 +44,15 @@ public class SystemServiceImpl implements SystemService {
 
     private final SystemMapper systemMapper;
     private volatile SystemInfoForm systemInfo;
+    private JsonResource resetPasswrodTitle;
 
     @Autowired // ensure flyway initialize before this service
     public void setFlywayMigrationInitializer(FlywayMigrationInitializer flywayMigrationInitializer) {
+    }
+
+    @PostConstruct
+    public void init() {
+        resetPasswrodTitle = JsonResource.withInitial(() -> systemMapper.getValueByName(Constants.SystemKey.RESETPASSWORD_TITLE));
     }
 
     @Nullable
@@ -60,8 +69,8 @@ public class SystemServiceImpl implements SystemService {
 
     @Nullable
     @Override
-    public String getResetPasswordTitle() {
-        return systemMapper.getValueByName(Constants.SystemKey.RESETPASSWORD_TITLE);
+    public String getResetPasswordTitle(Locale locale) {
+        return resetPasswrodTitle.get(locale);
     }
 
     @Nullable

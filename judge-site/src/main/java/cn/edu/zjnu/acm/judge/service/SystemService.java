@@ -18,6 +18,7 @@ package cn.edu.zjnu.acm.judge.service;
 import cn.edu.zjnu.acm.judge.data.form.SystemInfoForm;
 import cn.edu.zjnu.acm.judge.util.SpecialCall;
 import java.nio.file.Path;
+import java.util.Locale;
 import javax.annotation.Nullable;
 
 /**
@@ -43,7 +44,7 @@ public interface SystemService {
     String getGa();
 
     @Nullable
-    String getResetPasswordTitle();
+    String getResetPasswordTitle(Locale locale);
 
     Path getDataDirectory(long problem);
 
