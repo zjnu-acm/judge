@@ -46,8 +46,9 @@
     <modules>
         <module>judge-test</module>
         <module>jnc-platform</module>
-        <module>judge-site</module>
         <module>judge-core</module>
+        <module>judge-webjars</module>
+        <module>judge-site</module>
     </modules>
 
     <scm>
@@ -254,135 +255,6 @@
                 <groupId>org.unbescape</groupId>
                 <artifactId>unbescape</artifactId>
                 <version>${unbescape.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.webjars</groupId>
-                <artifactId>angular-multi-select</artifactId>
-                <version>4.0.0</version>
-                <exclusions>
-                    <exclusion>
-                        <artifactId>angularjs</artifactId>
-                        <groupId>org.webjars</groupId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.webjars</groupId>
-                <artifactId>ckeditor</artifactId>
-                <version>4.11.4</version>
-            </dependency>
-            <dependency>
-                <groupId>org.webjars</groupId>
-                <artifactId>highlightjs</artifactId>
-                <version>9.8.0</version>
-            </dependency>
-            <dependency>
-                <groupId>org.webjars</groupId>
-                <artifactId>html5shiv</artifactId>
-                <version>3.7.3</version>
-            </dependency>
-            <dependency>
-                <groupId>org.webjars</groupId>
-                <artifactId>jquery</artifactId>
-                <version>1.12.4</version>
-            </dependency>
-            <dependency>
-                <groupId>org.webjars.bower</groupId>
-                <artifactId>respond</artifactId>
-                <version>1.4.2</version>
-            </dependency>
-            <dependency>
-                <groupId>org.webjars.npm</groupId>
-                <artifactId>angular</artifactId>
-                <version>${angular.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.webjars.npm</groupId>
-                <artifactId>angular-datetime-input</artifactId>
-                <version>5.3.0</version>
-            </dependency>
-            <dependency>
-                <groupId>org.webjars.npm</groupId>
-                <artifactId>angular-loading-bar</artifactId>
-                <version>0.9.0</version>
-            </dependency>
-            <dependency>
-                <groupId>org.webjars.npm</groupId>
-                <artifactId>angular-resource</artifactId>
-                <version>${angular.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.webjars.npm</groupId>
-                <artifactId>angular-sanitize</artifactId>
-                <version>${angular.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.webjars.npm</groupId>
-                <artifactId>angular-ui-bootstrap</artifactId>
-                <version>0.12.1</version>
-                <exclusions>
-                    <exclusion>
-                        <artifactId>angular</artifactId>
-                        <groupId>org.webjars.npm</groupId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.webjars.npm</groupId>
-                <artifactId>angular-ui-router</artifactId>
-                <version>0.2.18</version>
-                <exclusions>
-                    <exclusion>
-                        <artifactId>angular</artifactId>
-                        <groupId>org.webjars.npm</groupId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.webjars.npm</groupId>
-                <artifactId>babel-polyfill</artifactId>
-                <version>6.23.0</version>
-                <exclusions>
-                    <exclusion>
-                        <artifactId>babel-runtime</artifactId>
-                        <groupId>org.webjars.npm</groupId>
-                    </exclusion>
-                    <exclusion>
-                        <artifactId>core-js</artifactId>
-                        <groupId>org.webjars.npm</groupId>
-                    </exclusion>
-                    <exclusion>
-                        <artifactId>regenerator-runtime</artifactId>
-                        <groupId>org.webjars.npm</groupId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.webjars.npm</groupId>
-                <artifactId>bootstrap</artifactId>
-                <version>3.4.1</version>
-            </dependency>
-            <dependency>
-                <groupId>org.webjars.npm</groupId>
-                <artifactId>custom-input</artifactId>
-                <version>0.3.1</version>
-                <exclusions>
-                    <exclusion>
-                        <artifactId>event-lite</artifactId>
-                        <groupId>org.webjars.npm</groupId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.webjars.npm</groupId>
-                <artifactId>ng-file-upload</artifactId>
-                <version>12.2.13</version>
-                <exclusions>
-                    <exclusion>
-                        <artifactId>angular</artifactId>
-                        <groupId>org.webjars.npm</groupId>
-                    </exclusion>
-                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.jetbrains.kotlin</groupId>
