@@ -22,6 +22,7 @@
 *.RTF -text
 *.tgz -text
 *.ttf -text
+*.war -text
 *.zip -text
 *.woff -text
 *.woff2 -text
