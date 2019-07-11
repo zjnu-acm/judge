@@ -11,7 +11,7 @@ public interface Kernel32Util {
         return Foreign.getDefault().getLastError();
     }
 
-    static void assertTrue(boolean test) {
+    static void assertTrue(boolean test) throws Win32Exception {
         if (!test) {
             throw new Win32Exception(getLastError());
         }

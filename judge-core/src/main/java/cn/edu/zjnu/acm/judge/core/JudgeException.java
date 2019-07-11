@@ -13,23 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.support;
-
-import cn.edu.zjnu.acm.judge.core.JudgeException;
+package cn.edu.zjnu.acm.judge.core;
 
 /**
  *
  * @author zhanhb
  */
-public class NoDataException extends JudgeException {
+@SuppressWarnings({"WeakerAccess", "unused"})
+public class JudgeException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
-    public NoDataException() {
+    public JudgeException() {
     }
 
-    public NoDataException(String message) {
+    public JudgeException(String message) {
         super(message);
+    }
+
+    public JudgeException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public JudgeException(Throwable cause) {
+        super(cause);
+    }
+
+    protected JudgeException(String message, Throwable cause,
+            boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
     }
 
 }

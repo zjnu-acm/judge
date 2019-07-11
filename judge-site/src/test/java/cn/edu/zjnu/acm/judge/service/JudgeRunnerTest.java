@@ -18,6 +18,7 @@ package cn.edu.zjnu.acm.judge.service;
 import cn.edu.zjnu.acm.judge.Application;
 import cn.edu.zjnu.acm.judge.core.GroovyHolder;
 import cn.edu.zjnu.acm.judge.core.SimpleValidator;
+import cn.edu.zjnu.acm.judge.core.Status;
 import cn.edu.zjnu.acm.judge.core.Validator;
 import cn.edu.zjnu.acm.judge.data.dto.SubmissionDetailDTO;
 import cn.edu.zjnu.acm.judge.domain.Language;
@@ -160,17 +161,24 @@ public class JudgeRunnerTest {
         int expectScore = SPECIAL_SCORE.getOrDefault(key, checker.getScore());
         String expectedCaseResult = ResultType.getCaseScoreDescription(checker.getStatus());
 
-        assertThat(runResult.getType())
-                .describedAs("type will either be null or COMPILATION_ERROR,"
-                        + " if got other result, please modify this file")
-                .isNull();
+        Status resultStatus = runResult.getType();
+        if (resultStatus != null) {
+            assertThat(resultStatus)
+                    .describedAs("type will either be null or COMPILATION_ERROR,"
+                            + " if got other result, please modify this file")
+                    .isEqualTo(Status.COMPILATION_ERROR);
+        }
         String detail1 = runResult.getDetail();
-        List<SubmissionDetailDTO> details = detail1 != null ? submissionService.parseSubmissionDetail(detail1) : null;
-        String msg = "%s %s %s";
-        Object[] param = {key, details, expectedCaseResult};
-        assertThat(runResult.getScore()).describedAs(msg, param).isEqualTo(expectScore);
-        assertThat(details).describedAs(msg, param)
-                .anyMatch(detail -> expectedCaseResult.equals(detail.getResult()));
+        if (resultStatus == Status.COMPILATION_ERROR) {
+            assertThat(detail1).describedAs("submission detail").isNull();
+        } else {
+            List<SubmissionDetailDTO> details = detail1 != null ? submissionService.parseSubmissionDetail(detail1) : null;
+            String msg = "%s %s %s";
+            Object[] param = {key, details, expectedCaseResult};
+            assertThat(runResult.getScore()).describedAs(msg, param).isEqualTo(expectScore);
+            assertThat(details).describedAs(msg, param)
+                    .anyMatch(detail -> expectedCaseResult.equals(detail.getResult()));
+        }
     }
 
 }

@@ -17,6 +17,7 @@ package cn.edu.zjnu.acm.judge.service.impl;
 
 import cn.edu.zjnu.acm.judge.core.ExecuteResult;
 import cn.edu.zjnu.acm.judge.core.JudgeBridge;
+import cn.edu.zjnu.acm.judge.core.NotExecutableException;
 import cn.edu.zjnu.acm.judge.core.Options;
 import cn.edu.zjnu.acm.judge.core.Status;
 import cn.edu.zjnu.acm.judge.core.Validator;
@@ -46,6 +47,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import jnc.platform.win32.Win32Exception;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -115,6 +117,7 @@ public class JudgeRunnerImpl implements JudgeRunner {
                 // VC++ will output compiling info to stdout
                 // G++ will output compiling info to stderr
                 Path compileInfo = workDirectory.resolve("compileInfo.txt");
+                @SuppressWarnings("null")
                 Process process = ProcessCreationHelper.execute(new ProcessBuilder(compileCommand.split("\\s+"))
                         .directory(workDirectory.toFile())
                         .redirectInput(ProcessBuilder.Redirect.from(NULL_FILE))
@@ -178,10 +181,27 @@ public class JudgeRunnerImpl implements JudgeRunner {
                         .build();
             }
             String scorePerCase = new DecimalFormat("0.#").format(100.0 / caseNum);
+            final ExecuteResult[] ers;
+            try {
+                ers = judgeBridge.judge(opts, false, validator);
+            } catch (NotExecutableException ex) {
+                // original command
+                if (!StringUtils.hasText(language.getExecuteCommand())) {
+                    String msg = "fail to execute the binary file";
+                    Win32Exception cause = ex.getCause();
+                    if (cause != null) {
+                        msg = msg + ": " + cause.getMessage();
+                    }
+                    return builder
+                            .type(Status.COMPILATION_ERROR)
+                            .detail(msg)
+                            .build();
+                }
+                throw ex.getCause();
+            }
             long time = 0;
             long memory = 0;
             int accept = 0; // final case who's result is accepted.
-            ExecuteResult[] ers = judgeBridge.judge(opts, false, validator);
             for (ExecuteResult er : ers) {
                 long tim1 = Math.max(0, er.getTime() - extTime);
                 long mem1 = Math.max(0, er.getMemory() / 1024 - extraMemory);

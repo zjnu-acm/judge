@@ -47,7 +47,7 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
  */
 @RunWith(JUnitPlatform.class)
 @Slf4j
-public class JudgeBridgeTest {
+public class JudgeBridgeGroovyTest {
 
     private static Path work;
     private static Path input;
@@ -78,7 +78,7 @@ public class JudgeBridgeTest {
     public static void setUpClass() throws Exception {
         assumingWindows();
         work = Files.createDirectories(Paths.get("target", "work", "judgeBridgeTest"));
-        URI uri = JudgeBridgeTest.class.getResource("/sample/program").toURI();
+        URI uri = JudgeBridgeGroovyTest.class.getResource("/sample/program").toURI();
         program = Paths.get(uri);
         Path data = program.resolve("../data").toRealPath();
         input = data.resolve("b.in");

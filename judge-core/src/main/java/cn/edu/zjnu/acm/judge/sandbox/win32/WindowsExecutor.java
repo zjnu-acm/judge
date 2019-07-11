@@ -18,6 +18,7 @@ package cn.edu.zjnu.acm.judge.sandbox.win32;
 import cn.edu.zjnu.acm.judge.core.Constants;
 import cn.edu.zjnu.acm.judge.core.ExecuteResult;
 import cn.edu.zjnu.acm.judge.core.Executor;
+import cn.edu.zjnu.acm.judge.core.NotExecutableException;
 import cn.edu.zjnu.acm.judge.core.Options;
 import cn.edu.zjnu.acm.judge.core.Status;
 import java.io.IOException;
@@ -35,7 +36,12 @@ import jnc.platform.win32.PROCESS_INFORMATION;
 import jnc.platform.win32.SECURITY_ATTRIBUTES;
 import jnc.platform.win32.STARTUPINFO;
 import jnc.platform.win32.WString;
+import jnc.platform.win32.Win32Exception;
 
+import static cn.edu.zjnu.acm.judge.core.Executor.O_CREAT;
+import static cn.edu.zjnu.acm.judge.core.Executor.O_RDWR;
+import static cn.edu.zjnu.acm.judge.core.Executor.O_TRUNC;
+import static cn.edu.zjnu.acm.judge.core.Executor.O_WRONLY;
 import static jnc.platform.win32.FileApi.CREATE_ALWAYS;
 import static jnc.platform.win32.FileApi.OPEN_ALWAYS;
 import static jnc.platform.win32.FileApi.OPEN_EXISTING;
@@ -121,8 +127,8 @@ public class WindowsExecutor implements Executor {
         PROCESS_INFORMATION pi;
 
         try (Handle hIn = fileOpen(inputFile, Executor.O_RDONLY);
-             Handle hOut = fileOpen(outputPath, Executor.O_WRONLY | Executor.O_CREAT | Executor.O_TRUNC);
-             Handle hErr = redirectErrorStream ? hOut : fileOpen(errorPath, Executor.O_WRONLY | Executor.O_CREAT | Executor.O_TRUNC)) {
+                Handle hOut = fileOpen(outputPath, Executor.O_WRONLY | Executor.O_CREAT | Executor.O_TRUNC);
+                Handle hErr = redirectErrorStream ? hOut : fileOpen(errorPath, Executor.O_WRONLY | Executor.O_CREAT | Executor.O_TRUNC)) {
             pi = createProcess(command, hIn.getValue(), hOut.getValue(), hErr.getValue(), redirectErrorStream, workDirectory);
         }
 
@@ -215,31 +221,35 @@ public class WindowsExecutor implements Executor {
             setInheritable(hErr);
         }
 
-        ProcessCreationHelper.execute(() -> {
-            String lpApplicationName = null;
-            SECURITY_ATTRIBUTES lpProcessAttributes = null;
-            SECURITY_ATTRIBUTES lpThreadAttributes = null;
-            int dwCreationFlags
-                    = CREATE_SUSPENDED
-                    | DETACHED_PROCESS
-                    | HIGH_PRIORITY_CLASS
-                    | CREATE_NEW_PROCESS_GROUP
-                    | CREATE_UNICODE_ENVIRONMENT
-                    | CREATE_BREAKAWAY_FROM_JOB
-                    | CREATE_NO_WINDOW;
-            Kernel32Util.assertTrue(Advapi32.INSTANCE.CreateProcessAsUserW(
-                    hToken.getValue(),
-                    WString.toNative(lpApplicationName), // executable name
-                    WString.toNative(lpCommandLine),// command line
-                    lpProcessAttributes, // process security attribute
-                    lpThreadAttributes, // thread security attribute
-                    true, // inherits system handles
-                    dwCreationFlags, // selected based on exe type
-                    EMPTY_ENV,
-                    WString.toNative(Objects.toString(lpCurrentDirectory, null)),
-                    startupInfo,
-                    lpProcessInformation));
-        });
+        try {
+            ProcessCreationHelper.execute(() -> {
+                String lpApplicationName = null;
+                SECURITY_ATTRIBUTES lpProcessAttributes = null;
+                SECURITY_ATTRIBUTES lpThreadAttributes = null;
+                int dwCreationFlags
+                        = CREATE_SUSPENDED
+                        | DETACHED_PROCESS
+                        | HIGH_PRIORITY_CLASS
+                        | CREATE_NEW_PROCESS_GROUP
+                        | CREATE_UNICODE_ENVIRONMENT
+                        | CREATE_BREAKAWAY_FROM_JOB
+                        | CREATE_NO_WINDOW;
+                Kernel32Util.assertTrue(Advapi32.INSTANCE.CreateProcessAsUserW(
+                        hToken.getValue(),
+                        WString.toNative(lpApplicationName), // executable name
+                        WString.toNative(lpCommandLine),// command line
+                        lpProcessAttributes, // process security attribute
+                        lpThreadAttributes, // thread security attribute
+                        true, // inherits system handles
+                        dwCreationFlags, // selected based on exe type
+                        EMPTY_ENV,
+                        WString.toNative(Objects.toString(lpCurrentDirectory, null)),
+                        startupInfo,
+                        lpProcessInformation));
+            });
+        } catch (Win32Exception ex) {
+            throw new NotExecutableException(ex);
+        }
         return lpProcessInformation;
     }
 

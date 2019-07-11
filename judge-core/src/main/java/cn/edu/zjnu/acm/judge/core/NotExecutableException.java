@@ -13,34 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.zjnu.acm.judge.support;
+package cn.edu.zjnu.acm.judge.core;
+
+import jnc.platform.win32.Win32Exception;
 
 /**
  *
  * @author zhanhb
  */
-public class JudgeException extends RuntimeException {
+public class NotExecutableException extends JudgeException {
 
     private static final long serialVersionUID = 1L;
 
-    public JudgeException() {
+    public NotExecutableException(Win32Exception ex) {
+        super(ex);
     }
 
-    public JudgeException(String message) {
-        super(message);
+    @Override
+    public Win32Exception getCause() {
+        return (Win32Exception) super.getCause();
     }
 
-    public JudgeException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public JudgeException(Throwable cause) {
-        super(cause);
-    }
-
-    protected JudgeException(String message, Throwable cause,
-            boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
+    @Override
+    public synchronized Throwable fillInStackTrace() {
+        return this;
     }
 
 }

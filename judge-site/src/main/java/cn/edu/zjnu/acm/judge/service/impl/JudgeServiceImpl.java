@@ -15,6 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.service.impl;
 
+import cn.edu.zjnu.acm.judge.core.JudgeException;
 import cn.edu.zjnu.acm.judge.core.SimpleValidator;
 import cn.edu.zjnu.acm.judge.core.Status;
 import cn.edu.zjnu.acm.judge.core.Validator;
@@ -33,7 +34,6 @@ import cn.edu.zjnu.acm.judge.service.LanguageService;
 import cn.edu.zjnu.acm.judge.service.ProblemService;
 import cn.edu.zjnu.acm.judge.service.SystemService;
 import cn.edu.zjnu.acm.judge.support.JudgeData;
-import cn.edu.zjnu.acm.judge.support.JudgeException;
 import cn.edu.zjnu.acm.judge.support.RunRecord;
 import cn.edu.zjnu.acm.judge.support.RunResult;
 import cn.edu.zjnu.acm.judge.util.ResultType;
@@ -100,14 +100,14 @@ public class JudgeServiceImpl implements JudgeService {
                     .build();
             if (runResult.getType() == Status.COMPILATION_ERROR) {
                 submissionMapper.updateResult(submissionId, ResultType.COMPILE_ERROR, 0, 0);
-                submissionDetailMapper.update(detail);
             } else {
                 int score = runResult.getScore();
                 long time = runResult.getTime();
                 long memory = runResult.getMemory();
                 submissionMapper.updateResult(submissionId, score, time, memory);
-                submissionDetailMapper.update(detail);
             }
+            // TODO return value not handled, we can do nothing for the record not exists in the table now.
+            submissionDetailMapper.update(detail);
             updateSubmissionStatus(submission.getUser(), problemId);
         } catch (JudgeException | IOException | Error ex) {
             log.error("got an exception when judging submission {}", submissionId, ex);
