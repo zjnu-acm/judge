@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.web.firewall.RequestRejectedException;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -42,16 +43,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 public class CKFinderControllerTest {
 
+    private static final String DEFAULT_PATH_NAME = "test.jpg";
+
     @Autowired
     private MockMvc mvc;
     @Autowired
     private SystemService systemService;
-    private String pathName = "test.jpg";
     private Path dir;
     private Path path;
     private byte[] content;
 
-    public void setUp() throws IOException {
+    public void setUp(String pathName) throws IOException {
         dir = Files.createDirectories(systemService.getUploadDirectory());
         path = dir.getFileSystem().getPath(dir.toString(), pathName);
         content = "Hello! But I'm not a picture!".getBytes(StandardCharsets.UTF_8);
@@ -66,50 +68,29 @@ public class CKFinderControllerTest {
         DeleteHelper.delete(path);
     }
 
-    /**
-     * Test of legacySupport method, of class CKFinderController.
-     *
-     * {@link CKFinderController#legacySupport(HttpServletRequest, HttpServletResponse, String)}
-     */
-    @Test
-    public void testLegacySupport() throws Exception {
-        log.info("legacySupport");
-        setUp();
-        mvc.perform(get("/support/ckfinder.action").param("path", pathName))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.IMAGE_JPEG))
-                .andExpect(content().bytes(content))
-                .andReturn();
-        mvc.perform(get("/support/ckfinder.action?path=" + pathName + "?hash-1"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.IMAGE_JPEG))
-                .andExpect(content().bytes(content))
-                .andReturn();
-        tearDown();
-    }
-
     @Test
     public void testGetParent() throws Exception {
-        pathName = "../../hello.txt";
-        setUp();
-        mvc.perform(get("/support/ckfinder.action?path=" + pathName))
-                .andExpect(status().isNotFound())
-                .andExpect(handler().handlerType(CKFinderController.class))
-                .andReturn();
+        String pathName = "../../hello.txt";
+        setUp(pathName);
+        try {
+            mvc.perform(get("/userfiles/" + pathName))
+                    .andExpect(status().isNotFound())
+                    .andExpect(handler().handlerType(CKFinderController.class));
+        } catch (RequestRejectedException ignored) {
+        }
         tearDown();
     }
 
     @Test
     public void testSlashRoot() throws Exception {
-        for (String s : new String[]{
+        for (String pathName : new String[]{
             "/aj.txt",
             "//ba.txt",
             "///cc.txt"
         }) {
-            pathName = s;
-            setUp();
+            setUp(pathName);
             assertTrue(path.startsWith(dir));
-            mvc.perform(get("/support/ckfinder.action?path=" + pathName))
+            mvc.perform(get("/userfiles" + pathName))
                     .andExpect(status().isOk())
                     .andExpect(handler().handlerType(CKFinderController.class))
                     .andReturn();
@@ -125,7 +106,8 @@ public class CKFinderControllerTest {
     @Test
     public void testAttachment() throws Exception {
         log.info("attachment");
-        setUp();
+        setUp(DEFAULT_PATH_NAME);
+        String pathName = DEFAULT_PATH_NAME;
         mvc.perform(get("/userfiles/" + pathName))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.IMAGE_JPEG))
@@ -152,8 +134,8 @@ public class CKFinderControllerTest {
 
     @Test
     public void testDotDirectory() throws Exception {
-        pathName = ".git/head";
-        setUp();
+        String pathName = ".git/head";
+        setUp(pathName);
         mvc.perform(get("/userfiles/" + pathName))
                 .andExpect(status().isNotFound())
                 .andExpect(handler().handlerType(CKFinderController.class))
@@ -165,8 +147,8 @@ public class CKFinderControllerTest {
     @SuppressWarnings("ThrowableResultIgnored")
     public void testIaeOnWindows() throws Exception {
         assumingWindows();
-        pathName = "::::::";
-        assertThrows(IllegalArgumentException.class, this::setUp);
+        String pathName = "::::::";
+        assertThrows(IllegalArgumentException.class, () -> setUp(pathName));
         mvc.perform(get("/userfiles/" + pathName))
                 .andExpect(status().isNotFound())
                 .andExpect(handler().handlerType(CKFinderController.class))
@@ -176,8 +158,8 @@ public class CKFinderControllerTest {
     @Test
     public void testColonOnUnix() throws Exception {
         assumingNotWindows();
-        pathName = "::::::";
-        setUp();
+        String pathName = "::::::";
+        setUp(pathName);
         mvc.perform(get("/userfiles/" + pathName))
                 .andExpect(status().isOk())
                 .andExpect(handler().handlerType(CKFinderController.class))

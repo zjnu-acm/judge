@@ -15,6 +15,11 @@
  */
 package cn.edu.zjnu.acm.judge.controller.legacy;
 
+import java.net.URI;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,6 +51,20 @@ public class LegacyController {
             RedirectAttributes redirectAttributes) {
         redirectAttributes.addAttribute("contestId", contestId);
         return "redirect:/contests/{contestId}/problems.html";
+    }
+
+    @Deprecated
+    @GetMapping("support/ckfinder.action")
+    public ResponseEntity<?> ckfinder(HttpServletRequest request, HttpServletResponse response,
+            @RequestParam("path") String path) {
+        try {
+            URI uri = URI.create(request.getContextPath() + "/userfiles/").resolve(path.replaceAll("^/+", ""));
+            if (!uri.isAbsolute()) {
+                return ResponseEntity.status(HttpStatus.FOUND).location(uri).build();
+            }
+        } catch (IllegalArgumentException ignored) {
+        }
+        return ResponseEntity.notFound().build();
     }
 
 }

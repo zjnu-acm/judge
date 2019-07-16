@@ -17,7 +17,6 @@ package cn.edu.zjnu.acm.judge.controller;
 
 import com.github.zhanhb.ckfinder.connector.api.BasePathBuilder;
 import com.github.zhanhb.ckfinder.connector.utils.FileUtils;
-import com.github.zhanhb.ckfinder.download.ContentDispositionStrategy;
 import com.github.zhanhb.ckfinder.download.PathPartial;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -36,7 +35,6 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.HandlerMapping;
 
@@ -49,9 +47,6 @@ import org.springframework.web.servlet.HandlerMapping;
 public class CKFinderController {
 
     private final AntPathMatcher matcher = new AntPathMatcher();
-    private final PathPartial viewer = PathPartial.builder()
-            .contentDisposition(ContentDispositionStrategy.inline())
-            .build();
     private final PathPartial pathPartial = PathPartial.builder().build();
 
     private final BasePathBuilder basePathBuilder;
@@ -71,14 +66,6 @@ public class CKFinderController {
         } catch (IllegalArgumentException ex) {
             return null;
         }
-    }
-
-    @Deprecated
-    @GetMapping("/support/ckfinder.action")
-    public void legacySupport(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam("path") String path) throws IOException, ServletException {
-        int indexOf = path.indexOf('?');
-        viewer.service(request, response, toPath(indexOf > 0 ? path.substring(0, indexOf) : path));
     }
 
     @GetMapping("/userfiles/{first}/**")
