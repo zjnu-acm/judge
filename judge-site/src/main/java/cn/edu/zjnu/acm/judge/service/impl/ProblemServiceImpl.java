@@ -180,15 +180,13 @@ public class ProblemServiceImpl implements ProblemService {
         @SuppressWarnings("CollectionWithoutInitialCapacity")
         List<String> list = new ArrayList<>();
         for (String string : new String[]{
-            description,
-            input,
-            output,
-            hint,
-            source
+            description, input, output, hint, source
         }) {
             try {
+                if (string == null) {
+                    continue;
+                }
                 parser.parse(string, new AbstractMarkupHandler() {
-
                     @Override
                     public void handleAttribute(
                             char[] buffer,
@@ -202,7 +200,6 @@ public class ProblemServiceImpl implements ProblemService {
                             list.add(value);
                         }
                     }
-
                 });
             } catch (ParseException ex) {
                 log.error("", ex);
