@@ -30,10 +30,17 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.attoparser.AbstractMarkupHandler;
+import org.attoparser.MarkupParser;
+import org.attoparser.ParseException;
+import org.attoparser.config.ParseConfiguration;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -46,6 +53,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @RequiredArgsConstructor
 @Service("problemService")
+@Slf4j
 public class ProblemServiceImpl implements ProblemService {
 
     private final ProblemMapper problemMapper;
@@ -157,6 +165,50 @@ public class ProblemServiceImpl implements ProblemService {
         if (total == 0) {
             throw new BusinessException(BusinessCode.PROBLEM_NOT_FOUND, id);
         }
+    }
+
+    @Override
+    public List<String> attachment(long problemId, String requestLocale) {
+        MarkupParser parser = new MarkupParser(ParseConfiguration.htmlConfiguration());
+        Problem problem = findOne(problemId, requestLocale);
+        String description = problem.getDescription();
+        String input = problem.getInput();
+        String output = problem.getOutput();
+        String hint = problem.getHint();
+        String source = problem.getSource();
+
+        @SuppressWarnings("CollectionWithoutInitialCapacity")
+        List<String> list = new ArrayList<>();
+        for (String string : new String[]{
+            description,
+            input,
+            output,
+            hint,
+            source
+        }) {
+            try {
+                parser.parse(string, new AbstractMarkupHandler() {
+
+                    @Override
+                    public void handleAttribute(
+                            char[] buffer,
+                            int nameOffset, int nameLen, int nameLine, int nameCol,
+                            int operatorOffset, int operatorLen, int operatorLine, int operatorCol,
+                            int valueContentOffset, int valueContentLen,
+                            int valueOuterOffset, int valueOuterLen, int valueLine, int valueCol) {
+                        String name = new String(buffer, nameOffset, nameLen);
+                        if (name.equalsIgnoreCase("href") || name.equalsIgnoreCase("src")) {
+                            String value = new String(buffer, valueContentOffset, valueContentLen);
+                            list.add(value);
+                        }
+                    }
+
+                });
+            } catch (ParseException ex) {
+                log.error("", ex);
+            }
+        }
+        return list;
     }
 
 }

@@ -20,6 +20,7 @@ import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.service.ProblemService;
 import com.google.common.collect.ImmutableMap;
 import java.io.IOException;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import javax.annotation.Nullable;
@@ -90,6 +91,12 @@ public class ProblemController {
     public void update(@PathVariable("id") long problemId, @RequestBody Problem p,
             @RequestParam(value = "locale", required = false) @Nullable String requestLocale) {
         problemService.updateSelective(problemId, p, requestLocale);
+    }
+
+    @GetMapping("{id}/attachment")
+    public List<String> attachment(@PathVariable("id") long problemId,
+            @RequestParam(value = "locale", required = false) @Nullable String requestLocale) {
+        return problemService.attachment(problemId, requestLocale);
     }
 
 }

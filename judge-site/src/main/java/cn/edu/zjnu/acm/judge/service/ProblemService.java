@@ -18,6 +18,7 @@ package cn.edu.zjnu.acm.judge.service;
 import cn.edu.zjnu.acm.judge.data.form.ProblemForm;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Locale;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -49,5 +50,7 @@ public interface ProblemService {
     Problem save(@Nonnull Problem problem);
 
     void updateSelective(long problemId, Problem p, @Nullable String requestLocale);
+
+    List<String> attachment(long problemId, String requestLocale);
 
 }
