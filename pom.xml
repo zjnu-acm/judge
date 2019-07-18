@@ -77,9 +77,9 @@
         <lombok-maven-plugin.version>1.18.6.0</lombok-maven-plugin.version>
         <main.basedir>${basedir}</main.basedir>
         <mariadb.version>2.4.2</mariadb.version>
-        <mybatis-spring-boot.version>2.0.1</mybatis-spring-boot.version>
-        <mybatis-spring.version>2.0.1</mybatis-spring.version>
-        <mybatis.version>3.5.1</mybatis.version>
+        <mybatis-spring-boot.version>2.1.0</mybatis-spring-boot.version>
+        <mybatis-spring.version>2.0.2</mybatis-spring.version>
+        <mybatis.version>3.5.2</mybatis.version>
         <objenesis.version>3.0.1</objenesis.version>
         <poi.version>4.1.0</poi.version>
         <prerequisites.maven>3.3.1</prerequisites.maven>
