@@ -115,6 +115,7 @@ public class AccountServiceImpl implements AccountService {
                 .createdTime(null)
                 .modifiedTime(Instant.now())
                 .password(Optional.ofNullable(user.getPassword()).map(passwordEncoder::encode).orElse(null))
+                .email(Optional.ofNullable(user.getEmail()).filter(Objects::nonNull).orElse(null))
                 .build()) == 0) {
             throw new BusinessException(BusinessCode.USER_NOT_FOUND, userId);
         }
