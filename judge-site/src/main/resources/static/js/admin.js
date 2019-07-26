@@ -877,6 +877,8 @@
             var kks = keys(p).sort();
             for (var i = 0, klen = kks.length; i < klen; ++i) {
                 var key = kks[i], v = p[key];
+                if (key === 'page')
+                    continue;
                 if (v === null || typeof v === 'undefined')
                     continue;
                 key = encodeURIComponent(key);

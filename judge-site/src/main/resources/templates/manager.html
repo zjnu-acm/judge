@@ -422,7 +422,7 @@
             </select>
             <button class="btn btn-default" type="submit">查询</button>
         </form>
-        <div ngf-select ngf-drop ng-model="files" ngf-keep="false" class="btn btn-default" ngf-accept="'.xls,.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel'" ngf-allow-dir="false" ngf-change="fileChange()" ngf-multiple="true">选择excel文件用于用户导入</div>
+        <div ngf-select ngf-drop ng-model="files" ngf-keep="false" class="btn btn-default" ngf-accept="'.xls,.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel'" ngf-allow-dir="false" ngf-change="fileChange()" ngf-multiple="true" title="点击选择文件或者将文件拖到这里导入，支持xls/xlsx">导入用户</div>
         <a ng-href="{{exportUrl}}" class="btn btn-default">导出查询结果</a>
         <div class="table-responsive">
             <table class="table table-striped table-hover table-bordered">
