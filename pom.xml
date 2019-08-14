@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.6.RELEASE</version>
+        <version>2.1.7.RELEASE</version>
         <relativePath />
     </parent>
     <groupId>cn.edu.zjnu.acm</groupId>
@@ -59,7 +59,7 @@
     <properties>
         <angular.version>1.2.32</angular.version>
         <attoparser.version>2.0.5.RELEASE</attoparser.version>
-        <caffeine.version>2.7.0</caffeine.version>
+        <caffeine.version>2.8.0</caffeine.version>
         <ckfinder.group-id>com.github.zhanhb</ckfinder.group-id>
         <ckfinder.version>0.0.1.BUILD-SNAPSHOT</ckfinder.version>
         <classmate.version>1.5.0</classmate.version>
@@ -71,12 +71,12 @@
         <jacoco-maven-plugin.version>0.8.4</jacoco-maven-plugin.version>
         <jnc.group-id>com.github.java-native-call</jnc.group-id>
         <jnc.version>0.1.BUILD-SNAPSHOT</jnc.version>
-        <junit-jupiter.version>5.5.0</junit-jupiter.version>
+        <junit-jupiter.version>5.5.1</junit-jupiter.version>
         <kaptcha.version>0.0.9</kaptcha.version>
         <kotlin.version>1.3.41</kotlin.version>
         <lombok-maven-plugin.version>1.18.6.0</lombok-maven-plugin.version>
         <main.basedir>${basedir}</main.basedir>
-        <mariadb.version>2.4.2</mariadb.version>
+        <mariadb.version>2.4.3</mariadb.version>
         <mybatis-spring-boot.version>2.1.0</mybatis-spring-boot.version>
         <mybatis-spring.version>2.0.2</mybatis-spring.version>
         <mybatis.version>3.5.2</mybatis.version>
@@ -115,6 +115,17 @@
                 <groupId>com.github.axet</groupId>
                 <artifactId>kaptcha</artifactId>
                 <version>${kaptcha.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.ben-manes.caffeine</groupId>
+                <artifactId>caffeine</artifactId>
+                <version>${caffeine.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>error_prone_annotations</artifactId>
+                        <groupId>com.google.errorprone</groupId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>com.github.zhanhb</groupId>
