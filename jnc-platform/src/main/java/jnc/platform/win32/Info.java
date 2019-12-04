@@ -26,7 +26,7 @@ import jnc.foreign.Struct;
  * @author zhanhb
  */
 @ParametersAreNonnullByDefault
-public final class Info {
+final class Info {
 
     @Nonnull
     public static <T extends Struct> Info of(Supplier<T> supplier, Function<T, Struct> anySizeArrayElement) {

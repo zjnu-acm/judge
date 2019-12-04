@@ -77,3 +77,4 @@ src/main/webapp/META-INF/
 .svn/
 *.original~
 *.orig
+.flattened-pom.xml.bak

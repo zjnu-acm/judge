@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import static org.hamcrest.Matchers.isIn;
+import static org.hamcrest.Matchers.in;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.http.MediaType.ALL;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -162,7 +162,7 @@ public class ContestListControllerTest {
     }
 
     private ResultMatcher isOkOrFound() {
-        return status().is(isIn(new Integer[]{200, 302}));
+        return status().is(in(new Integer[]{200, 302}));
     }
 
 }
