@@ -36,6 +36,11 @@ final class Info {
         return new Info(struct.size(), anySizeArrayElement.apply(struct).size());
     }
 
+    @Nonnull
+    public static <T extends Struct> Info of(int one, int per) {
+        return new Info(one, per);
+    }
+
     private final int a;
     private final int e;
 

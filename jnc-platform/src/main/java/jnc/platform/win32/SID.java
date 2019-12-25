@@ -31,8 +31,9 @@ public final class SID extends jnc.foreign.Struct {
 
     @Nonnull
     public static SID copyOf(@Nonnull jnc.foreign.Pointer pSid) {
-        SID sid = ofMaxSubAuthorities();
-        Kernel32Util.assertTrue(Advapi32.INSTANCE.CopySid(sid.size(), sid, pSid));
+        int size = Advapi32.INSTANCE.GetLengthSid(pSid);
+        SID sid = ofSize(size);
+        Kernel32Util.assertTrue(Advapi32.INSTANCE.CopySid(size, sid, pSid));
         return sid;
     }
 
@@ -57,6 +58,10 @@ public final class SID extends jnc.foreign.Struct {
         } finally {
             Kernel32Util.freeLocalMemory(ptr);
         }
+    }
+
+    private static SID ofSize(int size) {
+        return new SID(Lazy.INFO.toCount(size));
     }
 
     private final BYTE Revision = new BYTE();
@@ -134,6 +139,12 @@ public final class SID extends jnc.foreign.Struct {
     @Override
     public String toString() {
         return toString(asPSID());
+    }
+
+    private interface Lazy {
+
+        Info INFO = Info.of(new SID().size(), 4);
+
     }
 
 }
