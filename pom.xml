@@ -39,10 +39,6 @@
         </developer>
     </developers>
 
-    <prerequisites>
-        <maven>3.3.9</maven>
-    </prerequisites>
-
     <modules>
         <module>judge-test</module>
         <module>jnc-platform</module>
