@@ -47,10 +47,10 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
-import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.CellValue;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -169,7 +169,7 @@ public class ExcelUtil {
     private static JsonElement parseAsJsonElement(Cell cell, FormulaEvaluator evaluator) {
         switch (cell.getCellType()) {
             case NUMERIC:
-                if (HSSFDateUtil.isCellDateFormatted(cell)) {
+                if (DateUtil.isCellDateFormatted(cell)) {
                     return new JsonPrimitive(DateFormatterHolder.FORMATTER.format(cell.getDateCellValue().toInstant()));
                 } else {
                     return new JsonPrimitive(cell.getNumericCellValue());

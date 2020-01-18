@@ -168,55 +168,6 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>enforce-versions</id>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <configuration>
-                            <rules>
-                                <requireMavenVersion>
-                                    <message>You are running an older version of Maven. ${project.name} requires at least Maven ${prerequisites.maven}</message>
-                                    <version>[${prerequisites.maven},)</version>
-                                </requireMavenVersion>
-                                <requireJavaVersion>
-                                    <message>You are running an older version of Java. ${project.name} requires at least JDK ${java.version}</message>
-                                    <version>[${java.version}.0,)</version>
-                                </requireJavaVersion>
-                                <!--<requireNoRepositories>
-                                    <message>Best Practice is to never define repositories in pom.xml (use a repository manager instead).</message>
-                                </requireNoRepositories>
-                                <requireReleaseDeps>
-                                    <message>No Snapshots Dependencies Allowed!</message>
-                                </requireReleaseDeps>-->
-                                <bannedDependencies>
-                                    <searchTransitive>true</searchTransitive>
-                                    <excludes>
-                                        <!-- logging, use logback instead -->
-                                        <exclude>commons-logging:*</exclude>
-                                        <exclude>log4j:*</exclude>
-
-                                        <!-- use org.javassist:javassist instead -->
-                                        <exclude>javassist:javassist</exclude>
-
-                                        <!-- use net.sf.ehcache:ehcache instead -->
-                                        <exclude>net.sf.ehcache:ehcache-core</exclude>
-
-                                        <!-- old servlet api -->
-                                        <exclude>javax.servlet:servlet-api</exclude>
-                                        <exclude>org.mortbay.jetty:servlet-api</exclude>
-                                        <exclude>org.mortbay.jetty:servlet-api-2.5</exclude>
-                                    </excludes>
-                                </bannedDependencies>
-                            </rules>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <configuration>
                     <additionalJOption>-J-Dfile.encoding=${file.encoding}</additionalJOption>
