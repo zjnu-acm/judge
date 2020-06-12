@@ -41,11 +41,11 @@ public class PasswordConfiguration {
                         new MultiPasswordSupport(
                                 new CombinePasswordEncoder(
                                         new BCryptPasswordEncoder(8),
-                                        MessageDigestPasswordEncoder.md5(),
-                                        MessageDigestPasswordEncoder.sha1(),
-                                        MessageDigestPasswordEncoder.sha256(),
-                                        MessageDigestPasswordEncoder.sha384(),
-                                        MessageDigestPasswordEncoder.sha512()
+                                        MessageDigestPasswordEncoder.MD5,
+                                        MessageDigestPasswordEncoder.SHA1,
+                                        MessageDigestPasswordEncoder.SHA256,
+                                        MessageDigestPasswordEncoder.SHA384,
+                                        MessageDigestPasswordEncoder.SHA512
                                 )
                         ),
                         org.springframework.security.crypto.password.NoOpPasswordEncoder.getInstance()

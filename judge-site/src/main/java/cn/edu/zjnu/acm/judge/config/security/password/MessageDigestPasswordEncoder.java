@@ -18,7 +18,6 @@ package cn.edu.zjnu.acm.judge.config.security.password;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 import java.nio.charset.StandardCharsets;
-import java.util.function.Supplier;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,73 +27,27 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @author zhanhb
  */
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class MessageDigestPasswordEncoder implements PasswordEncoder {
+public enum MessageDigestPasswordEncoder implements PasswordEncoder {
 
     @Deprecated
-    public static MessageDigestPasswordEncoder md5() {
-        return MD5Holder.INSTANCE;
-    }
-
+    MD5(Hashing.md5()),
     @Deprecated
-    public static MessageDigestPasswordEncoder sha1() {
-        return SHAHolder.INSTANCE;
-    }
+    SHA1(Hashing.sha1()),
+    SHA256(Hashing.sha256()),
+    SHA384(Hashing.sha384()),
+    SHA512(Hashing.sha512());
 
-    public static MessageDigestPasswordEncoder sha256() {
-        return SHA256Holder.INSTANCE;
-    }
-
-    public static MessageDigestPasswordEncoder sha384() {
-        return SHA384Holder.INSTANCE;
-    }
-
-    public static MessageDigestPasswordEncoder sha512() {
-        return SHA512Holder.INSTANCE;
-    }
-
-    private final Supplier<HashFunction> s;
+    private final HashFunction hf;
 
     @Override
     public String encode(CharSequence password) {
-        return s.get().hashString(password, StandardCharsets.UTF_8).toString();
+        return hf.hashString(password, StandardCharsets.UTF_8).toString();
     }
 
     @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
-        return s.get().bits() >>> 2 == encodedPassword.length()
+        return hf.bits() >>> 2 == encodedPassword.length()
                 && encode(rawPassword).equalsIgnoreCase(encodedPassword);
-    }
-
-    @Deprecated
-    private interface MD5Holder {
-
-        MessageDigestPasswordEncoder INSTANCE = new MessageDigestPasswordEncoder(Hashing::md5);
-
-    }
-
-    @Deprecated
-    private interface SHAHolder {
-
-        MessageDigestPasswordEncoder INSTANCE = new MessageDigestPasswordEncoder(Hashing::sha1);
-
-    }
-
-    private interface SHA256Holder {
-
-        MessageDigestPasswordEncoder INSTANCE = new MessageDigestPasswordEncoder(Hashing::sha256);
-
-    }
-
-    private interface SHA384Holder {
-
-        MessageDigestPasswordEncoder INSTANCE = new MessageDigestPasswordEncoder(Hashing::sha384);
-
-    }
-
-    private interface SHA512Holder {
-
-        MessageDigestPasswordEncoder INSTANCE = new MessageDigestPasswordEncoder(Hashing::sha512);
-
     }
 
 }

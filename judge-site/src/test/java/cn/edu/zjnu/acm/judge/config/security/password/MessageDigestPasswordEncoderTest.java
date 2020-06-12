@@ -15,11 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.config.security.password;
 
-import java.lang.invoke.MethodHandles;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.Arrays;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.runner.JUnitPlatform;
@@ -46,7 +42,7 @@ public class MessageDigestPasswordEncoderTest {
         log.info("encode");
         CharSequence password = "123456";
         @SuppressWarnings("deprecation")
-        MessageDigestPasswordEncoder instance = MessageDigestPasswordEncoder.md5();
+        MessageDigestPasswordEncoder instance = MessageDigestPasswordEncoder.MD5;
         String expResult = "e10adc3949ba59abbe56e057f20f883e";
         String result = instance.encode(password);
         assertThat(result).isEqualTo(expResult);
@@ -61,7 +57,7 @@ public class MessageDigestPasswordEncoderTest {
         CharSequence rawPassword = "";
         String encodedPassword = "Da39a3ee5e6b4b0d3255bfef95601890afd80709";
         @SuppressWarnings("deprecation")
-        MessageDigestPasswordEncoder instance = MessageDigestPasswordEncoder.sha1();
+        MessageDigestPasswordEncoder instance = MessageDigestPasswordEncoder.SHA1;
         boolean expResult = true;
         boolean result = instance.matches(rawPassword, encodedPassword);
         assertThat(result).isEqualTo(expResult);
@@ -69,16 +65,8 @@ public class MessageDigestPasswordEncoderTest {
 
     @Test
     public void testAll() {
-        Arrays.stream(MessageDigestPasswordEncoder.class.getMethods())
-                .filter(method -> Modifier.isStatic(method.getModifiers()))
-                .filter(method -> method.getParameterTypes().length == 0)
-                .map(this::invokeStatic)
+        Arrays.stream(MessageDigestPasswordEncoder.values())
                 .forEach(encoder -> assertTrue(encoder.matches("test", encoder.encode("test"))));
-    }
-
-    @SneakyThrows
-    private MessageDigestPasswordEncoder invokeStatic(Method method) {
-        return (MessageDigestPasswordEncoder) MethodHandles.publicLookup().unreflect(method).invoke();
     }
 
 }
