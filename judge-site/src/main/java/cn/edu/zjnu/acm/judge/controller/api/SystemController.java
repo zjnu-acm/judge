@@ -42,8 +42,8 @@ public class SystemController {
     private final SystemService systemService;
 
     @GetMapping("time")
-    public Instant time() {
-        return Instant.now();
+    public ValueHolder<Instant> time() {
+        return new ValueHolder<>(Instant.now());
     }
 
     @GetMapping("index")

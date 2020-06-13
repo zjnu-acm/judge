@@ -104,7 +104,7 @@
     app.factory('currentTime', function ($http, path) {
         var timeDiff = 0;
         $http.get(path.api + 'system/time.json').then(function (resp) {
-            timeDiff = new Date - resp.data;
+            timeDiff = new Date - resp.data.value;
         });
         return function () {
             return new Date - timeDiff;
