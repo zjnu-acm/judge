@@ -43,6 +43,16 @@
         submit,
         nick
     </sql>
+    <sql id="propertySelector">
+        <choose>
+            <when test='"user_id".equalsIgnoreCase(item.property)'>user_id</when>
+            <when test='"nick".equalsIgnoreCase(item.property)'>nick</when>
+            <when test='"submit".equalsIgnoreCase(item.property)'>submit</when>
+            <when test='"ratio".equalsIgnoreCase(item.property)'>solved/submit</when>
+            <when test='"solved".equalsIgnoreCase(item.property)'>solved</when>
+            <otherwise>user_id</otherwise>
+        </choose>
+    </sql>
     <select id="findOne" resultMap="baseResultMap">
         select <include refid="columns"/>
         from `user` where user_id=#{id}
@@ -125,14 +135,7 @@
         </where>
         <if test='pageable.sort!=null and pageable.sort.iterator().hasNext()'>
             <foreach item='item' collection='pageable.sort' open='order by' separator=','>
-                <choose>
-                    <when test='item.property==&quot;user_id&quot;'>user_id</when>
-                    <when test='item.property==&quot;nick&quot;'>nick</when>
-                    <when test='item.property==&quot;submit&quot;'>submit</when>
-                    <when test='item.property==&quot;ratio&quot;'>solved/submit</when>
-                    <otherwise>solved</otherwise>
-                </choose>
-                <if test='item.descending'>desc</if>
+                <include refid="propertySelector" /><if test='item.descending'>desc</if>
             </foreach>
         </if>limit #{pageable.offset},#{pageable.size}
     </select>
@@ -153,14 +156,7 @@
         </where>
         <if test='pageable.sort!=null'>
             <foreach item='item' collection='pageable.sort' open='order by' separator=','>
-                <choose>
-                    <when test='item.property==&quot;user_id&quot;'>user_id</when>
-                    <when test='item.property==&quot;nick&quot;'>nick</when>
-                    <when test='item.property==&quot;submit&quot;'>submit</when>
-                    <when test='item.property==&quot;ratio&quot;'>solved/submit</when>
-                    <otherwise>solved</otherwise>
-                </choose>
-                <if test='item.descending'>desc</if>
+                <include refid="propertySelector" /><if test='item.descending'>desc</if>
             </foreach>
         </if>
         limit #{pageable.offset},#{pageable.size}
