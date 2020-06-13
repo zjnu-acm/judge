@@ -16,6 +16,7 @@
 package cn.edu.zjnu.acm.judge.service;
 
 import cn.edu.zjnu.acm.judge.data.dto.SubmissionDetailDTO;
+import cn.edu.zjnu.acm.judge.data.form.BestSubmissionForm;
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import com.google.common.annotations.VisibleForTesting;
 import java.util.List;
@@ -31,7 +32,7 @@ import org.springframework.data.domain.Pageable;
  */
 public interface SubmissionService {
 
-    Page<Submission> bestSubmission(Long contestId, long problemId, Pageable pageable, long total);
+    Page<Submission> bestSubmission(BestSubmissionForm form, Pageable pageable, long total);
 
     boolean canView(HttpServletRequest request, Submission submission);
 

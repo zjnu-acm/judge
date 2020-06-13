@@ -16,6 +16,7 @@
 package cn.edu.zjnu.acm.judge.controller.problem;
 
 import cn.edu.zjnu.acm.judge.data.dto.ScoreCount;
+import cn.edu.zjnu.acm.judge.data.form.BestSubmissionForm;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
@@ -76,6 +77,7 @@ public class ProblemStatusController {
     @SuppressWarnings("AssignmentToMethodParameter")
     public String status(HttpServletRequest request,
             @RequestParam("problem_id") long id,
+            @RequestParam(value = "language", required = false) Integer language,
             @PageableDefault(size = 20, sort = {"time", "memory", "code_length"}) Pageable pageable,
             @Nullable Authentication authentication) {
         log.debug("{}", pageable);
@@ -93,7 +95,11 @@ public class ProblemStatusController {
             counts.add(scoreCount.getCount());
             urls.add(request.getContextPath() + "/status?problem_id=" + id + "&score=" + score);
         }
-        Page<Submission> page = submissionService.bestSubmission(null, id, pageable, problem.getSubmitUser());
+        BestSubmissionForm form = BestSubmissionForm.builder()
+                .problemId(id)
+                .language(language)
+                .build();
+        Page<Submission> page = submissionService.bestSubmission(form, pageable, problem.getSubmitUser());
         boolean isAdmin = UserDetailsServiceImpl.isAdminLoginned(request);
         boolean isSourceBrowser = UserDetailsServiceImpl.isSourceBrowser(request);
         boolean canView = isAdmin || isSourceBrowser;

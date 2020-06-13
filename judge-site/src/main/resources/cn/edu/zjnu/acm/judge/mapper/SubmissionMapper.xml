@@ -89,6 +89,9 @@
         <if test='form.contestId!=null'>
             s.contest_id = s2.contest_id AND
         </if>
+        <if test='form.language!=null'>
+            s.language = s2.language AND
+        </if>
         s.problem_id=s2.problem_id AND s.score=s2.score AND s.user_id=s2.user_id
         AND (
             <foreach index='i' collection='pageable.sort' separator='OR' close="OR">
@@ -113,10 +116,16 @@
         <if test='form.contestId!=null'>
             s.contest_id = s3.contest_id AND
         </if>
+        <if test='form.language!=null'>
+            s.language = s3.language AND
+        </if>
         s.problem_id=s3.problem_id AND s.score=s3.score AND s.user_id=s3.user_id
         <where>
             <if test='form.contestId!=null'>
                 s.contest_id=#{form.contestId}
+            </if>
+            <if test='form.language!=null'>
+                AND s.language = #{form.language}
             </if>
             AND s.problem_id=#{form.problemId} AND s.score=100
             AND s2.solution_id IS NULL

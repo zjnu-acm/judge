@@ -97,8 +97,7 @@ public class SubmissionServiceImpl implements SubmissionService {
     }
 
     @Override
-    public Page<Submission> bestSubmission(Long contestId, long problemId, Pageable pageable, long total) {
-        BestSubmissionForm form = BestSubmissionForm.builder().contestId(contestId).problemId(problemId).build();
+    public Page<Submission> bestSubmission(BestSubmissionForm form, Pageable pageable, long total) {
         List<Submission> bestSubmissions = submissionMapper.bestSubmission(form, pageable);
         return new PageImpl<>(bestSubmissions, pageable, total);
     }

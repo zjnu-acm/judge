@@ -35,5 +35,6 @@ public class BestSubmissionForm implements Serializable {
     private static final long serialVersionUID = 1L;
     private Long contestId;
     private long problemId;
+    private Integer language;
 
 }

@@ -16,6 +16,7 @@
 package cn.edu.zjnu.acm.judge.controller.contest;
 
 import cn.edu.zjnu.acm.judge.data.dto.ScoreCount;
+import cn.edu.zjnu.acm.judge.data.form.BestSubmissionForm;
 import cn.edu.zjnu.acm.judge.domain.Contest;
 import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.domain.Submission;
@@ -45,6 +46,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 
@@ -100,11 +102,17 @@ public class ContestProblemController {
     public String status(
             @PathVariable("contestId") long contestId,
             @PathVariable("pid") int problemNum,
+            @RequestParam(value = "language", required = false) Integer language,
             @PageableDefault(size = 20, sort = {"time", "memory", "code_length"}) Pageable pageable,
             Model model, @Nullable Authentication authentication, HttpServletRequest request) {
         contestService.findOneByIdAndNotDisabled(contestId); // check if problem exists and not disabled
         Problem problem = contestService.getProblem(contestId, problemNum, null);
-        Page<Submission> page = submissionService.bestSubmission(contestId, problem.getOrigin(), pageable, problem.getSubmitUser());
+        BestSubmissionForm form = BestSubmissionForm.builder()
+                .contestId(contestId)
+                .problemId(problem.getOrigin())
+                .language(language)
+                .build();
+        Page<Submission> page = submissionService.bestSubmission(form, pageable, problem.getSubmitUser());
         model.addAttribute("page", page);
         List<ScoreCount> list = submissionMapper.groupByScore(contestId, problem.getOrigin());
         ArrayList<String> scores = new ArrayList<>(list.size());
