@@ -341,6 +341,12 @@
                             </goals>
                         </execution>
                     </executions>
+                    <configuration>
+                        <flattenMode>ossrh</flattenMode>
+                        <pomElements>
+                            <repositories>keep</repositories>
+                        </pomElements>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
@@ -416,17 +422,9 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>flatten-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>flatten</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>flatten</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <inherited>false</inherited>
                 <configuration>
-                    <flattenMode>ossrh</flattenMode>
+                    <flattenMode>bom</flattenMode>
                 </configuration>
             </plugin>
         </plugins>
