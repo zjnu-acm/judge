@@ -15,9 +15,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>jnc-platform</artifactId>
-            <version>${project.version}</version>
+            <groupId>${jnc.group-id}</groupId>
+            <artifactId>jnc-runtime</artifactId>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
