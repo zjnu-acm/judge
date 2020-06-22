@@ -7,5 +7,5 @@ CREATE TABLE `locale` (
   `created_time` datetime NOT NULL DEFAULT current_timestamp(),
   `modified_time` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`_id`),
-  UNIQUE KEY `UQ_ID` (`id`) USING HASH
+  UNIQUE KEY `UQ_ID` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
