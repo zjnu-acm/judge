@@ -26,11 +26,11 @@ import java.util.Objects;
  */
 public enum URLEncoder {
 
-    /**
+    /*
      * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent
      */
     URI_COMPONENT("!'()*-._~"),
-    /**
+    /*
      * pchar="!$&'()*+,-.:;=@_~"
      * https://tools.ietf.org/html/rfc3986#section-3.4
      */

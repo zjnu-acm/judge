@@ -16,6 +16,7 @@
 package cn.edu.zjnu.acm.judge.config;
 
 import com.google.code.kaptcha.servlet.KaptchaExtend;
+import javax.imageio.ImageIO;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -28,7 +29,12 @@ public class KaptchaConfiguration {
 
     @Bean
     public KaptchaExtend kaptchaExtend() {
-        return new KaptchaExtend();
+        boolean useCache = ImageIO.getUseCache();
+        try {
+            return new KaptchaExtend();
+        } finally {
+            ImageIO.setUseCache(useCache);
+        }
     }
 
 }

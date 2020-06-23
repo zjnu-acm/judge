@@ -36,7 +36,6 @@ import org.springframework.web.bind.annotation.RestController;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
- *
  * @author zhanhb
  */
 @RequestMapping(value = "/api/misc", produces = APPLICATION_JSON_VALUE)
@@ -52,10 +51,11 @@ public class MiscController {
     @PostMapping("fix")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public CompletableFuture<?> fix() {
-        userProblemMapper.init();
-        CompletableFuture<?> b = CompletableFuture.runAsync(userProblemMapper::updateProblems);
-        CompletableFuture<?> c = CompletableFuture.runAsync(userProblemMapper::updateUsers);
-        return CompletableFuture.allOf(b, c);
+        return CompletableFuture.runAsync(userProblemMapper::init).thenComposeAsync(__ -> {
+            CompletableFuture<?> b = CompletableFuture.runAsync(userProblemMapper::updateProblems);
+            CompletableFuture<?> c = CompletableFuture.runAsync(userProblemMapper::updateUsers);
+            return CompletableFuture.allOf(b, c);
+        });
     }
 
     @PutMapping("systemInfo")

@@ -66,10 +66,6 @@ public class StatusController {
             @Nullable Authentication authentication,
             Model model) {
         long problemId = 0;
-        URIBuilder uri = URIBuilder.fromRequest(request)
-                .replaceQueryParam("top")
-                .replaceQueryParam("bottom");
-        log.debug("uri={}", uri);
         Map<Long, long[]> problemsMap = Collections.emptyMap();
         if (contestId != null) {
             problemsMap = contestService.getProblemsMap(contestId);
@@ -205,6 +201,10 @@ public class StatusController {
             }
             sb.append("<td>").append(dtf.format(inDate.atZone(ZoneId.systemDefault()).toLocalDateTime())).append("</td></tr>");
         }
+        URIBuilder uri = URIBuilder.fromRequest(request)
+                .replaceQueryParam("top")
+                .replaceQueryParam("bottom");
+        log.debug("uri={}", uri);
         sb.append("</table><p align=center>[<a href=\"")
                 .append(request.getContextPath()).append(uri)
                 .append("\">Top</a>]&nbsp;&nbsp;");

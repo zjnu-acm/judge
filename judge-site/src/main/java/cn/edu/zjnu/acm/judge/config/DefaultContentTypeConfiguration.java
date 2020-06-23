@@ -15,21 +15,26 @@
  */
 package cn.edu.zjnu.acm.judge.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- *
  * @author zhanhb
  */
-@Configuration
-public class JudgeWebMvcConfiguration implements WebMvcConfigurer {
+@Configuration(proxyBeanMethods = false)
+public class DefaultContentTypeConfiguration {
 
-    @Override
-    public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
-        configurer.defaultContentType(MediaType.TEXT_HTML);
+    @Bean
+    public WebMvcConfigurer defaultContentTypeConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
+                configurer.defaultContentType(MediaType.TEXT_HTML);
+            }
+        };
     }
 
 }

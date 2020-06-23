@@ -47,7 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @WebAppConfiguration
 public class UnauthorizedEntryControllerTest {
-    
+
     @Autowired
     private MockMvc mvc;
 

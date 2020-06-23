@@ -15,7 +15,8 @@
  */
 package cn.edu.zjnu.acm.judge.controller.legacy;
 
-import java.util.Map;
+import cn.edu.zjnu.acm.judge.util.URIBuilder;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,9 +54,8 @@ public class LegacyAdminController {
 
     @Deprecated
     @GetMapping("admin.rejudge")
-    public String rejudge(RedirectAttributes attributes, @RequestParam Map<String, String> query) {
-        attributes.addAllAttributes(query);
-        return "redirect:/admin/rejudge";
+    public String rejudge(HttpServletRequest request) {
+        return "redirect:" + URIBuilder.fromRequest(request).replacePath("/admin/rejudge").toString();
     }
 
 }

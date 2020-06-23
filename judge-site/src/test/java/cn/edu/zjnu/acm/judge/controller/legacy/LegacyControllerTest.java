@@ -2,7 +2,6 @@ package cn.edu.zjnu.acm.judge.controller.legacy;
 
 import cn.edu.zjnu.acm.judge.Application;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.runner.JUnitPlatform;
@@ -62,7 +61,7 @@ public class LegacyControllerTest {
     /**
      * Test of ckfinder method, of class LegacyController.
      *
-     * {@link LegacyController#ckfinder(HttpServletRequest, HttpServletResponse, String)}
+     * {@link LegacyController#ckfinder(HttpServletRequest, String)}
      */
     @Test
     public void testCkfinder() throws Exception {

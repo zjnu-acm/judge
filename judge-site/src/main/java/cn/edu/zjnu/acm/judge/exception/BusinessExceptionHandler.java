@@ -24,7 +24,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
-import org.springframework.web.accept.ContentNegotiationStrategy;
+import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -39,7 +39,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class BusinessExceptionHandler {
 
     private final MessageSource messageSource;
-    private final ContentNegotiationStrategy contentNegotiationStrategy;
+    private final ContentNegotiationManager contentNegotiationManager;
 
     @ExceptionHandler
     public Object handler(BusinessException businessException, Locale locale, NativeWebRequest nativeWebRequest)
@@ -48,7 +48,7 @@ public class BusinessExceptionHandler {
         String message = code.getMessage();
         String formatted = messageSource.getMessage(message, businessException.getParams(), message, locale);
 
-        List<MediaType> mediaTypes = contentNegotiationStrategy.resolveMediaTypes(nativeWebRequest);
+        List<MediaType> mediaTypes = contentNegotiationManager.resolveMediaTypes(nativeWebRequest);
         log.debug("mediaTypes: {}", mediaTypes);
 
         for (MediaType mediaType : mediaTypes) {

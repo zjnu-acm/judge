@@ -41,7 +41,7 @@ public class ShowSourceControllerTest {
     /**
      * Test of showSource method, of class ShowSourceController.
      *
-     * {@link ShowSourceController#showSource(HttpServletRequest, long, Integer, Authentication)} 
+     * {@link ShowSourceController#showSource(HttpServletRequest, long, Integer, Authentication)}
      */
     @Test
     public void testShowSource() throws Exception {

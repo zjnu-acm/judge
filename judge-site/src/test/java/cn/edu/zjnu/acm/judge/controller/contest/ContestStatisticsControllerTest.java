@@ -2,7 +2,6 @@ package cn.edu.zjnu.acm.judge.controller.contest;
 
 import cn.edu.zjnu.acm.judge.Application;
 import cn.edu.zjnu.acm.judge.service.MockDataService;
-import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.runner.JUnitPlatform;
@@ -36,7 +35,7 @@ public class ContestStatisticsControllerTest {
 
     /**
      * Test of contestStatistics method, of class ContestStatisticsController.
-     * {@link ContestStatisticsController#contestStatistics(HttpServletRequest, Model, long)}
+     * {@link ContestStatisticsController#contestStatistics(Model, long)}
      */
     @Test
     public void testContestStatistics() throws Exception {

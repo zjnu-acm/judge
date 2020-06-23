@@ -17,7 +17,6 @@ package cn.edu.zjnu.acm.judge.controller.legacy;
 
 import java.net.URI;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -55,7 +54,7 @@ public class LegacyController {
 
     @Deprecated
     @GetMapping("support/ckfinder.action")
-    public ResponseEntity<?> ckfinder(HttpServletRequest request, HttpServletResponse response,
+    public ResponseEntity<?> ckfinder(HttpServletRequest request,
             @RequestParam("path") String path) {
         try {
             URI uri = URI.create(request.getContextPath() + "/userfiles/").resolve(path.replaceAll("^/+", ""));

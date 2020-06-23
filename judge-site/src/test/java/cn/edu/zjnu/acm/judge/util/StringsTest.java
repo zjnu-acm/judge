@@ -36,7 +36,7 @@ public class StringsTest {
 
     // use null class loader, ensure access of system script engine manager.
     // usually our classloader will extends system class loader.
-    // but surefire won't do like this when not forking
+    // but surefire won't do like this. when not forking
     // the enigine manager can be found though system class loader.
     private final ScriptEngine javascript = new ScriptEngineManager(null).getEngineByName("javascript");
 

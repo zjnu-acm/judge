@@ -22,7 +22,5 @@ ckfinder:
     file-delete: true
   thumbs.direct-access: true
   allow-double-extension: true
-  check-size-after-scaling: true
   force-ascii: true
-  secure-image-uploads: true
   servlet.path: /webjars/ckfinder/2.6.2.1/core/connector/java/connector.java

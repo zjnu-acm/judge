@@ -55,6 +55,16 @@
                 <groupId>org.webjars.npm</groupId>
                 <artifactId>angular-datetime-input</artifactId>
                 <version>5.3.0</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>angular</artifactId>
+                        <groupId>org.webjars.npm</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>custom-input</artifactId>
+                        <groupId>org.webjars.npm</groupId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.webjars.npm</groupId>
@@ -222,6 +232,11 @@
             <groupId>org.webjars.npm</groupId>
             <artifactId>ckeditor</artifactId>
             <version>4.12.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>custom-input</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>

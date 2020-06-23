@@ -11,7 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +38,6 @@ public class ContestStatisticsController {
 
     @GetMapping("conteststatistics")
     public String contestStatistics(
-            HttpServletRequest request,
             Model model,
             @RequestParam("contest_id") long contestId) throws SQLException {
         Instant now = Instant.now();

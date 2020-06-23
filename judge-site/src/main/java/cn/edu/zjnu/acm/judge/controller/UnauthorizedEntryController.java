@@ -38,7 +38,7 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 @RequestMapping("unauthorized")
 public class UnauthorizedEntryController {
 
-    @GetMapping(produces = TEXT_HTML_VALUE)
+    @RequestMapping(produces = TEXT_HTML_VALUE)
     public String unauthorizedHtml(HttpServletRequest request, RedirectAttributes redirectAttributes) {
         String url = (String) request.getAttribute(JudgeHandlerInterceptor.BACK_URL_ATTRIBUTE_NAME);
         if (StringUtils.hasText(url)) {
@@ -47,7 +47,7 @@ public class UnauthorizedEntryController {
         return "redirect:/login";
     }
 
-    @GetMapping(produces = APPLICATION_JSON_VALUE)
+    @RequestMapping(produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<?, ?>> unauthorized() {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.emptyMap());
     }

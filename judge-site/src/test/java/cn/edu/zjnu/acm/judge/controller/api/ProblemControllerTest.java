@@ -33,6 +33,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -146,6 +147,24 @@ public class ProblemControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
         objectMapper.readTree(result.getResponse().getContentAsString()).hasNonNull("dataDir");
+    }
+
+    /**
+     * Test of attachment method, of class ProblemController.
+     *
+     * {@link ProblemController#attachment(long, String)}
+     */
+    @Test
+    public void testAttachment() throws Exception {
+        log.info("attachment");
+        long id = mockDataService.problem().getId();
+        String locale = "";
+        MockHttpServletResponse response = mvc.perform(
+                get("/api/problems/{id}/attachment.json", id)
+                        .param("locale", locale))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse();
     }
 
 }

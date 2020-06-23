@@ -44,7 +44,7 @@ public class SystemServiceImpl implements SystemService {
 
     private final SystemMapper systemMapper;
     private volatile SystemInfoForm systemInfo;
-    private JsonResource resetPasswrodTitle;
+    private JsonResource resetPasswordTitle;
 
     @Autowired // ensure flyway initialize before this service
     public void setFlywayMigrationInitializer(FlywayMigrationInitializer flywayMigrationInitializer) {
@@ -52,7 +52,7 @@ public class SystemServiceImpl implements SystemService {
 
     @PostConstruct
     public void init() {
-        resetPasswrodTitle = JsonResource.withInitial(() -> systemMapper.getValueByName(Constants.SystemKey.RESETPASSWORD_TITLE));
+        resetPasswordTitle = JsonResource.withInitial(() -> systemMapper.getValueByName(Constants.SystemKey.RESETPASSWORD_TITLE));
     }
 
     @Nullable
@@ -70,7 +70,7 @@ public class SystemServiceImpl implements SystemService {
     @Nullable
     @Override
     public String getResetPasswordTitle(Locale locale) {
-        return resetPasswrodTitle.get(locale);
+        return resetPasswordTitle.get(locale);
     }
 
     @Nullable

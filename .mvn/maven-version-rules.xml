@@ -26,40 +26,9 @@
                 <ignoreVersion type="regex">.+-android</ignoreVersion>
             </ignoreVersions>
         </rule>
-        <rule groupId="com.thoughtworks.xstream" artifactId="xstream" comparisonMethod="maven">
-            <ignoreVersions>
-                <ignoreVersion type="regex">.+-java7</ignoreVersion>
-            </ignoreVersions>
-        </rule>
-        <rule groupId="dom4j" artifactId="dom4j" comparisonMethod="maven">
-            <ignoreVersions>
-                <ignoreVersion>20040902.021138</ignoreVersion>
-            </ignoreVersions>
-        </rule>
-        <rule groupId="javax.cache" artifactId="cache-api" comparisonMethod="maven">
-            <ignoreVersions>
-                <ignoreVersion type="regex">.+-PFD</ignoreVersion>
-            </ignoreVersions>
-        </rule>
-        <rule groupId="javax.enterprise" artifactId="cdi-api" comparisonMethod="maven">
-            <ignoreVersions>
-                <ignoreVersion type="regex">.+Alpha\d[a-z]</ignoreVersion>
-                <ignoreVersion type="regex">.+-[A-Z]{3}(?:\d+(?:\.\d+)*)?</ignoreVersion>
-            </ignoreVersions>
-        </rule>
-        <rule groupId="javax.faces" artifactId="javax.faces-api" comparisonMethod="maven">
-            <ignoreVersions>
-                <ignoreVersion type="regex">.+-pfd</ignoreVersion>
-            </ignoreVersions>
-        </rule>
         <rule groupId="javax.xml.bind" artifactId="jaxb-api" comparisonMethod="maven">
             <ignoreVersions>
                 <ignoreVersion type="regex">.+-b\d+\.\d+</ignoreVersion>
-            </ignoreVersions>
-        </rule>
-        <rule groupId="io.spring.platform" artifactId="platform-bom" comparisonMethod="maven">
-            <ignoreVersions>
-                <ignoreVersion type="regex">^\d+\.\d+.*</ignoreVersion>
             </ignoreVersions>
         </rule>
         <rule groupId="org.postgresql" artifactId="postgresql" comparisonMethod="maven">
@@ -82,18 +51,12 @@
         </rule>
         <rule groupId="org.webjars.npm" artifactId="angular*" comparisonMethod="maven">
             <ignoreVersions>
-                <ignoreVersion type="regex">(?!=1\.2).*</ignoreVersion>
+                <ignoreVersion type="regex">(?!=1\.2).+</ignoreVersion>
             </ignoreVersions>
         </rule>
         <rule groupId="org.webjars" artifactId="jquery" comparisonMethod="maven">
             <ignoreVersions>
                 <ignoreVersion type="regex">[^1].*</ignoreVersion>
-            </ignoreVersions>
-        </rule>
-        <rule groupId="xml-apis" artifactId="xml-apis" comparisonMethod="maven">
-            <ignoreVersions>
-                <ignoreVersion>2.0.0</ignoreVersion>
-                <ignoreVersion>2.0.2</ignoreVersion>
             </ignoreVersions>
         </rule>
     </rules>

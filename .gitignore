@@ -67,7 +67,7 @@ $RECYCLE.BIN/
 
 # Netbeans IDE
 nbproject
-src/main/webapp/META-INF/
+judge-site/src/main/webapp/META-INF/
 
 # Eclipse IDE
 .classpath
