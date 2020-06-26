@@ -42,7 +42,7 @@
             return title ? $document.prop('title', title + ' - 在线评测系统管理后台') : $document.prop('title');
         };
     });
-    app.factory('path', function ($rootScope) {
+    app.factory('paths', function ($rootScope) {
         function normalize(url) {
             var a = $('<a>', {href: url}).appendTo('body'), href = a.prop('href');
             a.remove();
@@ -50,42 +50,42 @@
         }
         var adminHref = normalize($('base').prop('href')),
                 baseHref = normalize(adminHref + '../');
-        var path = {
+        var paths = {
             admin: adminHref,
             api: baseHref + 'api/',
             base: baseHref
         };
-        return $rootScope.path = path;
+        return $rootScope.paths = paths;
     });
-    app.factory('problemApi', function ($resource, path) {
-        return $resource(path.api + 'problems/:id.json', {id: '@id'}, {
+    app.factory('problemApi', function ($resource, paths) {
+        return $resource(paths.api + 'problems/:id.json', {id: '@id'}, {
             'query': {method: 'GET', isArray: false},
             'update': {method: 'PATCH'}
         });
     });
-    app.factory('contestApi', function ($resource, path) {
-        return $resource(path.api + 'contests/:id.json', {id: '@id'}, {
+    app.factory('contestApi', function ($resource, paths) {
+        return $resource(paths.api + 'contests/:id.json', {id: '@id'}, {
             update: {method: 'PATCH'}
         });
     });
-    app.factory('localeApi', function ($resource, path) {
-        return $resource(path.api + 'locales/:id.json', {id: '@id'});
+    app.factory('localeApi', function ($resource, paths) {
+        return $resource(paths.api + 'locales/:id.json', {id: '@id'});
     });
-    app.factory('pageIndexApi', function ($resource, path) {
-        return $resource(path.api + 'system/index.json', {}, {
+    app.factory('pageIndexApi', function ($resource, paths) {
+        return $resource(paths.api + 'system/index.json', {}, {
             update: {method: 'PUT'}
         });
     });
-    app.factory('accountApi', function ($resource, path) {
-        return $resource(path.api + 'accounts/:id.json', {id: '@id'}, {
+    app.factory('accountApi', function ($resource, paths) {
+        return $resource(paths.api + 'accounts/:id.json', {id: '@id'}, {
             query: {method: 'GET', isArray: false},
             update: {method: 'PATCH'},
-            updatePassword: {method: 'PATCH', url: path.api + 'accounts/:id/password.json'},
-            saveAll: {method: 'POST', url: path.api + 'accounts/import.json'}
+            updatePassword: {method: 'PATCH', url: paths.api + 'accounts/:id/password.json'},
+            saveAll: {method: 'POST', url: paths.api + 'accounts/import.json'}
         });
     });
-    app.factory('miscApi', function ($resource, path) {
-        return $resource(path.api + 'misc/:action.json', null, {
+    app.factory('miscApi', function ($resource, paths) {
+        return $resource(paths.api + 'misc/:action.json', null, {
             getSystemInfo: {method: 'GET', params: {action: 'systemInfo'}},
             setSystemInfo: {method: 'PUT', params: {action: 'systemInfo'}},
             fix: {method: 'POST', params: {action: 'fix'}},
@@ -101,9 +101,9 @@
             }
         };
     });
-    app.factory('currentTime', function ($http, path) {
+    app.factory('currentTime', function ($http, paths) {
         var timeDiff = 0;
-        $http.get(path.api + 'system/time.json').then(function (resp) {
+        $http.get(paths.api + 'system/time.json').then(function (resp) {
             timeDiff = new Date - resp.data.value;
         });
         return function () {
@@ -474,11 +474,11 @@
             'Cache-Control': 'no-cache',
             'Pragma': 'no-cache'
         });
-        $httpProvider.interceptors.push(['$q', 'path', function ($q, path) {
+        $httpProvider.interceptors.push(['$q', 'paths', function ($q, paths) {
                 return {
                     'responseError': function (response) {
                         if (response.status === 401) {
-                            window.location = path.base + 'login?url=' + encodeURIComponent(document.location.href);
+                            window.location = paths.base + 'login?url=' + encodeURIComponent(document.location.href);
                             return;
                         }
                         var code = response.status, series = code / 100 >> 0;
@@ -510,7 +510,7 @@
             second: 'ss'
         });
     });
-    app.run(function (ckeditor, path) {
+    app.run(function (ckeditor, paths) {
         ckeditor.options = {
             deferred: true,
             toolbar: [
@@ -524,7 +524,7 @@
                 ['Font', 'FontSize', 'Maximize']
             ]
         };
-        ckeditor.ckfinder = path.base + 'webjars/ckfinder/2.6.2.1/';
+        ckeditor.ckfinder = paths.base + 'webjars/ckfinder/2.6.2.1/';
     });
     app.controller('index', function ($scope, contestApi, miscApi) {
         $scope.systemInfo = miscApi.getSystemInfo();
@@ -867,13 +867,13 @@
             return arguments.length ? set(t) : storage;
         };
     });
-    app.controller('account-list', function ($scope, $stateParams, $timeout, reload, accountApi, $modal, returnIt, path, Upload, $state, Sort, uploadAccounts) {
+    app.controller('account-list', function ($scope, $stateParams, $timeout, reload, accountApi, $modal, returnIt, paths, Upload, $state, Sort, uploadAccounts) {
         $scope.params = $.extend({}, $stateParams);
         function toReqParam(params) {
             return $.extend({}, params, {sort: sorted.concat(EXTERN_ORDERS)});
         }
         function exportUrl() {
-            var url = path.api + 'accounts.xlsx', p = $stateParams, parts = [];
+            var url = paths.api + 'accounts.xlsx', p = $stateParams, parts = [];
             var kks = keys(p).sort();
             for (var i = 0, klen = kks.length; i < klen; ++i) {
                 var key = kks[i], v = p[key];
@@ -933,7 +933,7 @@
             var files = $scope.files;
             files = files ? [].concat(files) : [];
             files.length && Upload.upload({
-                url: path.api + 'accounts.json',
+                url: paths.api + 'accounts.json',
                 data: {file: files},
                 arrayKey: '',
                 filename: files[0].name
