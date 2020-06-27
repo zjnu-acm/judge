@@ -15,12 +15,26 @@
  */
 package cn.edu.zjnu.acm.judge.util;
 
+import com.google.gson.Gson;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
+import org.unbescape.uri.UriEscape;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 /**
  *
@@ -49,6 +63,38 @@ public class URLEncoderTest {
 
         str = "abc@@@123456";
         assertThat(encoder.encode(str)).isSameAs(str);
+    }
+
+    private String printableAscii() {
+        return IntStream.range(32, 127).collect(StringBuilder::new,
+                (sb, x) -> sb.append((char) x),
+                StringBuilder::append).toString();
+    }
+
+    @Test
+    public void testUriComponent() throws ScriptException {
+        String printableAscii = printableAscii();
+
+        ScriptEngine javascript = new ScriptEngineManager(null).getEngineByName("javascript");
+        Object expect = javascript.eval("encodeURIComponent(" + new Gson().toJson(printableAscii) + ")");
+        assertThat(URLEncoder.URI_COMPONENT.encode(printableAscii)).isEqualTo(expect);
+    }
+
+    public static List<Arguments> data() {
+        return Arrays.asList(
+                arguments(URLEncoder.PATH, (Function<String, String>) UriEscape::escapeUriPath),
+                arguments(URLEncoder.QUERY, (Function<String, String>) UriEscape::escapeUriQueryParam),
+                arguments(URLEncoder.FRAGMENT, (Function<String, String>) UriEscape::escapeUriFragmentId),
+                arguments(URLEncoder.PATH_SEGMENT, (Function<String, String>) UriEscape::escapeUriPathSegment)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("data")
+    public void testPath(URLEncoder encoder, Function<String, String> function) {
+        String printableAscii = printableAscii();
+        String expect = function.apply(printableAscii);
+        assertThat(encoder.encode(printableAscii)).isEqualTo(expect);
     }
 
 }

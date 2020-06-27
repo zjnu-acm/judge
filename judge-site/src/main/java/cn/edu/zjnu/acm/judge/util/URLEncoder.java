@@ -35,7 +35,9 @@ public enum URLEncoder {
      * https://tools.ietf.org/html/rfc3986#section-3.4
      */
     QUERY("!$'()*,-./:;?@_~"),
-    PATH("!$'()*,-./:;@_~");
+    PATH("!$&'()*+,-./:;=@_~"),
+    PATH_SEGMENT("!$&'()*+,-.:;=@_~"),
+    FRAGMENT("!$&'()*+,-./:;?=@_~");
 
     private static final char[] HEX_CHARS = "0123456789ABCDEF".toCharArray();
 
