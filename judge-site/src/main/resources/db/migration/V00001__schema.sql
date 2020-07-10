@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS `compileinfo` (
   `error` longtext NOT NULL,
   PRIMARY KEY (`solution_id`) USING HASH,
   CONSTRAINT `FK_compileinfo_solution` FOREIGN KEY (`solution_id`) REFERENCES `solution` (`solution_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
 -- Data exporting was unselected.
 -- Dumping structure for table contest
@@ -31,21 +31,21 @@ CREATE TABLE IF NOT EXISTS `contest` (
   `private` int(11) DEFAULT NULL,
   `disabled` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`contest_id`) USING HASH
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
 -- Data exporting was unselected.
 -- Dumping structure for table contest_problem
 CREATE TABLE IF NOT EXISTS `contest_problem` (
   `contest_id` bigint(20) NOT NULL,
   `problem_id` bigint(20) NOT NULL,
-  `title` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
   `num` int(11) NOT NULL,
   PRIMARY KEY (`contest_id`,`problem_id`) USING HASH,
   UNIQUE KEY `UQ_contest_num` (`contest_id`,`num`),
   KEY `INDEX_problem` (`problem_id`) USING HASH,
   CONSTRAINT `FK_contest_problem_contest` FOREIGN KEY (`contest_id`) REFERENCES `contest` (`contest_id`),
   CONSTRAINT `FK_contest_problem_problem` FOREIGN KEY (`problem_id`) REFERENCES `problem` (`problem_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
 -- Data exporting was unselected.
 -- Dumping structure for table language
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `language` (
   `ext_memory` bigint(20) NOT NULL,
   `description` longtext NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
 -- Data exporting was unselected.
 -- Dumping structure for table loginlog
@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `loginlog` (
   `time` datetime NOT NULL,
   `success` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
 -- Data exporting was unselected.
 -- Dumping structure for table mail
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS `mail` (
   KEY `INDEX_from_user` (`from_user`),
   CONSTRAINT `FK_mail_users` FOREIGN KEY (`from_user`) REFERENCES `users` (`user_id`),
   CONSTRAINT `FK_mail_users_2` FOREIGN KEY (`to_user`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
 -- Data exporting was unselected.
 -- Dumping structure for table message
@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `message` (
   CONSTRAINT `FK_message_message` FOREIGN KEY (`parent_id`) REFERENCES `message` (`message_id`),
   CONSTRAINT `FK_message_problem` FOREIGN KEY (`problem_id`) REFERENCES `problem` (`problem_id`),
   CONSTRAINT `FK_message_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
 -- Data exporting was unselected.
 -- Dumping structure for table news
@@ -128,7 +128,7 @@ CREATE TABLE IF NOT EXISTS `news` (
   `disabled` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`news_id`),
   KEY `INDEX_users` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
 -- Data exporting was unselected.
 -- Dumping structure for table persistent_logins
@@ -139,7 +139,7 @@ CREATE TABLE IF NOT EXISTS `persistent_logins` (
   `last_used` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`series`) USING HASH,
   KEY `Index_username` (`username`) USING HASH
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
 -- Data exporting was unselected.
 -- Dumping structure for table privilege
@@ -149,7 +149,7 @@ CREATE TABLE IF NOT EXISTS `privilege` (
   `disabled` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`user_id`) USING HASH,
   CONSTRAINT `FK_privilege_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
 -- Data exporting was unselected.
 -- Dumping structure for table problem
@@ -175,7 +175,7 @@ CREATE TABLE IF NOT EXISTS `problem` (
   PRIMARY KEY (`problem_id`),
   KEY `FK_problem_contest` (`contest_id`),
   CONSTRAINT `FK_problem_contest` FOREIGN KEY (`contest_id`) REFERENCES `contest` (`contest_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
 -- Data exporting was unselected.
 -- Dumping structure for table problem_i18n
@@ -190,7 +190,7 @@ CREATE TABLE IF NOT EXISTS `problem_i18n` (
   `source` longtext,
   PRIMARY KEY (`id`,`locale`) USING HASH,
   CONSTRAINT `FK_problem` FOREIGN KEY (`id`) REFERENCES `problem` (`problem_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
 -- Data exporting was unselected.
 -- Dumping structure for table solution
@@ -216,7 +216,7 @@ CREATE TABLE IF NOT EXISTS `solution` (
   CONSTRAINT `FK_solution_contest` FOREIGN KEY (`contest_id`) REFERENCES `contest` (`contest_id`),
   CONSTRAINT `FK_solution_problem` FOREIGN KEY (`problem_id`) REFERENCES `problem` (`problem_id`),
   CONSTRAINT `FK_solution_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
 -- Data exporting was unselected.
 -- Dumping structure for table solution_details
@@ -225,7 +225,7 @@ CREATE TABLE IF NOT EXISTS `solution_details` (
   `details` longtext NOT NULL,
   PRIMARY KEY (`solution_id`) USING HASH,
   CONSTRAINT `FK_solution_details_solution` FOREIGN KEY (`solution_id`) REFERENCES `solution` (`solution_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
 -- Data exporting was unselected.
 -- Dumping structure for table source_code
@@ -234,7 +234,7 @@ CREATE TABLE IF NOT EXISTS `source_code` (
   `source` blob NOT NULL,
   PRIMARY KEY (`solution_id`) USING HASH,
   CONSTRAINT `FK_source_code_solution` FOREIGN KEY (`solution_id`) REFERENCES `solution` (`solution_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
 -- Data exporting was unselected.
 -- Dumping structure for table users
@@ -257,7 +257,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `submit_problem` bigint(20) NOT NULL DEFAULT '0',
   `disabled` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`user_id`) USING HASH
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
 -- Data exporting was unselected.
 -- Dumping structure for table user_problem
@@ -270,7 +270,7 @@ CREATE TABLE IF NOT EXISTS `user_problem` (
   KEY `INDEX_PROBLEM` (`problem_id`) USING HASH,
   CONSTRAINT `FK_user_problem_problem` FOREIGN KEY (`problem_id`) REFERENCES `problem` (`problem_id`),
   CONSTRAINT `FK_user_problem_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
 -- Data exporting was unselected.
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

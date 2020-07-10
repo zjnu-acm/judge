@@ -6,5 +6,3 @@ CREATE TABLE `email_history` (
 	`created_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`)
 )
-COLLATE='utf8mb4_general_ci'
-ENGINE=InnoDB

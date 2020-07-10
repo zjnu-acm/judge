@@ -6,7 +6,6 @@ CREATE TABLE `submission_detail` (
 	`system_info` LONGTEXT NULL DEFAULT NULL,
 	PRIMARY KEY (`submission_id`)
 )
-COLLATE='utf8mb4_general_ci'
 ROW_FORMAT=COMPRESSED
 ;
 ALTER TABLE `submission_detail`

@@ -29,6 +29,12 @@ public class FlywayMigrateConfiguration {
                         execute(connection, sql2);
                     }
                 }
+                changeChecksum(connection, "00001", -101734729, 592369862);
+                changeChecksum(connection, "20170415", -2048294486, -589197382);
+                changeChecksum(connection, "20170830", 1960302326, -617876408);
+                changeChecksum(connection, "20170904", -582277005, 1502423353);
+                changeChecksum(connection, "20180102", -609124434, 965422677);
+                changeChecksum(connection, "20190511.1", -1132220883, 2055755532);
             } catch (SQLException ex) {
                 // usually there is no table flyway_schema_history
                 log.error("{}", ex.getMessage());
