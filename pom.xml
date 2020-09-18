@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.1.RELEASE</version>
+        <version>2.3.4.RELEASE</version>
         <relativePath />
     </parent>
     <groupId>cn.edu.zjnu.acm</groupId>
@@ -73,7 +73,8 @@
         <poi.version>4.1.2</poi.version>
         <prerequisites.maven>3.3.1</prerequisites.maven>
         <revision>0.0.1-SNAPSHOT</revision>
-        <sortpom-maven-plugin.version>2.11.0</sortpom-maven-plugin.version>
+        <sortpom-maven-plugin.version>2.12.0</sortpom-maven-plugin.version>
+        <thymeleaf-layout-dialect.version>2.5.1</thymeleaf-layout-dialect.version>
         <unbescape.version>1.1.6.RELEASE</unbescape.version>
     </properties>
 
