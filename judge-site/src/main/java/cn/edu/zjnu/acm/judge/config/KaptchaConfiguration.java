@@ -29,11 +29,13 @@ public class KaptchaConfiguration {
 
     @Bean
     public KaptchaExtend kaptchaExtend() {
-        boolean useCache = ImageIO.getUseCache();
-        try {
-            return new KaptchaExtend();
-        } finally {
-            ImageIO.setUseCache(useCache);
+        synchronized (ImageIO.class) {
+            boolean useCache = ImageIO.getUseCache();
+            try {
+                return new KaptchaExtend();
+            } finally {
+                ImageIO.setUseCache(useCache);
+            }
         }
     }
 
