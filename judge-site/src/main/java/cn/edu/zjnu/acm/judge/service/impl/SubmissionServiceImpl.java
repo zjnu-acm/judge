@@ -69,7 +69,7 @@ public class SubmissionServiceImpl implements SubmissionService {
     private final JudgePoolService judgePoolService;
     private final ProblemMapper problemMapper;
     private final ProblemService problemService;
-    private final UserPreferenceMapper userPerferenceMapper;
+    private final UserPreferenceMapper userPreferenceMapper;
     private final LanguageService languageService;
     private final ContestService contestService;
 
@@ -159,7 +159,7 @@ public class SubmissionServiceImpl implements SubmissionService {
 
         // 插入source_code表
         submissionDetailMapper.saveSource(submissionId, source);
-        userPerferenceMapper.setLanguage(userId, languageId);
+        userPreferenceMapper.setLanguage(userId, languageId);
         if (addToPool) {
             return judgePoolService.add(submissionId);
         }

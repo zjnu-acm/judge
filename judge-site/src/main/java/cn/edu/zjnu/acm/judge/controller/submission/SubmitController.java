@@ -30,7 +30,7 @@ public class SubmitController {
 
     private final ContestOnlyService contestOnlyService;
     private final SubmissionService submissionService;
-    private final UserPreferenceMapper userPerferenceMapper;
+    private final UserPreferenceMapper userPreferenceMapper;
     private final LanguageService languageService;
 
     @GetMapping({"submitpage", "submit"})
@@ -56,7 +56,7 @@ public class SubmitController {
         model.addAttribute("problemId", problemId);
         model.addAttribute("languages", languageService.getAvailableLanguages().values());
         String user = authentication != null ? authentication.getName() : null;
-        int languageId = userPerferenceMapper.getLanguage(user);
+        int languageId = userPreferenceMapper.getLanguage(user);
         model.addAttribute("languageId", languageId);
         return "submissions/index";
     }

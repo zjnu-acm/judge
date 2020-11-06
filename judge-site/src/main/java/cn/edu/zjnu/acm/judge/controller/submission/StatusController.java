@@ -210,7 +210,7 @@ public class StatusController {
                 .append("\">Top</a>]&nbsp;&nbsp;");
         sb.append("[<a href=\"").append(request.getContextPath());
         if (max.isPresent()) {
-            uri.replaceQueryParam("bottom", Long.toString(max.getAsLong())).toString();
+            uri.replaceQueryParam("bottom", Long.toString(max.getAsLong()));
             sb.append(uri);
             uri.replaceQueryParam("bottom");
         } else {

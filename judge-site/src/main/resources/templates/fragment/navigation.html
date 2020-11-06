@@ -41,7 +41,8 @@
                 <a th:href="@{/userlist}" th:text="#{onlinejudge.user.ranklist}">user list</a>
                 <br/>
                 <form th:action="@{/searchuser}" method="get">
-                    <input size="10" name="user_id" type="text"/>
+                    <label th:for="${#ids.next('user-id')}" style="color:blue" th:text="#{onlinejudge.user.searchuser.label}">Search User:</label>
+                    <input th:id="${#ids.seq('user-id')}" size="10" name="user_id" type="text"/>
                     <button type="submit" th:text="#{onlinejudge.user.searchuser.button}">Search</button>
                 </form>
             </td>

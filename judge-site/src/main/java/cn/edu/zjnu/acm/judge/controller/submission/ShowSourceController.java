@@ -4,7 +4,6 @@ import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.exception.BusinessCode;
 import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionDetailMapper;
-import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserPreferenceMapper;
 import cn.edu.zjnu.acm.judge.service.ContestOnlyService;
 import cn.edu.zjnu.acm.judge.service.LanguageService;
@@ -30,9 +29,8 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 @RequiredArgsConstructor
 public class ShowSourceController {
 
-    private final SubmissionMapper submissionMapper;
     private final SubmissionDetailMapper submissionDetailMapper;
-    private final UserPreferenceMapper userPerferenceMapper;
+    private final UserPreferenceMapper userPreferenceMapper;
     private final SubmissionService submissionService;
     private final LanguageService languageService;
     private final ContestOnlyService contestOnlyService;
@@ -53,9 +51,9 @@ public class ShowSourceController {
         String language = languageService.getLanguageName(submission.getLanguage());
 
         if (style == null) {
-            style = userPerferenceMapper.getStyle(userId);
+            style = userPreferenceMapper.getStyle(userId);
         } else {
-            userPerferenceMapper.setStyle(userId, style);
+            userPreferenceMapper.setStyle(userId, style);
         }
         String source = submissionDetailMapper.findSourceById(submissionId);
 
