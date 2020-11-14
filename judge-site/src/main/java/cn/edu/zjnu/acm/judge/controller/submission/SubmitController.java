@@ -4,10 +4,10 @@ import cn.edu.zjnu.acm.judge.mapper.UserPreferenceMapper;
 import cn.edu.zjnu.acm.judge.service.ContestOnlyService;
 import cn.edu.zjnu.acm.judge.service.LanguageService;
 import cn.edu.zjnu.acm.judge.service.SubmissionService;
+import cn.edu.zjnu.acm.judge.util.SecurityUtils;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,9 +35,9 @@ public class SubmitController {
 
     @GetMapping({"submitpage", "submit"})
     public String submitPage(Model model,
-            @RequestParam(value = "problem_id", required = false) Long problemId,
-            Authentication authentication) {
-        return page(null, problemId, authentication, model);
+            @RequestParam(value = "problem_id", required = false) Long problemId) {
+        String userId = SecurityUtils.getUserId();
+        return page(null, problemId, userId, model);
     }
 
     @GetMapping({
@@ -46,17 +46,16 @@ public class SubmitController {
     })
     public String contestSubmitPage(Model model,
             @PathVariable(value = "contestId", required = false) Long contestId,
-            @PathVariable("problemId") long problemId,
-            Authentication authentication) {
-        return page(contestId, problemId, authentication, model);
+            @PathVariable("problemId") long problemId) {
+        String userId = SecurityUtils.getUserId();
+        return page(contestId, problemId, userId, model);
     }
 
-    private String page(Long contestId, Long problemId, Authentication authentication, Model model) {
+    private String page(Long contestId, Long problemId, String userId, Model model) {
         model.addAttribute("contestId", contestId);
         model.addAttribute("problemId", problemId);
         model.addAttribute("languages", languageService.getAvailableLanguages().values());
-        String user = authentication != null ? authentication.getName() : null;
-        int languageId = userPreferenceMapper.getLanguage(user);
+        int languageId = userPreferenceMapper.getLanguage(userId);
         model.addAttribute("languageId", languageId);
         return "submissions/index";
     }
@@ -70,10 +69,9 @@ public class SubmitController {
             @PathVariable("problemId") long problemId,
             @RequestParam("language") int languageId,
             @RequestParam("source") String source,
-            RedirectAttributes redirectAttributes,
-            Authentication authentication) {
+            RedirectAttributes redirectAttributes) {
         contestOnlyService.checkSubmit(request, contestId, problemId);
-        String userId = authentication.getName();
+        String userId = SecurityUtils.getUserId();
         String ip = request.getRemoteAddr();
         redirectAttributes.addAttribute("user_id", userId);
         // If the submit is not in a contest

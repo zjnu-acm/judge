@@ -20,6 +20,7 @@ import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.exception.BusinessCode;
 import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.service.ProblemService;
+import cn.edu.zjnu.acm.judge.util.SecurityUtils;
 import cn.edu.zjnu.acm.judge.util.URIBuilder;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +28,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -47,9 +47,9 @@ public class ProblemListController {
     private final ProblemService problemService;
 
     @GetMapping({"problemlist", "problems"})
-    public String problemList(ProblemForm form, Model model, Locale locale, Authentication authentication,
+    public String problemList(ProblemForm form, Model model, Locale locale,
             @PageableDefault(100) Pageable pageable, HttpServletRequest request) {
-        String currentUserId = authentication != null ? authentication.getName() : null;
+        String currentUserId = SecurityUtils.getUserId();
         String url = URIBuilder.fromRequest(request).replaceQueryParam("page").toString();
         model.addAttribute("url", url);
         form.setDisabled(Boolean.FALSE);
@@ -59,12 +59,12 @@ public class ProblemListController {
     }
 
     @GetMapping("searchproblem")
-    public String searchProblem(ProblemForm form, Model model, Locale locale, Authentication authentication,
+    public String searchProblem(ProblemForm form, Model model, Locale locale,
             @PageableDefault(1000) Pageable pageable, HttpServletRequest request) {
         if (!StringUtils.hasText(form.getSstr())) {
             throw new BusinessException(BusinessCode.PROBLEM_SEARCH_KEY_EMPTY);
         }
-        String currentUserId = authentication != null ? authentication.getName() : null;
+        String currentUserId = SecurityUtils.getUserId();
         String url = URIBuilder.fromRequest(request).replaceQueryParam("page").toString();
         model.addAttribute("url", url);
         model.addAttribute("query", form.getSstr());

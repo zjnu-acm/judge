@@ -6,6 +6,7 @@ import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.MessageMapper;
 import cn.edu.zjnu.acm.judge.service.MessageService;
 import cn.edu.zjnu.acm.judge.util.JudgeUtils;
+import cn.edu.zjnu.acm.judge.util.SecurityUtils;
 import cn.edu.zjnu.acm.judge.util.URIBuilder;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -15,7 +16,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -129,9 +129,8 @@ public class BBSController {
             @RequestParam(value = "parent_id", required = false) Long parentId,
             @RequestParam(value = "content", defaultValue = "") String content,
             @RequestParam(value = "title", defaultValue = "") String title,
-            RedirectAttributes redirectAttributes,
-            Authentication authentication) {
-        final String userId = authentication != null ? authentication.getName() : null;
+            RedirectAttributes redirectAttributes) {
+        final String userId = SecurityUtils.getUserId();
         if (!StringUtils.hasText(title)) {
             throw new BusinessException(BusinessCode.MESSAGE_EMPTY_TITLE);
         }

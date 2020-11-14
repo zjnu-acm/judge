@@ -18,15 +18,14 @@ package cn.edu.zjnu.acm.judge.service.impl;
 import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserRoleMapper;
+import cn.edu.zjnu.acm.judge.util.SecurityUtils;
+import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
-import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -55,9 +54,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return request.isUserInRole("SOURCE_BROWSER");
     }
 
-    public static boolean isUser(@Nullable Authentication authentication, @Nullable String userId) {
-        return userId != null && Optional.ofNullable(authentication).map(Principal::getName)
-                .map(userId::equals).orElse(false);
+    public static boolean isUser(@Nullable String userId) {
+        return Objects.equal(SecurityUtils.getUserId(), userId);
     }
 
     private final UserRoleMapper userRoleMapper;

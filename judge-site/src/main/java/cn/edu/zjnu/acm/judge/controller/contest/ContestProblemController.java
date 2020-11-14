@@ -28,6 +28,7 @@ import cn.edu.zjnu.acm.judge.service.SubmissionService;
 import cn.edu.zjnu.acm.judge.service.SystemService;
 import cn.edu.zjnu.acm.judge.service.impl.UserDetailsServiceImpl;
 import cn.edu.zjnu.acm.judge.util.ResultType;
+import cn.edu.zjnu.acm.judge.util.SecurityUtils;
 import cn.edu.zjnu.acm.judge.util.URIBuilder;
 import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
@@ -40,7 +41,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -66,9 +66,8 @@ public class ContestProblemController {
 
     @GetMapping
     public String problems(Model model, @Nullable Locale locale,
-            @PathVariable("contestId") long contestId,
-            Authentication authentication) {
-        Contest contest = contestService.getContestAndProblemsNotDisabled(contestId, authentication != null ? authentication.getName() : null, locale);
+            @PathVariable("contestId") long contestId) {
+        Contest contest = contestService.getContestAndProblemsNotDisabled(contestId, SecurityUtils.getUserId(), locale);
         model.addAttribute("contestId", contestId);
         model.addAttribute("contest", contest);
         if (contest.isStarted()) {
@@ -104,7 +103,7 @@ public class ContestProblemController {
             @PathVariable("pid") int problemNum,
             @RequestParam(value = "language", required = false) Integer language,
             @PageableDefault(size = 20, sort = {"time", "memory", "code_length"}) Pageable pageable,
-            Model model, @Nullable Authentication authentication, HttpServletRequest request) {
+            Model model, HttpServletRequest request) {
         contestService.findOneByIdAndNotDisabled(contestId); // check if problem exists and not disabled
         Problem problem = contestService.getProblem(contestId, problemNum, null);
         BestSubmissionForm form = BestSubmissionForm.builder()
@@ -134,7 +133,7 @@ public class ContestProblemController {
         request.setAttribute("url", URIBuilder.fromRequest(request).replaceQueryParam("page").toString());
         request.setAttribute("contestId", contestId);
         request.setAttribute("canView", canView);
-        request.setAttribute("authentication", authentication);
+        request.setAttribute("currentUserId", SecurityUtils.getUserId());
         return "contests/problems-status";
     }
 

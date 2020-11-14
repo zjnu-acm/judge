@@ -9,11 +9,10 @@ import cn.edu.zjnu.acm.judge.service.ContestOnlyService;
 import cn.edu.zjnu.acm.judge.service.LanguageService;
 import cn.edu.zjnu.acm.judge.service.SubmissionService;
 import cn.edu.zjnu.acm.judge.util.ResultType;
-import javax.annotation.Nullable;
+import cn.edu.zjnu.acm.judge.util.SecurityUtils;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,11 +39,10 @@ public class ShowSourceController {
     @SuppressWarnings("AssignmentToMethodParameter")
     public String showSource(HttpServletRequest request,
             @RequestParam("solution_id") long submissionId,
-            @RequestParam(value = "style", required = false) Integer style,
-            @Nullable Authentication authentication) {
+            @RequestParam(value = "style", required = false) Integer style) {
+        String userId = SecurityUtils.getUserId();
         Submission submission = submissionService.findById(submissionId);
         contestOnlyService.checkViewSource(request, submission);
-        String userId = authentication != null ? authentication.getName() : null;
         if (!submissionService.canView(request, submission)) {
             throw new BusinessException(BusinessCode.VIEW_SOURCE_PERMISSION_DENIED, submissionId);
         }

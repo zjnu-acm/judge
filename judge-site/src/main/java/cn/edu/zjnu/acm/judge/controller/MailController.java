@@ -22,10 +22,10 @@ import cn.edu.zjnu.acm.judge.mapper.MailMapper;
 import cn.edu.zjnu.acm.judge.service.AccountService;
 import cn.edu.zjnu.acm.judge.service.impl.UserDetailsServiceImpl;
 import cn.edu.zjnu.acm.judge.util.JudgeUtils;
+import cn.edu.zjnu.acm.judge.util.SecurityUtils;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -49,20 +49,20 @@ public class MailController {
     private final AccountService accountService;
     private final MailMapper mailMapper;
 
-    private Mail access(long mailId, Authentication authentication) {
+    private Mail access(long mailId) {
         Mail mail = mailMapper.findOne(mailId);
         if (mail == null) {
             throw new BusinessException(BusinessCode.MAIL_NOT_FOUND);
         }
-        if (!UserDetailsServiceImpl.isUser(authentication, mail.getTo())) {
+        if (!UserDetailsServiceImpl.isUser(mail.getTo())) {
             throw new BusinessException(BusinessCode.MAIL_INVALID_ACCESS);
         }
         return mail;
     }
 
     @GetMapping("deletemail")
-    public String delete(@RequestParam("mail_id") long mailId, Authentication authentication) {
-        access(mailId, authentication);
+    public String delete(@RequestParam("mail_id") long mailId) {
+        access(mailId);
         mailMapper.delete(mailId);
         return "redirect:/mail";
     }
@@ -71,12 +71,11 @@ public class MailController {
     @SuppressWarnings("AssignmentToMethodParameter")
     public String mail(Model model,
             @RequestParam(value = "size", defaultValue = "20") int size,
-            @RequestParam(value = "start", defaultValue = "1") long start,
-            Authentication authentication) {
+            @RequestParam(value = "start", defaultValue = "1") long start) {
         if (start <= 0) {
             start = 1;
         }
-        String currentUserId = authentication != null ? authentication.getName() : null;
+        String currentUserId = SecurityUtils.getUserId();
 
         List<Mail> mails = mailMapper.findAllByTo(currentUserId, start - 1, size);
 
@@ -91,9 +90,8 @@ public class MailController {
     @SuppressWarnings("AssignmentToMethodParameter")
     public String send(@RequestParam("title") String title,
             @RequestParam("to") String to,
-            @RequestParam("content") String content,
-            Authentication authentication) {
-        String userId = authentication != null ? authentication.getName() : null;
+            @RequestParam("content") String content) {
+        String userId = SecurityUtils.getUserId();
         if (!StringUtils.hasText(title)) {
             title = "No Topic";
         }
@@ -115,8 +113,7 @@ public class MailController {
     @SuppressWarnings("AssignmentToMethodParameter")
     public String sendPage(Model model,
             @RequestParam(value = "reply", defaultValue = "-1") long reply,
-            @RequestParam(value = "to", defaultValue = "") String userId,
-            Authentication authentication) {
+            @RequestParam(value = "to", defaultValue = "") String userId) {
         String title = "";
         String content = "";
 
@@ -126,7 +123,7 @@ public class MailController {
                 throw new BusinessException(BusinessCode.MAIL_NOT_FOUND);
             }
             String toUser = parent.getTo();
-            if (!UserDetailsServiceImpl.isUser(authentication, toUser)) {
+            if (!UserDetailsServiceImpl.isUser(toUser)) {
                 throw new BusinessException(BusinessCode.MAIL_INVALID_ACCESS);
             }
             userId = parent.getFrom();
@@ -145,9 +142,8 @@ public class MailController {
 
     @GetMapping("showmail")
     public String showMail(Model model,
-            @RequestParam("mail_id") long mailId,
-            Authentication authentication) {
-        Mail mail = access(mailId, authentication);
+            @RequestParam("mail_id") long mailId) {
+        Mail mail = access(mailId);
         mailMapper.readed(mailId);
         model.addAttribute("mail", mail);
         return "mails/view";

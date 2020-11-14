@@ -16,13 +16,12 @@
 package cn.edu.zjnu.acm.judge.config;
 
 import cn.edu.zjnu.acm.judge.mapper.MailMapper;
+import cn.edu.zjnu.acm.judge.util.SecurityUtils;
 import java.util.Optional;
 import java.util.function.Function;
-import javax.annotation.Nullable;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -47,8 +46,7 @@ public class JudgeHandlerInterceptor {
 
     @ModelAttribute
     public void addAttributes(HttpServletRequest request,
-            @RequestParam(value = "url", required = false) String url,
-            @Nullable Authentication authentication) {
+            @RequestParam(value = "url", required = false) String url) {
         if (Boolean.TRUE.equals(request.getAttribute(APPLIED_ONCE_KEY))) {
             return;
         }
@@ -64,7 +62,7 @@ public class JudgeHandlerInterceptor {
             }
             request.setAttribute(BACK_URL_ATTRIBUTE_NAME, uri);
         }
-        Optional.ofNullable(authentication).map(Authentication::getName)
+        Optional.ofNullable(SecurityUtils.getUserId())
                 .map(mailMapper::getMailInfo)
                 .ifPresent(mailInfo -> request.setAttribute("mailInfo", mailInfo));
     }

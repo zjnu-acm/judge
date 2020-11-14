@@ -24,7 +24,6 @@ import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -63,7 +62,6 @@ public class StatusController {
             @RequestParam(value = "score", required = false) @Nullable Integer sc,
             @RequestParam(value = "user_id", defaultValue = "") String userId,
             @RequestParam(value = "top", required = false) final Long top,
-            @Nullable Authentication authentication,
             Model model) {
         long problemId = 0;
         Map<Long, long[]> problemsMap = Collections.emptyMap();
@@ -187,7 +185,7 @@ public class StatusController {
             } else {
                 sb.append("<td>&nbsp;</td><td>&nbsp;</td>");
             }
-            if (admin || sourceBrowser || UserDetailsServiceImpl.isUser(authentication, user_id1)) {
+            if (admin || sourceBrowser || UserDetailsServiceImpl.isUser(user_id1)) {
                 sb.append("<td><a href=showsource?solution_id=").append(id).append(" target=_blank>").append(language1).append("</a></td>");
             } else {
                 sb.append("<td>").append(language1).append("</td>");

@@ -24,11 +24,11 @@ import cn.edu.zjnu.acm.judge.service.ProblemService;
 import cn.edu.zjnu.acm.judge.service.SubmissionService;
 import cn.edu.zjnu.acm.judge.service.impl.UserDetailsServiceImpl;
 import cn.edu.zjnu.acm.judge.util.ResultType;
+import cn.edu.zjnu.acm.judge.util.SecurityUtils;
 import cn.edu.zjnu.acm.judge.util.URIBuilder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +36,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -78,8 +77,7 @@ public class ProblemStatusController {
     public String status(HttpServletRequest request,
             @RequestParam("problem_id") long id,
             @RequestParam(value = "language", required = false) Integer language,
-            @PageableDefault(size = 20, sort = {"time", "memory", "code_length"}) Pageable pageable,
-            @Nullable Authentication authentication) {
+            @PageableDefault(size = 20, sort = {"time", "memory", "code_length"}) Pageable pageable) {
         log.debug("{}", pageable);
         if (pageable.getPageSize() > 500) {
             pageable = PageRequest.of(pageable.getPageNumber(), 500, pageable.getSort());
@@ -109,7 +107,7 @@ public class ProblemStatusController {
         request.setAttribute("problem", problem);
         request.setAttribute("url", URIBuilder.fromRequest(request).replaceQueryParam("page").toString());
         request.setAttribute("canView", canView);
-        request.setAttribute("authentication", authentication);
+        request.setAttribute("currentUserId", SecurityUtils.getUserId());
 
         return "problems/status";
     }
