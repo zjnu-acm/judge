@@ -31,7 +31,6 @@ import org.springframework.http.MediaType;
 public enum ExcelType {
 
     XLS(CustomMediaType.XLS, HSSFWorkbook::new),
-    @SuppressWarnings("SpellCheckingInspection")
     XLSX(CustomMediaType.XLSX, SXSSFWorkbook::new);
 
     private final MediaType mediaType;

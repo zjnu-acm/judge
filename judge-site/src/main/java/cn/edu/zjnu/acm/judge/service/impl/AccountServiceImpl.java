@@ -177,7 +177,7 @@ public class AccountServiceImpl implements AccountService {
                 throw new BusinessException(BusinessCode.IMPORT_USER_ID_EMPTY);
             }
             String password = account.getPassword();
-            if (StringUtils.isEmpty(password)) {
+            if (!StringUtils.hasLength(password)) {
                 throw new BusinessException(BusinessCode.EMPTY_PASSWORD);
             }
             if (password.length() <= PasswordConfiguration.MAX_PASSWORD_LENGTH) {

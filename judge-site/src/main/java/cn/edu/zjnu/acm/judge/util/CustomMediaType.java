@@ -28,7 +28,6 @@ public interface CustomMediaType {
     String XLSX_VALUE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
     MediaType XLS = MediaType.valueOf(XLS_VALUE);
-    @SuppressWarnings("SpellCheckingInspection")
     MediaType XLSX = MediaType.valueOf(XLSX_VALUE);
 
 }

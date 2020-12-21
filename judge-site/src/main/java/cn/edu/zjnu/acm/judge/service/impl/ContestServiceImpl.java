@@ -70,6 +70,7 @@ public class ContestServiceImpl implements ContestService {
     private final ObjectMapper objectMapper;
 
     @Override
+    @SpecialCall("contests/problems")
     public String getStatus(@Nonnull Contest contest) {
         Boolean disabled = contest.getDisabled();
         if (disabled != null && disabled) {
@@ -211,6 +212,7 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
+    @SpecialCall({"contests/problem", "contests/problems", "contests/standing"})
     public String toProblemIndex(long num) {
         char t = (char) ('A' + num);
         return String.valueOf(t);
