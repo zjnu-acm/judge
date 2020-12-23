@@ -15,13 +15,13 @@
         <form method="POST" th:action="@{/post}">
             <input th:if="${problemId!=null and problemId!=0}" type="hidden" name="problem_id" th:value="${problemId}"/>
             <br/>
-            <label th:for="${#ids.next('title')}">Title:</label>
+            <label for="title" th:for="${#ids.next('title')}">Title:</label>
             <br/>
-            <input th:id="${#ids.seq('title')}" type="text" name="title" size="100"/>
+            <input id="title" th:id="${#ids.seq('title')}" type="text" name="title" size="100"/>
             <br/>
-            <label th:for="${#ids.next('content')}">Content:</label>
+            <label for="content" th:for="${#ids.next('content')}">Content:</label>
             <br/>
-            <textarea th:id="${#ids.seq('content')}" rows="20" name="content" cols="100"></textarea>
+            <textarea id="content" th:id="${#ids.seq('content')}" rows="20" name="content" cols="100"></textarea>
             <br/>
             <button type="submit">Post</button>
         </form>
