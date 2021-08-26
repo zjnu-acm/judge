@@ -21,8 +21,8 @@
                 <version>4.0.0</version>
                 <exclusions>
                     <exclusion>
-                        <artifactId>angularjs</artifactId>
                         <groupId>org.webjars</groupId>
+                        <artifactId>angularjs</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -57,12 +57,12 @@
                 <version>5.3.0</version>
                 <exclusions>
                     <exclusion>
-                        <artifactId>angular</artifactId>
                         <groupId>org.webjars.npm</groupId>
+                        <artifactId>angular</artifactId>
                     </exclusion>
                     <exclusion>
-                        <artifactId>custom-input</artifactId>
                         <groupId>org.webjars.npm</groupId>
+                        <artifactId>custom-input</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -87,8 +87,8 @@
                 <version>0.12.1</version>
                 <exclusions>
                     <exclusion>
-                        <artifactId>angular</artifactId>
                         <groupId>org.webjars.npm</groupId>
+                        <artifactId>angular</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -98,8 +98,8 @@
                 <version>0.2.18</version>
                 <exclusions>
                     <exclusion>
-                        <artifactId>angular</artifactId>
                         <groupId>org.webjars.npm</groupId>
+                        <artifactId>angular</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -109,16 +109,16 @@
                 <version>6.23.0</version>
                 <exclusions>
                     <exclusion>
+                        <groupId>org.webjars.npm</groupId>
                         <artifactId>babel-runtime</artifactId>
-                        <groupId>org.webjars.npm</groupId>
                     </exclusion>
                     <exclusion>
+                        <groupId>org.webjars.npm</groupId>
                         <artifactId>core-js</artifactId>
-                        <groupId>org.webjars.npm</groupId>
                     </exclusion>
                     <exclusion>
-                        <artifactId>regenerator-runtime</artifactId>
                         <groupId>org.webjars.npm</groupId>
+                        <artifactId>regenerator-runtime</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -133,8 +133,8 @@
                 <version>0.3.1</version>
                 <exclusions>
                     <exclusion>
-                        <artifactId>event-lite</artifactId>
                         <groupId>org.webjars.npm</groupId>
+                        <artifactId>event-lite</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -144,8 +144,8 @@
                 <version>12.2.13</version>
                 <exclusions>
                     <exclusion>
-                        <artifactId>angular</artifactId>
                         <groupId>org.webjars.npm</groupId>
+                        <artifactId>angular</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -253,10 +253,10 @@
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
-                        <phase>generate-resources</phase>
                         <goals>
                             <goal>unpack-dependencies</goal>
                         </goals>
+                        <phase>generate-resources</phase>
                         <configuration>
                             <outputDirectory>${project.build.outputDirectory}</outputDirectory>
                         </configuration>

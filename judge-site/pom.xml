@@ -11,7 +11,7 @@
     <name>Online Judge Site</name>
 
     <properties>
-        <argLine />
+        <argLine/>
         <delombok.directory>${project.build.directory}/delombok</delombok.directory>
         <jacoco.propertyName>argLine</jacoco.propertyName>
         <main.basedir>${basedir}/..</main.basedir>
@@ -195,10 +195,10 @@
                 <executions>
                     <execution>
                         <id>duplicate-dependencies</id>
-                        <phase>validate</phase>
                         <goals>
                             <goal>check</goal>
                         </goals>
+                        <phase>validate</phase>
                         <configuration>
                             <ignoredClassPatterns>
                                 <ignoredClassPattern>.*\.module-info</ignoredClassPattern>
@@ -218,20 +218,6 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
                 <configuration>
                     <excludes>
                         <exclude>cn/edu/zjnu/acm/judge/Application.class</exclude>
@@ -240,24 +226,38 @@
                         <exclude>cn/edu/zjnu/acm/judge/data/**/*.class</exclude>
                     </excludes>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <phase>prepare-package</phase>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>delombok</id>
-                        <phase>pre-site</phase>
-                        <goals>
-                            <goal>delombok</goal>
-                        </goals>
-                    </execution>
-                </executions>
                 <configuration>
                     <addOutputDirectory>false</addOutputDirectory>
                     <sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
                     <outputDirectory>${delombok.directory}</outputDirectory>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>delombok</id>
+                        <goals>
+                            <goal>delombok</goal>
+                        </goals>
+                        <phase>pre-site</phase>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

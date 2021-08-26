@@ -11,7 +11,7 @@
 
     <properties>
         <main.basedir>${basedir}/..</main.basedir>
-        <start-class />
+        <start-class/>
     </properties>
 
     <dependencies>

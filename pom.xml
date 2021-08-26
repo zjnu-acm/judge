@@ -4,8 +4,8 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.2</version>
-        <relativePath />
+        <version>2.5.5</version>
+        <relativePath/>
     </parent>
     <groupId>cn.edu.zjnu.acm</groupId>
     <artifactId>judge-parent</artifactId>
@@ -74,7 +74,7 @@
         <poi.version>5.0.0</poi.version>
         <prerequisites.maven>3.5.1</prerequisites.maven>
         <revision>0.0.1-SNAPSHOT</revision>
-        <sortpom-maven-plugin.version>2.15.0</sortpom-maven-plugin.version>
+        <sortpom-maven-plugin.version>3.0.0</sortpom-maven-plugin.version>
         <unbescape.version>1.1.6.RELEASE</unbescape.version>
     </properties>
 
@@ -106,12 +106,12 @@
                 <version>${caffeine.version}</version>
                 <exclusions>
                     <exclusion>
-                        <artifactId>checker-qual</artifactId>
                         <groupId>org.checkerframework</groupId>
+                        <artifactId>checker-qual</artifactId>
                     </exclusion>
                     <exclusion>
-                        <artifactId>error_prone_annotations</artifactId>
                         <groupId>com.google.errorprone</groupId>
+                        <artifactId>error_prone_annotations</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -131,28 +131,28 @@
                 <version>${guava.version}</version>
                 <exclusions>
                     <exclusion>
-                        <artifactId>error_prone_annotations</artifactId>
                         <groupId>com.google.errorprone</groupId>
+                        <artifactId>error_prone_annotations</artifactId>
                     </exclusion>
                     <exclusion>
-                        <artifactId>j2objc-annotations</artifactId>
                         <groupId>com.google.j2objc</groupId>
+                        <artifactId>j2objc-annotations</artifactId>
                     </exclusion>
                     <exclusion>
-                        <artifactId>animal-sniffer-annotations</artifactId>
                         <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>animal-sniffer-annotations</artifactId>
                     </exclusion>
                     <exclusion>
+                        <groupId>org.checkerframework</groupId>
                         <artifactId>checker-qual</artifactId>
-                        <groupId>org.checkerframework</groupId>
                     </exclusion>
                     <exclusion>
+                        <groupId>org.checkerframework</groupId>
                         <artifactId>checker-compat-qual</artifactId>
-                        <groupId>org.checkerframework</groupId>
                     </exclusion>
                     <exclusion>
-                        <artifactId>listenablefuture</artifactId>
                         <groupId>com.google.guava</groupId>
+                        <artifactId>listenablefuture</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -167,8 +167,8 @@
                 <version>${sun-mail.version}</version>
                 <exclusions>
                     <exclusion>
-                        <artifactId>activation</artifactId>
                         <groupId>javax.activation</groupId>
+                        <artifactId>activation</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -178,8 +178,8 @@
                 <version>${javax-jaxb.version}</version>
                 <exclusions>
                     <exclusion>
-                        <artifactId>javax.activation-api</artifactId>
                         <groupId>javax.activation</groupId>
+                        <artifactId>javax.activation-api</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -209,8 +209,8 @@
                 <version>${glassfish-jaxb.version}</version>
                 <exclusions>
                     <exclusion>
-                        <artifactId>javax.activation-api</artifactId>
                         <groupId>javax.activation</groupId>
+                        <artifactId>javax.activation-api</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -245,8 +245,8 @@
                 <version>${thymeleaf.version}</version>
                 <exclusions>
                     <exclusion>
-                        <artifactId>ognl</artifactId>
                         <groupId>ognl</groupId>
+                        <artifactId>ognl</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -276,14 +276,6 @@
                     <groupId>com.github.ekryd.sortpom</groupId>
                     <artifactId>sortpom-maven-plugin</artifactId>
                     <version>${sortpom-maven-plugin.version}</version>
-                    <executions>
-                        <execution>
-                            <phase>verify</phase>
-                            <goals>
-                                <goal>sort</goal>
-                            </goals>
-                        </execution>
-                    </executions>
                     <configuration>
                         <createBackupFile>false</createBackupFile>
                         <sortProperties>true</sortProperties>
@@ -293,6 +285,14 @@
                         <keepBlankLines>true</keepBlankLines>
                         <expandEmptyElements>false</expandEmptyElements>
                     </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>sort</goal>
+                            </goals>
+                            <phase>verify</phase>
+                        </execution>
+                    </executions>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -325,21 +325,21 @@
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>flatten-maven-plugin</artifactId>
                     <version>${flatten-maven-plugin.version}</version>
-                    <executions>
-                        <execution>
-                            <id>flatten</id>
-                            <phase>process-resources</phase>
-                            <goals>
-                                <goal>flatten</goal>
-                            </goals>
-                        </execution>
-                    </executions>
                     <configuration>
                         <flattenMode>ossrh</flattenMode>
                         <pomElements>
                             <repositories>keep</repositories>
                         </pomElements>
                     </configuration>
+                    <executions>
+                        <execution>
+                            <id>flatten</id>
+                            <goals>
+                                <goal>flatten</goal>
+                            </goals>
+                            <phase>process-resources</phase>
+                        </execution>
+                    </executions>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
