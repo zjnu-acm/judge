@@ -67,6 +67,7 @@ public enum BusinessCode {
     REGISTER_PROMPT_USER_ID_EMPTY("onlinejudge.register.user.id.empty"),
     REGISTER_PROMPT_USER_ID("onlinejudge.register.user.id.prompt.length"),
     REGISTER_PROMPT_USER_ID_INVALID("onlinejudge.register.user.id.invalid"),
+    REGISTER_PROMPT_USER_ID_EXISTS("onlinejudge.register.user.id.exists"),
     EMPTY_PASSWORD("onlinejudge.password.empty"),
     PASSWORD_INVALID_LENGTH("onlinejudge.password.invalid.length"),
     PASSWORD_HAS_SPACE("onlinejudge.password.space"),

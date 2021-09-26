@@ -18,7 +18,14 @@
                 </tr>
                 <tr>
                     <td width="25%"><label th:text="#{onlinejudge.form.username.label}">username</label></td>
-                    <td width="75%" th:text="*{id}">userId</td></tr>
+                    <td width="75%">
+                        <span th:id="${#ids.seq('usernameSpan')}" th:text="*{id}">userId</span>
+                        <input th:id="${#ids.seq('username')}" type="text" th:value="*{id}" style="display: none" />
+                        <button th:id="${#ids.seq('editUsername')}" th:text="#{onlinejudge.form.username.edit}" type="button"></button>
+                        <button th:id="${#ids.seq('submitUsername')}" th:text="#{onlinejudge.form.username.submit}" type="button" style="display: none"></button>
+                        <span th:id="${#ids.seq('editError')}"></span>
+                    </td>
+                </tr>
                 <tr>
                     <td>
                         <label th:for="${#ids.next('nick')}" th:text="#{onlinejudge.form.nick.label}">nick:</label>
@@ -77,7 +84,9 @@
                 </tr>
             </table>
         </form>
-        <script th:inline="javascript">jQuery(function($){$("form.modify-user").submit(function(){var b=$(this).find("[name='oldPassword']");return b.val()?!0:(alert(b.data("promptEmpty")),b.focus(),!1);});});</script>
+        <script th:inline="javascript">jQuery(function($){var editUsername=$(/*[+[['#'+${#ids.prev('editUsername')}]]+]*/),submitUsername=$(/*[+[['#'+${#ids.prev('submitUsername')}]]+]*/),username=$(/*[+[['#'+${#ids.prev('username')}]]+]*/),usernameSpan=$(/*[+[['#'+${#ids.prev('usernameSpan')}]]+]*/),editError=$(/*[+[['#'+${#ids.prev('editError')}]]+]*/),oldUsername=username.val();editUsername.click(function(){username.show();submitUsername.show();editUsername.hide();usernameSpan.hide();});submitUsername.click(function(){var newUsername=username.val();if(newUsername===oldUsername) return username.hide(),submitUsername.hide(),editUsername.show(),usernameSpan.show();submitUsername.prop('disabled',true);editError.text('');$.ajax(/*[+[[@{/api/users}]]+]*//*[-*/null/*-]*/,{method:'PATCH',dataType:'json',contentType:'application/json',data:JSON.stringify({id:newUsername})}).fail(function (result) {editError.css('color','red').text(result.responseJSON && result.responseJSON.message || result.responseText || 'Error Occur');submitUsername.removeProp('disabled');}).done(function(){
+            editError.css('color','blue').text(/*[+[[#{onlinejudge.form.username.modify}]]+]*//*[-*/''/*-]*/.replace('{0}',newUsername));
+        });});$("form.modify-user").submit(function(){var b=$(this).find("[name='oldPassword']");return b.val()?!0:(alert(b.data("promptEmpty")),b.focus(),!1);});});</script>
         <font size="4" color="red" th:text="#{onlinejudge.user.modify.prompt.noenteringpassword}"></font>
         <!--/*/</th:block>/*/-->
     </body>

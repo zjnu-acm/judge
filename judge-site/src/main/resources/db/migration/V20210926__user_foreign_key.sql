@@ -1,0 +1,22 @@
+ALTER TABLE `mail`
+	DROP FOREIGN KEY `FK_mail_user`,
+	DROP FOREIGN KEY `FK_mail_user_2`;
+ALTER TABLE `mail`
+	ADD CONSTRAINT `FK_mail_user` FOREIGN KEY (`from_user`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE ON DELETE RESTRICT,
+	ADD CONSTRAINT `FK_mail_user_2` FOREIGN KEY (`to_user`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE ON DELETE RESTRICT;
+ALTER TABLE `message`
+	DROP FOREIGN KEY `FK_message_user`;
+ALTER TABLE `message`
+	ADD CONSTRAINT `FK_message_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE ON DELETE RESTRICT;
+ALTER TABLE `news`
+	DROP FOREIGN KEY `FK_news_user`;
+ALTER TABLE `news`
+	ADD CONSTRAINT `FK_news_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE ON DELETE RESTRICT;
+ALTER TABLE `privilege`
+	DROP FOREIGN KEY `FK_privilege_user`;
+ALTER TABLE `privilege`
+	ADD CONSTRAINT `FK_privilege_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE ON DELETE RESTRICT;
+ALTER TABLE `solution`
+	DROP FOREIGN KEY `FK_solution_user`;
+ALTER TABLE `solution`
+	ADD CONSTRAINT `FK_solution_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE ON DELETE RESTRICT;

@@ -20,11 +20,13 @@ import cn.edu.zjnu.acm.judge.data.excel.Account;
 import cn.edu.zjnu.acm.judge.data.form.AccountForm;
 import cn.edu.zjnu.acm.judge.data.form.AccountImportForm;
 import cn.edu.zjnu.acm.judge.domain.User;
+import cn.edu.zjnu.acm.judge.domain.UsernameChangeLog;
 import cn.edu.zjnu.acm.judge.exception.BusinessCode;
 import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.UserMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserProblemMapper;
 import cn.edu.zjnu.acm.judge.mapper.UserRoleMapper;
+import cn.edu.zjnu.acm.judge.mapper.UsernameChangeLogMapper;
 import cn.edu.zjnu.acm.judge.service.AccountService;
 import cn.edu.zjnu.acm.judge.util.EnumUtils;
 import cn.edu.zjnu.acm.judge.util.ValueCheck;
@@ -71,6 +73,7 @@ public class AccountServiceImpl implements AccountService {
     private final UserRoleMapper userRoleMapper;
     private final UserProblemMapper userProblemMapper;
     private final MessageSource messageSource;
+    private final UsernameChangeLogMapper usernameChangeLogMapper;
 
     @Override
     public Page<User> findAll(AccountForm form, Pageable pageable) {
@@ -111,6 +114,14 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void updateSelective(String userId, User user) {
+        String newId = user.getId();
+        boolean changeUserId = newId != null && !userId.equals(newId);
+        if (changeUserId) {
+            ValueCheck.checkUserId(newId);
+            if (userMapper.findOne(newId) != null) {
+                throw new BusinessException(BusinessCode.REGISTER_PROMPT_USER_ID_EXISTS, newId);
+            }
+        }
         if (userMapper.updateSelective(userId, user.toBuilder()
                 .createdTime(null)
                 .modifiedTime(Instant.now())
@@ -118,6 +129,9 @@ public class AccountServiceImpl implements AccountService {
                 .email(Optional.ofNullable(user.getEmail()).filter(Objects::nonNull).orElse(null))
                 .build()) == 0) {
             throw new BusinessException(BusinessCode.USER_NOT_FOUND, userId);
+        }
+        if (changeUserId) {
+            usernameChangeLogMapper.save(UsernameChangeLog.builder().old(userId).newName(newId).build());
         }
     }
 

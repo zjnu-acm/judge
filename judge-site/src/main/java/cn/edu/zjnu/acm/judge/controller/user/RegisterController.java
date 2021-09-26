@@ -56,7 +56,7 @@ public class RegisterController {
         }
         ValueCheck.checkNick(nick);
         if (userMapper.findOne(userId) != null) {
-            throw new BusinessException(BusinessCode.IMPORT_USER_EXISTS, userId);
+            throw new BusinessException(BusinessCode.REGISTER_PROMPT_USER_ID_EXISTS, userId);
         }
         User user = User.builder().id(userId)
                 .password(passwordEncoder.encode(password))
