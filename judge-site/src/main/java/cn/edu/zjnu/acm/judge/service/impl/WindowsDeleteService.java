@@ -56,6 +56,8 @@ public class WindowsDeleteService implements DeleteService {
                 DeleteHelper.delete(path);
             } catch (AccessDeniedException | DirectoryNotEmptyException ex) {
                 return;
+            } catch (ThreadDeath | VirtualMachineError error) {
+                throw error;
             } catch (IOException | Error ex) {
                 log.error("", ex);
             }

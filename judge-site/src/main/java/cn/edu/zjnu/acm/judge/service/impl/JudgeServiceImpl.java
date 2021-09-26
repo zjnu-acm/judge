@@ -109,6 +109,8 @@ public class JudgeServiceImpl implements JudgeService {
             // TODO return value not handled, we can do nothing for the record not exists in the table now.
             submissionDetailMapper.update(detail);
             updateSubmissionStatus(submission.getUser(), problemId);
+        } catch (ThreadDeath | VirtualMachineError error) {
+            throw error;
         } catch (JudgeException | IOException | Error ex) {
             log.error("got an exception when judging submission {}", submissionId, ex);
             submissionMapper.updateResult(submissionId, ResultType.SYSTEM_ERROR, 0, 0);

@@ -116,6 +116,8 @@ public class ResetPasswordController {
             String content = templateEngine.process("users/password", new Context(locale, map));
 
             emailService.send(email, title, content);
+        } catch (ThreadDeath | VirtualMachineError error) {
+            throw error;
         } catch (MessagingException | RuntimeException | Error ex) {
             log.error("fail to send email", ex);
             resetPasswordService.removeEmailCache(email);
