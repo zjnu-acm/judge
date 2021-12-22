@@ -259,6 +259,7 @@
                         <phase>generate-resources</phase>
                         <configuration>
                             <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+                            <excludes>META-INF/MANIFEST.MF</excludes>
                         </configuration>
                     </execution>
                 </executions>
