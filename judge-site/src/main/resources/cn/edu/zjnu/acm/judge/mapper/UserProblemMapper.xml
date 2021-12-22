@@ -30,14 +30,22 @@
         </set>
     </sql>
     <insert id="init">
-        replace into user_problem(user_id,problem_id,accepted,submit)
-        select
-            user_id,
-            problem_id,
-            sum(if(score=100,1,0)),
-            count(solution_id)
-        from solution
-        where score!=-10000 group by user_id,problem_id
+        REPLACE INTO user_problem(user_id,problem_id,accepted,submit)
+        (
+            SELECT
+                user_id,
+                problem_id,
+                sum(if(score=100,1,0)),
+                count(solution_id)
+            FROM solution
+            WHERE score!=-10000 GROUP BY user_id,problem_id
+        ) UNION (
+            SELECT user_id, problem_id, 0, 0 FROM user_problem
+            WHERE (user_id, problem_id) NOT IN (
+            SELECT distinct user_id, problem_id
+                FROM solution WHERE score!=-10000
+            )
+        )
     </insert>
     <select id="findOne" resultMap="baseResultMap">
         select <include refid="columns"/>
