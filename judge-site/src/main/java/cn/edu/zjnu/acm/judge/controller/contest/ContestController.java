@@ -62,7 +62,7 @@ public class ContestController {
     @GetMapping
     public String index(@PathVariable("contestId") long contestId, RedirectAttributes redirectAttributes) {
         redirectAttributes.addAttribute("contestId", contestId);
-        return "redirect:/contests/{contestId}/problems.html";
+        return "redirect:/contests/{contestId}/problems?_format=html";
     }
 
 }

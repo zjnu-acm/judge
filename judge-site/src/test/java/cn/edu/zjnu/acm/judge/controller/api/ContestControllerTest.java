@@ -55,7 +55,7 @@ public class ContestControllerTest {
     public void testSave() throws Exception {
         log.info("save");
         Contest contest = mockDataService.contest(false);
-        MvcResult result = mvc.perform(post("/api/contests.json")
+        MvcResult result = mvc.perform(post("/api/contests?_format=json")
                 .content(objectMapper.writeValueAsString(contest)).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -71,7 +71,7 @@ public class ContestControllerTest {
     public void testDelete() throws Exception {
         log.info("delete");
         long id = mockDataService.contest().getId();
-        MvcResult result = mvc.perform(delete("/api/contests/{id}.json", id))
+        MvcResult result = mvc.perform(delete("/api/contests/{id}?_format=json", id))
                 .andExpect(status().isNoContent())
                 .andReturn();
     }
@@ -87,7 +87,7 @@ public class ContestControllerTest {
         boolean includeDisabled = false;
         String[] exclude = null;
         String[] include = null;
-        MvcResult result = mvc.perform(get("/api/contests.json")
+        MvcResult result = mvc.perform(get("/api/contests?_format=json")
                 .param("includeDisabled", Boolean.toString(includeDisabled))
                 .param("exclude", Objects.toString(exclude, ""))
                 .param("include", Objects.toString(include, "")))
@@ -106,7 +106,7 @@ public class ContestControllerTest {
         log.info("findOne");
         long id = mockDataService.contest().getId();
         Locale locale = Locale.getDefault();
-        MvcResult result = mvc.perform(get("/api/contests/{id}.json", id)
+        MvcResult result = mvc.perform(get("/api/contests/{id}?_format=json", id)
                 .locale(locale))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -123,7 +123,7 @@ public class ContestControllerTest {
         log.info("update");
         long id = mockDataService.contest().getId();
         Contest request = new Contest();
-        MvcResult result = mvc.perform(patch("/api/contests/{id}.json", id)
+        MvcResult result = mvc.perform(patch("/api/contests/{id}?_format=json", id)
                 .content(objectMapper.writeValueAsString(request)).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent())
                 .andReturn();
@@ -138,7 +138,7 @@ public class ContestControllerTest {
     public void testStanding() throws Exception {
         log.info("standing");
         long id = mockDataService.contest().getId();
-        MvcResult result = mvc.perform(get("/api/contests/{id}/standing.json", id))
+        MvcResult result = mvc.perform(get("/api/contests/{id}/standing?_format=json", id))
                 .andExpect(request().asyncStarted())
                 .andReturn();
         MvcResult asyncResult = mvc.perform(asyncDispatch(result))

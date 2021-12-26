@@ -40,7 +40,7 @@ public class LegacyAdminControllerTest {
         log.info("showProblem");
         long problemId = 0;
         MvcResult result = mvc.perform(get("/admin.showproblem").param("problem_id", Long.toString(problemId)))
-                .andExpect(redirectedUrl("/admin/problems/" + problemId + ".html"))
+                .andExpect(redirectedUrl("/admin/problems/" + problemId + "?_format=html"))
                 .andReturn();
     }
 
@@ -54,7 +54,7 @@ public class LegacyAdminControllerTest {
         log.info("showContest");
         long contestId = 0;
         MvcResult result = mvc.perform(get("/admin.showcontest").param("contest_id", Long.toString(contestId)))
-                .andExpect(redirectedUrl("/admin/contests/" + contestId + ".html"))
+                .andExpect(redirectedUrl("/admin/contests/" + contestId + "?_format=html"))
                 .andReturn();
     }
 

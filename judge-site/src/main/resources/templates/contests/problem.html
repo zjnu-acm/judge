@@ -11,7 +11,7 @@
         <table border="0" width="100%" th:if="${problems!=null}">
             <tr>
                 <td style="text-align:center" th:each="problem,it:${problems}" th:object="${problem}">
-                    <a th:href="@{/contests/{contestId}/problems/{problemId}.html(contestId=${contestId},problemId=*{id})}">
+                    <a th:href="@{/contests/{contestId}/problems/{problemId}(_format='html',contestId=${contestId},problemId=*{id})}">
                         <b>[[${@contestService.toProblemIndex(it.index)}]]</b>
                     </a>
                 </td>
@@ -20,9 +20,9 @@
         <th:block th:include="fragment/problem"/>
         <p align="center" style="font-size: medium; color: #339">
             <span>[</span>
-            <a th:href="@{/contests/{contestId}/problems/{problemId}/submit.html(contestId=${contestId},problemId=${problem.id})}">Submit</a>
+            <a th:href="@{/contests/{contestId}/problems/{problemId}/submit(_format='html',contestId=${contestId},problemId=${problem.id})}">Submit</a>
             <span>]&nbsp;&nbsp;[</span>
-            <a th:href="@{/contests/{contestId}/problems/{problemId}/status.html(contestId=${contestId},problemId=${problem.id})}">Status</a>
+            <a th:href="@{/contests/{contestId}/problems/{problemId}/status(_format='html',contestId=${contestId},problemId=${problem.id})}">Status</a>
             <span>]&nbsp;&nbsp; [</span>
             <a th:href="@{/bbs(problem_id=${problem.origin},contest_id=${contestId})}">Discuss</a>
             <span>]</span>

@@ -58,34 +58,34 @@
         return $rootScope.paths = paths;
     });
     app.factory('problemApi', function ($resource, paths) {
-        return $resource(paths.api + 'problems/:id.json', {id: '@id'}, {
+        return $resource(paths.api + 'problems/:id?_format=json', {id: '@id'}, {
             'query': {method: 'GET', isArray: false},
             'update': {method: 'PATCH'}
         });
     });
     app.factory('contestApi', function ($resource, paths) {
-        return $resource(paths.api + 'contests/:id.json', {id: '@id'}, {
+        return $resource(paths.api + 'contests/:id?_format=json', {id: '@id'}, {
             update: {method: 'PATCH'}
         });
     });
     app.factory('localeApi', function ($resource, paths) {
-        return $resource(paths.api + 'locales/:id.json', {id: '@id'});
+        return $resource(paths.api + 'locales/:id?_format=json', {id: '@id'});
     });
     app.factory('pageIndexApi', function ($resource, paths) {
-        return $resource(paths.api + 'system/index.json', {}, {
+        return $resource(paths.api + 'system/index?_format=json', {}, {
             update: {method: 'PUT'}
         });
     });
     app.factory('accountApi', function ($resource, paths) {
-        return $resource(paths.api + 'accounts/:id.json', {id: '@id'}, {
+        return $resource(paths.api + 'accounts/:id?_format=json', {id: '@id'}, {
             query: {method: 'GET', isArray: false},
             update: {method: 'PATCH'},
-            updatePassword: {method: 'PATCH', url: paths.api + 'accounts/:id/password.json'},
-            saveAll: {method: 'POST', url: paths.api + 'accounts/import.json'}
+            updatePassword: {method: 'PATCH', url: paths.api + 'accounts/:id/password?_format=json'},
+            saveAll: {method: 'POST', url: paths.api + 'accounts/import?_format=json'}
         });
     });
     app.factory('miscApi', function ($resource, paths) {
-        return $resource(paths.api + 'misc/:action.json', null, {
+        return $resource(paths.api + 'misc/:action?_format=json', null, {
             getSystemInfo: {method: 'GET', params: {action: 'systemInfo'}},
             setSystemInfo: {method: 'PUT', params: {action: 'systemInfo'}},
             fix: {method: 'POST', params: {action: 'fix'}},
@@ -103,7 +103,7 @@
     });
     app.factory('currentTime', function ($http, paths) {
         var timeDiff = 0;
-        $http.get(paths.api + 'system/time.json').then(function (resp) {
+        $http.get(paths.api + 'system/time?_format=json').then(function (resp) {
             timeDiff = new Date - resp.data.value;
         });
         return function () {
@@ -338,7 +338,7 @@
             }
         }).state('contest-add', {
             title: '添加比赛',
-            url: '/contests/add.html',
+            url: '/contests/add',
             views: {
                 '': {
                     templateUrl: 'contest-edit.html',
@@ -347,7 +347,7 @@
             }
         }).state('problem-add', {
             title: '添加题目',
-            url: '/problems/add.html',
+            url: '/problems/add',
             views: {
                 '': {
                     templateUrl: 'problem-edit.html',
@@ -356,7 +356,7 @@
             }
         }).state('problem-list', {
             title: '题目列表',
-            url: '/problems.html?page&size&sort',
+            url: '/problems?page&size&sort',
             views: {
                 '': {
                     templateUrl: 'problem-list.html',
@@ -365,15 +365,15 @@
             }
         }).state('problem-view-current', {
             title: '题目查看',
-            url: '/problems/:id.html',
+            url: '/problems/:id',
             controller: 'problem-view-current'
         }).state('problem-view-current-alias', {
             title: '题目查看',
-            url: '/problems/:id/view/current.html',
+            url: '/problems/:id/view/current',
             controller: 'problem-view-current'
         }).state('problem-view-locale', {
             title: '题目查看',
-            url: '/problems/:id/view/:locale.html',
+            url: '/problems/:id/view/:locale',
             views: {
                 '': {
                     templateUrl: 'problem-view.html',
@@ -382,15 +382,15 @@
             }
         }).state('problem-edit-current', {
             title: '题目编辑',
-            url: '/problems/:id/edit.html',
+            url: '/problems/:id/edit',
             controller: 'problem-edit-current'
         }).state('problem-edit-current-alias', {
             title: '题目编辑',
-            url: '/problems/:id/edit/current.html',
+            url: '/problems/:id/edit/current',
             controller: 'problem-edit-current'
         }).state('problem-edit-locale', {
             title: '题目编辑',
-            url: '/problems/:id/edit/:locale.html',
+            url: '/problems/:id/edit/:locale',
             views: {
                 '': {
                     templateUrl: 'problem-edit.html',
@@ -399,7 +399,7 @@
             }
         }).state('contest-list', {
             title: '比赛列表',
-            url: '/contests.html',
+            url: '/contests',
             views: {
                 '': {
                     templateUrl: 'contest-list.html',
@@ -408,7 +408,7 @@
             }
         }).state('contest-view', {
             title: '比赛查看',
-            url: '/contests/:id.html',
+            url: '/contests/:id',
             views: {
                 '': {
                     templateUrl: 'contest-view.html',
@@ -417,7 +417,7 @@
             }
         }).state('contest-edit', {
             title: '比赛编辑',
-            url: '/contests/:id/edit.html',
+            url: '/contests/:id/edit',
             views: {
                 '': {
                     templateUrl: 'contest-edit.html',
@@ -426,7 +426,7 @@
             }
         }).state('account-list', {
             title: '用户列表',
-            url: '/accounts.html?userId&nick&query&disabled&page&size&sort',
+            url: '/accounts?userId&nick&query&disabled&page&size&sort',
             views: {
                 '': {
                     templateUrl: 'account-list.html',
@@ -435,7 +435,7 @@
             }
         }).state('upload-account', {
             title: '导入用户',
-            url: '/accounts/import.html?id&nick&school&email&page&sort&size',
+            url: '/accounts/import?id&nick&school&email&page&sort&size',
             views: {
                 '': {
                     templateUrl: 'account-import.html',
@@ -444,7 +444,7 @@
             }
         }).state('page-index-changer', {
             title: '修改首页内容',
-            url: '/system/index.html',
+            url: '/system/index',
             views: {
                 '': {
                     templateUrl: 'page-index-changer.html',
@@ -452,7 +452,7 @@
                 }
             }
         });
-        isLocal || $urlRouterProvider.when(/^#?\/?$/, '/').otherwise('404.html');
+        isLocal || $urlRouterProvider.when(/^#?\/?$/, '/').otherwise('404');
     });
     app.run(function ($rootScope, $state, $interpolate, title) {
         $rootScope.$on('$stateChangeSuccess', function () {
@@ -933,7 +933,7 @@
             var files = $scope.files;
             files = files ? [].concat(files) : [];
             files.length && Upload.upload({
-                url: paths.api + 'accounts.json',
+                url: paths.api + 'accounts?_format=json',
                 data: {file: files},
                 arrayKey: '',
                 filename: files[0].name

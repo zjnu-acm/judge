@@ -64,7 +64,7 @@ public class SystemControllerTest {
     @Test
     public void testTime() throws Exception {
         log.info("time");
-        MvcResult result = mvc.perform(get("/api/system/time.json"))
+        MvcResult result = mvc.perform(get("/api/system/time?_format=json"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn();

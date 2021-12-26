@@ -30,6 +30,8 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
@@ -46,6 +48,7 @@ import org.springframework.web.servlet.HandlerMapping;
 @RequiredArgsConstructor
 public class CKFinderController {
 
+    private static final MediaType APPLICATION_JAVASCRIPT = MediaType.parseMediaType("application/javascript");
     private final AntPathMatcher matcher = new AntPathMatcher();
     private final PathPartial pathPartial = PathPartial.builder().build();
 
@@ -78,9 +81,10 @@ public class CKFinderController {
         pathPartial.service(request, response, toPath(path));
     }
 
+    // Can't add produces, for the request head Accept is */*
     @ResponseBody
-    @GetMapping(value = "webjars/ckfinder/2.6.2.1/config", produces = {"application/javascript", "text/javascript"})
-    public String configJs(Locale locale) {
+    @GetMapping("webjars/ckfinder/2.6.2.1/config.js")
+    public ResponseEntity<String> configJs(Locale locale) {
         final String indent = "    ";
         StringWriter sw = new StringWriter();
         try (PrintWriter pw = new PrintWriter(sw)) {
@@ -99,7 +103,7 @@ public class CKFinderController {
             pw.println(indent + "config.removePlugins = 'help';");
             pw.println("};");
         }
-        return sw.toString();
+        return ResponseEntity.ok().contentType(APPLICATION_JAVASCRIPT).body(sw.toString());
     }
 
 }

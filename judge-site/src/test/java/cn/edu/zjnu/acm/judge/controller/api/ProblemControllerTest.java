@@ -80,7 +80,7 @@ public class ProblemControllerTest {
      */
     @Test
     public void testList() throws Exception {
-        mvc.perform(get("/api/problems.json"))
+        mvc.perform(get("/api/problems?_format=json"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
     }
@@ -94,7 +94,7 @@ public class ProblemControllerTest {
     @Test
     public void test() throws Exception {
         Problem problem = mockDataService.problem(false);
-        Long id = objectMapper.readValue(mvc.perform(post("/api/problems.json")
+        Long id = objectMapper.readValue(mvc.perform(post("/api/problems?_format=json")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(problem))
         )
@@ -104,31 +104,31 @@ public class ProblemControllerTest {
         assertThat(id).describedAs("problem id").isNotNull();
 
         assertFalse(findOne(id).getDisabled());
-        mvc.perform(patch("/api/problems/{id}.json", id).content("{\"disabled\":true}").contentType(MediaType.APPLICATION_JSON))
+        mvc.perform(patch("/api/problems/{id}?_format=json", id).content("{\"disabled\":true}").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
         assertTrue(findOne(id).getDisabled());
 
-        mvc.perform(patch("/api/problems/{id}.json", id).content("{\"disabled\":false}").contentType(MediaType.APPLICATION_JSON))
+        mvc.perform(patch("/api/problems/{id}?_format=json", id).content("{\"disabled\":false}").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
         assertFalse(findOne(id).getDisabled());
 
-        mvc.perform(delete("/api/problems/{id}.json", id))
+        mvc.perform(delete("/api/problems/{id}?_format=json", id))
                 .andExpect(status().isNoContent());
 
         BusinessCode code = assertThrows(BusinessException.class, () -> problemService.findOne(id)).getCode();
         assertThat(code).isEqualTo(BusinessCode.PROBLEM_NOT_FOUND);
 
-        mvc.perform(get("/api/problems/{id}.json", id))
+        mvc.perform(get("/api/problems/{id}?_format=json", id))
                 .andExpect(status().isNotFound());
-        mvc.perform(delete("/api/problems/{id}.json", id))
+        mvc.perform(delete("/api/problems/{id}?_format=json", id))
                 .andExpect(status().isNotFound());
-        mvc.perform(patch("/api/problems/{id}.json", id)
+        mvc.perform(patch("/api/problems/{id}?_format=json", id)
                 .content("{}").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
     private Problem findOne(long id) throws Exception {
-        return objectMapper.readValue(mvc.perform(get("/api/problems/{id}.json", id))
+        return objectMapper.readValue(mvc.perform(get("/api/problems/{id}?_format=json", id))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse().getContentAsString(), Problem.class);
@@ -160,7 +160,7 @@ public class ProblemControllerTest {
         long id = mockDataService.problem().getId();
         String locale = "";
         MockHttpServletResponse response = mvc.perform(
-                get("/api/problems/{id}/attachment.json", id)
+                get("/api/problems/{id}/attachment?_format=json", id)
                         .param("locale", locale))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

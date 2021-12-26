@@ -40,7 +40,7 @@ public class LegacyControllerTest {
         log.info("contestStanding");
         long contestId = 0;
         MvcResult result = mvc.perform(get("/conteststanding").param("contest_id", Long.toString(contestId)))
-                .andExpect(redirectedUrl("/contests/" + contestId + "/standing.html"))
+                .andExpect(redirectedUrl("/contests/" + contestId + "/standing?_format=html"))
                 .andReturn();
     }
 
@@ -54,7 +54,7 @@ public class LegacyControllerTest {
         log.info("showContest");
         long contestId = 1058;
         MvcResult result = mvc.perform(get("/showcontest").param("contest_id", Long.toString(contestId)))
-                .andExpect(redirectedUrl("/contests/" + contestId + "/problems.html"))
+                .andExpect(redirectedUrl("/contests/" + contestId + "/problems?_format=html"))
                 .andReturn();
     }
 

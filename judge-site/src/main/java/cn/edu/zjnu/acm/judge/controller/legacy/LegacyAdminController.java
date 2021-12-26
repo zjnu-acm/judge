@@ -41,7 +41,7 @@ public class LegacyAdminController {
     public String showProblem(@RequestParam("problem_id") long problemId,
             RedirectAttributes redirectAttributes) {
         redirectAttributes.addAttribute("problemId", problemId);
-        return "redirect:/admin/problems/{problemId}.html";
+        return "redirect:/admin/problems/{problemId}?_format=html";
     }
 
     @Deprecated
@@ -49,7 +49,7 @@ public class LegacyAdminController {
     public String showContest(@RequestParam("contest_id") long contestId,
             RedirectAttributes redirectAttributes) {
         redirectAttributes.addAttribute("contestId", contestId);
-        return "redirect:/admin/contests/{contestId}.html";
+        return "redirect:/admin/contests/{contestId}?_format=html";
     }
 
     @Deprecated

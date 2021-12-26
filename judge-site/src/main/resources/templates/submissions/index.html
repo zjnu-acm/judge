@@ -9,14 +9,14 @@
     <body>
         <!--/*/<th:block layout:fragment="content">/*/-->
         <div style="width:980px; margin: 0 auto; padding: 1px" class="table-back">
-            <form id="submitForm" method="POST" th:action="@{${contestId==null?'/problems/'+problemId+'/submit':'/contests/'+contestId+'/problems/'+problemId+'/submit.html'}}">
+            <form id="submitForm" method="POST" th:action="@{${contestId==null?'/problems/'+problemId+'/submit':'/contests/'+contestId+'/problems/'+problemId+'/submit?_format=html'}}">
                 <p align="center">
                     <font size="4" color="#339">Submit Your Solution Via Web</font>
                 </p>
                 <p align="center">
                     <label th:for="${#ids.next('pid')}">Problem ID:</label>
                     <span th:unless="${problemId==null}" th:text="${problemId}">1000</span>
-                    <input th:if="${problemId==null}" th:id="${#ids.seq('pid')}" type="number" th:value="${problemId}" accesskey="p" required="required" onchange="document.getElementById('submitForm').action='problems/'+this.value+'/submit.html'"/>
+                    <input th:if="${problemId==null}" th:id="${#ids.seq('pid')}" type="number" th:value="${problemId}" accesskey="p" required="required" onchange="document.getElementById('submitForm').action='problems/'+this.value+'/submit?_format=html'"/>
                     <br/>
                     <label th:for="${#ids.next('language')}">Language:</label>
                     <select th:id="${#ids.seq('language')}" size="1" name="language" style="width:100px;" accesskey="l">

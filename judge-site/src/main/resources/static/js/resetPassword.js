@@ -26,8 +26,11 @@ jQuery(function ($) {
             return false;
         }
         var withoutQuery = location.protocol + '//' + location.host + location.pathname;
-        var query = location.search;
-        $.post(withoutQuery.replace(/(\.html)?$/, '.json') + (query || ''), {
+        var query = location.search || '';
+        query = query.replace(/^\?/, '').replace(/(^|\?|&)_format(?:=[^&]*)?(&|$)/g, function (_, g1, g2) {
+            return g1 || g2;
+        });
+        $.post(withoutQuery + '?_format=json' + (query ? '&' + query : ''), {
             newPassword: p,
             action: 'changePassword'
         }).fail(function (result) {

@@ -41,7 +41,7 @@ public class LocaleControllerTest {
     public void testCurrent() throws Exception {
         log.info("current");
         Locale locale = Locale.getDefault();
-        MvcResult result = mvc.perform(get("/api/locales/current.json")
+        MvcResult result = mvc.perform(get("/api/locales/current?_format=json")
                 .locale(locale))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -58,7 +58,7 @@ public class LocaleControllerTest {
         log.info("findOne");
         String id = "en";
         boolean support = false;
-        MvcResult result = mvc.perform(get("/api/locales/{id}.json", id)
+        MvcResult result = mvc.perform(get("/api/locales/{id}?_format=json", id)
                 .param("support", Boolean.toString(support)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -73,7 +73,7 @@ public class LocaleControllerTest {
     @Test
     public void testFindAll() throws Exception {
         log.info("findAll");
-        MvcResult result = mvc.perform(get("/api/locales.json"))
+        MvcResult result = mvc.perform(get("/api/locales?_format=json"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn();
@@ -88,7 +88,7 @@ public class LocaleControllerTest {
     public void testSupported() throws Exception {
         log.info("supported");
         boolean all = false;
-        MvcResult result = mvc.perform(get("/api/locales.json").param("all", Boolean.toString(all)))
+        MvcResult result = mvc.perform(get("/api/locales?_format=json").param("all", Boolean.toString(all)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn();

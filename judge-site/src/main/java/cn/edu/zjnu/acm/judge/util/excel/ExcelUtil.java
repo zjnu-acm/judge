@@ -24,9 +24,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.time.ZoneId;
@@ -45,7 +45,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -58,6 +57,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 
 /**
@@ -67,23 +67,24 @@ import org.springframework.util.StringUtils;
 @SuppressWarnings("UtilityClassWithoutPrivateConstructor")
 public class ExcelUtil {
 
-    public static <T> void toResponse(Class<T> type, Collection<T> content,
-            @Nonnull Locale locale, ExcelType resultType, @Nullable String name,
-            HttpServletResponse response) throws IOException {
+    public static <T> ResponseEntity<?> toResponse(
+            Class<T> type, Collection<T> content,
+            @Nonnull Locale locale, ExcelType resultType,
+            @Nullable String name) throws IOException {
         Objects.requireNonNull(type, "type");
         Objects.requireNonNull(locale, "locale");
         try (Workbook workbook = resultType.createWorkBook()) {
             buildExcelDocument(type, content.stream(), locale, workbook);
+            ResponseEntity.BodyBuilder builder = ResponseEntity.ok();
             if (StringUtils.hasText(name)) {
                 String actual = name + "." + resultType.getExtension();
-                response.setHeader(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.builder("attachment").filename(actual, StandardCharsets.UTF_8).build().toString());
+                builder.header(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.builder("attachment").filename(actual, StandardCharsets.UTF_8).build().toString());
             } else {
-                response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment");
+                builder.header(HttpHeaders.CONTENT_DISPOSITION, "attachment");
             }
-            response.setContentType(resultType.getMediaType().toString());
-            try (OutputStream out = response.getOutputStream()) {
-                workbook.write(out);
-            }
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            workbook.write(out);
+            return builder.contentType(resultType.getMediaType()).body(out.toByteArray());
         }
     }
 

@@ -104,7 +104,7 @@ public class ResetPasswordController {
         try {
             String vc = resetPasswordService.getOrCreate(user.getId());
             String nick = user.getNick();
-            String url = getPath(request, "/resetPassword.html?vc=", vc + "&u=", user.getId());
+            String url = getPath(request, "/resetPassword?_format=html?vc=", vc + "&u=", user.getId());
             String title = systemService.getResetPasswordTitle(locale);
             Map<String, Object> map = ImmutableMap.of(
                     "url", url,

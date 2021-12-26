@@ -41,7 +41,7 @@ public class LegacyController {
     public String contestStanding(@RequestParam("contest_id") long contestId,
             RedirectAttributes redirectAttributes) {
         redirectAttributes.addAttribute("contestId", contestId);
-        return "redirect:/contests/{contestId}/standing.html";
+        return "redirect:/contests/{contestId}/standing?_format=html";
     }
 
     @Deprecated
@@ -49,7 +49,7 @@ public class LegacyController {
     public String showContest(@RequestParam("contest_id") long contestId,
             RedirectAttributes redirectAttributes) {
         redirectAttributes.addAttribute("contestId", contestId);
-        return "redirect:/contests/{contestId}/problems.html";
+        return "redirect:/contests/{contestId}/problems?_format=html";
     }
 
     @Deprecated

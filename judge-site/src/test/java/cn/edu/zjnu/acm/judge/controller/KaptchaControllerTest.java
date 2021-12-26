@@ -16,6 +16,8 @@
 package cn.edu.zjnu.acm.judge.controller;
 
 import cn.edu.zjnu.acm.judge.Application;
+import java.io.ByteArrayInputStream;
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -31,11 +33,13 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.RequestBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.util.AssertionErrors.assertNotEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  *
@@ -51,15 +55,9 @@ public class KaptchaControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    /**
-     * Test of service method, of class KaptchaController.
-     *
-     * {@link KaptchaController#doGet(HttpServletRequest, HttpServletResponse)}
-     */
-    @Test
-    public void testDoGet() throws Exception {
-        log.info("doGet");
-        MvcResult result = mockMvc.perform(get("/images/rand.jpg"))
+    private void testRequest(RequestBuilder builder) throws Exception {
+        MvcResult result = mockMvc.perform(builder)
+                .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.IMAGE_JPEG))
                 .andReturn();
         HttpSession session = result.getRequest().getSession(false);
@@ -68,7 +66,32 @@ public class KaptchaControllerTest {
         byte[] body = response.getContentAsByteArray();
         assertThat(body).describedAs("body").isNotNull().isNotEmpty();
         assertNotEquals("empty body", 0, body.length);
+        ImageIO.read(new ByteArrayInputStream(body));
         assertThat((String) session.getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY)).isNotEmpty();
+    }
+
+    /**
+     * Test of doGet method, of class KaptchaController.
+     *
+     * {@link KaptchaController#doGet(HttpServletRequest, HttpServletResponse)}
+     */
+    @Test
+    public void testDoGet() throws Exception {
+        log.info("doGet");
+        testRequest(get("/images/rand?_format=jpg"));
+        testRequest(get("/images/rand").accept(MediaType.valueOf("image/*")));
+        testRequest(get("/images/rand").accept(MediaType.IMAGE_JPEG));
+    }
+
+    /**
+     * Test of doGetJpg method, of class KaptchaController.
+     *
+     * {@link KaptchaController#doGetJpg(HttpServletRequest, HttpServletResponse)}
+     */
+    @Test
+    public void testDoGetJpg() throws Exception {
+        log.info("doGetJpg");
+        testRequest(get("/images/rand.jpg"));
     }
 
 }

@@ -90,7 +90,7 @@ public class ContestStatisticsController {
                     long[] num = problemsMap.get(problemId);
                     if (num != null) {
                         sb.append("<tr><th><a href=contests/").append(contestId)
-                                .append("/problems/").append(num[1]).append(".html>")
+                                .append("/problems/").append(num[1]).append("?_format=html>")
                                 .append(contestService.toProblemIndex(num[0])).append("</a></th>");
                     }
                     for (int i = 0; i < judgeStatus.length; ++i) {

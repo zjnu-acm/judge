@@ -49,7 +49,7 @@ public class LanguageControllerTest {
     @Test
     public void testFindAll() throws Exception {
         log.info("findAll");
-        MvcResult result = mvc.perform(get("/api/languages.json"))
+        MvcResult result = mvc.perform(get("/api/languages?_format=json"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn();
@@ -69,7 +69,7 @@ public class LanguageControllerTest {
                 .executableExtension("dummy")
                 .description("test description")
                 .build();
-        MvcResult result = mvc.perform(post("/api/languages.json")
+        MvcResult result = mvc.perform(post("/api/languages?_format=json")
                 .content(objectMapper.writeValueAsString(language)).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent())
                 .andReturn();
@@ -88,7 +88,7 @@ public class LanguageControllerTest {
     public void testFindOne() throws Exception {
         log.info("findOne");
         long id = anyId();
-        MvcResult result = mvc.perform(get("/api/languages/{id}.json", id))
+        MvcResult result = mvc.perform(get("/api/languages/{id}?_format=json", id))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn();
@@ -108,7 +108,7 @@ public class LanguageControllerTest {
                 .sourceExtension("tmp")
                 .executableExtension("dummy")
                 .build();
-        MvcResult result = mvc.perform(put("/api/languages/{id}.json", id)
+        MvcResult result = mvc.perform(put("/api/languages/{id}?_format=json", id)
                 .content(objectMapper.writeValueAsString(request)).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent())
                 .andReturn();
@@ -123,7 +123,7 @@ public class LanguageControllerTest {
     public void testDelete() throws Exception {
         log.info("delete");
         long id = anyId();
-        MvcResult result = mvc.perform(delete("/api/languages/{id}.json", id))
+        MvcResult result = mvc.perform(delete("/api/languages/{id}?_format=json", id))
                 .andExpect(status().isNoContent())
                 .andReturn();
     }

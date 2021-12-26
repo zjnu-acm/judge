@@ -33,7 +33,7 @@ jQuery(function ($) {
             imgv.focus();
         } else {
             disable();
-            $.post('resetPassword.json', {username: uid, verify: vcode})
+            $.post('resetPassword?_format=json', {username: uid, verify: vcode})
                 .always(click, enable).fail(function (result) {
                 alert(result.responseJSON && result.responseJSON.message || result.responseText || 'Error Occur');
             }).success(function (result) {

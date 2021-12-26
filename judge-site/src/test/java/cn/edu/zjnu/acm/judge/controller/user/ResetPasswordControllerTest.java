@@ -70,13 +70,13 @@ public class ResetPasswordControllerTest {
         String username = mockDataService.user(
                 builder -> builder.email("admin@local.host")
         ).getId();
-        mvc.perform(post("/resetPassword.json")
+        mvc.perform(post("/resetPassword?_format=json")
                 .param("verify", verify + "1")
                 .param("username", username)
                 .locale(locale))
                 .andExpect(status().isBadRequest())
                 .andReturn();
-        mvc.perform(post("/resetPassword.json")
+        mvc.perform(post("/resetPassword?_format=json")
                 .session((MockHttpSession) session)
                 .param("verify", verify + "1")
                 .param("username", username)
@@ -90,7 +90,7 @@ public class ResetPasswordControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.IMAGE_JPEG))
                 .andReturn();
         verify = (String) session.getAttribute(Constants.KAPTCHA_SESSION_KEY);
-        mvc.perform(post("/resetPassword.json")
+        mvc.perform(post("/resetPassword?_format=json")
                 .session((MockHttpSession) session)
                 .param("verify", verify)
                 .param("username", username)
@@ -98,7 +98,7 @@ public class ResetPasswordControllerTest {
                 .andExpect(status().isInternalServerError())
                 .andReturn();
         assertThat(session.getAttribute(Constants.KAPTCHA_SESSION_KEY)).isNull();
-        mvc.perform(post("/resetPassword.json")
+        mvc.perform(post("/resetPassword?_format=json")
                 .param("action", "changePassword"))
                 .andExpect(status().isBadRequest())
                 .andReturn();

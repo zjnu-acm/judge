@@ -70,7 +70,7 @@
                 <th:block th:unless="${#request.userPrincipal==null}">
                     <span th:text="|#{onlinejudge.profile.welcome} |">welcome</span><br/>
                     <b th:text="${#request.userPrincipal.name}">userId</b>
-                    <a th:href="@{/logout.html}" th:text="#{onlinejudge.profile.logout}">logout</a>
+                    <a th:href="@{/logout(_format='html')}" th:text="#{onlinejudge.profile.logout}">logout</a>
                     <br/>
                     <a th:href="@{/mail}">
                         <span style="color: blue">

@@ -155,7 +155,7 @@ public class StatusController {
             } else {
                 sb.append("<td><a href=contests/")
                         .append(contestId).append("/problems/").append(num[1])
-                        .append(".html>").append(contestService.toProblemIndex(num[0])).append("</a></td>");
+                        .append("?_format=html>").append(contestService.toProblemIndex(num[0])).append("</a></td>");
             }
             if (score == ResultType.COMPILE_ERROR) {
                 if (submissionService.canView(request, submission)) {

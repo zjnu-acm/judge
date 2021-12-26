@@ -40,4 +40,10 @@ public class KaptchaController {
         kaptchaExtend.captcha(request, response);
     }
 
+    @GetMapping(value = "images/rand.jpg")
+    public void doGetJpg(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        kaptchaExtend.captcha(request, response);
+    }
+
 }

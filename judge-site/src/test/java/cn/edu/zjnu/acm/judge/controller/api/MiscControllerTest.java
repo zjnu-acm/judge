@@ -49,7 +49,7 @@ public class MiscControllerTest {
     @Test
     public void testFix() throws Exception {
         log.info("fix");
-        MvcResult result = mvc.perform(post("/api/misc/fix.json"))
+        MvcResult result = mvc.perform(post("/api/misc/fix?_format=json"))
                 .andExpect(status().isNoContent())
                 .andReturn();
     }
@@ -63,7 +63,7 @@ public class MiscControllerTest {
     public void testSetSystemInfo() throws Exception {
         log.info("setSystemInfo");
         SystemInfoForm request = new SystemInfoForm("test", false);
-        MvcResult result = mvc.perform(put("/api/misc/systemInfo.json")
+        MvcResult result = mvc.perform(put("/api/misc/systemInfo?_format=json")
                 .content(objectMapper.writeValueAsString(request)).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent())
                 .andReturn();
@@ -77,7 +77,7 @@ public class MiscControllerTest {
     @Test
     public void testSystemInfo() throws Exception {
         log.info("systemInfo");
-        MvcResult result = mvc.perform(get("/api/misc/systemInfo.json"))
+        MvcResult result = mvc.perform(get("/api/misc/systemInfo?_format=json"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn();
@@ -85,7 +85,7 @@ public class MiscControllerTest {
 
     private Long getContestOnly() throws Exception {
         JavaType type = objectMapper.getTypeFactory().constructParametricType(ValueHolder.class, Long.class);
-        ValueHolder<Long> result = objectMapper.readValue(mvc.perform(get("/api/misc/contestOnly.json"))
+        ValueHolder<Long> result = objectMapper.readValue(mvc.perform(get("/api/misc/contestOnly?_format=json"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse().getContentAsString(), type);
@@ -94,7 +94,7 @@ public class MiscControllerTest {
 
     private void setContestOnly(Long value) throws Exception {
         ValueHolder<Long> request = new ValueHolder<>(value);
-        MvcResult result = mvc.perform(put("/api/misc/contestOnly.json")
+        MvcResult result = mvc.perform(put("/api/misc/contestOnly?_format=json")
                 .content(objectMapper.writeValueAsString(request)).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent())
                 .andReturn();

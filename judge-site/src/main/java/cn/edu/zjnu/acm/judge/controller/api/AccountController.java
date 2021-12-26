@@ -15,23 +15,12 @@
  */
 package cn.edu.zjnu.acm.judge.controller.api;
 
-import cn.edu.zjnu.acm.judge.data.excel.Account;
 import cn.edu.zjnu.acm.judge.data.form.AccountForm;
-import cn.edu.zjnu.acm.judge.data.form.AccountImportForm;
 import cn.edu.zjnu.acm.judge.data.form.UserPasswordForm;
 import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.service.AccountService;
 import cn.edu.zjnu.acm.judge.service.ResetPasswordService;
-import cn.edu.zjnu.acm.judge.util.excel.ExcelType;
-import cn.edu.zjnu.acm.judge.util.excel.ExcelUtil;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Optional;
-import javax.annotation.Nullable;
-import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,18 +30,12 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import static cn.edu.zjnu.acm.judge.util.CustomMediaType.XLSX_VALUE;
-import static cn.edu.zjnu.acm.judge.util.CustomMediaType.XLS_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 /**
  * @author zhanhb
@@ -81,38 +64,6 @@ public class AccountController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updatePassword(@PathVariable("userId") String userId, @RequestBody UserPasswordForm user) {
         accountService.updatePassword(userId, user.getPassword());
-    }
-
-    @GetMapping(produces = XLSX_VALUE)
-    public void findAllXlsx(AccountForm form, Pageable pageable, @Nullable Locale requestLocale,
-            HttpServletResponse response) throws IOException {
-        Locale locale = Optional.ofNullable(requestLocale).orElse(Locale.ROOT);
-        List<Account> content = accountService.findAllForExport(form, pageable);
-        ExcelUtil.toResponse(Account.class, content, locale, ExcelType.XLSX,
-                accountService.getExcelName(locale), response);
-    }
-
-    @GetMapping(produces = XLS_VALUE)
-    public void findAllXls(AccountForm form, Pageable pageable, @Nullable Locale requestLocale,
-            HttpServletResponse response) throws IOException {
-        Locale locale = Optional.ofNullable(requestLocale).orElse(Locale.ROOT);
-        List<Account> content = accountService.findAllForExport(form, pageable);
-        ExcelUtil.toResponse(Account.class, content, locale, ExcelType.XLS,
-                accountService.getExcelName(locale), response);
-    }
-
-    @PostMapping(consumes = MULTIPART_FORM_DATA_VALUE)
-    public List<Account> parseExcel(@RequestParam("file") MultipartFile multipartFile,
-            @Nullable Locale locale) throws IOException {
-        try (InputStream inputStream = multipartFile.getInputStream()) {
-            return accountService.parseExcel(inputStream, Optional.ofNullable(locale).orElse(Locale.ROOT));
-        }
-    }
-
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PostMapping(value = "import", consumes = APPLICATION_JSON_VALUE)
-    public void importUsers(@RequestBody AccountImportForm form) {
-        accountService.importUsers(form);
     }
 
     @GetMapping("password/status")
