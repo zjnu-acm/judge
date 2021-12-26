@@ -44,6 +44,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 import java.util.function.ObjIntConsumer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -63,6 +64,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class ContestServiceImpl implements ContestService {
 
     private static final ConcurrentMap<Long, CompletableFuture<List<UserStanding>>> STANDINGS = new ConcurrentHashMap<>(20);
+
+    private static <T> Function<T, T> removeStanding(long id, CompletableFuture<List<UserStanding>> future) {
+        return it -> {
+            STANDINGS.remove(id, future);
+            return it;
+        };
+    }
 
     private final ContestMapper contestMapper;
     private final SubmissionMapper submissionMapper;
@@ -236,11 +244,10 @@ public class ContestServiceImpl implements ContestService {
 
     @Override
     public CompletableFuture<List<UserStanding>> standingAsync(long id) {
-        return STANDINGS.computeIfAbsent(id, contestId -> CompletableFuture.supplyAsync(() -> {
-            List<UserStanding> result = standing(contestId);
-            STANDINGS.remove(id);
-            return result;
-        }));
+        CompletableFuture<List<UserStanding>> future = STANDINGS
+                .computeIfAbsent(id, contestId
+                        -> CompletableFuture.supplyAsync(() -> standing(contestId)));
+        return future.thenApply(removeStanding(id, future));
     }
 
     @SuppressWarnings("ValueOfIncrementOrDecrementUsed")
