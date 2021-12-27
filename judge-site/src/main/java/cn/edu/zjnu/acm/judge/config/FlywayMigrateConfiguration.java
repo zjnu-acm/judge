@@ -14,8 +14,9 @@ import org.springframework.context.annotation.Configuration;
 public class FlywayMigrateConfiguration {
 
     @Bean
-    public FlywayMigrationStrategy flywayChecksumFixture(DataSource dataSource) {
+    public FlywayMigrationStrategy flywayChecksumFixture() {
         return flyway -> {
+            DataSource dataSource = flyway.getConfiguration().getDataSource();
             try (Connection connection = dataSource.getConnection()) {
                 if (changeChecksum(connection, "20170830", -67687205, 1960302326)) {
                     final String sql = "ALTER TABLE problem_i18n DROP FOREIGN KEY FK_problem_i18n_locale";
