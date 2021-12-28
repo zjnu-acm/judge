@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" child.project.url.inherit.append.path="false" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -47,7 +47,7 @@
         <module>judge-site</module>
     </modules>
 
-    <scm>
+    <scm child.scm.connection.inherit.append.path="false" child.scm.url.inherit.append.path="false">
         <connection>scm:git:https://github.com/zjnu-acm/judge</connection>
         <url>https://github.com/zjnu-acm/judge</url>
     </scm>
@@ -72,7 +72,7 @@
         <mybatis.version>3.5.8</mybatis.version>
         <objenesis.version>3.2</objenesis.version>
         <poi.version>5.1.0</poi.version>
-        <prerequisites.maven>3.5.1</prerequisites.maven>
+        <prerequisites.maven>3.6.1</prerequisites.maven>
         <revision>0.0.1-SNAPSHOT</revision>
         <sortpom-maven-plugin.version>3.0.0</sortpom-maven-plugin.version>
         <unbescape.version>1.1.6.RELEASE</unbescape.version>
