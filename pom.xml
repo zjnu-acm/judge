@@ -327,6 +327,8 @@
                     <version>${flatten-maven-plugin.version}</version>
                     <configuration>
                         <flattenMode>ossrh</flattenMode>
+                        <flattenedPomFilename>flattened-pom.xml</flattenedPomFilename>
+                        <outputDirectory>${project.build.directory}</outputDirectory>
                         <pomElements>
                             <repositories>keep</repositories>
                         </pomElements>
