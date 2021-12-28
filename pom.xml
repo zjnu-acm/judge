@@ -75,6 +75,7 @@
         <prerequisites.maven>3.6.1</prerequisites.maven>
         <revision>0.0.1-SNAPSHOT</revision>
         <sortpom-maven-plugin.version>3.0.0</sortpom-maven-plugin.version>
+        <thymeleaf-layout-dialect.version>3.0.0</thymeleaf-layout-dialect.version>
         <unbescape.version>1.1.6.RELEASE</unbescape.version>
     </properties>
 

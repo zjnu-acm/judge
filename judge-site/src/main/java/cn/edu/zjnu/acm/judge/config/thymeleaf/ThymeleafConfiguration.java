@@ -15,7 +15,8 @@
  */
 package cn.edu.zjnu.acm.judge.config.thymeleaf;
 
-import nz.net.ultraq.thymeleaf.LayoutDialect;
+import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
+import nz.net.ultraq.thymeleaf.layoutdialect.decorators.strategies.GroupingStrategy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
@@ -33,7 +34,7 @@ public class ThymeleafConfiguration {
 
     @Bean
     public LayoutDialect layoutDialect() {
-        return new LayoutDialect(new nz.net.ultraq.thymeleaf.decorators.strategies.GroupingRespectLayoutTitleStrategy());
+        return new LayoutDialect(new GroupingStrategy());
     }
 
 }
