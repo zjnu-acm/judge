@@ -9,10 +9,6 @@
     <artifactId>judge-webjars</artifactId>
     <name>Online Judge Webjars</name>
 
-    <properties>
-        <main.basedir>${basedir}/..</main.basedir>
-    </properties>
-
     <dependencyManagement>
         <dependencies>
             <dependency>

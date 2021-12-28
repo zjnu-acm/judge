@@ -67,7 +67,6 @@
         <jnc.version>0.1.BUILD-SNAPSHOT</jnc.version>
         <kaptcha.version>0.0.9</kaptcha.version>
         <lombok-maven-plugin.version>1.18.20.0</lombok-maven-plugin.version>
-        <main.basedir>${basedir}</main.basedir>
         <mybatis-spring-boot.version>2.2.0</mybatis-spring-boot.version>
         <mybatis-spring.version>2.0.6</mybatis-spring.version>
         <mybatis.version>3.5.8</mybatis.version>
@@ -346,9 +345,6 @@
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>versions-maven-plugin</artifactId>
                     <version>${versions-maven-plugin.version}</version>
-                    <configuration>
-                        <rulesUri>file:${main.basedir}/.mvn/maven-version-rules.xml</rulesUri>
-                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.jacoco</groupId>

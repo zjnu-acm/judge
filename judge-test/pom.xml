@@ -9,10 +9,6 @@
     <artifactId>judge-test</artifactId>
     <name>Online Judge Test Base</name>
 
-    <properties>
-        <main.basedir>${basedir}/..</main.basedir>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>${jnc.group-id}</groupId>

@@ -10,7 +10,6 @@
     <name>Java Native Call Platform</name>
 
     <properties>
-        <main.basedir>${basedir}/..</main.basedir>
         <start-class/>
     </properties>
 

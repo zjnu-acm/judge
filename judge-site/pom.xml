@@ -14,7 +14,6 @@
         <argLine/>
         <delombok.directory>${project.build.directory}/delombok</delombok.directory>
         <jacoco.propertyName>argLine</jacoco.propertyName>
-        <main.basedir>${basedir}/..</main.basedir>
         <start-class>cn.edu.zjnu.acm.judge.Application</start-class>
     </properties>
 
