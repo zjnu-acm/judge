@@ -61,6 +61,7 @@
         <findbugs-jsr305.version>3.0.2</findbugs-jsr305.version>
         <flatten-maven-plugin.version>1.2.7</flatten-maven-plugin.version>
         <flyway.version>7.15.0</flyway.version>
+        <gmavenplus-plugin.version>1.13.1</gmavenplus-plugin.version>
         <guava.version>31.0.1-jre</guava.version>
         <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
         <jnc.group-id>com.github.java-native-call</jnc.group-id>
@@ -321,6 +322,11 @@
                             <ignoredResourcePattern>.*changelog\.txt$</ignoredResourcePattern>
                         </ignoredResourcePatterns>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.gmavenplus</groupId>
+                    <artifactId>gmavenplus-plugin</artifactId>
+                    <version>${gmavenplus-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
