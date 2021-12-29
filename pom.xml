@@ -56,7 +56,7 @@
         <angular.version>1.2.32</angular.version>
         <attoparser.version>2.0.5.RELEASE</attoparser.version>
         <ckfinder.group-id>com.github.zhanhb</ckfinder.group-id>
-        <ckfinder.version>0.0.1.BUILD-SNAPSHOT</ckfinder.version>
+        <ckfinder.version>0.1.0-SNAPSHOT</ckfinder.version>
         <duplicate-finder-maven-plugin.version>1.5.0</duplicate-finder-maven-plugin.version>
         <findbugs-jsr305.version>3.0.2</findbugs-jsr305.version>
         <flatten-maven-plugin.version>1.2.7</flatten-maven-plugin.version>
