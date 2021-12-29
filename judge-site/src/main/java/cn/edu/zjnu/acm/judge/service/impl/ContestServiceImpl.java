@@ -22,6 +22,7 @@ import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.exception.BusinessCode;
 import cn.edu.zjnu.acm.judge.exception.BusinessException;
 import cn.edu.zjnu.acm.judge.mapper.ContestMapper;
+import cn.edu.zjnu.acm.judge.mapper.ContestProblemMapper;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
 import cn.edu.zjnu.acm.judge.service.ContestService;
 import cn.edu.zjnu.acm.judge.service.LocaleService;
@@ -73,6 +74,7 @@ public class ContestServiceImpl implements ContestService {
     }
 
     private final ContestMapper contestMapper;
+    private final ContestProblemMapper contestProblemMapper;
     private final SubmissionMapper submissionMapper;
     private final LocaleService localeService;
     private final ObjectMapper objectMapper;
@@ -96,7 +98,7 @@ public class ContestServiceImpl implements ContestService {
 
     @Override
     public void addProblem(long contestId, long problemId) {
-        contestMapper.addProblem(contestId, problemId, null);
+        contestProblemMapper.addProblem(contestId, problemId, null);
     }
 
     @Override
@@ -136,7 +138,7 @@ public class ContestServiceImpl implements ContestService {
     @Override
     public Contest getContestAndProblems(long contestId, Locale locale) {
         Contest contest = checkedGet(contestId);
-        List<Problem> problems = contestMapper.getProblems(contestId, null, localeService.resolve(locale));
+        List<Problem> problems = contestProblemMapper.getProblems(contestId, null, localeService.resolve(locale));
         contest.setProblems(problems);
         return contest;
     }
@@ -145,7 +147,7 @@ public class ContestServiceImpl implements ContestService {
     @Override
     public Contest getContestAndProblemsNotDisabled(long contestId, @Nullable String userId, Locale locale) {
         Contest contest = getEnabledContest(contestId);
-        List<Problem> problems = contestMapper.getProblems(contestId, userId, localeService.resolve(locale));
+        List<Problem> problems = contestProblemMapper.getProblems(contestId, userId, localeService.resolve(locale));
         contest.setProblems(problems);
         return contest;
     }
@@ -173,13 +175,13 @@ public class ContestServiceImpl implements ContestService {
     public void delete(long id) throws IOException {
         if (log.isWarnEnabled()) {
             List<Long> submissions = submissionMapper.findAllByContestId(id);
-            List<Problem> problems = contestMapper.getProblems(id, null, null);
+            List<Problem> problems = contestProblemMapper.getProblems(id, null, null);
             // TODO add trash
             log.warn("delete contest id: {}, submissions: {}, problems: {}", id,
                     objectMapper.writeValueAsString(submissions), objectMapper.writeValueAsString(problems));
         }
         long result = submissionMapper.clearByContestId(id)
-                + contestMapper.deleteContestProblems(id)
+                + contestProblemMapper.deleteByContest(id)
                 + contestMapper.deleteByPrimaryKey(id);
         if (result == 0) {
             throw new BusinessException(BusinessCode.CONTEST_NOT_FOUND, id);
@@ -197,14 +199,14 @@ public class ContestServiceImpl implements ContestService {
         }
         List<Problem> problems = contest.getProblems();
         if (problems != null) {
-            contestMapper.deleteContestProblems(id);
+            contestProblemMapper.deleteByContest(id);
             add(id, problems);
         }
     }
 
     @Override
     public Map<Long, long[]> getProblemsMap(long id) {
-        List<Problem> problems = contestMapper.getProblems(id, null, null);
+        List<Problem> problems = contestProblemMapper.getProblems(id, null, null);
         AtomicInteger atomic = new AtomicInteger();
         return problems.stream().collect(ImmutableMap.toImmutableMap(Problem::getOrigin,
                 problem -> new long[]{atomic.getAndIncrement(), problem.getId()}
@@ -215,7 +217,7 @@ public class ContestServiceImpl implements ContestService {
         assert problems != null;
         if (!problems.isEmpty()) {
             long[] array = problems.stream().mapToLong(Problem::getOrigin).toArray();
-            contestMapper.addProblems(contestId, 1000, array);
+            contestProblemMapper.addProblems(contestId, 1000, array);
         }
     }
 
@@ -229,7 +231,7 @@ public class ContestServiceImpl implements ContestService {
     @Override
     public List<UserStanding> standing(long id) {
         Map<String, UserStanding> hashMap = Maps.newHashMapWithExpectedSize(80);
-        contestMapper.standing(id).forEach(standing
+        contestProblemMapper.standing(id).forEach(standing
                 -> hashMap.computeIfAbsent(standing.getUser(), UserStanding::new)
                         .add(standing.getProblem(), standing.getTime(), standing.getPenalty())
         );
@@ -269,7 +271,7 @@ public class ContestServiceImpl implements ContestService {
     @Nonnull
     @Override
     public Problem getProblem(long contestId, long problemNum, @Nullable Locale locale) {
-        Problem problem = contestMapper.getProblem(contestId, problemNum, localeService.resolve(locale));
+        Problem problem = contestProblemMapper.getProblem(contestId, problemNum, localeService.resolve(locale));
         if (problem == null) {
             throw new BusinessException(BusinessCode.CONTEST_PROBLEM_NOT_FOUND, contestId, problemNum);
         }

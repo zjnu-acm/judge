@@ -13,12 +13,6 @@
         <result property="createdTime" column="created_time"/>
         <result property="modifiedTime" column="modified_time"/>
     </resultMap>
-    <resultMap id="standingResultMap" type="cn.edu.zjnu.acm.judge.data.dto.Standing">
-        <result property="user" column="user_id"/>
-        <result property="problem" column="num"/>
-        <result property="time" column="time"/>
-        <result property="penalty" column="penalty"/>
-    </resultMap>
     <sql id="columns">
         contest_id,
         title,
@@ -34,88 +28,9 @@
         INSERT INTO contest (contest_id,title,description,start_time,end_time)
         VALUES (#{id},#{title},#{description},#{startTime},#{endTime})
     </insert>
-    <select id="getProblems" resultMap="cn.edu.zjnu.acm.judge.mapper.ProblemMapper.baseResultMap">
-        select
-            cp.problem_id origin,
-            cp.num problem_id,
-            COALESCE(nullif(cp.title,''),nullif(pi.title,''),p.title) title
-        <if test='userId!=null'>,temp.status</if>
-        from contest_problem cp
-        <if test='userId!=null'>left join (
-                select
-                    problem_id,
-                    if(count(solution_id)=0,0,if(sum(if(score=100,1,0)) !=0,1,2)) status
-                from solution
-                where user_id=#{userId} and contest_id=#{contest}
-                group by problem_id
-            ) temp on cp.problem_id=temp.problem_id
-        </if>
-        left join problem p on cp.problem_id=p.problem_id
-        <include refid="cn.edu.zjnu.acm.judge.mapper.ProblemMapper.joinI18n"/>
-        where cp.contest_id=#{contest} order by cp.num
-    </select>
-    <select id="standing" resultMap="standingResultMap">
-        select
-            ac.user_id,
-            cp.num,
-            UNIX_TIMESTAMP(ac.ac_time) - UNIX_TIMESTAMP((select start_time from contest where contest_id=#{id})) `time`,
-            sum(if(wa.in_date &lt; ac.ac_time,1,0)) penalty
-        from (
-            select
-                user_id,
-                problem_id,
-                min(in_date) ac_time
-            from solution
-            where contest_id=#{id} and score=100
-            group by user_id,problem_id
-        ) ac
-        left join solution wa on ac.user_id=wa.user_id and ac.problem_id=wa.problem_id
-        join contest_problem cp on cp.contest_id=#{id} and cp.problem_id=ac.problem_id
-        where wa.contest_id=#{id}
-        group by ac.user_id,ac.problem_id
-        union
-        select
-            s.user_id user,
-            cp.num `problem`,
-            null time,
-            count(s.solution_id) penalty
-        from solution s
-        join contest_problem cp on s.contest_id=cp.contest_id and s.problem_id=cp.problem_id
-        where s.contest_id=#{id} group by s.user_id,s.problem_id having sum(if(score=100,1,0))=0
-    </select>
     <select id="findOne" resultMap="baseResultMap">
         select <include refid="columns"/>
         from contest where contest_id=#{id}
-    </select>
-    <select id="getProblem" resultMap="cn.edu.zjnu.acm.judge.mapper.ProblemMapper.baseResultMap">
-        select
-            cp.num problem_id,
-            COALESCE(nullif(trim(cp.title),''),p.title) title,
-            p.problem_id origin,
-            COALESCE(pi.description,p.description) description,
-            COALESCE(pi.input,p.input) input,
-            COALESCE(pi.output,p.output) output,
-            p.sample_input,
-            p.sample_output,
-            COALESCE(pi.hint,p.hint) hint,
-            COALESCE(pi.source,p.source) source,
-            p.in_date,
-            p.time_limit,
-            p.memory_limit,
-            p.disabled,
-            p.created_time,
-            p.modified_time,
-            count(distinct sa.solution_id) accepted,
-            count(distinct s.solution_id) submit,
-            count(distinct sa.user_id) solved,
-            count(distinct s.user_id) submit_user
-        from contest_problem cp
-        join problem p on cp.problem_id=p.problem_id
-        <include refid="cn.edu.zjnu.acm.judge.mapper.ProblemMapper.joinI18n"/>
-        left join solution s on s.problem_id=p.problem_id and s.contest_id=#{contest}
-        left join solution sa on sa.problem_id=p.problem_id and sa.contest_id=#{contest} and sa.score=100
-        where cp.contest_id=#{contest} and cp.num=#{problem}
-        group by p.problem_id
     </select>
     <select id="findOneByIdAndNotDisabled" resultMap="baseResultMap">
         select <include refid="columns"/>
@@ -127,19 +42,6 @@
         join `user` u on s.user_id=u.user_id
         where s.contest_id=#{id} group by s.user_id
     </select>
-    <insert id="addProblem">
-        insert ignore into contest_problem(contest_id,problem_id,title,num)
-        select #{id},#{problem},nullif(#{title},''),COALESCE(max(num)+1,1000) num
-        from contest_problem cp where contest_id=#{id}
-    </insert>
-    <insert id="addProblems">
-        insert into contest_problem (contest_id,problem_id,title,num)
-        select #{contestId},problem_id,null,num from
-        <foreach item='item' index='index' collection='problems' open='(' separator='union' close=')'>
-            select problem_id,${base+index} num
-            from problem where problem_id=#{item}
-        </foreach> t
-    </insert>
     <select id="findAllByQuery" resultMap="baseResultMap">
         select <include refid="columns"/>
         from contest
@@ -176,9 +78,6 @@
         </where>
         order by contest_id desc
     </select>
-    <delete id="deleteContestProblems">
-        delete from contest_problem where contest_id=#{id}
-    </delete>
     <delete id="deleteByPrimaryKey">
         delete from contest where contest_id=#{id}
     </delete>

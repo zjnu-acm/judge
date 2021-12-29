@@ -15,9 +15,7 @@
  */
 package cn.edu.zjnu.acm.judge.mapper;
 
-import cn.edu.zjnu.acm.judge.data.dto.Standing;
 import cn.edu.zjnu.acm.judge.domain.Contest;
-import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.domain.User;
 import java.util.List;
 import javax.annotation.Nonnull;
@@ -34,35 +32,15 @@ public interface ContestMapper {
 
     long save(Contest contest);
 
-    List<Problem> getProblems(
-            @Param("contest") long contestId,
-            @Nullable @Param("userId") String userId,
-            @Nullable @Param("lang") String lang);
-
-    List<Standing> standing(@Param("id") long contestId);
-
     @Nullable
     Contest findOne(@Param("id") long contestId);
-
-    @Nullable
-    Problem getProblem(
-            @Param("contest") long contestId,
-            @Param("problem") long problemNum,
-            @Nullable @Param("lang") String lang);
 
     @Nullable
     Contest findOneByIdAndNotDisabled(@Param("id") long contestId);
 
     List<User> attenders(@Param("id") long contestId);
 
-    long addProblem(@Param("id") long contestId, @Param("problem") long problem,
-            @Nullable @Param("title") String title);
-
-    long addProblems(@Param("contestId") long contestId, @Param("base") int base, @Nonnull @Param("problems") long[] problems);
-
     List<Contest> findAllByQuery(@Param("includeDisabled") boolean includeDisabled, @Param("mask") int mask);
-
-    long deleteContestProblems(@Param("id") long id);
 
     long deleteByPrimaryKey(@Param("id") long id);
 
