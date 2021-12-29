@@ -292,7 +292,6 @@
                             <goals>
                                 <goal>sort</goal>
                             </goals>
-                            <phase>verify</phase>
                         </execution>
                     </executions>
                 </plugin>
