@@ -1074,7 +1074,7 @@
             var disabled = contest.disabled;
             var started = !contest.startTime || contest.startTime < now;
             var ended = !contest.endTime || contest.endTime < now;
-            var error = contest.startTime && contest.startTime > contest.endTime;
+            var error = contest.startTime && contest.startTime >= contest.endTime;
             return disabled ? 4 : error ? 3 : started && !ended ? 1 : ended ? 2 : 0;
         }
         var text = ['Pending', 'RUNNING', 'ENDED', 'ERROR', 'DISABLED'];

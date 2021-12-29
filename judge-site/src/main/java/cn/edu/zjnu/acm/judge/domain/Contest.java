@@ -61,7 +61,7 @@ public class Contest implements Serializable {
 
     @JsonIgnore
     public boolean isError() {
-        return startTime != null && endTime != null && startTime.isAfter(endTime);
+        return startTime != null && endTime != null && startTime.compareTo(endTime) >= 0;
     }
 
 }
