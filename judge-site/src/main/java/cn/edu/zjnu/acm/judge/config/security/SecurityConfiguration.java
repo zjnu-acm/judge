@@ -18,23 +18,20 @@ package cn.edu.zjnu.acm.judge.config.security;
 import cn.edu.zjnu.acm.judge.util.URLEncoder;
 import com.github.zhanhb.ckfinder.connector.autoconfigure.CKFinderProperties;
 import java.io.IOException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -44,29 +41,20 @@ import org.springframework.security.web.savedrequest.NullRequestCache;
 import org.springframework.util.StringUtils;
 
 /**
- *
  * @author zhanhb
  */
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(securedEnabled = true)
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class SecurityConfiguration {
 
     private final UserDetailsService userDetailsService;
-    private final PasswordEncoder passwordEncoder;
     private final PersistentTokenRepository persistentTokenRepository;
     private final CKFinderProperties ckfinderProperties;
 
-    @Bean(name = "authenticationManager")
-    @Primary
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         SimpleUrlAuthenticationSuccessHandler simpleUrlAuthenticationSuccessHandler = new SimpleUrlAuthenticationSuccessHandler("/");
         simpleUrlAuthenticationSuccessHandler.setUseReferer(false);
         simpleUrlAuthenticationSuccessHandler.setTargetUrlParameter("url");
@@ -114,16 +102,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
             .servletApi();
         // @formatter:on
+
+        http.setSharedObject(UserDetailsService.class, userDetailsService);
+        return http.build();
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
-    }
-
-    @Bean
-    public AuthenticationEntryPoint authenticationEntryPoint() {
-        return (request, response, authException) -> request.getRequestDispatcher("/unauthorized").forward(request, response);
+    private AuthenticationEntryPoint authenticationEntryPoint() {
+        return (request, response, authException) -> {
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/unauthorized");
+            dispatcher.forward(request, response);
+        };
     }
 
     private AuthenticationFailureHandler failureHandler() {
