@@ -1,6 +1,9 @@
 package cn.edu.zjnu.acm.judge.controller.submission;
 
 import cn.edu.zjnu.acm.judge.Application;
+import cn.edu.zjnu.acm.judge.domain.Contest;
+import cn.edu.zjnu.acm.judge.domain.Problem;
+import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.service.MockDataService;
 import com.google.common.base.Strings;
 import java.util.Objects;
@@ -13,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -21,12 +23,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.anonymous;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureMockMvc
 @RunWith(JUnitPlatform.class)
@@ -58,6 +59,34 @@ public class SubmitControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andReturn();
+    }
+
+    /**
+     * Test of contestSubmitPage method, of class SubmitController.
+     *
+     * {@link SubmitController#contestSubmitPage(Model, Long, long)}
+     */
+    @Test
+    public void testContestSubmitPage() throws Exception {
+        log.info("contestSubmitPage");
+        User user = mockDataService.user();
+        Problem problem = mockDataService.problem();
+        {
+            mvc.perform(get("/problems/{problemId}/submit", problem.getId()).with(anonymous()))
+                    .andExpect(forwardedUrl("/unauthorized"));
+            mvc.perform(get("/problems/{problemId}/submit", problem.getId()).with(user(user.getId())))
+                    .andExpect(status().isOk())
+                    .andReturn();
+        }
+        {
+            Contest contest = mockDataService.contest();
+
+            long problemId = problem.getId();
+            long contestId = contest.getId();
+            mvc.perform(get("/contests/{contestId}/problems/{problemId}/submit", contestId, problemId).with(user(user.getId())))
+                    .andExpect(status().isOk())
+                    .andReturn();
+        }
     }
 
     /**
