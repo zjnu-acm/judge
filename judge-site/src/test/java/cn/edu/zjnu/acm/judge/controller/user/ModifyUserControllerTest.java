@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -41,7 +40,7 @@ public class ModifyUserControllerTest {
     /**
      * Test of updatePage method, of class ModifyUserController.
      *
-     * {@link ModifyUserController#updatePage(Model, Authentication)}
+     * {@link ModifyUserController#updatePage(Model)}
      */
     @Test
     public void testUpdatePage() throws Exception {
@@ -56,7 +55,7 @@ public class ModifyUserControllerTest {
     /**
      * Test of update method, of class ModifyUserController.
      *
-     * {@link ModifyUserController#update(Model, String, String, String, String, String, String, Authentication)}
+     * {@link ModifyUserController#update(Model, String, String, String, String, String, String)}
      */
     @Test
     public void testUpdate() throws Exception {

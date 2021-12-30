@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -45,7 +44,7 @@ public class MailControllerTest {
     /**
      * Test of delete method, of class MailController.
      *
-     * {@link MailController#delete(long, Authentication)}
+     * {@link MailController#delete(long)}
      */
     @Test
     public void testDelete() throws Exception {
@@ -62,7 +61,7 @@ public class MailControllerTest {
     /**
      * Test of mail method, of class MailController.
      *
-     * {@link MailController#mail(Model, int, long, Authentication)}
+     * {@link MailController#mail(Model, int, long)}
      */
     @Test
     public void testMail() throws Exception {
@@ -82,7 +81,7 @@ public class MailControllerTest {
     /**
      * Test of send method, of class MailController.
      *
-     * {@link MailController#send(String, String, String, Authentication)}
+     * {@link MailController#send(String, String, String)}
      */
     @Test
     public void testSend() throws Exception {
@@ -103,7 +102,7 @@ public class MailControllerTest {
     /**
      * Test of sendPage method, of class MailController.
      *
-     * {@link MailController#sendPage(Model, long, String, Authentication)}
+     * {@link MailController#sendPage(Model, long, String)}
      */
     @Test
     public void testSendPage() throws Exception {
@@ -122,7 +121,7 @@ public class MailControllerTest {
     /**
      * Test of showMail method, of class MailController.
      *
-     * {@link MailController#showMail(Model, long, Authentication)}
+     * {@link MailController#showMail(Model, long)}
      */
     @Test
     public void testShowMail() throws Exception {

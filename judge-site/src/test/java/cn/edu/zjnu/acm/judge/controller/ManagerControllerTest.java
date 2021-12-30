@@ -32,7 +32,7 @@ public class ManagerControllerTest {
     private MockMvc mvc;
 
     /**
-     * Test of manager method, of class ManageController.
+     * Test of manager method, of class ManagerController.
      *
      * {@link ManagerController#manager()}
      */

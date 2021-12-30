@@ -13,7 +13,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -41,7 +40,7 @@ public class ContestProblemControllerTest {
     /**
      * Test of problems method, of class ContestProblemController.
      *
-     * {@link ContestProblemController#problems(Model, Locale, long, Authentication)}
+     * {@link ContestProblemController#problems(Model, Locale, long)}
      */
     @Test
     public void testProblems() throws Exception {
@@ -78,7 +77,7 @@ public class ContestProblemControllerTest {
     /**
      * Test of status method, of class ContestProblemController.
      *
-     * {@link ContestProblemController#status(long, int, Pageable, Model, Authentication, HttpServletRequest)}
+     * {@link ContestProblemController#status(long, int, Integer, Pageable, Model, HttpServletRequest)}
      */
     @Test
     public void testStatus() throws Exception {

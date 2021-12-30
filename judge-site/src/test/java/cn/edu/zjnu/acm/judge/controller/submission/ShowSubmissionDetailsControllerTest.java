@@ -37,12 +37,9 @@ public class ShowSubmissionDetailsControllerTest {
     private MockDataService mockDataService;
 
     /**
-     * Test of showSolutionDetails method, of class
-     * ShowSubmissionDetailsController.
+     * Test of showSolutionDetails method, of class ShowSubmissionDetailsController.
      *
-     * @see
-     * ShowSubmissionDetailsController#showSolutionDetails(HttpServletRequest,
-     * long)
+     * {@link ShowSubmissionDetailsController#showSolutionDetails(HttpServletRequest, long)}
      */
     @Test
     public void testShowSolutionDetails() throws Exception {

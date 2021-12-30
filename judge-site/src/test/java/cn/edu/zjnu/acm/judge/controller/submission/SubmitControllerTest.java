@@ -42,9 +42,9 @@ public class SubmitControllerTest {
     private MockDataService mockDataService;
 
     /**
-     * Test of submitPage method, of class SubmitPageController.
+     * Test of submitPage method, of class SubmitController.
      *
-     * {@link SubmitController#submitPage(Model, Long, Authentication)}
+     * {@link SubmitController#submitPage(Model, Long)}
      */
     @Test
     public void testSubmitPage() throws Exception {
@@ -63,7 +63,7 @@ public class SubmitControllerTest {
     /**
      * Test of submit method, of class SubmitController.
      *
-     * {@link SubmitController#submit(HttpServletRequest, Long, long, int, String, RedirectAttributes, Authentication)}
+     * {@link SubmitController#submit(HttpServletRequest, Long, long, int, String, RedirectAttributes)}
      */
     @Test
     public void testSubmit() throws Exception {

@@ -61,7 +61,7 @@ public class LegacyAdminControllerTest {
     /**
      * Test of rejudge method, of class LegacyAdminController.
      *
-     * {@link LegacyAdminController#rejudge(RedirectAttributes, java.util.Map)}
+     * {@link LegacyAdminController#rejudge(HttpServletRequest)}
      */
     @Test
     public void testRejudge() throws Exception {

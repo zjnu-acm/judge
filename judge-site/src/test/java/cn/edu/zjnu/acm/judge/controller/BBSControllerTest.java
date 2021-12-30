@@ -29,7 +29,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -128,7 +127,7 @@ public class BBSControllerTest {
     /**
      * Test of post method, of class BBSController.
      *
-     * {@link BBSController#post(Long, Long, String, String, RedirectAttributes, Authentication)}
+     * {@link BBSController#post(Long, Long, String, String, RedirectAttributes)}
      */
     @Test
     public void testPost() throws Exception {

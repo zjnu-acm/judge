@@ -13,7 +13,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -59,7 +58,7 @@ public class ProblemStatusControllerTest {
     /**
      * Test of status method, of class ProblemStatusController.
      *
-     * {@link ProblemStatusController#status(HttpServletRequest, long, Pageable, Authentication)}
+     * {@link ProblemStatusController#status(HttpServletRequest, long, Integer, Pageable)}
      */
     @Test
     public void testStatus() throws Exception {
