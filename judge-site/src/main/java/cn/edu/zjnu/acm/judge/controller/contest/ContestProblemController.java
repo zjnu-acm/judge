@@ -123,7 +123,7 @@ public class ContestProblemController {
             counts.add(scoreCount.getCount());
             urls.add(request.getContextPath() + "/status?contest_id=" + contestId + "&problem_id=" + problem.getOrigin() + "&score=" + score);
         }
-        boolean isAdmin = UserDetailsServiceImpl.isAdminLoginned(request);
+        boolean isAdmin = UserDetailsServiceImpl.isAdministrator(request);
         boolean isSourceBrowser = UserDetailsServiceImpl.isSourceBrowser(request);
         boolean canView = isAdmin || isSourceBrowser;
 

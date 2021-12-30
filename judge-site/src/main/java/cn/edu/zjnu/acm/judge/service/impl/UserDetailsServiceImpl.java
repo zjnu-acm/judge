@@ -46,7 +46,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private static final List<GrantedAuthority> ROLE_USER = ImmutableList.copyOf(AuthorityUtils.createAuthorityList("ROLE_USER"));
     private static final List<List<GrantedAuthority>> ROLES = ImmutableList.of(ROLE_USER, ROLE_SOURCE_BROWSER, ROLE_ADMIN);
 
-    public static boolean isAdminLoginned(HttpServletRequest request) {
+    public static boolean isAdministrator(HttpServletRequest request) {
         return request.isUserInRole("ADMIN");
     }
 

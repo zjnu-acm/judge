@@ -76,7 +76,7 @@ public class SubmissionServiceImpl implements SubmissionService {
 
     @Override
     public boolean canView(HttpServletRequest request, Submission submission) {
-        if (UserDetailsServiceImpl.isAdminLoginned(request)) {
+        if (UserDetailsServiceImpl.isAdministrator(request)) {
             return true;
         }
         if (UserDetailsServiceImpl.isUser(submission.getUser())) {

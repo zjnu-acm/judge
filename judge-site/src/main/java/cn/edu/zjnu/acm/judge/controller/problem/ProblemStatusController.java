@@ -98,7 +98,7 @@ public class ProblemStatusController {
                 .language(language)
                 .build();
         Page<Submission> page = submissionService.bestSubmission(form, pageable, problem.getSubmitUser());
-        boolean isAdmin = UserDetailsServiceImpl.isAdminLoginned(request);
+        boolean isAdmin = UserDetailsServiceImpl.isAdministrator(request);
         boolean isSourceBrowser = UserDetailsServiceImpl.isSourceBrowser(request);
         boolean canView = isAdmin || isSourceBrowser;
 

@@ -65,7 +65,7 @@ public class ContestOnlyServiceImpl implements ContestOnlyService {
         if (contestOnly == null) {
             return;
         }
-        if (UserDetailsServiceImpl.isAdminLoginned(request)) {
+        if (UserDetailsServiceImpl.isAdministrator(request)) {
             return;
         }
         if (!Objects.equals(contest, contestOnly)) {
@@ -95,7 +95,7 @@ public class ContestOnlyServiceImpl implements ContestOnlyService {
         if (contestOnly == null) {
             return true;
         }
-        if (UserDetailsServiceImpl.isAdminLoginned(request)) {
+        if (UserDetailsServiceImpl.isAdministrator(request)) {
             return true;
         }
         Long contestId = submission.getContest();

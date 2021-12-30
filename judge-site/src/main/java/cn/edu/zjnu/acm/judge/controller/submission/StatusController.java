@@ -128,7 +128,7 @@ public class StatusController {
                 + "<TABLE cellSpacing=0 cellPadding=0 width=100% border=1 class=table-back style=\"border-collapse: collapse\" bordercolor=#FFF>"
                 + "<tr bgcolor=#6589D1><td align=center width=8%><b>Run ID</b></td><td align=center width=10%><b>User</b></td><td align=center width=6%><b>Problem</b></td>"
                 + "<td align=center width=10%><b>Result</b></td><td align=center width=10%><b>Score</b></td><td align=center width=7%><b>Memory</b></td><td align=center width=7%><b>Time</b></td><td align=center width=7%><b>Language</b></td><td align=center width=7%><b>Code Length</b></td><td align=center width=17%><b>Submit Time</b></td></tr>");
-        boolean admin = UserDetailsServiceImpl.isAdminLoginned(request);
+        boolean admin = UserDetailsServiceImpl.isAdministrator(request);
         boolean sourceBrowser = UserDetailsServiceImpl.isSourceBrowser(request);
 
         for (Submission submission : submissions) {
