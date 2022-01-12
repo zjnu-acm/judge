@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JudgeBridge implements Closeable {
 
+    private static final ExecuteResult[] EMPTY = {};
     private final Executor executor;
 
     public JudgeBridge() {
@@ -44,7 +45,7 @@ public class JudgeBridge implements Closeable {
                 break;
             }
         }
-        return list.toArray(new ExecuteResult[list.size()]);
+        return list.toArray(EMPTY);
     }
 
     @Override
