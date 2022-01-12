@@ -90,7 +90,7 @@ public class JudgeServiceImpl implements JudgeService {
             Path work = systemService.getWorkDirectory(submissionId); //建立临时文件
             final Validator validator = isSpecial
                     ? new SpecialValidator(specialFile.toString(), work)
-                    : SimpleValidator.PE_AS_ACCEPTED;
+                    : SimpleValidator.PE_AS_AC;
             boolean deleteTempFile = systemService.isDeleteTempFile();
             RunResult runResult = judgeRunner.run(runRecord, work, judgeData, validator, deleteTempFile);
             SubmissionDetail detail = SubmissionDetail.builder().id(submissionId)

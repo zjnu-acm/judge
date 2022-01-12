@@ -14,13 +14,13 @@ import java.util.Scanner;
 public enum SimpleValidator implements Validator {
     NORMAL {
         @Override
-        public Status validate(Path inputFile, Path outputFile, Path answerFile)
+        public Status validate(Path input, Path standard, Path output)
                 throws IOException {
             try {
-                if (isAccepted(outputFile, answerFile)) {
+                if (isAccepted(standard, output)) {
                     return Status.ACCEPTED;
                 }
-                if (isPresentationError(outputFile, answerFile)) {
+                if (atLeastPe(standard, output)) {
                     return Status.PRESENTATION_ERROR;
                 }
             } catch (OutOfMemoryError ignored) {
@@ -28,12 +28,12 @@ public enum SimpleValidator implements Validator {
             return Status.WRONG_ANSWER;
         }
     },
-    PE_AS_ACCEPTED {
+    PE_AS_AC {
         @Override
-        public Status validate(Path inputFile, Path outputFile, Path answerFile)
+        public Status validate(Path input, Path standard, Path output)
                 throws IOException {
             try {
-                if (isPresentationError(outputFile, answerFile)) {
+                if (atLeastPe(standard, output)) {
                     return Status.ACCEPTED;
                 }
             } catch (OutOfMemoryError ignored) {
@@ -42,37 +42,37 @@ public enum SimpleValidator implements Validator {
         }
     };
 
-    boolean isAccepted(Path standardFile, Path answerFile) throws IOException {
-        try (BufferedReader outr = Files.newBufferedReader(standardFile, StandardCharsets.ISO_8859_1);
-                BufferedReader ansr = Files.newBufferedReader(answerFile, StandardCharsets.ISO_8859_1)) {
+    boolean isAccepted(Path standard, Path output) throws IOException {
+        try (BufferedReader std = Files.newBufferedReader(standard, StandardCharsets.ISO_8859_1);
+                BufferedReader out = Files.newBufferedReader(output, StandardCharsets.ISO_8859_1)) {
             while (true) {
-                String linea = outr.readLine();
-                String lineb = ansr.readLine();
-                if (linea == null && lineb == null) {
+                String cmp = std.readLine();
+                String line = out.readLine();
+                if (cmp == null && line == null) {
                     return true;
-                } else if (!Objects.equals(linea, lineb)) {
+                } else if (!Objects.equals(cmp, line)) {
                     return false;
                 }
             }
         }
     }
 
-    boolean isPresentationError(Path standardFile, Path answerFile) throws IOException {
-        try (BufferedReader outr = Files.newBufferedReader(standardFile, StandardCharsets.ISO_8859_1);
-                BufferedReader ansr = Files.newBufferedReader(answerFile, StandardCharsets.ISO_8859_1);
-                Scanner out = new Scanner(outr);
-                Scanner ans = new Scanner(ansr)) {
-            while (out.hasNext()) {
-                if (!ans.hasNext() || !out.next().equals(ans.next())) {
+    boolean atLeastPe(Path standard, Path output) throws IOException {
+        try (BufferedReader brStd = Files.newBufferedReader(standard, StandardCharsets.ISO_8859_1);
+                BufferedReader brOut = Files.newBufferedReader(output, StandardCharsets.ISO_8859_1);
+                Scanner std = new Scanner(brStd);
+                Scanner out = new Scanner(brOut)) {
+            while (std.hasNext()) {
+                if (!out.hasNext() || !std.next().equals(out.next())) {
                     return false;
                 }
             }
-            return !ans.hasNext();
+            return !out.hasNext();
         }
     }
 
     @Override
-    public abstract Status validate(Path inputFile, Path standardOutput, Path outputFile)
+    public abstract Status validate(Path input, Path standard, Path output)
             throws IOException;
 
 }

@@ -107,7 +107,7 @@ public class JudgeRunnerTest {
 
     private final long timeLimit = 6000L;
     private final long memoryLimit = 256 * 1024L;
-    private final Validator validator = SimpleValidator.PE_AS_ACCEPTED;
+    private final Validator validator = SimpleValidator.PE_AS_AC;
 
     private final JudgeData judgeData;
 
