@@ -22,20 +22,8 @@ import jnc.foreign.byref.IntByReference;
 /**
  * @see <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa379261">LUID</a>
  */
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public final class LUID extends jnc.foreign.Struct {
-
-    @Nonnull
-    public static LUID lookup(@Nullable String systemName, @Nonnull String name) {
-        LUID luid = new LUID();
-        Kernel32Util.assertTrue(Advapi32.INSTANCE.LookupPrivilegeValueW(WString.toNative(systemName), WString.toNative(name), luid));
-        return luid;
-    }
-
-    @Nonnull
-    public static LUID lookup(@Nonnull String name) {
-        return lookup(null, name);
-    }
 
     private final DWORD LowPart = new DWORD();
     private final int32_t HighPart = new int32_t();
@@ -74,10 +62,12 @@ public final class LUID extends jnc.foreign.Struct {
         return Long.hashCode(longValue());
     }
 
-    public final void copyFrom(@Nonnull LUID luid) {
-        long value = luid.longValue();
-        setHighPart((int) (value >>> 32));
-        setLowPart((int) value);
+    public void fromName(@Nullable String systemName, @Nonnull String name) {
+        Kernel32Util.assertTrue(Advapi32.INSTANCE.LookupPrivilegeValueW(WString.toNative(systemName), WString.toNative(name), this));
+    }
+
+    public void fromName(@Nonnull String name) {
+        fromName(null, name);
     }
 
     @Nonnull

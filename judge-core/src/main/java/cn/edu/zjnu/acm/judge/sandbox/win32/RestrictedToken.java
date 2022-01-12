@@ -22,7 +22,6 @@ import jnc.platform.win32.EXPLICIT_ACCESS;
 import jnc.platform.win32.Handle;
 import jnc.platform.win32.Kernel32;
 import jnc.platform.win32.Kernel32Util;
-import jnc.platform.win32.LUID;
 import jnc.platform.win32.LUID_AND_ATTRIBUTES;
 import jnc.platform.win32.SID;
 import jnc.platform.win32.SID_AND_ATTRIBUTES;
@@ -36,6 +35,8 @@ import jnc.platform.win32.TRUSTEE;
 import jnc.platform.win32.TokenInformation;
 import jnc.platform.win32.WString;
 import jnc.platform.win32.Win32Exception;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import static cn.edu.zjnu.acm.judge.sandbox.win32.IntegrityLevel.INTEGRITY_LEVEL_LAST;
@@ -48,25 +49,28 @@ import static jnc.platform.win32.SECURITY_IMPERSONATION_LEVEL.SecurityImpersonat
 import static jnc.platform.win32.TOKEN_INFORMATION_CLASS.TokenDefaultDacl;
 import static jnc.platform.win32.TOKEN_INFORMATION_CLASS.TokenGroups;
 import static jnc.platform.win32.TOKEN_INFORMATION_CLASS.TokenIntegrityLevel;
-import static jnc.platform.win32.TOKEN_INFORMATION_CLASS.TokenPrivileges;
 import static jnc.platform.win32.TOKEN_INFORMATION_CLASS.TokenUser;
 import static jnc.platform.win32.TOKEN_TYPE.TokenPrimary;
 import static jnc.platform.win32.TRUSTEE_FORM.TRUSTEE_IS_SID;
 import static jnc.platform.win32.TRUSTEE_TYPE.TRUSTEE_IS_UNKNOWN;
 import static jnc.platform.win32.WELL_KNOWN_SID_TYPE.WinRestrictedCodeSid;
 import static jnc.platform.win32.WinError.ERROR_SUCCESS;
+import static jnc.platform.win32.WinNT.DISABLE_MAX_PRIVILEGE;
 import static jnc.platform.win32.WinNT.DUPLICATE_SAME_ACCESS;
 import static jnc.platform.win32.WinNT.GENERIC_ALL;
 import static jnc.platform.win32.WinNT.SECURITY_MAX_SID_SIZE;
+import static jnc.platform.win32.WinNT.SE_CHANGE_NOTIFY_NAME;
 import static jnc.platform.win32.WinNT.SE_GROUP_INTEGRITY;
 import static jnc.platform.win32.WinNT.SE_GROUP_LOGON_ID;
 import static jnc.platform.win32.WinNT.SE_GROUP_USE_FOR_DENY_ONLY;
+import static jnc.platform.win32.WinNT.SE_PRIVILEGE_REMOVED;
 import static jnc.platform.win32.WinNT.TOKEN_ALL_ACCESS;
 
 /**
  * @author zhanhb
  */
 @Slf4j
+@SuppressWarnings("SameParameterValue")
 public class RestrictedToken implements Closeable {
 
     private static void addSidToDacl(Pointer pSid,
@@ -162,6 +166,9 @@ public class RestrictedToken implements Closeable {
     private static <T extends TokenInformation> T getTokenInfo(
             long token, TOKEN_INFORMATION_CLASS infoClass,
             IntFunction<T> bySize) {
+        if (token == 0) {
+            throw new NullPointerException();
+        }
         // get the required buffer size.
         IntByReference size = new IntByReference();
         // always false, no sufficient space to put the TokenInformation
@@ -179,15 +186,7 @@ public class RestrictedToken implements Closeable {
         return getTokenInfo(token, TokenGroups, TOKEN_GROUPS::ofSize);
     }
 
-    private static TOKEN_PRIVILEGES getTokenPrivileges(long token) {
-        return getTokenInfo(token, TokenPrivileges, TOKEN_PRIVILEGES::ofSize);
-    }
-
     private static TOKEN_DEFAULT_DACL getTokenDefaultDacl(long token) {
-        if (token == 0) {
-            throw new NullPointerException();
-        }
-
         return getTokenInfo(token, TokenDefaultDacl, TOKEN_DEFAULT_DACL::ofSize);
     }
 
@@ -201,18 +200,31 @@ public class RestrictedToken implements Closeable {
         return tokenUser;
     }
 
+    private static void deletePrivilege(long token, String name) {
+        TOKEN_PRIVILEGES privs = new TOKEN_PRIVILEGES();
+        privs.setPrivilegeCount(1);
+        LUID_AND_ATTRIBUTES luidAndAttributes = privs.get(0);
+        luidAndAttributes.getLuid().fromName(name);
+        luidAndAttributes.setAttributes(SE_PRIVILEGE_REMOVED);
+        Kernel32Util.assertTrue(Advapi32.INSTANCE.AdjustTokenPrivileges(token, false, privs, 0, null, null));
+    }
+
     // The list of restricting sids in the restricted token.
-    private final List<SID> sidsToRestrict = new ArrayList<>(10); // PSID
-    // The list of privileges to remove in the restricted token.
-    private final List<LUID> privilegesToDisable = new ArrayList<>(16);
+    private final List<SID> sidsToRestrict = new ArrayList<>(10);
     // The list of sids to mark as Deny Only in the restricted token.
-    private final List<SID> sidsForDenyOnly = new ArrayList<>(8); // PSID
+    private final List<SID> sidsForDenyOnly = new ArrayList<>(8);
+    // The list of sids to add to the default DACL of the restricted token.
+    private final List<DefaultDaclSid> sidsForDefaultDacl = new ArrayList<>();
     // The token to restrict. Can only be set in a constructor.
     private final long effectiveToken;
     // The token integrity level. Only valid on Vista.
     private IntegrityLevel integrityLevel;
     // Lockdown the default DACL when creating new tokens.
     private boolean lockdownDefaultDacl;
+    // Delete all privileges except for SeChangeNotifyPrivilege.
+    private boolean deleteAllPrivileges;
+    // Also delete SeChangeNotifyPrivilege if removeTraversalPrivilege is true.
+    private boolean removeTraversalPrivilege;
 
     // Initializes the RestrictedToken object with effectiveToken.
     // If effectiveToken is nullptr, it initializes the RestrictedToken object
@@ -242,51 +254,40 @@ public class RestrictedToken implements Closeable {
     public long createRestrictedToken() /*const*/ {
         int denySize = sidsForDenyOnly.size();
         int restrictSize = sidsToRestrict.size();
-        int privilegesSize = privilegesToDisable.size();
 
-        log.debug("createRestrictedToken: {} {} {}", sidsForDenyOnly, privilegesToDisable, sidsToRestrict);
+        log.debug("createRestrictedToken: {} {}", sidsForDenyOnly, sidsToRestrict);
 
-        StructArray<SID_AND_ATTRIBUTES> denyOnlyArray = null;
+        StructArray<SID_AND_ATTRIBUTES> denySids = null;
         if (denySize != 0) {
-            denyOnlyArray = new StructArray<>(SID_AND_ATTRIBUTES::new, denySize);
+            denySids = new StructArray<>(SID_AND_ATTRIBUTES::new, denySize);
 
             for (int i = 0; i < denySize; ++i) {
-                SID_AND_ATTRIBUTES sidAndAttributes = denyOnlyArray.get(i);
+                SID_AND_ATTRIBUTES sidAndAttributes = denySids.get(i);
                 sidAndAttributes.setAttributes(SE_GROUP_USE_FOR_DENY_ONLY);
                 sidAndAttributes.setSid(sidsForDenyOnly.get(i).asPSID());
             }
         }
 
-        StructArray<SID_AND_ATTRIBUTES> sidsToRestrictArray = null;
+        StructArray<SID_AND_ATTRIBUTES> restrictSids = null;
         if (restrictSize != 0) {
-            sidsToRestrictArray = new StructArray<>(SID_AND_ATTRIBUTES::new, restrictSize);
+            restrictSids = new StructArray<>(SID_AND_ATTRIBUTES::new, restrictSize);
 
             for (int i = 0; i < restrictSize; ++i) {
-                SID_AND_ATTRIBUTES sidAndAttributes = sidsToRestrictArray.get(i);
+                SID_AND_ATTRIBUTES sidAndAttributes = restrictSids.get(i);
                 sidAndAttributes.setAttributes(0);
                 sidAndAttributes.setSid(sidsToRestrict.get(i).asPSID());
             }
         }
 
-        StructArray<LUID_AND_ATTRIBUTES> privilegesToDisableArray = null;
-        if (privilegesSize != 0) {
-            privilegesToDisableArray = new StructArray<>(LUID_AND_ATTRIBUTES::new, privilegesSize);
-
-            for (int i = 0; i < privilegesSize; ++i) {
-                LUID_AND_ATTRIBUTES luidAndAttributes = privilegesToDisableArray.get(i);
-                luidAndAttributes.setAttributes(0);
-                luidAndAttributes.getLuid().copyFrom(privilegesToDisable.get(i));
-            }
-        }
-
         boolean result;
         AddressByReference newTokenHandle = new AddressByReference();
-        if (denySize != 0 || restrictSize != 0 || privilegesSize != 0) {
+        if (denySize != 0 || restrictSize != 0 || deleteAllPrivileges) {
             result = Advapi32.INSTANCE.CreateRestrictedToken(
-                    effectiveToken, 0,
-                    denySize, denyOnlyArray,
-                    privilegesSize, privilegesToDisableArray,
-                    restrictSize, sidsToRestrictArray,
+                    effectiveToken,
+                    deleteAllPrivileges ? DISABLE_MAX_PRIVILEGE : 0,
+                    denySize, denySids,
+                    0, null,
+                    restrictSize, restrictSids,
                     newTokenHandle);
         } else {
             // Duplicate the token even if it's not modified at this point
@@ -300,6 +301,9 @@ public class RestrictedToken implements Closeable {
 
         long newToken = newTokenHandle.getValue();
         try {
+            if (deleteAllPrivileges && removeTraversalPrivilege) {
+                deletePrivilege(newToken, SE_CHANGE_NOTIFY_NAME);
+            }
             if (lockdownDefaultDacl) {
                 // Don't add Restricted sid and also remove logon sid access.
                 revokeLogonSidFromDefaultDacl(newToken);
@@ -308,6 +312,14 @@ public class RestrictedToken implements Closeable {
                 // Modify the default dacl on the token to contain Restricted.
                 addSidToDefaultDacl(newToken, restrictedCodeSid.asPSID(),
                         GRANT_ACCESS, GENERIC_ALL);
+            }
+
+            for (DefaultDaclSid defaultDaclSid : sidsForDefaultDacl) {
+                addSidToDefaultDacl(
+                        newToken,
+                        defaultDaclSid.getUniqueRestrictedSid().asPSID(),
+                        defaultDaclSid.getAccessMode(),
+                        defaultDaclSid.getAccess());
             }
 
             // Add user to default dacl.
@@ -397,41 +409,19 @@ public class RestrictedToken implements Closeable {
     // Adds the user sid of the token for Deny Only in the restricted token.
     public void addUserSidForDenyOnly() {
         TOKEN_USER tokenUser = getTokenUser(effectiveToken);
-        sidsForDenyOnly.add(SID.copyOf(tokenUser.getUser().getSid()));
+        addSidForDenyOnly(SID.copyOf(tokenUser.getUser().getSid()));
     }
 
-    // Lists all privileges in the token and add them to the list of privileges
-    // to remove except for those present in the exceptions parameter. If
-    // there is no exception needed, the caller can pass an empty list or nullptr
-    // for the exceptions parameter.
+    // Specify to remove all privileges in the restricted token. By default this
+    // will not remove SeChangeNotifyPrivilege, however you can specify true for
+    // |remove_traversal_privilege| to remove that privilege as well.
     //
-    // Sample usage:
-    //    List<LUID> privilegeExceptions = new ArrayList<>();
-    //    privilegeExceptions.add(LUID.lookup(SE_CHANGE_NOTIFY_NAME));
-    //    privilegeExceptions.deleteAllPrivileges(privilegeExceptions);
-    public void deleteAllPrivileges(Collection<LUID> exceptions) {
-        Objects.requireNonNull(exceptions);
-        TOKEN_PRIVILEGES tokenPrivileges = getTokenPrivileges(effectiveToken);
-        log.debug("deleteAllPrivileges: delete all except '{}' from {}", exceptions, tokenPrivileges);
-        // Build the list of privileges to disable
-        for (int i = 0, n = tokenPrivileges.getPrivilegeCount(); i < n; ++i) {
-            LUID luid = tokenPrivileges.get(i).getLuid();
-            boolean shouldIgnore = exceptions.contains(luid);
-            if (!shouldIgnore) {
-                privilegesToDisable.add(luid);
-            }
-        }
-    }
-
-    // Adds a privilege to the list of privileges to remove in the restricted
-    // token.
-    // Parameter: privilege is the privilege name to remove. This is the string
-    // representing the privilege. (e.g. "SeChangeNotifyPrivilege").
-    //
-    // Sample usage:
-    //    restrictedToken.deletePrivilege(LUID.lookup(SE_LOAD_DRIVER_NAME));
-    public void deletePrivilege(LUID privilege) {
-        privilegesToDisable.add(Objects.requireNonNull(privilege));
+    // If the function succeeds, the return value is ERROR_SUCCESS. If the
+    // function fails, the return value is the win32 error code corresponding to
+    // the error.
+    public void deleteAllPrivileges(boolean removeTraversalPrivilege) {
+        this.deleteAllPrivileges = true;
+        this.removeTraversalPrivilege = removeTraversalPrivilege;
     }
 
     // Adds a SID to the list of restricting sids in the restricted token.
@@ -501,9 +491,26 @@ public class RestrictedToken implements Closeable {
         lockdownDefaultDacl = true;
     }
 
+    // Add a SID to the default DACL. These SIDs are added regardless of the
+    // SetLockdownDefaultDacl state.
+    public void addDefaultDaclSid(SID uniqueRestrictedSid, ACCESS_MODE access_mode, int access) {
+        sidsForDefaultDacl.add(new DefaultDaclSid(uniqueRestrictedSid, access_mode, access));
+    }
+
     @Override
     public void close() {
         Handle.close(effectiveToken);
+    }
+
+    @Getter
+    @RequiredArgsConstructor
+    @SuppressWarnings("FinalClass")
+    private static class DefaultDaclSid {
+
+        private final SID uniqueRestrictedSid;
+        private final ACCESS_MODE accessMode;
+        private final int access;
+
     }
 
 }

@@ -143,4 +143,7 @@ public interface Kernel32 {
             @uint32_t int /*DWORD*/ dwDesiredAccess,
             @int32_t boolean bInheritHandle,
             @uint32_t int /*DWORD*/ dwOptions);
+
+    @uint32_t
+    int GetVersion();
 }

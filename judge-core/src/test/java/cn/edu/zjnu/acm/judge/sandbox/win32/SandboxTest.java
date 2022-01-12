@@ -72,7 +72,7 @@ public class SandboxTest {
     @MethodSource("data")
     public void testCreateRestrictedToken(TokenLevel securityLevel, IntegrityLevel integrityLevel, TokenType tokenType, boolean lockdownDefaultDacl) {
         log.info("CreateRestrictedToken");
-        Handle.close(Sandbox.INSTANCE.createRestrictedToken(securityLevel, integrityLevel, tokenType, lockdownDefaultDacl));
+        Handle.close(Sandbox.INSTANCE.createRestrictedToken(securityLevel, integrityLevel, tokenType, lockdownDefaultDacl, null));
     }
 
 }

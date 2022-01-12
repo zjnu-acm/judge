@@ -18,8 +18,9 @@ package cn.edu.zjnu.acm.judge.sandbox.win32;
  * <tr><td>USER_INTERACTIVE</td><td>Users, Everyone, RESTRICTED,
  * Owner</td><td>All except: Users, Everyone, Interactive, Local, Authent-users,
  * User</td><td>Traverse</td></tr>
- * <tr><td>USER_NON_ADMIN</td><td>None</td><td>All except: Users, Everyone,
- * Interactive, Local, Authent-users, User</td><td>Traverse</td></tr>
+ * <tr><td>USER_RESTRICTED_NON_ADMIN</td><td>Users,
+ * Everyone,Interactive,Local,Authent-users,User</td><td>All except: Users,
+ * Everyone, Interactive, Local, Authent-users, User</td><td>Traverse</td></tr>
  * <tr><td>USER_RESTRICTED_SAME_ACCESS</td><td>All</td><td>None</td><td>All</td></tr>
  * <tr><td>USER_UNPROTECTED</td><td>None</td><td>None</td><td>All</td></tr>
  * </table>
@@ -40,7 +41,7 @@ public enum TokenLevel {
     USER_RESTRICTED,
     USER_LIMITED,
     USER_INTERACTIVE,
-    USER_NON_ADMIN,
+    USER_RESTRICTED_NON_ADMIN,
     USER_RESTRICTED_SAME_ACCESS,
     USER_UNPROTECTED,
     USER_LAST

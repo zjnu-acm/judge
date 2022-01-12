@@ -7,18 +7,21 @@ package cn.edu.zjnu.acm.judge.sandbox.win32;
 
 import com.google.common.collect.ImmutableSet;
 import java.util.Set;
-import jnc.platform.win32.LUID;
+import javax.annotation.Nullable;
+import jnc.platform.win32.ACCESS_MODE;
 import jnc.platform.win32.SID;
 import jnc.platform.win32.Win32Exception;
 
 import static jnc.platform.win32.WELL_KNOWN_SID_TYPE.WinAuthenticatedUserSid;
 import static jnc.platform.win32.WELL_KNOWN_SID_TYPE.WinBuiltinUsersSid;
+import static jnc.platform.win32.WELL_KNOWN_SID_TYPE.WinCreatorOwnerRightsSid;
 import static jnc.platform.win32.WELL_KNOWN_SID_TYPE.WinInteractiveSid;
 import static jnc.platform.win32.WELL_KNOWN_SID_TYPE.WinNullSid;
 import static jnc.platform.win32.WELL_KNOWN_SID_TYPE.WinRestrictedCodeSid;
 import static jnc.platform.win32.WELL_KNOWN_SID_TYPE.WinWorldSid;
 import static jnc.platform.win32.WinError.ERROR_BAD_ARGUMENTS;
-import static jnc.platform.win32.WinNT.SE_CHANGE_NOTIFY_NAME;
+import static jnc.platform.win32.WinNT.GENERIC_ALL;
+import static jnc.platform.win32.WinNT.READ_CONTROL;
 
 public enum Sandbox {
 
@@ -30,27 +33,35 @@ public enum Sandbox {
     private final SID SID_AUTHENTICATED_USER = SID.ofWellKnown(WinAuthenticatedUserSid);
     private final SID SID_RESTRICTED_CODE = SID.ofWellKnown(WinRestrictedCodeSid);
     private final SID SID_BUILTIN_USERS = SID.ofWellKnown(WinBuiltinUsersSid);
-    private final Set<LUID> CHANGE_NOTIFY = ImmutableSet.of(LUID.lookup(SE_CHANGE_NOTIFY_NAME));
-    private final Set<SID> USER_NON_ADMIN_EXCEPTION = ImmutableSet.of(SID_WORLD, SID_INTERACTIVE, SID_AUTHENTICATED_USER, SID_BUILTIN_USERS);
-    private final Set<SID> USER_INTERACTIVE_EXCEPTION = USER_NON_ADMIN_EXCEPTION;
-    private final Set<SID> USER_LIMITED_EXCEPTION = ImmutableSet.of(SID_WORLD, SID_INTERACTIVE, SID_BUILTIN_USERS);
+    private final SID SID_CREATOR_OWNER_RIGHTS = SID.ofWellKnown(WinCreatorOwnerRightsSid);
+    private final Set<SID> USER_INTERACTIVE_EXCEPTION = ImmutableSet.of(SID_BUILTIN_USERS, SID_WORLD, SID_INTERACTIVE, SID_AUTHENTICATED_USER);
+    private final Set<SID> USER_RESTRICTED_NON_ADMIN_EXCEPTION = USER_INTERACTIVE_EXCEPTION;
+    private final Set<SID> USER_LIMITED_EXCEPTION = ImmutableSet.of(SID_BUILTIN_USERS, SID_WORLD, SID_INTERACTIVE);
 
     public long createRestrictedToken(
             TokenLevel securityLevel,
             IntegrityLevel integrityLevel,
             TokenType tokenType,
-            boolean lockdownDefaultDacl) {
+            boolean lockdownDefaultDacl,
+            @Nullable SID uniqueRestrictedSid) {
         // Initialized with the current process token
         try (RestrictedToken restrictedToken = new RestrictedToken(0 /*nullptr*/)) {
             if (lockdownDefaultDacl) {
                 restrictedToken.setLockdownDefaultDacl();
             }
+            if (uniqueRestrictedSid != null) {
+                restrictedToken.addDefaultDaclSid(uniqueRestrictedSid,
+                        ACCESS_MODE.GRANT_ACCESS, GENERIC_ALL);
+                restrictedToken.addDefaultDaclSid(
+                        SID_CREATOR_OWNER_RIGHTS,
+                        ACCESS_MODE.GRANT_ACCESS, READ_CONTROL);
+            }
 
-            Set<LUID> privilegeExceptions = ImmutableSet.of();
             Set<SID> sidExceptions = ImmutableSet.of();
 
             boolean denySids = true;
             boolean removePrivileges = true;
+            boolean removeTraversePrivilege = false;
 
             switch (securityLevel) {
                 case USER_UNPROTECTED:
@@ -63,25 +74,36 @@ public enum Sandbox {
 
                     restrictedToken.addRestrictingSidAllSids();
                     break;
-                case USER_NON_ADMIN:
-                    sidExceptions = USER_NON_ADMIN_EXCEPTION;
-                    privilegeExceptions = CHANGE_NOTIFY;
+                case USER_RESTRICTED_NON_ADMIN:
+                    sidExceptions = USER_RESTRICTED_NON_ADMIN_EXCEPTION;
+                    restrictedToken.addRestrictingSid(SID_BUILTIN_USERS);
+                    restrictedToken.addRestrictingSid(SID_WORLD);
+                    restrictedToken.addRestrictingSid(SID_INTERACTIVE);
+                    restrictedToken.addRestrictingSid(SID_AUTHENTICATED_USER);
+                    restrictedToken.addRestrictingSid(SID_RESTRICTED_CODE);
+                    if (uniqueRestrictedSid != null) {
+                        restrictedToken.addRestrictingSid(uniqueRestrictedSid);
+                    }
                     break;
                 case USER_INTERACTIVE:
                     sidExceptions = USER_INTERACTIVE_EXCEPTION;
-                    privilegeExceptions = CHANGE_NOTIFY;
                     restrictedToken.addRestrictingSid(SID_BUILTIN_USERS);
                     restrictedToken.addRestrictingSid(SID_WORLD);
                     restrictedToken.addRestrictingSid(SID_RESTRICTED_CODE);
                     restrictedToken.addRestrictingSidCurrentUser();
                     restrictedToken.addRestrictingSidLogonSession();
+                    if (uniqueRestrictedSid != null) {
+                        restrictedToken.addRestrictingSid(uniqueRestrictedSid);
+                    }
                     break;
                 case USER_LIMITED:
                     sidExceptions = USER_LIMITED_EXCEPTION;
-                    privilegeExceptions = CHANGE_NOTIFY;
                     restrictedToken.addRestrictingSid(SID_BUILTIN_USERS);
                     restrictedToken.addRestrictingSid(SID_WORLD);
                     restrictedToken.addRestrictingSid(SID_RESTRICTED_CODE);
+                    if (uniqueRestrictedSid != null) {
+                        restrictedToken.addRestrictingSid(uniqueRestrictedSid);
+                    }
 
                     // This token has to be able to create objects in BNO.
                     // Unfortunately, on Vista+, it needs the current logon sid
@@ -91,13 +113,19 @@ public enum Sandbox {
                     restrictedToken.addRestrictingSidLogonSession();
                     break;
                 case USER_RESTRICTED:
-                    privilegeExceptions = CHANGE_NOTIFY;
                     restrictedToken.addUserSidForDenyOnly();
                     restrictedToken.addRestrictingSid(SID_RESTRICTED_CODE);
+                    if (uniqueRestrictedSid != null) {
+                        restrictedToken.addRestrictingSid(uniqueRestrictedSid);
+                    }
                     break;
                 case USER_LOCKDOWN:
+                    removeTraversePrivilege = true;
                     restrictedToken.addUserSidForDenyOnly();
                     restrictedToken.addRestrictingSid(SID_NULL);
+                    if (uniqueRestrictedSid != null) {
+                        restrictedToken.addRestrictingSid(uniqueRestrictedSid);
+                    }
                     break;
                 default:
                     throw new Win32Exception(ERROR_BAD_ARGUMENTS);
@@ -108,7 +136,7 @@ public enum Sandbox {
             }
 
             if (removePrivileges) {
-                restrictedToken.deleteAllPrivileges(privilegeExceptions);
+                restrictedToken.deleteAllPrivileges(removeTraversePrivilege);
             }
 
             restrictedToken.setIntegrityLevel(integrityLevel);

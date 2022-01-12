@@ -129,4 +129,13 @@ public interface Advapi32 {
 
     @int32_t
     boolean IsValidSid(SID pSid);
+
+    @int32_t
+    boolean AdjustTokenPrivileges(
+            @uintptr_t long /*HANDLE*/ TokenHandle,
+            @uint32_t boolean DisableAllPrivileges,
+            TOKEN_PRIVILEGES NewState,
+            @uint32_t int BufferLength,
+            @Nullable TOKEN_PRIVILEGES PreviousState,
+            @Nullable IntByReference ReturnLength);
 }

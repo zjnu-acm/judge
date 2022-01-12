@@ -11,6 +11,11 @@ public interface Kernel32Util {
         return Foreign.getDefault().getLastError();
     }
 
+    static int getOSVersion() {
+        int version = Kernel32.INSTANCE.GetVersion();
+        return (version & 0xFF) << 8 | (version >> 8 & 0xFF);
+    }
+
     static void assertTrue(boolean test) throws Win32Exception {
         if (!test) {
             throw new Win32Exception(getLastError());

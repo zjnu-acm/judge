@@ -33,7 +33,6 @@ import jnc.platform.win32.Handle;
 import jnc.platform.win32.Kernel32;
 import jnc.platform.win32.Kernel32Util;
 import jnc.platform.win32.PROCESS_INFORMATION;
-import jnc.platform.win32.SECURITY_ATTRIBUTES;
 import jnc.platform.win32.STARTUPINFO;
 import jnc.platform.win32.WString;
 import jnc.platform.win32.Win32Exception;
@@ -73,7 +72,7 @@ public class WindowsExecutor implements Executor {
                 TokenLevel.USER_LIMITED,
                 IntegrityLevel.INTEGRITY_LEVEL_LOW,
                 TokenType.PRIMARY,
-                true));
+                true, null));
     }
 
     private Handle fileOpen(Path path, int flags) {
@@ -220,22 +219,20 @@ public class WindowsExecutor implements Executor {
         try {
             ProcessCreationHelper.execute(() -> {
                 String lpApplicationName = null;
-                SECURITY_ATTRIBUTES lpProcessAttributes = null;
-                SECURITY_ATTRIBUTES lpThreadAttributes = null;
                 int dwCreationFlags
                         = CREATE_SUSPENDED
                         | DETACHED_PROCESS
                         | HIGH_PRIORITY_CLASS
                         | CREATE_NEW_PROCESS_GROUP
                         | CREATE_UNICODE_ENVIRONMENT
-                        | CREATE_BREAKAWAY_FROM_JOB
+                        | (Kernel32Util.getOSVersion() >= 0x602 ? 0 : CREATE_BREAKAWAY_FROM_JOB)
                         | CREATE_NO_WINDOW;
                 Kernel32Util.assertTrue(Advapi32.INSTANCE.CreateProcessAsUserW(
                         hToken.getValue(),
                         WString.toNative(lpApplicationName), // executable name
                         WString.toNative(lpCommandLine),// command line
-                        lpProcessAttributes, // process security attribute
-                        lpThreadAttributes, // thread security attribute
+                        null, // process security attribute
+                        null, // thread security attribute
                         true, // inherits system handles
                         dwCreationFlags, // selected based on exe type
                         EMPTY_ENV,
