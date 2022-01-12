@@ -84,7 +84,7 @@ public class JudgeServiceImpl implements JudgeService {
                     .timeLimit(problem.getTimeLimit())
                     .build();
             Path dataDirectory = systemService.getDataDirectory(problemId);
-            JudgeData judgeData = new JudgeData(dataDirectory);
+            JudgeData judgeData = JudgeData.parse(dataDirectory);
             Path specialFile = systemService.getSpecialJudgeExecutable(problemId);
             boolean isSpecial = systemService.isSpecialJudge(problemId);
             Path work = systemService.getWorkDirectory(submissionId); //建立临时文件

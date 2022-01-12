@@ -29,9 +29,9 @@ import java.util.List;
  */
 public class JudgeData {
 
-    private Path[][] data;
+    private final Path[][] data;
 
-    public JudgeData(Path dataDirectory) throws IOException {
+    public static JudgeData parse(Path dataDirectory) throws IOException {
         if (!Files.isDirectory(dataDirectory)) {
             throw new NoDataException("data directory not exists");
         }
@@ -53,7 +53,11 @@ public class JudgeData {
         if (caseNum == 0) {
             throw new NoDataException("No test cases found in specified directory");
         }
-        this.data = files.toArray(new Path[caseNum][]);
+        return new JudgeData(files.toArray(new Path[caseNum][]));
+    }
+
+    private JudgeData(Path[][] data) {
+        this.data = data;
     }
 
     public int getCaseCount() {

@@ -113,7 +113,7 @@ public class JudgeRunnerTest {
 
     public JudgeRunnerTest()
             throws URISyntaxException, IOException {
-        this.judgeData = new JudgeData(Paths.get(JudgeRunnerTest.class.getResource("/sample/data").toURI()));
+        this.judgeData = JudgeData.parse(Paths.get(JudgeRunnerTest.class.getResource("/sample/data").toURI()));
     }
 
     private int findFirstLanguageByExtension(String extension) {
