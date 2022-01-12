@@ -11,6 +11,7 @@ import cn.edu.zjnu.acm.judge.util.CopyHelper;
 import cn.edu.zjnu.acm.judge.util.Platform;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -29,6 +30,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -62,11 +64,13 @@ public class RejudgeControllerTest {
     public void setUp() throws IOException, URISyntaxException {
         submission = mockDataService.submission(false);
         Path dataDir = systemService.getDataDirectory(submission.getProblem());
-        CopyHelper.copy(Paths.get(RejudgeControllerTest.class.getResource("/sample/data").toURI()), dataDir, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES);
+        URL data = RejudgeControllerTest.class.getResource("/sample/data");
+        assertNotNull(data);
+        CopyHelper.copy(Paths.get(data.toURI()), dataDir, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES);
     }
 
     @AfterEach
-    public void tearDown() throws IOException {
+    public void tearDown() {
         if (submission != null) {
             deleteService.delete(systemService.getDataDirectory(submission.getProblem()));
             submissionService.delete(submission.getId());
