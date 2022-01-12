@@ -22,7 +22,6 @@ import cn.edu.zjnu.acm.judge.domain.Problem;
 import cn.edu.zjnu.acm.judge.domain.Submission;
 import cn.edu.zjnu.acm.judge.domain.User;
 import cn.edu.zjnu.acm.judge.mapper.SubmissionMapper;
-import com.google.common.base.Throwables;
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.nio.charset.StandardCharsets;
@@ -37,6 +36,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
+import lombok.SneakyThrows;
 import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -157,8 +157,10 @@ public class MockDataService {
         return contest;
     }
 
+    @SneakyThrows
+    @SuppressWarnings("RedundantThrows")
     private Submission submission(int languageId, String source, String userId, String ip,
-            long problemId, boolean runTestCase) throws Throwable {
+            long problemId, boolean runTestCase) throws IOException {
         if (runTestCase) {
             assumingWindows();
         }
@@ -176,12 +178,7 @@ public class MockDataService {
         String userId = user().getId();
         long problemId = problem().getId();
         String source = Lazy.SAMPLE_SOURCE;
-        try {
-            return submission(anyLanguage().getId(), source, userId, "::1", problemId, runTestCase);
-        } catch (Throwable ex) {
-            Throwables.propagateIfPossible(ex, IOException.class);
-            throw new IOException(ex);
-        }
+        return submission(anyLanguage().getId(), source, userId, "::1", problemId, runTestCase);
     }
 
     public Submission submission() throws IOException {
