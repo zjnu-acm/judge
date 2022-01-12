@@ -5,24 +5,48 @@ on: push
 jobs:
   build:
     strategy:
+      fail-fast: false
       matrix:
         os:
-          - ubuntu-latest
+          - windows-latest
+        arch:
+          - x64
+          - x86
         java-version:
           - 8
           - 11
-    name: test with jdk ${{ matrix.java-version }} on ${{ matrix.os }}
+        include:
+          - os: ubuntu-latest
+            java-version: 8
+          - os: ubuntu-latest
+            java-version: 11
+    name: test with jdk ${{ matrix.java-version }} on ${{ matrix.os }} ${{ matrix.arch }}
     runs-on: ${{ matrix.os }}
     steps:
       - name: Start MariaDB
         uses: ankane/setup-mariadb@v1
         with:
           mariadb-version: 10.5
+      - if: startsWith(matrix.os, 'windows')
+        name: Set up MinGW
+        uses: egor-tensin/setup-mingw@v2
       - uses: actions/checkout@v2
+      - if: startsWith(matrix.os, 'windows')
+        name: Initialize judge languages
+        shell: bash
+        run: |
+          cat <<EOF >judge-site/src/main/resources/db/migration/V00002__initial_language.sql
+            INSERT IGNORE INTO language (id, name, source_extension, compile_command, execute_command, executable_extension, time_factor, ext_memory, description) VALUES
+              (1, 'GNU C++', 'cc', 'x86_64-w64-mingw32-g++ -fno-asm -s -w -O2 -DONLINE_JUDGE -static -o Main.exe Main.cc', NULL, 'exe', 1, 2400, ''),
+              (2, 'GNU C', 'c', 'x86_64-w64-mingw32-gcc -fno-asm -s -w -O2 -DONLINE_JUDGE -static -o Main.exe Main.c', NULL, 'exe', 1, 2400, ''),
+              (3, 'Java', 'java', 'javac Main.java', 'java -DONLINE_JUDGE -Djava.security.manager -cp . Main', 'class', 2, 17000, ''),
+              (4, 'GNU C++11', 'cc', 'x86_64-w64-mingw32-g++ -std=c++0x -fno-asm -s -w -DONLINE_JUDGE -o Main.exe Main.cc', NULL, 'exe', 1, 2400, '');  
+          EOF
       - uses: actions/setup-java@v2
         with:
           distribution: adopt
           java-version: ${{ matrix.java-version }}
+          architecture: ${{ matrix.arch || 'x64' }}
       - uses: actions/cache@v2
         env:
           cache-name: maven-dependencies
@@ -33,14 +57,18 @@ jobs:
             ${{ env.cache-name }}-${{ github.workflow }}-
             ${{ env.cache-name }}-
       - name: mvn verify
+        shell: bash
         run: ./mvnw -B --color=always -Dspring.datasource.password= verify
       - name: show dependency updates
+        shell: bash
         run: ./mvnw -B --color=always -U -Dmaven.version.rules=https://github.com/zhanhb/maven-shared/raw/main/version-rules.xml org.codehaus.mojo:versions-maven-plugin:display-property-updates org.codehaus.mojo:versions-maven-plugin:display-dependency-updates org.codehaus.mojo:versions-maven-plugin:display-plugin-updates
       - name: Codecov
+        shell: bash
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         run: bash <(curl -s https://codecov.io/bash)
       - name: Before Cache
+        shell: bash
         run: |
           ./mvnw -B --color=always build-helper:remove-project-artifact || :
           find ~/.m2/ -type d -name '*-SNAPSHOT' \( -exec rm -rf '{}' \; -prune \)

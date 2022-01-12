@@ -8,12 +8,12 @@ import cn.edu.zjnu.acm.judge.service.MockDataService;
 import cn.edu.zjnu.acm.judge.service.SubmissionService;
 import cn.edu.zjnu.acm.judge.service.SystemService;
 import cn.edu.zjnu.acm.judge.util.CopyHelper;
+import cn.edu.zjnu.acm.judge.util.Platform;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Arrays;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +23,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -40,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc(addFilters = false)
 @RunWith(JUnitPlatform.class)
 @Slf4j
-@SpringBootTest(classes = Application.class)
+@SpringBootTest(classes = Application.class, properties = "spring.mvc.async.request-timeout=10m")
 @WebAppConfiguration
 @WithMockUser(roles = "ADMIN")
 public class RejudgeControllerTest {
@@ -49,8 +48,6 @@ public class RejudgeControllerTest {
     private MockMvc mvc;
     @Autowired
     private MockDataService mockDataService;
-    @Autowired
-    private Environment environment;
     @Autowired
     private SubmissionService submissionService;
     @Autowired
@@ -84,7 +81,7 @@ public class RejudgeControllerTest {
      */
     @Test
     public void testRejudgeSolution() throws Exception {
-        assumeTrue(Arrays.asList(environment.getActiveProfiles()).contains("appveyor"), "not appveyor");
+        assumeTrue(Platform.isWindows(), "skip test on other OS");
         log.info("rejudgeSolution");
         long solutionId = submission.getId();
         MvcResult result = mvc.perform(get("/admin/rejudge")
