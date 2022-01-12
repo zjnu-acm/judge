@@ -81,7 +81,7 @@ public class JudgeBridgeSecurityTest {
             try {
                 Runtime.getRuntime().exec("shutdown /a");
             } catch (IOException ex) {
-                log.warn("Error during cancal shutdown", ex);
+                log.warn("Error during cancel shutdown", ex);
             }
         }
     }

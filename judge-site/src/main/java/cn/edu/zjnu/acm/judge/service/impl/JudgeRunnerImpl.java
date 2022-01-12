@@ -129,7 +129,7 @@ public class JudgeRunnerImpl implements JudgeRunner {
                     process.destroy();
                     throw new InterruptedIOException();
                 }
-                // export compiling infomation
+                // export compiling information
                 String errorInfo;
                 if (process.isAlive()) {
                     process.destroyForcibly();
@@ -202,7 +202,7 @@ public class JudgeRunnerImpl implements JudgeRunner {
             }
             long time = 0;
             long memory = 0;
-            int accept = 0; // final case who's result is accepted.
+            int accept = 0; // final case whose result is accepted.
             for (ExecuteResult er : ers) {
                 long tim1 = Math.max(0, er.getTime() - extTime);
                 long mem1 = Math.max(0, er.getMemory() / 1024 - extraMemory);
