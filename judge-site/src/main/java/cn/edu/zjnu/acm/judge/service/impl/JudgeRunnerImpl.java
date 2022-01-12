@@ -126,6 +126,7 @@ public class JudgeRunnerImpl implements JudgeRunner {
                 try {
                     process.waitFor(1, TimeUnit.MINUTES);
                 } catch (InterruptedException ex) {
+                    process.destroy();
                     throw new InterruptedIOException();
                 }
                 // export compiling infomation
