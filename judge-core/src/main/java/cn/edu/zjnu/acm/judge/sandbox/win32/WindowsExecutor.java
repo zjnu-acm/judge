@@ -19,7 +19,7 @@ import cn.edu.zjnu.acm.judge.core.Constants;
 import cn.edu.zjnu.acm.judge.core.ExecuteResult;
 import cn.edu.zjnu.acm.judge.core.Executor;
 import cn.edu.zjnu.acm.judge.core.NotExecutableException;
-import cn.edu.zjnu.acm.judge.core.Options;
+import cn.edu.zjnu.acm.judge.core.Option;
 import cn.edu.zjnu.acm.judge.core.Status;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
@@ -38,10 +38,6 @@ import jnc.platform.win32.STARTUPINFO;
 import jnc.platform.win32.WString;
 import jnc.platform.win32.Win32Exception;
 
-import static cn.edu.zjnu.acm.judge.core.Executor.O_CREAT;
-import static cn.edu.zjnu.acm.judge.core.Executor.O_RDWR;
-import static cn.edu.zjnu.acm.judge.core.Executor.O_TRUNC;
-import static cn.edu.zjnu.acm.judge.core.Executor.O_WRONLY;
 import static jnc.platform.win32.FileApi.CREATE_ALWAYS;
 import static jnc.platform.win32.FileApi.OPEN_ALWAYS;
 import static jnc.platform.win32.FileApi.OPEN_EXISTING;
@@ -112,17 +108,17 @@ public class WindowsExecutor implements Executor {
     }
 
     @Override
-    public ExecuteResult execute(Options options) throws IOException {
-        Path inputFile = options.getInputFile();
-        Path outputPath = options.getOutputFile();
-        boolean redirectErrorStream = options.isRedirectErrorStream();
-        Path errorPath = options.getErrFile();
-        Path workDirectory = options.getWorkDirectory();
-        String command = options.getCommand();
+    public ExecuteResult execute(Option option) throws IOException {
+        Path inputFile = option.getInputFile();
+        Path outputPath = option.getOutputFile();
+        boolean redirectErrorStream = option.isRedirectErrorStream();
+        Path errorPath = option.getErrFile();
+        Path workDirectory = option.getWorkDirectory();
+        String command = option.getCommand();
 
-        long timeLimit = options.getTimeLimit();
-        long memoryLimit = options.getMemoryLimit();
-        long outputLimit = options.getOutputLimit();
+        long timeLimit = option.getTimeLimit();
+        long memoryLimit = option.getMemoryLimit();
+        long outputLimit = option.getOutputLimit();
 
         PROCESS_INFORMATION pi;
 

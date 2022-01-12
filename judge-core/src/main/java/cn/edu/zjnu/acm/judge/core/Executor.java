@@ -25,7 +25,7 @@ public interface Executor extends Closeable {
     int O_SYNC = 0x0800;
     int O_DSYNC = 0x2000;
 
-    ExecuteResult execute(Options options) throws IOException;
+    ExecuteResult execute(Option option) throws IOException;
 
     @Override
     default void close() {

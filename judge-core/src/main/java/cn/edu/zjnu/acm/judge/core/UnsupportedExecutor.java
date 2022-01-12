@@ -8,7 +8,7 @@ import java.io.IOException;
 public class UnsupportedExecutor implements Executor {
 
     @Override
-    public ExecuteResult execute(Options options) throws IOException {
+    public ExecuteResult execute(Option option) throws IOException {
         throw new UnsupportedOperationException();
     }
 

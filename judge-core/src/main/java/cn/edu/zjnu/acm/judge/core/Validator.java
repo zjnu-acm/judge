@@ -23,12 +23,12 @@ public interface Validator {
     Status validate(Path inputFile, Path standardOutput, Path outputFile)
             throws IOException;
 
-    default ExecuteResult validate(Options options, ExecuteResult executeResult)
+    default ExecuteResult validate(Option option, ExecuteResult executeResult)
             throws IOException {
         Objects.requireNonNull(executeResult);
-        Status validate = validate(options.getInputFile(),
-                options.getStandardOutput(),
-                options.getOutputFile());
+        Status validate = validate(option.getInputFile(),
+                option.getStandardOutput(),
+                option.getOutputFile());
         return executeResult.toBuilder().code(validate).build();
     }
 

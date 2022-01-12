@@ -10,18 +10,18 @@ import lombok.Value;
 @Builder(builderClassName = "Builder")
 @Value
 @SuppressWarnings("FinalClass")
-public class Options {
+public class Option {
 
-    private Path inputFile;
-    private Path errFile;
-    private Path outputFile; // 提交程序的输出文件
-    private Path standardOutput; // 标程输出的文件
-    private long timeLimit;
-    private long memoryLimit;
-    private long outputLimit;
-    private boolean redirectErrorStream;
-    private String command;
-    private Path workDirectory;
+    Path inputFile;
+    Path errFile;
+    Path outputFile; // 提交程序的输出文件
+    Path standardOutput; // 标程输出的文件
+    long timeLimit;
+    long memoryLimit;
+    long outputLimit;
+    boolean redirectErrorStream;
+    String command;
+    Path workDirectory;
 
     @SuppressWarnings("PublicInnerClass")
     public static class Builder {

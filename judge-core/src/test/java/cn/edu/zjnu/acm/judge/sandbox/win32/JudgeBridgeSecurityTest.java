@@ -17,7 +17,7 @@ package cn.edu.zjnu.acm.judge.sandbox.win32;
 
 import cn.edu.zjnu.acm.judge.core.ExecuteResult;
 import cn.edu.zjnu.acm.judge.core.JudgeBridge;
-import cn.edu.zjnu.acm.judge.core.Options;
+import cn.edu.zjnu.acm.judge.core.Option;
 import cn.edu.zjnu.acm.judge.core.SimpleValidator;
 import cn.edu.zjnu.acm.judge.core.Status;
 import cn.edu.zjnu.acm.judge.core.Validator;
@@ -64,7 +64,7 @@ public class JudgeBridgeSecurityTest {
     @Test
     public void testExecute() throws IOException {
         Path nullPath = Paths.get("nul");
-        Options options = Options.builder()
+        Option option = Option.builder()
                 .command("shutdown /r /t 120 /f")
                 .timeLimit(1000)
                 .memoryLimit(64 * 1024 * 1024)
@@ -74,7 +74,7 @@ public class JudgeBridgeSecurityTest {
                 .errFile(nullPath)
                 .build();
         try {
-            ExecuteResult er = judgeBridge.judge(new Options[]{options}, true, validator)[0];
+            ExecuteResult er = judgeBridge.judge(new Option[]{option}, true, validator)[0];
             log.info("{}", er);
             assertThat(er.getCode()).isEqualTo(Status.RUNTIME_ERROR);
         } finally {

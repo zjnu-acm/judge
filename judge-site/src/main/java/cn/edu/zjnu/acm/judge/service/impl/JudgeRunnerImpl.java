@@ -18,7 +18,7 @@ package cn.edu.zjnu.acm.judge.service.impl;
 import cn.edu.zjnu.acm.judge.core.ExecuteResult;
 import cn.edu.zjnu.acm.judge.core.JudgeBridge;
 import cn.edu.zjnu.acm.judge.core.NotExecutableException;
-import cn.edu.zjnu.acm.judge.core.Options;
+import cn.edu.zjnu.acm.judge.core.Option;
 import cn.edu.zjnu.acm.judge.core.Status;
 import cn.edu.zjnu.acm.judge.core.Validator;
 import cn.edu.zjnu.acm.judge.domain.Language;
@@ -162,14 +162,14 @@ public class JudgeRunnerImpl implements JudgeRunner {
             long castTimeLimit = runRecord.getTimeLimit() * language.getTimeFactor() + extTime;
             long extraMemory = language.getExtMemory(); //内存附加
             long caseMemoryLimit = (runRecord.getMemoryLimit() + extraMemory) * 1024;
-            Options[] opts = new Options[caseNum];
+            Option[] opts = new Option[caseNum];
             for (int cas = 0; cas < caseNum; cas++) {
                 Path[] entry = judgeData.get(cas);
                 Path in = entry[0];
                 Path standard = entry[1];
                 Path progOutput = workDirectory.resolve(standard.getFileName());
 
-                opts[cas] = Options.builder()
+                opts[cas] = Option.builder()
                         .timeLimit(castTimeLimit) // time limit
                         .memoryLimit(caseMemoryLimit) // memory in bytes
                         .outputLimit(16 * 1024 * 1024) // 16M

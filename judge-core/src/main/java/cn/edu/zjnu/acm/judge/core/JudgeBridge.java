@@ -26,17 +26,17 @@ public class JudgeBridge implements Closeable {
         }
     }
 
-    public ExecuteResult[] judge(Options[] optionses, boolean stopOnError, Validator validator)
+    public ExecuteResult[] judge(Option[] options, boolean stopOnError, Validator validator)
             throws IOException {
         // the first case takes much more time than other cases.
-        executor.execute(optionses[0]);
-        List<ExecuteResult> list = new ArrayList<>(optionses.length);
-        for (Options options : optionses) {
-            log.debug("prepare execute {}", options);
-            ExecuteResult result = executor.execute(options);
+        executor.execute(options[0]);
+        List<ExecuteResult> list = new ArrayList<>(options.length);
+        for (Option option : options) {
+            log.debug("prepare execute {}", option);
+            ExecuteResult result = executor.execute(option);
             boolean success = result.isSuccess();
             if (success) {
-                result = validator.validate(options, result);
+                result = validator.validate(option, result);
                 success = result.isSuccess();
             }
             log.info("result:{}", result);

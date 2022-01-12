@@ -113,7 +113,7 @@ public class JudgeBridgeGroovyTest {
     @ParameterizedTest
     @MethodSource("data")
     public void test(Checker checker, String executable) throws IOException {
-        Options options = Options.builder().command(build("java", "-cp", groovy.getFileName().toString(), groovy.ui.GroovyMain.class.getName(), executable))
+        Option option = Option.builder().command(build("java", "-cp", groovy.getFileName().toString(), groovy.ui.GroovyMain.class.getName(), executable))
                 .inputFile(input)
                 .outputFile(work.resolve(output.getFileName()))
                 .standardOutput(output)
@@ -124,7 +124,7 @@ public class JudgeBridgeGroovyTest {
                 .timeLimit(6000)
                 .build();
         boolean stopOnError = false;
-        ExecuteResult er = judgeBridge.judge(new Options[]{options}, stopOnError, validator)[0];
+        ExecuteResult er = judgeBridge.judge(new Option[]{option}, stopOnError, validator)[0];
         Status result = er.getCode();
         Status expect = checker.getStatus();
         assertThat(result)
