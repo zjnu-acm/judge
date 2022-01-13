@@ -141,14 +141,7 @@ public enum Sandbox {
 
             restrictedToken.setIntegrityLevel(integrityLevel);
 
-            switch (tokenType) {
-                case PRIMARY:
-                    return restrictedToken.createRestrictedToken();
-                case IMPERSONATION:
-                    return restrictedToken.createRestrictedTokenForImpersonation();
-                default:
-                    throw new Win32Exception(ERROR_BAD_ARGUMENTS);
-            }
+            return tokenType.applyAsLong(restrictedToken);
         }
     }
 

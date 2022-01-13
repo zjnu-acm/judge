@@ -5,7 +5,17 @@
  */
 package cn.edu.zjnu.acm.judge.sandbox.win32;
 
-public enum TokenType {
-    IMPERSONATION,
-    PRIMARY
+import java.util.function.ToLongFunction;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.Delegate;
+
+@RequiredArgsConstructor
+public enum TokenType implements ToLongFunction<RestrictedToken> {
+
+    IMPERSONATION(RestrictedToken::createRestrictedTokenForImpersonation),
+    PRIMARY(RestrictedToken::createRestrictedToken);
+
+    @Delegate
+    private final ToLongFunction<RestrictedToken> function;
+
 }
