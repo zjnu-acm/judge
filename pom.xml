@@ -57,7 +57,7 @@
         <attoparser.version>2.0.5.RELEASE</attoparser.version>
         <ckfinder.group-id>com.github.zhanhb</ckfinder.group-id>
         <ckfinder.version>0.1.0-SNAPSHOT</ckfinder.version>
-        <duplicate-finder-maven-plugin.version>1.5.0</duplicate-finder-maven-plugin.version>
+        <duplicate-finder-maven-plugin.version>1.5.1</duplicate-finder-maven-plugin.version>
         <findbugs-jsr305.version>3.0.2</findbugs-jsr305.version>
         <flatten-maven-plugin.version>1.2.7</flatten-maven-plugin.version>
         <flyway.version>7.15.0</flyway.version>
@@ -68,14 +68,14 @@
         <jnc.version>0.1.BUILD-SNAPSHOT</jnc.version>
         <kaptcha.version>0.0.9</kaptcha.version>
         <lombok-maven-plugin.version>1.18.20.0</lombok-maven-plugin.version>
-        <mybatis-spring-boot.version>2.2.0</mybatis-spring-boot.version>
+        <mybatis-spring-boot.version>2.2.1</mybatis-spring-boot.version>
         <mybatis-spring.version>2.0.6</mybatis-spring.version>
-        <mybatis.version>3.5.8</mybatis.version>
+        <mybatis.version>3.5.9</mybatis.version>
         <objenesis.version>3.2</objenesis.version>
         <poi.version>5.1.0</poi.version>
         <prerequisites.maven>3.6.1</prerequisites.maven>
         <revision>0.0.1-SNAPSHOT</revision>
-        <sortpom-maven-plugin.version>3.0.0</sortpom-maven-plugin.version>
+        <sortpom-maven-plugin.version>3.0.1</sortpom-maven-plugin.version>
         <thymeleaf-layout-dialect.version>3.0.0</thymeleaf-layout-dialect.version>
         <unbescape.version>1.1.6.RELEASE</unbescape.version>
     </properties>
