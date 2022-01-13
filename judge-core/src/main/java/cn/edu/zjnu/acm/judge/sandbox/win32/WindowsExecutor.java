@@ -71,7 +71,7 @@ public class WindowsExecutor implements Executor {
         hToken = Handle.of(Sandbox.INSTANCE.createRestrictedToken(
                 TokenLevel.USER_LIMITED,
                 IntegrityLevel.INTEGRITY_LEVEL_LOW,
-                TokenType.PRIMARY,
+                TokenType.IMPERSONATION,
                 true, null));
     }
 
