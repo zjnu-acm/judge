@@ -58,13 +58,13 @@ public class ModifyUserController {
         if (!passwordEncoder.matches(oldPassword, password)) {
             throw new BusinessException(BusinessCode.INCORRECT_PASSWORD);
         }
-        if (StringUtils.isEmpty(nick)) {
+        if (!StringUtils.hasLength(nick)) {
             nick = userId;
         }
-        if (StringUtils.isEmpty(newPassword)) {
-            newPassword = oldPassword;
-        } else {
+        if (StringUtils.hasLength(newPassword)) {
             ValueCheck.checkPassword(newPassword);
+        } else {
+            newPassword = oldPassword;
         }
         if (StringUtils.hasText(email)) {
             ValueCheck.checkEmail(email);

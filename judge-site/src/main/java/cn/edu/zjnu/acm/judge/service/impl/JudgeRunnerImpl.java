@@ -101,7 +101,7 @@ public class JudgeRunnerImpl implements JudgeRunner {
             RunResult.Builder builder = RunResult.builder();
             String source = runRecord.getSource();
 
-            if (StringUtils.isEmpty(source)) {
+            if (!StringUtils.hasLength(source)) {
                 return builder.type(Status.COMPILATION_ERROR).compileInfo("empty source file").build();
             }
             final String main = "Main";

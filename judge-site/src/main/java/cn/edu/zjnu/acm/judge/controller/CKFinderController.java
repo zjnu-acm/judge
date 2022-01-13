@@ -77,7 +77,7 @@ public class CKFinderController {
         final String uri = request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE).toString();
         final String pattern = request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE).toString();
         String rest = matcher.extractPathWithinPattern(pattern, uri);
-        String path = StringUtils.isEmpty(rest) ? first : first + "/" + rest;
+        String path = StringUtils.hasLength(rest) ? first + "/" + rest : first;
         pathPartial.service(request, response, toPath(path));
     }
 

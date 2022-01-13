@@ -28,10 +28,9 @@ public interface ValueCheck {
     String EMAIL_PATTERN = "[a-z0-9!#$%&'*+/=?^_`{|}~-]++(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]++)*+@[a-z0-9](?:[a-z0-9-]*[a-z0-9])?+(?:\\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?+)++";
 
     static void checkUserId(@Nullable String userId) {
-        if (StringUtils.isEmpty(userId)) {
+        if (!StringUtils.hasLength(userId)) {
             throw new BusinessException(BusinessCode.REGISTER_PROMPT_USER_ID_EMPTY);
         }
-        assert userId != null;
         if (userId.length() < 6 || userId.length() > 20) {
             throw new BusinessException(BusinessCode.REGISTER_PROMPT_USER_ID);
         }
@@ -41,10 +40,9 @@ public interface ValueCheck {
     }
 
     static void checkPassword(@Nullable String password) {
-        if (StringUtils.isEmpty(password)) {
+        if (!StringUtils.hasLength(password)) {
             throw new BusinessException(BusinessCode.EMPTY_PASSWORD);
         }
-        assert password != null;
         if (password.length() > 20 || password.length() < 6) {
             throw new BusinessException(BusinessCode.PASSWORD_INVALID_LENGTH);
         }
@@ -62,10 +60,9 @@ public interface ValueCheck {
     }
 
     static void checkNick(@Nullable String nick) {
-        if (StringUtils.isEmpty(nick)) {
+        if (!StringUtils.hasLength(nick)) {
             throw new BusinessException(BusinessCode.NICK_EMPTY);
         }
-        assert nick != null;
         if (nick.length() > 64) {
             throw new BusinessException(BusinessCode.NICK_LONG);
         }
