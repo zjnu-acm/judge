@@ -127,14 +127,26 @@ public class WindowsExecutor implements Executor {
             pi = createProcess(command, hIn.getValue(), hOut.getValue(), hErr.getValue(), redirectErrorStream, workDirectory);
         }
 
-        try (Job job = new Job();
-                Handle hProcess = Handle.of(pi.getProcess());
+        Job job;
+        long process = pi.getProcess();
+        try {
+            job = new Job(JobLevel.JOB_RESTRICTED, null, 0, 0);
+            try {
+                job.assignProcessToJob(process);
+            } catch (Throwable t) {
+                job.close();
+                throw t;
+            }
+        } catch (Throwable t) {
+            Kernel32.INSTANCE.TerminateProcess(process, 1);
+            throw t;
+        }
+        try (
+                Handle hProcess = Handle.of(process);
                 Handle hThread = Handle.of(pi.getThread())) {
             JudgeProcess judgeProcess = new JudgeProcess(hProcess.getValue());
             try (FileChannel cOut = FileChannel.open(outputPath);
-                    FileChannel cErr = redirectErrorStream ? cOut : FileChannel.open(errorPath)) {
-                job.init();
-                job.assignProcess(hProcess.getValue());
+                 FileChannel cErr = redirectErrorStream ? cOut : FileChannel.open(errorPath)) {
 
                 int dwCount = Kernel32.INSTANCE.ResumeThread(hThread.getValue());
                 Kernel32Util.assertTrue(dwCount != -1);
@@ -189,6 +201,8 @@ public class WindowsExecutor implements Executor {
                     .code(status)
                     .exitCode(exitCode)
                     .build();
+        } finally {
+            job.close();
         }
     }
 

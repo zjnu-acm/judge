@@ -87,6 +87,15 @@ public interface Kernel32 {
     @int32_t
     boolean CloseHandle(@uintptr_t long /*HANDLE*/ handle);
 
+    @int32_t
+    boolean QueryInformationJobObject(
+            @In @uintptr_t long /*HANDLE*/ hJob,
+            @In JOBOBJECTINFOCLASS JobObjectInformationClass,
+            @Out JobObjectInformation lpJobObjectInformation,
+            @In @uint32_t int /*DWORD*/ cbJobObjectInformationLength,
+            @Out @Nullable IntByReference lpReturnLength
+    );
+
     /**
      * @return If the function succeeds, the return value is nonzero. If the
      * function fails, the return value is zero. To get extended error
