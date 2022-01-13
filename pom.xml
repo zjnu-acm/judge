@@ -54,6 +54,7 @@
 
     <properties>
         <angular.version>1.2.32</angular.version>
+        <argLine/>
         <attoparser.version>2.0.5.RELEASE</attoparser.version>
         <ckfinder.group-id>com.github.zhanhb</ckfinder.group-id>
         <ckfinder.version>0.1.0-SNAPSHOT</ckfinder.version>
@@ -63,6 +64,7 @@
         <gmavenplus-plugin.version>1.13.1</gmavenplus-plugin.version>
         <guava.version>31.0.1-jre</guava.version>
         <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
+        <jacoco.propertyName>argLine</jacoco.propertyName>
         <jnc.group-id>com.github.java-native-call</jnc.group-id>
         <jnc.version>0.1.BUILD-SNAPSHOT</jnc.version>
         <kaptcha.version>0.0.9</kaptcha.version>
@@ -308,6 +310,14 @@
                     </configuration>
                 </plugin>
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven-surefire-plugin.version}</version>
+                    <configuration>
+                        <argLine>-Dfile.encoding=${file.encoding} -ea @{argLine}</argLine>
+                    </configuration>
+                </plugin>
+                <plugin>
                     <groupId>org.basepom.maven</groupId>
                     <artifactId>duplicate-finder-maven-plugin</artifactId>
                     <version>${duplicate-finder-maven-plugin.version}</version>
@@ -357,6 +367,14 @@
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
                     <version>${jacoco-maven-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                                <goal>report</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
                 <plugin>
                     <groupId>org.projectlombok</groupId>
@@ -367,6 +385,10 @@
         </pluginManagement>
 
         <plugins>
+            <plugin>
+                <groupId>com.github.ekryd.sortpom</groupId>
+                <artifactId>sortpom-maven-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
@@ -423,6 +445,10 @@
                 <configuration>
                     <flattenMode>bom</flattenMode>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

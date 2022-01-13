@@ -11,9 +11,7 @@
     <name>Online Judge Site</name>
 
     <properties>
-        <argLine/>
         <delombok.directory>${project.build.directory}/delombok</delombok.directory>
-        <jacoco.propertyName>argLine</jacoco.propertyName>
         <start-class>cn.edu.zjnu.acm.judge.Application</start-class>
     </properties>
 
@@ -153,10 +151,6 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>com.github.ekryd.sortpom</groupId>
-                <artifactId>sortpom-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
             </plugin>
@@ -177,7 +171,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <argLine>-Dfile.encoding=${file.encoding} -ea @{argLine}</argLine>
                     <forkCount>1C</forkCount>
                     <systemPropertyVariables>
                         <slf4j.detectLoggerNameMismatch>true</slf4j.detectLoggerNameMismatch>
@@ -225,20 +218,6 @@
                         <exclude>cn/edu/zjnu/acm/judge/data/**/*.class</exclude>
                     </excludes>
                 </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                        <phase>prepare-package</phase>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.projectlombok</groupId>
