@@ -8,9 +8,9 @@ package cn.edu.zjnu.acm.judge.sandbox.win32;
 /**
  * <table><caption><b>The Token level specifies a set of security profiles
  * designed to provide the bulk of the security of
- * sandbox.</b></caption><tr><td>TokenLevel</td><td>Restricting
- * Sids</td><td>Deny
- * Only</td><td>Privileges</td></tr><tr><td>USER_LOCKDOWN</td><td>Null
+ * sandbox.</b></caption><tr><th>TokenLevel</th><th>Restricting
+ * Sids</th><th>Deny
+ * Only</th><th>Privileges</th></tr><tr><td>USER_LOCKDOWN</td><td>Null
  * Sid</td><td>All</td><td>None</td></tr>
  * <tr><td>USER_RESTRICTED</td><td>RESTRICTED</td><td>All</td><td>Traverse</td></tr>
  * <tr><td>USER_LIMITED</td><td>Users, Everyone, RESTRICTED</td><td>All except:
