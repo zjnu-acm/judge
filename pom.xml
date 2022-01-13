@@ -67,6 +67,7 @@
         <jnc.version>0.1.BUILD-SNAPSHOT</jnc.version>
         <kaptcha.version>0.0.9</kaptcha.version>
         <lombok-maven-plugin.version>1.18.20.0</lombok-maven-plugin.version>
+        <maven-compiler-plugin.version>3.9.0</maven-compiler-plugin.version>
         <mybatis-spring-boot.version>2.2.1</mybatis-spring-boot.version>
         <mybatis-spring.version>2.0.6</mybatis-spring.version>
         <mybatis.version>3.5.9</mybatis.version>
