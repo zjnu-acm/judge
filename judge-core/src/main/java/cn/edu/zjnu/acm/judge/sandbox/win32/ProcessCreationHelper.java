@@ -29,7 +29,7 @@ import static jnc.platform.win32.WinBase.SEM_NOOPENFILEERRORBOX;
 @SuppressWarnings("PublicInnerClass")
 public interface ProcessCreationHelper {
 
-    static <V, E extends Throwable> V execute(ExceptionCallable<V, E> supplier) throws E {
+    static <V, E extends Throwable> V execute(ExceptionalCallable<V, E> supplier) throws E {
         Objects.requireNonNull(supplier);
         synchronized (java.lang.Runtime.getRuntime()) {
             int oldErrorMode = Kernel32.INSTANCE.SetErrorMode(SEM_FAILCRITICALERRORS | SEM_NOGPFAULTERRORBOX | SEM_NOOPENFILEERRORBOX);
@@ -41,23 +41,26 @@ public interface ProcessCreationHelper {
         }
     }
 
-    static <E extends Throwable> void execute(ExceptionRunnable<E> runnable) throws E {
-        Objects.requireNonNull(runnable);
-        execute(() -> {
-            runnable.run();
-            return null;
-        });
+    static <E extends Throwable> void execute(ExceptionalRunnable<E> runnable) throws E {
+        execute(ExceptionalCallable.fromRunnable(runnable));
     }
 
     @FunctionalInterface
-    interface ExceptionCallable<V, E extends Throwable> {
+    interface ExceptionalCallable<V, E extends Throwable> {
 
         V call() throws E;
 
+        static <V, E extends Throwable> ExceptionalCallable<V, E> fromRunnable(ExceptionalRunnable<E> runnable) {
+            Objects.requireNonNull(runnable);
+            return () -> {
+                runnable.run();
+                return null;
+            };
+        }
     }
 
     @FunctionalInterface
-    interface ExceptionRunnable<E extends Throwable> {
+    interface ExceptionalRunnable<E extends Throwable> {
 
         void run() throws E;
 
