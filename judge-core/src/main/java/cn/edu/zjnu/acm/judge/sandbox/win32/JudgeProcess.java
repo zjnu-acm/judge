@@ -25,17 +25,12 @@ public class JudgeProcess {
     private final long /*HANDLE*/ hProcess;
     private final AtomicReference<Status> status = new AtomicReference<>();
 
-    JudgeProcess(long /*HANDLE*/ hProcess) {
-        this.hProcess = hProcess;
+    public JudgeProcess(long /*HANDLE*/ hProcess) {
+        this.hProcess = Handle.validateHandle(hProcess);
     }
 
     public void terminate(Status errorCode) {
         if (status.compareAndSet(null, errorCode)) {
-            try {
-                Handle.validateHandle(hProcess);
-            } catch (IllegalArgumentException ex) {
-                return;
-            }
             // don't check the return value, maybe the process has already exited.
             Kernel32.INSTANCE.TerminateProcess(hProcess, 1);
         }
