@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.8</version>
+        <version>2.6.2</version>
         <relativePath/>
     </parent>
     <groupId>cn.edu.zjnu.acm</groupId>
@@ -60,7 +60,6 @@
         <duplicate-finder-maven-plugin.version>1.5.1</duplicate-finder-maven-plugin.version>
         <findbugs-jsr305.version>3.0.2</findbugs-jsr305.version>
         <flatten-maven-plugin.version>1.2.7</flatten-maven-plugin.version>
-        <flyway.version>7.15.0</flyway.version>
         <gmavenplus-plugin.version>1.13.1</gmavenplus-plugin.version>
         <guava.version>31.0.1-jre</guava.version>
         <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
@@ -76,7 +75,6 @@
         <prerequisites.maven>3.6.1</prerequisites.maven>
         <revision>0.0.1-SNAPSHOT</revision>
         <sortpom-maven-plugin.version>3.0.1</sortpom-maven-plugin.version>
-        <thymeleaf-layout-dialect.version>3.0.0</thymeleaf-layout-dialect.version>
         <unbescape.version>1.1.6.RELEASE</unbescape.version>
     </properties>
 
