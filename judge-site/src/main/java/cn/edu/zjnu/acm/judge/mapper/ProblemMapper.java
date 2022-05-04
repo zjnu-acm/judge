@@ -44,6 +44,11 @@ public interface ProblemMapper {
 
     long updateSelective(@Param("id") long id, @Param("p") Problem build, @Nullable @Param("lang") String lang);
 
+    long updateImgUrl(
+            @Param("problemId") long problemId,
+            @Param("imgSrc") String imgSrc,
+            @Param("newImgSrc") String newImgSrc);
+
     List<Problem> findAll(
             @Param(value = "form") ProblemForm form,
             @Nullable @Param(value = "userId") String userId,

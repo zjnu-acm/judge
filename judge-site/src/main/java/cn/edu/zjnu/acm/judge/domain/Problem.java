@@ -18,6 +18,8 @@ package cn.edu.zjnu.acm.judge.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.List;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -48,6 +50,9 @@ public class Problem implements Serializable {
     private String source;
     private Long timeLimit;
     private Long memoryLimit;
+
+    private List<TestData> testData;
+    private List<Image> images;
 
     private Long accepted;
     private Long submit;

@@ -1106,4 +1106,20 @@
         });
         $('script').remove();
     });
+
+    $(function ($) {
+        var url = window.location.href;
+        var prefix = url.substring(0, url.indexOf('/admin'));
+        $("#input-b9").fileinput({
+            language: 'zh',
+            showPreview: true,
+            showUpload: true,
+            elErrorContainer: '#kartik-file-errors',
+            allowedFileExtensions: ["md", "xml"],
+            uploadUrl: prefix + '/api/problems/importProb'
+        }).on("fileuploaded", function(event, data){
+            window.location.reload();
+        })
+    })
+
 }(typeof window !== 'undefined' ? window : this);

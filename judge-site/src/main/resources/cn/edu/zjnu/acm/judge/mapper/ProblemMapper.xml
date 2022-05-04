@@ -114,6 +114,17 @@
         </set>
         <where>p.problem_id=#{id}</where>
     </update>
+    <update id="updateImgUrl">
+        UPDATE problem p
+        <set>
+            p.description=replace(p.description,#{imgSrc},#{newImgSrc}),
+            p.input=replace(p.input,#{imgSrc},#{newImgSrc}),
+            p.output=replace(p.output,#{imgSrc},#{newImgSrc}),
+            p.hint=replace(p.hint,#{imgSrc},#{newImgSrc}),
+            p.source=replace(p.source,#{imgSrc},#{newImgSrc}),
+        </set>
+        <where>p.problem_id=#{problemId}</where>
+    </update>
     <select id="findAll" resultMap="baseResultMap">
         select
             p.problem_id,

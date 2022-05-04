@@ -51,6 +51,8 @@ public interface ProblemService {
 
     void updateSelective(long problemId, Problem p, @Nullable String requestLocale);
 
+    void updateImgUrl(long problemId, String imgSrc, String newImgSrc);
+
     List<String> attachment(long problemId, String requestLocale);
 
 }

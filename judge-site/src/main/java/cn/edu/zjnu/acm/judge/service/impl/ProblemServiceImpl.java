@@ -85,6 +85,11 @@ public class ProblemServiceImpl implements ProblemService {
         problemMapper.updateSelective(problemId, p, locale);
     }
 
+    @Override
+    public void updateImgUrl(long problemId, String imgSrc, String newImgSrc) {
+        problemMapper.updateImgUrl(problemId, imgSrc, newImgSrc);
+    }
+
     @Nonnull
     @Transactional
     @Override

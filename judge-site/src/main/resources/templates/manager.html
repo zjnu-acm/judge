@@ -10,7 +10,12 @@
         <title>在线评测系统管理后台</title>
         <base href="./" th:href="@{/admin/}"/>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.css" th:href="@{/webjars/bootstrap/3.4.1/dist/css/bootstrap.min.css}" rel="stylesheet"/>
+        <link href="https://cdn.bootcss.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
         <link href="../static/css/site.css" th:href="@{/css/site.css(_=${application.startupDate})}" rel="stylesheet"/>
+        <link th:href="@{/css/fileinput/fileinput.css}" rel="stylesheet"/>
+        <link th:href="@{/css/fileinput/fileinput-rtl.css}" rel="stylesheet"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.min.css" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" crossorigin="anonymous">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.9.0/loading-bar.css" th:href="@{/webjars/angular-loading-bar/0.9.0/build/loading-bar.min.css}" rel="stylesheet"/>
         <link href="https://cdn.jsdelivr.net/gh/isteven/angular-multi-select@v4.0.0/isteven-multi-select.css" th:href="@{/webjars/angular-multi-select/4.0.0/isteven-multi-select.css}" rel="stylesheet"/>
         <!--[if lt IE 9]>
@@ -39,6 +44,9 @@
         </div>
         <a th:title="#{onlinejudge.footer.back_to_top}" class="back-to-top" id="back-to-top" href="#top"></a>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.js" th:src="@{/webjars/jquery/1.12.4/jquery.min.js}"></script>
+        <script src="https://cdn.bootcss.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script th:src="@{/js/fileinput/fileinput.js}"></script>
+        <script th:src="@{/js/fileinput/zh.js}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.32/angular.js" th:src="@{/webjars/angular/1.2.32/angular.min.js}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.9.0/loading-bar.js" th:src="@{/webjars/angular-loading-bar/0.9.0/build/loading-bar.min.js}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.32/angular-resource.js" th:src="@{/webjars/angular-resource/1.2.32/angular-resource.min.js}"></script>
@@ -247,21 +255,64 @@
             <font size="4" color="#339">Problem List</font>
         </p>
         <div class="table-responsive">
-            <div class="pull-right">
-                <button type="button" class="btn btn-default" ui-sref="problem-add" ui-sref-opts="{reload: true}">添加</button>
+            <div class="pull-right" style="padding-bottom: 0.5rem">
+                <button type="button" class="btn btn-default" ui-sref="problem-add" ui-sref-opts="{reload: true}">添加</button>&nbsp;
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#importModal">导入</button>&nbsp;
+                <button type="button" class="btn btn-default" onclick="exportProblem();">导出</button>
+            </div>
+            <div class="modal fade" id="importModal" tabindex="-1" role="document" aria-labelledby="importModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h5 class="modal-title" id="importModalLabel">导入题目</h5>
+                        </div>
+                        <div class="modal-body">
+                            <div>
+                                <p><i width="16" height="16" class="bi bi-exclamation-triangle"></i><span>&nbsp;注意事项</span></p>
+                                <p>1. 导入题目文件前，请严格按照模版与说明文件整理。</p>
+                                <p>2. 点击"下载导入模版"，可下载查看导入模版文件与说明。</p>
+                                <p>3. 点击"上传文件"按钮，选择整理好的文件。</p>
+                                <br/>
+                            </div>
+                            <div>
+                                <p><i width="16" height="16" class="bi bi-card-text"></i><span>&nbsp;导入文件</span></p>
+                                <p>
+                                    <span>导入模版：&nbsp;</span>
+                                    <i width="14" height="14" class="bi-arrow-down-circle"></i>
+                                    <span class="form-control-static">&nbsp;下载导入模版</span>
+                                </p>
+                                <form enctype="multipart/form-data">
+                                    <div>
+                                        <p>文件上传：</p>
+                                        <div class="file-loading">
+                                            <input id="input-b9" name="file" type="file">
+                                        </div>
+                                        <div id="kartik-file-errors"></div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">完成</button>
+                        </div>
+                    </div>
+                </div>
             </div>
             <table class="table table-striped table-hover table-bordered">
                 <thead>
                     <tr class="text-center">
-                        <th width="10%" class="sortable" ng-click="push('id')">编号</th>
+                        <th width="4%"><input type="checkbox" id="checkAll"></th>
+                        <th width="8%" class="sortable" ng-click="push('id')">编号</th>
                         <th width="45%" class="sortable" ng-click="push('title')">标题</th>
                         <th width="8%" class="sortable" ng-click="push('disabled')">状态</th>
-                        <th width="20%" class="sortable" ng-click="push('inDate,desc')">最后提交</th>
-                        <th width="16%">操作</th>
+                        <th width="19%" class="sortable" ng-click="push('inDate,desc')">最后提交</th>
+                        <th width="15%">操作</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="tbody">
                     <tr class="text-center" ng-repeat="p in page.content">
+                        <td><input type="checkbox" name="ck" class="ck"> </td>
                         <td>{{p.id}}</td>
                         <td align="left">
                             <a ui-sref="problem-view-current({id:p.id})" ui-sref-opts="{reload: true}">{{p.title||'无标题'}}</a>
@@ -280,6 +331,61 @@
         <div class="clearfix" ng-hide="1 >= page.totalPages && page.number === 0">
             <pagination total-items="page.totalElements" ng-model="currentPage" max-size="10" items-per-page="page.size" ng-change="pageChanged()" boundary-links="true" direction-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
         </div>
+        <script th:inline="javascript">
+            // 全选事件
+            $(function ($) {
+                var j_cbAll = document.getElementById('checkAll');
+                var j_tbs = document.getElementById('tbody').getElementsByTagName('input');
+
+                j_cbAll.onclick = function () {
+                    for(var i = 0; i < j_tbs.length; i++) {
+                        j_tbs[i].checked = this.checked;
+                    }
+                }
+
+                for(var i = 0; i < j_tbs.length; i++) {
+                    j_tbs[i].onclick = function () {
+                        for(var i = 0; i < j_tbs.length; i++) {
+                            if (!j_tbs[i].checked) {
+                                j_cbAll.checked = false;
+                                return;
+                            }
+                        }
+                        j_cbAll.checked = true;
+                    }
+                }
+            })
+
+            function getCheckedIds(){
+                var ids = []
+                $(":checkbox[name='ck']:checked").each(function(){
+                    var tr = this.parentNode.parentNode;
+                    var id = tr.cells[1].innerHTML;
+                    console.log('id:' + id);
+                    ids.push(id);
+                })
+                return ids
+            }
+
+            function exportProblem(){
+                var checkids = [];
+                checkids = getCheckedIds();
+                if(checkids.length <= 0){
+                    alert("请选择一行");
+                    return;
+                } else {
+                    console.log(checkids);
+                    var url = window.location.href;
+                    var prefix = url.substring(0, url.indexOf('/admin'));
+                    var form = $("<form>");
+                    form.attr("style","display:none").attr("method","post").attr("action", prefix + '/api/problems/exportProb');
+                    var input1 = $("<input>");
+                    input1.attr("type","hidden").attr("name","ids").attr("value",checkids);
+                    $("body").append(form);
+                    form.append(input1).submit().remove();
+                }
+            }
+        </script>
         <!--/*/</script>/*/-->
 
         <!--/*/<script type="text/ng-template" id="problem-view.html">/*/-->
@@ -314,6 +420,26 @@
                 <span>]</span>
             </p>
         </font>
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                showProcessingMessages: false,
+                messageStyle: "none",
+                extensions: ["tex2jax.js"],
+                jax: ["input/TeX", "output/HTML-CSS"],
+                tex2jax: {
+                    inlineMath:  [ ["$", "$"] ],
+                    displayMath: [ ["$$","$$"] ],
+                    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre','code','a'],
+                    ignoreClass:"comment-content"
+                },
+                "HTML-CSS": {
+                    availableFonts: ["STIX","TeX"],
+                    showMathMenu: false
+                }
+            });
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+        </script>
+        <script src="https://cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <!--/*/</script>/*/-->
 
         <!--/*/<script type="text/ng-template" id="contest-list.html">/*/-->
