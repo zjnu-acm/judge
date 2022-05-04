@@ -8,7 +8,7 @@ import cn.edu.zjnu.acm.judge.service.ProblemService;
 import cn.edu.zjnu.acm.judge.service.SystemService;
 import cn.edu.zjnu.acm.judge.util.parser.SAXUtils;
 import com.github.zhanhb.ckfinder.connector.api.BasePathBuilder;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,6 +21,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static cn.edu.zjnu.acm.judge.util.FileUtils.*;
 import static cn.edu.zjnu.acm.judge.util.ImgUtils.imageToBase64;
@@ -174,7 +175,7 @@ public class ProblemImportServiceImpl implements ProblemImportService {
         return problem;
     }
 
-    public Problem mapToProblem(@NotNull HashMap<String, String> problemMap){
+    public Problem mapToProblem(@NonNull Map<String, String> problemMap){
         Problem newProblem = new Problem();
         newProblem.setTitle(problemMap.get("title").trim());
         Long timeLimit = Long.parseLong(problemMap.get("timelimit").replaceAll("[^0-9]",""));
