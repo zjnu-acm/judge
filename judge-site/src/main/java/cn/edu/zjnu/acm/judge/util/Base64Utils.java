@@ -1,9 +1,7 @@
 package cn.edu.zjnu.acm.judge.util;
 
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
-
-import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,14 +13,7 @@ public class Base64Utils {
      * @return
      */
     public static byte[] decode(String base64Str){
-        byte[] b = null;
-        BASE64Decoder decoder = new BASE64Decoder();
-        try {
-            b = decoder.decodeBuffer(replaceEnter(base64Str));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return b;
+        return Base64.getDecoder().decode(replaceEnter(base64Str));
     }
 
     /**
@@ -31,13 +22,11 @@ public class Base64Utils {
      * @return
      */
     public static String encode(byte[] image){
-        BASE64Encoder decoder = new BASE64Encoder();
-        return replaceEnter(decoder.encode(image));
+        return Base64.getEncoder().encodeToString(image);
     }
 
     public static String encode(String uri){
-        BASE64Encoder encoder = new BASE64Encoder();
-        return replaceEnter(encoder.encode(uri.getBytes()));
+        return Base64.getEncoder().encodeToString(uri.getBytes(StandardCharsets.UTF_8));
     }
 
     public static String replaceEnter(String str){
