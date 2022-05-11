@@ -6,6 +6,7 @@ import cn.edu.zjnu.acm.judge.domain.TestData;
 import cn.edu.zjnu.acm.judge.service.ProblemExportService;
 import cn.edu.zjnu.acm.judge.service.ProblemService;
 import cn.edu.zjnu.acm.judge.service.SystemService;
+import com.github.zhanhb.ckfinder.connector.api.BasePathBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ public class ProblemExportServiceImpl implements ProblemExportService {
 
     private final ProblemService problemService;
     private final SystemService systemService;
+    private final BasePathBuilder basePathBuilder;
 
     @Override
     public List<Problem> generateProblemEntity(Long[] ids) throws IOException {
@@ -78,7 +80,7 @@ public class ProblemExportServiceImpl implements ProblemExportService {
     @Override
     public List<Image> findImages(Long id) throws IOException {
         Path dirPath = systemService.getUploadDirectory();
-        String dirUrl = dirPath.toAbsolutePath().toString();
+        String dirUrl = dirPath.toAbsolutePath().toString() + "/Images";
         File dir = new File(dirUrl);
         File[] fileArray = dir.listFiles();
         List<Image> imageList = new ArrayList<>();
@@ -90,7 +92,8 @@ public class ProblemExportServiceImpl implements ProblemExportService {
             String filePath = fileArray[i].getAbsolutePath();
             if (fileName.contains(Long.toString(id))) {
                 String base64 = getImgFileToBase64(filePath);
-                Image image = new Image(filePath, base64);
+                String imgSrc = basePathBuilder.getBaseUrl() + "Images/" + fileName;
+                Image image = new Image(imgSrc, base64);
                 imageList.add(image);
             }
         }
