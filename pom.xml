@@ -74,7 +74,7 @@
         <mybatis-spring.version>2.0.6</mybatis-spring.version>
         <mybatis.version>3.5.9</mybatis.version>
         <objenesis.version>3.2</objenesis.version>
-        <poi.version>5.1.0</poi.version>
+        <poi.version>5.4.0</poi.version>
         <prerequisites.maven>3.6.1</prerequisites.maven>
         <revision>0.0.1-SNAPSHOT</revision>
         <sortpom-maven-plugin.version>3.0.1</sortpom-maven-plugin.version>
